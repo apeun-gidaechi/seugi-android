@@ -1,4 +1,4 @@
-package com.seugi.android
+package com.`apeun-gidaechi`.seugi
 
 import org.junit.Test
 

@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.seugi.android"
+    namespace = "com.apeun-gidaechi.seugi"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.seugi.android"
+        applicationId = "com.apeun-gidaechi.seugi"
         minSdk = 28
         targetSdk = 34
         versionCode = 1

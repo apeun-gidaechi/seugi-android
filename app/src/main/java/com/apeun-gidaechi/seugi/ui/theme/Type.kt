@@ -1,4 +1,4 @@
-package com.seugi.android.ui.theme
+package com.`apeun-gidaechi`.seugi.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
