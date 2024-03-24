@@ -1,4 +1,4 @@
-package com.`apeun-gidaechi`.seugi
+package com.apeun.gidaechi.seugi
 
 import org.junit.Test
 
