@@ -51,7 +51,6 @@ private val LightColorScheme =
         outline = Gray300,
     )
 
-
 @Composable
 fun SeugiTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
