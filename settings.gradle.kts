@@ -18,3 +18,4 @@ rootProject.name = "seugi"
 include(":app")
 //include(":build-logic")
 //include(":build-logic:convention")
+include(":designsystem")
