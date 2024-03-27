@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -78,8 +77,7 @@ fun SeugiTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        // TODO(" 텍스트 스타일 추가 ")
-        typography = Typography(),
+        typography = Pretendard,
         content = content,
     )
 }
