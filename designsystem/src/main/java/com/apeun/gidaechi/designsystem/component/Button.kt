@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -56,15 +55,19 @@ sealed class ButtonType(
     val textColor: Color,
     val backgroundColor: Color,
     val disableTextColor: Color,
-    val disableBackgroundColor: Color
+    val disableBackgroundColor: Color,
 ) {
-    data object Primary: ButtonType(White, Primary500, White, Primary100)
-    data object Black: ButtonType(White, com.apeun.gidaechi.designsystem.theme.Black, White, Gray500)
-    data object Red: ButtonType(Red500, Red200, Red300, Red100)
-    data object Transparent: ButtonType(com.apeun.gidaechi.designsystem.theme.Black, com.apeun.gidaechi.designsystem.theme.Transparent, Gray500, com.apeun.gidaechi.designsystem.theme.Transparent)
-    data object Shadow: ButtonType(com.apeun.gidaechi.designsystem.theme.Black, White, Gray500, White)
+    data object Primary : ButtonType(White, Primary500, White, Primary100)
+    data object Black : ButtonType(White, com.apeun.gidaechi.designsystem.theme.Black, White, Gray500)
+    data object Red : ButtonType(Red500, Red200, Red300, Red100)
+    data object Transparent : ButtonType(
+        com.apeun.gidaechi.designsystem.theme.Black,
+        com.apeun.gidaechi.designsystem.theme.Transparent,
+        Gray500,
+        com.apeun.gidaechi.designsystem.theme.Transparent,
+    )
+    data object Shadow : ButtonType(com.apeun.gidaechi.designsystem.theme.Black, White, Gray500, White)
 }
-
 
 @Composable
 fun SeugiFullWidthButton(
@@ -75,25 +78,30 @@ fun SeugiFullWidthButton(
     enabled: Boolean = true,
     shape: Shape = RoundedCornerShape(12.dp),
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    interactionSource: MutableInteractionSource = NoInteractionSource()
+    interactionSource: MutableInteractionSource = NoInteractionSource(),
 ) {
     val buttonModifier =
-        if (type is ButtonType.Shadow)
+        if (type is ButtonType.Shadow) {
             Modifier
                 .dropShadow(DropShadowType.Ev1)
                 .background(White)
-        else Modifier
+        } else {
+            Modifier
+        }
 
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val scale by animateFloatAsState(
         targetValue = if (buttonState == ButtonState.Idle) 1f else 0.96f,
-        label = ""
+        label = "",
     )
     val color = if (enabled) type.backgroundColor else type.disableBackgroundColor
     val animColor by animateColorAsState(
-        targetValue = if (buttonState == ButtonState.Idle) color.copy(alpha = 1f)
-        else color.copy(alpha = 0.64f),
-        label = ""
+        targetValue = if (buttonState == ButtonState.Idle) {
+            color.copy(alpha = 1f)
+        } else {
+            color.copy(alpha = 0.64f)
+        },
+        label = "",
     )
 
     Box(modifier = buttonModifier) {
@@ -122,21 +130,20 @@ fun SeugiFullWidthButton(
                 containerColor = animColor,
                 contentColor = type.textColor,
                 disabledContainerColor = animColor,
-                disabledContentColor = type.disableTextColor
+                disabledContentColor = type.disableTextColor,
             ),
             enabled = enabled,
             shape = shape,
             contentPadding = contentPadding,
-            interactionSource = interactionSource
+            interactionSource = interactionSource,
         ) {
             Text(
                 text = text,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
             )
         }
     }
 }
-
 
 @Composable
 fun SeugiButton(
@@ -147,25 +154,30 @@ fun SeugiButton(
     enabled: Boolean = true,
     shape: Shape = RoundedCornerShape(12.dp),
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    interactionSource: MutableInteractionSource = NoInteractionSource()
+    interactionSource: MutableInteractionSource = NoInteractionSource(),
 ) {
     val buttonModifier =
-        if (type is ButtonType.Shadow)
+        if (type is ButtonType.Shadow) {
             Modifier
                 .dropShadow(DropShadowType.Ev1)
                 .background(White)
-        else Modifier
+        } else {
+            Modifier
+        }
 
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val scale by animateFloatAsState(
         targetValue = if (buttonState == ButtonState.Idle) 1f else 0.96f,
-        label = ""
+        label = "",
     )
     val color = if (enabled) type.backgroundColor else type.disableBackgroundColor
     val animColor by animateColorAsState(
-        targetValue = if (buttonState == ButtonState.Idle) color.copy(alpha = 1f)
-        else color.copy(alpha = 0.64f),
-        label = ""
+        targetValue = if (buttonState == ButtonState.Idle) {
+            color.copy(alpha = 1f)
+        } else {
+            color.copy(alpha = 0.64f)
+        },
+        label = "",
     )
 
     Box(modifier = buttonModifier) {
@@ -193,22 +205,21 @@ fun SeugiButton(
                 containerColor = animColor,
                 contentColor = type.textColor,
                 disabledContainerColor = animColor,
-                disabledContentColor = type.disableTextColor
+                disabledContentColor = type.disableTextColor,
             ),
             enabled = enabled,
             shape = shape,
             contentPadding = contentPadding,
-            interactionSource = interactionSource
+            interactionSource = interactionSource,
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 12.dp),
                 text = text,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -228,7 +239,7 @@ private fun SeugiButtonPreview() {
                 .fillMaxSize()
                 .padding(horizontal = 20.dp)
                 .background(White)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
         ) {
             SeugiFullWidthButton(
                 onClick = onClick,
@@ -242,28 +253,28 @@ private fun SeugiButtonPreview() {
                 onClick = onClick,
                 enabled = testState,
                 type = ButtonType.Black,
-                text = "시작하기"
+                text = "시작하기",
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiFullWidthButton(
                 onClick = onClick,
                 enabled = testState,
                 type = ButtonType.Red,
-                text = "시작하기"
+                text = "시작하기",
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiFullWidthButton(
                 onClick = onClick,
                 enabled = testState,
                 type = ButtonType.Transparent,
-                text = "시작하기"
+                text = "시작하기",
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiFullWidthButton(
                 onClick = onClick,
                 enabled = testState,
                 type = ButtonType.Shadow,
-                text = "시작하기"
+                text = "시작하기",
             )
             Spacer(modifier = Modifier.height(20.dp))
             SeugiButton(
@@ -278,28 +289,28 @@ private fun SeugiButtonPreview() {
                 onClick = onClick,
                 enabled = testState,
                 type = ButtonType.Black,
-                text = "시작하기"
+                text = "시작하기",
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiButton(
                 onClick = onClick,
                 enabled = testState,
                 type = ButtonType.Red,
-                text = "시작하기"
+                text = "시작하기",
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiButton(
                 onClick = onClick,
                 enabled = testState,
                 type = ButtonType.Transparent,
-                text = "시작하기"
+                text = "시작하기",
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiButton(
                 onClick = onClick,
                 enabled = testState,
                 type = ButtonType.Shadow,
-                text = "시작하기"
+                text = "시작하기",
             )
         }
     }
