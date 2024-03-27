@@ -33,6 +33,12 @@ sealed class DropShadowType(
     data object Ev3: DropShadowType(18.dp, 6.dp, Color(0x14000000))
 }
 
+/**
+ * Seugi DropShadow
+ *
+ * @param type: the size of the shadow according to the design system.
+ * @param modifier: the Modifier to be applied to this drop shadow
+ */
 fun Modifier.dropShadow(
     type: DropShadowType,
     modifier: Modifier = Modifier,
@@ -70,7 +76,6 @@ fun Modifier.dropShadow(
         }
     }
 )
-
 
 @Composable
 @Preview(showBackground = true)
