@@ -1,7 +1,6 @@
 package com.apeun.gidaechi.designsystem.component
 
 import androidx.compose.ui.graphics.Color
-import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.Red200
 import com.apeun.gidaechi.designsystem.theme.Red500
