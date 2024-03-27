@@ -79,7 +79,7 @@ fun SeugiTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         // TODO(" 텍스트 스타일 추가 ")
-        typography = Typography(),
+        typography = Pretendard,
         content = content,
     )
 }
