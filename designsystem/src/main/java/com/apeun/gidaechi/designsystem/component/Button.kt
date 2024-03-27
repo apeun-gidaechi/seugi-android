@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,6 +49,8 @@ import com.apeun.gidaechi.designsystem.theme.Red500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.designsystem.theme.Transparent
 import com.apeun.gidaechi.designsystem.theme.White
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 sealed class ButtonType(
     val textColor: Color,
@@ -211,6 +214,15 @@ fun SeugiButton(
 @Composable
 private fun SeugiButtonPreview() {
     SeugiTheme {
+        var testState by remember { mutableStateOf(true) }
+        val coroutineScope = rememberCoroutineScope()
+        val onClick: () -> Unit = {
+            coroutineScope.launch {
+                testState = false
+                delay(2000)
+                testState = true
+            }
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -219,63 +231,73 @@ private fun SeugiButtonPreview() {
                 .verticalScroll(rememberScrollState())
         ) {
             SeugiFullWidthButton(
-                onClick = {  },
+                onClick = onClick,
+                enabled = testState,
                 type = ButtonType.Primary,
                 text = "시작하기",
                 interactionSource = NoInteractionSource(),
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiFullWidthButton(
-                onClick = {  },
+                onClick = onClick,
+                enabled = testState,
                 type = ButtonType.Black,
                 text = "시작하기"
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiFullWidthButton(
-                onClick = {  },
+                onClick = onClick,
+                enabled = testState,
                 type = ButtonType.Red,
                 text = "시작하기"
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiFullWidthButton(
-                onClick = {  },
+                onClick = onClick,
+                enabled = testState,
                 type = ButtonType.Transparent,
                 text = "시작하기"
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiFullWidthButton(
-                onClick = {  },
+                onClick = onClick,
+                enabled = testState,
                 type = ButtonType.Shadow,
                 text = "시작하기"
             )
             Spacer(modifier = Modifier.height(20.dp))
             SeugiButton(
-                onClick = {  },
+                onClick = onClick,
+                enabled = testState,
                 type = ButtonType.Primary,
                 text = "시작하기",
                 interactionSource = NoInteractionSource(),
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiButton(
-                onClick = {  },
+                onClick = onClick,
+                enabled = testState,
                 type = ButtonType.Black,
                 text = "시작하기"
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiButton(
-                onClick = {  },
+                onClick = onClick,
+                enabled = testState,
                 type = ButtonType.Red,
                 text = "시작하기"
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiButton(
-                onClick = {  },
+                onClick = onClick,
+                enabled = testState,
                 type = ButtonType.Transparent,
                 text = "시작하기"
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiButton(
-                onClick = {  },
+                onClick = onClick,
+                enabled = testState,
                 type = ButtonType.Shadow,
                 text = "시작하기"
             )
