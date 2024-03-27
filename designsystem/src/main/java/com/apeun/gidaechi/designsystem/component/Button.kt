@@ -1,6 +1,10 @@
 package com.apeun.gidaechi.designsystem.component
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
@@ -18,12 +22,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.apeun.gidaechi.designsystem.animation.ButtonState
+import com.apeun.gidaechi.designsystem.animation.NoInteractionSource
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
 import com.apeun.gidaechi.designsystem.theme.Gray500
@@ -60,7 +70,7 @@ fun SeugiFullWidthButton(
     enabled: Boolean = true,
     shape: Shape = RoundedCornerShape(12.dp),
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+    interactionSource: MutableInteractionSource = NoInteractionSource()
 ) {
     val buttonModifier =
         if (type is ButtonType.Shadow)
@@ -68,17 +78,45 @@ fun SeugiFullWidthButton(
                 .dropShadow(DropShadowType.Ev1)
                 .background(White)
         else Modifier
+
+    var buttonState by remember { mutableStateOf(ButtonState.Idle) }
+    val scale by animateFloatAsState(
+        targetValue = if (buttonState == ButtonState.Idle) 1f else 0.96f,
+        label = ""
+    )
+    val color = if (enabled) type.backgroundColor else type.disableBackgroundColor
+    val animColor by animateColorAsState(
+        targetValue = if (buttonState == ButtonState.Idle) color.copy(alpha = 1f)
+        else color.copy(alpha = 0.64f),
+        label = ""
+    )
+
     Box(modifier = buttonModifier) {
         Button(
             onClick = onClick,
             modifier = buttonModifier
                 .then(modifier)
                 .fillMaxWidth()
-                .height(54.dp),
+                .height(54.dp)
+                .graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
+                }
+                .pointerInput(buttonState) {
+                    awaitPointerEventScope {
+                        buttonState = if (buttonState == ButtonState.Hold) {
+                            waitForUpOrCancellation()
+                            ButtonState.Idle
+                        } else {
+                            awaitFirstDown(false)
+                            ButtonState.Hold
+                        }
+                    }
+                },
             colors = ButtonDefaults.buttonColors(
-                containerColor = type.backgroundColor,
+                containerColor = animColor,
                 contentColor = type.textColor,
-                disabledContainerColor = type.disableBackgroundColor,
+                disabledContainerColor = animColor,
                 disabledContentColor = type.disableTextColor
             ),
             enabled = enabled,
@@ -108,7 +146,8 @@ private fun SeugiButtonPreview() {
             SeugiFullWidthButton(
                 onClick = {  },
                 type = ButtonType.Primary,
-                text = "시작하기"
+                text = "시작하기",
+                interactionSource = NoInteractionSource(),
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiFullWidthButton(
