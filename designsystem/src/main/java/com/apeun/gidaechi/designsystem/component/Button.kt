@@ -44,7 +44,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.animation.ButtonState
 import com.apeun.gidaechi.designsystem.animation.NoInteractionSource
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
@@ -244,25 +243,26 @@ fun SeugiIconButton(
 ) {
     val animColor by animateColorAsState(
         targetValue = if (enabled) colors.contentColor else colors.disabledContentColor,
-        label = ""
+        label = "",
     )
-    Box(modifier = modifier
-        .size(24.dp)
-        .clickable(
-            onClick = onClick,
-            enabled = enabled,
-            role = Role.Button,
-            interactionSource = interactionSource,
-            indication = rememberRipple(
-                bounded = false,
-                radius = 24.dp / 2
-            )
-        )
+    Box(
+        modifier = modifier
+            .size(24.dp)
+            .clickable(
+                onClick = onClick,
+                enabled = enabled,
+                role = Role.Button,
+                interactionSource = interactionSource,
+                indication = rememberRipple(
+                    bounded = false,
+                    radius = 24.dp / 2,
+                ),
+            ),
     ) {
         Image(
             painter = painterResource(id = resId),
             contentDescription = contentDescription,
-            colorFilter = ColorFilter.tint(animColor)
+            colorFilter = ColorFilter.tint(animColor),
         )
     }
 }

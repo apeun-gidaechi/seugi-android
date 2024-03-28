@@ -5,9 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,7 +16,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -85,12 +82,12 @@ fun SeugiTextField(
         disabledIndicatorColor = Transparent,
         disabledTextColor = Gray400,
         disabledContainerColor = White,
-    )
+    ),
 ) {
     var isFocused by remember { mutableStateOf(false) }
     val animBorderColor by animateColorAsState(
         targetValue = if (isFocused) Primary500 else Gray400,
-        label = ""
+        label = "",
     )
 
     CompositionLocalProvider(LocalTextSelectionColors provides colors.textSelectionColors) {
@@ -102,7 +99,7 @@ fun SeugiTextField(
                 .fillMaxWidth()
                 .background(
                     color = if (enabled) colors.focusedContainerColor else colors.disabledContainerColor,
-                    shape = shape
+                    shape = shape,
                 )
                 .onFocusChanged {
                     isFocused = it.isFocused
@@ -110,7 +107,7 @@ fun SeugiTextField(
                 .border(
                     width = (1.5).dp,
                     color = animBorderColor,
-                    shape = shape
+                    shape = shape,
                 ),
             onValueChange = onValueChange,
             enabled = enabled,
@@ -125,7 +122,7 @@ fun SeugiTextField(
                         Text(
                             text = placeholder,
                             style = textStyle,
-                            color = if (enabled) Gray500 else Gray400
+                            color = if (enabled) Gray500 else Gray400,
                         )
                     },
                     label = null,
@@ -138,8 +135,8 @@ fun SeugiTextField(
                                 containerColor = colors.focusedContainerColor,
                                 disabledContainerColor = colors.disabledContainerColor,
                                 contentColor = colors.focusedTextColor,
-                                disabledContentColor = colors.disabledTextColor
-                            )
+                                disabledContentColor = colors.disabledTextColor,
+                            ),
                         )
                     },
                     contentPadding = TextFieldDefaults.contentPaddingWithoutLabel(start = 16.dp, end = 16.dp),
@@ -148,9 +145,9 @@ fun SeugiTextField(
                     colors = colors,
                     interactionSource = NoInteractionSource(),
                     singleLine = false,
-                    visualTransformation = VisualTransformation.None
+                    visualTransformation = VisualTransformation.None,
                 )
-            }
+            },
         )
     }
 }
@@ -169,10 +166,10 @@ private fun PreviewSeugiTextField() {
                 .focusRequester(focusRequester)
                 .clickable(
                     interactionSource = NoInteractionSource(),
-                    indication = null
+                    indication = null,
                 ) {
                     focusManager.clearFocus(true)
-                }
+                },
         ) {
             var value by remember { mutableStateOf("") }
             SeugiTextField(
@@ -182,7 +179,7 @@ private fun PreviewSeugiTextField() {
                 },
                 onClickDelete = {
                     value = ""
-                }
+                },
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiTextField(
@@ -193,7 +190,7 @@ private fun PreviewSeugiTextField() {
                 onClickDelete = {
                     value = ""
                 },
-                enabled = false
+                enabled = false,
             )
         }
     }

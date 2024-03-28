@@ -1,19 +1,15 @@
 package com.apeun.gidaechi.designsystem.component.textfield
 
 import android.util.Log
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -24,10 +20,8 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -47,20 +41,15 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.animation.NoInteractionSource
-import com.apeun.gidaechi.designsystem.component.SeugiIconButton
 import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.Gray200
 import com.apeun.gidaechi.designsystem.theme.Gray300
 import com.apeun.gidaechi.designsystem.theme.Gray400
-import com.apeun.gidaechi.designsystem.theme.Gray500
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.Red500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
@@ -102,7 +91,7 @@ fun SeugiCodeTextField(
         disabledIndicatorColor = Transparent,
         disabledTextColor = Gray400,
         disabledContainerColor = White,
-    )
+    ),
 ) {
     var isFocused by remember { mutableStateOf(false) }
     val focusRequester = LocalFocusManager.current
@@ -114,7 +103,7 @@ fun SeugiCodeTextField(
                 .height(52.dp)
                 .background(
                     color = if (enabled) colors.focusedContainerColor else colors.disabledContainerColor,
-                    shape = shape
+                    shape = shape,
                 )
                 .onFocusChanged {
                     isFocused = it.isFocused
@@ -133,12 +122,12 @@ fun SeugiCodeTextField(
             keyboardActions = KeyboardActions(
                 onDone = {
                     focusRequester.clearFocus(true)
-                }
+                },
             ),
             decorationBox = @Composable { innerTextField ->
                 Row(horizontalArrangement = Arrangement.Center) {
                     repeat(limit) { index ->
-                        Log.d("TAG", "SeugiCodeTextField: ${limit-index} ${value.length}")
+                        Log.d("TAG", "SeugiCodeTextField: ${limit - index} ${value.length}")
                         Box(
                             modifier = Modifier
                                 .height(52.dp)
@@ -151,10 +140,10 @@ fun SeugiCodeTextField(
                                         enabled -> Gray300
                                         else -> Gray200
                                     },
-                                    shape = shape
+                                    shape = shape,
                                 )
                                 .padding(horizontal = 18.dp),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             Text(
                                 modifier = Modifier
@@ -168,7 +157,7 @@ fun SeugiCodeTextField(
                         Spacer(modifier = Modifier.weight(1f))
                     }
                 }
-            }
+            },
         )
     }
 }
@@ -194,7 +183,7 @@ fun SeugiCodeTextField(
         disabledIndicatorColor = Transparent,
         disabledTextColor = Gray400,
         disabledContainerColor = White,
-    )
+    ),
 ) {
     var isFocused by remember { mutableStateOf(false) }
     val focusRequester = LocalFocusManager.current
@@ -206,7 +195,7 @@ fun SeugiCodeTextField(
                 .height(52.dp)
                 .background(
                     color = if (enabled) colors.focusedContainerColor else colors.disabledContainerColor,
-                    shape = shape
+                    shape = shape,
                 )
                 .onFocusChanged {
                     isFocused = it.isFocused
@@ -225,7 +214,7 @@ fun SeugiCodeTextField(
             keyboardActions = KeyboardActions(
                 onDone = {
                     focusRequester.clearFocus(true)
-                }
+                },
             ),
             decorationBox = @Composable { innerTextField ->
                 Row(horizontalArrangement = Arrangement.Center) {
@@ -242,10 +231,10 @@ fun SeugiCodeTextField(
                                         enabled -> Gray300
                                         else -> Gray200
                                     },
-                                    shape = shape
+                                    shape = shape,
                                 )
                                 .padding(horizontal = 18.dp),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             Text(
                                 modifier = Modifier
@@ -259,7 +248,7 @@ fun SeugiCodeTextField(
                         Spacer(modifier = Modifier.weight(1f))
                     }
                 }
-            }
+            },
         )
     }
 }
@@ -278,10 +267,10 @@ private fun PreviewSeugiCodeTextField() {
                 .focusRequester(focusRequester)
                 .clickable(
                     interactionSource = NoInteractionSource(),
-                    indication = null
+                    indication = null,
                 ) {
                     focusManager.clearFocus(true)
-                }
+                },
         ) {
             var textValue by remember { mutableStateOf(TextFieldValue()) }
             var value by remember { mutableStateOf("") }
@@ -303,7 +292,7 @@ private fun PreviewSeugiCodeTextField() {
                     }
                     textValue = textValue.copy(
                         text = newValue,
-                        selection = TextRange(newValue.length)
+                        selection = TextRange(newValue.length),
                     )
                 },
             )
