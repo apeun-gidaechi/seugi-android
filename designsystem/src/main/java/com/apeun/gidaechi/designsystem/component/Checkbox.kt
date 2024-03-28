@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,9 +27,9 @@ import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 sealed class CheckBoxType(val size: Dp) {
-    data object Small: CheckBoxType(16.dp)
-    data object Medium: CheckBoxType(20.dp)
-    data object Large: CheckBoxType(24.dp)
+    data object Small : CheckBoxType(16.dp)
+    data object Medium : CheckBoxType(20.dp)
+    data object Large : CheckBoxType(24.dp)
 }
 
 /**
@@ -43,13 +42,7 @@ sealed class CheckBoxType(val size: Dp) {
  * @param onCheckedChange An event occurs when the checkbox is pressed.
  */
 @Composable
-fun SeugiCheckbox(
-    modifier: Modifier = Modifier,
-    type: CheckBoxType,
-    checked: Boolean,
-    enabled: Boolean = true,
-    onCheckedChange: (Boolean) -> Unit,
-) {
+fun SeugiCheckbox(modifier: Modifier = Modifier, type: CheckBoxType, checked: Boolean, enabled: Boolean = true, onCheckedChange: (Boolean) -> Unit) {
     Image(
         modifier = modifier
             .size(type.size)
@@ -64,7 +57,7 @@ fun SeugiCheckbox(
             ),
         painter = painterResource(id = if (checked) R.drawable.ic_check_fill else R.drawable.ic_check_line),
         contentDescription = "checkBox",
-        colorFilter = ColorFilter.tint(if (checked && enabled) Primary500 else Gray500)
+        colorFilter = ColorFilter.tint(if (checked && enabled) Primary500 else Gray500),
     )
 }
 
@@ -75,24 +68,23 @@ private fun PreviewSeugiCheckBox() {
 
     SeugiTheme {
         Column(modifier = Modifier.fillMaxSize()) {
-
             SeugiCheckbox(
                 type = CheckBoxType.Small,
-                checked = checked
+                checked = checked,
             ) {
                 checked = it
             }
             Spacer(modifier = Modifier.height(10.dp))
             SeugiCheckbox(
                 type = CheckBoxType.Medium,
-                checked = checked
+                checked = checked,
             ) {
                 checked = it
             }
             Spacer(modifier = Modifier.height(10.dp))
             SeugiCheckbox(
                 type = CheckBoxType.Large,
-                checked = checked
+                checked = checked,
             ) {
                 checked = it
             }
