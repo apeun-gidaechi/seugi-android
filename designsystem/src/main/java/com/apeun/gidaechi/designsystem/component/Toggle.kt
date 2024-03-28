@@ -58,7 +58,7 @@ fun Toggle(
         Switch(
             checked = isChecked,
             onCheckedChange = { isChecked = it },
-            colors = SwitchDefaults.colors( // 스위치 색상 설정
+            colors = SwitchDefaults.colors(
                 checkedThumbColor = White,
                 checkedTrackColor = Primary500,
                 uncheckedThumbColor = White,
