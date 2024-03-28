@@ -153,24 +153,6 @@ fun SeugiTextField(
             }
         )
     }
-//        modifier = modifier
-//            .height(62.dp)
-//            .fillMaxWidth()
-//            .background(
-//            ),
-//        value = value,
-//        onValueChange = onValueChange,
-//        textStyle = textStyle,
-//        enabled = enabled,
-//        colors = colors,
-//        shape = shape,
-//        trailingIcon = {
-//            SeugiIconButton(
-//                resId = R.drawable.ic_close_fill,
-//                onClick = {  }
-//            )
-//        }
-//    )
 }
 
 @Preview(showBackground = true)
