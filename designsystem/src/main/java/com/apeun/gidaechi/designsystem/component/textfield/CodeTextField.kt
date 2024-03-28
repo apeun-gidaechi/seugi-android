@@ -61,16 +61,14 @@ import com.apeun.gidaechi.designsystem.theme.White
  *
  * @param modifier the Modifier to be applied to this text field
  * @param value the means the value to be seen.
+ * @param limit the indicates the maximum number to be displayed.
  * @param onValueChange the event is forwarded when the value changes.
- * @param onHideChange the event occurs when the value display status changes.
- * @param placeholder the indicates the value to be displayed before the value is entered.
+ * @param isError the if true, change the color of the border.
  * @param enabled the whether TextField can be entered.
- * @param singleLine the whether it is possible to enter only one line.
  * @param textStyle the setting for when the value is displayed.
  * @param shape the setting for how round the textField is.
  * @param colors specifies the color of the text field.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SeugiCodeTextField(
     modifier: Modifier = Modifier,
@@ -256,7 +254,6 @@ fun SeugiCodeTextField(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewSeugiCodeTextField() {
-    var isFocused by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
 

@@ -94,7 +94,6 @@ fun SeugiTextField(
         BasicTextField(
             value = value,
             modifier = modifier
-//                .defaultErrorSemantics(isError, getString(Strings.DefaultErrorMessage))
                 .height(52.dp)
                 .fillMaxWidth()
                 .background(
@@ -155,7 +154,6 @@ fun SeugiTextField(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewSeugiTextField() {
-    var isFocused by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
 

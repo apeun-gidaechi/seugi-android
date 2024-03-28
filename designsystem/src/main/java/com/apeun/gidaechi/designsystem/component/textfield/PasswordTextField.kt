@@ -171,7 +171,6 @@ fun SeugiPasswordTextField(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewSeugiPasswordTextField() {
-    var isFocused by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
 
