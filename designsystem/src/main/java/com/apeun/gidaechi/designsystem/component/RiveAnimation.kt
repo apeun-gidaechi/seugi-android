@@ -51,9 +51,8 @@ fun RiveAnimation(
     notifyPlay: ((PlayableInstance) -> Unit)? = null,
     notifyStateChanged: ((String, String) -> Unit)? = null,
     notifyStop: ((PlayableInstance) -> Unit)? = null,
-    update: (RiveAnimationView) -> Unit = { _ -> }
+    update: (RiveAnimationView) -> Unit = { _ -> },
 ) {
-
     var riveAnimationView: RiveAnimationView? = null
     var listener: RiveFileController.Listener? = null
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -61,8 +60,8 @@ fun RiveAnimation(
     if (LocalInspectionMode.current) { // For Developing only,
         Image(
             modifier = modifier.size(100.dp),
-            painter = painterResource(id = androidx.core.R.drawable.ic_call_answer), //any image
-            contentDescription = contentDescription
+            painter = painterResource(id = androidx.core.R.drawable.ic_call_answer),
+            contentDescription = contentDescription,
         )
     } else {
         val semantics = if (contentDescription != null) {
@@ -86,10 +85,7 @@ fun RiveAnimation(
                 notifyPlay?.invoke(animation)
             }
 
-            override fun notifyStateChanged(
-                stateMachineName: String,
-                stateName: String
-            ) {
+            override fun notifyStateChanged(stateMachineName: String, stateName: String) {
                 notifyStateChanged?.invoke(stateMachineName, stateName)
             }
 
@@ -98,8 +94,8 @@ fun RiveAnimation(
             }
         }.takeIf {
             (notifyLoop != null) || (notifyPause != null) ||
-                    (notifyPlay != null) || (notifyStateChanged != null) ||
-                    (notifyStop != null)
+                (notifyPlay != null) || (notifyStateChanged != null) ||
+                (notifyStop != null)
         }
 
         AndroidView(
@@ -116,7 +112,7 @@ fun RiveAnimation(
                         autoplay,
                         fit,
                         alignment,
-                        loop
+                        loop,
                     )
                 }
                 listener?.let {
@@ -126,7 +122,7 @@ fun RiveAnimation(
             },
             update = {
                 update.invoke(it)
-            }
+            },
         )
 
         DisposableEffect(lifecycleOwner) {
@@ -145,13 +141,17 @@ fun RiveAnimation(
 fun RiveComposablePreview() {
     val context = LocalContext.current
     Rive.init(context)
-    Box(modifier = Modifier.fillMaxSize().background(Black)) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Black),
+    ) {
         RiveAnimation(
             modifier = Modifier.size(24.dp),
             resId = R.raw.loading_dots,
             autoplay = true,
             animationName = "Loading",
-            contentDescription = "Just a Rive Animation"
+            contentDescription = "Just a Rive Animation",
         )
     }
 }
