@@ -31,7 +31,7 @@ import com.apeun.gidaechi.designsystem.theme.White
 
 @Composable
 @Preview
-fun Preview() {
+private fun Preview() {
     Column(
         modifier = Modifier
             .fillMaxSize()
