@@ -25,7 +25,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,10 +50,8 @@ import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
 import com.apeun.gidaechi.designsystem.theme.Gray100
 import com.apeun.gidaechi.designsystem.theme.Gray500
 import com.apeun.gidaechi.designsystem.theme.Gray600
-import com.apeun.gidaechi.designsystem.theme.Primary100
 import com.apeun.gidaechi.designsystem.theme.Primary200
 import com.apeun.gidaechi.designsystem.theme.Primary500
-import com.apeun.gidaechi.designsystem.theme.Red100
 import com.apeun.gidaechi.designsystem.theme.Red200
 import com.apeun.gidaechi.designsystem.theme.Red300
 import com.apeun.gidaechi.designsystem.theme.Red500
@@ -69,9 +66,9 @@ sealed class ButtonType(
     val backgroundColor: Color,
     val disableTextColor: Color,
     val disableBackgroundColor: Color,
-    val animName: String
+    val animName: String,
 ) {
-    data object Primary : ButtonType(White, Primary500, White, Primary200 , "Loading_White")
+    data object Primary : ButtonType(White, Primary500, White, Primary200, "Loading_White")
     data object Black : ButtonType(White, com.apeun.gidaechi.designsystem.theme.Black, White, Gray600, "Loading_White")
     data object Red : ButtonType(Red500, Red200, Red300, Red200, "Loading_White")
     data object Transparent : ButtonType(
