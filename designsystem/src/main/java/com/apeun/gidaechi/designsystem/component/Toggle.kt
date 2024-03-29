@@ -29,19 +29,6 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.designsystem.theme.Transparent
 import com.apeun.gidaechi.designsystem.theme.White
 
-@Composable
-@Preview
-private fun TogglePreview() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Toggle(checked = true)
-    }
-}
 
 @Composable
 fun Toggle(checked: Boolean, modifier: Modifier = Modifier) {
@@ -74,5 +61,20 @@ fun Toggle(checked: Boolean, modifier: Modifier = Modifier) {
                 )
             },
         )
+    }
+}
+
+
+@Composable
+@Preview
+private fun TogglePreview() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Toggle(checked = true)
     }
 }
