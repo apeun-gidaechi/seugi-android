@@ -29,7 +29,6 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.designsystem.theme.Transparent
 import com.apeun.gidaechi.designsystem.theme.White
 
-
 @Composable
 fun Toggle(checked: Boolean, modifier: Modifier = Modifier) {
     var isChecked by remember { mutableStateOf(checked) }
@@ -63,7 +62,6 @@ fun Toggle(checked: Boolean, modifier: Modifier = Modifier) {
         )
     }
 }
-
 
 @Composable
 @Preview
