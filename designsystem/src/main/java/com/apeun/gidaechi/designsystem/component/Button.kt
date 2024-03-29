@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalAssetLoader::class)
+
 package com.apeun.gidaechi.designsystem.component
 
+import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -22,18 +25,25 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.rive.runtime.kotlin.core.ExperimentalAssetLoader
+import app.rive.runtime.kotlin.core.Rive
+import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.animation.ButtonState
 import com.apeun.gidaechi.designsystem.animation.NoInteractionSource
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
@@ -42,6 +52,7 @@ import com.apeun.gidaechi.designsystem.theme.Gray100
 import com.apeun.gidaechi.designsystem.theme.Gray500
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary100
+import com.apeun.gidaechi.designsystem.theme.Primary200
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.Red100
 import com.apeun.gidaechi.designsystem.theme.Red200
@@ -58,20 +69,37 @@ sealed class ButtonType(
     val backgroundColor: Color,
     val disableTextColor: Color,
     val disableBackgroundColor: Color,
+    val animName: String
 ) {
-    data object Primary : ButtonType(White, Primary500, White, Primary100)
-    data object Black : ButtonType(White, com.apeun.gidaechi.designsystem.theme.Black, White, Gray500)
-    data object Red : ButtonType(Red500, Red200, Red300, Red100)
+    data object Primary : ButtonType(White, Primary500, White, Primary200 , "Loading_White")
+    data object Black : ButtonType(White, com.apeun.gidaechi.designsystem.theme.Black, White, Gray600, "Loading_White")
+    data object Red : ButtonType(Red500, Red200, Red300, Red200, "Loading_White")
     data object Transparent : ButtonType(
         com.apeun.gidaechi.designsystem.theme.Black,
         com.apeun.gidaechi.designsystem.theme.Transparent,
         Gray500,
         com.apeun.gidaechi.designsystem.theme.Transparent,
+        "Loading_Gray",
     )
-    data object Shadow : ButtonType(com.apeun.gidaechi.designsystem.theme.Black, White, Gray500, White)
-    data object Gray : ButtonType(Gray600, Gray100, Gray500, Gray100)
+    data object Shadow : ButtonType(com.apeun.gidaechi.designsystem.theme.Black, White, Gray500, White, "Loading_Gray")
+    data object Gray : ButtonType(Gray600, Gray100, Gray500, Gray100, "Loading_Gray")
 }
 
+/**
+ * Seugi Full Width Button
+ *
+ * **This Button Need Rive Initialize**
+ *
+ * @param onClick An event occurs when the button is pressed.
+ * @param type the means Button Color And Animation Color
+ * @param text the indicates text to be displayed on the button.
+ * @param modifier the Modifier to be applied to this Button.
+ * @param enabled the indicates whether the button is activated.
+ * @param isLoading the indicates whether it is currently loading.
+ * @param shape means the roundness of the button.
+ * @param contentPadding the indicates the spacing of the contents of the button.
+ * @param interactionSource the MutableInteractionSource representing the stream of Interactions for this button. You can create and pass in your own remembered instance to observe Interactions and customize the appearance / behavior of this button in different states.
+ */
 @Composable
 fun SeugiFullWidthButton(
     onClick: () -> Unit,
@@ -79,6 +107,7 @@ fun SeugiFullWidthButton(
     text: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    isLoading: Boolean = false,
     shape: Shape = RoundedCornerShape(12.dp),
     contentPadding: PaddingValues = PaddingValues(0.dp),
     interactionSource: MutableInteractionSource = NoInteractionSource(),
@@ -91,13 +120,14 @@ fun SeugiFullWidthButton(
         } else {
             Modifier
         }
+    val isEnabled = enabled && !isLoading
 
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val scale by animateFloatAsState(
         targetValue = if (buttonState == ButtonState.Idle) 1f else 0.96f,
         label = "",
     )
-    val color = if (enabled) type.backgroundColor else type.disableBackgroundColor
+    val color = if (isEnabled) type.backgroundColor else type.disableBackgroundColor
     val animColor by animateColorAsState(
         targetValue = if (buttonState == ButtonState.Idle) {
             color.copy(alpha = 1f)
@@ -135,19 +165,43 @@ fun SeugiFullWidthButton(
                 disabledContainerColor = animColor,
                 disabledContentColor = type.disableTextColor,
             ),
-            enabled = enabled,
+            enabled = isEnabled,
             shape = shape,
             contentPadding = contentPadding,
             interactionSource = interactionSource,
         ) {
-            Text(
-                text = text,
-                style = MaterialTheme.typography.titleMedium,
-            )
+            if (isLoading) {
+                RiveAnimation(
+                    resId = R.raw.loading_dots,
+                    contentDescription = "loading gif",
+                    autoplay = true,
+                    animationName = type.animName,
+                )
+            } else {
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.titleMedium,
+                )
+            }
         }
     }
 }
 
+/**
+ * Seugi Button
+ *
+ * **This Button Need Rive Initialize**
+ *
+ * @param onClick An event occurs when the button is pressed.
+ * @param type the means Button Color And Animation Color
+ * @param text the indicates text to be displayed on the button.
+ * @param modifier the Modifier to be applied to this Button.
+ * @param enabled the indicates whether the button is activated.
+ * @param isLoading the indicates whether it is currently loading.
+ * @param shape means the roundness of the button.
+ * @param contentPadding the indicates the spacing of the contents of the button.
+ * @param interactionSource the MutableInteractionSource representing the stream of Interactions for this button. You can create and pass in your own remembered instance to observe Interactions and customize the appearance / behavior of this button in different states.
+ */
 @Composable
 fun SeugiButton(
     onClick: () -> Unit,
@@ -155,6 +209,7 @@ fun SeugiButton(
     text: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    isLoading: Boolean = false,
     shape: Shape = RoundedCornerShape(12.dp),
     contentPadding: PaddingValues = PaddingValues(0.dp),
     interactionSource: MutableInteractionSource = NoInteractionSource(),
@@ -167,13 +222,14 @@ fun SeugiButton(
         } else {
             Modifier
         }
+    val isEnabled = enabled && !isLoading
 
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val scale by animateFloatAsState(
         targetValue = if (buttonState == ButtonState.Idle) 1f else 0.96f,
         label = "",
     )
-    val color = if (enabled) type.backgroundColor else type.disableBackgroundColor
+    val color = if (isEnabled) type.backgroundColor else type.disableBackgroundColor
     val animColor by animateColorAsState(
         targetValue = if (buttonState == ButtonState.Idle) {
             color.copy(alpha = 1f)
@@ -210,16 +266,30 @@ fun SeugiButton(
                 disabledContainerColor = animColor,
                 disabledContentColor = type.disableTextColor,
             ),
-            enabled = enabled,
+            enabled = isEnabled,
             shape = shape,
             contentPadding = contentPadding,
             interactionSource = interactionSource,
         ) {
-            Text(
-                modifier = Modifier.padding(horizontal = 12.dp),
-                text = text,
-                style = MaterialTheme.typography.bodyMedium,
-            )
+            Box {
+                if (isLoading) {
+                    RiveAnimation(
+                        modifier = Modifier.align(Alignment.Center),
+                        resId = R.raw.loading_dots,
+                        contentDescription = "loading gif",
+                        autoplay = true,
+                        animationName = type.animName,
+                    )
+                }
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 12.dp)
+                        .align(Alignment.Center)
+                        .alpha(if (isLoading) 0f else 1f),
+                    text = text,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
         }
     }
 }
@@ -227,13 +297,20 @@ fun SeugiButton(
 @Preview(showBackground = true)
 @Composable
 private fun SeugiButtonPreview() {
+    val context = LocalContext.current
+    Rive.init(context)
     SeugiTheme {
         var testState by remember { mutableStateOf(true) }
+        var loadingState by remember { mutableStateOf(false) }
         val coroutineScope = rememberCoroutineScope()
         val onClick: () -> Unit = {
+            Log.d("TAG", "SeugiButtonPreview: $loadingState")
             coroutineScope.launch {
                 testState = false
+                loadingState = true
+                Log.d("TAG", "SeugiButtonPreview: $loadingState")
                 delay(2000)
+                loadingState = false
                 testState = true
             }
         }
@@ -249,6 +326,7 @@ private fun SeugiButtonPreview() {
                 enabled = testState,
                 type = ButtonType.Primary,
                 text = "시작하기",
+                isLoading = loadingState,
                 interactionSource = NoInteractionSource(),
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -257,6 +335,7 @@ private fun SeugiButtonPreview() {
                 enabled = testState,
                 type = ButtonType.Black,
                 text = "시작하기",
+                isLoading = loadingState,
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiFullWidthButton(
@@ -264,6 +343,7 @@ private fun SeugiButtonPreview() {
                 enabled = testState,
                 type = ButtonType.Red,
                 text = "시작하기",
+                isLoading = loadingState,
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiFullWidthButton(
@@ -271,6 +351,7 @@ private fun SeugiButtonPreview() {
                 enabled = testState,
                 type = ButtonType.Transparent,
                 text = "시작하기",
+                isLoading = loadingState,
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiFullWidthButton(
@@ -278,6 +359,7 @@ private fun SeugiButtonPreview() {
                 enabled = testState,
                 type = ButtonType.Shadow,
                 text = "시작하기",
+                isLoading = loadingState,
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiFullWidthButton(
@@ -285,6 +367,7 @@ private fun SeugiButtonPreview() {
                 enabled = testState,
                 type = ButtonType.Gray,
                 text = "시작하기",
+                isLoading = loadingState,
             )
             Spacer(modifier = Modifier.height(20.dp))
             SeugiButton(
@@ -292,6 +375,7 @@ private fun SeugiButtonPreview() {
                 enabled = testState,
                 type = ButtonType.Primary,
                 text = "시작하기",
+                isLoading = loadingState,
                 interactionSource = NoInteractionSource(),
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -300,6 +384,7 @@ private fun SeugiButtonPreview() {
                 enabled = testState,
                 type = ButtonType.Black,
                 text = "시작하기",
+                isLoading = loadingState,
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiButton(
@@ -307,6 +392,7 @@ private fun SeugiButtonPreview() {
                 enabled = testState,
                 type = ButtonType.Red,
                 text = "시작하기",
+                isLoading = loadingState,
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiButton(
@@ -314,6 +400,7 @@ private fun SeugiButtonPreview() {
                 enabled = testState,
                 type = ButtonType.Transparent,
                 text = "시작하기",
+                isLoading = loadingState,
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiButton(
@@ -321,6 +408,7 @@ private fun SeugiButtonPreview() {
                 enabled = testState,
                 type = ButtonType.Shadow,
                 text = "시작하기",
+                isLoading = loadingState,
             )
             Spacer(modifier = Modifier.height(10.dp))
             SeugiButton(
@@ -328,6 +416,7 @@ private fun SeugiButtonPreview() {
                 enabled = testState,
                 type = ButtonType.Gray,
                 text = "시작하기",
+                isLoading = loadingState,
             )
         }
     }
