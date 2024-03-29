@@ -38,7 +38,9 @@ import com.apeun.gidaechi.designsystem.animation.ButtonState
 import com.apeun.gidaechi.designsystem.animation.NoInteractionSource
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
+import com.apeun.gidaechi.designsystem.theme.Gray100
 import com.apeun.gidaechi.designsystem.theme.Gray500
+import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary100
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.Red100
@@ -67,6 +69,7 @@ sealed class ButtonType(
         com.apeun.gidaechi.designsystem.theme.Transparent,
     )
     data object Shadow : ButtonType(com.apeun.gidaechi.designsystem.theme.Black, White, Gray500, White)
+    data object Gray : ButtonType(Gray600, Gray100, Gray500, Gray100)
 }
 
 @Composable
@@ -276,6 +279,13 @@ private fun SeugiButtonPreview() {
                 type = ButtonType.Shadow,
                 text = "시작하기",
             )
+            Spacer(modifier = Modifier.height(10.dp))
+            SeugiFullWidthButton(
+                onClick = onClick,
+                enabled = testState,
+                type = ButtonType.Gray,
+                text = "시작하기",
+            )
             Spacer(modifier = Modifier.height(20.dp))
             SeugiButton(
                 onClick = onClick,
@@ -310,6 +320,13 @@ private fun SeugiButtonPreview() {
                 onClick = onClick,
                 enabled = testState,
                 type = ButtonType.Shadow,
+                text = "시작하기",
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            SeugiButton(
+                onClick = onClick,
+                enabled = testState,
+                type = ButtonType.Gray,
                 text = "시작하기",
             )
         }
