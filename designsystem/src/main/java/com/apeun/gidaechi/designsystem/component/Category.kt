@@ -24,6 +24,14 @@ import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.designsystem.theme.White
 
+/**
+ * Seugi Category
+ *
+ * @param modifier the Modifier to be applied to this badge.
+ * @param category the means the category to be seen.
+ * @param isChoose the indicates whether the status is selected.
+ * @param onClick An event occurs when the category is pressed.
+ */
 @Composable
 fun SeugiCategory(modifier: Modifier = Modifier, category: String, isChoose: Boolean, onClick: () -> Unit = {}) {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
