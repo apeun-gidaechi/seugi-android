@@ -347,7 +347,6 @@ private fun SeugiButtonPreview() {
         var loadingState by remember { mutableStateOf(false) }
         val coroutineScope = rememberCoroutineScope()
         val onClick: () -> Unit = {
-            Log.d("TAG", "SeugiButtonPreview: $loadingState")
             coroutineScope.launch {
                 testState = false
                 loadingState = true
