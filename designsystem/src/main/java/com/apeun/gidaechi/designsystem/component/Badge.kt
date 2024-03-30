@@ -27,53 +27,49 @@ import com.apeun.gidaechi.designsystem.theme.White
  * @param count the means the count to be seen.
  */
 @Composable
-fun SeugiBadge(
-    modifier: Modifier = Modifier,
-    count: Int? = null
-) {
+fun SeugiBadge(modifier: Modifier = Modifier, count: Int? = null) {
     if (count == null) {
         Box(
             modifier = modifier
                 .size(12.dp)
                 .background(
                     color = Orange500,
-                    shape = CircleShape
-                )
+                    shape = CircleShape,
+                ),
         )
     } else {
         Box(
             modifier = modifier
                 .background(
                     color = Orange500,
-                    shape = RoundedCornerShape(10.dp)
-                )
+                    shape = RoundedCornerShape(10.dp),
+                ),
         ) {
             Text(
                 modifier = Modifier.padding(
                     horizontal = 8.dp,
-                    vertical = 2.dp
+                    vertical = 2.dp,
                 ),
                 text = if (count > 300) "300+" else count.toString(),
                 color = White,
-                style = MaterialTheme.typography.labelLarge
+                style = MaterialTheme.typography.labelLarge,
             )
         }
     }
 }
-
 
 @Preview
 @Composable
 private fun PreviewSeugiBadge() {
     SeugiTheme {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             SeugiBadge()
             Spacer(modifier = Modifier.height(10.dp))
             SeugiBadge(count = 72)
             Spacer(modifier = Modifier.height(10.dp))
-            SeugiBadge(count = 400  )
+            SeugiBadge(count = 400)
         }
     }
 }
