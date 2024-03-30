@@ -19,7 +19,6 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -68,7 +67,7 @@ fun SeugiChatTextField(
             .fillMaxWidth()
             .dropShadow(DropShadowType.Ev1),
         shape = RoundedCornerShape(12.dp),
-        color = White
+        color = White,
     ) {
         Row(
             modifier = Modifier
@@ -76,9 +75,9 @@ fun SeugiChatTextField(
                 .heightIn(max = 200.dp)
                 .padding(
                     horizontal = 16.dp,
-                    vertical = 14.dp
+                    vertical = 14.dp,
                 ),
-            verticalAlignment = Alignment.Bottom
+            verticalAlignment = Alignment.Bottom,
         ) {
             Image(
                 modifier = Modifier
@@ -86,15 +85,15 @@ fun SeugiChatTextField(
                     .clip(CircleShape)
                     .clickable(
                         role = Role.Button,
-                        onClick = onAddClick
+                        onClick = onAddClick,
                     ),
                 painter = painterResource(id = R.drawable.ic_add_fill),
                 contentDescription = "add button",
-                colorFilter = ColorFilter.tint(Gray400)
+                colorFilter = ColorFilter.tint(Gray400),
             )
             Spacer(modifier = Modifier.width(8.dp))
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {
                 BasicTextField(
                     modifier = Modifier.fillMaxWidth(),
@@ -107,12 +106,12 @@ fun SeugiChatTextField(
                                 Text(
                                     text = placeholder,
                                     color = Gray500,
-                                    style = MaterialTheme.typography.titleMedium
+                                    style = MaterialTheme.typography.titleMedium,
                                 )
                             }
                             innerTextField()
                         }
-                    }
+                    },
                 )
                 Spacer(modifier = Modifier.height(5.5.dp))
             }
@@ -124,11 +123,11 @@ fun SeugiChatTextField(
                     .clickable(
                         role = Role.Button,
                         onClick = onSendClick,
-                        enabled = !valueIsEmpty
+                        enabled = !valueIsEmpty,
                     ),
                 painter = painterResource(id = R.drawable.ic_send_fill),
                 contentDescription = "send button",
-                colorFilter = ColorFilter.tint(if (valueIsEmpty) Gray400 else Primary500)
+                colorFilter = ColorFilter.tint(if (valueIsEmpty) Gray400 else Primary500),
             )
         }
     }
@@ -140,7 +139,7 @@ private fun PreviewSeugiChatTextField() {
     var value by remember { mutableStateOf("") }
     SeugiTheme {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             SeugiChatTextField(
                 value = value,
@@ -149,11 +148,10 @@ private fun PreviewSeugiChatTextField() {
                     value = it
                 },
                 onAddClick = {
-
                 },
                 onSendClick = {
                     Log.d("TAG", "PreviewSeugiChatTextField: qewwe")
-                }
+                },
             )
         }
     }
