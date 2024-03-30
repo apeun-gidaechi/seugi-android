@@ -1,7 +1,6 @@
 package com.apeun.gidaechi.designsystem.component
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -26,12 +25,7 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.designsystem.theme.White
 
 @Composable
-fun SeugiCategory(
-    modifier: Modifier = Modifier,
-    category: String,
-    isChoose: Boolean,
-    onClick: () -> Unit = {}
-) {
+fun SeugiCategory(modifier: Modifier = Modifier, category: String, isChoose: Boolean, onClick: () -> Unit = {}) {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
 
     val animBackgroundColor by animateColorAsState(
@@ -41,11 +35,11 @@ fun SeugiCategory(
             !isChoose && buttonState == ButtonState.Hold -> Gray100.copy(alpha = 0.7f)
             else -> Gray100
         },
-        label = ""
+        label = "",
     )
     val animTextColor by animateColorAsState(
         targetValue = if (isChoose) White else Gray500,
-        label = ""
+        label = "",
     )
 
     Surface(
@@ -54,15 +48,15 @@ fun SeugiCategory(
                 onClick = onClick,
                 onChangeButtonState = {
                     buttonState = it
-                }
+                },
             ),
         shape = RoundedCornerShape(17.dp),
-        color = animBackgroundColor
+        color = animBackgroundColor,
     ) {
         Text(
             modifier = Modifier.padding(
                 horizontal = 16.dp,
-                vertical = 8.dp
+                vertical = 8.dp,
             ),
             text = category,
             color = animTextColor,
@@ -80,23 +74,23 @@ private fun PreviewSeugiCategory() {
     }
     SeugiTheme {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             SeugiCategory(
                 category = "어쩔티비",
                 isChoose = isChoose,
-                onClick = onClick
+                onClick = onClick,
             )
             SeugiCategory(
                 category = "어쩔티비1",
                 isChoose = !isChoose,
-                onClick = onClick
+                onClick = onClick,
 
             )
             SeugiCategory(
                 category = "어쩔티비2",
                 isChoose = isChoose,
-                onClick = onClick
+                onClick = onClick,
             )
         }
     }
