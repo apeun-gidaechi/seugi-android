@@ -74,21 +74,29 @@ fun SeugiCategory(
 @Preview
 @Composable
 private fun PreviewSeugiCategory() {
+    var isChoose by remember { mutableStateOf(false) }
+    val onClick: () -> Unit = {
+        isChoose = !isChoose
+    }
     SeugiTheme {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
             SeugiCategory(
                 category = "어쩔티비",
-                isChoose = true
+                isChoose = isChoose,
+                onClick = onClick
             )
             SeugiCategory(
                 category = "어쩔티비1",
-                isChoose = false
+                isChoose = !isChoose,
+                onClick = onClick
+
             )
             SeugiCategory(
                 category = "어쩔티비2",
-                isChoose = true
+                isChoose = isChoose,
+                onClick = onClick
             )
         }
     }
