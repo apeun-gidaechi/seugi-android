@@ -1,6 +1,5 @@
 package com.apeun.gidaechi.designsystem.component.textfield
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -125,7 +124,6 @@ fun SeugiCodeTextField(
             decorationBox = @Composable { innerTextField ->
                 Row(horizontalArrangement = Arrangement.Center) {
                     repeat(limit) { index ->
-                        Log.d("TAG", "SeugiCodeTextField: ${limit - index} ${value.length}")
                         Box(
                             modifier = Modifier
                                 .height(52.dp)
