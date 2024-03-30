@@ -16,32 +16,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 
 enum class ButtonState { Idle, Hold }
 
-fun Modifier.bounceClick(onClick: () -> Unit, color: Color) = composed {
+fun Modifier.bounceClick(
+    onClick: () -> Unit,
+    onChangeButtonState: (ButtonState) -> Unit = {},
+) = composed {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val scale by animateFloatAsState(
         targetValue = if (buttonState == ButtonState.Idle) 1f else 0.95f,
         label = "",
     )
-    val animColor by animateColorAsState(
-        targetValue = if (buttonState == ButtonState.Idle) {
-            color.copy(alpha = 0f)
-        } else {
-            color.copy(alpha = 0.7f)
-        },
-        label = "",
-    )
 
     this
-        .background(
-            color = animColor,
-            shape = RoundedCornerShape(12.dp),
-        )
         .clickable(
             interactionSource = remember { MutableInteractionSource() },
             indication = null,
@@ -60,6 +52,7 @@ fun Modifier.bounceClick(onClick: () -> Unit, color: Color) = composed {
                     awaitFirstDown(false)
                     ButtonState.Hold
                 }
+                onChangeButtonState(buttonState)
             }
         }
 }
