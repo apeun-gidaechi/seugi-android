@@ -30,7 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.animation.ButtonState
-import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
 import com.apeun.gidaechi.designsystem.theme.Black
@@ -39,15 +38,8 @@ import com.apeun.gidaechi.designsystem.theme.White
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
 @Composable
-fun OAuthButton(
-    image: Int,
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-
+fun OAuthButton(image: Int, text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val scale by animateFloatAsState(
         targetValue = if (buttonState == ButtonState.Idle) 1f else 0.96f,
@@ -69,10 +61,10 @@ fun OAuthButton(
                 containerColor = White,
                 contentColor = Black,
                 disabledContainerColor = White.copy(alpha = 0.5f),
-                disabledContentColor = White.copy(alpha = 0.5f)
+                disabledContentColor = White.copy(alpha = 0.5f),
             ),
 
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(12.dp),
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -93,7 +85,6 @@ fun OAuthButton(
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
