@@ -12,5 +12,6 @@ android {
 }
 dependencies {
     api(libs.androidx.compose.material)
+    implementation(libs.coil.compose)
     implementation(libs.rive)
 }
