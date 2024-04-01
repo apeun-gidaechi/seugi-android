@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -31,6 +32,7 @@ import com.apeun.gidaechi.designsystem.component.SeugiAvatar
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
 import com.apeun.gidaechi.designsystem.theme.Black
+import com.apeun.gidaechi.designsystem.theme.Gray100
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary050
 import com.apeun.gidaechi.designsystem.theme.Primary500
@@ -96,7 +98,10 @@ fun SeugiChatItem(
             )
         }
         is ChatItemType.Date -> {
-
+            SeugiChatItemDate(
+                modifier = modifier,
+                createdAt = type.createdAt
+            )
         }
     }
 }
@@ -267,6 +272,32 @@ private fun SeugiChatItemMe(
     }
 }
 
+@Composable
+private fun SeugiChatItemDate(
+    modifier: Modifier,
+    createdAt: String
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+    ) {
+        Text(
+            modifier = Modifier
+                .background(
+                    color = Gray100,
+                    shape = RoundedCornerShape(24.dp)
+                )
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 8.dp
+                ),
+            text = createdAt,
+            color = Gray600,
+            style = MaterialTheme.typography.labelMedium
+        )
+    }
+}
+
 
 @Preview
 @Composable
@@ -343,6 +374,12 @@ private fun PreviewSeugiChatItem() {
                 onDateClick = {
                     Log.d("TAG", "PreviewSeugiChatItem: ")
                 }
+            )
+            Spacer(modifier = Modifier.height(32.dp))
+            SeugiChatItem(
+                type = ChatItemType.Date(
+                    createdAt = "2024년 3월 21일 목요일",
+                ),
             )
         }
     }
