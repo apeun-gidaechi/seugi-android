@@ -1,6 +1,5 @@
 package com.apeun.gidaechi.designsystem.component
 
-import android.widget.CompoundButton.OnCheckedChangeListener
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -34,11 +33,7 @@ import com.apeun.gidaechi.designsystem.theme.Primary400
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @Composable
-fun SeugiMemberList(
-    userName: String,
-    userProfile: String?,
-    onClick: () -> Unit
-) {
+fun SeugiMemberList(userName: String, userProfile: String?, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -47,38 +42,33 @@ fun SeugiMemberList(
                 onClick = onClick,
                 role = Role.Button,
                 indication = AlphaIndication,
-                interactionSource = remember { MutableInteractionSource() }
+                interactionSource = remember { MutableInteractionSource() },
             ),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(
             modifier = Modifier.padding(
                 horizontal = 16.dp,
-                vertical = 10.dp
+                vertical = 10.dp,
             ),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             SeugiAvatar(
                 type = AvatarType.Large,
-                image = userProfile
+                image = userProfile,
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = userName,
                 style = MaterialTheme.typography.titleMedium,
-                color = Black
+                color = Black,
             )
         }
     }
 }
 
 @Composable
-fun SeugiMemberList(
-    userName: String,
-    userProfile: String?,
-    checked: Boolean = false,
-    onCheckedChangeListener: (Boolean) -> Unit = {}
-) {
+fun SeugiMemberList(userName: String, userProfile: String?, checked: Boolean = false, onCheckedChangeListener: (Boolean) -> Unit = {}) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -89,31 +79,31 @@ fun SeugiMemberList(
                 },
                 role = Role.Button,
                 indication = AlphaIndication,
-                interactionSource = remember { MutableInteractionSource() }
+                interactionSource = remember { MutableInteractionSource() },
             ),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(
             modifier = Modifier.padding(
                 horizontal = 16.dp,
-                vertical = 10.dp
+                vertical = 10.dp,
             ),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             SeugiAvatar(
                 type = AvatarType.Large,
-                image = userProfile
+                image = userProfile,
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = userName,
                 style = MaterialTheme.typography.titleMedium,
-                color = Black
+                color = Black,
             )
             Spacer(modifier = Modifier.weight(1f))
             SeugiCheckbox(
                 type = CheckBoxType.Large,
-                checked = checked
+                checked = checked,
             ) {
                 onCheckedChangeListener(it)
             }
@@ -122,10 +112,7 @@ fun SeugiMemberList(
 }
 
 @Composable
-fun SeugiMemberList(
-    text: String,
-    onClick: () -> Unit
-) {
+fun SeugiMemberList(text: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -134,33 +121,32 @@ fun SeugiMemberList(
                 onClick = onClick,
                 role = Role.Button,
                 indication = AlphaIndication,
-                interactionSource = remember { MutableInteractionSource() }
+                interactionSource = remember { MutableInteractionSource() },
             ),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(
             modifier = Modifier.padding(
                 horizontal = 16.dp,
-                vertical = 14.dp
+                vertical = 14.dp,
             ),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 modifier = Modifier.size(28.dp),
                 painter = painterResource(id = R.drawable.ic_add_ring_line),
                 contentDescription = "icon add ring line",
-                colorFilter = ColorFilter.tint(Primary400)
+                colorFilter = ColorFilter.tint(Primary400),
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = text,
                 style = MaterialTheme.typography.titleMedium,
-                color = Primary400
+                color = Primary400,
             )
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -168,14 +154,13 @@ private fun PreviewSeugiMemberList() {
     var checked by remember { mutableStateOf(true) }
     SeugiTheme {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             SeugiMemberList(
                 userName = "노영재",
                 userProfile = null,
                 onClick = {
-
-                }
+                },
             )
             SeugiMemberList(
                 userName = "노영재",
@@ -183,15 +168,13 @@ private fun PreviewSeugiMemberList() {
                 checked = checked,
                 onCheckedChangeListener = {
                     checked = it
-                }
+                },
             )
             SeugiMemberList(
                 text = "멤버 초대하기",
                 onClick = {
-
-                }
+                },
             )
-
         }
     }
 }
