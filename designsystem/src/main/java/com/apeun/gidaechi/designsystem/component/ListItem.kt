@@ -1,6 +1,5 @@
 package com.apeun.gidaechi.designsystem.component
 
-import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -31,22 +30,17 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.designsystem.theme.White
 
 sealed class ListItemType {
-    data object Normal: ListItemType()
-    data class Toggle(val checked: Boolean, val onCheckedChangeListener: (Boolean) -> Unit): ListItemType()
-    data class Description(val description: String): ListItemType()
+    data object Normal : ListItemType()
+    data class Toggle(val checked: Boolean, val onCheckedChangeListener: (Boolean) -> Unit) : ListItemType()
+    data class Description(val description: String) : ListItemType()
 }
 
 @Composable
-fun SeugiListItem(
-    modifier: Modifier = Modifier,
-    type: ListItemType,
-    text: String,
-    onClick: () -> Unit,
-) {
+fun SeugiListItem(modifier: Modifier = Modifier, type: ListItemType, text: String, onClick: () -> Unit) {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val animColor by animateColorAsState(
         targetValue = if (buttonState == ButtonState.Idle) White else Gray100,
-        label = ""
+        label = "",
     )
 
     Box(
@@ -55,42 +49,42 @@ fun SeugiListItem(
             .height(56.dp)
             .background(
                 color = animColor,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(8.dp),
             )
             .bounceClick(
                 onClick = onClick,
                 onChangeButtonState = {
                     buttonState = it
-                }
-            )
+                },
+            ),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
                     vertical = 12.dp,
-                    horizontal = 21.dp
+                    horizontal = 21.dp,
                 )
                 .align(Alignment.Center),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = text,
                 color = Black,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
             )
             Spacer(modifier = Modifier.weight(1f))
             if (type is ListItemType.Toggle) {
                 SeugiToggle(
                     checked = type.checked,
-                    onCheckedChangeListener = type.onCheckedChangeListener
+                    onCheckedChangeListener = type.onCheckedChangeListener,
                 )
             }
             if (type is ListItemType.Description) {
                 Text(
                     text = type.description,
                     color = Gray500,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
                 )
             }
         }
@@ -108,7 +102,7 @@ private fun PreviewSeugiListItem() {
                 type = ListItemType.Normal,
                 text = "서비스정책",
                 onClick = {
-                }
+                },
             )
             Spacer(modifier = Modifier.height(16.dp))
             SeugiListItem(
@@ -117,12 +111,11 @@ private fun PreviewSeugiListItem() {
                     checked = checked,
                     onCheckedChangeListener = {
                         checked = it
-                    }
+                    },
                 ),
                 text = "알람 설정",
                 onClick = {
-
-                }
+                },
             )
             Spacer(modifier = Modifier.height(16.dp))
             SeugiListItem(
@@ -130,8 +123,7 @@ private fun PreviewSeugiListItem() {
                 type = ListItemType.Description("v1.0.0"),
                 text = "버전",
                 onClick = {
-
-                }
+                },
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
