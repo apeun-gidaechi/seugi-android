@@ -69,18 +69,18 @@ fun SeugiDropDown(item: List<String>, title: String, type: DropDownType) {
         Icons.Filled.KeyboardArrowDown
     }
 
-    val clickableModifier = if (type != DropDownType.Disabled) {
-        Modifier.clickable { isExpanded = !isExpanded }
-    } else {
-        Modifier
-    }
 
     SeugiTheme {
         Column(
             modifier = Modifier
                 .padding(20.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .then(clickableModifier),
+                .clickable(
+                    enabled = type != DropDownType.Disabled,
+                    onClick = {
+                        isExpanded = !isExpanded
+                    }
+                ),
         ) {
             Box(
                 modifier = Modifier
