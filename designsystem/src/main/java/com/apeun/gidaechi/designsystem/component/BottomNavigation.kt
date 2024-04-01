@@ -14,8 +14,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,28 +31,21 @@ import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
 import com.apeun.gidaechi.designsystem.theme.Gray300
-import com.apeun.gidaechi.designsystem.theme.Gray400
 import com.apeun.gidaechi.designsystem.theme.Gray500
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.designsystem.theme.White
 
 sealed class BottomNavigationItemType(@DrawableRes val resId: Int, val text: String) {
-    data object Home: BottomNavigationItemType(R.drawable.ic_home_fill, "홈")
-    data object Chat: BottomNavigationItemType(R.drawable.ic_chat_fill, "채팅")
-    data object Group: BottomNavigationItemType(R.drawable.ic_people_fill, "단체")
-    data object Notification: BottomNavigationItemType(R.drawable.ic_notification_fill, "알림")
-    data object Profile: BottomNavigationItemType(R.drawable.ic_person_fill, "프로필")
+    data object Home : BottomNavigationItemType(R.drawable.ic_home_fill, "홈")
+    data object Chat : BottomNavigationItemType(R.drawable.ic_chat_fill, "채팅")
+    data object Group : BottomNavigationItemType(R.drawable.ic_people_fill, "단체")
+    data object Notification : BottomNavigationItemType(R.drawable.ic_notification_fill, "알림")
+    data object Profile : BottomNavigationItemType(R.drawable.ic_person_fill, "프로필")
 }
 
-
 @Composable
-fun SeugiBottomNavigation(
-    modifier: Modifier = Modifier,
-    selected: BottomNavigationItemType,
-    onClick: (BottomNavigationItemType) -> Unit
-) {
-
+fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigationItemType, onClick: (BottomNavigationItemType) -> Unit) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -62,7 +55,7 @@ fun SeugiBottomNavigation(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(62.dp)
+                .height(62.dp),
         ) {
             Spacer(modifier = Modifier.width(32.dp))
             SeugiBottomNavigationItem(
@@ -70,7 +63,7 @@ fun SeugiBottomNavigation(
                 selected = selected is BottomNavigationItemType.Home,
                 onClick = {
                     onClick(BottomNavigationItemType.Home)
-                }
+                },
             )
             Spacer(modifier = Modifier.weight(1f))
             SeugiBottomNavigationItem(
@@ -78,7 +71,7 @@ fun SeugiBottomNavigation(
                 selected = selected is BottomNavigationItemType.Chat,
                 onClick = {
                     onClick(BottomNavigationItemType.Chat)
-                }
+                },
             )
             Spacer(modifier = Modifier.weight(1f))
             SeugiBottomNavigationItem(
@@ -86,7 +79,7 @@ fun SeugiBottomNavigation(
                 selected = selected is BottomNavigationItemType.Group,
                 onClick = {
                     onClick(BottomNavigationItemType.Group)
-                }
+                },
             )
             Spacer(modifier = Modifier.weight(1f))
             SeugiBottomNavigationItem(
@@ -94,7 +87,7 @@ fun SeugiBottomNavigation(
                 selected = selected is BottomNavigationItemType.Notification,
                 onClick = {
                     onClick(BottomNavigationItemType.Notification)
-                }
+                },
             )
             Spacer(modifier = Modifier.weight(1f))
             SeugiBottomNavigationItem(
@@ -102,27 +95,22 @@ fun SeugiBottomNavigation(
                 selected = selected is BottomNavigationItemType.Profile,
                 onClick = {
                     onClick(BottomNavigationItemType.Profile)
-                }
+                },
             )
             Spacer(modifier = Modifier.width(32.dp))
         }
-
     }
 }
 
 @Composable
-private fun SeugiBottomNavigationItem(
-    type: BottomNavigationItemType,
-    selected: Boolean,
-    onClick: () -> Unit
-) {
+private fun SeugiBottomNavigationItem(type: BottomNavigationItemType, selected: Boolean, onClick: () -> Unit) {
     val animIconColor by animateColorAsState(
         targetValue = if (selected) Primary500 else Gray300,
-        label = ""
+        label = "",
     )
     val animTextColor by animateColorAsState(
         targetValue = if (selected) Primary500 else Gray500,
-        label = ""
+        label = "",
     )
 
     Column(
@@ -131,20 +119,20 @@ private fun SeugiBottomNavigationItem(
             .clickable(
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() },
-                indication = null
+                indication = null,
             ),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             modifier = Modifier.size(28.dp),
             painter = painterResource(id = type.resId),
             contentDescription = "",
-            colorFilter = ColorFilter.tint(animIconColor)
+            colorFilter = ColorFilter.tint(animIconColor),
         )
         Text(
             text = type.text,
             style = MaterialTheme.typography.labelMedium,
-            color = animTextColor
+            color = animTextColor,
         )
     }
 }
@@ -157,7 +145,7 @@ private fun PreviewSeugiBottomNavigation() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(White)
+                .background(White),
         ) {
             Spacer(modifier = Modifier.weight(1f))
             SeugiBottomNavigation(
@@ -165,9 +153,8 @@ private fun PreviewSeugiBottomNavigation() {
                 selected = selectedItem,
                 onClick = {
                     selectedItem = it
-                }
+                },
             )
         }
     }
-
 }
