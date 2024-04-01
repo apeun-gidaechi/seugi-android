@@ -1,6 +1,5 @@
 package com.apeun.gidaechi.designsystem.component
 
-import android.widget.CompoundButton.OnCheckedChangeListener
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,12 +30,7 @@ import com.apeun.gidaechi.designsystem.theme.Transparent
 import com.apeun.gidaechi.designsystem.theme.White
 
 @Composable
-fun SeugiToggle(
-    modifier: Modifier = Modifier,
-    checked: Boolean,
-    onCheckedChangeListener: (Boolean) -> Unit,
-) {
-
+fun SeugiToggle(modifier: Modifier = Modifier, checked: Boolean, onCheckedChangeListener: (Boolean) -> Unit) {
     Switch(
         checked = checked,
         onCheckedChange = onCheckedChangeListener,
@@ -81,7 +75,7 @@ private fun SeugiTogglePreview() {
                 checked = checked,
                 onCheckedChangeListener = {
                     checked = it
-                }
+                },
             )
         }
     }
