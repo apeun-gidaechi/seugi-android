@@ -91,13 +91,18 @@ fun SeugiDropDown(item: List<String>, title: String, type: DropDownType) {
                     .clip(RoundedCornerShape(12.dp))
                     .padding(horizontal = 16.dp, vertical = 12.dp),
 
-            ) {
+                ) {
                 Text(
                     text = selectedItem,
                     modifier = Modifier.align(Alignment.CenterStart),
                     style = MaterialTheme.typography.titleMedium,
-                    color = if (selectedItem == title) Gray500 else Black,
+                    color = when {
+                        type == DropDownType.Disabled -> Gray200
+                        selectedItem == title -> Gray500
+                        else -> Black
+                    }
                 )
+
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
