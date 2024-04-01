@@ -36,7 +36,7 @@ sealed class ListItemType {
 }
 
 @Composable
-fun SeugiListItem(modifier: Modifier = Modifier, type: ListItemType, text: String, onClick: () -> Unit) {
+fun SeugiListItem(modifier: Modifier = Modifier, type: ListItemType = ListItemType.Normal, text: String, onClick: () -> Unit) {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val animColor by animateColorAsState(
         targetValue = if (buttonState == ButtonState.Idle) White else Gray100,
