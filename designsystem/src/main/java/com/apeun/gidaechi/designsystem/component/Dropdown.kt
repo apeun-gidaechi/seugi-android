@@ -32,7 +32,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import com.apeun.gidaechi.designsystem.theme.Black
@@ -69,7 +68,6 @@ fun SeugiDropDown(item: List<String>, title: String, type: DropDownType) {
         Icons.Filled.KeyboardArrowDown
     }
 
-
     SeugiTheme {
         Column(
             modifier = Modifier
@@ -79,7 +77,7 @@ fun SeugiDropDown(item: List<String>, title: String, type: DropDownType) {
                     enabled = type != DropDownType.Disabled,
                     onClick = {
                         isExpanded = !isExpanded
-                    }
+                    },
                 ),
         ) {
             Box(
@@ -91,7 +89,7 @@ fun SeugiDropDown(item: List<String>, title: String, type: DropDownType) {
                     .clip(RoundedCornerShape(12.dp))
                     .padding(horizontal = 16.dp, vertical = 12.dp),
 
-                ) {
+            ) {
                 Text(
                     text = selectedItem,
                     modifier = Modifier.align(Alignment.CenterStart),
@@ -100,7 +98,7 @@ fun SeugiDropDown(item: List<String>, title: String, type: DropDownType) {
                         type == DropDownType.Disabled -> Gray200
                         selectedItem == title -> Gray500
                         else -> Black
-                    }
+                    },
                 )
 
                 Icon(
