@@ -30,49 +30,53 @@ import com.apeun.gidaechi.designsystem.theme.Transparent
 import com.apeun.gidaechi.designsystem.theme.White
 
 @Composable
-fun Toggle(checked: Boolean, modifier: Modifier = Modifier) {
-    var isChecked by remember { mutableStateOf(checked) }
+fun SeugiToggle(modifier: Modifier = Modifier, checked: Boolean, onCheckedChangeListener: (Boolean) -> Unit) {
+    Switch(
+        checked = checked,
+        onCheckedChange = onCheckedChangeListener,
+        colors = SwitchDefaults.colors(
+            checkedThumbColor = White,
+            checkedTrackColor = Primary500,
+            uncheckedThumbColor = White,
+            uncheckedTrackColor = Gray200,
+            uncheckedBorderColor = Transparent,
 
-    SeugiTheme {
-        Switch(
-            checked = isChecked,
-            onCheckedChange = { isChecked = it },
-            colors = SwitchDefaults.colors(
-                checkedThumbColor = White,
-                checkedTrackColor = Primary500,
-                uncheckedThumbColor = White,
-                uncheckedTrackColor = Gray200,
-                uncheckedBorderColor = Transparent,
-
-            ),
-            modifier = Modifier
-                .height(31.dp)
-                .width(51.dp),
-            thumbContent = {
-                Box(
-                    modifier = Modifier
-                        .size(27.dp)
-                        .background(
-                            color = White,
-                            shape = CircleShape,
-                        )
-                        .dropShadow(DropShadowType.Ev2),
-                )
-            },
-        )
-    }
+        ),
+        modifier = modifier
+            .height(31.dp)
+            .width(51.dp),
+        thumbContent = {
+            Box(
+                modifier = Modifier
+                    .size(27.dp)
+                    .background(
+                        color = White,
+                        shape = CircleShape,
+                    )
+                    .dropShadow(DropShadowType.Ev2),
+            )
+        },
+    )
 }
 
 @Composable
 @Preview
-private fun TogglePreview() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Toggle(checked = true)
+private fun SeugiTogglePreview() {
+    SeugiTheme {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            var checked by remember { mutableStateOf(false) }
+            SeugiToggle(
+                checked = checked,
+                onCheckedChangeListener = {
+                    checked = it
+                },
+            )
+        }
     }
 }
