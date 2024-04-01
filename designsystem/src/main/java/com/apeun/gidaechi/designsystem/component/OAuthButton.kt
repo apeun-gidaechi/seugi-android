@@ -88,7 +88,7 @@ fun OAuthButton(image: Int, text: String, onClick: () -> Unit, modifier: Modifie
 
 @Preview(showBackground = true)
 @Composable
-fun OAuthButtonPreview() {
+private fun OAuthButtonPreview() {
     SeugiTheme {
         var testState by remember { mutableStateOf(true) }
         val coroutineScope = rememberCoroutineScope()
