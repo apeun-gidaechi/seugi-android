@@ -33,6 +33,7 @@ import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
 import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary050
+import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.designsystem.theme.White
 import java.time.LocalDateTime
@@ -62,6 +63,7 @@ sealed class ChatItemType {
 
 @Composable
 fun SeugiChatItem(
+    modifier: Modifier = Modifier,
     type: ChatItemType,
     onChatLongClick: () -> Unit = {},
     onDateClick: () -> Unit = {}
@@ -70,6 +72,7 @@ fun SeugiChatItem(
     when (type) {
         is ChatItemType.Others -> {
             SeugiChatItemOthers(
+                modifier = modifier,
                 isFirst = type.isFirst,
                 isLast = type.isLast,
                 userName = type.userName,
@@ -82,7 +85,15 @@ fun SeugiChatItem(
             )
         }
         is ChatItemType.Me -> {
-
+            SeugiChatItemMe(
+                modifier = modifier,
+                isLast = type.isLast,
+                message = type.message,
+                createdAt = type.createdAt,
+                count = type.count,
+                onChatLongClick = onChatLongClick,
+                onDateClick = onDateClick
+            )
         }
         is ChatItemType.Date -> {
 
@@ -185,6 +196,77 @@ private fun SeugiChatItemOthers(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun SeugiChatItemMe(
+    modifier: Modifier = Modifier,
+    isLast: Boolean,
+    message: String,
+    createdAt: String,
+    count: Int,
+    onChatLongClick: () -> Unit,
+    onDateClick: () -> Unit
+) {
+    val chatShape = RoundedCornerShape(
+        topStart = CHAT_SHAPE,
+        topEnd = 0.dp,
+        bottomStart = CHAT_SHAPE,
+        bottomEnd = CHAT_SHAPE
+    )
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.Bottom
+    ) {
+        if (isLast) {
+            Column(
+                modifier = Modifier
+                    .clickable(
+                        onClick = onDateClick
+                    ),
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.End
+            ) {
+                Text(
+                    text = count.toString(),
+                    color = Gray600,
+                    style = MaterialTheme.typography.labelLarge,
+                )
+                Text(
+                    text = createdAt,
+                    color = Gray600,
+                    style = MaterialTheme.typography.labelMedium,
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+        }
+        Box(
+            modifier = Modifier
+                .dropShadow(
+                    type = DropShadowType.Ev1
+                )
+                .background(
+                    color = Primary500,
+                    shape = chatShape
+                )
+                .clip(chatShape)
+                .combinedClickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = AlphaIndication,
+                    onClick = {},
+                    onLongClick = onChatLongClick
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                modifier = Modifier.padding(12.dp),
+                text = message,
+                color = White,
+                style = MaterialTheme.typography.bodyLarge,
+            )
+        }
+    }
+}
+
 
 @Preview
 @Composable
@@ -219,6 +301,38 @@ private fun PreviewSeugiChatItem() {
                     isLast = true,
                     userName = "이강현",
                     userProfile = null,
+                    message = "iOS정말 재미없어요!",
+                    createdAt = "오후 7:44",
+                    count = 1,
+                ),
+                onChatLongClick = {
+                    Log.d("TAG", "PreviewSeugiChatItem: ")
+                },
+                onDateClick = {
+                    Log.d("TAG", "PreviewSeugiChatItem: ")
+                }
+            )
+            Spacer(modifier = Modifier.height(32.dp))
+            SeugiChatItem(
+                modifier = Modifier.align(Alignment.End),
+                type = ChatItemType.Me(
+                    isLast = false,
+                    message = "iOS정말 재미없어요!",
+                    createdAt = "오후 7:44",
+                    count = 1,
+                ),
+                onChatLongClick = {
+                    Log.d("TAG", "PreviewSeugiChatItem: ")
+                },
+                onDateClick = {
+                    Log.d("TAG", "PreviewSeugiChatItem: ")
+                }
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            SeugiChatItem(
+                modifier = Modifier.align(Alignment.End),
+                type = ChatItemType.Me(
+                    isLast = true,
                     message = "iOS정말 재미없어요!",
                     createdAt = "오후 7:44",
                     count = 1,
