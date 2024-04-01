@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -111,8 +112,8 @@ fun SeugiDropDown(item: List<String>, title: String, type: DropDownType) {
                 modifier = Modifier
                     .width(300.dp)
                     .align(Alignment.CenterHorizontally)
-                    .height(calculateDropdownHeight(item.size))
-                    .background(White),
+                    .background(White)
+                    .heightIn(max = 240.dp),
                 scrollState = scrollState,
             ) {
                 item.forEach { label ->
@@ -134,15 +135,6 @@ fun SeugiDropDown(item: List<String>, title: String, type: DropDownType) {
             }
         }
     }
-}
-
-// 아이템 높이 제한
-@Composable
-fun calculateDropdownHeight(itemCount: Int): Dp {
-    val listItemHeight = 48.dp
-    val maxDropdownHeight = 240.dp
-    val calculatedHeight = (itemCount * listItemHeight).coerceAtMost(maxDropdownHeight) // 최대 높이보다 크면 최대 높이, 작으면 아이템 개수에 맞는 높이
-    return calculatedHeight
 }
 
 @Composable
