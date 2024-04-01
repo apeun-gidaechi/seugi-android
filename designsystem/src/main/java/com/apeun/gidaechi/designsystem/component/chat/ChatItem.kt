@@ -38,7 +38,6 @@ import com.apeun.gidaechi.designsystem.theme.Primary050
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.designsystem.theme.White
-import java.time.LocalDateTime
 
 val CHAT_SHAPE = 8.dp
 
@@ -50,27 +49,21 @@ sealed class ChatItemType {
         val userProfile: String?,
         val message: String,
         val createdAt: String,
-        val count: Int
-    ): ChatItemType()
+        val count: Int,
+    ) : ChatItemType()
     data class Me(
         val isLast: Boolean,
         val message: String,
         val createdAt: String,
-        val count: Int
-    ): ChatItemType()
+        val count: Int,
+    ) : ChatItemType()
     data class Date(
         val createdAt: String,
-    ): ChatItemType()
+    ) : ChatItemType()
 }
 
 @Composable
-fun SeugiChatItem(
-    modifier: Modifier = Modifier,
-    type: ChatItemType,
-    onChatLongClick: () -> Unit = {},
-    onDateClick: () -> Unit = {}
-) {
-
+fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType, onChatLongClick: () -> Unit = {}, onDateClick: () -> Unit = {}) {
     when (type) {
         is ChatItemType.Others -> {
             SeugiChatItemOthers(
@@ -83,7 +76,7 @@ fun SeugiChatItem(
                 createdAt = type.createdAt,
                 count = type.count,
                 onChatLongClick = onChatLongClick,
-                onDateClick = onDateClick
+                onDateClick = onDateClick,
             )
         }
         is ChatItemType.Me -> {
@@ -94,13 +87,13 @@ fun SeugiChatItem(
                 createdAt = type.createdAt,
                 count = type.count,
                 onChatLongClick = onChatLongClick,
-                onDateClick = onDateClick
+                onDateClick = onDateClick,
             )
         }
         is ChatItemType.Date -> {
             SeugiChatItemDate(
                 modifier = modifier,
-                createdAt = type.createdAt
+                createdAt = type.createdAt,
             )
         }
     }
@@ -118,21 +111,21 @@ private fun SeugiChatItemOthers(
     createdAt: String,
     count: Int,
     onChatLongClick: () -> Unit,
-    onDateClick: () -> Unit
+    onDateClick: () -> Unit,
 ) {
     val chatShape = RoundedCornerShape(
         topStart = 0.dp,
         topEnd = CHAT_SHAPE,
         bottomStart = CHAT_SHAPE,
-        bottomEnd = CHAT_SHAPE
+        bottomEnd = CHAT_SHAPE,
     )
     Row(
-        modifier = modifier
+        modifier = modifier,
     ) {
         if (isFirst) {
             SeugiAvatar(
                 type = AvatarType.Medium,
-                image = userProfile
+                image = userProfile,
             )
         } else {
             Spacer(modifier = Modifier.width(32.dp))
@@ -143,30 +136,30 @@ private fun SeugiChatItemOthers(
                 Text(
                     text = userName,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = Gray600
+                    color = Gray600,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
             }
             Row(
-                verticalAlignment = Alignment.Bottom
+                verticalAlignment = Alignment.Bottom,
             ) {
                 Box(
                     modifier = Modifier
                         .dropShadow(
-                            type = DropShadowType.Ev1
+                            type = DropShadowType.Ev1,
                         )
                         .background(
                             color = White,
-                            shape = chatShape
+                            shape = chatShape,
                         )
                         .clip(chatShape)
                         .combinedClickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = AlphaIndication,
                             onClick = {},
-                            onLongClick = onChatLongClick
+                            onLongClick = onChatLongClick,
                         ),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         modifier = Modifier.padding(12.dp),
@@ -180,9 +173,9 @@ private fun SeugiChatItemOthers(
                     Column(
                         modifier = Modifier
                             .clickable(
-                                onClick = onDateClick
+                                onClick = onDateClick,
                             ),
-                        verticalArrangement = Arrangement.Bottom
+                        verticalArrangement = Arrangement.Bottom,
                     ) {
                         Text(
                             text = count.toString(),
@@ -210,26 +203,26 @@ private fun SeugiChatItemMe(
     createdAt: String,
     count: Int,
     onChatLongClick: () -> Unit,
-    onDateClick: () -> Unit
+    onDateClick: () -> Unit,
 ) {
     val chatShape = RoundedCornerShape(
         topStart = CHAT_SHAPE,
         topEnd = 0.dp,
         bottomStart = CHAT_SHAPE,
-        bottomEnd = CHAT_SHAPE
+        bottomEnd = CHAT_SHAPE,
     )
     Row(
         modifier = modifier,
-        verticalAlignment = Alignment.Bottom
+        verticalAlignment = Alignment.Bottom,
     ) {
         if (isLast) {
             Column(
                 modifier = Modifier
                     .clickable(
-                        onClick = onDateClick
+                        onClick = onDateClick,
                     ),
                 verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.End
+                horizontalAlignment = Alignment.End,
             ) {
                 Text(
                     text = count.toString(),
@@ -247,20 +240,20 @@ private fun SeugiChatItemMe(
         Box(
             modifier = Modifier
                 .dropShadow(
-                    type = DropShadowType.Ev1
+                    type = DropShadowType.Ev1,
                 )
                 .background(
                     color = Primary500,
-                    shape = chatShape
+                    shape = chatShape,
                 )
                 .clip(chatShape)
                 .combinedClickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = AlphaIndication,
                     onClick = {},
-                    onLongClick = onChatLongClick
+                    onLongClick = onChatLongClick,
                 ),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Text(
                 modifier = Modifier.padding(12.dp),
@@ -273,10 +266,7 @@ private fun SeugiChatItemMe(
 }
 
 @Composable
-private fun SeugiChatItemDate(
-    modifier: Modifier,
-    createdAt: String
-) {
+private fun SeugiChatItemDate(modifier: Modifier, createdAt: String) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -285,19 +275,18 @@ private fun SeugiChatItemDate(
             modifier = Modifier
                 .background(
                     color = Gray100,
-                    shape = RoundedCornerShape(24.dp)
+                    shape = RoundedCornerShape(24.dp),
                 )
                 .padding(
                     horizontal = 16.dp,
-                    vertical = 8.dp
+                    vertical = 8.dp,
                 ),
             text = createdAt,
             color = Gray600,
-            style = MaterialTheme.typography.labelMedium
+            style = MaterialTheme.typography.labelMedium,
         )
     }
 }
-
 
 @Preview
 @Composable
@@ -306,7 +295,7 @@ private fun PreviewSeugiChatItem() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Primary050)
+                .background(Primary050),
         ) {
             SeugiChatItem(
                 type = ChatItemType.Others(
@@ -323,7 +312,7 @@ private fun PreviewSeugiChatItem() {
                 },
                 onDateClick = {
                     Log.d("TAG", "PreviewSeugiChatItem: ")
-                }
+                },
             )
             Spacer(modifier = Modifier.height(8.dp))
             SeugiChatItem(
@@ -341,7 +330,7 @@ private fun PreviewSeugiChatItem() {
                 },
                 onDateClick = {
                     Log.d("TAG", "PreviewSeugiChatItem: ")
-                }
+                },
             )
             Spacer(modifier = Modifier.height(32.dp))
             SeugiChatItem(
@@ -357,7 +346,7 @@ private fun PreviewSeugiChatItem() {
                 },
                 onDateClick = {
                     Log.d("TAG", "PreviewSeugiChatItem: ")
-                }
+                },
             )
             Spacer(modifier = Modifier.height(8.dp))
             SeugiChatItem(
@@ -373,7 +362,7 @@ private fun PreviewSeugiChatItem() {
                 },
                 onDateClick = {
                     Log.d("TAG", "PreviewSeugiChatItem: ")
-                }
+                },
             )
             Spacer(modifier = Modifier.height(32.dp))
             SeugiChatItem(
