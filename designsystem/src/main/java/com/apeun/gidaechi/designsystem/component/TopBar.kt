@@ -33,9 +33,6 @@ import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
-
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SeugiTopBar(
@@ -53,10 +50,9 @@ fun SeugiTopBar(
     ),
     scrollBehavior: TopAppBarScrollBehavior? = null,
     backIconCheck: Boolean = false,
-    shadow: Boolean = false
+    shadow: Boolean = false,
 ) {
     SeugiTheme {
-
         val modifierWithShadow = if (shadow) {
             modifier.dropShadow(DropShadowType.Ev1)
         } else {
@@ -72,7 +68,7 @@ fun SeugiTopBar(
                 )
             },
             modifier = Modifier.then(
-                modifierWithShadow
+                modifierWithShadow,
             ),
             navigationIcon = {
                 if (backIconCheck) {
@@ -100,7 +96,7 @@ fun SeugiTopBar(
 @Composable
 private fun PreviewSeugiTopBar() {
     SeugiTheme {
-        Box(modifier = Modifier.fillMaxSize()){
+        Box(modifier = Modifier.fillMaxSize()) {
             SeugiTopBar(
                 title = {
                     Text(text = "로그인", style = MaterialTheme.typography.titleLarge)
@@ -135,7 +131,7 @@ private fun PreviewSeugiTopBar() {
                     Spacer(modifier = Modifier.padding(end = 12.dp))
                 },
                 backIconCheck = true,
-                shadow = true
+                shadow = true,
             )
         }
     }
