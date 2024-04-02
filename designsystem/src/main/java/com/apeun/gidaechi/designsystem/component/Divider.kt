@@ -26,25 +26,21 @@ enum class DividerType {
 }
 
 @Composable
-fun SeugiDivider(
-    modifier: Modifier = Modifier,
-    size: Dp = 1.dp,
-    type: DividerType,
-    color: Color = Gray200
-) {
+fun SeugiDivider(modifier: Modifier = Modifier, size: Dp = 1.dp, type: DividerType, color: Color = Gray200) {
     val typeModifier =
-        if (type == DividerType.WIDTH)
+        if (type == DividerType.WIDTH) {
             Modifier
                 .fillMaxWidth()
                 .height(size)
-        else
+        } else {
             Modifier
                 .fillMaxHeight()
                 .width(size)
+        }
     Box(
         modifier = modifier
             .background(color)
-            .then(typeModifier)
+            .then(typeModifier),
     )
 }
 
@@ -55,14 +51,14 @@ private fun PreviewSeugiDivider() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(White)
+                .background(White),
         ) {
             Spacer(modifier = Modifier.height(10.dp))
             SeugiDivider(type = DividerType.WIDTH)
             Spacer(modifier = Modifier.height(10.dp))
             SeugiDivider(
                 type = DividerType.WIDTH,
-                size = 8.dp
+                size = 8.dp,
             )
             Row {
                 Spacer(modifier = Modifier.width(10.dp))
@@ -70,7 +66,7 @@ private fun PreviewSeugiDivider() {
                 Spacer(modifier = Modifier.width(10.dp))
                 SeugiDivider(
                     type = DividerType.HEIGHT,
-                    size = 8.dp
+                    size = 8.dp,
                 )
             }
         }
