@@ -1,9 +1,11 @@
 package com.apeun.gidaechi.designsystem.component
 
 import android.util.Log
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,7 +29,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.animation.bounceClick
+import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
+import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,9 +52,16 @@ fun SeugiTopBar(
         actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
     ),
     scrollBehavior: TopAppBarScrollBehavior? = null,
-    backIconCheck: Boolean,
+    backIconCheck: Boolean = false,
+    shadow: Boolean = false
 ) {
     SeugiTheme {
+
+        val modifierWithShadow = if (shadow) {
+            modifier.dropShadow(DropShadowType.Ev1)
+        } else {
+            modifier
+        }
         TopAppBar(
             title = {
                 CompositionLocalProvider(
@@ -57,7 +71,9 @@ fun SeugiTopBar(
                     content = title,
                 )
             },
-            modifier = modifier,
+            modifier = Modifier.then(
+                modifierWithShadow
+            ),
             navigationIcon = {
                 if (backIconCheck) {
                     Icon(
@@ -67,7 +83,7 @@ fun SeugiTopBar(
                         contentDescription = null,
                         modifier = Modifier
                             .bounceClick(onClick = onNavigationIconClick)
-                            .padding(end = 16.dp),
+                            .padding(start = 12.dp, end = 16.dp),
                     )
                 }
             },
@@ -80,44 +96,47 @@ fun SeugiTopBar(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun PreviewSeugiTopBar() {
     SeugiTheme {
-        SeugiTopBar(
-            title = {
-                Text(text = "로그인", style = MaterialTheme.typography.titleLarge)
-            },
-            onNavigationIconClick = {
-                Log.d("TAG", "backClick: ")
-            },
-            actions = {
-                Icon(
-                    painter = painterResource(
-                        id = R.drawable.ic_search,
-                    ),
-                    contentDescription = null,
-                    modifier = Modifier.bounceClick(
-                        {
-                            Log.d("TAG", "menuClick: ")
-                        },
-                    ),
-                )
-                Spacer(modifier = Modifier.padding(end = 16.dp))
-                Icon(
-                    painter = painterResource(
-                        id = R.drawable.ic_menu,
-                    ),
-                    contentDescription = null,
-                    modifier = Modifier.bounceClick(
-                        {
-                            Log.d("TAG", "SearchClick: ")
-                        },
-                    ),
-                )
-                Spacer(modifier = Modifier.padding(end = 12.dp))
-            },
-            backIconCheck = true,
-        )
+        Box(modifier = Modifier.fillMaxSize()){
+            SeugiTopBar(
+                title = {
+                    Text(text = "로그인", style = MaterialTheme.typography.titleLarge)
+                },
+                onNavigationIconClick = {
+                    Log.d("TAG", "backClick: ")
+                },
+                actions = {
+                    Icon(
+                        painter = painterResource(
+                            id = R.drawable.ic_search,
+                        ),
+                        contentDescription = null,
+                        modifier = Modifier.bounceClick(
+                            {
+                                Log.d("TAG", "menuClick: ")
+                            },
+                        ),
+                    )
+                    Spacer(modifier = Modifier.padding(end = 16.dp))
+                    Icon(
+                        painter = painterResource(
+                            id = R.drawable.ic_menu,
+                        ),
+                        contentDescription = null,
+                        modifier = Modifier.bounceClick(
+                            {
+                                Log.d("TAG", "SearchClick: ")
+                            },
+                        ),
+                    )
+                    Spacer(modifier = Modifier.padding(end = 12.dp))
+                },
+                backIconCheck = true,
+                shadow = true
+            )
+        }
     }
 }
