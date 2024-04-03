@@ -60,7 +60,7 @@ fun SeugiDropDown(
     isExpanded: Boolean,
     selectedItem: String,
     icon: ImageVector,
-    onExpandedChanged: (Boolean) -> Unit 
+    onExpandedChanged: (Boolean) -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -85,7 +85,7 @@ fun SeugiDropDown(
                     .clip(RoundedCornerShape(12.dp))
                     .padding(horizontal = 16.dp, vertical = 12.dp),
 
-                ) {
+            ) {
                 Text(
                     text = selectedItem,
                     modifier = Modifier.align(Alignment.CenterStart),
@@ -140,7 +140,6 @@ fun SeugiDropDown(
     }
 }
 
-
 @Composable
 @Preview(showBackground = true)
 fun PreviewSeugiDropdown() {
@@ -169,7 +168,7 @@ fun PreviewSeugiDropdown() {
                 isExpanded = isExpanded,
                 selectedItem = selectedItem,
                 icon = icon,
-                onExpandedChanged = { isExpanded = it }
+                onExpandedChanged = { isExpanded = it },
             )
 
             Spacer(modifier = Modifier.padding(horizontal = 20.dp))
@@ -182,7 +181,7 @@ fun PreviewSeugiDropdown() {
                 isExpanded = isExpanded,
                 selectedItem = selectedItem,
                 icon = icon,
-                onExpandedChanged = { isExpanded = it }
+                onExpandedChanged = { isExpanded = it },
             )
         }
     }
