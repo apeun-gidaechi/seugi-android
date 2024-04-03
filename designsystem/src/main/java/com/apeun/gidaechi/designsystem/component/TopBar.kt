@@ -52,44 +52,44 @@ fun SeugiTopBar(
     backIconCheck: Boolean = false,
     shadow: Boolean = false,
 ) {
-    SeugiTheme {
-        val modifierWithShadow = if (shadow) {
-            modifier.dropShadow(DropShadowType.Ev1)
-        } else {
-            modifier
-        }
-        TopAppBar(
-            title = {
-                CompositionLocalProvider(
-                    LocalContentColor provides colors.titleContentColor,
-                    LocalTextStyle provides MaterialTheme.typography.titleMedium
-                        .copy(fontWeight = FontWeight.SemiBold),
-                    content = title,
-                )
-            },
-            modifier = Modifier.then(
-                modifierWithShadow,
-            ),
-            navigationIcon = {
-                if (backIconCheck) {
-                    Icon(
-                        painter = painterResource(
-                            id = R.drawable.ic_back,
-                        ),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .bounceClick(onClick = onNavigationIconClick)
-                            .padding(start = 12.dp, end = 16.dp),
-                    )
-                }
-            },
-            actions = actions,
-            windowInsets = windowInsets,
-            colors = colors,
-            scrollBehavior = scrollBehavior,
-        )
+
+    val modifierWithShadow = if (shadow) {
+        modifier.dropShadow(DropShadowType.Ev1)
+    } else {
+        modifier
     }
+    TopAppBar(
+        title = {
+            CompositionLocalProvider(
+                LocalContentColor provides colors.titleContentColor,
+                LocalTextStyle provides MaterialTheme.typography.titleMedium
+                    .copy(fontWeight = FontWeight.SemiBold),
+                content = title,
+            )
+        },
+        modifier = Modifier.then(
+            modifierWithShadow,
+        ),
+        navigationIcon = {
+            if (backIconCheck) {
+                Icon(
+                    painter = painterResource(
+                        id = R.drawable.ic_back,
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .bounceClick(onClick = onNavigationIconClick)
+                        .padding(start = 12.dp, end = 16.dp),
+                )
+            }
+        },
+        actions = actions,
+        windowInsets = windowInsets,
+        colors = colors,
+        scrollBehavior = scrollBehavior,
+    )
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
