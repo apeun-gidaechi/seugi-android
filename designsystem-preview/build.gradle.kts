@@ -31,4 +31,5 @@ android {
 
 dependencies {
     implementation(project(":designsystem"))
+    implementation(libs.rive)
 }
