@@ -31,9 +31,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.times
 import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.Gray200
 import com.apeun.gidaechi.designsystem.theme.Gray300
@@ -52,21 +52,17 @@ sealed class DropDownType(
 }
 
 @Composable
-fun SeugiDropDown(item: List<String>, title: String, type: DropDownType) {
-    var isExpanded by remember {
-        mutableStateOf(false)
-    }
-
-    var selectedItem by remember {
-        mutableStateOf(title)
-    }
+fun SeugiDropDown(
+    item: List<String>,
+    title: String,
+    type: DropDownType,
+    onItemSelected: (String) -> Unit,
+    isExpanded: Boolean,
+    selectedItem: String,
+    icon: ImageVector,
+    onExpandedChanged: (Boolean) -> Unit 
+) {
     val scrollState = rememberScrollState()
-
-    val icon = if (isExpanded) {
-        Icons.Filled.KeyboardArrowUp
-    } else {
-        Icons.Filled.KeyboardArrowDown
-    }
 
     SeugiTheme {
         Column(
@@ -76,7 +72,7 @@ fun SeugiDropDown(item: List<String>, title: String, type: DropDownType) {
                 .clickable(
                     enabled = type != DropDownType.Disabled,
                     onClick = {
-                        isExpanded = !isExpanded
+                        onExpandedChanged(!isExpanded)
                     },
                 ),
         ) {
@@ -89,7 +85,7 @@ fun SeugiDropDown(item: List<String>, title: String, type: DropDownType) {
                     .clip(RoundedCornerShape(12.dp))
                     .padding(horizontal = 16.dp, vertical = 12.dp),
 
-            ) {
+                ) {
                 Text(
                     text = selectedItem,
                     modifier = Modifier.align(Alignment.CenterStart),
@@ -151,11 +147,29 @@ fun PreviewSeugiDropdown() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            SeugiDropDown(dummyList, "비밀번호 선택", DropDownType.Disabled)
+            SeugiDropDown(
+                item = dummyList,
+                title = "비밀번호 선택",
+                type = DropDownType.Disabled,
+                onItemSelected = { selectedItem = it },
+                isExpanded = isExpanded,
+                selectedItem = selectedItem,
+                icon = icon,
+                onExpandedChanged = { isExpanded = it }
+            )
 
             Spacer(modifier = Modifier.padding(horizontal = 20.dp))
 
-            SeugiDropDown(dummyList, "비밀번호 선택", DropDownType.Typing)
+            SeugiDropDown(
+                item = dummyList,
+                title = "비밀번호 선택",
+                type = DropDownType.Typing,
+                onItemSelected = { selectedItem = it },
+                isExpanded = isExpanded,
+                selectedItem = selectedItem,
+                icon = icon,
+                onExpandedChanged = { isExpanded = it }
+            )
         }
     }
 }
