@@ -105,41 +105,55 @@ fun SeugiDropDown(
                 )
             }
 
-            DropdownMenu(
-                expanded = isExpanded,
-                onDismissRequest = { isExpanded = false },
-                modifier = Modifier
-                    .width(300.dp)
-                    .align(Alignment.CenterHorizontally)
-                    .background(White)
-                    .heightIn(max = 240.dp),
-                scrollState = scrollState,
-            ) {
-                item.forEach { label ->
-                    DropdownMenuItem(
-                        onClick = {
-                            selectedItem = label
-                            isExpanded = false
-                        },
-                        text = {
-                            Text(
-                                text = label,
-                                style = MaterialTheme.typography.titleMedium,
-                                color = type.textColor,
-                            )
-                        },
-                        modifier = Modifier.background(White),
-                    )
+            if (type != DropDownType.Disabled) {
+                DropdownMenu(
+                    expanded = isExpanded,
+                    onDismissRequest = {
+                        onExpandedChanged(false)
+                    },
+                    modifier = Modifier
+                        .width(300.dp)
+                        .align(Alignment.CenterHorizontally)
+                        .background(White)
+                        .heightIn(max = 240.dp),
+                    scrollState = scrollState,
+                ) {
+                    item.forEach { label ->
+                        DropdownMenuItem(
+                            onClick = {
+                                onItemSelected(label)
+                                onExpandedChanged(false)
+                            },
+                            text = {
+                                Text(
+                                    text = label,
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = type.textColor,
+                                )
+                            },
+                            modifier = Modifier.background(White),
+                        )
+                    }
                 }
             }
         }
     }
 }
 
+
 @Composable
 @Preview(showBackground = true)
 fun PreviewSeugiDropdown() {
     val dummyList = listOf("1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2")
+
+    var selectedItem by remember { mutableStateOf("비밀번호 선택") }
+    var isExpanded by remember { mutableStateOf(false) }
+
+    val icon = if (isExpanded) {
+        Icons.Filled.KeyboardArrowUp
+    } else {
+        Icons.Filled.KeyboardArrowDown
+    }
 
     SeugiTheme {
         Column(
