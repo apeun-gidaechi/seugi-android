@@ -52,7 +52,6 @@ fun SeugiTopBar(
     backIconCheck: Boolean = false,
     shadow: Boolean = false,
 ) {
-
     val modifierWithShadow = if (shadow) {
         modifier.dropShadow(DropShadowType.Ev1)
     } else {
@@ -89,7 +88,6 @@ fun SeugiTopBar(
         scrollBehavior = scrollBehavior,
     )
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
