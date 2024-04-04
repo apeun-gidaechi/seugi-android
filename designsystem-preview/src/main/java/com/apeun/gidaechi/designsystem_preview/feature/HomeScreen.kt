@@ -117,6 +117,18 @@ fun HomeScreen(
                 navController.navigate(NavRoot.SHADOW)
             }
         )
+        HomeButton(
+            text = "DROPDOWN",
+            onClick = {
+                navController.navigate(NavRoot.DROPDOWN)
+            }
+        )
+        HomeButton(
+            text = "TOPBAR",
+            onClick = {
+                navController.navigate(NavRoot.TOPBAR)
+            }
+        )
 
     }
 }

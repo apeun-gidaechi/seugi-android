@@ -24,11 +24,13 @@ import com.apeun.gidaechi.designsystem_preview.feature.ChatItem
 import com.apeun.gidaechi.designsystem_preview.feature.ChatList
 import com.apeun.gidaechi.designsystem_preview.feature.CheckBox
 import com.apeun.gidaechi.designsystem_preview.feature.Divider
+import com.apeun.gidaechi.designsystem_preview.feature.Dropdown
 import com.apeun.gidaechi.designsystem_preview.feature.HomeScreen
 import com.apeun.gidaechi.designsystem_preview.feature.ListItem
 import com.apeun.gidaechi.designsystem_preview.feature.MemberList
 import com.apeun.gidaechi.designsystem_preview.feature.Shadow
 import com.apeun.gidaechi.designsystem_preview.feature.Toggle
+import com.apeun.gidaechi.designsystem_preview.feature.TopBar
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,6 +91,12 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(NavRoot.SHADOW) {
                             Shadow()
+                        }
+                        composable(NavRoot.DROPDOWN) {
+                            Dropdown()
+                        }
+                        composable(NavRoot.TOPBAR) {
+                            TopBar()
                         }
 
                     }

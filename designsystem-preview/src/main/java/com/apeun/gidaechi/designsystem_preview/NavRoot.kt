@@ -17,5 +17,8 @@ object NavRoot {
     const val TOGGLE = "TOGGLE"
     const val SHADOW = "SHADOW"
 
+    const val TOPBAR = "TOPBAR"
+    const val DROPDOWN = "DROPDOWN"
+
 
 }
