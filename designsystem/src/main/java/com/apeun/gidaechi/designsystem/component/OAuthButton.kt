@@ -40,14 +40,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun OAuthButton(@DrawableRes image: Int, text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun SeugiOAuthButton(@DrawableRes image: Int, text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val scale by animateFloatAsState(
         targetValue = if (buttonState == ButtonState.Idle) 1f else 0.96f,
         label = "",
     )
 
-    SeugiTheme {
+
         Button(
             modifier = modifier
                 .fillMaxWidth()
@@ -84,12 +84,12 @@ fun OAuthButton(@DrawableRes image: Int, text: String, onClick: () -> Unit, modi
                 )
             }
         }
-    }
+
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun OAuthButtonPreview() {
+private fun PreviewSeugiOAuthButton() {
     SeugiTheme {
         var testState by remember { mutableStateOf(true) }
         val coroutineScope = rememberCoroutineScope()
@@ -107,7 +107,7 @@ private fun OAuthButtonPreview() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            OAuthButton(image = R.drawable.test_icon, text = "Google로 계속하기", onClick = onClick)
+            SeugiOAuthButton(image = R.drawable.test_icon, text = "Google로 계속하기", onClick = onClick)
         }
     }
 }

@@ -64,7 +64,7 @@ fun SeugiDropDown(
 ) {
     val scrollState = rememberScrollState()
 
-    SeugiTheme {
+
         Column(
             modifier = Modifier
                 .padding(20.dp)
@@ -137,12 +137,12 @@ fun SeugiDropDown(
                 }
             }
         }
-    }
+
 }
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewSeugiDropdown() {
+private fun PreviewSeugiDropdown() {
     val dummyList = listOf("1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2")
 
     var selectedItem by remember { mutableStateOf("비밀번호 선택") }
