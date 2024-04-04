@@ -47,44 +47,42 @@ fun SeugiOAuthButton(@DrawableRes image: Int, text: String, onClick: () -> Unit,
         label = "",
     )
 
-
-        Button(
-            modifier = modifier
-                .fillMaxWidth()
-                .height(54.dp)
-                .graphicsLayer {
-                    scaleX = scale
-                    scaleY = scale
-                }
-                .dropShadow(DropShadowType.Ev2),
-            onClick = onClick,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = White,
-                contentColor = Black,
-                disabledContainerColor = White.copy(alpha = 0.5f),
-                disabledContentColor = White.copy(alpha = 0.5f),
-            ),
-
-            shape = RoundedCornerShape(12.dp),
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-
-            ) {
-                Image(
-                    painter = painterResource(id = image),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(25.dp),
-                )
-                Spacer(modifier = Modifier.padding(start = 10.dp))
-                Text(
-                    text = text,
-                    style = MaterialTheme.typography.titleMedium,
-                )
+    Button(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(54.dp)
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
             }
-        }
+            .dropShadow(DropShadowType.Ev2),
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = White,
+            contentColor = Black,
+            disabledContainerColor = White.copy(alpha = 0.5f),
+            disabledContentColor = White.copy(alpha = 0.5f),
+        ),
 
+        shape = RoundedCornerShape(12.dp),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+
+        ) {
+            Image(
+                painter = painterResource(id = image),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(25.dp),
+            )
+            Spacer(modifier = Modifier.padding(start = 10.dp))
+            Text(
+                text = text,
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)

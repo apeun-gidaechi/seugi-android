@@ -64,80 +64,78 @@ fun SeugiDropDown(
 ) {
     val scrollState = rememberScrollState()
 
-
-        Column(
+    Column(
+        modifier = Modifier
+            .padding(20.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .clickable(
+                enabled = type != DropDownType.Disabled,
+                onClick = {
+                    onExpandedChanged(!isExpanded)
+                },
+            ),
+    ) {
+        Box(
             modifier = Modifier
-                .padding(20.dp)
+                .width(320.dp)
+                .height(52.dp)
+                .border(1.dp, type.backgroundColor, RoundedCornerShape(12.dp))
+                .background(White, RoundedCornerShape(12.dp))
                 .clip(RoundedCornerShape(12.dp))
-                .clickable(
-                    enabled = type != DropDownType.Disabled,
-                    onClick = {
-                        onExpandedChanged(!isExpanded)
-                    },
-                ),
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+
         ) {
-            Box(
+            Text(
+                text = selectedItem,
+                modifier = Modifier.align(Alignment.CenterStart),
+                style = MaterialTheme.typography.titleMedium,
+                color = when {
+                    type == DropDownType.Disabled -> Gray200
+                    selectedItem == title -> Gray500
+                    else -> Black
+                },
+            )
+
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                modifier = Modifier.align(Alignment.CenterEnd),
+                tint = type.iconColor,
+            )
+        }
+
+        if (type != DropDownType.Disabled) {
+            DropdownMenu(
+                expanded = isExpanded,
+                onDismissRequest = {
+                    onExpandedChanged(false)
+                },
                 modifier = Modifier
-                    .width(320.dp)
-                    .height(52.dp)
-                    .border(1.dp, type.backgroundColor, RoundedCornerShape(12.dp))
-                    .background(White, RoundedCornerShape(12.dp))
-                    .clip(RoundedCornerShape(12.dp))
-                    .padding(horizontal = 16.dp, vertical = 12.dp),
-
+                    .width(300.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .background(White)
+                    .heightIn(max = 240.dp),
+                scrollState = scrollState,
             ) {
-                Text(
-                    text = selectedItem,
-                    modifier = Modifier.align(Alignment.CenterStart),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = when {
-                        type == DropDownType.Disabled -> Gray200
-                        selectedItem == title -> Gray500
-                        else -> Black
-                    },
-                )
-
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    modifier = Modifier.align(Alignment.CenterEnd),
-                    tint = type.iconColor,
-                )
-            }
-
-            if (type != DropDownType.Disabled) {
-                DropdownMenu(
-                    expanded = isExpanded,
-                    onDismissRequest = {
-                        onExpandedChanged(false)
-                    },
-                    modifier = Modifier
-                        .width(300.dp)
-                        .align(Alignment.CenterHorizontally)
-                        .background(White)
-                        .heightIn(max = 240.dp),
-                    scrollState = scrollState,
-                ) {
-                    item.forEach { label ->
-                        DropdownMenuItem(
-                            onClick = {
-                                onItemSelected(label)
-                                onExpandedChanged(false)
-                            },
-                            text = {
-                                Text(
-                                    text = label,
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = type.textColor,
-                                )
-                            },
-                            modifier = Modifier.background(White),
-                        )
-                    }
+                item.forEach { label ->
+                    DropdownMenuItem(
+                        onClick = {
+                            onItemSelected(label)
+                            onExpandedChanged(false)
+                        },
+                        text = {
+                            Text(
+                                text = label,
+                                style = MaterialTheme.typography.titleMedium,
+                                color = type.textColor,
+                            )
+                        },
+                        modifier = Modifier.background(White),
+                    )
                 }
             }
         }
-
+    }
 }
 
 @Composable
