@@ -78,7 +78,7 @@ fun SeugiTopBar(
                     contentDescription = null,
                     modifier = Modifier
                         .bounceClick(onClick = onNavigationIconClick)
-                        .padding(start = 12.dp, end = 16.dp),
+                        .padding(horizontal = 16.dp),
                 )
             }
         },
@@ -126,7 +126,7 @@ private fun PreviewSeugiTopBar() {
                             },
                         ),
                     )
-                    Spacer(modifier = Modifier.padding(end = 12.dp))
+                    Spacer(modifier = Modifier.padding(end = 16.dp))
                 },
                 backIconCheck = true,
                 shadow = true,
