@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.designsystem_preview
+package com.apeun.gidaechi.designsystem.preview
 
 object NavRoot {
     const val HOME = "HOME"
@@ -19,6 +19,4 @@ object NavRoot {
 
     const val TOPBAR = "TOPBAR"
     const val DROPDOWN = "DROPDOWN"
-
-
 }

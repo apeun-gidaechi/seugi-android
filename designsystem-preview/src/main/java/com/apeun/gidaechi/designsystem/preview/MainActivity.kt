@@ -1,36 +1,33 @@
-package com.apeun.gidaechi.designsystem_preview
+package com.apeun.gidaechi.designsystem.preview
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.apeun.gidaechi.designsystem_preview.feature.OAuthButton
+import com.apeun.gidaechi.designsystem.preview.feature.Avatar
+import com.apeun.gidaechi.designsystem.preview.feature.Badge
+import com.apeun.gidaechi.designsystem.preview.feature.BottomNavigation
+import com.apeun.gidaechi.designsystem.preview.feature.Button
+import com.apeun.gidaechi.designsystem.preview.feature.Category
+import com.apeun.gidaechi.designsystem.preview.feature.ChatItem
+import com.apeun.gidaechi.designsystem.preview.feature.ChatList
+import com.apeun.gidaechi.designsystem.preview.feature.CheckBox
+import com.apeun.gidaechi.designsystem.preview.feature.Divider
+import com.apeun.gidaechi.designsystem.preview.feature.Dropdown
+import com.apeun.gidaechi.designsystem.preview.feature.HomeScreen
+import com.apeun.gidaechi.designsystem.preview.feature.ListItem
+import com.apeun.gidaechi.designsystem.preview.feature.MemberList
+import com.apeun.gidaechi.designsystem.preview.feature.OAuthButton
+import com.apeun.gidaechi.designsystem.preview.feature.Shadow
+import com.apeun.gidaechi.designsystem.preview.feature.Toggle
+import com.apeun.gidaechi.designsystem.preview.feature.TopBar
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.designsystem.theme.White
-import com.apeun.gidaechi.designsystem_preview.feature.Avatar
-import com.apeun.gidaechi.designsystem_preview.feature.Badge
-import com.apeun.gidaechi.designsystem_preview.feature.BottomNavigation
-import com.apeun.gidaechi.designsystem_preview.feature.Button
-import com.apeun.gidaechi.designsystem_preview.feature.Category
-import com.apeun.gidaechi.designsystem_preview.feature.ChatItem
-import com.apeun.gidaechi.designsystem_preview.feature.ChatList
-import com.apeun.gidaechi.designsystem_preview.feature.CheckBox
-import com.apeun.gidaechi.designsystem_preview.feature.Divider
-import com.apeun.gidaechi.designsystem_preview.feature.Dropdown
-import com.apeun.gidaechi.designsystem_preview.feature.HomeScreen
-import com.apeun.gidaechi.designsystem_preview.feature.ListItem
-import com.apeun.gidaechi.designsystem_preview.feature.MemberList
-import com.apeun.gidaechi.designsystem_preview.feature.Shadow
-import com.apeun.gidaechi.designsystem_preview.feature.Toggle
-import com.apeun.gidaechi.designsystem_preview.feature.TopBar
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +42,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = navHostController,
-                        startDestination = NavRoot.HOME
+                        startDestination = NavRoot.HOME,
                     ) {
                         composable(NavRoot.HOME) {
                             HomeScreen(navController = navHostController)
@@ -98,7 +95,6 @@ class MainActivity : ComponentActivity() {
                         composable(NavRoot.TOPBAR) {
                             TopBar()
                         }
-
                     }
                 }
             }

@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.designsystem_preview.feature
+package com.apeun.gidaechi.designsystem.preview.feature
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -14,7 +14,6 @@ import com.apeun.gidaechi.designsystem.component.chat.ChatItemType
 import com.apeun.gidaechi.designsystem.component.chat.SeugiChatItem
 import com.apeun.gidaechi.designsystem.theme.Primary050
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
-
 
 @Composable
 fun ChatItem() {

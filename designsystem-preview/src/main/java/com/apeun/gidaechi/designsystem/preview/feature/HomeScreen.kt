@@ -1,6 +1,5 @@
-package com.apeun.gidaechi.designsystem_preview.feature
+package com.apeun.gidaechi.designsystem.preview.feature
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -19,13 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.apeun.gidaechi.designsystem.preview.NavRoot
 import com.apeun.gidaechi.designsystem.theme.Black
-import com.apeun.gidaechi.designsystem_preview.NavRoot
 
 @Composable
-fun HomeScreen(
-    navController: NavController
-) {
+fun HomeScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -36,126 +33,122 @@ fun HomeScreen(
             text = "CHATITEM",
             onClick = {
                 navController.navigate(NavRoot.CHATITEM)
-            }
+            },
         )
         HomeButton(
             text = "CHATLIST",
             onClick = {
                 navController.navigate(NavRoot.CHATLIST)
-            }
+            },
         )
         HomeButton(
             text = "AVATAR",
             onClick = {
                 navController.navigate(NavRoot.AVATAR)
-            }
+            },
         )
         HomeButton(
             text = "BADGE",
             onClick = {
                 navController.navigate(NavRoot.BADGE)
-            }
+            },
         )
         HomeButton(
             text = "BOTTOMNAV",
             onClick = {
                 navController.navigate(NavRoot.BOTTOMNAV)
-            }
+            },
         )
         HomeButton(
             text = "BUTTON",
             onClick = {
                 navController.navigate(NavRoot.BUTTON)
-            }
+            },
         )
 
         HomeButton(
             text = "CATEGORY",
             onClick = {
                 navController.navigate(NavRoot.CATEGORY)
-            }
+            },
         )
         HomeButton(
             text = "CHECKBOX",
             onClick = {
                 navController.navigate(NavRoot.CHECKBOX)
-            }
+            },
         )
         HomeButton(
             text = "DIVIDER",
             onClick = {
                 navController.navigate(NavRoot.DIVIDER)
-            }
+            },
         )
         HomeButton(
             text = "LISTIEM",
             onClick = {
                 navController.navigate(NavRoot.LISTIEM)
-            }
+            },
         )
         HomeButton(
             text = "MEMBERLIST",
             onClick = {
                 navController.navigate(NavRoot.MEMBERLIST)
-            }
+            },
         )
         HomeButton(
             text = "OAUTHBUTTON",
             onClick = {
                 navController.navigate(NavRoot.OAUTHBUTTON)
-            }
+            },
         )
         HomeButton(
             text = "TOGGLE",
             onClick = {
                 navController.navigate(NavRoot.TOGGLE)
-            }
+            },
         )
         HomeButton(
             text = "SHADOW",
             onClick = {
                 navController.navigate(NavRoot.SHADOW)
-            }
+            },
         )
         HomeButton(
             text = "DROPDOWN",
             onClick = {
                 navController.navigate(NavRoot.DROPDOWN)
-            }
+            },
         )
         HomeButton(
             text = "TOPBAR",
             onClick = {
                 navController.navigate(NavRoot.TOPBAR)
-            }
+            },
         )
-
     }
 }
 
 @Composable
-private fun HomeButton(
-    text: String,
-    onClick: () -> Unit
-) {
+private fun HomeButton(text: String, onClick: () -> Unit) {
     Column {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp)
                 .clickable(
-                    onClick = onClick
+                    onClick = onClick,
                 )
                 .border(
                     width = 1.dp,
                     color = Black,
-                    shape = RoundedCornerShape(8.dp)
-                )
+                    shape = RoundedCornerShape(8.dp),
+                ),
         ) {
             Text(
                 text = text,
                 style = MaterialTheme.typography.titleMedium,
-                color = Black
+                color = Black,
             )
         }
         Spacer(modifier = Modifier.height(20.dp))

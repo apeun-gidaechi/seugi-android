@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.designsystem_preview.feature
+package com.apeun.gidaechi.designsystem.preview.feature
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
