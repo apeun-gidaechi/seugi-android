@@ -40,56 +40,54 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun OAuthButton(@DrawableRes image: Int, text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun SeugiOAuthButton(@DrawableRes image: Int, text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val scale by animateFloatAsState(
         targetValue = if (buttonState == ButtonState.Idle) 1f else 0.96f,
         label = "",
     )
 
-    SeugiTheme {
-        Button(
-            modifier = modifier
-                .fillMaxWidth()
-                .height(54.dp)
-                .graphicsLayer {
-                    scaleX = scale
-                    scaleY = scale
-                }
-                .dropShadow(DropShadowType.Ev2),
-            onClick = onClick,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = White,
-                contentColor = Black,
-                disabledContainerColor = White.copy(alpha = 0.5f),
-                disabledContentColor = White.copy(alpha = 0.5f),
-            ),
-
-            shape = RoundedCornerShape(12.dp),
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-
-            ) {
-                Image(
-                    painter = painterResource(id = image),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(25.dp),
-                )
-                Spacer(modifier = Modifier.padding(start = 10.dp))
-                Text(
-                    text = text,
-                    style = MaterialTheme.typography.titleMedium,
-                )
+    Button(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(54.dp)
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
             }
+            .dropShadow(DropShadowType.Ev2),
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = White,
+            contentColor = Black,
+            disabledContainerColor = White.copy(alpha = 0.5f),
+            disabledContentColor = White.copy(alpha = 0.5f),
+        ),
+
+        shape = RoundedCornerShape(12.dp),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+
+        ) {
+            Image(
+                painter = painterResource(id = image),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(25.dp),
+            )
+            Spacer(modifier = Modifier.padding(start = 10.dp))
+            Text(
+                text = text,
+                style = MaterialTheme.typography.titleMedium,
+            )
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun OAuthButtonPreview() {
+private fun PreviewSeugiOAuthButton() {
     SeugiTheme {
         var testState by remember { mutableStateOf(true) }
         val coroutineScope = rememberCoroutineScope()
@@ -107,7 +105,7 @@ private fun OAuthButtonPreview() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            OAuthButton(image = R.drawable.test_icon, text = "Google로 계속하기", onClick = onClick)
+            SeugiOAuthButton(image = R.drawable.test_icon, text = "Google로 계속하기", onClick = onClick)
         }
     }
 }
