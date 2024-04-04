@@ -1,5 +1,6 @@
 package com.apeun.gidaechi.designsystem.component
 
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -39,7 +40,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun OAuthButton(image: Int, text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun OAuthButton(@DrawableRes image: Int, text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val scale by animateFloatAsState(
         targetValue = if (buttonState == ButtonState.Idle) 1f else 0.96f,
