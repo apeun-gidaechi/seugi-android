@@ -22,5 +22,6 @@ include(
     ":designsystem",
     ":designsystem-preview",
     ":network:core",
-    ":common"
+    ":common",
+    ":feature-main:main"
 )
