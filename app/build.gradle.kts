@@ -38,5 +38,8 @@ dependencies {
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.androidx.test.espresso)
     androidTestImplementation(platform(libs.androidx.compose.bom))
+
     implementation(projects.network.core)
+    implementation(projects.designsystem)
+    implementation(projects.featureMain.main)
 }
