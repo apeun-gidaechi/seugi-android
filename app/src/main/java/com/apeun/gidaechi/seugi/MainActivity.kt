@@ -6,10 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.main.navigation.MAIN_ROUTE
@@ -29,7 +27,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = rememberNavController(),
-                        startDestination = MAIN_ROUTE
+                        startDestination = MAIN_ROUTE,
                     ) {
                         mainScreen()
                     }

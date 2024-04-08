@@ -10,9 +10,7 @@ const val MAIN_ROUTE = "main"
 
 fun NavController.navigateToMain(navOptions: NavOptions? = null) = navigate(MAIN_ROUTE, navOptions)
 
-fun NavGraphBuilder.mainScreen(
-
-) {
+fun NavGraphBuilder.mainScreen() {
     composable(route = MAIN_ROUTE) {
         MainScreen()
     }

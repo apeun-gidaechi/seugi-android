@@ -57,14 +57,14 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
                 shape = RoundedCornerShape(
                     topStart = 16.dp,
                     topEnd = 16.dp,
-                )
+                ),
             ),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(62.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Spacer(modifier = Modifier.width(32.dp))
             SeugiBottomNavigationItem(
