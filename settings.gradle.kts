@@ -24,5 +24,6 @@ include(
     ":network:core",
     ":common",
     ":feature-main:main",
-    ":feature-main:chat"
+    ":feature-main:chat",
+    ":feature-main:home"
 )
