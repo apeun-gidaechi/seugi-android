@@ -92,7 +92,7 @@ fun SeugiChatList(
             }
             Spacer(modifier = Modifier.weight(1f))
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = Alignment.End,
             ) {
                 Text(
                     text = createdAt,
