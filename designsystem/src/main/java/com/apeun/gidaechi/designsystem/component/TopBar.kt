@@ -33,7 +33,6 @@ import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
-import com.apeun.gidaechi.designsystem.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
