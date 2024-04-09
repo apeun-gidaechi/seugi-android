@@ -1,6 +1,7 @@
 package com.apeun.gidaechi.designsystem.component
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -32,17 +33,18 @@ import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import com.apeun.gidaechi.designsystem.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SeugiTopBar(
     title: @Composable () -> Unit,
     modifier: Modifier = Modifier,
-    onNavigationIconClick: () -> Unit,
+    onNavigationIconClick: () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
     colors: TopAppBarColors = TopAppBarDefaults.mediumTopAppBarColors(
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         scrolledContainerColor = MaterialTheme.colorScheme.surface,
         navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
         titleContentColor = MaterialTheme.colorScheme.onSurface,
@@ -66,9 +68,8 @@ fun SeugiTopBar(
                 content = title,
             )
         },
-        modifier = Modifier.then(
-            modifierWithShadow,
-        ),
+        modifier = Modifier
+            .then(modifierWithShadow),
         navigationIcon = {
             if (backIconCheck) {
                 Icon(
