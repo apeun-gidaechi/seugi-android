@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -21,6 +22,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.apeun.gidaechi.chat.navigation.CHAT_ROUTE
 import com.apeun.gidaechi.chat.navigation.chatScreen
+import com.apeun.gidaechi.chatdatail.navigation.chatDetailScreen
+import com.apeun.gidaechi.chatdatail.navigation.navigateToChatDetail
 import com.apeun.gidaechi.designsystem.component.BottomNavigationItemType
 import com.apeun.gidaechi.designsystem.component.SeugiBottomNavigation
 
@@ -29,27 +32,34 @@ private const val NAVIGATION_ANIM = 400
 @Composable
 internal fun MainScreen(navHostController: NavHostController = rememberNavController()) {
     var selectItemState: BottomNavigationItemType by remember { mutableStateOf(BottomNavigationItemType.Home) }
+    var navigationVisible by remember { mutableStateOf(true) }
+
+    val onNavigationVisibleChange: (Boolean) -> Unit = {
+        navigationVisible = it
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            SeugiBottomNavigation(selected = selectItemState) {
-                selectItemState = it
-                navHostController.navigate(
-                    when (it) {
-                        is BottomNavigationItemType.Home -> "route"
-                        is BottomNavigationItemType.Chat -> CHAT_ROUTE
-                        is BottomNavigationItemType.Group -> "route"
-                        is BottomNavigationItemType.Notification -> "route"
-                        is BottomNavigationItemType.Profile -> "route"
-                        else -> "route"
-                    },
-                ) {
-                    popUpTo(navHostController.graph.findStartDestination().id) {
-                        saveState = true
+            if (navigationVisible) {
+                SeugiBottomNavigation(selected = selectItemState) {
+                    selectItemState = it
+                    navHostController.navigate(
+                        when (it) {
+                            is BottomNavigationItemType.Home -> "route"
+                            is BottomNavigationItemType.Chat -> CHAT_ROUTE
+                            is BottomNavigationItemType.Group -> "route"
+                            is BottomNavigationItemType.Notification -> "route"
+                            is BottomNavigationItemType.Profile -> "route"
+                            else -> "route"
+                        },
+                    ) {
+                        popUpTo(navHostController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
                     }
-                    launchSingleTop = true
-                    restoreState = true
                 }
             }
         },
@@ -72,8 +82,14 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
 
             chatScreen(
                 navigateToChatDetail = {
-                    Log.d("TAG", "MainScreen: $it")
-                },
+                    navHostController.navigateToChatDetail()
+                }
+            )
+            chatDetailScreen(
+                onNavigationVisibleChange = onNavigationVisibleChange,
+                popBackStack = {
+                    navHostController.popBackStack()
+                }
             )
         }
     }
