@@ -28,6 +28,23 @@ class ChatDetailViewModel @Inject constructor(
             roomInfo = ChatRoomState(
                 0,
                 "박병준, 박재욱",
+                members = persistentListOf(
+                    TestUserModel(0, "노영재"),
+                    TestUserModel(0, "노영재"),
+                    TestUserModel(0, "노영재"),
+                    TestUserModel(0, "노영재"),
+                    TestUserModel(0, "노영재"),
+                    TestUserModel(0, "노영재"),
+                    TestUserModel(0, "노영재"),
+                    TestUserModel(0, "노영재"),
+                    TestUserModel(0, "노영재"),
+                    TestUserModel(0, "노영재"),
+                    TestUserModel(0, "노영재"),
+                    TestUserModel(0, "노영재"),
+                    TestUserModel(0, "노영재"),
+
+
+                )
             ),
             userInfo = TestUserModel(
                 0,

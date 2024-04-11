@@ -12,7 +12,8 @@ data class ChatUiState(
 
 data class ChatRoomState(
     val id: Int,
-    val roomName: String
+    val roomName: String,
+    val members: ImmutableList<TestUserModel> = persistentListOf()
 )
 
 data class TestMessageModel(
@@ -26,4 +27,5 @@ data class TestMessageModel(
 data class TestUserModel(
     val id: Int,
     val userName: String,
+    val userProfile: String? = null
 )
