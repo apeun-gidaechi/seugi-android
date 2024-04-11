@@ -49,6 +49,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.rive.runtime.kotlin.core.ExperimentalAssetLoader
 import app.rive.runtime.kotlin.core.Rive
@@ -307,6 +308,7 @@ fun SeugiIconButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     contentDescription: String = "",
+    size: Dp = 24.dp,
     enabled: Boolean = true,
     colors: IconButtonColors = IconButtonDefaults.iconButtonColors(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -317,7 +319,7 @@ fun SeugiIconButton(
     )
     Box(
         modifier = modifier
-            .size(24.dp)
+            .size(size)
             .clickable(
                 onClick = onClick,
                 enabled = enabled,
@@ -325,11 +327,12 @@ fun SeugiIconButton(
                 interactionSource = interactionSource,
                 indication = rememberRipple(
                     bounded = false,
-                    radius = 24.dp / 2,
+                    radius = size / 2,
                 ),
             ),
     ) {
         Image(
+            modifier = Modifier.size(size),
             painter = painterResource(id = resId),
             contentDescription = contentDescription,
             colorFilter = ColorFilter.tint(animColor),

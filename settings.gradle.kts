@@ -1,3 +1,5 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     includeBuild("build-logic")
     repositories {
@@ -15,8 +17,13 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "seugi"
-include(":app")
-//include(":build-logic")
-//include(":build-logic:convention")
-include(":designsystem")
-include(":designsystem-preview")
+include(
+    ":app",
+    ":designsystem",
+    ":designsystem-preview",
+    ":network:core",
+    ":common",
+    ":feature-main:main",
+    ":feature-main:chat",
+    ":feature-main:home"
+)

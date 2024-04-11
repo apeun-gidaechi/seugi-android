@@ -1,6 +1,7 @@
 package com.apeun.gidaechi.designsystem.component
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -38,11 +39,11 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 fun SeugiTopBar(
     title: @Composable () -> Unit,
     modifier: Modifier = Modifier,
-    onNavigationIconClick: () -> Unit,
+    onNavigationIconClick: () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
     colors: TopAppBarColors = TopAppBarDefaults.mediumTopAppBarColors(
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         scrolledContainerColor = MaterialTheme.colorScheme.surface,
         navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
         titleContentColor = MaterialTheme.colorScheme.onSurface,
@@ -66,9 +67,8 @@ fun SeugiTopBar(
                 content = title,
             )
         },
-        modifier = Modifier.then(
-            modifierWithShadow,
-        ),
+        modifier = Modifier
+            .then(modifierWithShadow),
         navigationIcon = {
             if (backIconCheck) {
                 Icon(
@@ -78,7 +78,7 @@ fun SeugiTopBar(
                     contentDescription = null,
                     modifier = Modifier
                         .bounceClick(onClick = onNavigationIconClick)
-                        .padding(start = 12.dp, end = 16.dp),
+                        .padding(horizontal = 16.dp),
                 )
             }
         },
@@ -126,7 +126,7 @@ private fun PreviewSeugiTopBar() {
                             },
                         ),
                     )
-                    Spacer(modifier = Modifier.padding(end = 12.dp))
+                    Spacer(modifier = Modifier.padding(end = 16.dp))
                 },
                 backIconCheck = true,
                 shadow = true,
