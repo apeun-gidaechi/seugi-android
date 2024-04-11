@@ -9,6 +9,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.animateTo
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -101,8 +102,6 @@ internal fun ChatDetailScreen(
     var isSearch by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
 
-    val focusRequester by remember { mutableStateOf(FocusRequester()) }
-    val focusManager = LocalFocusManager.current
     val density = LocalDensity.current
     val screenSizeDp = LocalConfiguration.current.screenWidthDp.dp
     val screenSizePx = with(density) { screenSizeDp.toPx() }
@@ -154,6 +153,7 @@ internal fun ChatDetailScreen(
             .background(Primary050),
         topBar = {
             SeugiTopBar(
+                modifier = Modifier.fillMaxWidth(),
                 title = {
                     if (isSearch) {
                         ChatDetailTextField(
@@ -432,49 +432,34 @@ private fun ChatDetailTextField(
     val focusRequester by remember { mutableStateOf(FocusRequester()) }
     val focusManager = LocalFocusManager.current
 
-    CompositionLocalProvider(LocalTextSelectionColors provides textColor.textSelectionColors) {
-        BasicTextField(
-            value = searchText,
-            modifier = Modifier
-                .fillMaxWidth()
-                .focusRequester(focusRequester)
-                .onFocusChanged {
-                    if (!it.isFocused) {
-                        focusManager.clearFocus()
-                    }
-                },
-            onValueChange = onValueChange,
-            enabled = enabled,
-            textStyle = MaterialTheme.typography.titleLarge,
-            cursorBrush = SolidColor(Primary500),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    onDone()
-                    focusManager.clearFocus()
+    BasicTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(end = 16.dp),
+        value = searchText,
+        onValueChange = onValueChange,
+        textStyle = MaterialTheme.typography.titleLarge,
+        enabled = enabled,
+        cursorBrush = SolidColor(Primary500),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                onDone()
+                focusManager.clearFocus()
+            }
+        ),
+        singleLine = true,
+        maxLines = 1,
+        decorationBox = { innerTextField ->
+            Box {
+                if (searchText.isEmpty()) {
+                    Text(
+                        text = placeholder,
+                        color = if (enabled) Gray500 else Gray400,
+                        style = MaterialTheme.typography.titleLarge,
+                    )
                 }
-            ),
-            singleLine = true,
-            maxLines = 1,
-            decorationBox = @Composable { innerTextField ->
-                TextFieldDefaults.DecorationBox(
-                    value = searchText,
-                    innerTextField = innerTextField,
-                    placeholder = {
-                        Text(
-                            text = placeholder,
-                            style = MaterialTheme.typography.titleLarge,
-                            color = if (enabled) Gray500 else Gray400,
-                        )
-                    },
-                    label = null,
-                    trailingIcon = {},
-                    enabled = enabled,
-                    colors = textColor,
-                    interactionSource = NoInteractionSource(),
-                    singleLine = false,
-                    visualTransformation = VisualTransformation.None,
-                )
-            },
-        )
-    }
+                innerTextField()
+            }
+        },
+    )
 }
