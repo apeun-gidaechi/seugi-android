@@ -34,7 +34,7 @@ import kotlin.math.roundToInt
 
 enum class DragState {
     START,
-    END
+    END,
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -53,12 +53,12 @@ fun SeugiRightSideScaffold(
     containerColor: Color = MaterialTheme.colorScheme.background,
     contentColor: Color = contentColorFor(containerColor),
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
-    content: @Composable (PaddingValues) -> Unit
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     val sizeModifier = if (state.currentValue == DragState.START || state.targetValue == DragState.START) Modifier.fillMaxSize() else Modifier.size(0.dp)
 
-    Box( // 1번째 박스
-        modifier = modifier
+    Box(
+        modifier = modifier,
     ) {
         Scaffold(
             modifier,
@@ -69,38 +69,39 @@ fun SeugiRightSideScaffold(
             floatingActionButtonPosition,
             containerColor, contentColor,
             contentWindowInsets,
-            content
+            content,
         )
-        Box( // 2번째 박스
+        Box(
             modifier = Modifier
                 .then(sizeModifier)
                 .anchoredDraggable(state, orientation = Orientation.Horizontal)
-                .background(Black.copy(alpha = 0.3f))
+                .background(Black.copy(alpha = 0.3f)),
         ) {
-            Box(modifier = Modifier
-                .fillMaxHeight()
-                .width(startPadding)
-                .clickable(
-                    interactionSource = NoInteractionSource(),
-                    indication = null,
-                    onClick = onSideBarClose
-                )
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(startPadding)
+                    .clickable(
+                        interactionSource = NoInteractionSource(),
+                        indication = null,
+                        onClick = onSideBarClose,
+                    ),
             )
-            Box( // 3번째 박스
+            Box(
                 modifier = Modifier
                     .offset {
                         IntOffset(
                             x = state
                                 .requireOffset()
                                 .roundToInt(),
-                            y = 0
+                            y = 0,
                         )
                     }
                     .fillMaxSize()
                     .padding(
-                        start = startPadding
+                        start = startPadding,
                     )
-                    .background(White)
+                    .background(White),
             ) {
                 sideBar()
             }

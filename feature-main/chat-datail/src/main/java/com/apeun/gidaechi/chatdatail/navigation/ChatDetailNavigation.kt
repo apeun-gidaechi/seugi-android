@@ -10,14 +10,11 @@ const val CHAT_DETAIL_ROUTE = "chat_detail"
 
 fun NavController.navigateToChatDetail(navOptions: NavOptions? = null) = navigate(CHAT_DETAIL_ROUTE, navOptions)
 
-fun NavGraphBuilder.chatDetailScreen(
-    onNavigationVisibleChange: (Boolean) -> Unit,
-    popBackStack: () -> Unit,
-) {
+fun NavGraphBuilder.chatDetailScreen(onNavigationVisibleChange: (Boolean) -> Unit, popBackStack: () -> Unit) {
     composable(CHAT_DETAIL_ROUTE) {
         ChatDetailScreen(
             onNavigationVisibleChange = onNavigationVisibleChange,
-            popBackStack = popBackStack
+            popBackStack = popBackStack,
         )
     }
 }

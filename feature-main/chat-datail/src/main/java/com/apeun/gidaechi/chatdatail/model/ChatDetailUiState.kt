@@ -1,19 +1,19 @@
 package com.apeun.gidaechi.chatdatail.model
 
+import java.time.LocalDateTime
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import java.time.LocalDateTime
 
 data class ChatUiState(
     val roomInfo: ChatRoomState? = null,
     val userInfo: TestUserModel? = null,
-    val message: ImmutableList<TestMessageModel> = persistentListOf()
+    val message: ImmutableList<TestMessageModel> = persistentListOf(),
 )
 
 data class ChatRoomState(
     val id: Int,
     val roomName: String,
-    val members: ImmutableList<TestUserModel> = persistentListOf()
+    val members: ImmutableList<TestUserModel> = persistentListOf(),
 )
 
 data class TestMessageModel(
@@ -27,5 +27,5 @@ data class TestMessageModel(
 data class TestUserModel(
     val id: Int,
     val userName: String,
-    val userProfile: String? = null
+    val userProfile: String? = null,
 )

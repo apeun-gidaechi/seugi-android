@@ -1,11 +1,9 @@
 package com.apeun.gidaechi.chatdatail
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.animateTo
@@ -23,18 +21,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -44,25 +36,19 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.apeun.gidaechi.chatdatail.model.ChatRoomState
 import com.apeun.gidaechi.chatdatail.model.TestUserModel
 import com.apeun.gidaechi.common.utiles.toAmShortString
 import com.apeun.gidaechi.common.utiles.toFullFormatString
 import com.apeun.gidaechi.designsystem.R
-import com.apeun.gidaechi.designsystem.animation.NoInteractionSource
 import com.apeun.gidaechi.designsystem.component.DragState
 import com.apeun.gidaechi.designsystem.component.SeugiIconButton
 import com.apeun.gidaechi.designsystem.component.SeugiMemberList
@@ -73,27 +59,20 @@ import com.apeun.gidaechi.designsystem.component.chat.SeugiChatItem
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
 import com.apeun.gidaechi.designsystem.component.textfield.SeugiChatTextField
-import com.apeun.gidaechi.designsystem.component.textfield.SeugiTextField
 import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.Gray400
 import com.apeun.gidaechi.designsystem.theme.Gray500
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary050
 import com.apeun.gidaechi.designsystem.theme.Primary500
-import com.apeun.gidaechi.designsystem.theme.Transparent
-import com.apeun.gidaechi.designsystem.theme.White
+import java.time.Duration
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
-import java.time.Duration
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-internal fun ChatDetailScreen(
-    viewModel: ChatDetailViewModel = hiltViewModel(),
-    onNavigationVisibleChange: (Boolean) -> Unit,
-    popBackStack: () -> Unit
-) {
+internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), onNavigationVisibleChange: (Boolean) -> Unit, popBackStack: () -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val coroutineScope = rememberCoroutineScope()
@@ -125,7 +104,6 @@ internal fun ChatDetailScreen(
         )
     }
 
-
     LaunchedEffect(key1 = true) {
         onNavigationVisibleChange(false)
         viewModel.loadMessage()
@@ -138,7 +116,7 @@ internal fun ChatDetailScreen(
     }
 
     BackHandler(
-        enabled = isSearch
+        enabled = isSearch,
     ) {
         isSearch = !isSearch
     }
@@ -166,7 +144,7 @@ internal fun ChatDetailScreen(
                             onDone = {
                                 searchText = ""
                                 isSearch = false
-                            }
+                            },
                         )
                     } else {
                         Text(
@@ -174,7 +152,7 @@ internal fun ChatDetailScreen(
                             style = MaterialTheme.typography.titleLarge,
                             color = Black,
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 },
@@ -186,7 +164,7 @@ internal fun ChatDetailScreen(
                             onClick = {
                                 isSearch = true
                                 searchText = ""
-                            }
+                            },
                         )
                         Spacer(modifier = Modifier.width(16.dp))
                         SeugiIconButton(
@@ -196,7 +174,7 @@ internal fun ChatDetailScreen(
                                 coroutineScope.launch {
                                     anchoredState.animateTo(DragState.START)
                                 }
-                            }
+                            },
                         )
                         Spacer(modifier = Modifier.width(16.dp))
                     }
@@ -209,7 +187,7 @@ internal fun ChatDetailScreen(
                     } else {
                         popBackStack()
                     }
-                }
+                },
             )
         },
         bottomBar = {
@@ -217,7 +195,7 @@ internal fun ChatDetailScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        horizontal = 8.dp
+                        horizontal = 8.dp,
                     )
                     .dropShadow(DropShadowType.Ev1),
                 value = text,
@@ -227,7 +205,7 @@ internal fun ChatDetailScreen(
                 },
                 onSendClick = {
                     text = ""
-                }
+                },
             )
             Spacer(modifier = Modifier.height(8.dp))
         },
@@ -241,7 +219,7 @@ internal fun ChatDetailScreen(
                 onClickNotification = {
                     notificationState = !notificationState
                 },
-                onClickSetting = {  }
+                onClickSetting = { },
             )
         },
         onSideBarClose = {
@@ -251,23 +229,23 @@ internal fun ChatDetailScreen(
         },
         startPadding = 62.dp,
         state = anchoredState,
-        ) {
+    ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
                 .background(Primary050),
             contentPadding = PaddingValues(
-                horizontal = 8.dp
-            )
+                horizontal = 8.dp,
+            ),
         ) {
             items(state.message.size) { index ->
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            top = 8.dp
-                        )
+                            top = 8.dp,
+                        ),
                 ) {
                     val formerItem = state.message.getOrNull(index - 1)
                     val nextItem = state.message.getOrNull(index + 1)
@@ -275,16 +253,17 @@ internal fun ChatDetailScreen(
 
                     val isMe = item.userId == state.userInfo?.id
                     val isLast = item.userId != nextItem?.userId ||
-                            (Duration.between(
+                        (
+                            Duration.between(
                                 item.createdAt,
-                                nextItem.createdAt
-                            ).seconds >= 86400 && item.userId == nextItem.userId)
-
+                                nextItem.createdAt,
+                            ).seconds >= 86400 && item.userId == nextItem.userId
+                            )
 
                     var isFirst = item.userId != formerItem?.userId
                     if (formerItem != null && Duration.between(
                             formerItem.createdAt,
-                            item.createdAt
+                            item.createdAt,
                         ).seconds >= 86400
                     ) {
                         isFirst = true
@@ -304,7 +283,7 @@ internal fun ChatDetailScreen(
                                 isLast = isLast,
                                 message = item.message,
                                 createdAt = item.createdAt.toAmShortString(),
-                                count = 1
+                                count = 1,
                             )
 
                             else -> ChatItemType.Others(
@@ -316,7 +295,7 @@ internal fun ChatDetailScreen(
                                 createdAt = item.createdAt.toAmShortString(),
                                 count = 1,
                             )
-                        }
+                        },
                     )
                 }
             }
@@ -332,7 +311,7 @@ private fun ChatSideBarScreen(
     onClickInviteMember: () -> Unit,
     onClickLeft: () -> Unit,
     onClickNotification: () -> Unit,
-    onClickSetting: () -> Unit
+    onClickSetting: () -> Unit,
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -344,15 +323,15 @@ private fun ChatSideBarScreen(
                         .padding(
                             start = 16.dp,
                             top = (9.5).dp,
-                            bottom = (9.5).dp
+                            bottom = (9.5).dp,
                         ),
                     text = "멤버",
                     style = MaterialTheme.typography.titleMedium,
-                    color = Black
+                    color = Black,
                 )
                 SeugiMemberList(
                     text = "멤버 초대하기",
-                    onClick = onClickInviteMember
+                    onClick = onClickInviteMember,
                 )
             }
         },
@@ -362,13 +341,13 @@ private fun ChatSideBarScreen(
                     .fillMaxWidth()
                     .height(39.dp)
                     .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 SeugiIconButton(
                     resId = R.drawable.ic_logout_line,
                     onClick = onClickLeft,
                     size = 28.dp,
-                    colors = IconButtonDefaults.iconButtonColors(contentColor = Gray600)
+                    colors = IconButtonDefaults.iconButtonColors(contentColor = Gray600),
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 SeugiIconButton(
@@ -377,22 +356,22 @@ private fun ChatSideBarScreen(
                         onClickNotification()
                     },
                     size = 28.dp,
-                    colors = IconButtonDefaults.iconButtonColors(contentColor = Gray600)
+                    colors = IconButtonDefaults.iconButtonColors(contentColor = Gray600),
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 SeugiIconButton(
                     resId = R.drawable.ic_setting_fill,
                     onClick = onClickSetting,
                     size = 28.dp,
-                    colors = IconButtonDefaults.iconButtonColors(contentColor = Gray600)
+                    colors = IconButtonDefaults.iconButtonColors(contentColor = Gray600),
                 )
             }
-        }
+        },
     ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(it),
         ) {
             items(members) {
                 SeugiMemberList(
@@ -400,36 +379,15 @@ private fun ChatSideBarScreen(
                     userProfile = it.userProfile,
                     onClick = {
                         onClickMember(it)
-                    }
+                    },
                 )
             }
         }
     }
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ChatDetailTextField(
-    searchText: String,
-    onValueChange: (String) -> Unit,
-    placeholder: String = "",
-    enabled: Boolean = true,
-    onDone: () -> Unit
-) {
-
-    val textColor = TextFieldDefaults.colors(
-        focusedTextColor = Black,
-        focusedContainerColor = Transparent,
-        focusedIndicatorColor = Transparent,
-        unfocusedContainerColor = White,
-        unfocusedTextColor = Black,
-        unfocusedIndicatorColor = Transparent,
-        disabledIndicatorColor = Transparent,
-        disabledTextColor = Gray400,
-        disabledContainerColor = Transparent,
-    )
-    val focusRequester by remember { mutableStateOf(FocusRequester()) }
+private fun ChatDetailTextField(searchText: String, onValueChange: (String) -> Unit, placeholder: String = "", enabled: Boolean = true, onDone: () -> Unit) {
     val focusManager = LocalFocusManager.current
 
     BasicTextField(
@@ -445,7 +403,7 @@ private fun ChatDetailTextField(
             onDone = {
                 onDone()
                 focusManager.clearFocus()
-            }
+            },
         ),
         singleLine = true,
         maxLines = 1,
