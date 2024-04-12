@@ -23,6 +23,8 @@ import com.apeun.gidaechi.chat.navigation.CHAT_ROUTE
 import com.apeun.gidaechi.chat.navigation.chatScreen
 import com.apeun.gidaechi.designsystem.component.BottomNavigationItemType
 import com.apeun.gidaechi.designsystem.component.SeugiBottomNavigation
+import com.apeun.gidaechi.room.navigation.ROOM_ROUTE
+import com.apeun.gidaechi.room.navigation.roomScreen
 
 private const val NAVIGATION_ANIM = 400
 
@@ -39,7 +41,7 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                     when (it) {
                         is BottomNavigationItemType.Home -> "route"
                         is BottomNavigationItemType.Chat -> CHAT_ROUTE
-                        is BottomNavigationItemType.Group -> "route"
+                        is BottomNavigationItemType.Group -> ROOM_ROUTE
                         is BottomNavigationItemType.Notification -> "route"
                         is BottomNavigationItemType.Profile -> "route"
                         else -> "route"
@@ -74,6 +76,11 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                 navigateToChatDetail = {
                     Log.d("TAG", "MainScreen: $it")
                 },
+            )
+
+            roomScreen(
+                navigateToChatDetail = {},
+                navigateToCreateRoom = {}
             )
         }
     }
