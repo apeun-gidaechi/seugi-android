@@ -80,7 +80,7 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
 
             roomScreen(
                 navigateToChatDetail = {},
-                navigateToCreateRoom = {}
+                navigateToCreateRoom = {},
             )
         }
     }

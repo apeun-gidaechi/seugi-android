@@ -14,5 +14,5 @@ data class TestRoomItem(
     val message: String,
     val createdAt: String,
     val count: Int?,
-    val memberCount: Int?
+    val memberCount: Int?,
 )

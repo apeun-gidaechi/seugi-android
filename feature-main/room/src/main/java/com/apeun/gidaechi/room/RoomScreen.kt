@@ -23,11 +23,7 @@ import com.apeun.gidaechi.designsystem.component.chat.SeugiChatList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun RoomScreen(
-    viewModel: RoomViewModel = hiltViewModel(),
-    navigateToChatDetail: (Int) -> Unit,
-    navigateToCreateRoom: () -> Unit
-) {
+internal fun RoomScreen(viewModel: RoomViewModel = hiltViewModel(), navigateToChatDetail: (Int) -> Unit, navigateToCreateRoom: () -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = true) {
@@ -54,7 +50,6 @@ internal fun RoomScreen(
                         resId = R.drawable.ic_search,
                         size = 28.dp,
                         onClick = {
-
                         },
                     )
                     Spacer(modifier = Modifier.width(16.dp))

@@ -26,7 +26,7 @@ class RoomViewModel @Inject constructor() : ViewModel() {
                     "정말 좋습니다",
                     "12:39",
                     if (Random.nextBoolean()) Random.nextInt() else null,
-                    4
+                    4,
                 ),
                 TestRoomItem(
                     0,
@@ -35,7 +35,7 @@ class RoomViewModel @Inject constructor() : ViewModel() {
                     "정말 좋습니다",
                     "12:39",
                     if (Random.nextBoolean()) Random.nextInt() else null,
-                    4
+                    4,
                 ),
 
                 TestRoomItem(
@@ -45,7 +45,7 @@ class RoomViewModel @Inject constructor() : ViewModel() {
                     "정말 좋습니다",
                     "12:39",
                     if (Random.nextBoolean()) Random.nextInt() else null,
-                    4
+                    4,
                 ),
 
                 TestRoomItem(
@@ -55,7 +55,7 @@ class RoomViewModel @Inject constructor() : ViewModel() {
                     "정말 좋습니다",
                     "12:39",
                     if (Random.nextBoolean()) Random.nextInt() else null,
-                    4
+                    4,
                 ),
 
                 TestRoomItem(
@@ -65,7 +65,7 @@ class RoomViewModel @Inject constructor() : ViewModel() {
                     "정말 좋습니다",
                     "12:39",
                     if (Random.nextBoolean()) Random.nextInt() else null,
-                    4
+                    4,
                 ),
 
                 TestRoomItem(
@@ -75,7 +75,7 @@ class RoomViewModel @Inject constructor() : ViewModel() {
                     "정말 좋습니다",
                     "12:39",
                     if (Random.nextBoolean()) Random.nextInt() else null,
-                    4
+                    4,
                 ),
                 TestRoomItem(
                     0,
@@ -84,7 +84,7 @@ class RoomViewModel @Inject constructor() : ViewModel() {
                     "정말 좋습니다",
                     "12:39",
                     if (Random.nextBoolean()) Random.nextInt() else null,
-                    4
+                    4,
                 ),
                 TestRoomItem(
                     0,
@@ -93,7 +93,7 @@ class RoomViewModel @Inject constructor() : ViewModel() {
                     "정말 좋습니다",
                     "12:39",
                     if (Random.nextBoolean()) Random.nextInt() else null,
-                    4
+                    4,
                 ),
 
                 TestRoomItem(
@@ -103,7 +103,7 @@ class RoomViewModel @Inject constructor() : ViewModel() {
                     "정말 좋습니다",
                     "12:39",
                     if (Random.nextBoolean()) Random.nextInt() else null,
-                    4
+                    4,
                 ),
 
                 TestRoomItem(
@@ -113,7 +113,7 @@ class RoomViewModel @Inject constructor() : ViewModel() {
                     "정말 좋습니다",
                     "12:39",
                     if (Random.nextBoolean()) Random.nextInt() else null,
-                    4
+                    4,
                 ),
 
                 TestRoomItem(
@@ -123,7 +123,7 @@ class RoomViewModel @Inject constructor() : ViewModel() {
                     "정말 좋습니다",
                     "12:39",
                     if (Random.nextBoolean()) Random.nextInt() else null,
-                    4
+                    4,
                 ),
 
                 TestRoomItem(
@@ -133,10 +133,10 @@ class RoomViewModel @Inject constructor() : ViewModel() {
                     "정말 좋습니다",
                     "12:39",
                     if (Random.nextBoolean()) Random.nextInt() else null,
-                    4
+                    4,
                 ),
 
-                ).toImmutableList(),
+            ).toImmutableList(),
         )
     }
 }
