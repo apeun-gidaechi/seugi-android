@@ -26,3 +26,4 @@ include(
     ":feature-main:main",
     ":feature-main:chat"
 )
+include(":feature-main:room-create")
