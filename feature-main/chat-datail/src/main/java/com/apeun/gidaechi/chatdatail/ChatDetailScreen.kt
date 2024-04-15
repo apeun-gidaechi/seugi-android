@@ -264,7 +264,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            top = 8.dp,
+                            bottom = 8.dp,
                         ),
                 ) {
                     val formerItem = state.message.getOrNull(index - 1)
