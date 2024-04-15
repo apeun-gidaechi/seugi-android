@@ -39,12 +39,7 @@ import com.apeun.gidaechi.roomcreate.model.RoomCreateUiState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun FirstScreen(
-    state: RoomCreateUiState,
-    updateChecked: (userId: Int) -> Unit,
-    popBackStack: () -> Unit,
-    nextScreen: () -> Unit
-) {
+fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) -> Unit, popBackStack: () -> Unit, nextScreen: () -> Unit) {
     Scaffold(
         topBar = {
             SeugiTopBar(
@@ -52,7 +47,7 @@ fun FirstScreen(
                     Text(
                         text = "멤버 선택",
                         style = MaterialTheme.typography.titleLarge,
-                        color = Black
+                        color = Black,
                     )
                 },
                 actions = {
@@ -61,30 +56,30 @@ fun FirstScreen(
                             .clip(RoundedCornerShape(4.dp))
                             .clickable(
                                 role = Role.Button,
-                                onClick = nextScreen
-                            )
+                                onClick = nextScreen,
+                            ),
                     ) {
                         Text(
                             modifier = Modifier
                                 .padding(
                                     horizontal = 12.dp,
-                                    vertical = 9.dp
+                                    vertical = 9.dp,
                                 ),
                             text = "완료",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = Black
+                            color = Black,
                         )
                     }
                     Spacer(modifier = Modifier.width(16.dp))
                 },
                 backIconCheck = true,
-                onNavigationIconClick = popBackStack
+                onNavigationIconClick = popBackStack,
             )
-        }
+        },
     ) { paddingValue ->
         Column(
             modifier = Modifier
-                .padding(paddingValue)
+                .padding(paddingValue),
         ) {
             LazyColumn {
                 item {
@@ -92,28 +87,28 @@ fun FirstScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(
-                                min = 44.dp
+                                min = 44.dp,
                             )
                             .padding(horizontal = 20.dp)
                             .border(
                                 width = 1.dp,
                                 color = Gray300,
-                                shape = RoundedCornerShape(12.dp)
-                            )
+                                shape = RoundedCornerShape(12.dp),
+                            ),
                     ) {
                         FlowRow(
                             modifier = Modifier
                                 .align(Alignment.TopStart)
                                 .padding(4.dp),
                             horizontalArrangement = Arrangement.Start,
-                            verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically)
+                            verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
                         ) {
                             state.checkedMemberState.forEach {
                                 SelectMemberCard(
                                     name = it.name,
                                     onClick = {
                                         updateChecked(it.id)
-                                    }
+                                    },
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
                             }
@@ -127,7 +122,7 @@ fun FirstScreen(
                         checked = item.checked,
                         onCheckedChangeListener = {
                             updateChecked(item.id)
-                        }
+                        },
                     )
                 }
             }
@@ -136,22 +131,19 @@ fun FirstScreen(
 }
 
 @Composable
-internal fun SelectMemberCard(
-    name: String,
-    onClick: () -> Unit
-) {
+internal fun SelectMemberCard(name: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier.background(
             color = Gray100,
-            shape = RoundedCornerShape(12.dp)
-        )
+            shape = RoundedCornerShape(12.dp),
+        ),
     ) {
         Row(
             modifier = Modifier
                 .padding(
                     horizontal = 12.dp,
-                    vertical = 9.dp
-                )
+                    vertical = 9.dp,
+                ),
         ) {
             Text(
                 text = name,
@@ -162,7 +154,7 @@ internal fun SelectMemberCard(
             SeugiIconButton(
                 resId = R.drawable.ic_close_line,
                 size = 16.dp,
-                onClick = onClick
+                onClick = onClick,
             )
         }
     }

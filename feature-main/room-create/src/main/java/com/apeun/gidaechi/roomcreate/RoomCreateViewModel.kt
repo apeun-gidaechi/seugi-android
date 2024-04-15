@@ -4,15 +4,13 @@ import androidx.lifecycle.ViewModel
 import com.apeun.gidaechi.roomcreate.model.RoomCreateUiState
 import com.apeun.gidaechi.roomcreate.model.TestMemberItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
 
 @HiltViewModel
-class RoomCreateViewModel @Inject constructor(
-
-): ViewModel() {
+class RoomCreateViewModel @Inject constructor() : ViewModel() {
 
     private val _state = MutableStateFlow(RoomCreateUiState())
     val state = _state.asStateFlow()
@@ -23,12 +21,12 @@ class RoomCreateViewModel @Inject constructor(
             users.add(
                 TestMemberItem(
                     id = i,
-                    name = "노영재 ${i}세"
-                )
+                    name = "노영재 ${i}세",
+                ),
             )
         }
         _state.value = _state.value.copy(
-            userItem = users.toImmutableList()
+            userItem = users.toImmutableList(),
         )
     }
 
@@ -37,12 +35,12 @@ class RoomCreateViewModel @Inject constructor(
             userItem = _state.value.userItem.map {
                 if (it.id == userId) {
                     it.copy(
-                        checked = it.checked.not()
+                        checked = it.checked.not(),
                     )
                 } else {
                     it
                 }
-            }.toImmutableList()
+            }.toImmutableList(),
         )
     }
 }

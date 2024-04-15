@@ -7,17 +7,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apeun.gidaechi.roomcreate.screen.FirstScreen
 import com.apeun.gidaechi.roomcreate.screen.SecondScreen
 
 @Composable
-internal fun RoomCreateScreen(
-    viewModel: RoomCreateViewModel = hiltViewModel(),
-    popBackStack: () -> Unit
-) {
+internal fun RoomCreateScreen(viewModel: RoomCreateViewModel = hiltViewModel(), popBackStack: () -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var nowScreen by remember { mutableStateOf(1) }
     LaunchedEffect(key1 = true) {
@@ -35,20 +31,19 @@ internal fun RoomCreateScreen(
                 if (state.checkedMemberState.size > 0) {
                     nowScreen = 2
                 }
-            }
+            },
         )
     }
 
     AnimatedVisibility(visible = nowScreen == 2) {
-        val memberCount = state.checkedMemberState.size-1
+        val memberCount = state.checkedMemberState.size - 1
         SecondScreen(
             placeholder = "${state.checkedMemberState[0].name} ${if (memberCount > 0) "외 ${memberCount}명" else ""}",
             onNameSuccess = {
-
             },
             popBackStack = {
                 nowScreen = 1
-            }
+            },
         )
     }
 }

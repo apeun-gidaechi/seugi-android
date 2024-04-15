@@ -1,19 +1,12 @@
 package com.apeun.gidaechi.roomcreate.screen
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -24,28 +17,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import com.apeun.gidaechi.designsystem.component.SeugiMemberList
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.textfield.SeugiTextField
 import com.apeun.gidaechi.designsystem.theme.Black
-import com.apeun.gidaechi.designsystem.theme.Gray300
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SecondScreen(
-    placeholder: String,
-    onNameSuccess: (String) -> Unit,
-    popBackStack: () -> Unit
-) {
+fun SecondScreen(placeholder: String, onNameSuccess: (String) -> Unit, popBackStack: () -> Unit) {
     var title by remember { mutableStateOf("") }
 
     BackHandler(
-        onBack = popBackStack
+        onBack = popBackStack,
     )
     Scaffold(
         topBar = {
@@ -59,34 +45,34 @@ fun SecondScreen(
                                 role = Role.Button,
                                 onClick = {
                                     onNameSuccess(if (title == "") placeholder else title)
-                                }
-                            )
+                                },
+                            ),
                     ) {
                         Text(
                             modifier = Modifier
                                 .padding(
                                     horizontal = 12.dp,
-                                    vertical = 9.dp
+                                    vertical = 9.dp,
                                 ),
                             text = "완료",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = Black
+                            color = Black,
                         )
                     }
                     Spacer(modifier = Modifier.width(16.dp))
                 },
                 backIconCheck = true,
-                onNavigationIconClick = popBackStack
+                onNavigationIconClick = popBackStack,
             )
-        }
+        },
     ) { paddingValue ->
         Column(
-            modifier = Modifier.padding(paddingValue)
+            modifier = Modifier.padding(paddingValue),
         ) {
             SeugiTextField(
                 modifier = Modifier
                     .padding(
-                        horizontal = 20.dp
+                        horizontal = 20.dp,
                     ),
                 value = title,
                 placeholder = placeholder,
@@ -95,7 +81,7 @@ fun SecondScreen(
                 },
                 onClickDelete = {
                     title = ""
-                }
+                },
             )
         }
     }
