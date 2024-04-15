@@ -23,6 +23,8 @@ import com.apeun.gidaechi.chat.navigation.CHAT_ROUTE
 import com.apeun.gidaechi.chat.navigation.chatScreen
 import com.apeun.gidaechi.designsystem.component.BottomNavigationItemType
 import com.apeun.gidaechi.designsystem.component.SeugiBottomNavigation
+import com.apeun.gidaechi.roomcreate.navigation.ROOM_CREATE_ROUTE
+import com.apeun.gidaechi.roomcreate.navigation.roomCreateScreen
 
 private const val NAVIGATION_ANIM = 400
 
@@ -74,6 +76,12 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                 navigateToChatDetail = {
                     Log.d("TAG", "MainScreen: $it")
                 },
+            )
+
+            roomCreateScreen(
+                popBackStack = {
+                    navHostController.popBackStack()
+                }
             )
         }
     }

@@ -10,4 +10,5 @@ dependencies {
     implementation(projects.designsystem)
 
     implementation(projects.featureMain.chat)
+    implementation(projects.featureMain.roomCreate)
 }
