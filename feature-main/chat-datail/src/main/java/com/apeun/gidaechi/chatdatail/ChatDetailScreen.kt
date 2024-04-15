@@ -1,6 +1,5 @@
 package com.apeun.gidaechi.chatdatail
 
-import android.app.Activity
 import android.graphics.Rect
 import android.util.Log
 import android.view.View
@@ -24,7 +23,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.BasicTextField
@@ -48,7 +46,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalView
@@ -81,8 +78,6 @@ import com.apeun.gidaechi.designsystem.theme.Primary500
 import java.time.Duration
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -135,7 +130,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     LaunchedEffect(key1 = keyboardState) {
         Log.d("TAG", "ChatDetailScreen: ${keyboardState.height} ${keyboardState.isOpen}")
         if (keyboardState.isOpen) {
-            scrollState.animateScrollBy(with(density) {keyboardState.height.toPx() })
+            scrollState.animateScrollBy(with(density) { keyboardState.height.toPx() })
         }
     }
 
@@ -262,7 +257,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
             contentPadding = PaddingValues(
                 horizontal = 8.dp,
             ),
-            state = scrollState
+            state = scrollState,
         ) {
             items(state.message.size) { index ->
                 Column(
@@ -449,7 +444,7 @@ private fun ChatDetailTextField(searchText: String, onValueChange: (String) -> U
 
 data class ExKeyboardState(
     val isOpen: Boolean = false,
-    val height: Dp = 0.dp
+    val height: Dp = 0.dp,
 )
 
 internal fun View.isKeyboardOpen(): Pair<Boolean, Int> {
@@ -461,8 +456,6 @@ internal fun View.isKeyboardOpen(): Pair<Boolean, Int> {
     return Pair(keypadHeight > screenHeight * 0.15, screenHeight - rect.bottom)
 }
 
-
-
 @Composable
 internal fun rememberKeyboardOpen(): State<ExKeyboardState> {
     val view = LocalView.current
@@ -470,7 +463,7 @@ internal fun rememberKeyboardOpen(): State<ExKeyboardState> {
 
     fun Pair<Boolean, Int>.toState() = ExKeyboardState(
         isOpen = first,
-        height = with(density) { second.toDp()-48.dp }
+        height = with(density) { second.toDp() - 48.dp },
     )
 
     return produceState(initialValue = view.isKeyboardOpen().toState()) {
