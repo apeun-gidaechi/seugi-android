@@ -10,14 +10,11 @@ const val ROOM_CREATE_ROUTE = "room_create"
 
 fun NavController.navigateToRoomCreate(navOptions: NavOptions? = null) = navigate(ROOM_CREATE_ROUTE, navOptions)
 
-fun NavGraphBuilder.roomCreateScreen(
-    popBackStack: () -> Unit,
-    onNavigationVisibleChange: (Boolean) -> Unit
-) {
+fun NavGraphBuilder.roomCreateScreen(popBackStack: () -> Unit, onNavigationVisibleChange: (Boolean) -> Unit) {
     composable(ROOM_CREATE_ROUTE) {
         RoomCreateScreen(
             popBackStack = popBackStack,
-            onNavigationVisibleChange = onNavigationVisibleChange
+            onNavigationVisibleChange = onNavigationVisibleChange,
         )
     }
 }

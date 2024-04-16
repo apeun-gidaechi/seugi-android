@@ -109,7 +109,7 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                 popBackStack = {
                     navHostController.popBackStack()
                 },
-                onNavigationVisibleChange = onNavigationVisibleChange
+                onNavigationVisibleChange = onNavigationVisibleChange,
             )
         }
     }
