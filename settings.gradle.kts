@@ -26,4 +26,5 @@ include(
     ":feature-main:main",
     ":feature-main:chat",
     ":feature-main:chat-datail",
+    ":feature-main:home"
 )

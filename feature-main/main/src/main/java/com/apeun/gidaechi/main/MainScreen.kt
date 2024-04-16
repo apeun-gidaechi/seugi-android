@@ -24,6 +24,8 @@ import com.apeun.gidaechi.chatdatail.navigation.chatDetailScreen
 import com.apeun.gidaechi.chatdatail.navigation.navigateToChatDetail
 import com.apeun.gidaechi.designsystem.component.BottomNavigationItemType
 import com.apeun.gidaechi.designsystem.component.SeugiBottomNavigation
+import com.apeun.gidaechi.home.navigation.HOME_ROUTE
+import com.apeun.gidaechi.home.navigation.homeScreen
 
 private const val NAVIGATION_ANIM = 400
 
@@ -44,7 +46,7 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                     selectItemState = it
                     navHostController.navigate(
                         when (it) {
-                            is BottomNavigationItemType.Home -> "route"
+                            is BottomNavigationItemType.Home -> HOME_ROUTE
                             is BottomNavigationItemType.Chat -> CHAT_ROUTE
                             is BottomNavigationItemType.Group -> "route"
                             is BottomNavigationItemType.Notification -> "route"
@@ -67,7 +69,7 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                 .padding(it)
                 .fillMaxSize(),
             navController = navHostController,
-            startDestination = "route",
+            startDestination = HOME_ROUTE,
             enterTransition = { fadeIn(animationSpec = tween(NAVIGATION_ANIM)) },
             exitTransition = { fadeOut(animationSpec = tween(NAVIGATION_ANIM)) },
             popEnterTransition = { fadeIn(animationSpec = tween(NAVIGATION_ANIM)) },
@@ -77,6 +79,8 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
             composable("route") {
                 Text(text = "hi")
             }
+
+            homeScreen()
 
             chatScreen(
                 navigateToChatDetail = {
