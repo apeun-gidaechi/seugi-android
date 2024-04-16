@@ -211,23 +211,25 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
             )
         },
         bottomBar = {
-            SeugiChatTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = 8.dp,
-                    )
-                    .dropShadow(DropShadowType.Ev1),
-                value = text,
-                placeholder = "메세지 보내기",
-                onValueChange = {
-                    text = it
-                },
-                onSendClick = {
-                    text = ""
-                },
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+            Column {
+                SeugiChatTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = 8.dp,
+                        )
+                        .dropShadow(DropShadowType.Ev1),
+                    value = text,
+                    placeholder = "메세지 보내기",
+                    onValueChange = {
+                        text = it
+                    },
+                    onSendClick = {
+                        text = ""
+                    },
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
         },
         sideBar = {
             ChatSideBarScreen(
