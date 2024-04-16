@@ -226,6 +226,9 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                     },
                     onSendClick = {
                         text = ""
+                        coroutineScope.launch {
+                            scrollState.animateScrollToItem(state.message.size-1)
+                        }
                     },
                 )
                 Spacer(modifier = Modifier.height(8.dp))
