@@ -18,6 +18,7 @@ internal fun RoomCreateScreen(viewModel: RoomCreateViewModel = hiltViewModel(), 
     val state by viewModel.state.collectAsStateWithLifecycle()
     var nowScreen by remember { mutableStateOf(1) }
     LaunchedEffect(key1 = true) {
+        onNavigationVisibleChange(false)
         viewModel.loadUser()
     }
 
