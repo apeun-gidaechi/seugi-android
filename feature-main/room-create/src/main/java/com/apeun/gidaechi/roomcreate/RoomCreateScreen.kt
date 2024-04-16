@@ -8,16 +8,28 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apeun.gidaechi.roomcreate.screen.FirstScreen
 import com.apeun.gidaechi.roomcreate.screen.SecondScreen
 
 @Composable
-internal fun RoomCreateScreen(viewModel: RoomCreateViewModel = hiltViewModel(), popBackStack: () -> Unit) {
+internal fun RoomCreateScreen(
+    viewModel: RoomCreateViewModel = hiltViewModel(),
+    popBackStack: () -> Unit,
+    onNavigationVisibleChange: (Boolean) -> Unit
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var nowScreen by remember { mutableStateOf(1) }
     LaunchedEffect(key1 = true) {
         viewModel.loadUser()
+    }
+
+    LifecycleResumeEffect(key1 = Unit) {
+        onNavigationVisibleChange(false)
+        onPauseOrDispose {
+            onNavigationVisibleChange(true)
+        }
     }
 
     AnimatedVisibility(visible = nowScreen == 1) {
