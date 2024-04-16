@@ -12,4 +12,5 @@ dependencies {
     implementation(projects.featureMain.chat)
     implementation(projects.featureMain.chatDatail)
     implementation(projects.featureMain.home)
+    implementation(projects.featureMain.room)
 }

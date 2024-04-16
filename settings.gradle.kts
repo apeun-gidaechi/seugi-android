@@ -28,3 +28,4 @@ include(
     ":feature-main:chat-datail",
     ":feature-main:home"
 )
+include(":feature-main:room")
