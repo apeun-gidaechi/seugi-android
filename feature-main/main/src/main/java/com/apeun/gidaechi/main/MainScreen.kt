@@ -1,6 +1,5 @@
 package com.apeun.gidaechi.main
 
-import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -21,8 +20,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.apeun.gidaechi.chat.navigation.CHAT_ROUTE
 import com.apeun.gidaechi.chat.navigation.chatScreen
+import com.apeun.gidaechi.chatdatail.navigation.chatDetailScreen
+import com.apeun.gidaechi.chatdatail.navigation.navigateToChatDetail
 import com.apeun.gidaechi.designsystem.component.BottomNavigationItemType
 import com.apeun.gidaechi.designsystem.component.SeugiBottomNavigation
+import com.apeun.gidaechi.home.navigation.HOME_ROUTE
+import com.apeun.gidaechi.home.navigation.homeScreen
 import com.apeun.gidaechi.room.navigation.ROOM_ROUTE
 import com.apeun.gidaechi.room.navigation.roomScreen
 
@@ -31,27 +34,34 @@ private const val NAVIGATION_ANIM = 400
 @Composable
 internal fun MainScreen(navHostController: NavHostController = rememberNavController()) {
     var selectItemState: BottomNavigationItemType by remember { mutableStateOf(BottomNavigationItemType.Home) }
+    var navigationVisible by remember { mutableStateOf(true) }
+
+    val onNavigationVisibleChange: (Boolean) -> Unit = {
+        navigationVisible = it
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            SeugiBottomNavigation(selected = selectItemState) {
-                selectItemState = it
-                navHostController.navigate(
-                    when (it) {
-                        is BottomNavigationItemType.Home -> "route"
-                        is BottomNavigationItemType.Chat -> CHAT_ROUTE
-                        is BottomNavigationItemType.Group -> ROOM_ROUTE
-                        is BottomNavigationItemType.Notification -> "route"
-                        is BottomNavigationItemType.Profile -> "route"
-                        else -> "route"
-                    },
-                ) {
-                    popUpTo(navHostController.graph.findStartDestination().id) {
-                        saveState = true
+            if (navigationVisible) {
+                SeugiBottomNavigation(selected = selectItemState) {
+                    selectItemState = it
+                    navHostController.navigate(
+                        when (it) {
+                            is BottomNavigationItemType.Home -> HOME_ROUTE
+                            is BottomNavigationItemType.Chat -> CHAT_ROUTE
+                            is BottomNavigationItemType.Group -> ROOM_ROUTE
+                            is BottomNavigationItemType.Notification -> "route"
+                            is BottomNavigationItemType.Profile -> "route"
+                            else -> "route"
+                        },
+                    ) {
+                        popUpTo(navHostController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
                     }
-                    launchSingleTop = true
-                    restoreState = true
                 }
             }
         },
@@ -61,7 +71,7 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                 .padding(it)
                 .fillMaxSize(),
             navController = navHostController,
-            startDestination = "route",
+            startDestination = HOME_ROUTE,
             enterTransition = { fadeIn(animationSpec = tween(NAVIGATION_ANIM)) },
             exitTransition = { fadeOut(animationSpec = tween(NAVIGATION_ANIM)) },
             popEnterTransition = { fadeIn(animationSpec = tween(NAVIGATION_ANIM)) },
@@ -72,9 +82,17 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                 Text(text = "hi")
             }
 
+            homeScreen()
+
             chatScreen(
                 navigateToChatDetail = {
-                    Log.d("TAG", "MainScreen: $it")
+                    navHostController.navigateToChatDetail()
+                },
+            )
+            chatDetailScreen(
+                onNavigationVisibleChange = onNavigationVisibleChange,
+                popBackStack = {
+                    navHostController.popBackStack()
                 },
             )
 

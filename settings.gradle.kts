@@ -24,6 +24,8 @@ include(
     ":network:core",
     ":common",
     ":feature-main:main",
-    ":feature-main:chat"
+    ":feature-main:chat",
+    ":feature-main:chat-datail",
+    ":feature-main:home"
 )
 include(":feature-main:room")
