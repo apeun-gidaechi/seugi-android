@@ -30,7 +30,6 @@ include(
     ":feature-main:room",
     ":feature-main:room-create",
     ":feature-onboarding:onboarding",
-    ":feature-onboarding:login"
+    ":feature-onboarding:login",
+    ":feature-onboarding:join"
 )
-include(":feature-main:room")
-include(":feature-main:room-create")
