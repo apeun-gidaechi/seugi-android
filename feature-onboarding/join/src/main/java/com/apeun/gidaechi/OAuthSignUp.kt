@@ -47,7 +47,7 @@ fun OAuthSignUpScreen() {
                 backIconCheck = true,
             )
         },
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .padding(it)
@@ -63,36 +63,38 @@ fun OAuthSignUpScreen() {
                 }
                 SeugiTextField(
                     value = text,
-                    onValueChange = {text = it},
+                    onValueChange = { text = it },
                     onClickDelete = { text = "" },
                     placeholder = "이름을 입력해 주세요",
                     modifier = Modifier.padding(vertical = 4.dp),
-                    )
-                if (error){
+                )
+                if (error) {
                     Text(
                         text = "이름을 입력해 주세요",
                         style = MaterialTheme.typography.bodyLarge,
                         color = Red500,
-                        modifier = Modifier.padding(start = 4.dp))
-                }
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Bottom,
-                    modifier = Modifier.fillMaxHeight()
-                ) {
-                    Text(
-                        text = "이미 계정이 있으신가요?",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Primary500,
-                        modifier = Modifier.bounceClick({}))
-                    SeugiFullWidthButton(
-                        onClick = { error = true },
-                        type = ButtonType.Primary,
-                        text = "계속하기",
-                        modifier = Modifier.padding(vertical = 16.dp)
+                        modifier = Modifier.padding(start = 4.dp)
                     )
                 }
 
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Bottom,
+                modifier = Modifier.fillMaxHeight()
+            ) {
+                Text(
+                    text = "이미 계정이 있으신가요?",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Primary500,
+                    modifier = Modifier.bounceClick({})
+                )
+                SeugiFullWidthButton(
+                    onClick = { error = true },
+                    type = ButtonType.Primary,
+                    text = "계속하기",
+                    modifier = Modifier.padding(vertical = 16.dp)
+                )
             }
         }
     }
