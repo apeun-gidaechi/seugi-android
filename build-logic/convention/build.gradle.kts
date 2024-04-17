@@ -66,5 +66,9 @@ gradlePlugin {
             id = "com.apeun.gidaechi.android.feature"
             implementationClass = "com.apeun.gidaechi.convention.AndroidFeaturePlugin"
         }
+        register("kotlin") {
+            id = "com.apeun.gidaechi.convention.kotlin"
+            implementationClass = "com.apeun.gidaechi.convention.KotlinPlugin"
+        }
     }
 }

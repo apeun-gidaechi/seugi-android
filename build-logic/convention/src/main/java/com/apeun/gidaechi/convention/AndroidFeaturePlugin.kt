@@ -7,10 +7,10 @@ class AndroidFeaturePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply("com.apeun.gidaechi.primitive.android")
-//                apply("com.apeun.gidaechi.primitive.android.kotlin")
-                apply("com.apeun.gidaechi.primitive.android.compose")
-//                apply("b1nd.dodam.primitive.android.hilt")
+                apply("com.apeun.gidaechi.android")
+                apply("com.apeun.gidaechi.android.kotlin")
+                apply("com.apeun.gidaechi.android.compose")
+                apply("com.apeun.gidaechi.android.hilt")
             }
         }
     }

@@ -13,7 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.apeun.gidaechi.designsystem.component.OAuthButton
+import com.apeun.gidaechi.designsystem.component.SeugiOAuthButton
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -37,7 +37,7 @@ fun OAuthButton() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            OAuthButton(image = com.apeun.gidaechi.designsystem.R.drawable.test_icon, text = "Google로 계속하기", onClick = onClick)
+            SeugiOAuthButton(image = com.apeun.gidaechi.designsystem.R.drawable.test_icon, text = "Google로 계속하기", onClick = onClick)
         }
     }
 }

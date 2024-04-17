@@ -1,3 +1,5 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     includeBuild("build-logic")
     repositories {
@@ -23,7 +25,10 @@ include(
     ":common",
     ":feature-main:main",
     ":feature-main:chat",
+    ":feature-main:chat-datail",
     ":feature-main:home",
     ":feature-onboarding:onboarding",
     ":feature-onboarding:login"
 )
+include(":feature-main:room")
+include(":feature-main:room-create")
