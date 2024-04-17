@@ -27,7 +27,6 @@ include(
     ":feature-main:chat",
     ":feature-main:chat-datail",
     ":feature-main:home",
-    ":feature-main:home",
     ":feature-main:room",
     ":feature-main:room-create",
     ":feature-onboarding:onboarding",
