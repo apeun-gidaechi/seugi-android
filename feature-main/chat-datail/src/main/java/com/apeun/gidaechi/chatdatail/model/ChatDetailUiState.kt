@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-data class ChatUiState(
+data class ChatDetailUiState(
     val roomInfo: ChatRoomState? = null,
     val userInfo: TestUserModel? = null,
     val message: ImmutableList<TestMessageModel> = persistentListOf(),

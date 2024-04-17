@@ -94,6 +94,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     var isSearch by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
     val keyboardState by rememberKeyboardOpen()
+    var isFirst by remember { mutableStateOf(true) }
 
     val density = LocalDensity.current
     val screenSizeDp = LocalConfiguration.current.screenWidthDp.dp
@@ -131,9 +132,17 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     }
 
     LaunchedEffect(key1 = keyboardState) {
-        Log.d("TAG", "ChatDetailScreen: ${keyboardState.height} ${keyboardState.isOpen}")
         if (keyboardState.isOpen) {
             scrollState.animateScrollBy(with(density) { keyboardState.height.toPx() })
+        }
+    }
+
+    LaunchedEffect(key1 = state) {
+        if (isFirst) {
+            coroutineScope.launch {
+                isFirst = !isFirst
+                scrollState.scrollToItem(state.message.lastIndex)
+            }
         }
     }
 

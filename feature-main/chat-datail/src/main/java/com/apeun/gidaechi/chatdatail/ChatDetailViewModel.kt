@@ -2,7 +2,7 @@ package com.apeun.gidaechi.chatdatail
 
 import androidx.lifecycle.ViewModel
 import com.apeun.gidaechi.chatdatail.model.ChatRoomState
-import com.apeun.gidaechi.chatdatail.model.ChatUiState
+import com.apeun.gidaechi.chatdatail.model.ChatDetailUiState
 import com.apeun.gidaechi.chatdatail.model.TestMessageModel
 import com.apeun.gidaechi.chatdatail.model.TestUserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.asStateFlow
 @HiltViewModel
 class ChatDetailViewModel @Inject constructor() : ViewModel() {
 
-    private val _state = MutableStateFlow(ChatUiState())
+    private val _state = MutableStateFlow(ChatDetailUiState())
     val state = _state.asStateFlow()
 
     init {
