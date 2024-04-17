@@ -25,7 +25,10 @@ include(
     ":common",
     ":feature-main:main",
     ":feature-main:chat",
+    ":feature-main:chat-datail",
+    ":feature-main:home"
     ":feature-main:home",
     ":feature-onboarding"
 )
-include(":feature-onboarding:onboarding")
+include(":feature-main:room")
+include(":feature-main:room-create")
