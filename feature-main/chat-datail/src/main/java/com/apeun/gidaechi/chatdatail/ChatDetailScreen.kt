@@ -59,7 +59,9 @@ import com.apeun.gidaechi.chatdatail.model.TestUserModel
 import com.apeun.gidaechi.common.utiles.toAmShortString
 import com.apeun.gidaechi.common.utiles.toFullFormatString
 import com.apeun.gidaechi.designsystem.R
+import com.apeun.gidaechi.designsystem.component.DividerType
 import com.apeun.gidaechi.designsystem.component.DragState
+import com.apeun.gidaechi.designsystem.component.SeugiDivider
 import com.apeun.gidaechi.designsystem.component.SeugiIconButton
 import com.apeun.gidaechi.designsystem.component.SeugiMemberList
 import com.apeun.gidaechi.designsystem.component.SeugiRightSideScaffold
@@ -235,17 +237,20 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
             }
         },
         sideBar = {
-            ChatSideBarScreen(
-                members = state.roomInfo?.members ?: persistentListOf(),
-                notificationState = notificationState,
-                onClickInviteMember = {},
-                onClickMember = {},
-                onClickLeft = {},
-                onClickNotification = {
-                    notificationState = !notificationState
-                },
-                onClickSetting = { },
-            )
+            Row {
+                SeugiDivider(type = DividerType.HEIGHT)
+                ChatSideBarScreen(
+                    members = state.roomInfo?.members ?: persistentListOf(),
+                    notificationState = notificationState,
+                    onClickInviteMember = {},
+                    onClickMember = {},
+                    onClickLeft = {},
+                    onClickNotification = {
+                        notificationState = !notificationState
+                    },
+                    onClickSetting = { },
+                )
+            }
         },
         onSideBarClose = {
             coroutineScope.launch {
