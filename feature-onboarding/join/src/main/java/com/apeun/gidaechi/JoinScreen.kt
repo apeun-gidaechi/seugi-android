@@ -130,7 +130,7 @@ fun SelectingJob() {
                             Spacer(modifier = Modifier.weight(1f))
                             Image(painter = painterResource(id = if (!studentOnOff)R.drawable.img_teacher_on else R.drawable.img_teacher_off), contentDescription = "")
                             Spacer(modifier = Modifier.height(16.dp))
-                            Text(text = "학생", style = MaterialTheme.typography.bodyLarge)
+                            Text(text = "선생님", style = MaterialTheme.typography.bodyLarge)
                             Spacer(modifier = Modifier.weight(1f))
                         }
                     }
