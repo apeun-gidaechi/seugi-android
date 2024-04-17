@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,12 +51,20 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
         modifier = modifier
             .fillMaxWidth()
             .height(96.dp)
-            .dropShadow(DropShadowType.Nav),
+            .dropShadow(DropShadowType.Nav)
+            .background(
+                color = White,
+                shape = RoundedCornerShape(
+                    topStart = 16.dp,
+                    topEnd = 16.dp,
+                ),
+            ),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(62.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Spacer(modifier = Modifier.width(32.dp))
             SeugiBottomNavigationItem(
