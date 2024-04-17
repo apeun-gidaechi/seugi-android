@@ -26,9 +26,11 @@ include(
     ":feature-main:main",
     ":feature-main:chat",
     ":feature-main:chat-datail",
-    ":feature-main:home"
     ":feature-main:home",
-    ":feature-onboarding"
+    ":feature-main:home",
+    ":feature-main:room",
+    ":feature-main:room-create",
+    ":feature-onboarding:onboarding",
+    ":feature-onboarding:login"
 )
-include(":feature-main:room")
-include(":feature-main:room-create")
+
