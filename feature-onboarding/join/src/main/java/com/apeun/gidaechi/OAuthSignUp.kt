@@ -35,7 +35,7 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OAuthSignUp() {
+fun OAuthSignUpScreen() {
     var text by remember { mutableStateOf("") }
     var error by remember { mutableStateOf(false) }
     Scaffold(
@@ -102,6 +102,6 @@ fun OAuthSignUp() {
 @Composable
 private fun PreviewOAuthSignUp() {
     SeugiTheme {
-        OAuthSignUp()
+        OAuthSignUpScreen()
     }
 }

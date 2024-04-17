@@ -43,7 +43,7 @@ import com.apeun.gidaechi.join.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SelectingJob() {
+fun SelectingJobScreen() {
     var studentOnOff by remember {
         mutableStateOf(true)
     }
@@ -158,6 +158,6 @@ fun SelectingJob() {
 @Preview
 private fun PreviewJoinScreen() {
     SeugiTheme {
-        SelectingJob()
+        SelectingJobScreen()
     }
 }
