@@ -360,10 +360,6 @@ private fun ChatSideBarScreen(
                     style = MaterialTheme.typography.titleMedium,
                     color = Black,
                 )
-                SeugiMemberList(
-                    text = "멤버 초대하기",
-                    onClick = onClickInviteMember,
-                )
             }
         },
         bottomBar = {
@@ -404,6 +400,12 @@ private fun ChatSideBarScreen(
                 .fillMaxSize()
                 .padding(it),
         ) {
+            item {
+                SeugiMemberList(
+                    text = "멤버 초대하기",
+                    onClick = onClickInviteMember,
+                )
+            }
             items(members) {
                 SeugiMemberList(
                     userName = it.userName,
