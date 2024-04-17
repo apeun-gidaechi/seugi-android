@@ -29,3 +29,4 @@ include(
     ":feature-main:home"
 )
 include(":feature-main:room")
+include(":feature-main:room-create")

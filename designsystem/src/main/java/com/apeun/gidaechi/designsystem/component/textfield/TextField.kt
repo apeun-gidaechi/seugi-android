@@ -126,17 +126,19 @@ fun SeugiTextField(
                     },
                     label = null,
                     trailingIcon = {
-                        SeugiIconButton(
-                            resId = R.drawable.ic_close_fill,
-                            onClick = onClickDelete,
-                            enabled = enabled,
-                            colors = IconButtonColors(
-                                containerColor = colors.focusedContainerColor,
-                                disabledContainerColor = colors.disabledContainerColor,
-                                contentColor = colors.focusedTextColor,
-                                disabledContentColor = colors.disabledTextColor,
-                            ),
-                        )
+                        if (value != "") {
+                            SeugiIconButton(
+                                resId = R.drawable.ic_close_fill,
+                                onClick = onClickDelete,
+                                enabled = enabled,
+                                colors = IconButtonColors(
+                                    containerColor = colors.focusedContainerColor,
+                                    disabledContainerColor = colors.disabledContainerColor,
+                                    contentColor = colors.focusedTextColor,
+                                    disabledContentColor = colors.disabledTextColor,
+                                ),
+                            )
+                        }
                     },
                     contentPadding = TextFieldDefaults.contentPaddingWithoutLabel(start = 16.dp, end = 16.dp),
                     shape = shape,

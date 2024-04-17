@@ -28,6 +28,8 @@ import com.apeun.gidaechi.home.navigation.HOME_ROUTE
 import com.apeun.gidaechi.home.navigation.homeScreen
 import com.apeun.gidaechi.room.navigation.ROOM_ROUTE
 import com.apeun.gidaechi.room.navigation.roomScreen
+import com.apeun.gidaechi.roomcreate.navigation.navigateToRoomCreate
+import com.apeun.gidaechi.roomcreate.navigation.roomCreateScreen
 
 private const val NAVIGATION_ANIM = 400
 
@@ -98,7 +100,16 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
 
             roomScreen(
                 navigateToChatDetail = {},
-                navigateToCreateRoom = {},
+                navigateToCreateRoom = {
+                    navHostController.navigateToRoomCreate()
+                },
+            )
+
+            roomCreateScreen(
+                popBackStack = {
+                    navHostController.popBackStack()
+                },
+                onNavigationVisibleChange = onNavigationVisibleChange,
             )
         }
     }
