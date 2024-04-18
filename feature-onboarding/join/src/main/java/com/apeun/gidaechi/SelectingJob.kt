@@ -43,7 +43,7 @@ import com.apeun.gidaechi.join.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SelectingJobScreen() {
+internal fun SelectingJobScreen() {
     var studentOnOff by remember {
         mutableStateOf(true)
     }

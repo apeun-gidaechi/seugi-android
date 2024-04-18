@@ -39,7 +39,7 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(
+internal fun LoginScreen(
     emailValue: String,
     pwValue: String,
     onEmailValueChange: (String) -> Unit,

@@ -39,7 +39,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OnboardingScreen() {
+internal fun OnboardingScreen() {
 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
