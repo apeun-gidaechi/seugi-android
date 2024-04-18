@@ -126,7 +126,7 @@ fun SeugiTextField(
                     },
                     label = null,
                     trailingIcon = {
-                        if (value != "") {
+                        if (value.isNotEmpty()){
                             SeugiIconButton(
                                 resId = R.drawable.ic_close_fill,
                                 onClick = onClickDelete,
@@ -134,7 +134,7 @@ fun SeugiTextField(
                                 colors = IconButtonColors(
                                     containerColor = colors.focusedContainerColor,
                                     disabledContainerColor = colors.disabledContainerColor,
-                                    contentColor = colors.focusedTextColor,
+                                    contentColor = Gray500,
                                     disabledContentColor = colors.disabledTextColor,
                                 ),
                             )
