@@ -69,8 +69,7 @@ fun SeugiRoundedCircleImage(modifier: Modifier = Modifier, size: Size, image: St
         modifier = modifier
             .bounceClick(onClick)
             .size(size.size)
-            .clip(shape = RoundedCornerShape(size.radius))
-            ,
+            .clip(shape = RoundedCornerShape(size.radius)),
         model = image,
         contentDescription = "",
         contentScale = ContentScale.Crop,
