@@ -73,7 +73,7 @@ fun SeugiTopBar(
                 content = {
                     Column(
                         Modifier.fillMaxHeight(),
-                        verticalArrangement = Arrangement.Center
+                        verticalArrangement = Arrangement.Center,
                     ) {
                         title()
                     }
@@ -86,7 +86,7 @@ fun SeugiTopBar(
         navigationIcon = {
             Row(
                 modifier = Modifier.fillMaxHeight(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Spacer(modifier = Modifier.width(16.dp))
                 if (backIconCheck) {
@@ -96,7 +96,7 @@ fun SeugiTopBar(
                         ),
                         contentDescription = null,
                         modifier = Modifier
-                            .bounceClick(onClick = onNavigationIconClick)
+                            .bounceClick(onClick = onNavigationIconClick),
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                 }
@@ -105,7 +105,7 @@ fun SeugiTopBar(
         actions = {
             Row(
                 modifier = Modifier.fillMaxHeight(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 actions()
             }

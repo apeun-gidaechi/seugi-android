@@ -20,14 +20,14 @@ fun Modifier.verticalScrollbar(
     scrollBarWidth: Dp = 4.dp,
     minScrollBarHeight: Dp = 5.dp,
     scrollBarColor: Color = Color.Blue,
-    cornerRadius: Dp = 2.dp
+    cornerRadius: Dp = 2.dp,
 ): Modifier = composed {
     val targetAlpha = if (scrollState.isScrollInProgress) 1f else 0f
     val duration = if (scrollState.isScrollInProgress) 150 else 500
 
     val alpha by animateFloatAsState(
         targetValue = targetAlpha,
-        animationSpec = tween(durationMillis = duration)
+        animationSpec = tween(durationMillis = duration),
     )
 
     drawWithContent {
@@ -46,7 +46,7 @@ fun Modifier.verticalScrollbar(
                 topLeft = Offset(this.size.width - scrollBarWidth.toPx(), scrollBarOffsetY),
                 size = Size(scrollBarWidth.toPx(), scrollBarHeight),
                 alpha = alpha,
-                cornerRadius = CornerRadius(cornerRadius.toPx())
+                cornerRadius = CornerRadius(cornerRadius.toPx()),
             )
         }
     }
