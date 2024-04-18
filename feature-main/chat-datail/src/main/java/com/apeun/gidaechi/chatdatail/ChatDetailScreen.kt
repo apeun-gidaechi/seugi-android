@@ -59,7 +59,9 @@ import com.apeun.gidaechi.chatdatail.model.TestUserModel
 import com.apeun.gidaechi.common.utiles.toAmShortString
 import com.apeun.gidaechi.common.utiles.toFullFormatString
 import com.apeun.gidaechi.designsystem.R
+import com.apeun.gidaechi.designsystem.component.DividerType
 import com.apeun.gidaechi.designsystem.component.DragState
+import com.apeun.gidaechi.designsystem.component.SeugiDivider
 import com.apeun.gidaechi.designsystem.component.SeugiIconButton
 import com.apeun.gidaechi.designsystem.component.SeugiMemberList
 import com.apeun.gidaechi.designsystem.component.SeugiRightSideScaffold
@@ -92,6 +94,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     var isSearch by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
     val keyboardState by rememberKeyboardOpen()
+    var isFirst by remember { mutableStateOf(true) }
 
     val density = LocalDensity.current
     val screenSizeDp = LocalConfiguration.current.screenWidthDp.dp
@@ -129,9 +132,17 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     }
 
     LaunchedEffect(key1 = keyboardState) {
-        Log.d("TAG", "ChatDetailScreen: ${keyboardState.height} ${keyboardState.isOpen}")
         if (keyboardState.isOpen) {
             scrollState.animateScrollBy(with(density) { keyboardState.height.toPx() })
+        }
+    }
+
+    LaunchedEffect(key1 = state) {
+        if (isFirst) {
+            coroutineScope.launch {
+                isFirst = !isFirst
+                scrollState.scrollToItem(state.message.lastIndex)
+            }
         }
     }
 
@@ -211,36 +222,44 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
             )
         },
         bottomBar = {
-            SeugiChatTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = 8.dp,
-                    )
-                    .dropShadow(DropShadowType.Ev1),
-                value = text,
-                placeholder = "메세지 보내기",
-                onValueChange = {
-                    text = it
-                },
-                onSendClick = {
-                    text = ""
-                },
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+            Column {
+                SeugiChatTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = 8.dp,
+                        )
+                        .dropShadow(DropShadowType.Ev1),
+                    value = text,
+                    placeholder = "메세지 보내기",
+                    onValueChange = {
+                        text = it
+                    },
+                    onSendClick = {
+                        text = ""
+                        coroutineScope.launch {
+                            scrollState.animateScrollToItem(state.message.size - 1)
+                        }
+                    },
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
         },
         sideBar = {
-            ChatSideBarScreen(
-                members = state.roomInfo?.members ?: persistentListOf(),
-                notificationState = notificationState,
-                onClickInviteMember = {},
-                onClickMember = {},
-                onClickLeft = {},
-                onClickNotification = {
-                    notificationState = !notificationState
-                },
-                onClickSetting = { },
-            )
+            Row {
+                SeugiDivider(type = DividerType.HEIGHT)
+                ChatSideBarScreen(
+                    members = state.roomInfo?.members ?: persistentListOf(),
+                    notificationState = notificationState,
+                    onClickInviteMember = {},
+                    onClickMember = {},
+                    onClickLeft = {},
+                    onClickNotification = {
+                        notificationState = !notificationState
+                    },
+                    onClickSetting = { },
+                )
+            }
         },
         onSideBarClose = {
             coroutineScope.launch {
@@ -350,10 +369,6 @@ private fun ChatSideBarScreen(
                     style = MaterialTheme.typography.titleMedium,
                     color = Black,
                 )
-                SeugiMemberList(
-                    text = "멤버 초대하기",
-                    onClick = onClickInviteMember,
-                )
             }
         },
         bottomBar = {
@@ -394,6 +409,12 @@ private fun ChatSideBarScreen(
                 .fillMaxSize()
                 .padding(it),
         ) {
+            item {
+                SeugiMemberList(
+                    text = "멤버 초대하기",
+                    onClick = onClickInviteMember,
+                )
+            }
             items(members) {
                 SeugiMemberList(
                     userName = it.userName,

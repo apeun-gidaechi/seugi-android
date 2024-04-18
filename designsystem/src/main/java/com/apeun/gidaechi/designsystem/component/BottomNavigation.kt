@@ -9,6 +9,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -50,7 +51,7 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .height(96.dp)
+            .height(62.dp)
             .dropShadow(DropShadowType.Nav)
             .background(
                 color = White,
@@ -63,7 +64,7 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(62.dp),
+                .fillMaxHeight(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Spacer(modifier = Modifier.width(32.dp))
