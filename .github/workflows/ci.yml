@@ -28,3 +28,18 @@ jobs:
       
     - name: Run spotless
       run: ./gradlew spotlessCheck
+
+    - name: Assemble
+      run: ./gradlew assemble
+
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: debug
+        path: ./app/build/outputs/apk/debug/app-debug.apk
+
+    - name: Upload Release APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: release
+        path: ./app/build/outputs/apk/release/app-release-unsigned.apk
