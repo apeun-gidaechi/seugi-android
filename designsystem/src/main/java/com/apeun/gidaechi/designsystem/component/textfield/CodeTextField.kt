@@ -127,7 +127,8 @@ fun SeugiCodeTextField(
                         Box(
                             modifier = Modifier
                                 .height(52.dp)
-                                .width(50.dp)
+                                .weight(1f)
+                                .padding(horizontal = 4.dp)
                                 .border(
                                     width = 1.dp,
                                     color = when {
@@ -137,8 +138,7 @@ fun SeugiCodeTextField(
                                         else -> Gray200
                                     },
                                     shape = shape,
-                                )
-                                .padding(horizontal = 18.dp),
+                                ),
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
@@ -150,7 +150,6 @@ fun SeugiCodeTextField(
                                 textAlign = TextAlign.Center,
                             )
                         }
-                        Spacer(modifier = Modifier.weight(1f))
                     }
                 }
             },
