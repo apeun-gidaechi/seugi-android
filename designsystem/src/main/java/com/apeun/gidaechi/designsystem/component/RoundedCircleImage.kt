@@ -67,9 +67,10 @@ fun SeugiRoundedCircleImage(modifier: Modifier = Modifier, size: Size, type: Typ
 fun SeugiRoundedCircleImage(modifier: Modifier = Modifier, size: Size, image: String, onClick: () -> Unit) {
     AsyncImage(
         modifier = modifier
+            .bounceClick(onClick)
             .size(size.size)
             .clip(shape = RoundedCornerShape(size.radius))
-            .bounceClick(onClick),
+            ,
         model = image,
         contentDescription = "",
         contentScale = ContentScale.Crop,
