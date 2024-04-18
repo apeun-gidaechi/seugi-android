@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,8 +11,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +28,6 @@ import com.apeun.gidaechi.designsystem.component.textfield.SeugiTextField
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.Red500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,11 +48,11 @@ internal fun OAuthSignUpScreen() {
             modifier = Modifier
                 .padding(it)
                 .padding(top = 6.dp)
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = 20.dp),
         ) {
             Column {
                 Row(
-                    modifier = Modifier.padding(start = 4.dp)
+                    modifier = Modifier.padding(start = 4.dp),
                 ) {
                     Text(text = "이름", style = MaterialTheme.typography.titleMedium)
                     Text(text = " *", style = MaterialTheme.typography.titleMedium, color = Red500)
@@ -73,27 +69,26 @@ internal fun OAuthSignUpScreen() {
                         text = "이름을 입력해 주세요",
                         style = MaterialTheme.typography.bodyLarge,
                         color = Red500,
-                        modifier = Modifier.padding(start = 4.dp)
+                        modifier = Modifier.padding(start = 4.dp),
                     )
                 }
-
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom,
-                modifier = Modifier.fillMaxHeight()
+                modifier = Modifier.fillMaxHeight(),
             ) {
                 Text(
                     text = "이미 계정이 있으신가요?",
                     style = MaterialTheme.typography.bodySmall,
                     color = Primary500,
-                    modifier = Modifier.bounceClick({})
+                    modifier = Modifier.bounceClick({}),
                 )
                 SeugiFullWidthButton(
                     onClick = { error = true },
                     type = ButtonType.Primary,
                     text = "계속하기",
-                    modifier = Modifier.padding(vertical = 16.dp)
+                    modifier = Modifier.padding(vertical = 16.dp),
                 )
             }
         }
