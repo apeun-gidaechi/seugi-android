@@ -32,7 +32,7 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailSignUpScreen() {
+internal fun EmailSignUpScreen() {
     var nameText by remember { mutableStateOf("") }
     var emailText by remember { mutableStateOf("") }
     var pwText by remember { mutableStateOf("") }
@@ -52,13 +52,13 @@ fun EmailSignUpScreen() {
             modifier = Modifier
                 .padding(it)
                 .padding(top = 6.dp)
-                .padding(horizontal = 20.dp)
+                .padding(horizontal = 20.dp),
         ) {
             Column(
-                modifier = Modifier.padding(bottom = 16.dp)
+                modifier = Modifier.padding(bottom = 16.dp),
             ) {
                 Row(
-                    modifier = Modifier.padding(start = 4.dp)
+                    modifier = Modifier.padding(start = 4.dp),
                 ) {
                     Text(text = "이름", style = MaterialTheme.typography.titleMedium)
                     Text(text = " *", style = MaterialTheme.typography.titleMedium, color = Red500)
@@ -75,15 +75,15 @@ fun EmailSignUpScreen() {
                         text = "이름을 입력해 주세요",
                         style = MaterialTheme.typography.bodyLarge,
                         color = Red500,
-                        modifier = Modifier.padding(start = 4.dp)
+                        modifier = Modifier.padding(start = 4.dp),
                     )
                 }
             }
             Column(
-                modifier = Modifier.padding(bottom = 16.dp)
+                modifier = Modifier.padding(bottom = 16.dp),
             ) {
                 Row(
-                    modifier = Modifier.padding(start = 4.dp)
+                    modifier = Modifier.padding(start = 4.dp),
                 ) {
                     Text(text = "이메일", style = MaterialTheme.typography.titleMedium)
                     Text(text = " *", style = MaterialTheme.typography.titleMedium, color = Red500)
@@ -100,15 +100,15 @@ fun EmailSignUpScreen() {
                         text = "이메일을 입력해 주세요",
                         style = MaterialTheme.typography.bodyLarge,
                         color = Red500,
-                        modifier = Modifier.padding(start = 4.dp)
+                        modifier = Modifier.padding(start = 4.dp),
                     )
                 }
             }
             Column(
-                modifier = Modifier.padding(bottom = 16.dp)
+                modifier = Modifier.padding(bottom = 16.dp),
             ) {
                 Row(
-                    modifier = Modifier.padding(start = 4.dp)
+                    modifier = Modifier.padding(start = 4.dp),
                 ) {
                     Text(text = "비밀번호", style = MaterialTheme.typography.titleMedium)
                     Text(text = " *", style = MaterialTheme.typography.titleMedium, color = Red500)
@@ -124,15 +124,15 @@ fun EmailSignUpScreen() {
                         text = "비밀번호를 입력해 주세요",
                         style = MaterialTheme.typography.bodyLarge,
                         color = Red500,
-                        modifier = Modifier.padding(start = 4.dp)
+                        modifier = Modifier.padding(start = 4.dp),
                     )
                 }
             }
             Column(
-                modifier = Modifier.padding(bottom = 16.dp)
+                modifier = Modifier.padding(bottom = 16.dp),
             ) {
                 Row(
-                    modifier = Modifier.padding(start = 4.dp)
+                    modifier = Modifier.padding(start = 4.dp),
                 ) {
                     Text(text = "비밀번호 확인", style = MaterialTheme.typography.titleMedium)
                     Text(text = " *", style = MaterialTheme.typography.titleMedium, color = Red500)
@@ -148,34 +148,32 @@ fun EmailSignUpScreen() {
                         text = "비밀번호를 다시 입력해 주세요",
                         style = MaterialTheme.typography.bodyLarge,
                         color = Red500,
-                        modifier = Modifier.padding(start = 4.dp)
+                        modifier = Modifier.padding(start = 4.dp),
                     )
                 }
             }
 
-
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom,
-                modifier = Modifier.fillMaxHeight()
+                modifier = Modifier.fillMaxHeight(),
             ) {
                 Text(
                     text = "이미 계정이 있으신가요?",
                     style = MaterialTheme.typography.bodySmall,
                     color = Primary500,
-                    modifier = Modifier.bounceClick({})
+                    modifier = Modifier.bounceClick({}),
                 )
                 SeugiFullWidthButton(
                     onClick = { error = !error },
                     type = ButtonType.Primary,
                     text = "계속하기",
-                    modifier = Modifier.padding(vertical = 16.dp)
+                    modifier = Modifier.padding(vertical = 16.dp),
                 )
             }
         }
     }
 }
-
 
 @Preview
 @Composable
