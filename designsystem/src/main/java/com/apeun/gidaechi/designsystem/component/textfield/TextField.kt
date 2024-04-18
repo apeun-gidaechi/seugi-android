@@ -126,7 +126,7 @@ fun SeugiTextField(
                     },
                     label = null,
                     trailingIcon = {
-                        if (value.isNotEmpty()){
+                        if (value.isNotEmpty()) {
                             SeugiIconButton(
                                 resId = R.drawable.ic_close_fill,
                                 onClick = onClickDelete,
