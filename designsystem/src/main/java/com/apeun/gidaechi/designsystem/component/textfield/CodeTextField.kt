@@ -127,7 +127,7 @@ fun SeugiCodeTextField(
                         Box(
                             modifier = Modifier
                                 .height(52.dp)
-                                .width(48.dp)
+                                .width(50.dp)
                                 .border(
                                     width = 1.dp,
                                     color = when {
@@ -218,7 +218,7 @@ fun SeugiCodeTextField(
                         Box(
                             modifier = Modifier
                                 .height(52.dp)
-                                .width(48.dp)
+                                .width(50.dp)
                                 .border(
                                     width = 1.dp,
                                     color = when {

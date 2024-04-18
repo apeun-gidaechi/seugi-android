@@ -34,4 +34,9 @@ val Primary500 = Color(0xFF1D93F3)
 val Primary600 = Color(0xFF0481E6)
 val Primary700 = Color(0xFF0A6EC0)
 
+val GradientColor1 = Color(0xFF1C8DF4)
+val GradientColor2 = Color(0xFF21B6E5)
+
+val Gradient = listOf(GradientColor1, GradientColor2)
+
 val Wrapper = Color(0xFF475B6B)

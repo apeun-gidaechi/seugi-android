@@ -150,7 +150,7 @@ fun SeugiPasswordTextField(
                             colors = IconButtonColors(
                                 containerColor = colors.focusedContainerColor,
                                 disabledContainerColor = colors.disabledContainerColor,
-                                contentColor = colors.focusedTextColor,
+                                contentColor = Gray500,
                                 disabledContentColor = colors.disabledTextColor,
                             ),
                         )
