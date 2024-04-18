@@ -68,9 +68,9 @@ fun SeugiMemberList(userName: String, userProfile: String?, onClick: () -> Unit)
 }
 
 @Composable
-fun SeugiMemberList(userName: String, userProfile: String?, checked: Boolean = false, onCheckedChangeListener: (Boolean) -> Unit = {}) {
+fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile: String?, checked: Boolean = false, onCheckedChangeListener: (Boolean) -> Unit = {}) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(56.dp)
             .clickable(
