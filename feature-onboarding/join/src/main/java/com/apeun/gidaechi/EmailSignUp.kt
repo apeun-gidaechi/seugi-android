@@ -32,7 +32,7 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailSignUpScreen() {
+internal fun EmailSignUpScreen() {
     var nameText by remember { mutableStateOf("") }
     var emailText by remember { mutableStateOf("") }
     var pwText by remember { mutableStateOf("") }
