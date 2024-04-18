@@ -40,13 +40,10 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun LoginScreen(
-    emailValue: String,
-    pwValue: String,
-    onEmailValueChange: (String) -> Unit,
-    onPwValueChange: (String) -> Unit,
-    onClickDelete: () -> Unit,
-) {
 
+) {
+    var emailValue by remember { mutableStateOf("") }
+    var pwValue by remember { mutableStateOf("") }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -77,8 +74,8 @@ internal fun LoginScreen(
                 Spacer(modifier = Modifier.height(4.dp))
                 SeugiTextField(
                     value = emailValue,
-                    onValueChange = onEmailValueChange,
-                    onClickDelete = onClickDelete,
+                    onValueChange = {emailValue = it},
+                    onClickDelete = { emailValue = "" },
                     placeholder = "이메일을 입력해 주세요",
                 )
             }
@@ -98,7 +95,7 @@ internal fun LoginScreen(
                 Spacer(modifier = Modifier.height(4.dp))
                 SeugiPasswordTextField(
                     value = pwValue,
-                    onValueChange = onPwValueChange,
+                    onValueChange = { pwValue = it },
                     placeholder = "비밀번호를 입력해 주세요",
                 )
             }
@@ -132,27 +129,5 @@ internal fun LoginScreen(
                 modifier = Modifier.padding(horizontal = 20.dp)
                 )
         }
-    }
-}
-
-@Composable
-@Preview
-fun PreviewLoginScreen() {
-    SeugiTheme {
-        var emailValue by remember { mutableStateOf("") }
-        var pwValue by remember { mutableStateOf("") }
-        LoginScreen(
-            emailValue,
-            pwValue,
-            {
-                emailValue = it
-            },
-            {
-                pwValue = it
-            },
-            {
-                emailValue = ""
-            }
-        )
     }
 }
