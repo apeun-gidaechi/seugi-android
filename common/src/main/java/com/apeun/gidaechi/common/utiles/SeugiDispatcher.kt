@@ -9,5 +9,5 @@ annotation class SeugiDispatcher(val dispatcherType: DispatcherType)
 enum class DispatcherType {
     Default,
     IO,
-    Main
+    Main,
 }
