@@ -229,7 +229,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                         .padding(
                             horizontal = 8.dp,
                         )
-                        .dropShadow(DropShadowType.Ev1),
+                        .dropShadow(DropShadowType.EvBlack1),
                     value = text,
                     placeholder = "메세지 보내기",
                     onValueChange = {

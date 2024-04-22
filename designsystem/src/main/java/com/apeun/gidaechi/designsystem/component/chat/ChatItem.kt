@@ -146,7 +146,7 @@ private fun SeugiChatItemOthers(
                 Box(
                     modifier = Modifier
                         .dropShadow(
-                            type = DropShadowType.Ev1,
+                            type = DropShadowType.EvBlack1,
                         )
                         .background(
                             color = White,
@@ -240,7 +240,7 @@ private fun SeugiChatItemMe(
         Box(
             modifier = Modifier
                 .dropShadow(
-                    type = DropShadowType.Ev1,
+                    type = DropShadowType.EvBlack1,
                 )
                 .background(
                     color = Primary500,
