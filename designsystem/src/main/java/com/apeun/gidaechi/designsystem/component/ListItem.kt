@@ -37,7 +37,7 @@ sealed class ListItemType {
     data object Normal : ListItemType()
     data class Toggle(val checked: Boolean, val onCheckedChangeListener: (Boolean) -> Unit) : ListItemType()
     data class Description(val description: String) : ListItemType()
-    data object Icon: ListItemType()
+    data object Icon : ListItemType()
 }
 
 @Composable
@@ -97,12 +97,11 @@ fun SeugiListItem(modifier: Modifier = Modifier, type: ListItemType = ListItemTy
                     Image(
                         modifier = Modifier.size(28.dp),
                         painter = painterResource(id = R.drawable.ic_expand_right_line),
-                        contentDescription = "오른쪽 방향표"
+                        contentDescription = "오른쪽 방향표",
                     )
                 }
                 else -> {}
             }
-
         }
     }
 }

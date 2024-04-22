@@ -72,7 +72,7 @@ sealed class ChatItemType {
         val message: String,
         val createdAt: String,
         val count: Int,
-    ): ChatItemType()
+    ) : ChatItemType()
 }
 
 @Composable
@@ -338,7 +338,7 @@ private fun SeugiChatItemAi(
             Image(
                 modifier = Modifier.size(32.dp),
                 painter = painterResource(id = R.drawable.ic_appicon_round),
-                contentDescription = "앱 둥근 로고"
+                contentDescription = "앱 둥근 로고",
             )
         } else {
             Spacer(modifier = Modifier.width(32.dp))
@@ -368,7 +368,7 @@ private fun SeugiChatItemAi(
                         .border(
                             width = (1.5).dp,
                             brush = GradientPrimary,
-                            shape = chatShape
+                            shape = chatShape,
                         )
                         .clip(chatShape)
                         .combinedClickable(

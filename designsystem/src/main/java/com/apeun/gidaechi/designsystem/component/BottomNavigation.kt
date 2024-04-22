@@ -153,8 +153,8 @@ private fun SeugiBottomNavigationItem(type: BottomNavigationItemType, selected: 
                         .align(Alignment.TopEnd)
                         .offset(
                             x = 6.dp,
-                            y = (-2).dp
-                        )
+                            y = (-2).dp,
+                        ),
                 )
             }
         }

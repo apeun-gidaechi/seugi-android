@@ -14,22 +14,22 @@ fun ToolTip() {
     Column {
         SeugiToolTip(
             text = "가입 수락을 대기중이에요",
-            type = ToolTipType.Side
+            type = ToolTipType.Side,
         )
         Spacer(modifier = Modifier.height(8.dp))
         SeugiToolTip(
             text = "가입 수락을 대기중이에요",
-            type = ToolTipType.Center
+            type = ToolTipType.Center,
         )
         Spacer(modifier = Modifier.height(8.dp))
         SeugiToolTip(
             text = "답장",
-            type = ToolTipType.SideSmall
+            type = ToolTipType.SideSmall,
         )
         Spacer(modifier = Modifier.height(8.dp))
         SeugiToolTip(
             text = "답장",
-            type = ToolTipType.CenterSmall
+            type = ToolTipType.CenterSmall,
         )
         Spacer(modifier = Modifier.height(8.dp))
     }

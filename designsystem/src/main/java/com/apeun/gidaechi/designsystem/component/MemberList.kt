@@ -155,12 +155,7 @@ fun SeugiMemberList(text: String, onClick: () -> Unit) {
 }
 
 @Composable
-fun SeugiMemberList(
-    modifier: Modifier = Modifier,
-    userName: String,
-    userProfile: String?,
-    content: @Composable () -> Unit = {},
-) {
+fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile: String?, content: @Composable () -> Unit = {}) {
     Row(
         modifier = modifier
             .fillMaxWidth()

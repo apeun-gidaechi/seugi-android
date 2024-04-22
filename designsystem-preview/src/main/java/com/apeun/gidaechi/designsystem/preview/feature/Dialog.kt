@@ -20,7 +20,7 @@ fun Dialog() {
             content = "본문을 입력해주세요",
             onDismissRequest = {
                 dialogFirstShow = false
-            }
+            },
         )
     }
 
@@ -36,7 +36,7 @@ fun Dialog() {
             },
             onSuccessRequest = {
                 dialogSecondShow = false
-            }
+            },
         )
     }
     Column {
@@ -45,14 +45,14 @@ fun Dialog() {
                 dialogFirstShow = true
             },
             type = ButtonType.Primary,
-            text = "Dialog First Show"
+            text = "Dialog First Show",
         )
         SeugiButton(
             onClick = {
                 dialogSecondShow = true
             },
             type = ButtonType.Primary,
-            text = "Dialog Second Show"
+            text = "Dialog Second Show",
         )
     }
 }

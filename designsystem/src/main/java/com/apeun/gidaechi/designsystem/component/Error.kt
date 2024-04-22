@@ -19,51 +19,43 @@ import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @Composable
-fun SeugiError(
-    modifier: Modifier = Modifier,
-    @DrawableRes resId: Int,
-    text: String
-) {
+fun SeugiError(modifier: Modifier = Modifier, @DrawableRes resId: Int, text: String) {
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
         Image(
             modifier = Modifier
                 .size(64.dp)
                 .align(Alignment.CenterHorizontally),
             painter = painterResource(id = resId),
-            contentDescription = ""
+            contentDescription = "",
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = text,
             style = MaterialTheme.typography.titleMedium,
-            color = Black
+            color = Black,
         )
     }
 }
 
 @Composable
-fun SeugiError(
-    modifier: Modifier,
-    model: String,
-    text: String
-) {
+fun SeugiError(modifier: Modifier, model: String, text: String) {
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
         AsyncImage(
             modifier = Modifier
                 .size(64.dp)
                 .align(Alignment.CenterHorizontally),
             model = model,
-            contentDescription = ""
+            contentDescription = "",
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = text,
             style = MaterialTheme.typography.titleMedium,
-            color = Black
+            color = Black,
         )
     }
 }
@@ -75,11 +67,11 @@ private fun PreviewSeugiError() {
         Column {
             SeugiError(
                 resId = com.apeun.gidaechi.designsystem.R.drawable.ic_emoji_sad,
-                text = "페이지를 찾을 수 없습니다."
+                text = "페이지를 찾을 수 없습니다.",
             )
             SeugiError(
                 resId = com.apeun.gidaechi.designsystem.R.drawable.ic_emoji_happy,
-                text = "페이지를 찾을 수 없습니다."
+                text = "페이지를 찾을 수 없습니다.",
             )
         }
     }
