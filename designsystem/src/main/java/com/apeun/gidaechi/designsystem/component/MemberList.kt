@@ -154,6 +154,42 @@ fun SeugiMemberList(text: String, onClick: () -> Unit) {
     }
 }
 
+@Composable
+fun SeugiMemberList(
+    modifier: Modifier = Modifier,
+    userName: String,
+    userProfile: String?,
+    content: @Composable () -> Unit = {},
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(56.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Row(
+            modifier = Modifier.padding(
+                horizontal = 16.dp,
+                vertical = 10.dp,
+            ),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            SeugiAvatar(
+                type = AvatarType.Large,
+                image = userProfile,
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = userName,
+                style = MaterialTheme.typography.titleMedium,
+                color = Black,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            content()
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun PreviewSeugiMemberList() {
