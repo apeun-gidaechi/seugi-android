@@ -25,6 +25,7 @@ import com.apeun.gidaechi.designsystem.preview.feature.MemberList
 import com.apeun.gidaechi.designsystem.preview.feature.OAuthButton
 import com.apeun.gidaechi.designsystem.preview.feature.Shadow
 import com.apeun.gidaechi.designsystem.preview.feature.Toggle
+import com.apeun.gidaechi.designsystem.preview.feature.ToolTip
 import com.apeun.gidaechi.designsystem.preview.feature.TopBar
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.designsystem.theme.White
@@ -94,6 +95,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(NavRoot.TOPBAR) {
                             TopBar()
+                        }
+                        composable(NavRoot.TOOLTIP) {
+                            ToolTip()
                         }
                     }
                 }
