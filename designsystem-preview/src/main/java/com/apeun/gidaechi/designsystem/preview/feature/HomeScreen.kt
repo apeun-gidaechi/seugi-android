@@ -138,6 +138,12 @@ fun HomeScreen(navController: NavController) {
                 navController.navigate(NavRoot.DIALOG)
             },
         )
+        HomeButton(
+            text = "ERROR",
+            onClick = {
+                navController.navigate(NavRoot.ERROR)
+            },
+        )
     }
 }
 

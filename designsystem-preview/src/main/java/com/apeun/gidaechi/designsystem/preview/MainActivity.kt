@@ -20,6 +20,7 @@ import com.apeun.gidaechi.designsystem.preview.feature.CheckBox
 import com.apeun.gidaechi.designsystem.preview.feature.Dialog
 import com.apeun.gidaechi.designsystem.preview.feature.Divider
 import com.apeun.gidaechi.designsystem.preview.feature.Dropdown
+import com.apeun.gidaechi.designsystem.preview.feature.Error
 import com.apeun.gidaechi.designsystem.preview.feature.HomeScreen
 import com.apeun.gidaechi.designsystem.preview.feature.ListItem
 import com.apeun.gidaechi.designsystem.preview.feature.MemberList
@@ -102,6 +103,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(NavRoot.DIALOG) {
                             Dialog()
+                        }
+                        composable(NavRoot.ERROR) {
+                            Error()
                         }
                     }
                 }

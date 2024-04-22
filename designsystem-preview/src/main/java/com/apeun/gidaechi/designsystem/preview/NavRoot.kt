@@ -18,6 +18,7 @@ object NavRoot {
     const val SHADOW = "SHADOW"
     const val TOOLTIP = "TOOLTIP"
     const val DIALOG = "DIALOG"
+    const val ERROR = "ERROR"
 
     const val TOPBAR = "TOPBAR"
     const val DROPDOWN = "DROPDOWN"
