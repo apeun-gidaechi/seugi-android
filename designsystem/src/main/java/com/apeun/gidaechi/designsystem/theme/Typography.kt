@@ -47,7 +47,7 @@ val Pretendard = Typography(
     ),
     titleLarge = TextStyle(
         fontFamily = PretendardFontFamily,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
         lineHeight = 1.3.em,
         platformStyle = PlatformTextStyle(includeFontPadding = false),

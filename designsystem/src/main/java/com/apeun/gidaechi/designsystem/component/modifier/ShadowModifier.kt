@@ -1,7 +1,6 @@
 package com.apeun.gidaechi.designsystem.component.modifier
 
 import android.graphics.BlurMaskFilter
-import android.graphics.Color.toArgb
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,9 +26,12 @@ sealed class DropShadowType(
     val offsetY: Dp,
     val color: Color,
 ) {
-    data object Ev1 : DropShadowType(9.dp, 3.dp, Color(0x08000000))
-    data object Ev2 : DropShadowType(12.dp, 4.dp, Color(0x0F000000))
-    data object Ev3 : DropShadowType(18.dp, 6.dp, Color(0x14000000))
+    data object EvBlack1 : DropShadowType(9.dp, 3.dp, Color(0x08000000))
+    data object EvBlack2 : DropShadowType(12.dp, 4.dp, Color(0x0F000000))
+    data object EvBlack3 : DropShadowType(18.dp, 6.dp, Color(0x14000000))
+    data object EvPrimary1 : DropShadowType(9.dp, 3.dp, Color(0x081D93F3))
+    data object EvPrimary2 : DropShadowType(12.dp, 4.dp, Color(0x0F1D93F3))
+    data object EvPrimary3 : DropShadowType(18.dp, 6.dp, Color(0x141D93F3))
     data object Nav : DropShadowType(12.dp, 0.dp, Color(0x08000000))
 }
 
@@ -84,21 +86,21 @@ private fun ShadowModifierPreview() {
             Box(
                 modifier = Modifier
                     .size(50.dp)
-                    .dropShadow(DropShadowType.Ev1)
+                    .dropShadow(DropShadowType.EvBlack1)
                     .background(White),
             )
             Spacer(modifier = Modifier.height(30.dp))
             Box(
                 modifier = Modifier
                     .size(50.dp)
-                    .dropShadow(DropShadowType.Ev2)
+                    .dropShadow(DropShadowType.EvBlack2)
                     .background(White),
             )
             Spacer(modifier = Modifier.height(30.dp))
             Box(
                 modifier = Modifier
                     .size(50.dp)
-                    .dropShadow(DropShadowType.Ev3)
+                    .dropShadow(DropShadowType.EvBlack3)
                     .background(White),
             )
         }

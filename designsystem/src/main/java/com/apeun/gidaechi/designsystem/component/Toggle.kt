@@ -53,7 +53,7 @@ fun SeugiToggle(modifier: Modifier = Modifier, checked: Boolean, onCheckedChange
                         color = White,
                         shape = CircleShape,
                     )
-                    .dropShadow(DropShadowType.Ev2),
+                    .dropShadow(DropShadowType.EvBlack2),
             )
         },
     )

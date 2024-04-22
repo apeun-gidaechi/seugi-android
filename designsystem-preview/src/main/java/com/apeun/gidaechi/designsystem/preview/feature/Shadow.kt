@@ -25,7 +25,7 @@ fun Shadow() {
             modifier = Modifier
                 .height(50.dp)
                 .fillMaxWidth()
-                .dropShadow(DropShadowType.Ev1)
+                .dropShadow(DropShadowType.EvBlack1)
                 .background(White),
         )
         Spacer(modifier = Modifier.height(10.dp))
@@ -33,7 +33,7 @@ fun Shadow() {
             modifier = Modifier
                 .height(50.dp)
                 .fillMaxWidth()
-                .dropShadow(DropShadowType.Ev2)
+                .dropShadow(DropShadowType.EvBlack2)
                 .background(White),
         )
         Spacer(modifier = Modifier.height(10.dp))
@@ -41,7 +41,7 @@ fun Shadow() {
             modifier = Modifier
                 .height(50.dp)
                 .fillMaxWidth()
-                .dropShadow(DropShadowType.Ev3)
+                .dropShadow(DropShadowType.EvBlack3)
                 .background(White),
         )
         Spacer(modifier = Modifier.height(10.dp))

@@ -96,6 +96,38 @@ fun ChatItem() {
                     createdAt = "2024년 3월 21일 목요일",
                 ),
             )
+            Spacer(modifier = Modifier.height(32.dp))
+            SeugiChatItem(
+                type = ChatItemType.Ai(
+                    isFirst = true,
+                    isLast = false,
+                    message = "iOS정말 재미없어요!",
+                    createdAt = "오후 7:44",
+                    count = 1,
+                ),
+                onChatLongClick = {
+                    Log.d("TAG", "PreviewSeugiChatItem: ")
+                },
+                onDateClick = {
+                    Log.d("TAG", "PreviewSeugiChatItem: ")
+                },
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            SeugiChatItem(
+                type = ChatItemType.Ai(
+                    isFirst = false,
+                    isLast = true,
+                    message = "iOS정말 재미없어요!",
+                    createdAt = "오후 7:44",
+                    count = 1,
+                ),
+                onChatLongClick = {
+                    Log.d("TAG", "PreviewSeugiChatItem: ")
+                },
+                onDateClick = {
+                    Log.d("TAG", "PreviewSeugiChatItem: ")
+                },
+            )
         }
     }
 }

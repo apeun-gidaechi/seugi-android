@@ -2,6 +2,11 @@ package com.apeun.gidaechi.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
+val Yellow100 = Color(0xFFFFFDF7)
+val Yellow200 = Color(0xFFFDF2CB)
+val Yellow300 = Color(0xFFFFE999)
+val Yellow500 = Color(0xFFF7CC33)
+
 val Orange100 = Color(0xFFFFF9F7)
 val Orange200 = Color(0xFFFDDDCB)
 val Orange300 = Color(0xFFFFBE99)

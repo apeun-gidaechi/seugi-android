@@ -2,7 +2,9 @@ package com.apeun.gidaechi.designsystem.component.chat
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -15,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -24,10 +27,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.animation.AlphaIndication
 import com.apeun.gidaechi.designsystem.component.AvatarType
+import com.apeun.gidaechi.designsystem.component.GradientPrimary
 import com.apeun.gidaechi.designsystem.component.SeugiAvatar
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
@@ -59,6 +65,13 @@ sealed class ChatItemType {
     ) : ChatItemType()
     data class Date(
         val createdAt: String,
+    ) : ChatItemType()
+    data class Ai(
+        val isFirst: Boolean,
+        val isLast: Boolean,
+        val message: String,
+        val createdAt: String,
+        val count: Int,
     ) : ChatItemType()
 }
 
@@ -94,6 +107,18 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType, onChatLongC
             SeugiChatItemDate(
                 modifier = modifier,
                 createdAt = type.createdAt,
+            )
+        }
+        is ChatItemType.Ai -> {
+            SeugiChatItemAi(
+                modifier = modifier,
+                isFirst = type.isFirst,
+                isLast = type.isLast,
+                message = type.message,
+                createdAt = type.createdAt,
+                count = type.count,
+                onChatLongClick = onChatLongClick,
+                onDateClick = onDateClick,
             )
         }
     }
@@ -146,7 +171,7 @@ private fun SeugiChatItemOthers(
                 Box(
                     modifier = Modifier
                         .dropShadow(
-                            type = DropShadowType.Ev1,
+                            type = DropShadowType.EvBlack1,
                         )
                         .background(
                             color = White,
@@ -240,7 +265,7 @@ private fun SeugiChatItemMe(
         Box(
             modifier = Modifier
                 .dropShadow(
-                    type = DropShadowType.Ev1,
+                    type = DropShadowType.EvBlack1,
                 )
                 .background(
                     color = Primary500,
@@ -285,6 +310,105 @@ private fun SeugiChatItemDate(modifier: Modifier, createdAt: String) {
             color = Gray600,
             style = MaterialTheme.typography.labelMedium,
         )
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun SeugiChatItemAi(
+    modifier: Modifier = Modifier,
+    isFirst: Boolean,
+    isLast: Boolean,
+    message: String,
+    createdAt: String,
+    count: Int,
+    onChatLongClick: () -> Unit,
+    onDateClick: () -> Unit,
+) {
+    val chatShape = RoundedCornerShape(
+        topStart = 0.dp,
+        topEnd = CHAT_SHAPE,
+        bottomStart = CHAT_SHAPE,
+        bottomEnd = CHAT_SHAPE,
+    )
+    Row(
+        modifier = modifier,
+    ) {
+        if (isFirst) {
+            Image(
+                modifier = Modifier.size(32.dp),
+                painter = painterResource(id = R.drawable.ic_appicon_round),
+                contentDescription = "앱 둥근 로고",
+            )
+        } else {
+            Spacer(modifier = Modifier.width(32.dp))
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+        Column {
+            if (isFirst) {
+                Text(
+                    text = "AI",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Gray600,
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+            }
+            Row(
+                verticalAlignment = Alignment.Bottom,
+            ) {
+                Box(
+                    modifier = Modifier
+                        .dropShadow(
+                            type = DropShadowType.EvBlack1,
+                        )
+                        .background(
+                            color = White,
+                            shape = chatShape,
+                        )
+                        .border(
+                            width = (1.5).dp,
+                            brush = GradientPrimary,
+                            shape = chatShape,
+                        )
+                        .clip(chatShape)
+                        .combinedClickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = AlphaIndication,
+                            onClick = {},
+                            onLongClick = onChatLongClick,
+                        ),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        modifier = Modifier.padding(12.dp),
+                        text = message,
+                        color = Black,
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+                }
+                if (isLast) {
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Column(
+                        modifier = Modifier
+                            .clickable(
+                                onClick = onDateClick,
+                            ),
+                        verticalArrangement = Arrangement.Bottom,
+                    ) {
+                        Text(
+                            text = count.toString(),
+                            color = Gray600,
+                            style = MaterialTheme.typography.labelLarge,
+                        )
+                        Text(
+                            text = createdAt,
+                            color = Gray600,
+                            style = MaterialTheme.typography.labelMedium,
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 

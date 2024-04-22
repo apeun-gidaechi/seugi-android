@@ -1,6 +1,7 @@
 package com.apeun.gidaechi.designsystem.component
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,8 +21,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.animation.ButtonState
 import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.theme.Black
@@ -33,6 +37,7 @@ sealed class ListItemType {
     data object Normal : ListItemType()
     data class Toggle(val checked: Boolean, val onCheckedChangeListener: (Boolean) -> Unit) : ListItemType()
     data class Description(val description: String) : ListItemType()
+    data object Icon : ListItemType()
 }
 
 @Composable
@@ -74,18 +79,28 @@ fun SeugiListItem(modifier: Modifier = Modifier, type: ListItemType = ListItemTy
                 style = MaterialTheme.typography.titleMedium,
             )
             Spacer(modifier = Modifier.weight(1f))
-            if (type is ListItemType.Toggle) {
-                SeugiToggle(
-                    checked = type.checked,
-                    onCheckedChangeListener = type.onCheckedChangeListener,
-                )
-            }
-            if (type is ListItemType.Description) {
-                Text(
-                    text = type.description,
-                    color = Gray500,
-                    style = MaterialTheme.typography.titleMedium,
-                )
+            when (type) {
+                is ListItemType.Toggle -> {
+                    SeugiToggle(
+                        checked = type.checked,
+                        onCheckedChangeListener = type.onCheckedChangeListener,
+                    )
+                }
+                is ListItemType.Description -> {
+                    Text(
+                        text = type.description,
+                        color = Gray500,
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
+                is ListItemType.Icon -> {
+                    Image(
+                        modifier = Modifier.size(28.dp),
+                        painter = painterResource(id = R.drawable.ic_expand_right_line),
+                        contentDescription = "오른쪽 방향표",
+                    )
+                }
+                else -> {}
             }
         }
     }

@@ -65,7 +65,7 @@ fun SeugiChatTextField(
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .dropShadow(DropShadowType.Ev1),
+            .dropShadow(DropShadowType.EvBlack1),
         shape = RoundedCornerShape(12.dp),
         color = White,
     ) {

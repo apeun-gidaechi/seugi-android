@@ -17,14 +17,17 @@ import com.apeun.gidaechi.designsystem.preview.feature.Category
 import com.apeun.gidaechi.designsystem.preview.feature.ChatItem
 import com.apeun.gidaechi.designsystem.preview.feature.ChatList
 import com.apeun.gidaechi.designsystem.preview.feature.CheckBox
+import com.apeun.gidaechi.designsystem.preview.feature.Dialog
 import com.apeun.gidaechi.designsystem.preview.feature.Divider
 import com.apeun.gidaechi.designsystem.preview.feature.Dropdown
+import com.apeun.gidaechi.designsystem.preview.feature.Error
 import com.apeun.gidaechi.designsystem.preview.feature.HomeScreen
 import com.apeun.gidaechi.designsystem.preview.feature.ListItem
 import com.apeun.gidaechi.designsystem.preview.feature.MemberList
 import com.apeun.gidaechi.designsystem.preview.feature.OAuthButton
 import com.apeun.gidaechi.designsystem.preview.feature.Shadow
 import com.apeun.gidaechi.designsystem.preview.feature.Toggle
+import com.apeun.gidaechi.designsystem.preview.feature.ToolTip
 import com.apeun.gidaechi.designsystem.preview.feature.TopBar
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.designsystem.theme.White
@@ -94,6 +97,15 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(NavRoot.TOPBAR) {
                             TopBar()
+                        }
+                        composable(NavRoot.TOOLTIP) {
+                            ToolTip()
+                        }
+                        composable(NavRoot.DIALOG) {
+                            Dialog()
+                        }
+                        composable(NavRoot.ERROR) {
+                            Error()
                         }
                     }
                 }

@@ -67,7 +67,6 @@ import com.apeun.gidaechi.designsystem.theme.Red200
 import com.apeun.gidaechi.designsystem.theme.Red300
 import com.apeun.gidaechi.designsystem.theme.Red500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
-import com.apeun.gidaechi.designsystem.theme.Transparent
 import com.apeun.gidaechi.designsystem.theme.White
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -123,7 +122,7 @@ fun SeugiFullWidthButton(
     val buttonModifier =
         if (type is ButtonType.Shadow) {
             Modifier
-                .dropShadow(DropShadowType.Ev1)
+                .dropShadow(DropShadowType.EvBlack1)
                 .background(White)
         } else {
             Modifier
@@ -225,7 +224,7 @@ fun SeugiButton(
     val buttonModifier =
         if (type is ButtonType.Shadow) {
             Modifier
-                .dropShadow(DropShadowType.Ev1)
+                .dropShadow(DropShadowType.EvBlack1)
                 .background(White)
         } else {
             Modifier

@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -71,6 +73,7 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
             SeugiBottomNavigationItem(
                 type = BottomNavigationItemType.Home,
                 selected = selected is BottomNavigationItemType.Home,
+                isNew = true,
                 onClick = {
                     onClick(BottomNavigationItemType.Home)
                 },
@@ -79,6 +82,7 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
             SeugiBottomNavigationItem(
                 type = BottomNavigationItemType.Chat,
                 selected = selected is BottomNavigationItemType.Chat,
+                isNew = false,
                 onClick = {
                     onClick(BottomNavigationItemType.Chat)
                 },
@@ -87,6 +91,7 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
             SeugiBottomNavigationItem(
                 type = BottomNavigationItemType.Group,
                 selected = selected is BottomNavigationItemType.Group,
+                isNew = false,
                 onClick = {
                     onClick(BottomNavigationItemType.Group)
                 },
@@ -95,6 +100,7 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
             SeugiBottomNavigationItem(
                 type = BottomNavigationItemType.Notification,
                 selected = selected is BottomNavigationItemType.Notification,
+                isNew = false,
                 onClick = {
                     onClick(BottomNavigationItemType.Notification)
                 },
@@ -103,6 +109,7 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
             SeugiBottomNavigationItem(
                 type = BottomNavigationItemType.Profile,
                 selected = selected is BottomNavigationItemType.Profile,
+                isNew = false,
                 onClick = {
                     onClick(BottomNavigationItemType.Profile)
                 },
@@ -113,7 +120,7 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
 }
 
 @Composable
-private fun SeugiBottomNavigationItem(type: BottomNavigationItemType, selected: Boolean, onClick: () -> Unit) {
+private fun SeugiBottomNavigationItem(type: BottomNavigationItemType, selected: Boolean, isNew: Boolean, onClick: () -> Unit) {
     val animIconColor by animateColorAsState(
         targetValue = if (selected) Primary500 else Gray300,
         label = "",
@@ -133,12 +140,24 @@ private fun SeugiBottomNavigationItem(type: BottomNavigationItemType, selected: 
             ),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Image(
-            modifier = Modifier.size(28.dp),
-            painter = painterResource(id = type.resId),
-            contentDescription = "",
-            colorFilter = ColorFilter.tint(animIconColor),
-        )
+        Box {
+            Image(
+                modifier = Modifier.size(28.dp),
+                painter = painterResource(id = type.resId),
+                contentDescription = "",
+                colorFilter = ColorFilter.tint(animIconColor),
+            )
+            if (isNew) {
+                SeugiBadge(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .offset(
+                            x = 6.dp,
+                            y = (-2).dp,
+                        ),
+                )
+            }
+        }
         Text(
             text = type.text,
             style = MaterialTheme.typography.labelMedium,

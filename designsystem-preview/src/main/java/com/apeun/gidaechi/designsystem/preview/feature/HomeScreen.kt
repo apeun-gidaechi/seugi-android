@@ -126,6 +126,24 @@ fun HomeScreen(navController: NavController) {
                 navController.navigate(NavRoot.TOPBAR)
             },
         )
+        HomeButton(
+            text = "TOOLTIP",
+            onClick = {
+                navController.navigate(NavRoot.TOOLTIP)
+            },
+        )
+        HomeButton(
+            text = "DIALOG",
+            onClick = {
+                navController.navigate(NavRoot.DIALOG)
+            },
+        )
+        HomeButton(
+            text = "ERROR",
+            onClick = {
+                navController.navigate(NavRoot.ERROR)
+            },
+        )
     }
 }
 
