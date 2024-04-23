@@ -149,7 +149,7 @@ fun SeugiCodeTextField(
                                 textAlign = TextAlign.Center,
                             )
                         }
-                        if (index != limit-1){
+                        if (index != limit - 1) {
                             Spacer(modifier = Modifier.width(4.dp))
                         }
                     }
@@ -242,9 +242,8 @@ fun SeugiCodeTextField(
                                 color = if (enabled) colors.focusedTextColor else colors.disabledTextColor,
                                 textAlign = TextAlign.Center,
                             )
-
                         }
-                        if (index != limit-1){
+                        if (index != limit - 1) {
                             Spacer(modifier = Modifier.width(4.dp))
                         }
                     }
