@@ -11,9 +11,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,34 +34,32 @@ fun SchoolScreen() {
         topBar = {
             SeugiTopBar(
                 title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
-                onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") }
+                onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") },
             )
         },
     ) {
         Column(
             modifier = Modifier
                 .padding(it)
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp),
         ) {
             Text(text = "학교 코드", modifier = Modifier.padding(start = 8.dp, bottom = 4.dp), style = MaterialTheme.typography.titleMedium)
             SeugiCodeTextField(value = schoolCode, limit = 6, onValueChange = { schoolCode = it })
             Spacer(modifier = Modifier.weight(1f))
             SeugiFullWidthButton(
-                onClick = {  },
+                onClick = { },
                 type = ButtonType.Primary,
                 text = "계속하기",
                 modifier = Modifier.padding(vertical = 16.dp),
             )
         }
     }
-
 }
 
 @Preview
 @Composable
 private fun PreviewSchoolCode() {
     SeugiTheme {
-
         SchoolScreen()
     }
 }

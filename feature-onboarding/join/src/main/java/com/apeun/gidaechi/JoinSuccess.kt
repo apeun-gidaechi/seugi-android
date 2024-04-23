@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,7 +20,6 @@ import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiRoundedCircleImage
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.Size
-import com.apeun.gidaechi.designsystem.theme.Gray400
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
@@ -33,8 +31,8 @@ fun JoinSuccessScreen() {
         topBar = {
             SeugiTopBar(
                 title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
-                onNavigationIconClick = { Log.d("TAG", "뒤로가기: ")},
-                backIconCheck = true
+                onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") },
+                backIconCheck = true,
             )
         },
     ) {
@@ -45,18 +43,19 @@ fun JoinSuccessScreen() {
             Spacer(modifier = Modifier.weight(1f))
             Column(
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 SeugiRoundedCircleImage(
-                    size = Size.Small, 
+                    size = Size.Small,
                     image = "https://images-na.ssl-images-amazon.com/images/I/41VTLQ%2BH-oL._UL1200_.jpg",
-                    onClick = {}) 
+                    onClick = {},
+                )
                 Text(text = "대구 소프트웨어 마이스터 고등학교", style = MaterialTheme.typography.titleLarge)
                 Text(text = "학생 213명 선생님 32명", style = MaterialTheme.typography.titleMedium, color = Gray600)
             }
             Spacer(modifier = Modifier.weight(1f))
             SeugiFullWidthButton(
-                onClick = {  },
+                onClick = { },
                 type = ButtonType.Primary,
                 text = "계속하기",
                 modifier = Modifier.padding(vertical = 16.dp),
