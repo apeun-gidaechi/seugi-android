@@ -127,7 +127,7 @@ fun SeugiCodeTextField(
                         Box(
                             modifier = Modifier
                                 .height(52.dp)
-                                .width(50.dp)
+                                .weight(1f)
                                 .border(
                                     width = 1.dp,
                                     color = when {
@@ -137,8 +137,7 @@ fun SeugiCodeTextField(
                                         else -> Gray200
                                     },
                                     shape = shape,
-                                )
-                                .padding(horizontal = 18.dp),
+                                ),
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
@@ -150,7 +149,9 @@ fun SeugiCodeTextField(
                                 textAlign = TextAlign.Center,
                             )
                         }
-                        Spacer(modifier = Modifier.weight(1f))
+                        if (index != limit - 1) {
+                            Spacer(modifier = Modifier.width(4.dp))
+                        }
                     }
                 }
             },
@@ -215,10 +216,11 @@ fun SeugiCodeTextField(
             decorationBox = @Composable { innerTextField ->
                 Row(horizontalArrangement = Arrangement.Center) {
                     repeat(limit) { index ->
+
                         Box(
                             modifier = Modifier
                                 .height(52.dp)
-                                .width(50.dp)
+                                .weight(1f)
                                 .border(
                                     width = 1.dp,
                                     color = when {
@@ -241,7 +243,9 @@ fun SeugiCodeTextField(
                                 textAlign = TextAlign.Center,
                             )
                         }
-                        Spacer(modifier = Modifier.weight(1f))
+                        if (index != limit - 1) {
+                            Spacer(modifier = Modifier.width(4.dp))
+                        }
                     }
                 }
             },
