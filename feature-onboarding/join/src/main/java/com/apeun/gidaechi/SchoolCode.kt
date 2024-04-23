@@ -81,8 +81,7 @@ fun SchoolScreen() {
                         text = newValue,
                         selection = TextRange(newValue.length),
                     )
-                },
-            )
+                } )
             Spacer(modifier = Modifier.weight(1f))
             SeugiFullWidthButton(
                 onClick = { },
