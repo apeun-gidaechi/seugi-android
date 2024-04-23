@@ -128,7 +128,6 @@ fun SeugiCodeTextField(
                             modifier = Modifier
                                 .height(52.dp)
                                 .weight(1f)
-                                .padding(horizontal = 4.dp)
                                 .border(
                                     width = 1.dp,
                                     color = when {
@@ -149,6 +148,9 @@ fun SeugiCodeTextField(
                                 color = if (enabled) colors.focusedTextColor else colors.disabledTextColor,
                                 textAlign = TextAlign.Center,
                             )
+                        }
+                        if (index != limit-1){
+                            Spacer(modifier = Modifier.width(4.dp))
                         }
                     }
                 }
@@ -214,10 +216,11 @@ fun SeugiCodeTextField(
             decorationBox = @Composable { innerTextField ->
                 Row(horizontalArrangement = Arrangement.Center) {
                     repeat(limit) { index ->
+
                         Box(
                             modifier = Modifier
                                 .height(52.dp)
-                                .width(50.dp)
+                                .weight(1f)
                                 .border(
                                     width = 1.dp,
                                     color = when {
@@ -239,8 +242,11 @@ fun SeugiCodeTextField(
                                 color = if (enabled) colors.focusedTextColor else colors.disabledTextColor,
                                 textAlign = TextAlign.Center,
                             )
+
                         }
-                        Spacer(modifier = Modifier.weight(1f))
+                        if (index != limit-1){
+                            Spacer(modifier = Modifier.width(4.dp))
+                        }
                     }
                 }
             },
