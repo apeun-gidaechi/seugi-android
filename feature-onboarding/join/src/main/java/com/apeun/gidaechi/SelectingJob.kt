@@ -193,12 +193,7 @@ internal fun SelectingJobScreen() {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text(
-                    text = "이미 계정이 있으신가요?",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Primary500,
-                    modifier = Modifier.bounceClick({}),
-                )
+
                 SeugiFullWidthButton(
                     onClick = { /*TODO*/ },
                     type = ButtonType.Primary,
