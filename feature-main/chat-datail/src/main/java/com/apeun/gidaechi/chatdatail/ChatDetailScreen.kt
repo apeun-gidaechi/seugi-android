@@ -100,6 +100,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     val screenSizeDp = LocalConfiguration.current.screenWidthDp.dp
     val screenSizePx = with(density) { screenSizeDp.toPx() }
 
+    var isOpenSidebar by remember { mutableStateOf(false) }
     val anchors = remember {
         DraggableAnchors {
             DragState.START at 0f
@@ -147,9 +148,15 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     }
 
     BackHandler(
-        enabled = isSearch,
+        enabled = isSearch || isOpenSidebar,
     ) {
-        isSearch = !isSearch
+        isSearch = false
+        if (isOpenSidebar) {
+            coroutineScope.launch {
+                anchoredState.animateTo(DragState.END)
+            }
+            isOpenSidebar = false
+        }
     }
 
     SideEffect {
@@ -202,6 +209,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                             resId = R.drawable.ic_hamburger_horizontal_line,
                             size = 28.dp,
                             onClick = {
+                                isOpenSidebar = true
                                 coroutineScope.launch {
                                     anchoredState.animateTo(DragState.START)
                                 }
@@ -264,6 +272,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
         onSideBarClose = {
             coroutineScope.launch {
                 anchoredState.animateTo(DragState.END)
+                isOpenSidebar = false
             }
         },
         startPadding = 62.dp,
