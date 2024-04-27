@@ -127,8 +127,7 @@ internal fun SelectingJobScreen() {
                                 contentDescription = "",
                                 modifier = Modifier
                                     .size(152.dp)
-                                    .offset(y = (4).dp)
-                                    .aspectRatio(studentPainter.intrinsicSize.width / studentPainter.intrinsicSize.height),
+                                    .offset(y = (4).dp),
                                 contentScale = ContentScale.Fit,
                             )
                         }
@@ -175,8 +174,7 @@ internal fun SelectingJobScreen() {
                                 contentDescription = "",
                                 modifier = Modifier
                                     .size(152.dp)
-                                    .offset(y = (4).dp)
-                                    .aspectRatio(teacherPainter.intrinsicSize.width / studentPainter.intrinsicSize.height),
+                                    .offset(y = (4).dp),
                                 contentScale = ContentScale.Fit,
                             )
                         }
