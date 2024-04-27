@@ -133,7 +133,7 @@ internal fun SelectingJobScreen() {
                                 modifier = Modifier
                                     .size(152.dp)
                                     .offset(y=(4).dp)
-                                    .aspectRatio(studentPainter.intrinsicSize.width / studentPainter.intrinsicSize.height), // 이미지의 가로 세로 비율 유지
+                                    .aspectRatio(studentPainter.intrinsicSize.width / studentPainter.intrinsicSize.height),
                                 contentScale = ContentScale.Fit,
                             )
                         }
