@@ -142,7 +142,7 @@ internal fun SelectingJobScreen() {
                             .background(shape = RoundedCornerShape(12.dp), color = Gray100)
                             .border(
                                 border = BorderStroke(
-                                    1.dp,
+                                    width = 1.dp,
                                     color = if (!studentOnOff) Primary500 else Gray100,
                                 ),
                                 shape = RoundedCornerShape(12.dp),
