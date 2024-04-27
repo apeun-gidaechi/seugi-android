@@ -68,7 +68,7 @@ fun WaitingJoinScreen() {
                         contentDescription = "",
                         modifier = Modifier
                             .size(145.dp)
-                            .aspectRatio(painter.intrinsicSize.width / painter.intrinsicSize.height), // 이미지의 가로 세로 비율 유지
+                            .aspectRatio(painter.intrinsicSize.width / painter.intrinsicSize.height),
                         contentScale = ContentScale.Fit,
                     )
                     Spacer(modifier = Modifier.height(10.dp))
