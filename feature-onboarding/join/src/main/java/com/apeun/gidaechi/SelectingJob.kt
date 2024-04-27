@@ -5,8 +5,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,12 +31,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.apeun.gidaechi.designsystem.animation.ButtonState
 import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
@@ -90,24 +86,23 @@ internal fun SelectingJobScreen() {
                 Row {
                     Box(
                         modifier = Modifier
-                            .bounceClick({studentOnOff = true})
+                            .bounceClick({ studentOnOff = true })
                             .fillMaxHeight()
                             .weight(1f)
                             .background(shape = RoundedCornerShape(12.dp), color = Gray100)
                             .border(
                                 border = BorderStroke(
                                     1.dp,
-                                    color = if (studentOnOff) Primary500 else Gray100
+                                    color = if (studentOnOff) Primary500 else Gray100,
                                 ),
                                 shape = RoundedCornerShape(12.dp),
-                            )
+                            ),
 
                     ) {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .fillMaxHeight()
-                                ,
+                                .fillMaxHeight(),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
                         ) {
@@ -115,14 +110,14 @@ internal fun SelectingJobScreen() {
 
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Center
+                                horizontalArrangement = Arrangement.Center,
                             ) {
                                 Text(text = "학생", style = MaterialTheme.typography.titleMedium, color = if (studentOnOff) Black else Gray500)
                                 if (studentOnOff) {
                                     Spacer(modifier = Modifier.width(4.dp))
                                     Image(
                                         painter = painterResource(id = R.drawable.img_check),
-                                        contentDescription = ""
+                                        contentDescription = "",
                                     )
                                 }
                             }
@@ -132,7 +127,7 @@ internal fun SelectingJobScreen() {
                                 contentDescription = "",
                                 modifier = Modifier
                                     .size(152.dp)
-                                    .offset(y=(4).dp)
+                                    .offset(y = (4).dp)
                                     .aspectRatio(studentPainter.intrinsicSize.width / studentPainter.intrinsicSize.height),
                                 contentScale = ContentScale.Fit,
                             )
@@ -148,30 +143,29 @@ internal fun SelectingJobScreen() {
                             .border(
                                 border = BorderStroke(
                                     1.dp,
-                                    color = if (!studentOnOff) Primary500 else Gray100
+                                    color = if (!studentOnOff) Primary500 else Gray100,
                                 ),
                                 shape = RoundedCornerShape(12.dp),
-                            )
+                            ),
                     ) {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .fillMaxHeight()
-                                ,
+                                .fillMaxHeight(),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
                         ) {
                             Spacer(modifier = Modifier.weight(1f))
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Center
+                                horizontalArrangement = Arrangement.Center,
                             ) {
                                 Text(text = "선생님", style = MaterialTheme.typography.titleMedium, color = if (!studentOnOff) Black else Gray500)
                                 if (!studentOnOff) {
                                     Spacer(modifier = Modifier.width(4.dp))
                                     Image(
                                         painter = painterResource(id = R.drawable.img_check),
-                                        contentDescription = ""
+                                        contentDescription = "",
                                     )
                                 }
                             }
@@ -181,9 +175,9 @@ internal fun SelectingJobScreen() {
                                 contentDescription = "",
                                 modifier = Modifier
                                     .size(152.dp)
-                                    .offset(y=(4).dp)
+                                    .offset(y = (4).dp)
                                     .aspectRatio(teacherPainter.intrinsicSize.width / studentPainter.intrinsicSize.height),
-                                contentScale = ContentScale.Fit
+                                contentScale = ContentScale.Fit,
                             )
                         }
                     }
@@ -193,7 +187,6 @@ internal fun SelectingJobScreen() {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-
                 SeugiFullWidthButton(
                     onClick = { /*TODO*/ },
                     type = ButtonType.Primary,
