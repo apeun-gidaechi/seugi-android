@@ -33,3 +33,4 @@ include(
     ":feature-onboarding:join",
     ":feature-onboarding:start"
 )
+include(":feature-onboarding:onabording")

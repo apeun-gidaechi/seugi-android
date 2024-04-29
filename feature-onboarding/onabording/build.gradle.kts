@@ -3,17 +3,15 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.start"
+    namespace = "com.apeun.gidaechi.onboarding"
 }
 
 dependencies {
     implementation(projects.designsystem)
     implementation(project(":designsystem"))
 
-
     implementation(projects.featureOnboarding.login)
+    implementation(projects.featureOnboarding.start)
     implementation(projects.featureOnboarding.join)
-
-
 
 }

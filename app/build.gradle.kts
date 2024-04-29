@@ -42,4 +42,5 @@ dependencies {
     implementation(projects.network.core)
     implementation(projects.designsystem)
     implementation(projects.featureMain.main)
+    implementation(projects.featureOnboarding.onabording)
 }

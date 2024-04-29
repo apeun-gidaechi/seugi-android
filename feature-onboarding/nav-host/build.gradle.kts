@@ -3,17 +3,16 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.start"
+    namespace = "com.apeun.gidaechi.nav-host"
 }
 
 dependencies {
     implementation(projects.designsystem)
-    implementation(project(":designsystem"))
-
+    implementation(libs.androidx.monitor)
+    implementation(libs.androidx.junit.ktx)
 
     implementation(projects.featureOnboarding.login)
     implementation(projects.featureOnboarding.join)
-
 
 
 }
