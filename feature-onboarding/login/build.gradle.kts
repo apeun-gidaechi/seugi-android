@@ -8,5 +8,6 @@ android {
 
 dependencies {
     implementation(projects.designsystem)
+    implementation(projects.featureOnboarding.join)
 
 }
