@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiRoundedCircleImage
@@ -23,10 +24,11 @@ import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.Size
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import com.apeun.gidaechi.navigation.SELECTING_JOB
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun JoinSuccessScreen() {
+fun JoinSuccessScreen(navHostController: NavHostController) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -60,7 +62,9 @@ fun JoinSuccessScreen() {
             }
             Spacer(modifier = Modifier.weight(1f))
             SeugiFullWidthButton(
-                onClick = { },
+                onClick = {
+                          navHostController.navigate(SELECTING_JOB)
+                },
                 type = ButtonType.Primary,
                 text = "계속하기",
                 modifier = Modifier.padding(vertical = 16.dp),
@@ -69,10 +73,10 @@ fun JoinSuccessScreen() {
     }
 }
 
-@Preview
-@Composable
-private fun PreviewJoinSuccess() {
-    SeugiTheme {
-        JoinSuccessScreen()
-    }
-}
+//@Preview
+//@Composable
+//private fun PreviewJoinSuccess() {
+//    SeugiTheme {
+//        JoinSuccessScreen()
+//    }
+//}
