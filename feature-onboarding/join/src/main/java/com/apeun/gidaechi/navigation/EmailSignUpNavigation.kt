@@ -2,6 +2,7 @@ package com.apeun.gidaechi.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.apeun.gidaechi.EmailSignUpScreen
@@ -10,8 +11,8 @@ const val EMAIL_SIGN_UP_ROUTE = "emailSignUp"
 
 fun NavController.navigateToEmailSignUp(navOptions: NavOptions? = null) = navigate(EMAIL_SIGN_UP_ROUTE, navOptions)
 
-fun NavGraphBuilder.emailSignUpScreen() {
+fun NavGraphBuilder.emailSignUpScreen(navHostController: NavHostController) {
     composable(route = EMAIL_SIGN_UP_ROUTE) {
-        EmailSignUpScreen()
+        EmailSignUpScreen(navHostController)
     }
 }

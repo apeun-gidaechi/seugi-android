@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
@@ -34,7 +35,7 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun EmailSignUpScreen() {
+internal fun EmailSignUpScreen(navHostController: NavHostController) {
     var nameText by remember { mutableStateOf("") }
     var emailText by remember { mutableStateOf("") }
     var pwText by remember { mutableStateOf("") }
@@ -180,10 +181,10 @@ internal fun EmailSignUpScreen() {
     }
 }
 
-@Preview
-@Composable
-private fun PreviewEmailSignUp() {
-    SeugiTheme {
-        EmailSignUpScreen()
-    }
-}
+//@Preview
+//@Composable
+//private fun PreviewEmailSignUp() {
+//    SeugiTheme {
+//        EmailSignUpScreen()
+//    }
+//}

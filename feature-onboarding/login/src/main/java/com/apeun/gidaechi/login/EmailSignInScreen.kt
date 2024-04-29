@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
@@ -29,10 +30,11 @@ import com.apeun.gidaechi.designsystem.component.textfield.SeugiPasswordTextFiel
 import com.apeun.gidaechi.designsystem.component.textfield.SeugiTextField
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary500
+import com.apeun.gidaechi.navigation.EMAIL_SIGN_UP_ROUTE
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun EmailSignInScreen() {
+internal fun EmailSignInScreen(navHostController: NavHostController) {
     var emailValue by remember { mutableStateOf("") }
     var pwValue by remember { mutableStateOf("") }
 
@@ -108,7 +110,7 @@ internal fun EmailSignInScreen() {
                     style = MaterialTheme.typography.bodyLarge,
                     color = Primary500,
                     modifier = Modifier
-                        .bounceClick({ Log.d("TAG", "LoginScreen:가입하기 ") }),
+                        .bounceClick({ navHostController.navigate(EMAIL_SIGN_UP_ROUTE) }),
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
