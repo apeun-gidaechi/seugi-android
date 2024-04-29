@@ -107,7 +107,9 @@ internal fun StartScreen(navHostController: NavHostController) {
                 ) {
                     Column {
                         SeugiFullWidthButton(
-                            onClick = { navHostController.navigate(LOGIN_ROUTE) },
+                            onClick = {
+                                showBottomSheet = false
+                                navHostController.navigate(LOGIN_ROUTE) },
                             type = ButtonType.Black,
                             text = "이메일로 계속하기",
                         )
