@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.login
+package com.apeun.gidaechi
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
