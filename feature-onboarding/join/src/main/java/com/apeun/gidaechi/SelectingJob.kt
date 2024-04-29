@@ -41,6 +41,7 @@ import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.Gray100
 import com.apeun.gidaechi.designsystem.theme.Gray500
 import com.apeun.gidaechi.designsystem.theme.Primary500
+import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.join.R
 import com.apeun.gidaechi.navigation.WAITING_JOIN
 
@@ -53,144 +54,154 @@ internal fun SelectingJobScreen(navHostController: NavHostController) {
 
     val studentPainter = painterResource(id = R.drawable.img_student)
     val teacherPainter = painterResource(id = R.drawable.img_teacher)
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            SeugiTopBar(
-                title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
-                onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") },
-                backIconCheck = true,
-            )
-        },
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(it)
-                .padding(horizontal = 16.dp),
+    SeugiTheme {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                SeugiTopBar(
+                    title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
+                    onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") },
+                    backIconCheck = true,
+                )
+            },
         ) {
-            Spacer(modifier = Modifier.weight(0.4f))
             Column(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .padding(it)
+                    .padding(horizontal = 16.dp),
             ) {
-                Row(
-                    modifier = Modifier.padding(start = 4.dp, bottom = 8.dp),
+                Spacer(modifier = Modifier.weight(0.4f))
+                Column(
+                    modifier = Modifier.weight(1f),
                 ) {
-                    Text(
-                        text = "학생이신가요?\n" + "아니면 선생님이신가요?",
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.bounceClick({}),
+                    Row(
+                        modifier = Modifier.padding(start = 4.dp, bottom = 8.dp),
+                    ) {
+                        Text(
+                            text = "학생이신가요?\n" + "아니면 선생님이신가요?",
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.bounceClick({}),
+                        )
+                    }
+                    Row {
+                        Box(
+                            modifier = Modifier
+                                .bounceClick({ studentOnOff = true })
+                                .fillMaxHeight()
+                                .weight(1f)
+                                .background(shape = RoundedCornerShape(12.dp), color = Gray100)
+                                .border(
+                                    border = BorderStroke(
+                                        1.dp,
+                                        color = if (studentOnOff) Primary500 else Gray100,
+                                    ),
+                                    shape = RoundedCornerShape(12.dp),
+                                ),
+
+                            ) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                Spacer(modifier = Modifier.weight(1f))
+
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.Center,
+                                ) {
+                                    Text(
+                                        text = "학생",
+                                        style = MaterialTheme.typography.titleMedium,
+                                        color = if (studentOnOff) Black else Gray500
+                                    )
+                                    if (studentOnOff) {
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Image(
+                                            painter = painterResource(id = R.drawable.img_check),
+                                            contentDescription = "",
+                                        )
+                                    }
+                                }
+                                Spacer(modifier = Modifier.weight(1f))
+                                Image(
+                                    painter = studentPainter,
+                                    contentDescription = "",
+                                    modifier = Modifier
+                                        .size(152.dp)
+                                        .offset(y = (4).dp),
+                                    contentScale = ContentScale.Fit,
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Box(
+                            modifier = Modifier
+                                .bounceClick(onClick = { studentOnOff = false })
+                                .fillMaxHeight()
+                                .weight(1f)
+                                .background(shape = RoundedCornerShape(12.dp), color = Gray100)
+                                .border(
+                                    border = BorderStroke(
+                                        width = 1.dp,
+                                        color = if (!studentOnOff) Primary500 else Gray100,
+                                    ),
+                                    shape = RoundedCornerShape(12.dp),
+                                ),
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                Spacer(modifier = Modifier.weight(1f))
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.Center,
+                                ) {
+                                    Text(
+                                        text = "선생님",
+                                        style = MaterialTheme.typography.titleMedium,
+                                        color = if (!studentOnOff) Black else Gray500
+                                    )
+                                    if (!studentOnOff) {
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Image(
+                                            painter = painterResource(id = R.drawable.img_check),
+                                            contentDescription = "",
+                                        )
+                                    }
+                                }
+                                Spacer(modifier = Modifier.weight(1f))
+                                Image(
+                                    painter = teacherPainter,
+                                    contentDescription = "",
+                                    modifier = Modifier
+                                        .size(152.dp)
+                                        .offset(y = (4).dp),
+                                    contentScale = ContentScale.Fit,
+                                )
+                            }
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    SeugiFullWidthButton(
+                        onClick = {
+                            navHostController.navigate(WAITING_JOIN)
+                        },
+                        type = ButtonType.Primary,
+                        text = "계속하기",
+                        modifier = Modifier.padding(vertical = 16.dp),
                     )
                 }
-                Row {
-                    Box(
-                        modifier = Modifier
-                            .bounceClick({ studentOnOff = true })
-                            .fillMaxHeight()
-                            .weight(1f)
-                            .background(shape = RoundedCornerShape(12.dp), color = Gray100)
-                            .border(
-                                border = BorderStroke(
-                                    1.dp,
-                                    color = if (studentOnOff) Primary500 else Gray100,
-                                ),
-                                shape = RoundedCornerShape(12.dp),
-                            ),
-
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .fillMaxHeight(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                        ) {
-                            Spacer(modifier = Modifier.weight(1f))
-
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Center,
-                            ) {
-                                Text(text = "학생", style = MaterialTheme.typography.titleMedium, color = if (studentOnOff) Black else Gray500)
-                                if (studentOnOff) {
-                                    Spacer(modifier = Modifier.width(4.dp))
-                                    Image(
-                                        painter = painterResource(id = R.drawable.img_check),
-                                        contentDescription = "",
-                                    )
-                                }
-                            }
-                            Spacer(modifier = Modifier.weight(1f))
-                            Image(
-                                painter = studentPainter,
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .size(152.dp)
-                                    .offset(y = (4).dp),
-                                contentScale = ContentScale.Fit,
-                            )
-                        }
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Box(
-                        modifier = Modifier
-                            .bounceClick(onClick = { studentOnOff = false })
-                            .fillMaxHeight()
-                            .weight(1f)
-                            .background(shape = RoundedCornerShape(12.dp), color = Gray100)
-                            .border(
-                                border = BorderStroke(
-                                    width = 1.dp,
-                                    color = if (!studentOnOff) Primary500 else Gray100,
-                                ),
-                                shape = RoundedCornerShape(12.dp),
-                            ),
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .fillMaxHeight(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                        ) {
-                            Spacer(modifier = Modifier.weight(1f))
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Center,
-                            ) {
-                                Text(text = "선생님", style = MaterialTheme.typography.titleMedium, color = if (!studentOnOff) Black else Gray500)
-                                if (!studentOnOff) {
-                                    Spacer(modifier = Modifier.width(4.dp))
-                                    Image(
-                                        painter = painterResource(id = R.drawable.img_check),
-                                        contentDescription = "",
-                                    )
-                                }
-                            }
-                            Spacer(modifier = Modifier.weight(1f))
-                            Image(
-                                painter = teacherPainter,
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .size(152.dp)
-                                    .offset(y = (4).dp),
-                                contentScale = ContentScale.Fit,
-                            )
-                        }
-                    }
-                }
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                SeugiFullWidthButton(
-                    onClick = {
-                              navHostController.navigate(WAITING_JOIN)
-                    },
-                    type = ButtonType.Primary,
-                    text = "계속하기",
-                    modifier = Modifier.padding(vertical = 16.dp),
-                )
             }
         }
     }

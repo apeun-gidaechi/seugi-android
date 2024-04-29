@@ -31,6 +31,7 @@ import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiOAuthButton
 import com.apeun.gidaechi.designsystem.theme.Gradient
+import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.login.navigation.EMAIL_SIGN_IN
 import com.apeun.gidaechi.start.R
 
@@ -42,84 +43,87 @@ internal fun StartScreen(navHostController: NavHostController) {
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Brush.verticalGradient(Gradient)),
-    ) {
-        Spacer(modifier = Modifier.weight(1f))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.End,
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.img_cloud1),
-                contentDescription = "",
-            )
-        }
-        Spacer(modifier = Modifier.weight(1f))
+    SeugiTheme {
         Column(
-            modifier = Modifier.padding(start = 24.dp),
-        ) {
-            Text(text = "스기", style = MaterialTheme.typography.displayLarge, color = White)
-            Text(
-                text = "학생, 선생님 모두 함께하는\n스마트 스쿨 플랫폼",
-                style = MaterialTheme.typography.titleMedium,
-                color = White,
-            )
-        }
-        Spacer(modifier = Modifier.weight(1f))
-
-        Row(
             modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Start,
+                .fillMaxSize()
+                .background(Brush.verticalGradient(Gradient)),
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.img_cloud2),
-                contentDescription = "",
-            )
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        SeugiFullWidthButton(
-            onClick = { showBottomSheet = true },
-            type = ButtonType.Transparent,
-            text = "시작하기",
-            modifier = Modifier.padding(horizontal = 20.dp),
-        )
-        Spacer(modifier = Modifier.weight(1f))
-
-        if (showBottomSheet) {
-            ModalBottomSheet(
-                onDismissRequest = {
-                    showBottomSheet = false
-                },
-                sheetState = sheetState,
-                containerColor = White,
-                dragHandle = null,
+            Spacer(modifier = Modifier.weight(1f))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
             ) {
-                Column(
-                    modifier = Modifier
-                        .padding(20.dp),
+                Image(
+                    painter = painterResource(id = R.drawable.img_cloud1),
+                    contentDescription = "",
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            Column(
+                modifier = Modifier.padding(start = 24.dp),
+            ) {
+                Text(text = "스기", style = MaterialTheme.typography.displayLarge, color = White)
+                Text(
+                    text = "학생, 선생님 모두 함께하는\n스마트 스쿨 플랫폼",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = White,
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start,
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.img_cloud2),
+                    contentDescription = "",
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            SeugiFullWidthButton(
+                onClick = { showBottomSheet = true },
+                type = ButtonType.Transparent,
+                text = "시작하기",
+                modifier = Modifier.padding(horizontal = 20.dp),
+            )
+            Spacer(modifier = Modifier.weight(1f))
+
+            if (showBottomSheet) {
+                ModalBottomSheet(
+                    onDismissRequest = {
+                        showBottomSheet = false
+                    },
+                    sheetState = sheetState,
+                    containerColor = White,
+                    dragHandle = null,
                 ) {
-                    Column {
-                        SeugiFullWidthButton(
-                            onClick = {
-                                showBottomSheet = false
-                                navHostController.navigate(EMAIL_SIGN_IN) },
-                            type = ButtonType.Black,
-                            text = "이메일로 계속하기",
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        // TODO: google icon
-                        SeugiOAuthButton(
-                            image = R.drawable.ic_menu,
-                            text = "Google로 계속하기",
-                            onClick = { /*TODO: google login*/ },
-                        )
+                    Column(
+                        modifier = Modifier
+                            .padding(20.dp),
+                    ) {
+                        Column {
+                            SeugiFullWidthButton(
+                                onClick = {
+                                    showBottomSheet = false
+                                    navHostController.navigate(EMAIL_SIGN_IN)
+                                },
+                                type = ButtonType.Black,
+                                text = "이메일로 계속하기",
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            // TODO: google icon
+                            SeugiOAuthButton(
+                                image = R.drawable.ic_menu,
+                                text = "Google로 계속하기",
+                                onClick = { /*TODO: google login*/ },
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(50.dp))
                     }
-                    Spacer(modifier = Modifier.height(50.dp))
                 }
             }
         }

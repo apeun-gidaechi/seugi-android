@@ -26,68 +26,75 @@ import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.textfield.SeugiTextField
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.Red500
+import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun OAuthSignUpScreen() {
     var text by remember { mutableStateOf("") }
     var error by remember { mutableStateOf(false) }
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            SeugiTopBar(
-                title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
-                onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") },
-                backIconCheck = true,
-            )
-        },
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(it)
-                .padding(top = 6.dp)
-                .padding(horizontal = 20.dp),
-        ) {
-            Column {
-                Row(
-                    modifier = Modifier.padding(start = 4.dp),
-                ) {
-                    Text(text = "이름", style = MaterialTheme.typography.titleMedium)
-                    Text(text = " *", style = MaterialTheme.typography.titleMedium, color = Red500)
-                }
-                SeugiTextField(
-                    value = text,
-                    onValueChange = { text = it },
-                    onClickDelete = { text = "" },
-                    placeholder = "이름을 입력해 주세요",
-                    modifier = Modifier.padding(vertical = 4.dp),
+    SeugiTheme {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                SeugiTopBar(
+                    title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
+                    onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") },
+                    backIconCheck = true,
                 )
-                if (error) {
-                    Text(
-                        text = "이름을 입력해 주세요",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Red500,
+            },
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(it)
+                    .padding(top = 6.dp)
+                    .padding(horizontal = 20.dp),
+            ) {
+                Column {
+                    Row(
                         modifier = Modifier.padding(start = 4.dp),
+                    ) {
+                        Text(text = "이름", style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            text = " *",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Red500
+                        )
+                    }
+                    SeugiTextField(
+                        value = text,
+                        onValueChange = { text = it },
+                        onClickDelete = { text = "" },
+                        placeholder = "이름을 입력해 주세요",
+                        modifier = Modifier.padding(vertical = 4.dp),
+                    )
+                    if (error) {
+                        Text(
+                            text = "이름을 입력해 주세요",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Red500,
+                            modifier = Modifier.padding(start = 4.dp),
+                        )
+                    }
+                }
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom,
+                    modifier = Modifier.fillMaxHeight(),
+                ) {
+                    Text(
+                        text = "이미 계정이 있으신가요?",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Primary500,
+                        modifier = Modifier.bounceClick({}),
+                    )
+                    SeugiFullWidthButton(
+                        onClick = { error = true },
+                        type = ButtonType.Primary,
+                        text = "계속하기",
+                        modifier = Modifier.padding(vertical = 16.dp),
                     )
                 }
-            }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom,
-                modifier = Modifier.fillMaxHeight(),
-            ) {
-                Text(
-                    text = "이미 계정이 있으신가요?",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Primary500,
-                    modifier = Modifier.bounceClick({}),
-                )
-                SeugiFullWidthButton(
-                    onClick = { error = true },
-                    type = ButtonType.Primary,
-                    text = "계속하기",
-                    modifier = Modifier.padding(vertical = 16.dp),
-                )
             }
         }
     }

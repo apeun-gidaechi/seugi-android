@@ -28,6 +28,7 @@ import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.textfield.SeugiCodeTextField
+import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.navigation.JOIN_SUCCESS
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,59 +40,64 @@ fun SchoolScreen(navHostController: NavHostController) {
 
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
-
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            SeugiTopBar(
-                title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
-                onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") },
-            )
-        },
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(it)
-                .padding(horizontal = 16.dp)
-                .focusRequester(focusRequester)
-                .clickable(
-                    interactionSource = NoInteractionSource(),
-                    indication = null,
-                ) {
-                    focusManager.clearFocus(true)
-                },
+    SeugiTheme {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                SeugiTopBar(
+                    title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
+                    onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") },
+                )
+            },
         ) {
-            Text(text = "학교 코드", modifier = Modifier.padding(start = 8.dp, bottom = 4.dp), style = MaterialTheme.typography.titleMedium)
-            SeugiCodeTextField(
-                value = schoolCode,
-                limit = 6,
-                onValueChange = { newInput ->
-                    val newValue = if (newInput.text.isNotBlank()) {
-                        newInput.text
-                            .replace(" ", "")
-                            .replace(",", "")
-                    } else {
-                        newInput.text
-                    }
-                    if (newValue.length > 6) {
+            Column(
+                modifier = Modifier
+                    .padding(it)
+                    .padding(horizontal = 16.dp)
+                    .focusRequester(focusRequester)
+                    .clickable(
+                        interactionSource = NoInteractionSource(),
+                        indication = null,
+                    ) {
                         focusManager.clearFocus(true)
-                        return@SeugiCodeTextField
-                    }
-                    schoolCode = schoolCode.copy(
-                        text = newValue,
-                        selection = TextRange(newValue.length),
-                    )
-                },
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            SeugiFullWidthButton(
-                onClick = {
-                          navHostController.navigate(JOIN_SUCCESS)
-                },
-                type = ButtonType.Primary,
-                text = "계속하기",
-                modifier = Modifier.padding(vertical = 16.dp),
-            )
+                    },
+            ) {
+                Text(
+                    text = "학교 코드",
+                    modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                SeugiCodeTextField(
+                    value = schoolCode,
+                    limit = 6,
+                    onValueChange = { newInput ->
+                        val newValue = if (newInput.text.isNotBlank()) {
+                            newInput.text
+                                .replace(" ", "")
+                                .replace(",", "")
+                        } else {
+                            newInput.text
+                        }
+                        if (newValue.length > 6) {
+                            focusManager.clearFocus(true)
+                            return@SeugiCodeTextField
+                        }
+                        schoolCode = schoolCode.copy(
+                            text = newValue,
+                            selection = TextRange(newValue.length),
+                        )
+                    },
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                SeugiFullWidthButton(
+                    onClick = {
+                        navHostController.navigate(JOIN_SUCCESS)
+                    },
+                    type = ButtonType.Primary,
+                    text = "계속하기",
+                    modifier = Modifier.padding(vertical = 16.dp),
+                )
+            }
         }
     }
 }
