@@ -31,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.apeun.gidaechi.designsystem.animation.bounceClick
@@ -42,7 +41,6 @@ import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.Gray100
 import com.apeun.gidaechi.designsystem.theme.Gray500
 import com.apeun.gidaechi.designsystem.theme.Primary500
-import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.join.R
 import com.apeun.gidaechi.navigation.WAITING_JOIN
 
@@ -197,11 +195,3 @@ internal fun SelectingJobScreen(navHostController: NavHostController) {
         }
     }
 }
-
-//@Composable
-//@Preview
-//private fun PreviewJoinScreen() {
-//    SeugiTheme {
-//        SelectingJobScreen()
-//    }
-//}

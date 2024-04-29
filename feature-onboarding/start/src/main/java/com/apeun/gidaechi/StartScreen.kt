@@ -125,11 +125,3 @@ internal fun StartScreen(navHostController: NavHostController) {
         }
     }
 }
-
-//@Composable
-//@Preview
-//private fun OnboardingPreview() {
-//    SeugiTheme {
-//        StartScreen()
-//    }
-//}

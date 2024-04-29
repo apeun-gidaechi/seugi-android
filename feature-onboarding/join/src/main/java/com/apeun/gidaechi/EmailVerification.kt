@@ -25,7 +25,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.apeun.gidaechi.designsystem.component.ButtonType
@@ -174,9 +173,3 @@ fun EmailVerificationScreen(navHostController: NavHostController) {
         }
     }
 }
-
-//@Preview
-//@Composable
-//private fun PreviewEmailVerification() {
-//    EmailVerificationScreen()
-//}

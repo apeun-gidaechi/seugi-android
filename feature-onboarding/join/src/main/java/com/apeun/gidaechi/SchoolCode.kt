@@ -21,7 +21,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.apeun.gidaechi.designsystem.animation.NoInteractionSource
@@ -29,7 +28,6 @@ import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.textfield.SeugiCodeTextField
-import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.navigation.JOIN_SUCCESS
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -97,11 +95,3 @@ fun SchoolScreen(navHostController: NavHostController) {
         }
     }
 }
-
-//@Preview
-//@Composable
-//private fun PreviewSchoolCode() {
-//    SeugiTheme {
-//        SchoolScreen()
-//    }
-//}

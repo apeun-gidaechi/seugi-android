@@ -14,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.apeun.gidaechi.designsystem.component.ButtonType
@@ -23,7 +22,6 @@ import com.apeun.gidaechi.designsystem.component.SeugiRoundedCircleImage
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.Size
 import com.apeun.gidaechi.designsystem.theme.Gray600
-import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.navigation.SELECTING_JOB
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,11 +70,3 @@ fun JoinSuccessScreen(navHostController: NavHostController) {
         }
     }
 }
-
-//@Preview
-//@Composable
-//private fun PreviewJoinSuccess() {
-//    SeugiTheme {
-//        JoinSuccessScreen()
-//    }
-//}

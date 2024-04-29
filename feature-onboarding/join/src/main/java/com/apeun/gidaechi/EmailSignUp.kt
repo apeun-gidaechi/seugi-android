@@ -20,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.apeun.gidaechi.designsystem.animation.bounceClick
@@ -31,7 +30,6 @@ import com.apeun.gidaechi.designsystem.component.textfield.SeugiPasswordTextFiel
 import com.apeun.gidaechi.designsystem.component.textfield.SeugiTextField
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.Red500
-import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.navigation.EMAIL_VERIFICATION_ROUTE
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -181,11 +179,3 @@ internal fun EmailSignUpScreen(navHostController: NavHostController) {
         }
     }
 }
-
-//@Preview
-//@Composable
-//private fun PreviewEmailSignUp() {
-//    SeugiTheme {
-//        EmailSignUpScreen()
-//    }
-//}
