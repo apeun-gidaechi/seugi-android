@@ -33,6 +33,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
@@ -43,10 +44,11 @@ import com.apeun.gidaechi.designsystem.theme.Gray500
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.join.R
+import com.apeun.gidaechi.navigation.WAITING_JOIN
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun SelectingJobScreen() {
+internal fun SelectingJobScreen(navHostController: NavHostController) {
     var studentOnOff by remember {
         mutableStateOf(true)
     }
@@ -184,7 +186,9 @@ internal fun SelectingJobScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 SeugiFullWidthButton(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                              navHostController.navigate(WAITING_JOIN)
+                    },
                     type = ButtonType.Primary,
                     text = "계속하기",
                     modifier = Modifier.padding(vertical = 16.dp),
@@ -194,10 +198,10 @@ internal fun SelectingJobScreen() {
     }
 }
 
-@Composable
-@Preview
-private fun PreviewJoinScreen() {
-    SeugiTheme {
-        SelectingJobScreen()
-    }
-}
+//@Composable
+//@Preview
+//private fun PreviewJoinScreen() {
+//    SeugiTheme {
+//        SelectingJobScreen()
+//    }
+//}
