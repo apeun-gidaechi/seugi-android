@@ -37,6 +37,7 @@ import com.apeun.gidaechi.designsystem.component.textfield.SeugiCodeTextField
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Red500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import com.apeun.gidaechi.navigation.SCHOOL_CODE
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -162,7 +163,9 @@ fun EmailVerificationScreen(navHostController: NavHostController) {
 
                 SeugiFullWidthButton(
                     enabled = verificationClick,
-                    onClick = { },
+                    onClick = {
+                              navHostController.navigate(SCHOOL_CODE)
+                    },
                     type = ButtonType.Primary,
                     text = "확인",
                     modifier = Modifier.padding(vertical = 16.dp),
