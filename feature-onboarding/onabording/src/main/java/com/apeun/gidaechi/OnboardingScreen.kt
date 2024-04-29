@@ -28,7 +28,7 @@ internal fun OnboardingScreen(navHostController: NavHostController = rememberNav
         exitTransition = { fadeOut(animationSpec = tween(NAVIGATION_ANIM)) },
         popEnterTransition = { fadeIn(animationSpec = tween(NAVIGATION_ANIM)) },
         popExitTransition = { fadeOut(animationSpec = tween(NAVIGATION_ANIM)) }
-    ){
+    ) {
         startScreen(navHostController)
         emailSignInScreen(navHostController)
         emailSignUpScreen(navHostController)
