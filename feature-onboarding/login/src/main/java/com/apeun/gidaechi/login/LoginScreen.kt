@@ -32,7 +32,7 @@ import com.apeun.gidaechi.designsystem.theme.Primary500
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun EmailSignInScreen() {
+internal fun LoginScreen() {
     var emailValue by remember { mutableStateOf("") }
     var pwValue by remember { mutableStateOf("") }
 
