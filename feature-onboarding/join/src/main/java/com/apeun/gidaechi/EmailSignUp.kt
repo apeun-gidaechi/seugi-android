@@ -32,6 +32,7 @@ import com.apeun.gidaechi.designsystem.component.textfield.SeugiTextField
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.Red500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import com.apeun.gidaechi.navigation.EMAIL_VERIFICATION_ROUTE
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -170,7 +171,7 @@ internal fun EmailSignUpScreen(navHostController: NavHostController) {
                     modifier = Modifier.bounceClick({}),
                 )
                 SeugiFullWidthButton(
-                    onClick = { error = !error },
+                    onClick = { navHostController.navigate(EMAIL_VERIFICATION_ROUTE) },
                     type = ButtonType.Primary,
                     text = "계속하기",
                     modifier = Modifier

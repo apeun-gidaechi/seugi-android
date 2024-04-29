@@ -27,6 +27,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiButton
 import com.apeun.gidaechi.designsystem.component.SeugiDialog
@@ -40,7 +41,7 @@ import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailVerificationScreen() {
+fun EmailVerificationScreen(navHostController: NavHostController) {
     var timeLeft by remember { mutableStateOf(0) }
 
     val minutes = timeLeft / 60
@@ -171,8 +172,8 @@ fun EmailVerificationScreen() {
     }
 }
 
-@Preview
-@Composable
-private fun PreviewEmailVerification() {
-    EmailVerificationScreen()
-}
+//@Preview
+//@Composable
+//private fun PreviewEmailVerification() {
+//    EmailVerificationScreen()
+//}
