@@ -7,9 +7,15 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.apeun.gidaechi.login.navigation.loginScreen
+import com.apeun.gidaechi.login.navigation.emailSignInScreen
 import com.apeun.gidaechi.navigation.START_ROUTE
+import com.apeun.gidaechi.navigation.emailSignUpScreen
+import com.apeun.gidaechi.navigation.emailVerificationScreen
+import com.apeun.gidaechi.navigation.joinSuccess
+import com.apeun.gidaechi.navigation.schoolCode
+import com.apeun.gidaechi.navigation.selectingJob
 import com.apeun.gidaechi.navigation.startScreen
+import com.apeun.gidaechi.navigation.waitingJoin
 
 private const val NAVIGATION_ANIM = 400
 
@@ -24,6 +30,12 @@ internal fun OnboardingScreen(navHostController: NavHostController = rememberNav
         popExitTransition = { fadeOut(animationSpec = tween(NAVIGATION_ANIM)) }
     ){
         startScreen(navHostController)
-        loginScreen()
+        emailSignInScreen(navHostController)
+        emailSignUpScreen(navHostController)
+        emailVerificationScreen(navHostController)
+        schoolCode(navHostController)
+        joinSuccess(navHostController)
+        selectingJob(navHostController)
+        waitingJoin()
     }
 }
