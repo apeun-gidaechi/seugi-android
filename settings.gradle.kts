@@ -31,6 +31,6 @@ include(
     ":feature-main:room-create",
     ":feature-onboarding:login",
     ":feature-onboarding:join",
-    ":feature-onboarding:start"
+    ":feature-onboarding:start",
+    ":feature-onboarding:onabording"
 )
-include(":feature-onboarding:onabording")
