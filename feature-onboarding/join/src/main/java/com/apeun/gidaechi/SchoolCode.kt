@@ -23,16 +23,18 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.apeun.gidaechi.designsystem.animation.NoInteractionSource
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.textfield.SeugiCodeTextField
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import com.apeun.gidaechi.navigation.JOIN_SUCCESS
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SchoolScreen() {
+fun SchoolScreen(navHostController: NavHostController) {
     var schoolCode by remember {
         mutableStateOf(TextFieldValue())
     }
@@ -85,7 +87,9 @@ fun SchoolScreen() {
             )
             Spacer(modifier = Modifier.weight(1f))
             SeugiFullWidthButton(
-                onClick = { },
+                onClick = {
+                          navHostController.navigate(JOIN_SUCCESS)
+                },
                 type = ButtonType.Primary,
                 text = "계속하기",
                 modifier = Modifier.padding(vertical = 16.dp),
@@ -94,10 +98,10 @@ fun SchoolScreen() {
     }
 }
 
-@Preview
-@Composable
-private fun PreviewSchoolCode() {
-    SeugiTheme {
-        SchoolScreen()
-    }
-}
+//@Preview
+//@Composable
+//private fun PreviewSchoolCode() {
+//    SeugiTheme {
+//        SchoolScreen()
+//    }
+//}
