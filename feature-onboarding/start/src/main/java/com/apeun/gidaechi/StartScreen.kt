@@ -25,15 +25,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiOAuthButton
 import com.apeun.gidaechi.designsystem.theme.Gradient
-import com.apeun.gidaechi.designsystem.theme.SeugiTheme
-import com.apeun.gidaechi.login.navigation.LOGIN_ROUTE
+import com.apeun.gidaechi.login.navigation.EMAIL_SIGN_IN
 import com.apeun.gidaechi.start.R
 
 
@@ -109,7 +107,7 @@ internal fun StartScreen(navHostController: NavHostController) {
                         SeugiFullWidthButton(
                             onClick = {
                                 showBottomSheet = false
-                                navHostController.navigate(LOGIN_ROUTE) },
+                                navHostController.navigate(EMAIL_SIGN_IN) },
                             type = ButtonType.Black,
                             text = "이메일로 계속하기",
                         )
