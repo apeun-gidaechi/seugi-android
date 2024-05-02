@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiToolTip
@@ -32,7 +33,7 @@ import com.apeun.gidaechi.join.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WaitingJoinScreen() {
+fun WaitingJoinScreen(navHostController: NavHostController) {
     val painter = painterResource(id = R.drawable.img_school)
 
     SeugiTheme {
@@ -41,7 +42,7 @@ fun WaitingJoinScreen() {
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") },
+                    onNavigationIconClick = { navHostController.popBackStack() },
                     backIconCheck = true,
                 )
             },

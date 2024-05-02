@@ -45,7 +45,7 @@ internal fun EmailSignInScreen(navHostController: NavHostController) {
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "로그인", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") },
+                    onNavigationIconClick = { navHostController.popBackStack() },
                     backIconCheck = true,
                 )
             },

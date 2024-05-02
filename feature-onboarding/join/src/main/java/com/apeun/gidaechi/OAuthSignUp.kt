@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
@@ -30,7 +31,7 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun OAuthSignUpScreen() {
+internal fun OAuthSignUpScreen(navHostController: NavHostController) {
     var text by remember { mutableStateOf("") }
     var error by remember { mutableStateOf(false) }
     SeugiTheme {
@@ -39,7 +40,7 @@ internal fun OAuthSignUpScreen() {
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") },
+                    onNavigationIconClick = { navHostController.popBackStack() },
                     backIconCheck = true,
                 )
             },

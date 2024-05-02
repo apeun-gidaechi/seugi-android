@@ -46,7 +46,7 @@ fun SchoolScreen(navHostController: NavHostController) {
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") },
+                    onNavigationIconClick = { navHostController.popBackStack() },
                 )
             },
         ) {

@@ -49,7 +49,7 @@ internal fun EmailSignUpScreen(navHostController: NavHostController) {
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") },
+                    onNavigationIconClick = { navHostController.popBackStack() },
                     backIconCheck = true,
                 )
             },
