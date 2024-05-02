@@ -23,4 +23,6 @@ dependencies {
     api(libs.ktor.serialization.kotlinx.json)
     api(libs.kotlinx.datetime)
     implementation(projects.common)
+    implementation(libs.gson)
+
 }
