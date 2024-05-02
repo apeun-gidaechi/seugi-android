@@ -79,7 +79,7 @@ fun EmailVerificationScreen(navHostController: NavHostController) {
                         title = {
                             Text(
                                 text = "이메일 인증",
-                                style = MaterialTheme.typography.titleLarge
+                                style = MaterialTheme.typography.titleLarge,
                             )
                         },
                         onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") },

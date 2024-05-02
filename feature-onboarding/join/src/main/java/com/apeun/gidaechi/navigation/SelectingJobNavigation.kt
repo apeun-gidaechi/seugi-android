@@ -10,7 +10,9 @@ import com.apeun.gidaechi.SelectingJobScreen
 const val SELECTING_JOB = "selectingJob"
 
 fun NavController.navigateToSelectingJob(navOptions: NavOptions? = null) = navigate(
-    SELECTING_JOB, navOptions)
+    SELECTING_JOB,
+    navOptions,
+)
 
 fun NavGraphBuilder.selectingJob(navHostController: NavHostController) {
     composable(route = SELECTING_JOB) {

@@ -10,7 +10,9 @@ import com.apeun.gidaechi.JoinSuccessScreen
 const val JOIN_SUCCESS = "joinSuccess"
 
 fun NavController.navigateToJoinSuccess(navOptions: NavOptions? = null) = navigate(
-    JOIN_SUCCESS, navOptions)
+    JOIN_SUCCESS,
+    navOptions,
+)
 
 fun NavGraphBuilder.joinSuccess(navHostController: NavHostController) {
     composable(route = JOIN_SUCCESS) {

@@ -1,6 +1,5 @@
 package com.apeun.gidaechi.login
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -109,7 +108,7 @@ internal fun EmailSignInScreen(navHostController: NavHostController) {
                     Text(
                         text = "계정이 없으시다면?",
                         style = MaterialTheme.typography.bodyLarge,
-                        color = Gray600
+                        color = Gray600,
                     )
                     Text(
                         text = " 가입하기",

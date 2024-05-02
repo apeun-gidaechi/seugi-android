@@ -10,7 +10,9 @@ import com.apeun.gidaechi.SchoolScreen
 const val SCHOOL_CODE = "schoolCode"
 
 fun NavController.navigateToSchoolCode(navOptions: NavOptions? = null) = navigate(
-    SCHOOL_CODE, navOptions)
+    SCHOOL_CODE,
+    navOptions,
+)
 
 fun NavGraphBuilder.schoolCode(navHostController: NavHostController) {
     composable(route = SCHOOL_CODE) {

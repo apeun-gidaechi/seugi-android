@@ -10,7 +10,9 @@ import com.apeun.gidaechi.WaitingJoinScreen
 const val WAITING_JOIN = "waitingJoin"
 
 fun NavController.navigateToWaitingJoin(navOptions: NavOptions? = null) = navigate(
-    WAITING_JOIN, navOptions)
+    WAITING_JOIN,
+    navOptions,
+)
 
 fun NavGraphBuilder.waitingJoin(navHostController: NavHostController) {
     composable(route = WAITING_JOIN) {

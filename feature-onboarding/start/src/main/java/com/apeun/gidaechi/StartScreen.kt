@@ -17,10 +17,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color.Companion.White
@@ -34,7 +34,6 @@ import com.apeun.gidaechi.designsystem.theme.Gradient
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.login.navigation.EMAIL_SIGN_IN
 import com.apeun.gidaechi.start.R
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,6 +1,5 @@
 package com.apeun.gidaechi
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -65,7 +64,7 @@ fun SchoolScreen(navHostController: NavHostController) {
                 Text(
                     text = "학교 코드",
                     modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
                 )
                 SeugiCodeTextField(
                     value = schoolCode,

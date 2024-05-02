@@ -13,7 +13,6 @@ import com.apeun.gidaechi.navigation.emailSignUpScreen
 import com.apeun.gidaechi.navigation.emailVerificationScreen
 import com.apeun.gidaechi.navigation.joinSuccess
 import com.apeun.gidaechi.navigation.oauthSignUp
-import com.apeun.gidaechi.navigation.onboardingScreen
 import com.apeun.gidaechi.navigation.schoolCode
 import com.apeun.gidaechi.navigation.selectingJob
 import com.apeun.gidaechi.navigation.startScreen
@@ -29,7 +28,7 @@ internal fun OnboardingScreen(navHostController: NavHostController = rememberNav
         enterTransition = { fadeIn(animationSpec = tween(NAVIGATION_ANIM)) },
         exitTransition = { fadeOut(animationSpec = tween(NAVIGATION_ANIM)) },
         popEnterTransition = { fadeIn(animationSpec = tween(NAVIGATION_ANIM)) },
-        popExitTransition = { fadeOut(animationSpec = tween(NAVIGATION_ANIM)) }
+        popExitTransition = { fadeOut(animationSpec = tween(NAVIGATION_ANIM)) },
     ) {
         startScreen(navHostController)
         emailSignInScreen(navHostController)

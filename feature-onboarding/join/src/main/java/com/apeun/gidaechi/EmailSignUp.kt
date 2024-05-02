@@ -1,6 +1,5 @@
 package com.apeun.gidaechi
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -42,8 +41,6 @@ internal fun EmailSignUpScreen(navHostController: NavHostController) {
     var pwCheckText by remember { mutableStateOf("") }
     var error by remember { mutableStateOf(false) }
     SeugiTheme {
-
-
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
@@ -72,7 +69,7 @@ internal fun EmailSignUpScreen(navHostController: NavHostController) {
                         Text(
                             text = " *",
                             style = MaterialTheme.typography.titleMedium,
-                            color = Red500
+                            color = Red500,
                         )
                     }
                     SeugiTextField(
@@ -101,7 +98,7 @@ internal fun EmailSignUpScreen(navHostController: NavHostController) {
                         Text(
                             text = " *",
                             style = MaterialTheme.typography.titleMedium,
-                            color = Red500
+                            color = Red500,
                         )
                     }
                     SeugiTextField(
@@ -130,7 +127,7 @@ internal fun EmailSignUpScreen(navHostController: NavHostController) {
                         Text(
                             text = " *",
                             style = MaterialTheme.typography.titleMedium,
-                            color = Red500
+                            color = Red500,
                         )
                     }
                     SeugiPasswordTextField(
@@ -158,7 +155,7 @@ internal fun EmailSignUpScreen(navHostController: NavHostController) {
                         Text(
                             text = " *",
                             style = MaterialTheme.typography.titleMedium,
-                            color = Red500
+                            color = Red500,
                         )
                     }
                     SeugiPasswordTextField(

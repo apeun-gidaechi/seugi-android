@@ -1,6 +1,5 @@
 package com.apeun.gidaechi
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -61,7 +60,7 @@ fun JoinSuccessScreen(navHostController: NavHostController) {
                     Text(
                         text = "학생 213명 선생님 32명",
                         style = MaterialTheme.typography.titleMedium,
-                        color = Gray600
+                        color = Gray600,
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))

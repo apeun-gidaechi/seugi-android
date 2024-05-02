@@ -1,6 +1,5 @@
 package com.apeun.gidaechi
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -98,7 +97,7 @@ internal fun SelectingJobScreen(navHostController: NavHostController) {
                                     shape = RoundedCornerShape(12.dp),
                                 ),
 
-                            ) {
+                        ) {
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -115,7 +114,7 @@ internal fun SelectingJobScreen(navHostController: NavHostController) {
                                     Text(
                                         text = "학생",
                                         style = MaterialTheme.typography.titleMedium,
-                                        color = if (studentOnOff) Black else Gray500
+                                        color = if (studentOnOff) Black else Gray500,
                                     )
                                     if (studentOnOff) {
                                         Spacer(modifier = Modifier.width(4.dp))
@@ -166,7 +165,7 @@ internal fun SelectingJobScreen(navHostController: NavHostController) {
                                     Text(
                                         text = "선생님",
                                         style = MaterialTheme.typography.titleMedium,
-                                        color = if (!studentOnOff) Black else Gray500
+                                        color = if (!studentOnOff) Black else Gray500,
                                     )
                                     if (!studentOnOff) {
                                         Spacer(modifier = Modifier.width(4.dp))
