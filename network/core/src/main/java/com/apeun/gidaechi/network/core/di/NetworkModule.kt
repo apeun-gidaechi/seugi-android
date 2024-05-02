@@ -1,6 +1,7 @@
 package com.apeun.gidaechi.network.core.di
 
 import android.util.Log
+import com.apeun.gidaechi.network.core.utiles.LocalDateTimeTypeAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,9 +17,11 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.accept
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import io.ktor.serialization.kotlinx.json.json
+import io.ktor.http.headers
+import io.ktor.serialization.gson.gson
 import javax.inject.Singleton
 import kotlinx.serialization.json.Json
+import java.time.LocalDateTime
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -28,13 +31,11 @@ object NetworkModule {
     @Singleton
     fun provideHttpClient(): HttpClient = HttpClient(CIO) {
         install(ContentNegotiation) {
-            json(
-                Json {
-                    prettyPrint = true
-                    isLenient = true
-                    ignoreUnknownKeys = true
-                },
-            )
+            gson {
+                registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeTypeAdapter())
+                setPrettyPrinting()
+                setLenient()
+            }
         }
         install(Logging) {
             logger = object : Logger {
