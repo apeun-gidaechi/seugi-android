@@ -125,7 +125,7 @@ internal fun SelectingJobScreen() {
                                 contentDescription = "",
                                 modifier = Modifier
                                     .size(152.dp)
-                                    .offset(y = (4).dp),
+                                    .offset(y = 4.dp),
                                 contentScale = ContentScale.Fit,
                             )
                         }
@@ -172,7 +172,7 @@ internal fun SelectingJobScreen() {
                                 contentDescription = "",
                                 modifier = Modifier
                                     .size(152.dp)
-                                    .offset(y = (4).dp),
+                                    .offset(y = 4.dp),
                                 contentScale = ContentScale.Fit,
                             )
                         }
