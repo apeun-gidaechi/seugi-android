@@ -64,8 +64,7 @@ fun WaitingJoinScreen() {
                         painter = painter,
                         contentDescription = "",
                         modifier = Modifier
-                            .size(145.dp)
-                            .aspectRatio(painter.intrinsicSize.width / painter.intrinsicSize.height),
+                            .size(145.dp),
                         contentScale = ContentScale.Fit,
                     )
                     Spacer(modifier = Modifier.height(10.dp))
