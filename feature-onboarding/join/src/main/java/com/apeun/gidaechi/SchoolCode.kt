@@ -32,7 +32,7 @@ import com.apeun.gidaechi.navigation.JOIN_SUCCESS
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SchoolScreen(navHostController: NavHostController) {
+fun SchoolScreen(navigateToJoinSuccess:() -> Unit,popBackStack:() -> Unit) {
     var schoolCode by remember {
         mutableStateOf(TextFieldValue())
     }
@@ -45,7 +45,7 @@ fun SchoolScreen(navHostController: NavHostController) {
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { navHostController.popBackStack() },
+                    onNavigationIconClick = { popBackStack() },
                 )
             },
         ) {
@@ -90,7 +90,7 @@ fun SchoolScreen(navHostController: NavHostController) {
                 Spacer(modifier = Modifier.weight(1f))
                 SeugiFullWidthButton(
                     onClick = {
-                        navHostController.navigate(JOIN_SUCCESS)
+                        navigateToJoinSuccess()
                     },
                     type = ButtonType.Primary,
                     text = "계속하기",

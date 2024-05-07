@@ -41,7 +41,7 @@ import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailVerificationScreen(navHostController: NavHostController) {
+fun EmailVerificationScreen(navigateToSchoolCode:() -> Unit, popBackStack:() -> Unit) {
     var timeLeft by remember { mutableStateOf(0) }
 
     val minutes = timeLeft / 60
@@ -82,7 +82,7 @@ fun EmailVerificationScreen(navHostController: NavHostController) {
                                 style = MaterialTheme.typography.titleLarge,
                             )
                         },
-                        onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") },
+                        onNavigationIconClick = { popBackStack() },
                         backIconCheck = true,
                     )
                 },
@@ -168,7 +168,7 @@ fun EmailVerificationScreen(navHostController: NavHostController) {
                     SeugiFullWidthButton(
                         enabled = verificationClick,
                         onClick = {
-                            navHostController.navigate(SCHOOL_CODE)
+                            navigateToSchoolCode()
                         },
                         type = ButtonType.Primary,
                         text = "확인",

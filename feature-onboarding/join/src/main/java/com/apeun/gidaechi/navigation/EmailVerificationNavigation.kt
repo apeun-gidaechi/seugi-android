@@ -14,8 +14,8 @@ fun NavController.navigateToEmailVerification(navOptions: NavOptions? = null) = 
     navOptions,
 )
 
-fun NavGraphBuilder.emailVerificationScreen(navHostController: NavHostController) {
+fun NavGraphBuilder.emailVerificationScreen(navigateToSchoolCode:() -> Unit, popBackStack:() -> Unit) {
     composable(route = EMAIL_VERIFICATION_ROUTE) {
-        EmailVerificationScreen(navHostController)
+        EmailVerificationScreen(navigateToSchoolCode = navigateToSchoolCode, popBackStack = popBackStack)
     }
 }

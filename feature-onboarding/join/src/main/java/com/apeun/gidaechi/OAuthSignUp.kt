@@ -30,7 +30,7 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun OAuthSignUpScreen(navHostController: NavHostController) {
+internal fun OAuthSignUpScreen(popBackStack:() -> Unit,  navigateToEmailSignUp: () -> Unit) {
     var text by remember { mutableStateOf("") }
     var error by remember { mutableStateOf(false) }
     SeugiTheme {
@@ -39,7 +39,7 @@ internal fun OAuthSignUpScreen(navHostController: NavHostController) {
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { navHostController.popBackStack() },
+                    onNavigationIconClick = { popBackStack() },
                     backIconCheck = true,
                 )
             },
@@ -86,7 +86,9 @@ internal fun OAuthSignUpScreen(navHostController: NavHostController) {
                         text = "이미 계정이 있으신가요?",
                         style = MaterialTheme.typography.bodySmall,
                         color = Primary500,
-                        modifier = Modifier.bounceClick({}),
+                        modifier = Modifier.bounceClick({
+                            navigateToEmailSignUp()
+                        }),
                     )
                     SeugiFullWidthButton(
                         onClick = { error = true },

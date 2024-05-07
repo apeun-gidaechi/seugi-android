@@ -1,5 +1,6 @@
 package com.apeun.gidaechi.navigation
 
+import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -9,10 +10,11 @@ import com.apeun.gidaechi.StartScreen
 
 const val START_ROUTE = "start"
 
-fun NavController.navigateToLogin(navOptions: NavOptions? = null) = navigate(START_ROUTE, navOptions)
+fun NavController.navigateToStart(navOptions: NavOptions? = null) = navigate(START_ROUTE, navOptions)
 
-fun NavGraphBuilder.startScreen(navHostController: NavHostController) {
+fun NavGraphBuilder.startScreen(navigateToEmailSignIn:() -> Unit, navigateToOAuthSignIn:() -> Unit) {
     composable(route = START_ROUTE) {
-        StartScreen(navHostController)
+        Log.d("TAG", "$navigateToEmailSignIn: ")
+        StartScreen(navigateToEmailSignIn = navigateToEmailSignIn, navigateToOAuthSignIn = navigateToOAuthSignIn)
     }
 }

@@ -14,8 +14,8 @@ fun NavController.navigateToSelectingJob(navOptions: NavOptions? = null) = navig
     navOptions,
 )
 
-fun NavGraphBuilder.selectingJob(navHostController: NavHostController) {
+fun NavGraphBuilder.selectingJob(navigateToWaitingJoin: () -> Unit, popBackStack: ()-> Unit) {
     composable(route = SELECTING_JOB) {
-        SelectingJobScreen(navHostController)
+        SelectingJobScreen(navigateToWaitingJoin = navigateToWaitingJoin, popBackStack = popBackStack)
     }
 }

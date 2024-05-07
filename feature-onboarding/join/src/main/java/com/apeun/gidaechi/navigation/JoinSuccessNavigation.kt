@@ -14,8 +14,9 @@ fun NavController.navigateToJoinSuccess(navOptions: NavOptions? = null) = naviga
     navOptions,
 )
 
-fun NavGraphBuilder.joinSuccess(navHostController: NavHostController) {
+fun NavGraphBuilder.joinSuccess(navigateToSelectingJob: () -> Unit, popBackStack:() -> Unit) {
     composable(route = JOIN_SUCCESS) {
-        JoinSuccessScreen(navHostController)
+        JoinSuccessScreen(navigateToSelectingJob = navigateToSelectingJob, popBackStack = popBackStack)
+
     }
 }

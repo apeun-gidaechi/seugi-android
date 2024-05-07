@@ -37,7 +37,7 @@ import com.apeun.gidaechi.start.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun StartScreen(navHostController: NavHostController) {
+internal fun StartScreen(navigateToEmailSignIn:() -> Unit, navigateToOAuthSignIn:() -> Unit) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -107,8 +107,9 @@ internal fun StartScreen(navHostController: NavHostController) {
                         Column {
                             SeugiFullWidthButton(
                                 onClick = {
+                                    navigateToEmailSignIn()
+
                                     showBottomSheet = false
-                                    navHostController.navigate(EMAIL_SIGN_IN)
                                 },
                                 type = ButtonType.Black,
                                 text = "이메일로 계속하기",
@@ -118,7 +119,10 @@ internal fun StartScreen(navHostController: NavHostController) {
                             SeugiOAuthButton(
                                 image = R.drawable.ic_menu,
                                 text = "Google로 계속하기",
-                                onClick = { /*TODO: google login*/ },
+                                onClick = {
+                                    navigateToOAuthSignIn()
+
+                                    showBottomSheet = false },
                             )
                         }
                         Spacer(modifier = Modifier.height(50.dp))

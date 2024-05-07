@@ -26,14 +26,14 @@ import com.apeun.gidaechi.navigation.SELECTING_JOB
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun JoinSuccessScreen(navHostController: NavHostController) {
+fun JoinSuccessScreen(navigateToSelectingJob: () -> Unit, popBackStack:() -> Unit) {
     SeugiTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { navHostController.popBackStack() },
+                    onNavigationIconClick = { popBackStack() },
                     backIconCheck = true,
                 )
             },
@@ -66,7 +66,7 @@ fun JoinSuccessScreen(navHostController: NavHostController) {
                 Spacer(modifier = Modifier.weight(1f))
                 SeugiFullWidthButton(
                     onClick = {
-                        navHostController.navigate(SELECTING_JOB)
+                       navigateToSelectingJob()
                     },
                     type = ButtonType.Primary,
                     text = "계속하기",

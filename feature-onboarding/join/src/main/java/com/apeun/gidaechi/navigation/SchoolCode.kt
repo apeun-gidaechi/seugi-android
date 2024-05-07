@@ -14,8 +14,11 @@ fun NavController.navigateToSchoolCode(navOptions: NavOptions? = null) = navigat
     navOptions,
 )
 
-fun NavGraphBuilder.schoolCode(navHostController: NavHostController) {
+fun NavGraphBuilder.schoolCode(navigateToJoinSuccess:() -> Unit, popBackStack:() -> Unit) {
     composable(route = SCHOOL_CODE) {
-        SchoolScreen(navHostController)
+        SchoolScreen(
+            navigateToJoinSuccess = navigateToJoinSuccess,
+            popBackStack = popBackStack
+        )
     }
 }

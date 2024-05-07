@@ -14,4 +14,9 @@ dependencies {
     implementation(projects.featureMain.home)
     implementation(projects.featureMain.room)
     implementation(projects.featureMain.roomCreate)
+
+    implementation(projects.featureOnboarding.onabording)
+    implementation(projects.featureOnboarding.login)
+    implementation(projects.featureOnboarding.join)
+    implementation(projects.featureOnboarding.start)
 }

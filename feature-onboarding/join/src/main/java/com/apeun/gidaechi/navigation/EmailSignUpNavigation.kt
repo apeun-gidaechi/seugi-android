@@ -11,8 +11,8 @@ const val EMAIL_SIGN_UP_ROUTE = "emailSignUp"
 
 fun NavController.navigateToEmailSignUp(navOptions: NavOptions? = null) = navigate(EMAIL_SIGN_UP_ROUTE, navOptions)
 
-fun NavGraphBuilder.emailSignUpScreen(navHostController: NavHostController) {
+fun NavGraphBuilder.emailSignUpScreen(navigateToEmailVerification:() -> Unit,  popBackStack:() -> Unit) {
     composable(route = EMAIL_SIGN_UP_ROUTE) {
-        EmailSignUpScreen(navHostController)
+        EmailSignUpScreen(navigateToEmailVerification = navigateToEmailVerification, popBackStack = popBackStack)
     }
 }

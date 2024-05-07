@@ -34,7 +34,7 @@ import com.apeun.gidaechi.navigation.EMAIL_VERIFICATION_ROUTE
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun EmailSignUpScreen(navHostController: NavHostController) {
+internal fun EmailSignUpScreen(navigateToEmailVerification:() -> Unit, popBackStack:() -> Unit) {
     var nameText by remember { mutableStateOf("") }
     var emailText by remember { mutableStateOf("") }
     var pwText by remember { mutableStateOf("") }
@@ -46,7 +46,7 @@ internal fun EmailSignUpScreen(navHostController: NavHostController) {
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { navHostController.popBackStack() },
+                    onNavigationIconClick = { popBackStack() },
                     backIconCheck = true,
                 )
             },
@@ -186,7 +186,7 @@ internal fun EmailSignUpScreen(navHostController: NavHostController) {
                         modifier = Modifier.bounceClick({}),
                     )
                     SeugiFullWidthButton(
-                        onClick = { navHostController.navigate(EMAIL_VERIFICATION_ROUTE) },
+                        onClick = { navigateToEmailVerification() },
                         type = ButtonType.Primary,
                         text = "계속하기",
                         modifier = Modifier

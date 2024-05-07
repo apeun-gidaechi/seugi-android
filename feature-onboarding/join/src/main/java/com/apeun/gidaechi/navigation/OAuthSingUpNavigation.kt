@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.apeun.gidaechi.OAuthSignUpScreen
 import com.apeun.gidaechi.SchoolScreen
 
 const val OAUTH_SIGN_UP = "oauthSignUp"
@@ -14,8 +15,8 @@ fun NavController.navigateToOAuthSignUp(navOptions: NavOptions? = null) = naviga
     navOptions,
 )
 
-fun NavGraphBuilder.oauthSignUp(navHostController: NavHostController) {
+fun NavGraphBuilder.oauthSignUp(popBackStack: ()->Unit, navigateToEmailSignUp: () -> Unit) {
     composable(route = OAUTH_SIGN_UP) {
-        SchoolScreen(navHostController)
+        OAuthSignUpScreen(popBackStack = popBackStack, navigateToEmailSignUp = navigateToEmailSignUp)
     }
 }

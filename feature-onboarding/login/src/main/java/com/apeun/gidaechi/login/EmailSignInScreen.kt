@@ -20,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
@@ -30,11 +29,10 @@ import com.apeun.gidaechi.designsystem.component.textfield.SeugiTextField
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
-import com.apeun.gidaechi.navigation.EMAIL_SIGN_UP_ROUTE
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun EmailSignInScreen(navHostController: NavHostController) {
+internal fun EmailSignInScreen(navigateToEmailSignUp:() -> Unit, popBackStack:() -> Unit) {
     var emailValue by remember { mutableStateOf("") }
     var pwValue by remember { mutableStateOf("") }
 
@@ -44,7 +42,9 @@ internal fun EmailSignInScreen(navHostController: NavHostController) {
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "로그인", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { navHostController.popBackStack() },
+                    onNavigationIconClick = {
+                        popBackStack()
+                    },
                     backIconCheck = true,
                 )
             },
@@ -115,12 +115,12 @@ internal fun EmailSignInScreen(navHostController: NavHostController) {
                         style = MaterialTheme.typography.bodyLarge,
                         color = Primary500,
                         modifier = Modifier
-                            .bounceClick({ navHostController.navigate(EMAIL_SIGN_UP_ROUTE) }),
+                            .bounceClick({ navigateToEmailSignUp() }),
                     )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 SeugiFullWidthButton(
-                    onClick = { /*TODO*/ },
+                    onClick = {  },
                     type = ButtonType.Primary,
                     text = "로그인",
                     modifier = Modifier.padding(horizontal = 20.dp),

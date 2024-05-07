@@ -46,7 +46,7 @@ import com.apeun.gidaechi.navigation.WAITING_JOIN
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun SelectingJobScreen(navHostController: NavHostController) {
+internal fun SelectingJobScreen(navigateToWaitingJoin: () -> Unit, popBackStack: ()-> Unit) {
     var studentOnOff by remember {
         mutableStateOf(true)
     }
@@ -59,7 +59,7 @@ internal fun SelectingJobScreen(navHostController: NavHostController) {
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { navHostController.popBackStack() },
+                    onNavigationIconClick = { popBackStack() },
                     backIconCheck = true,
                 )
             },
@@ -194,7 +194,7 @@ internal fun SelectingJobScreen(navHostController: NavHostController) {
                 ) {
                     SeugiFullWidthButton(
                         onClick = {
-                            navHostController.navigate(WAITING_JOIN)
+                            navigateToWaitingJoin()
                         },
                         type = ButtonType.Primary,
                         text = "계속하기",
