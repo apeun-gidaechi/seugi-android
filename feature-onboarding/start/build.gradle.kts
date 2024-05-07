@@ -8,7 +8,6 @@ android {
 
 dependencies {
     implementation(projects.designsystem)
-    implementation(project(":designsystem"))
 
 
     implementation(projects.featureOnboarding.login)
