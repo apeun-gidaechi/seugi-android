@@ -29,7 +29,8 @@ include(
     ":feature-main:home",
     ":feature-main:room",
     ":feature-main:room-create",
-    ":feature-onboarding:onboarding",
     ":feature-onboarding:login",
-    ":feature-onboarding:join"
+    ":feature-onboarding:join",
+    ":feature-onboarding:start",
+    ":feature-onboarding:onabording"
 )

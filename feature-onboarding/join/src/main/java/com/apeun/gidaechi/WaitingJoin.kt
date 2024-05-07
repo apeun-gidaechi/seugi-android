@@ -1,6 +1,5 @@
 package com.apeun.gidaechi
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,21 +20,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.apeun.gidaechi.designsystem.animation.bounceClick
+import androidx.navigation.NavHostController
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiToolTip
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.ToolTipType
-import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.join.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WaitingJoinScreen() {
+fun WaitingJoinScreen(navHostController: NavHostController) {
     val painter = painterResource(id = R.drawable.img_school)
 
     SeugiTheme {
@@ -45,7 +41,7 @@ fun WaitingJoinScreen() {
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") },
+                    onNavigationIconClick = { navHostController.popBackStack() },
                     backIconCheck = true,
                 )
             },
@@ -61,14 +57,14 @@ fun WaitingJoinScreen() {
                         .fillMaxWidth()
                         .padding(horizontal = 50.dp),
                     verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Image(
                         painter = painter,
                         contentDescription = "",
                         modifier = Modifier
                             .size(145.dp)
-                            .aspectRatio(painter.intrinsicSize.width / painter.intrinsicSize.height), // 이미지의 가로 세로 비율 유지
+                            .aspectRatio(painter.intrinsicSize.width / painter.intrinsicSize.height),
                         contentScale = ContentScale.Fit,
                     )
                     Spacer(modifier = Modifier.height(10.dp))
@@ -76,12 +72,10 @@ fun WaitingJoinScreen() {
                     Spacer(modifier = Modifier.height(15.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
+                        horizontalArrangement = Arrangement.End,
                     ) {
-
                         SeugiToolTip(text = "가입 수락을 대기중이에요", type = ToolTipType.Side)
                     }
-
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Column(
@@ -97,12 +91,4 @@ fun WaitingJoinScreen() {
             }
         }
     }
-}
-
-
-
-@Preview
-@Composable
-private fun WaitingJoin() {
-    WaitingJoinScreen()
 }

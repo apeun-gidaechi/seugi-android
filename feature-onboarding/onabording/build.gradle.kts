@@ -8,7 +8,9 @@ android {
 
 dependencies {
     implementation(projects.designsystem)
-    implementation(libs.androidx.monitor)
-    implementation(libs.androidx.junit.ktx)
+
+    implementation(projects.featureOnboarding.login)
+    implementation(projects.featureOnboarding.start)
+    implementation(projects.featureOnboarding.join)
 
 }
