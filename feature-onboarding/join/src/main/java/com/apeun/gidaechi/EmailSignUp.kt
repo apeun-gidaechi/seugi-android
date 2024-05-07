@@ -174,7 +174,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                 Spacer(modifier = Modifier.weight(1f))
 
                 SeugiFullWidthButton(
-                    onClick = { Log.d("TAG", "EmailSignUpScreen: ") },
+                    onClick = { navigateToEmailVerification() },
                     type = ButtonType.Primary,
                     text = "계속하기",
                     modifier = Modifier
