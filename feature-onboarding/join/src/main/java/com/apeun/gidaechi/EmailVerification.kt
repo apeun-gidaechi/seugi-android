@@ -41,7 +41,6 @@ import kotlinx.coroutines.delay
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailVerificationScreen() {
-
     var timeLeft by remember { mutableStateOf(0) }
 
     val minutes = timeLeft / 60
@@ -55,8 +54,6 @@ fun EmailVerificationScreen() {
     var dialogState by remember {
         mutableStateOf(false)
     }
-
-
 
     LaunchedEffect(key1 = timeLeft) {
         while (timeLeft > 0) {
@@ -90,7 +87,7 @@ fun EmailVerificationScreen() {
                     content = "이메일 함을 확인해 보세요",
                     onDismissRequest = {
                         dialogState = false
-                    }
+                    },
                 )
             }
             Column(
@@ -101,9 +98,8 @@ fun EmailVerificationScreen() {
             ) {
                 Spacer(modifier = Modifier.height(6.dp))
                 Column(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
-
                     Row(
                         modifier = Modifier.padding(start = 4.dp),
                     ) {
@@ -111,7 +107,7 @@ fun EmailVerificationScreen() {
                         Text(
                             text = " *",
                             style = MaterialTheme.typography.titleMedium,
-                            color = Red500
+                            color = Red500,
                         )
                     }
                     SeugiCodeTextField(
@@ -140,10 +136,9 @@ fun EmailVerificationScreen() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 4.dp),
-                        horizontalArrangement = Arrangement.End
+                        horizontalArrangement = Arrangement.End,
                     ) {
                         if (!verificationClick) {
-
                             SeugiButton(
                                 onClick = {
                                     verificationClick = true
@@ -151,13 +146,13 @@ fun EmailVerificationScreen() {
                                     dialogState = true
                                 },
                                 type = ButtonType.Primary,
-                                text = "인증 코드 전송"
+                                text = "인증 코드 전송",
                             )
                         } else {
                             Text(
                                 text = "$formattedTime",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Gray600
+                                color = Gray600,
                             )
                         }
                     }
@@ -166,7 +161,7 @@ fun EmailVerificationScreen() {
 
                 SeugiFullWidthButton(
                     enabled = verificationClick,
-                    onClick = {  },
+                    onClick = { },
                     type = ButtonType.Primary,
                     text = "확인",
                     modifier = Modifier.padding(vertical = 16.dp),
@@ -175,7 +170,6 @@ fun EmailVerificationScreen() {
         }
     }
 }
-
 
 @Preview
 @Composable
