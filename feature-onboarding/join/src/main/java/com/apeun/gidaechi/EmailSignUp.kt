@@ -157,28 +157,20 @@ internal fun EmailSignUpScreen() {
                 }
             }
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom,
-                modifier = Modifier.fillMaxHeight(),
-            ) {
-                Text(
-                    text = "이미 계정이 있으신가요?",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Primary500,
-                    modifier = Modifier.bounceClick({}),
-                )
-                SeugiFullWidthButton(
-                    onClick = { error = !error },
-                    type = ButtonType.Primary,
-                    text = "계속하기",
-                    modifier = Modifier
-                        .padding(vertical = 16.dp),
-                )
-            }
+            Spacer(modifier = Modifier.weight(1f))
+
+            SeugiFullWidthButton(
+                onClick = { Log.d("TAG", "EmailSignUpScreen: ") },
+                type = ButtonType.Primary,
+                text = "계속하기",
+                modifier = Modifier
+                    .padding(vertical = 16.dp),
+            )
         }
+
     }
 }
+
 
 @Preview
 @Composable
