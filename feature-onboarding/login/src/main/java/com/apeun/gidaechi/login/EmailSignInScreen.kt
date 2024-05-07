@@ -32,7 +32,7 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun EmailSignInScreen(navigateToEmailSignUp:() -> Unit, popBackStack:() -> Unit) {
+internal fun EmailSignInScreen(navigateToEmailSignUp: () -> Unit, popBackStack: () -> Unit) {
     var emailValue by remember { mutableStateOf("") }
     var pwValue by remember { mutableStateOf("") }
 
@@ -120,7 +120,7 @@ internal fun EmailSignInScreen(navigateToEmailSignUp:() -> Unit, popBackStack:()
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 SeugiFullWidthButton(
-                    onClick = {  },
+                    onClick = { },
                     type = ButtonType.Primary,
                     text = "로그인",
                     modifier = Modifier.padding(horizontal = 20.dp),

@@ -2,7 +2,6 @@ package com.apeun.gidaechi.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.apeun.gidaechi.EmailVerificationScreen
@@ -14,7 +13,7 @@ fun NavController.navigateToEmailVerification(navOptions: NavOptions? = null) = 
     navOptions,
 )
 
-fun NavGraphBuilder.emailVerificationScreen(navigateToSchoolCode:() -> Unit, popBackStack:() -> Unit) {
+fun NavGraphBuilder.emailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -> Unit) {
     composable(route = EMAIL_VERIFICATION_ROUTE) {
         EmailVerificationScreen(navigateToSchoolCode = navigateToSchoolCode, popBackStack = popBackStack)
     }

@@ -2,7 +2,6 @@ package com.apeun.gidaechi.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.apeun.gidaechi.SchoolScreen
@@ -14,11 +13,11 @@ fun NavController.navigateToSchoolCode(navOptions: NavOptions? = null) = navigat
     navOptions,
 )
 
-fun NavGraphBuilder.schoolCode(navigateToJoinSuccess:() -> Unit, popBackStack:() -> Unit) {
+fun NavGraphBuilder.schoolCode(navigateToJoinSuccess: () -> Unit, popBackStack: () -> Unit) {
     composable(route = SCHOOL_CODE) {
         SchoolScreen(
             navigateToJoinSuccess = navigateToJoinSuccess,
-            popBackStack = popBackStack
+            popBackStack = popBackStack,
         )
     }
 }

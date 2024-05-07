@@ -26,18 +26,16 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiOAuthButton
 import com.apeun.gidaechi.designsystem.theme.Gradient
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
-import com.apeun.gidaechi.login.navigation.EMAIL_SIGN_IN
 import com.apeun.gidaechi.start.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun StartScreen(navigateToEmailSignIn:() -> Unit, navigateToOAuthSignIn:() -> Unit) {
+internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignIn: () -> Unit) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -122,7 +120,8 @@ internal fun StartScreen(navigateToEmailSignIn:() -> Unit, navigateToOAuthSignIn
                                 onClick = {
                                     navigateToOAuthSignIn()
 
-                                    showBottomSheet = false },
+                                    showBottomSheet = false
+                                },
                             )
                         }
                         Spacer(modifier = Modifier.height(50.dp))

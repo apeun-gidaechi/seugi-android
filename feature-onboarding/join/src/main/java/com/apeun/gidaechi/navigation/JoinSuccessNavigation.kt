@@ -2,7 +2,6 @@ package com.apeun.gidaechi.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.apeun.gidaechi.JoinSuccessScreen
@@ -14,9 +13,8 @@ fun NavController.navigateToJoinSuccess(navOptions: NavOptions? = null) = naviga
     navOptions,
 )
 
-fun NavGraphBuilder.joinSuccess(navigateToSelectingJob: () -> Unit, popBackStack:() -> Unit) {
+fun NavGraphBuilder.joinSuccess(navigateToSelectingJob: () -> Unit, popBackStack: () -> Unit) {
     composable(route = JOIN_SUCCESS) {
         JoinSuccessScreen(navigateToSelectingJob = navigateToSelectingJob, popBackStack = popBackStack)
-
     }
 }

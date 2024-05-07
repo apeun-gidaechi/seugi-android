@@ -40,37 +40,37 @@ internal fun OnboardingScreen(navHostController: NavHostController = rememberNav
     ) {
         startScreen(
             navigateToEmailSignIn = { navHostController.navigateToEmailSignIn() },
-            navigateToOAuthSignIn = {navHostController.navigateToOAuthSignUp()}
+            navigateToOAuthSignIn = { navHostController.navigateToOAuthSignUp() },
         )
         emailSignInScreen(
-            navigateToOAuthSignUp = { navHostController.navigateToEmailSignUp()},
-            popBackStack = { navHostController.popBackStack() }
+            navigateToOAuthSignUp = { navHostController.navigateToEmailSignUp() },
+            popBackStack = { navHostController.popBackStack() },
         )
         emailSignUpScreen(
-            navigateToEmailVerification = {navHostController.navigateToEmailVerification()},
-            popBackStack = { navHostController.popBackStack() }
+            navigateToEmailVerification = { navHostController.navigateToEmailVerification() },
+            popBackStack = { navHostController.popBackStack() },
         )
         emailVerificationScreen(
-            navigateToSchoolCode = {navHostController.navigateToSchoolCode()},
-            popBackStack = {navHostController.popBackStack()}
+            navigateToSchoolCode = { navHostController.navigateToSchoolCode() },
+            popBackStack = { navHostController.popBackStack() },
         )
         schoolCode(
             navigateToJoinSuccess = { navHostController.navigateToJoinSuccess() },
-            popBackStack = {navHostController.popBackStack()}
+            popBackStack = { navHostController.popBackStack() },
         )
         joinSuccess(
             navigateToSelectingJob = { navHostController.navigateToSelectingJob() },
-            popBackStack = {navHostController.popBackStack()}
+            popBackStack = { navHostController.popBackStack() },
         )
         selectingJob(
-            navigateToWaitingJoin = {navHostController.navigateToWaitingJoin()},
-            popBackStack = {navHostController.popBackStack()}
+            navigateToWaitingJoin = { navHostController.navigateToWaitingJoin() },
+            popBackStack = { navHostController.popBackStack() },
         )
         waitingJoin(navHostController)
 
         oauthSignUp(
-            popBackStack = {navHostController.popBackStack()},
-            navigateToEmailSignUp = {navHostController.navigateToEmailSignUp()}
+            popBackStack = { navHostController.popBackStack() },
+            navigateToEmailSignUp = { navHostController.navigateToEmailSignUp() },
         )
     }
 }

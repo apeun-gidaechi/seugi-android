@@ -2,7 +2,6 @@ package com.apeun.gidaechi.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.apeun.gidaechi.SelectingJobScreen
@@ -14,7 +13,7 @@ fun NavController.navigateToSelectingJob(navOptions: NavOptions? = null) = navig
     navOptions,
 )
 
-fun NavGraphBuilder.selectingJob(navigateToWaitingJoin: () -> Unit, popBackStack: ()-> Unit) {
+fun NavGraphBuilder.selectingJob(navigateToWaitingJoin: () -> Unit, popBackStack: () -> Unit) {
     composable(route = SELECTING_JOB) {
         SelectingJobScreen(navigateToWaitingJoin = navigateToWaitingJoin, popBackStack = popBackStack)
     }
