@@ -171,19 +171,19 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                     }
                 }
 
-                
+                Spacer(modifier = Modifier.weight(1f))
+
+                SeugiFullWidthButton(
+                    onClick = { Log.d("TAG", "EmailSignUpScreen: ") },
+                    type = ButtonType.Primary,
+                    text = "계속하기",
+                    modifier = Modifier
+                        .padding(vertical = 16.dp),
+                )
+
             }
 
 
-            Spacer(modifier = Modifier.weight(1f))
-
-            SeugiFullWidthButton(
-                onClick = { Log.d("TAG", "EmailSignUpScreen: ") },
-                type = ButtonType.Primary,
-                text = "계속하기",
-                modifier = Modifier
-                    .padding(vertical = 16.dp),
-            )
         }
     }
 }
