@@ -163,7 +163,7 @@ fun EmailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -
                     Spacer(modifier = Modifier.weight(1f))
 
                     SeugiFullWidthButton(
-                        enabled = verificationClick,
+                        enabled = if (verificationCode.text.length == 6) true else false,
                         onClick = {
                             navigateToSchoolCode()
                         },

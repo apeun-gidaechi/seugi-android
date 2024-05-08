@@ -87,6 +87,7 @@ fun SchoolScreen(navigateToJoinSuccess: () -> Unit, popBackStack: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 SeugiFullWidthButton(
+                    enabled =  if (schoolCode.text.length == 6) true else false,
                     onClick = {
                         navigateToJoinSuccess()
                     },
