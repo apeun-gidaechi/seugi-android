@@ -31,7 +31,7 @@ fun JoinSuccessScreen(navigateToSelectingJob: () -> Unit, popBackStack: () -> Un
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { popBackStack() },
+                    onNavigationIconClick = popBackStack,
                     backIconCheck = true,
                 )
             },
@@ -63,9 +63,7 @@ fun JoinSuccessScreen(navigateToSelectingJob: () -> Unit, popBackStack: () -> Un
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 SeugiFullWidthButton(
-                    onClick = {
-                        navigateToSelectingJob()
-                    },
+                    onClick = navigateToSelectingJob,
                     type = ButtonType.Primary,
                     text = "계속하기",
                     modifier = Modifier.padding(vertical = 16.dp),

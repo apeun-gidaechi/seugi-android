@@ -39,7 +39,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { popBackStack() },
+                    onNavigationIconClick = popBackStack,
                     backIconCheck = true,
                 )
             },
@@ -170,7 +170,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                 Spacer(modifier = Modifier.weight(1f))
 
                 SeugiFullWidthButton(
-                    onClick = { navigateToEmailVerification() },
+                    onClick = navigateToEmailVerification,
                     type = ButtonType.Primary,
                     text = "계속하기",
                     modifier = Modifier
