@@ -57,7 +57,7 @@ internal fun SelectingJobScreen(navigateToWaitingJoin: () -> Unit, popBackStack:
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { popBackStack() },
+                    onNavigationIconClick = popBackStack,
                     backIconCheck = true,
                 )
             },
@@ -191,9 +191,7 @@ internal fun SelectingJobScreen(navigateToWaitingJoin: () -> Unit, popBackStack:
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     SeugiFullWidthButton(
-                        onClick = {
-                            navigateToWaitingJoin()
-                        },
+                        onClick = navigateToWaitingJoin,
                         type = ButtonType.Primary,
                         text = "계속하기",
                         modifier = Modifier.padding(vertical = 16.dp),

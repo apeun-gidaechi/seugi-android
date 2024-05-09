@@ -43,7 +43,7 @@ fun SchoolScreen(navigateToJoinSuccess: () -> Unit, popBackStack: () -> Unit) {
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { popBackStack() },
+                    onNavigationIconClick = popBackStack,
                 )
             },
         ) {
@@ -87,9 +87,8 @@ fun SchoolScreen(navigateToJoinSuccess: () -> Unit, popBackStack: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 SeugiFullWidthButton(
-                    onClick = {
-                        navigateToJoinSuccess()
-                    },
+                    enabled = if (schoolCode.text.length == 6) true else false,
+                    onClick = navigateToJoinSuccess,
                     type = ButtonType.Primary,
                     text = "계속하기",
                     modifier = Modifier.padding(vertical = 16.dp),

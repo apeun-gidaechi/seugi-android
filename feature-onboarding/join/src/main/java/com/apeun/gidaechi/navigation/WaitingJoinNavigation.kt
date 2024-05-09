@@ -2,7 +2,6 @@ package com.apeun.gidaechi.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.apeun.gidaechi.WaitingJoinScreen
@@ -14,8 +13,8 @@ fun NavController.navigateToWaitingJoin(navOptions: NavOptions? = null) = naviga
     navOptions,
 )
 
-fun NavGraphBuilder.waitingJoin(navHostController: NavHostController) {
+fun NavGraphBuilder.waitingJoin(popBackStack: () -> Unit) {
     composable(route = WAITING_JOIN) {
-        WaitingJoinScreen(navHostController)
+        WaitingJoinScreen(popBackStack = popBackStack)
     }
 }

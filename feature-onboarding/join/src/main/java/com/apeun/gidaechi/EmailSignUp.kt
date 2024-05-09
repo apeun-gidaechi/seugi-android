@@ -1,7 +1,5 @@
 package com.apeun.gidaechi
 
-import android.util.Log
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,8 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
@@ -43,7 +39,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { popBackStack() },
+                    onNavigationIconClick = popBackStack,
                     backIconCheck = true,
                 )
             },
@@ -171,19 +167,16 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                     }
                 }
 
-                
+                Spacer(modifier = Modifier.weight(1f))
+
+                SeugiFullWidthButton(
+                    onClick = navigateToEmailVerification,
+                    type = ButtonType.Primary,
+                    text = "계속하기",
+                    modifier = Modifier
+                        .padding(vertical = 16.dp),
+                )
             }
-
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            SeugiFullWidthButton(
-                onClick = { Log.d("TAG", "EmailSignUpScreen: ") },
-                type = ButtonType.Primary,
-                text = "계속하기",
-                modifier = Modifier
-                    .padding(vertical = 16.dp),
-            )
         }
     }
 }
