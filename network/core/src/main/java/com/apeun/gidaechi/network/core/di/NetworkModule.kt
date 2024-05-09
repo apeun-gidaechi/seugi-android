@@ -1,6 +1,7 @@
 package com.apeun.gidaechi.network.core.di
 
 import android.util.Log
+import com.apeun.gidaechi.network.core.SeugiUrl
 import com.apeun.gidaechi.network.core.utiles.LocalDateTimeTypeAdapter
 import dagger.Module
 import dagger.Provides
@@ -17,11 +18,14 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.accept
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import io.ktor.http.headers
 import io.ktor.serialization.gson.gson
 import javax.inject.Singleton
-import kotlinx.serialization.json.Json
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import ua.naiksoftware.stomp.Stomp
+import ua.naiksoftware.stomp.StompClient
 import java.time.LocalDateTime
+import java.util.concurrent.TimeUnit
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -55,6 +59,22 @@ object NetworkModule {
             accept(ContentType.Application.Json)
         }
     }
+
+    @Provides
+    @Singleton
+    fun providesOkhttpClient(): OkHttpClient = OkHttpClient.Builder()
+        .readTimeout(10, TimeUnit.SECONDS)
+        .writeTimeout(10, TimeUnit.SECONDS)
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
+        .build()
+
+
+    @Provides
+    @Singleton
+    fun providesStompClient(
+        okHttpClient: OkHttpClient
+    ): StompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, SeugiUrl.Chat.HANDSHAKE, null, okHttpClient)
 }
 
 private const val TIME_OUT = 60_000L
