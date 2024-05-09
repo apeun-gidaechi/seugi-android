@@ -67,7 +67,7 @@ internal fun OnboardingScreen(navHostController: NavHostController = rememberNav
             popBackStack = { navHostController.popBackStack() },
         )
         waitingJoin(
-            popBackStack = {navHostController.popBackStack()}
+            popBackStack = { navHostController.popBackStack() },
         )
 
         oauthSignUp(

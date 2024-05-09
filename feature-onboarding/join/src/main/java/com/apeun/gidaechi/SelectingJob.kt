@@ -57,7 +57,7 @@ internal fun SelectingJobScreen(navigateToWaitingJoin: () -> Unit, popBackStack:
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick =  popBackStack,
+                    onNavigationIconClick = popBackStack,
                     backIconCheck = true,
                 )
             },
