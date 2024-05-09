@@ -25,4 +25,5 @@ dependencies {
     implementation(projects.common)
     implementation(libs.gson)
 
+    implementation(libs.stomp.android)
 }
