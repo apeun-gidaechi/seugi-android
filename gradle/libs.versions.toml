@@ -34,6 +34,7 @@ ktor = "2.3.8"
 coil = "2.6.0"
 rive = "8.7.0"
 gson = "2.10.1"
+okhttp3 = "4.9.0"
 
 #socket
 stomp-android = "1.6.6"
@@ -112,6 +113,7 @@ ktor-client-auth = { group = "io.ktor", name = "ktor-client-auth", version.ref =
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 rive = { group = "app.rive", name = "rive-android", version.ref = "rive" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3"}
 
 # socket
 stomp-android = { group = "com.github.NaikSoftware", name = "StompProtocolAndroid", version.ref = "stomp-android" }

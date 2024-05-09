@@ -24,6 +24,7 @@ dependencies {
     api(libs.kotlinx.datetime)
     implementation(projects.common)
     implementation(libs.gson)
+    implementation(libs.okhttp3.logging.interceptor)
 
     implementation(libs.stomp.android)
 }
