@@ -32,7 +32,7 @@ import com.apeun.gidaechi.join.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WaitingJoinScreen(navHostController: NavHostController) {
+fun WaitingJoinScreen(popBackStack: () -> Unit) {
     val painter = painterResource(id = R.drawable.img_school)
 
     SeugiTheme {
@@ -41,7 +41,7 @@ fun WaitingJoinScreen(navHostController: NavHostController) {
             topBar = {
                 SeugiTopBar(
                     title = { Text(text = "", style = MaterialTheme.typography.titleLarge) },
-                    onNavigationIconClick = { navHostController.popBackStack() },
+                    onNavigationIconClick = popBackStack,
                     backIconCheck = true,
                 )
             },
