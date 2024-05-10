@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -69,7 +68,7 @@ fun SeugiOAuthButton(@DrawableRes image: Int, text: String, onClick: () -> Unit,
         ),
 
         shape = RoundedCornerShape(12.dp),
-        border = BorderStroke((1.5).dp, Gray300)
+        border = BorderStroke((1.5).dp, Gray300),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
