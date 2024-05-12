@@ -85,9 +85,8 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 50.dp),
-                verticalArrangement = Arrangement.Bottom
+                verticalArrangement = Arrangement.Bottom,
             ) {
-
                 SeugiFullWidthButton(
                     onClick = { showBottomSheet = true },
                     type = ButtonType.Transparent,
