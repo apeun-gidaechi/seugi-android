@@ -28,6 +28,7 @@ import com.apeun.gidaechi.designsystem.component.textfield.SeugiPasswordTextFiel
 import com.apeun.gidaechi.designsystem.component.textfield.SeugiTextField
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary500
+import com.apeun.gidaechi.designsystem.theme.Red500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,11 +59,16 @@ internal fun EmailSignInScreen(navigateToEmailSignUp: () -> Unit, popBackStack: 
                         .padding(horizontal = 20.dp),
                 ) {
                     Spacer(modifier = Modifier.height(6.dp))
-                    Text(
-                        text = "이메일",
-                        style = MaterialTheme.typography.titleMedium,
+                    Row(
                         modifier = Modifier.padding(start = 4.dp),
-                    )
+                    ) {
+                        Text(text = "이메일", style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            text = " *",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Red500,
+                        )
+                    }
                     Spacer(modifier = Modifier.height(4.dp))
                     SeugiTextField(
                         value = emailValue,
@@ -79,11 +85,16 @@ internal fun EmailSignInScreen(navigateToEmailSignUp: () -> Unit, popBackStack: 
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp),
                 ) {
-                    Text(
-                        text = "비밀번호",
-                        style = MaterialTheme.typography.titleMedium,
+                    Row(
                         modifier = Modifier.padding(start = 4.dp),
-                    )
+                    ) {
+                        Text(text = "비밀번호", style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            text = " *",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Red500,
+                        )
+                    }
                     Spacer(modifier = Modifier.height(4.dp))
                     SeugiPasswordTextField(
                         value = pwValue,

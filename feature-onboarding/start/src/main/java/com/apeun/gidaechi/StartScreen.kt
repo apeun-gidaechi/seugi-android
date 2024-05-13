@@ -81,13 +81,20 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
-            SeugiFullWidthButton(
-                onClick = { showBottomSheet = true },
-                type = ButtonType.Transparent,
-                text = "시작하기",
-                modifier = Modifier.padding(horizontal = 20.dp),
-            )
-            Spacer(modifier = Modifier.weight(1f))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 50.dp),
+                verticalArrangement = Arrangement.Bottom,
+            ) {
+                SeugiFullWidthButton(
+                    onClick = { showBottomSheet = true },
+                    type = ButtonType.Transparent,
+                    text = "시작하기",
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp),
+                )
+            }
 
             if (showBottomSheet) {
                 ModalBottomSheet(
