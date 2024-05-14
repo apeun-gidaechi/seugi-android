@@ -10,5 +10,7 @@ interface ChatDetailDataSource {
 
     suspend fun connectStomp(accessToken: String)
 
+    suspend fun reConnectStomp(accessToken: String)
+
     suspend fun getIsConnect(): Boolean
 }

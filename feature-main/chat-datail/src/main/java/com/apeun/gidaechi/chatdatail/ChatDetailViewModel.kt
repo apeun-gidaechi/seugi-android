@@ -16,6 +16,11 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -28,6 +33,8 @@ class ChatDetailViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(ChatDetailUiState())
     val state = _state.asStateFlow()
+
+    private var subscribeChat: Job? = null
 
     init {
         _state.value = _state.value.copy(
@@ -80,36 +87,6 @@ class ChatDetailViewModel @Inject constructor(
         )
     }
 
-    fun testInit() = viewModelScope.launch {
-        testConnect.subscribeRoom(
-            chatRoomId = 2,
-        ).collectLatest {
-            when (it) {
-                is Result.Success -> {
-                    val data = it.data
-                    val message = _state.value.message.toMutableList()
-                    message.add(
-                        TestMessageModel(
-                            id = 3,
-                            userName = data.author.name,
-                            userId = data.author.id,
-                            message = data.message,
-                            createdAt = data.timestamp
-                        )
-                    )
-                    _state.value = _state.value.copy(
-                        message = message.toImmutableList()
-                    )
-                }
-                is Result.Loading -> {}
-                is Result.Error -> {
-
-                }
-            }
-        }
-        Log.d("TAG", "testInit: 구독끝남")
-    }
-
     fun testSend(
         content: String
     ) {
@@ -117,5 +94,49 @@ class ChatDetailViewModel @Inject constructor(
             val e = testConnect.sendMessage(2, content)
             Log.d("TAG", "testSend: $e")
         }
+    }
+
+    fun testReconnect(
+
+    ) {
+        viewModelScope.launch {
+            subscribeChat?.cancel()
+            subscribeChat = viewModelScope.async {
+                testConnect.reSubscribeRoom(
+                    chatRoomId = 2
+                ).collect {
+                    when (it) {
+                        is Result.Success -> {
+                            val data = it.data
+                            val message = _state.value.message.toMutableList()
+                            message.add(
+                                TestMessageModel(
+                                    id = 3,
+                                    userName = data.author.name,
+                                    userId = data.author.id,
+                                    message = data.message,
+                                    createdAt = data.timestamp
+                                )
+                            )
+                            _state.value = _state.value.copy(
+                                message = message.toImmutableList()
+                            )
+                        }
+                        is Result.Loading -> {}
+                        is Result.Error -> {
+
+                        }
+                    }
+                }
+            }
+            (subscribeChat as Deferred<*>).await()
+            Log.d("TAG", "testReconnect: ")
+            testReconnect()
+        }
+    }
+
+    fun testSubscribeCancel() {
+        subscribeChat?.cancel()
+        subscribeChat = null
     }
 }

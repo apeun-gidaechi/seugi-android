@@ -10,4 +10,6 @@ interface ChatDetailRepository {
     suspend fun sendMessage(chatRoomId: Int, message: String): Result<Boolean>
 
     suspend fun subscribeRoom(chatRoomId: Int): Flow<Result<ChatDetailMessageModel>>
+
+    suspend fun reSubscribeRoom(chatRoomId: Int): Flow<Result<ChatDetailMessageModel>>
 }

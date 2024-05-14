@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import com.apeun.gidaechi.common.model.Result
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 
 class ChatDetailRepositoryImpl @Inject constructor(
     private val datasource: ChatDetailDataSource,
@@ -29,7 +31,7 @@ class ChatDetailRepositoryImpl @Inject constructor(
 
     override suspend fun subscribeRoom(chatRoomId: Int): Flow<Result<ChatDetailMessageModel>> {
         if (!datasource.getIsConnect()) {
-            datasource.connectStomp("Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0QHRlc3QiLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE1NjYyMjI0LCJleHAiOjE3MTU2NjgyMjR9.6lyJtSOLCcgtL6_UD5XvsM5SXqHdsuoqNbgR3xxzpDY")
+            datasource.connectStomp(TEST_TOKEN)
         }
         return datasource.subscribeRoom(chatRoomId)
             .flowOn(dispatcher)
@@ -37,6 +39,21 @@ class ChatDetailRepositoryImpl @Inject constructor(
                 it.toModel()
             }
             .asResult()
+    }
+
+    override suspend fun reSubscribeRoom(chatRoomId: Int): Flow<Result<ChatDetailMessageModel>> {
+        datasource.reConnectStomp(TEST_TOKEN)
+
+        return datasource.subscribeRoom(chatRoomId)
+            .flowOn(dispatcher)
+            .map {
+                it.toModel()
+            }
+            .asResult()
+    }
+
+    companion object {
+        const val TEST_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0QHRlc3QiLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE1NjkxOTc4LCJleHAiOjE3MTU2OTc5Nzh9.H9mJYw2A2xshao7xV-E1SPFfWcVznIbNCvZry8L6OZ4"
     }
 
 }

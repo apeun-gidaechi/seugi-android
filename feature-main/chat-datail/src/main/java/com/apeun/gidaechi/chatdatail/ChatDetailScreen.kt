@@ -122,13 +122,13 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
 
     LaunchedEffect(key1 = true) {
         onNavigationVisibleChange(false)
-//        viewModel.loadMessage()
-        viewModel.testInit()
     }
 
     LifecycleResumeEffect(key1 = Unit) {
         onNavigationVisibleChange(false)
+        viewModel.testReconnect()
         onPauseOrDispose {
+            viewModel.testSubscribeCancel()
             onNavigationVisibleChange(true)
         }
     }

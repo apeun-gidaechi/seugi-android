@@ -1,5 +1,6 @@
 package com.apeun.gidaechi.network.chatdetail.datasource
 
+import android.util.Log
 import com.apeun.gidaechi.common.utiles.DispatcherType
 import com.apeun.gidaechi.common.utiles.SeugiDispatcher
 import com.apeun.gidaechi.network.chatdetail.ChatDetailDataSource
@@ -9,6 +10,7 @@ import com.apeun.gidaechi.network.core.SeugiUrl
 import com.apeun.gidaechi.network.core.utiles.toJsonString
 import com.apeun.gidaechi.network.core.utiles.toResponse
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -27,8 +29,15 @@ class ChatDetailDataSourceImpl @Inject constructor(
 
     override suspend fun connectStomp(accessToken: String) {
         val header = listOf(StompHeader("Authorization", accessToken))
-        var test = false
         stompClient.connect(header)
+    }
+
+    override suspend fun reConnectStomp(accessToken: String) {
+        stompClient.disconnectCompletable().subscribe() {
+            Log.d("TAG", "reConnectStomp: 시작")
+        }
+        this.connectStomp(accessToken)
+        Log.d("TAG", "reConnectStomp: 끛")
     }
 
     override suspend fun getIsConnect(): Boolean = stompClient.isConnected
