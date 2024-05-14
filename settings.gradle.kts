@@ -25,6 +25,7 @@ include(
     ":designsystem",
     ":designsystem-preview",
     ":network:core",
+    ":network:chat-detail",
     ":common",
     ":feature-main:main",
     ":feature-main:chat",
