@@ -122,7 +122,8 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
 
     LaunchedEffect(key1 = true) {
         onNavigationVisibleChange(false)
-        viewModel.loadMessage()
+//        viewModel.loadMessage()
+        viewModel.testInit()
     }
 
     LifecycleResumeEffect(key1 = Unit) {
@@ -141,8 +142,10 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     LaunchedEffect(key1 = state) {
         if (isFirst) {
             coroutineScope.launch {
-                isFirst = !isFirst
-                scrollState.scrollToItem(state.message.lastIndex)
+                if (state.message.lastIndex != -1) {
+                    isFirst = !isFirst
+                    scrollState.scrollToItem(state.message.lastIndex)
+                }
             }
         }
     }
@@ -244,9 +247,12 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                         text = it
                     },
                     onSendClick = {
+                        viewModel.testSend(text)
                         text = ""
                         coroutineScope.launch {
-                            scrollState.animateScrollToItem(state.message.size - 1)
+                            if (state.message.lastIndex != -1) {
+                                scrollState.animateScrollToItem(state.message.size - 1)
+                            }
                         }
                     },
                 )
