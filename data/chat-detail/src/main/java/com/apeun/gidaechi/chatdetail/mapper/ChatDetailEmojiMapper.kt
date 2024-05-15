@@ -1,15 +1,13 @@
 package com.apeun.gidaechi.chatdetail.mapper
 
-import com.apeun.gidaechi.chatdetail.model.ChatDetailEmojiModel
-import com.apeun.gidaechi.network.chatdetail.response.ChatDetailEmojiResponse
+import com.apeun.gidaechi.chatdetail.model.emoji.ChatDetailEmojiModel
+import com.apeun.gidaechi.network.chatdetail.response.emoji.ChatDetailEmojiResponse
+
 
 internal fun ChatDetailEmojiResponse.toModel() =
     ChatDetailEmojiModel(
-        emojiId = emojiId,
-        userId = userId
+        type = type.toChatType(),
+        eventList = eventList,
+        messageId = messageId,
+        emojiId = emojiId
     )
-
-internal fun List<ChatDetailEmojiResponse>.toModels() =
-    this.map {
-        it.toModel()
-    }

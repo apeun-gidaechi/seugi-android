@@ -1,10 +1,11 @@
 package com.apeun.gidaechi.network.chatdetail
 
-import com.apeun.gidaechi.network.chatdetail.response.ChatDetailMessageResponse
+import com.apeun.gidaechi.network.chatdetail.response.ChatDetailTypeResponse
+import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageResponse
 import kotlinx.coroutines.flow.Flow
 
 interface ChatDetailDataSource {
-    suspend fun subscribeRoom(chatRoomId: Int): Flow<ChatDetailMessageResponse>
+    suspend fun subscribeRoom(chatRoomId: Int): Flow<ChatDetailTypeResponse>
 
     suspend fun sendMessage(chatRoomId: Int, message: String): Boolean
 

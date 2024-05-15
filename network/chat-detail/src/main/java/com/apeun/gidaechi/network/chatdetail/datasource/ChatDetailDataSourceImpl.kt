@@ -5,12 +5,15 @@ import com.apeun.gidaechi.common.utiles.DispatcherType
 import com.apeun.gidaechi.common.utiles.SeugiDispatcher
 import com.apeun.gidaechi.network.chatdetail.ChatDetailDataSource
 import com.apeun.gidaechi.network.chatdetail.request.ChatDetailMessageRequest
-import com.apeun.gidaechi.network.chatdetail.response.ChatDetailMessageResponse
+import com.apeun.gidaechi.network.chatdetail.response.ChatDetailTypeResponse
+import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageDeleteResponse
+import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageEmojiResponse
+import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageResponse
+import com.apeun.gidaechi.network.chatdetail.response.sub.ChatDetailSubResponse
 import com.apeun.gidaechi.network.core.SeugiUrl
 import com.apeun.gidaechi.network.core.utiles.toJsonString
 import com.apeun.gidaechi.network.core.utiles.toResponse
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -44,7 +47,7 @@ class ChatDetailDataSourceImpl @Inject constructor(
 
     override suspend fun subscribeRoom(
         chatRoomId: Int,
-    ): Flow<ChatDetailMessageResponse> = flow {
+    ): Flow<ChatDetailTypeResponse> = flow {
 
         stompClient.topic(SeugiUrl.Chat.SUBSCRIPTION + chatRoomId)
             .asFlow()
@@ -53,7 +56,22 @@ class ChatDetailDataSourceImpl @Inject constructor(
                 it.printStackTrace()
             }
             .collect { message ->
-                emit(message.payload.toResponse(ChatDetailMessageResponse::class.java))
+                val type = message.payload.toResponse(ChatDetailMessageResponse::class.java).type
+                when (type) {
+                    "MESSAGE", "FILE", "IMG", "ENTER", "LEFT" -> {
+                        emit(message.payload.toResponse(ChatDetailMessageResponse::class.java))
+                    }
+                    "SUB" -> {
+                        emit(message.payload.toResponse(ChatDetailSubResponse::class.java))
+                    }
+                    "DELETE_MESSAGE" -> {
+                        emit(message.payload.toResponse(ChatDetailMessageDeleteResponse::class.java))
+                    }
+                    "ADD_EMOJI", "REMOVE_EMOJI" -> {
+                        emit(message.payload.toResponse(ChatDetailMessageEmojiResponse::class.java))
+                    }
+                    else -> {}
+                }
             }
 
     }

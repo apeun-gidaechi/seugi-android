@@ -1,13 +1,13 @@
 package com.apeun.gidaechi.chatdetail.mapper
 
-import com.apeun.gidaechi.chatdetail.model.ChatDetailEmojiModel
-import com.apeun.gidaechi.chatdetail.model.ChatDetailMessageModel
-import com.apeun.gidaechi.chatdetail.model.ChatDetailUserModel
-import com.apeun.gidaechi.chatdetail.model.ChatMessageType
-import com.apeun.gidaechi.network.chatdetail.response.ChatDetailEmojiResponse
-import com.apeun.gidaechi.network.chatdetail.response.ChatDetailMessageResponse
-import com.apeun.gidaechi.network.chatdetail.response.ChatDetailUserResponse
-import java.time.LocalDateTime
+import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageDeleteModel
+import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageEmojiModel
+import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageModel
+import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageUserModel
+import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageDeleteResponse
+import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageEmojiResponse
+import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageResponse
+import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageUserResponse
 
 internal fun ChatDetailMessageResponse.toModel() =
     ChatDetailMessageModel(
@@ -23,4 +23,28 @@ internal fun ChatDetailMessageResponse.toModel() =
         read = read,
         joined = joined,
         messageStatus = messageStatus.toChatMessageType()
+    )
+
+internal fun ChatDetailMessageDeleteResponse.toModel() =
+    ChatDetailMessageDeleteModel(
+        type = type.toChatType(),
+        eventList = eventList,
+        messageId = messageId,
+    )
+
+internal fun ChatDetailMessageEmojiResponse.toModel() =
+    ChatDetailMessageEmojiModel(
+        emojiId = emojiId,
+        userId = userId
+    )
+
+internal fun List<ChatDetailMessageEmojiResponse>.toModels() =
+    this.map {
+        it.toModel()
+    }
+
+internal fun ChatDetailMessageUserResponse.toModel() =
+    ChatDetailMessageUserModel(
+        id = id,
+        name = name
     )

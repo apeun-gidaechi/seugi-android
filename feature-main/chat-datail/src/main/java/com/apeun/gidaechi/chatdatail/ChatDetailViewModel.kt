@@ -8,6 +8,9 @@ import com.apeun.gidaechi.chatdatail.model.ChatRoomState
 import com.apeun.gidaechi.chatdatail.model.TestMessageModel
 import com.apeun.gidaechi.chatdatail.model.TestUserModel
 import com.apeun.gidaechi.chatdetail.ChatDetailRepository
+import com.apeun.gidaechi.chatdetail.model.ChatType
+import com.apeun.gidaechi.chatdetail.model.isMessage
+import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageModel
 import com.apeun.gidaechi.common.model.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDateTime
@@ -107,20 +110,23 @@ class ChatDetailViewModel @Inject constructor(
                 ).collect {
                     when (it) {
                         is Result.Success -> {
-                            val data = it.data
-                            val message = _state.value.message.toMutableList()
-                            message.add(
-                                TestMessageModel(
-                                    id = 3,
-                                    userName = data.author.name,
-                                    userId = data.author.id,
-                                    message = data.message,
-                                    createdAt = data.timestamp
+                            val dataType = it.data.type
+                            if (dataType.isMessage()) {
+                                val data = it.data as ChatDetailMessageModel
+                                val message = _state.value.message.toMutableList()
+                                message.add(
+                                    TestMessageModel(
+                                        id = 3,
+                                        userName = data.author.name,
+                                        userId = data.author.id,
+                                        message = data.message,
+                                        createdAt = data.timestamp
+                                    )
                                 )
-                            )
-                            _state.value = _state.value.copy(
-                                message = message.toImmutableList()
-                            )
+                                _state.value = _state.value.copy(
+                                    message = message.toImmutableList()
+                                )
+                            }
                         }
                         is Result.Loading -> {}
                         is Result.Error -> {
