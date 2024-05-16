@@ -338,7 +338,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                                     )
                                 } else {
                                     ChatItemType.Others(
-                                        isFirst = isFirst,
+                                        isFirst = item.isFirst,
                                         isLast = item.isLast,
                                         userName = item.author.name,
                                         userProfile = null,

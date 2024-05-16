@@ -140,7 +140,7 @@ class ChatDetailViewModel @Inject constructor(
                                             ).seconds >= 86400 && item.author.id == nextItem.author.id
                                             )
 
-                            var isFirst = item.author.id != formerItem?.author?.id
+                            var isFirst = formerItem == null || item.author.id != formerItem.author.id
                             if (formerItem != null && Duration.between(
                                     formerItem.timestamp,
                                     item.timestamp,
