@@ -121,6 +121,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     }
 
     LaunchedEffect(key1 = true) {
+        viewModel.testLoad()
         onNavigationVisibleChange(false)
     }
 

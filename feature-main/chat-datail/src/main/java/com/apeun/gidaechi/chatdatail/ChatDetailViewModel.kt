@@ -8,7 +8,6 @@ import com.apeun.gidaechi.chatdatail.model.ChatRoomState
 import com.apeun.gidaechi.chatdatail.model.TestMessageModel
 import com.apeun.gidaechi.chatdatail.model.TestUserModel
 import com.apeun.gidaechi.chatdetail.ChatDetailRepository
-import com.apeun.gidaechi.chatdetail.model.ChatType
 import com.apeun.gidaechi.chatdetail.model.isMessage
 import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageModel
 import com.apeun.gidaechi.common.model.Result
@@ -20,18 +19,15 @@ import kotlin.random.nextInt
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ChatDetailViewModel @Inject constructor(
-    private val testConnect: ChatDetailRepository
+    private val repository: ChatDetailRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ChatDetailUiState())
@@ -94,7 +90,7 @@ class ChatDetailViewModel @Inject constructor(
         content: String
     ) {
         viewModelScope.launch {
-            val e = testConnect.sendMessage(2, content)
+            val e = repository.sendMessage(2, content)
             Log.d("TAG", "testSend: $e")
         }
     }
@@ -105,7 +101,7 @@ class ChatDetailViewModel @Inject constructor(
         viewModelScope.launch {
             subscribeChat?.cancel()
             subscribeChat = viewModelScope.async {
-                testConnect.reSubscribeRoom(
+                repository.reSubscribeRoom(
                     chatRoomId = 2
                 ).collect {
                     when (it) {
@@ -144,5 +140,33 @@ class ChatDetailViewModel @Inject constructor(
     fun testSubscribeCancel() {
         subscribeChat?.cancel()
         subscribeChat = null
+    }
+
+    fun testLoad() {
+        viewModelScope.launch {
+            repository.getMessage(2, 0).collect {
+                when(it) {
+                    is Result.Success -> {
+                        val data = it.data.messages
+                            .map { data ->
+                                TestMessageModel(
+                                    id = 3,
+                                    userName = data.author.name,
+                                    userId = data.author.id,
+                                    message = data.message,
+                                    createdAt = data.timestamp
+                                )
+                            }
+                        val chatData = _state.value.message.toMutableList()
+                        chatData.addAll(data)
+                        _state.value = _state.value.copy(
+                            message = chatData.toImmutableList()
+                        )
+                    }
+                    is Result.Loading -> {}
+                    is Result.Error -> {}
+                }
+            }
+        }
     }
 }
