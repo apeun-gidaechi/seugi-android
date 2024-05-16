@@ -67,7 +67,7 @@ class ChatDetailRepositoryImpl @Inject constructor(
     }
 
     companion object {
-        const val TEST_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0QHRlc3QiLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE1ODQ2NDU5LCJleHAiOjE3MTY0NTEyNTl9.MqmdEJT1cRwgMDduNZKiw52Y5USKETstEgYDL0_LxNg"
+        const val TEST_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTcxNTg1ODkwMywiZXhwIjoxNzIxODU4OTAzfQ.F5_W4wAay4FbssM6XxJSCiUIvGCAcjAXqPxb-PXvUDo"
     }
 
 }

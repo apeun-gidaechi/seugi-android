@@ -82,6 +82,7 @@ import com.apeun.gidaechi.designsystem.theme.Primary500
 import java.time.Duration
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -102,6 +103,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     val screenSizeDp = LocalConfiguration.current.screenWidthDp.dp
     val screenSizePx = with(density) { screenSizeDp.toPx() }
 
+    var canScrollForward by remember { mutableStateOf(false) }
     var isOpenSidebar by remember { mutableStateOf(false) }
     val anchors = remember {
         DraggableAnchors {
@@ -150,6 +152,19 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                     scrollState.scrollToItem(state.message.lastIndex)
                 }
             }
+        } else {
+            coroutineScope.launch {
+                if (state.message.lastIndex != -1 && !canScrollForward) {
+                    scrollState.scrollToItem(state.message.lastIndex)
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(key1 = scrollState.canScrollForward) {
+        coroutineScope.launch {
+            delay(50)
+            canScrollForward = scrollState.canScrollForward
         }
     }
 

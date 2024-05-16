@@ -51,7 +51,7 @@ class ChatDetailViewModel @Inject constructor(
                 members = persistentListOf(),
             ),
             userInfo = ChatDetailMessageUserModel(
-                3,
+                2,
                 "박병준",
                 null
             ),
