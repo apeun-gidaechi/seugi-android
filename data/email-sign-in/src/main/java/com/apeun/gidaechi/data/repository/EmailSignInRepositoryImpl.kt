@@ -10,18 +10,18 @@ import com.apeun.gidaechi.data.model.EmailSignInModel
 import com.apeun.gidaechi.network.EmailSignInDatasource
 import com.apeun.gidaechi.network.core.response.safeResponse
 import com.apeun.gidaechi.network.request.EmailSignInRequest
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
 class EmailSignInRepositoryImpl @Inject constructor(
     private val datasource: EmailSignInDatasource,
-    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher
-): EmailSignInRepository {
+    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
+) : EmailSignInRepository {
     override suspend fun emailSignIn(body: EmailSignInRequest): Flow<Result<EmailSignInModel>> {
-        return flow{
+        return flow {
             val e = datasource.emailSignIn(body).safeResponse()
 
             emit(e.toModel())
