@@ -55,7 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.apeun.gidaechi.chatdatail.model.TestUserModel
+import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageUserModel
 import com.apeun.gidaechi.common.utiles.toAmShortString
 import com.apeun.gidaechi.common.utiles.toFullFormatString
 import com.apeun.gidaechi.designsystem.R
@@ -135,20 +135,20 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     }
 
     LaunchedEffect(key1 = keyboardState) {
-        if (keyboardState.isOpen) {
-            scrollState.animateScrollBy(with(density) { keyboardState.height.toPx() })
-        }
+//        if (keyboardState.isOpen) {
+//            scrollState.animateScrollBy(with(density) { keyboardState.height.toPx() })
+//        }
     }
 
     LaunchedEffect(key1 = state) {
-        if (isFirst) {
-            coroutineScope.launch {
-                if (state.message.lastIndex != -1) {
-                    isFirst = !isFirst
-                    scrollState.scrollToItem(state.message.lastIndex)
-                }
-            }
-        }
+//        if (isFirst) {
+//            coroutineScope.launch {
+//                if (state.message.lastIndex != -1) {
+//                    isFirst = !isFirst
+//                    scrollState.scrollToItem(state.message.lastIndex)
+//                }
+//            }
+//        }
     }
 
     BackHandler(
@@ -307,24 +307,24 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                     val nextItem = state.message.getOrNull(index + 1)
                     val item = state.message[index]
 
-                    val isMe = item.userId == state.userInfo?.id
-                    val isLast = item.userId != nextItem?.userId ||
+                    val isMe = item.author.id == state.userInfo?.id
+                    val isLast = item.author.id != nextItem?.author?.id ||
                         (
                             Duration.between(
-                                item.createdAt,
-                                nextItem.createdAt,
-                            ).seconds >= 86400 && item.userId == nextItem.userId
+                                item.timestamp,
+                                nextItem.timestamp,
+                            ).seconds >= 86400 && item.author.id == nextItem.author.id
                             )
 
-                    var isFirst = item.userId != formerItem?.userId
+                    var isFirst = item.author.id != formerItem?.author?.id
                     if (formerItem != null && Duration.between(
-                            formerItem.createdAt,
-                            item.createdAt,
+                            formerItem.timestamp,
+                            item.timestamp,
                         ).seconds >= 86400
                     ) {
                         isFirst = true
                         Spacer(modifier = Modifier.height(12.dp))
-                        SeugiChatItem(type = ChatItemType.Date(item.createdAt.toFullFormatString()))
+                        SeugiChatItem(type = ChatItemType.Date(item.timestamp.toFullFormatString()))
                         Spacer(modifier = Modifier.height(12.dp))
                     }
 
@@ -338,17 +338,17 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                             isMe -> ChatItemType.Me(
                                 isLast = isLast,
                                 message = item.message,
-                                createdAt = item.createdAt.toAmShortString(),
+                                createdAt = item.timestamp.toAmShortString(),
                                 count = 1,
                             )
 
                             else -> ChatItemType.Others(
                                 isFirst = isFirst,
                                 isLast = isLast,
-                                userName = item.userName,
+                                userName = item.author.name,
                                 userProfile = null,
                                 message = item.message,
-                                createdAt = item.createdAt.toAmShortString(),
+                                createdAt = item.timestamp.toAmShortString(),
                                 count = 1,
                             )
                         },
@@ -361,9 +361,9 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
 
 @Composable
 private fun ChatSideBarScreen(
-    members: ImmutableList<TestUserModel>,
+    members: ImmutableList<ChatDetailMessageUserModel>,
     notificationState: Boolean,
-    onClickMember: (TestUserModel) -> Unit,
+    onClickMember: (ChatDetailMessageUserModel) -> Unit,
     onClickInviteMember: () -> Unit,
     onClickLeft: () -> Unit,
     onClickNotification: () -> Unit,
@@ -433,8 +433,8 @@ private fun ChatSideBarScreen(
             }
             items(members) {
                 SeugiMemberList(
-                    userName = it.userName,
-                    userProfile = it.userProfile,
+                    userName = it.name,
+                    userProfile = it.profile,
                     onClick = {
                         onClickMember(it)
                     },

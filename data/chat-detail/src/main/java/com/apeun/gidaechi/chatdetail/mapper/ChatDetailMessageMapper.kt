@@ -56,7 +56,8 @@ internal fun List<ChatDetailMessageEmojiResponse>.toModels() =
 internal fun ChatDetailMessageUserResponse.toModel() =
     ChatDetailMessageUserModel(
         id = id,
-        name = name
+        name = name,
+        profile = null
     )
 
 internal fun ChatDetailMessageLoadResponse.toModel() =

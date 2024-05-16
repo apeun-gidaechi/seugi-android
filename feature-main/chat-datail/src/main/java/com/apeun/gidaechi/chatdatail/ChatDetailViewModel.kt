@@ -3,19 +3,16 @@ package com.apeun.gidaechi.chatdatail
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.apeun.gidaechi.chatdatail.mapper.toState
 import com.apeun.gidaechi.chatdatail.model.ChatDetailUiState
 import com.apeun.gidaechi.chatdatail.model.ChatRoomState
-import com.apeun.gidaechi.chatdatail.model.TestMessageModel
-import com.apeun.gidaechi.chatdatail.model.TestUserModel
 import com.apeun.gidaechi.chatdetail.ChatDetailRepository
 import com.apeun.gidaechi.chatdetail.model.isMessage
 import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageModel
+import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageUserModel
 import com.apeun.gidaechi.common.model.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.LocalDateTime
 import javax.inject.Inject
-import kotlin.random.Random
-import kotlin.random.nextInt
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Deferred
@@ -40,49 +37,13 @@ class ChatDetailViewModel @Inject constructor(
             roomInfo = ChatRoomState(
                 2,
                 "박병준, 박재욱",
-                members = persistentListOf(
-                    TestUserModel(0, "노영재"),
-                    TestUserModel(0, "노영재"),
-                    TestUserModel(0, "노영재"),
-                    TestUserModel(0, "노영재"),
-                    TestUserModel(0, "노영재"),
-                    TestUserModel(0, "노영재"),
-                    TestUserModel(0, "노영재"),
-                    TestUserModel(0, "노영재"),
-                    TestUserModel(0, "노영재"),
-                    TestUserModel(0, "노영재"),
-                    TestUserModel(0, "노영재"),
-                    TestUserModel(0, "노영재"),
-                    TestUserModel(0, "노영재"),
-
-                ),
+                members = persistentListOf(),
             ),
-            userInfo = TestUserModel(
+            userInfo = ChatDetailMessageUserModel(
                 3,
                 "박병준",
+                null
             ),
-        )
-    }
-
-    fun loadMessage() {
-        var time = LocalDateTime.now()
-        val messages: MutableList<TestMessageModel> = mutableListOf()
-        for (i in 1..20) {
-            if (Random.nextBoolean()) {
-                time = time.plusDays(1)
-            }
-            messages.add(
-                TestMessageModel(
-                    0,
-                    "이강현",
-                    Random.nextInt(0..1),
-                    "테스트 메세지 $i",
-                    time,
-                ),
-            )
-        }
-        _state.value = _state.value.copy(
-            message = messages.toImmutableList(),
         )
     }
 
@@ -111,13 +72,7 @@ class ChatDetailViewModel @Inject constructor(
                                 val data = it.data as ChatDetailMessageModel
                                 val message = _state.value.message.toMutableList()
                                 message.add(
-                                    TestMessageModel(
-                                        id = 3,
-                                        userName = data.author.name,
-                                        userId = data.author.id,
-                                        message = data.message,
-                                        createdAt = data.timestamp
-                                    )
+                                    data.toState(false, false)
                                 )
                                 _state.value = _state.value.copy(
                                     message = message.toImmutableList()
@@ -149,13 +104,7 @@ class ChatDetailViewModel @Inject constructor(
                     is Result.Success -> {
                         val data = it.data.messages
                             .map { data ->
-                                TestMessageModel(
-                                    id = 3,
-                                    userName = data.author.name,
-                                    userId = data.author.id,
-                                    message = data.message,
-                                    createdAt = data.timestamp
-                                )
+                                data.toState(false, false)
                             }
                         val chatData = _state.value.message.toMutableList()
                         chatData.addAll(data)
