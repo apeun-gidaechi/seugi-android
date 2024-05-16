@@ -1,7 +1,8 @@
 package com.apeun.gidaechi.network.chatdetail
 
 import com.apeun.gidaechi.network.chatdetail.response.ChatDetailTypeResponse
-import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageResponse
+import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageLoadResponse
+import com.apeun.gidaechi.network.core.response.BaseResponse
 import kotlinx.coroutines.flow.Flow
 
 interface ChatDetailDataSource {
@@ -14,4 +15,6 @@ interface ChatDetailDataSource {
     suspend fun reConnectStomp(accessToken: String)
 
     suspend fun getIsConnect(): Boolean
+
+    suspend fun getMessage(chatRoomId: Int, page: Int): BaseResponse<ChatDetailMessageLoadResponse>
 }

@@ -8,11 +8,20 @@ import com.apeun.gidaechi.network.chatdetail.request.ChatDetailMessageRequest
 import com.apeun.gidaechi.network.chatdetail.response.ChatDetailTypeResponse
 import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageDeleteResponse
 import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageEmojiResponse
+import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageLoadResponse
 import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageResponse
 import com.apeun.gidaechi.network.chatdetail.response.sub.ChatDetailSubResponse
 import com.apeun.gidaechi.network.core.SeugiUrl
+import com.apeun.gidaechi.network.core.Test
+import com.apeun.gidaechi.network.core.response.BaseResponse
+import com.apeun.gidaechi.network.core.utiles.addTestHeader
 import com.apeun.gidaechi.network.core.utiles.toJsonString
 import com.apeun.gidaechi.network.core.utiles.toResponse
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.request.headers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -27,7 +36,8 @@ import javax.inject.Inject
 
 class ChatDetailDataSourceImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
-    private val stompClient: StompClient
+    private val stompClient: StompClient,
+    private val httpClient: HttpClient
 ): ChatDetailDataSource {
 
     override suspend fun connectStomp(accessToken: String) {
@@ -44,6 +54,11 @@ class ChatDetailDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getIsConnect(): Boolean = stompClient.isConnected
+
+    override suspend fun getMessage(chatRoomId: Int, page: Int): BaseResponse<ChatDetailMessageLoadResponse> =
+        httpClient.get("${SeugiUrl.Chat.GET_MESSAGE}/${chatRoomId}?page=${page}") {
+            addTestHeader(Test.TEST_TOKEN)
+        }.body<BaseResponse<ChatDetailMessageLoadResponse>>()
 
     override suspend fun subscribeRoom(
         chatRoomId: Int,

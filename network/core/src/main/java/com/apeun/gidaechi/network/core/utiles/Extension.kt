@@ -2,6 +2,8 @@ package com.apeun.gidaechi.network.core.utiles
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.headers
 import java.time.LocalDateTime
 
 inline fun <reified T> String.toResponse(): T {
@@ -25,6 +27,11 @@ inline fun <reified T> T.toJsonString(): String {
         throw IllegalArgumentException("Only data classes are allowed")
     }
 }
+
+fun HttpRequestBuilder.addTestHeader(token: String) =
+    this.headers {
+        append("Authorization", token)
+    }
 
 
 object GsonConverter {
