@@ -3,6 +3,7 @@ package com.apeun.gidaechi.chatdetail.repository
 import com.apeun.gidaechi.chatdetail.ChatDetailRepository
 import com.apeun.gidaechi.chatdetail.mapper.toModel
 import com.apeun.gidaechi.chatdetail.model.ChatDetailTypeModel
+import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageLoadModel
 import com.apeun.gidaechi.common.model.asResult
 import com.apeun.gidaechi.common.utiles.DispatcherType
 import com.apeun.gidaechi.common.utiles.SeugiDispatcher
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import com.apeun.gidaechi.common.model.Result
+import kotlinx.coroutines.flow.flow
 
 class ChatDetailRepositoryImpl @Inject constructor(
     private val datasource: ChatDetailDataSource,
@@ -50,8 +52,21 @@ class ChatDetailRepositoryImpl @Inject constructor(
             .asResult()
     }
 
+    override suspend fun getMessage(
+        chatRoomId: Int,
+        page: Int,
+    ): Flow<Result<ChatDetailMessageLoadModel>> {
+        return flow {
+            val e = datasource.getMessage(chatRoomId, page)
+
+            emit(e.data.toModel())
+        }
+            .flowOn(dispatcher)
+            .asResult()
+    }
+
     companion object {
-        const val TEST_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0QHRlc3QiLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE1Nzc3MjY5LCJleHAiOjE3MTU3ODMyNjl9.8ERrrbpfgvFj2v48_ihkIokwo7cfvl_y6Bf5hJlyDDc"
+        const val TEST_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0QHRlc3QiLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE1ODQxNTA3LCJleHAiOjE3MTU4NDc1MDd9.3oseZBb-u0pya26nGBabfglFfRMBjNOzl8W2H31hSZo"
     }
 
 }

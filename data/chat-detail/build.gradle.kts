@@ -13,6 +13,7 @@ android {
 
 
 dependencies {
+    implementation(projects.network.core)
     implementation(projects.network.chatDetail)
     implementation(projects.common)
 }
