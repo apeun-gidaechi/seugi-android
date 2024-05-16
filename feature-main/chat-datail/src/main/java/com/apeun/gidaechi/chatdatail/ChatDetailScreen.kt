@@ -79,7 +79,6 @@ import com.apeun.gidaechi.designsystem.theme.Gray500
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary050
 import com.apeun.gidaechi.designsystem.theme.Primary500
-import java.time.Duration
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
@@ -125,15 +124,15 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     }
 
     LaunchedEffect(key1 = true) {
-        viewModel.testLoad()
+        viewModel.loadMessage()
         onNavigationVisibleChange(false)
     }
 
     LifecycleResumeEffect(key1 = Unit) {
         onNavigationVisibleChange(false)
-        viewModel.testReconnect()
+        viewModel.channelReconnect()
         onPauseOrDispose {
-            viewModel.testSubscribeCancel()
+            viewModel.subscribeCancel()
             onNavigationVisibleChange(true)
         }
     }
@@ -265,7 +264,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                         text = it
                     },
                     onSendClick = {
-                        viewModel.testSend(text)
+                        viewModel.channelSend(text)
                         text = ""
                         coroutineScope.launch {
                             if (state.message.lastIndex != -1) {

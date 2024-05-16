@@ -1,10 +1,6 @@
 package com.apeun.gidaechi.chatdatail
 
 import android.util.Log
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apeun.gidaechi.chatdatail.mapper.toState
@@ -17,9 +13,6 @@ import com.apeun.gidaechi.chatdetail.model.isMessage
 import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageModel
 import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageUserModel
 import com.apeun.gidaechi.common.model.Result
-import com.apeun.gidaechi.common.utiles.toFullFormatString
-import com.apeun.gidaechi.designsystem.component.chat.ChatItemType
-import com.apeun.gidaechi.designsystem.component.chat.SeugiChatItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
@@ -31,7 +24,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.Duration
-import kotlin.random.Random
 
 @HiltViewModel
 class ChatDetailViewModel @Inject constructor(
@@ -58,7 +50,7 @@ class ChatDetailViewModel @Inject constructor(
         )
     }
 
-    fun testSend(
+    fun channelSend(
         content: String
     ) {
         viewModelScope.launch {
@@ -67,7 +59,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun testReconnect(
+    fun channelReconnect(
 
     ) {
         viewModelScope.launch {
@@ -111,16 +103,16 @@ class ChatDetailViewModel @Inject constructor(
             }
             (subscribeChat as Deferred<*>).await()
             Log.d("TAG", "testReconnect: ")
-            testReconnect()
+            channelReconnect()
         }
     }
 
-    fun testSubscribeCancel() {
+    fun subscribeCancel() {
         subscribeChat?.cancel()
         subscribeChat = null
     }
 
-    fun testLoad() {
+    fun loadMessage() {
         viewModelScope.launch {
             repository.getMessage(2, 0).collect {
                 when(it) {
