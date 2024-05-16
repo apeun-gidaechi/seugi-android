@@ -1,5 +1,6 @@
 package com.apeun.gidaechi.network.chatdetail.datasource
 
+import android.content.Context
 import android.util.Log
 import com.apeun.gidaechi.common.utiles.DispatcherType
 import com.apeun.gidaechi.common.utiles.SeugiDispatcher
@@ -17,6 +18,7 @@ import com.apeun.gidaechi.network.core.response.BaseResponse
 import com.apeun.gidaechi.network.core.utiles.addTestHeader
 import com.apeun.gidaechi.network.core.utiles.toJsonString
 import com.apeun.gidaechi.network.core.utiles.toResponse
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -27,11 +29,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.newCoroutineContext
 import kotlinx.coroutines.reactive.asFlow
+import kotlinx.coroutines.withContext
 import ua.naiksoftware.stomp.StompClient
+import ua.naiksoftware.stomp.dto.LifecycleEvent
 import ua.naiksoftware.stomp.dto.StompHeader
 import ua.naiksoftware.stomp.dto.StompMessage
 import javax.inject.Inject
+import kotlin.coroutines.coroutineContext
 
 
 class ChatDetailDataSourceImpl @Inject constructor(
@@ -67,9 +73,6 @@ class ChatDetailDataSourceImpl @Inject constructor(
         stompClient.topic(SeugiUrl.Chat.SUBSCRIPTION + chatRoomId)
             .asFlow()
             .flowOn(dispatcher)
-            .catch {
-                it.printStackTrace()
-            }
             .collect { message ->
                 val type = message.payload.toResponse(ChatDetailMessageResponse::class.java).type
                 when (type) {

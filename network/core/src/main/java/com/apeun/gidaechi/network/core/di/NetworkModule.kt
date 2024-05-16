@@ -71,7 +71,6 @@ object NetworkModule {
 
 
     @Provides
-    @Singleton
     fun providesStompClient(
         okHttpClient: OkHttpClient
     ): StompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, SeugiUrl.Chat.HANDSHAKE, null, okHttpClient)

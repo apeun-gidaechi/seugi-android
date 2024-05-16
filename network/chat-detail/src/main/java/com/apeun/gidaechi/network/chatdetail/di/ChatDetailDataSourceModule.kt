@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-interface ChatDetailDataSourceDi {
+interface ChatDetailDataSourceModule {
 
     @Binds
     @Singleton

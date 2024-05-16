@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import com.apeun.gidaechi.common.model.Result
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 
 class ChatDetailRepositoryImpl @Inject constructor(
@@ -43,7 +44,7 @@ class ChatDetailRepositoryImpl @Inject constructor(
 
     override suspend fun reSubscribeRoom(chatRoomId: Int): Flow<Result<ChatDetailTypeModel>> {
         datasource.reConnectStomp(TEST_TOKEN)
-
+        delay(200)
         return datasource.subscribeRoom(chatRoomId)
             .flowOn(dispatcher)
             .map {
@@ -66,7 +67,7 @@ class ChatDetailRepositoryImpl @Inject constructor(
     }
 
     companion object {
-        const val TEST_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0QHRlc3QiLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE1ODQxNTA3LCJleHAiOjE3MTU4NDc1MDd9.3oseZBb-u0pya26nGBabfglFfRMBjNOzl8W2H31hSZo"
+        const val TEST_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0QHRlc3QiLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzE1ODQ2NDU5LCJleHAiOjE3MTY0NTEyNTl9.MqmdEJT1cRwgMDduNZKiw52Y5USKETstEgYDL0_LxNg"
     }
 
 }

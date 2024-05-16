@@ -24,7 +24,7 @@ data class ChatRoomState(
 data class ChatDetailMessageState(
     val id: String,
     val chatRoomId: Int,
-    val type: ChatType,
+    val type: ChatDetailChatTypeState,
     val author: ChatDetailMessageUserModel,
     val message: String,
     val emojiList: List<ChatDetailMessageEmojiModel>,
@@ -35,5 +35,24 @@ data class ChatDetailMessageState(
     val joined: List<Int>,
     val messageStatus: ChatMessageType,
     val isFirst: Boolean,
-    val isLast: Boolean
-)
+    val isLast: Boolean,
+    val isMe: Boolean
+) {
+    constructor(chatRoomId: Int, type: ChatDetailChatTypeState, timestamp: LocalDateTime): this(
+        id = "id",
+        chatRoomId = chatRoomId,
+        type = type,
+        author = ChatDetailMessageUserModel(0, "qwe", null),
+        message = "",
+        emojiList = emptyList(),
+        mention = emptyList(),
+        mentionAll = false,
+        timestamp = timestamp,
+        read = emptyList(),
+        joined = emptyList(),
+        messageStatus = ChatMessageType.ALIVE,
+        isFirst = false,
+        isLast = false,
+        isMe = false
+    )
+}

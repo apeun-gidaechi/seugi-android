@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.apeun.gidaechi.chatdatail.model.ChatDetailChatTypeState
 import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageUserModel
 import com.apeun.gidaechi.common.utiles.toAmShortString
 import com.apeun.gidaechi.common.utiles.toFullFormatString
@@ -70,6 +71,7 @@ import com.apeun.gidaechi.designsystem.component.chat.ChatItemType
 import com.apeun.gidaechi.designsystem.component.chat.SeugiChatItem
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
+import com.apeun.gidaechi.designsystem.component.modifier.`if`
 import com.apeun.gidaechi.designsystem.component.textfield.SeugiChatTextField
 import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.Gray400
@@ -135,20 +137,20 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     }
 
     LaunchedEffect(key1 = keyboardState) {
-//        if (keyboardState.isOpen) {
-//            scrollState.animateScrollBy(with(density) { keyboardState.height.toPx() })
-//        }
+        if (keyboardState.isOpen) {
+            scrollState.animateScrollBy(with(density) { keyboardState.height.toPx() })
+        }
     }
 
     LaunchedEffect(key1 = state) {
-//        if (isFirst) {
-//            coroutineScope.launch {
-//                if (state.message.lastIndex != -1) {
-//                    isFirst = !isFirst
-//                    scrollState.scrollToItem(state.message.lastIndex)
-//                }
-//            }
-//        }
+        if (isFirst) {
+            coroutineScope.launch {
+                if (state.message.lastIndex != -1) {
+                    isFirst = !isFirst
+                    scrollState.scrollToItem(state.message.lastIndex)
+                }
+            }
+        }
     }
 
     BackHandler(
@@ -295,7 +297,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
             ),
             state = scrollState,
         ) {
-            items(state.message.size) { index ->
+            items(state.message) { item ->
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -303,54 +305,38 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                             bottom = 8.dp,
                         ),
                 ) {
-                    val formerItem = state.message.getOrNull(index - 1)
-                    val nextItem = state.message.getOrNull(index + 1)
-                    val item = state.message[index]
-
-                    val isMe = item.author.id == state.userInfo?.id
-                    val isLast = item.author.id != nextItem?.author?.id ||
-                        (
-                            Duration.between(
-                                item.timestamp,
-                                nextItem.timestamp,
-                            ).seconds >= 86400 && item.author.id == nextItem.author.id
-                            )
-
-                    var isFirst = item.author.id != formerItem?.author?.id
-                    if (formerItem != null && Duration.between(
-                            formerItem.timestamp,
-                            item.timestamp,
-                        ).seconds >= 86400
-                    ) {
-                        isFirst = true
-                        Spacer(modifier = Modifier.height(12.dp))
-                        SeugiChatItem(type = ChatItemType.Date(item.timestamp.toFullFormatString()))
-                        Spacer(modifier = Modifier.height(12.dp))
-                    }
-
-                    val alignModifier =
-                        if (isMe) Modifier.align(Alignment.End) else Modifier
-
                     SeugiChatItem(
                         modifier = Modifier
-                            .then(alignModifier),
-                        type = when {
-                            isMe -> ChatItemType.Me(
-                                isLast = isLast,
-                                message = item.message,
-                                createdAt = item.timestamp.toAmShortString(),
-                                count = 1,
-                            )
+                            .`if`(item.isMe) {
+                                align(Alignment.End)
+                            },
+                        type = when(item.type) {
+                            ChatDetailChatTypeState.DATE -> ChatItemType.Date(item.timestamp.toFullFormatString())
 
-                            else -> ChatItemType.Others(
-                                isFirst = isFirst,
-                                isLast = isLast,
-                                userName = item.author.name,
-                                userProfile = null,
-                                message = item.message,
-                                createdAt = item.timestamp.toAmShortString(),
-                                count = 1,
-                            )
+                            ChatDetailChatTypeState.MESSAGE -> {
+                                if (item.isMe) {
+                                    ChatItemType.Me(
+                                        isLast = item.isLast,
+                                        message = item.message,
+                                        createdAt = item.timestamp.toAmShortString(),
+                                        count = 1,
+                                    )
+                                } else {
+                                    ChatItemType.Others(
+                                        isFirst = isFirst,
+                                        isLast = item.isLast,
+                                        userName = item.author.name,
+                                        userProfile = null,
+                                        message = item.message,
+                                        createdAt = item.timestamp.toAmShortString(),
+                                        count = 1,
+                                    )
+                                }
+                            }
+
+                            ChatDetailChatTypeState.AI -> TODO()
+                            ChatDetailChatTypeState.LEFT -> TODO()
+                            ChatDetailChatTypeState.ENTER -> TODO()
                         },
                     )
                 }
