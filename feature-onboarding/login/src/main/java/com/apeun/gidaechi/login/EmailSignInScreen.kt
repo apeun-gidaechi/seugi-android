@@ -1,5 +1,6 @@
 package com.apeun.gidaechi.login
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,6 +23,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
@@ -29,12 +34,24 @@ import com.apeun.gidaechi.designsystem.component.textfield.SeugiTextField
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun EmailSignInScreen(navigateToEmailSignUp: () -> Unit, popBackStack: () -> Unit) {
+internal fun EmailSignInScreen(
+    navigateToEmailSignUp: () -> Unit,
+    popBackStack: () -> Unit,
+    viewModel: EmailSignInVIewModel = hiltViewModel()
+) {
+
+    val state by viewModel.state.collectAsState()
     var emailValue by remember { mutableStateOf("") }
     var pwValue by remember { mutableStateOf("") }
+
+    LaunchedEffect(key1 = state){
+        Log.d("TAG", "asdf ${state.accessToken}, ${state.refreshToken}: ")
+    }
+
 
     SeugiTheme {
         Scaffold(
@@ -118,7 +135,12 @@ internal fun EmailSignInScreen(navigateToEmailSignUp: () -> Unit, popBackStack: 
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 SeugiFullWidthButton(
-                    onClick = { },
+                    onClick = {
+                        viewModel.emailSignIn(
+                            email = emailValue,
+                            password = pwValue
+                        )
+                    },
                     type = ButtonType.Primary,
                     text = "로그인",
                     modifier = Modifier.padding(horizontal = 20.dp),
