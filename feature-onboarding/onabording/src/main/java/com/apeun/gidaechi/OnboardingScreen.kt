@@ -29,7 +29,11 @@ import com.apeun.gidaechi.navigation.waitingJoin
 private const val NAVIGATION_ANIM = 400
 
 @Composable
-internal fun OnboardingScreen(navHostController: NavHostController = rememberNavController()) {
+fun OnboardingScreen(
+    navHostController: NavHostController = rememberNavController(),
+    onboardingToMain:() -> Unit
+) {
+
     NavHost(
         navController = navHostController,
         startDestination = START_ROUTE,
@@ -43,6 +47,7 @@ internal fun OnboardingScreen(navHostController: NavHostController = rememberNav
             navigateToOAuthSignIn = { navHostController.navigateToOAuthSignUp() },
         )
         emailSignInScreen(
+            onboardingToMain = onboardingToMain,
             navigateToOAuthSignUp = { navHostController.navigateToEmailSignUp() },
             popBackStack = { navHostController.popBackStack() },
         )

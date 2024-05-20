@@ -34,7 +34,7 @@ import com.apeun.gidaechi.roomcreate.navigation.roomCreateScreen
 private const val NAVIGATION_ANIM = 400
 
 @Composable
-internal fun MainScreen(navHostController: NavHostController = rememberNavController()) {
+fun MainScreen(navHostController: NavHostController = rememberNavController()) {
     var selectItemState: BottomNavigationItemType by remember { mutableStateOf(BottomNavigationItemType.Home) }
     var navigationVisible by remember { mutableStateOf(true) }
 

@@ -19,6 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,14 +36,19 @@ import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun EmailSignInScreen(
     navigateToEmailSignUp: () -> Unit,
     popBackStack: () -> Unit,
+    onboardingToMain:() -> Unit,
     viewModel: EmailSignInVIewModel = hiltViewModel()
 ) {
+
+    val coroutineScope = rememberCoroutineScope()
 
     val state by viewModel.state.collectAsState()
     var emailValue by remember { mutableStateOf("") }
@@ -50,6 +56,12 @@ internal fun EmailSignInScreen(
 
     LaunchedEffect(key1 = state){
         Log.d("TAG", "asdf ${state.accessToken}, ${state.refreshToken}: ")
+        if (state.accessToken != ""&& state.refreshToken != ""){
+            Log.d("TAG", "로그인 성공: ")
+            coroutineScope.launch() {
+                onboardingToMain()
+            }
+        }
     }
 
 
