@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navOptions
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.main.navigation.mainScreen
 import com.apeun.gidaechi.main.navigation.navigateToMain
@@ -38,7 +37,7 @@ class MainActivity : ComponentActivity() {
                         onboardingScreen(
                             onboardingToMain = {
                                 navHostController.navigateToMain()
-                            }
+                            },
                         )
                     }
                 }
