@@ -1,6 +1,6 @@
 package com.apeun.gidaechi.login.model
 
-data class TokenModel(
+data class EmailSignInState(
     val accessToken: String = "",
-    val refreshToken: String = ""
+    val refreshToken: String = "",
 )

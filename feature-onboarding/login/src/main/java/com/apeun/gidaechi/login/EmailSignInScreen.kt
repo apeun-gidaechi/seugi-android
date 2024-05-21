@@ -28,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.ButtonType
+import com.apeun.gidaechi.designsystem.component.SeugiDialog
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.textfield.SeugiPasswordTextField
@@ -36,8 +37,10 @@ import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.Red500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import com.apeun.gidaechi.login.model.EmailSignInSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,12 +61,21 @@ internal fun EmailSignInScreen(
 
     var emailError by remember { mutableStateOf(false) }
     var pwError by remember { mutableStateOf(false) }
+    var failedLogin by remember { mutableStateOf(false) }
 
-    LaunchedEffect(key1 = state) {
-        Log.d("TAG", "asdf ${state.accessToken}, ${state.refreshToken}: ")
-        if (state.accessToken != "" && state.refreshToken != "") {
-            coroutineScope.launch() {
-                onboardingToMain()
+
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.emailSignInSideEffect.collectLatest { value ->
+            when (value) {
+                // Handle events
+                is EmailSignInSideEffect.SuccessLogin -> {
+                    onboardingToMain()
+                }
+
+                is EmailSignInSideEffect.FailedLogin -> {
+                    failedLogin = true
+                }
             }
         }
     }
@@ -80,6 +92,16 @@ internal fun EmailSignInScreen(
                 )
             },
         ) {
+            if (failedLogin) {
+
+                SeugiDialog(
+                    title = "인증코드를 전송했어요",
+                    content = "이메일 함을 확인해 보세요",
+                    onDismissRequest = {
+                        failedLogin = false
+                    },
+                )
+            }
             Column(
                 modifier = Modifier
                     .padding(it)
