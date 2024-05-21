@@ -12,6 +12,7 @@ import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.gestures.animateTo
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -38,11 +39,13 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
@@ -83,6 +86,7 @@ import com.apeun.gidaechi.designsystem.theme.Primary500
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
@@ -124,6 +128,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
             },
         )
     }
+    var nowIndex by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(key1 = true) {
         onNavigationVisibleChange(false)
@@ -145,6 +150,15 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     }
 
     LaunchedEffect(key1 = state) {
+        val chatIndex = state.message.size
+        if (nowIndex != chatIndex) {
+            coroutineScope.launch {
+                scrollState.scrollToItem(chatIndex-nowIndex)
+                scrollState.scrollBy(-50f)
+                nowIndex = chatIndex
+            }
+        }
+
         if (isFirst) {
             coroutineScope.launch {
                 if (state.message.lastIndex != -1) {
