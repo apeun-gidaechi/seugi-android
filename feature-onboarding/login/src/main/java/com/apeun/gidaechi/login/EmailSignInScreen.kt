@@ -1,6 +1,5 @@
 package com.apeun.gidaechi.login
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiDialog
@@ -38,10 +36,7 @@ import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.Red500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.login.model.EmailSignInSideEffect
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,21 +44,17 @@ internal fun EmailSignInScreen(
     navigateToEmailSignUp: () -> Unit,
     popBackStack: () -> Unit,
     onboardingToMain: () -> Unit,
-    viewModel: EmailSignInVIewModel = hiltViewModel()
+    viewModel: EmailSignInVIewModel = hiltViewModel(),
 ) {
-
     val coroutineScope = rememberCoroutineScope()
 
     val state by viewModel.state.collectAsState()
     var emailValue by remember { mutableStateOf("") }
     var pwValue by remember { mutableStateOf("") }
 
-
     var emailError by remember { mutableStateOf(false) }
     var pwError by remember { mutableStateOf(false) }
     var failedLogin by remember { mutableStateOf(false) }
-
-
 
     LaunchedEffect(key1 = Unit) {
         viewModel.emailSignInSideEffect.collectLatest { value ->
@@ -80,7 +71,6 @@ internal fun EmailSignInScreen(
         }
     }
 
-
     SeugiTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -93,7 +83,6 @@ internal fun EmailSignInScreen(
             },
         ) {
             if (failedLogin) {
-
                 SeugiDialog(
                     title = "인증코드를 전송했어요",
                     content = "이메일 함을 확인해 보세요",
@@ -196,7 +185,7 @@ internal fun EmailSignInScreen(
                         if (!emailError && !pwError) {
                             viewModel.emailSignIn(
                                 email = emailValue,
-                                password = pwValue
+                                password = pwValue,
                             )
                         }
                     },

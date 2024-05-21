@@ -6,11 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.apeun.gidaechi.common.model.Result
 import com.apeun.gidaechi.data.repository.EmailSignInRepositoryImpl
 import com.apeun.gidaechi.login.model.EmailSignInSideEffect
-import com.apeun.gidaechi.login.model.TokenModel
+import com.apeun.gidaechi.login.model.EmailSignInState
 import com.apeun.gidaechi.network.request.EmailSignInRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -21,7 +21,7 @@ class EmailSignInVIewModel @Inject constructor(
     private val emailSignInRepositoryImpl: EmailSignInRepositoryImpl,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(TokenModel())
+    private val _state = MutableStateFlow(EmailSignInState())
     val state = _state.asStateFlow()
 
     private val _emailSignInSideEffect = Channel<EmailSignInSideEffect>()
@@ -38,13 +38,13 @@ class EmailSignInVIewModel @Inject constructor(
                 when (it) {
                     is Result.Success -> {
                         _emailSignInSideEffect.send(
-                            EmailSignInSideEffect.SuccessLogin
+                            EmailSignInSideEffect.SuccessLogin,
                         )
                         val accessToken = it.data.accessToken
                         val refreshToken = it.data.refreshToken
                         _state.value = _state.value.copy(
-                                accessToken = accessToken,
-                                refreshToken = refreshToken,
+                            accessToken = accessToken,
+                            refreshToken = refreshToken,
                         )
                     }
 
@@ -52,8 +52,8 @@ class EmailSignInVIewModel @Inject constructor(
                         Log.d("TAG", "Error: $it")
                         _emailSignInSideEffect.send(
                             EmailSignInSideEffect.FailedLogin(
-                                it.throwable
-                            )
+                                it.throwable,
+                            ),
                         )
                     }
                     is Result.Loading -> {}
