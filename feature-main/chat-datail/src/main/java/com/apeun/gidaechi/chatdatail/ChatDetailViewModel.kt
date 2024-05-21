@@ -41,8 +41,6 @@ class ChatDetailViewModel @Inject constructor(
 
     private var subscribeChat: Job? = null
 
-    private val _page = mutableIntStateOf(0)
-
     init {
         _state.value = _state.value.copy(
             roomInfo = ChatRoomState(
