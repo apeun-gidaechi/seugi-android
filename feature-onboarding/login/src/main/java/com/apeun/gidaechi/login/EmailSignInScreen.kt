@@ -34,6 +34,7 @@ import com.apeun.gidaechi.designsystem.component.textfield.SeugiPasswordTextFiel
 import com.apeun.gidaechi.designsystem.component.textfield.SeugiTextField
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary500
+import com.apeun.gidaechi.designsystem.theme.Red500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -44,7 +45,7 @@ import kotlinx.coroutines.launch
 internal fun EmailSignInScreen(
     navigateToEmailSignUp: () -> Unit,
     popBackStack: () -> Unit,
-    onboardingToMain:() -> Unit,
+    onboardingToMain: () -> Unit,
     viewModel: EmailSignInVIewModel = hiltViewModel()
 ) {
 
@@ -54,10 +55,13 @@ internal fun EmailSignInScreen(
     var emailValue by remember { mutableStateOf("") }
     var pwValue by remember { mutableStateOf("") }
 
-    LaunchedEffect(key1 = state){
+
+    var emailError by remember { mutableStateOf(false) }
+    var pwError by remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = state) {
         Log.d("TAG", "asdf ${state.accessToken}, ${state.refreshToken}: ")
-        if (state.accessToken != ""&& state.refreshToken != ""){
-            Log.d("TAG", "로그인 성공: ")
+        if (state.accessToken != "" && state.refreshToken != "") {
             coroutineScope.launch() {
                 onboardingToMain()
             }
@@ -99,6 +103,14 @@ internal fun EmailSignInScreen(
                         onClickDelete = { emailValue = "" },
                         placeholder = "이메일을 입력해 주세요",
                     )
+                    if (emailError) {
+                        Text(
+                            text = "이메일을 입력해 주세요",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Red500,
+                            modifier = Modifier.padding(start = 4.dp),
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -119,6 +131,14 @@ internal fun EmailSignInScreen(
                         onValueChange = { pwValue = it },
                         placeholder = "비밀번호를 입력해 주세요",
                     )
+                    if (pwError) {
+                        Text(
+                            text = "비밀번호을 입력해 주세요",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Red500,
+                            modifier = Modifier.padding(start = 4.dp),
+                        )
+                    }
                 }
             }
             Column(
@@ -148,10 +168,15 @@ internal fun EmailSignInScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 SeugiFullWidthButton(
                     onClick = {
-                        viewModel.emailSignIn(
-                            email = emailValue,
-                            password = pwValue
-                        )
+                        emailError = emailValue.isEmpty()
+                        pwError = pwValue.isEmpty()
+
+                        if (!emailError && !pwError) {
+                            viewModel.emailSignIn(
+                                email = emailValue,
+                                password = pwValue
+                            )
+                        }
                     },
                     type = ButtonType.Primary,
                     text = "로그인",
