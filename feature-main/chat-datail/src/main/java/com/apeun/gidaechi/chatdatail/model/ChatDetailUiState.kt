@@ -12,6 +12,9 @@ import kotlinx.collections.immutable.persistentListOf
 data class ChatDetailUiState(
     val roomInfo: ChatRoomState? = null,
     val userInfo: ChatDetailMessageUserModel? = null,
+    val nowPage: Int = 0,
+    val isInit: Boolean = false,
+    val isLastPage: Boolean = false,
     val message: ImmutableList<ChatDetailMessageState> = persistentListOf(),
 )
 

@@ -36,6 +36,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
@@ -83,6 +84,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -124,7 +126,6 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     }
 
     LaunchedEffect(key1 = true) {
-        viewModel.loadMessage()
         onNavigationVisibleChange(false)
     }
 
@@ -157,6 +158,12 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                     scrollState.scrollToItem(state.message.lastIndex)
                 }
             }
+        }
+    }
+
+    LaunchedEffect(key1 = scrollState.canScrollBackward) {
+        if (!scrollState.canScrollBackward) {
+            viewModel.nextPage()
         }
     }
 
@@ -348,9 +355,9 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                                 }
                             }
 
-                            ChatDetailChatTypeState.AI -> TODO()
-                            ChatDetailChatTypeState.LEFT -> TODO()
-                            ChatDetailChatTypeState.ENTER -> TODO()
+                            ChatDetailChatTypeState.AI -> ChatItemType.Else(item.message)
+                            ChatDetailChatTypeState.LEFT -> ChatItemType.Else(item.message)
+                            ChatDetailChatTypeState.ENTER -> ChatItemType.Else(item.message)
                         },
                     )
                 }

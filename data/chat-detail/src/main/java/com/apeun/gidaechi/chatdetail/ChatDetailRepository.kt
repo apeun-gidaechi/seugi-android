@@ -14,5 +14,5 @@ interface ChatDetailRepository {
 
     suspend fun reSubscribeRoom(chatRoomId: Int): Flow<Result<ChatDetailTypeModel>>
 
-    suspend fun getMessage(chatRoomId: Int, page: Int): Flow<Result<ChatDetailMessageLoadModel>>
+    suspend fun getMessage(chatRoomId: Int, page: Int, size: Int): Flow<Result<ChatDetailMessageLoadModel>>
 }

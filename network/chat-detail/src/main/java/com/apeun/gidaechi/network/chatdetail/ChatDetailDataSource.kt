@@ -16,5 +16,5 @@ interface ChatDetailDataSource {
 
     suspend fun getIsConnect(): Boolean
 
-    suspend fun getMessage(chatRoomId: Int, page: Int): BaseResponse<ChatDetailMessageLoadResponse>
+    suspend fun getMessage(chatRoomId: Int, page: Int, size: Int): BaseResponse<ChatDetailMessageLoadResponse>
 }

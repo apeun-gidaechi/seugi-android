@@ -73,6 +73,9 @@ sealed class ChatItemType {
         val createdAt: String,
         val count: Int,
     ) : ChatItemType()
+    data class Else(
+        val message: String
+    ): ChatItemType()
 }
 
 @Composable
@@ -120,6 +123,9 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType, onChatLongC
                 onChatLongClick = onChatLongClick,
                 onDateClick = onDateClick,
             )
+        }
+        is ChatItemType.Else -> {
+            Text(text = type.message)
         }
     }
 }

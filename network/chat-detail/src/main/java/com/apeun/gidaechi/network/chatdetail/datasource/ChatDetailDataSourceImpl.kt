@@ -61,8 +61,8 @@ class ChatDetailDataSourceImpl @Inject constructor(
 
     override suspend fun getIsConnect(): Boolean = stompClient.isConnected
 
-    override suspend fun getMessage(chatRoomId: Int, page: Int): BaseResponse<ChatDetailMessageLoadResponse> =
-        httpClient.get("${SeugiUrl.Chat.GET_MESSAGE}/${chatRoomId}?page=${page}") {
+    override suspend fun getMessage(chatRoomId: Int, page: Int, size: Int): BaseResponse<ChatDetailMessageLoadResponse> =
+        httpClient.get("${SeugiUrl.Chat.GET_MESSAGE}/${chatRoomId}?page=${page}&size=${size}") {
             addTestHeader(Test.TEST_TOKEN)
         }.body<BaseResponse<ChatDetailMessageLoadResponse>>()
 
