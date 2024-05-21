@@ -15,7 +15,8 @@ android {
     namespace = "com.apeun.gidaechi.network.core"
 
     defaultConfig {
-        buildConfigField("String", "SERVER_URL", "${prperties["SERVER_URL"]}")
+        buildConfigField("String", "BASE_URL", "${prperties["BASE_URL"]}")
+        buildConfigField("String", "WS_URL", "${prperties["WS_URL"]}")
 
         consumerProguardFiles("consumer-rules.pro")
     }
