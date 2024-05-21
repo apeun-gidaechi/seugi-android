@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.seugi.android)
     alias(libs.plugins.seugi.android.kotlin)
@@ -5,11 +7,20 @@ plugins {
     alias(libs.plugins.seugi.android.hilt)
 }
 
+
+val prperties = Properties()
+prperties.load(project.rootProject.file("local.properties").inputStream())
+
 android {
     namespace = "com.apeun.gidaechi.network.core"
 
     defaultConfig {
+        buildConfigField("String", "SERVER_URL", "${prperties["SERVER_URL"]}")
+
         consumerProguardFiles("consumer-rules.pro")
+    }
+    buildFeatures{
+        buildConfig = true
     }
 }
 
