@@ -11,17 +11,14 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
 class EmailSignInDatasourceImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
-    private val httpClient: HttpClient
-):EmailSignInDatasource {
-    override suspend fun emailSignIn(body: EmailSignInRequest): BaseResponse<EmailSignInResponse> =
-        httpClient.post("${SeugiUrl.Auth.EMAIL_SIGN_IN}"){
-            setBody(body = body)
-        }.body<BaseResponse<EmailSignInResponse>>()
-
-
+    private val httpClient: HttpClient,
+) : EmailSignInDatasource {
+    override suspend fun emailSignIn(body: EmailSignInRequest): BaseResponse<EmailSignInResponse> = httpClient.post("${SeugiUrl.Auth.EMAIL_SIGN_IN}") {
+        setBody(body = body)
+    }.body<BaseResponse<EmailSignInResponse>>()
 }
