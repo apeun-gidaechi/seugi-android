@@ -10,6 +10,7 @@ import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageD
 import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageEmojiResponse
 import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageLoadResponse
 import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageResponse
+import com.apeun.gidaechi.network.chatdetail.response.room.ChatDetailRoomMemberResponse
 import com.apeun.gidaechi.network.chatdetail.response.room.ChatDetailRoomResponse
 import com.apeun.gidaechi.network.chatdetail.response.sub.ChatDetailSubResponse
 import com.apeun.gidaechi.network.core.SeugiUrl
@@ -67,6 +68,11 @@ class ChatDetailDataSourceImpl @Inject constructor(
             addTestHeader(Test.TEST_TOKEN)
         }.body()
     }
+
+    override suspend fun loadRoomMember(roomId: Int): BaseResponse<ChatDetailRoomMemberResponse> =
+        httpClient.get("${SeugiUrl.Chat.LOAD_MEMBER}/${roomId}") {
+            addTestHeader(Test.TEST_TOKEN)
+        }.body()
 
     override suspend fun subscribeRoom(
         chatRoomId: Int,

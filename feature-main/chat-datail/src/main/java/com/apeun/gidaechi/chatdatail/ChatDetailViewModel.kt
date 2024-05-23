@@ -75,7 +75,13 @@ class ChatDetailViewModel @Inject constructor(
                         roomInfo = ChatRoomState(
                             chatRoomId,
                             it.data.chatName,
-                            members = persistentListOf(),
+                            members = it.data.memberList.map {
+                                ChatDetailMessageUserModel(
+                                    id = it,
+                                    name = "test ${it}",
+                                    profile = null
+                                )
+                            }.toImmutableList(),
                         ),
                     )
                 }

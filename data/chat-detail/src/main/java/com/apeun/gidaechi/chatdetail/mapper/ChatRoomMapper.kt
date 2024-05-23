@@ -5,16 +5,6 @@ import com.apeun.gidaechi.chatdetail.model.room.ChatRoomStatusType
 import com.apeun.gidaechi.chatdetail.model.room.ChatRoomType
 import com.apeun.gidaechi.network.chatdetail.response.room.ChatDetailRoomResponse
 
-internal fun ChatDetailRoomResponse.toModel() =
-    ChatRoomModel(
-        id = id,
-        type = type.toRoomType(),
-        chatName = chatName,
-        containUserCnt = containUserCnt,
-        chatRoomImg = chatRoomImg,
-        createdAt = createdAt,
-        chatStatusEnum = chatStatusEnum.toRoomStatus()
-    )
 
 internal fun String.toRoomType() =
     when(this) {

@@ -9,5 +9,7 @@ data class ChatRoomModel(
     val containUserCnt: Int,
     val chatRoomImg: String,
     val createdAt: LocalDateTime,
+    val workspaceId: String,
+    val memberList: List<Int>,
     val chatStatusEnum: ChatRoomStatusType
 )

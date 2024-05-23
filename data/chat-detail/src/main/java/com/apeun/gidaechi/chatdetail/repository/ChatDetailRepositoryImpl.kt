@@ -2,6 +2,8 @@ package com.apeun.gidaechi.chatdetail.repository
 
 import com.apeun.gidaechi.chatdetail.ChatDetailRepository
 import com.apeun.gidaechi.chatdetail.mapper.toModel
+import com.apeun.gidaechi.chatdetail.mapper.toRoomStatus
+import com.apeun.gidaechi.chatdetail.mapper.toRoomType
 import com.apeun.gidaechi.chatdetail.model.ChatDetailTypeModel
 import com.apeun.gidaechi.chatdetail.model.ChatMessageType
 import com.apeun.gidaechi.chatdetail.model.ChatType
@@ -79,8 +81,21 @@ class ChatDetailRepositoryImpl @Inject constructor(
         roomId: Int,
     ): Flow<Result<ChatRoomModel>> {
         return flow {
-            val response = datasource.loadRoomInfo(isPersonal, roomId).safeResponse()
-            emit(response.toModel())
+            val roomResponse = datasource.loadRoomInfo(isPersonal, roomId).safeResponse()
+            val memberResponse = datasource.loadRoomMember(roomId).safeResponse()
+            emit(
+                ChatRoomModel(
+                    id = roomResponse.id,
+                    type = roomResponse.type.toRoomType(),
+                    chatName = roomResponse.chatName,
+                    containUserCnt = roomResponse.containUserCnt,
+                    chatRoomImg = roomResponse.chatRoomImg,
+                    createdAt = roomResponse.createdAt,
+                    memberList = memberResponse.joinUserId,
+                    workspaceId = memberResponse.workspaceId,
+                    chatStatusEnum = roomResponse.chatStatusEnum.toRoomStatus()
+                )
+            )
         }
             .flowOn(dispatcher)
             .asResult()
