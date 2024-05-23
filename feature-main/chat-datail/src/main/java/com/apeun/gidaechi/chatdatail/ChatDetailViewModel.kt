@@ -43,7 +43,8 @@ class ChatDetailViewModel @Inject constructor(
 
     fun loadInfo(
         chatRoomId: Int,
-        isPersonal: Boolean
+        isPersonal: Boolean,
+        workspaceId: String
     ) = viewModelScope.launch(Dispatchers.IO) {
         _state.value = _state.value.copy(
             roomInfo = ChatRoomState(
@@ -57,14 +58,36 @@ class ChatDetailViewModel @Inject constructor(
 //                null
 //            ),
         )
+        initProfile(workspaceId)
         initPage()
         loadRoom(chatRoomId, isPersonal)
+    }
+
+    private fun initProfile(workspaceId: String) = viewModelScope.launch {
+        repository.loadProfile(workspaceId).collect {
+            when (it) {
+                is Result.Success -> {
+                    _state.value = _state.value.copy(
+                        userInfo = ChatDetailMessageUserModel(
+                            id = 2,
+                            name = it.data.nick,
+                            profile = null,
+                        )
+                    )
+                    Log.d("TAG", "initProfile: ${_state.value.userInfo?.id}")
+                }
+                is Result.Loading -> {}
+                is Result.Error -> {
+                    it.throwable.printStackTrace()
+                }
+            }
+        }
     }
 
     private fun loadRoom(
         chatRoomId: Int,
         isPersonal: Boolean
-    )= viewModelScope.launch {
+    ) = viewModelScope.launch {
         repository.loadRoomInfo(
             isPersonal = isPersonal,
             roomId = chatRoomId

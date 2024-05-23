@@ -10,6 +10,7 @@ import com.apeun.gidaechi.chatdetail.model.ChatType
 import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageLoadModel
 import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageModel
 import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageUserModel
+import com.apeun.gidaechi.chatdetail.model.profile.ChatProfileModel
 import com.apeun.gidaechi.chatdetail.model.room.ChatRoomModel
 import com.apeun.gidaechi.common.model.asResult
 import com.apeun.gidaechi.common.utiles.DispatcherType
@@ -96,6 +97,15 @@ class ChatDetailRepositoryImpl @Inject constructor(
                     chatStatusEnum = roomResponse.chatStatusEnum.toRoomStatus()
                 )
             )
+        }
+            .flowOn(dispatcher)
+            .asResult()
+    }
+
+    override suspend fun loadProfile(workspaceId: String): Flow<Result<ChatProfileModel>> {
+        return flow {
+            val response = datasource.loadUserInfo(workspaceId).safeResponse()
+            emit(response.toModel())
         }
             .flowOn(dispatcher)
             .asResult()

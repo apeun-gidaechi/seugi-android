@@ -10,6 +10,7 @@ import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageD
 import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageEmojiResponse
 import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageLoadResponse
 import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageResponse
+import com.apeun.gidaechi.network.chatdetail.response.profile.ChatDetailProfileResponse
 import com.apeun.gidaechi.network.chatdetail.response.room.ChatDetailRoomMemberResponse
 import com.apeun.gidaechi.network.chatdetail.response.room.ChatDetailRoomResponse
 import com.apeun.gidaechi.network.chatdetail.response.sub.ChatDetailSubResponse
@@ -22,6 +23,7 @@ import com.apeun.gidaechi.network.core.utiles.toResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -71,6 +73,12 @@ class ChatDetailDataSourceImpl @Inject constructor(
 
     override suspend fun loadRoomMember(roomId: Int): BaseResponse<ChatDetailRoomMemberResponse> =
         httpClient.get("${SeugiUrl.Chat.LOAD_MEMBER}/${roomId}") {
+            addTestHeader(Test.TEST_TOKEN)
+        }.body()
+
+    override suspend fun loadUserInfo(workspaceId: String): BaseResponse<ChatDetailProfileResponse> =
+        httpClient.get(SeugiUrl.Profile.ME) {
+            parameter("workspaceId", workspaceId)
             addTestHeader(Test.TEST_TOKEN)
         }.body()
 
