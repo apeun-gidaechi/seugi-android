@@ -23,6 +23,14 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    - name: Set up local.properties
+      run: |
+        echo "server.url=${{ secrets.SERVER_URL }}" > $GITHUB_WORKSPACE/network/core/local.properties
+        echo "ws.url=${{ secrets.WS_URL }}" >> $GITHUB_WORKSPACE/network/core/local.properties
+
+    - name: Display local.properties
+      run: cat $GITHUB_WORKSPACE/network/core/local.properties
+
     - name: Build with Gradle
       run: ./gradlew build
       
