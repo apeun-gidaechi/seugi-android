@@ -10,7 +10,7 @@ import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageD
 import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageEmojiResponse
 import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageLoadResponse
 import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageResponse
-import com.apeun.gidaechi.network.chatdetail.response.room.ChatDetailChatRoomResponse
+import com.apeun.gidaechi.network.chatdetail.response.room.ChatDetailRoomResponse
 import com.apeun.gidaechi.network.chatdetail.response.sub.ChatDetailSubResponse
 import com.apeun.gidaechi.network.core.SeugiUrl
 import com.apeun.gidaechi.network.core.Test
@@ -61,7 +61,7 @@ class ChatDetailDataSourceImpl @Inject constructor(
     override suspend fun loadRoomInfo(
         isPersonal: Boolean,
         roomId: Int,
-    ): BaseResponse<ChatDetailChatRoomResponse> {
+    ): BaseResponse<ChatDetailRoomResponse> {
         val url = "${SeugiUrl.Chat.ROOT}/${if (isPersonal) "personal" else "group"}/search/room/${roomId}"
         return httpClient.get(url) {
             addTestHeader(Test.TEST_TOKEN)

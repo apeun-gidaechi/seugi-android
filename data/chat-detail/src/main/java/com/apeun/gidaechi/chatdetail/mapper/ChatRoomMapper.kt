@@ -3,9 +3,9 @@ package com.apeun.gidaechi.chatdetail.mapper
 import com.apeun.gidaechi.chatdetail.model.room.ChatRoomModel
 import com.apeun.gidaechi.chatdetail.model.room.ChatRoomStatusType
 import com.apeun.gidaechi.chatdetail.model.room.ChatRoomType
-import com.apeun.gidaechi.network.chatdetail.response.room.ChatDetailChatRoomResponse
+import com.apeun.gidaechi.network.chatdetail.response.room.ChatDetailRoomResponse
 
-internal fun ChatDetailChatRoomResponse.toModel() =
+internal fun ChatDetailRoomResponse.toModel() =
     ChatRoomModel(
         id = id,
         type = type.toRoomType(),

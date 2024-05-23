@@ -4,8 +4,6 @@ import com.apeun.gidaechi.chatdetail.model.ChatDetailTypeModel
 import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageLoadModel
 import com.apeun.gidaechi.chatdetail.model.room.ChatRoomModel
 import com.apeun.gidaechi.common.model.Result
-import com.apeun.gidaechi.network.chatdetail.response.room.ChatDetailChatRoomResponse
-import com.apeun.gidaechi.network.core.response.BaseResponse
 import kotlinx.coroutines.flow.Flow
 
 
