@@ -92,7 +92,7 @@ import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), onNavigationVisibleChange: (Boolean) -> Unit, popBackStack: () -> Unit) {
+internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), isPersonal: Boolean = false, chatRoomId: Int = 99, onNavigationVisibleChange: (Boolean) -> Unit, popBackStack: () -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scrollState = rememberLazyListState()
 
@@ -132,6 +132,10 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
 
     LaunchedEffect(key1 = true) {
         onNavigationVisibleChange(false)
+        viewModel.loadInfo(
+            isPersonal = isPersonal,
+            chatRoomId = chatRoomId
+        )
     }
 
     LifecycleResumeEffect(key1 = Unit) {

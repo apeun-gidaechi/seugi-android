@@ -41,21 +41,48 @@ class ChatDetailViewModel @Inject constructor(
 
     private var subscribeChat: Job? = null
 
-    init {
+    fun loadInfo(
+        chatRoomId: Int,
+        isPersonal: Boolean
+    ) = viewModelScope.launch(Dispatchers.IO) {
         _state.value = _state.value.copy(
             roomInfo = ChatRoomState(
-                99,
-                "박병준, 박재욱",
+                chatRoomId,
+                "",
                 members = persistentListOf(),
             ),
-            userInfo = ChatDetailMessageUserModel(
-                2,
-                "박병준",
-                null
-            ),
+//            userInfo = ChatDetailMessageUserModel(
+//                2,
+//                "박병준",
+//                null
+//            ),
         )
-
         initPage()
+        loadRoom(chatRoomId, isPersonal)
+    }
+
+    private fun loadRoom(
+        chatRoomId: Int,
+        isPersonal: Boolean
+    )= viewModelScope.launch {
+        repository.loadRoomInfo(
+            isPersonal = isPersonal,
+            roomId = chatRoomId
+        ).collect {
+            when (it) {
+                is Result.Success -> {
+                    _state.value = _state.value.copy(
+                        roomInfo = ChatRoomState(
+                            chatRoomId,
+                            it.data.chatName,
+                            members = persistentListOf(),
+                        ),
+                    )
+                }
+                is Result.Loading -> {}
+                is Result.Error -> {}
+            }
+        }
     }
 
     fun channelSend(

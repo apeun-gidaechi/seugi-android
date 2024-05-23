@@ -58,6 +58,16 @@ class ChatDetailDataSourceImpl @Inject constructor(
             addTestHeader(Test.TEST_TOKEN)
         }.body<BaseResponse<ChatDetailMessageLoadResponse>>()
 
+    override suspend fun loadRoomInfo(
+        isPersonal: Boolean,
+        roomId: Int,
+    ): BaseResponse<ChatDetailChatRoomResponse> {
+        val url = "${SeugiUrl.Chat.ROOT}/${if (isPersonal) "personal" else "group"}/search/room/${roomId}"
+        return httpClient.get(url) {
+            addTestHeader(Test.TEST_TOKEN)
+        }.body()
+    }
+
     override suspend fun subscribeRoom(
         chatRoomId: Int,
     ): Flow<ChatDetailTypeResponse> = flow {

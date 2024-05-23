@@ -8,6 +8,7 @@ import com.apeun.gidaechi.chatdetail.model.ChatType
 import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageLoadModel
 import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageModel
 import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageUserModel
+import com.apeun.gidaechi.chatdetail.model.room.ChatRoomModel
 import com.apeun.gidaechi.common.model.asResult
 import com.apeun.gidaechi.common.utiles.DispatcherType
 import com.apeun.gidaechi.common.utiles.SeugiDispatcher
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import com.apeun.gidaechi.common.model.Result
+import com.apeun.gidaechi.network.core.response.safeResponse
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import java.time.LocalDateTime
@@ -67,6 +69,18 @@ class ChatDetailRepositoryImpl @Inject constructor(
             val e = datasource.getMessage(chatRoomId, page, size)
 
             emit(e.data.toModel())
+        }
+            .flowOn(dispatcher)
+            .asResult()
+    }
+
+    override suspend fun loadRoomInfo(
+        isPersonal: Boolean,
+        roomId: Int,
+    ): Flow<Result<ChatRoomModel>> {
+        return flow {
+            val response = datasource.loadRoomInfo(isPersonal, roomId).safeResponse()
+            emit(response.toModel())
         }
             .flowOn(dispatcher)
             .asResult()
