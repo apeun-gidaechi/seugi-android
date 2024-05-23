@@ -1,6 +1,5 @@
 package com.apeun.gidaechi.network.chatdetail.datasource
 
-import android.content.Context
 import android.util.Log
 import com.apeun.gidaechi.common.utiles.DispatcherType
 import com.apeun.gidaechi.common.utiles.SeugiDispatcher
@@ -11,6 +10,7 @@ import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageD
 import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageEmojiResponse
 import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageLoadResponse
 import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageResponse
+import com.apeun.gidaechi.network.chatdetail.response.room.ChatDetailChatRoomResponse
 import com.apeun.gidaechi.network.chatdetail.response.sub.ChatDetailSubResponse
 import com.apeun.gidaechi.network.core.SeugiUrl
 import com.apeun.gidaechi.network.core.Test
@@ -18,26 +18,18 @@ import com.apeun.gidaechi.network.core.response.BaseResponse
 import com.apeun.gidaechi.network.core.utiles.addTestHeader
 import com.apeun.gidaechi.network.core.utiles.toJsonString
 import com.apeun.gidaechi.network.core.utiles.toResponse
-import dagger.hilt.android.qualifiers.ApplicationContext
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import io.ktor.client.request.header
-import io.ktor.client.request.headers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.newCoroutineContext
 import kotlinx.coroutines.reactive.asFlow
-import kotlinx.coroutines.withContext
 import ua.naiksoftware.stomp.StompClient
-import ua.naiksoftware.stomp.dto.LifecycleEvent
 import ua.naiksoftware.stomp.dto.StompHeader
 import ua.naiksoftware.stomp.dto.StompMessage
 import javax.inject.Inject
-import kotlin.coroutines.coroutineContext
 
 
 class ChatDetailDataSourceImpl @Inject constructor(
@@ -62,7 +54,7 @@ class ChatDetailDataSourceImpl @Inject constructor(
     override suspend fun getIsConnect(): Boolean = stompClient.isConnected
 
     override suspend fun getMessage(chatRoomId: Int, page: Int, size: Int): BaseResponse<ChatDetailMessageLoadResponse> =
-        httpClient.get("${SeugiUrl.Chat.GET_MESSAGE}/${chatRoomId}?page=${page}&size=${size}") {
+        httpClient.get("${SeugiUrl.Message.GET_MESSAGE}/${chatRoomId}?page=${page}&size=${size}") {
             addTestHeader(Test.TEST_TOKEN)
         }.body<BaseResponse<ChatDetailMessageLoadResponse>>()
 
@@ -70,7 +62,7 @@ class ChatDetailDataSourceImpl @Inject constructor(
         chatRoomId: Int,
     ): Flow<ChatDetailTypeResponse> = flow {
 
-        stompClient.topic(SeugiUrl.Chat.SUBSCRIPTION + chatRoomId)
+        stompClient.topic(SeugiUrl.Message.SUBSCRIPTION + chatRoomId)
             .asFlow()
             .flowOn(dispatcher)
             .collect { message ->
