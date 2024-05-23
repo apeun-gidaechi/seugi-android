@@ -369,9 +369,9 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                                 }
                             }
 
-                            ChatDetailChatTypeState.AI -> ChatItemType.Else(item.message)
-                            ChatDetailChatTypeState.LEFT -> ChatItemType.Else(item.message)
-                            ChatDetailChatTypeState.ENTER -> ChatItemType.Else(item.message)
+                            ChatDetailChatTypeState.AI -> ChatItemType.Else(item.toString())
+                            ChatDetailChatTypeState.LEFT -> ChatItemType.Else("${item.author.name}님이 방에서 퇴장하셨습니다.")
+                            ChatDetailChatTypeState.ENTER -> ChatItemType.Else("${item.author.name}님이 방에서 입장하셨습니다.")
                         },
                     )
                 }
