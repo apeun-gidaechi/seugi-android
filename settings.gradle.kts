@@ -1,5 +1,7 @@
 import java.net.URI
 
+
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -26,6 +28,7 @@ include(
     ":designsystem-preview",
     ":network:core",
     ":network:chat-detail",
+    ":network:profile",
     ":common",
     ":feature-main:main",
     ":feature-main:chat",
@@ -36,5 +39,6 @@ include(
     ":feature-onboarding:onboarding",
     ":feature-onboarding:login",
     ":feature-onboarding:join",
-    ":data:chat-detail"
+    ":data:chat-detail",
+    ":data:profile"
 )

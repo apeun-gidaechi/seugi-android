@@ -17,6 +17,7 @@ import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageLoadModel
 import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageModel
 import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageUserModel
 import com.apeun.gidaechi.common.model.Result
+import com.apeun.gidaechi.data.profile.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
@@ -33,7 +34,8 @@ import java.time.Duration
 
 @HiltViewModel
 class ChatDetailViewModel @Inject constructor(
-    private val repository: ChatDetailRepository
+    private val repository: ChatDetailRepository,
+    private val profileRepository: ProfileRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ChatDetailUiState())
@@ -64,7 +66,7 @@ class ChatDetailViewModel @Inject constructor(
     }
 
     private fun initProfile(workspaceId: String) = viewModelScope.launch {
-        repository.loadProfile(workspaceId).collect {
+        profileRepository.getProfile(workspaceId).collect {
             when (it) {
                 is Result.Success -> {
                     _state.value = _state.value.copy(
