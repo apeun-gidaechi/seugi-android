@@ -23,6 +23,13 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
+    - name: Set up local.properties
+      run: echo "${{ secrets.LOCAL_PROPERTIES }}" > $GITHUB_WORKSPACE/local.properties
+
+    - name: Display local.properties
+      run: cat $GITHUB_WORKSPACE/local.properties
+
+
     - name: Build with Gradle
       run: ./gradlew build
       
@@ -31,12 +38,6 @@ jobs:
 
     - name: Assemble
       run: ./gradlew assemble
-
-    - name: Set up local.properties
-      run: echo "${{ secrets.LOCAL_PROPERTIES }}" > $GITHUB_WORKSPACE/local.properties
-
-    - name: Display local.properties
-      run: cat $GITHUB_WORKSPACE/local.properties
 
 
     - name: Upload Debug APK
