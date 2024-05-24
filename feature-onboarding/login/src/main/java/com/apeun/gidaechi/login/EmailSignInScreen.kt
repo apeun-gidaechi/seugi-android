@@ -102,11 +102,16 @@ internal fun EmailSignInScreen(
                         .padding(horizontal = 20.dp),
                 ) {
                     Spacer(modifier = Modifier.height(6.dp))
-                    Text(
-                        text = "이메일",
-                        style = MaterialTheme.typography.titleMedium,
+                    Row(
                         modifier = Modifier.padding(start = 4.dp),
-                    )
+                    ) {
+                        Text(text = "이메일", style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            text = " *",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Red500,
+                        )
+                    }
                     Spacer(modifier = Modifier.height(4.dp))
                     SeugiTextField(
                         value = emailValue,
@@ -131,11 +136,16 @@ internal fun EmailSignInScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp),
                 ) {
-                    Text(
-                        text = "비밀번호",
-                        style = MaterialTheme.typography.titleMedium,
+                    Row(
                         modifier = Modifier.padding(start = 4.dp),
-                    )
+                    ) {
+                        Text(text = "비밀번호", style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            text = " *",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Red500,
+                        )
+                    }
                     Spacer(modifier = Modifier.height(4.dp))
                     SeugiPasswordTextField(
                         value = pwValue,

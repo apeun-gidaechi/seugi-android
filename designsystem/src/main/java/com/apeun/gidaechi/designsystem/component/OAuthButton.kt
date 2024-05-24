@@ -2,7 +2,9 @@ package com.apeun.gidaechi.designsystem.component
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,6 +36,7 @@ import com.apeun.gidaechi.designsystem.animation.ButtonState
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
 import com.apeun.gidaechi.designsystem.theme.Black
+import com.apeun.gidaechi.designsystem.theme.Gray300
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.designsystem.theme.White
 import kotlinx.coroutines.delay
@@ -65,6 +68,7 @@ fun SeugiOAuthButton(@DrawableRes image: Int, text: String, onClick: () -> Unit,
         ),
 
         shape = RoundedCornerShape(12.dp),
+        border = BorderStroke((1.5).dp, Gray300),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
