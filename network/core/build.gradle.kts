@@ -1,9 +1,15 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.seugi.android)
     alias(libs.plugins.seugi.android.kotlin)
     alias(libs.plugins.seugi.kotlin.serialization)
     alias(libs.plugins.seugi.android.hilt)
 }
+
+
+val properties = Properties()
+properties.load(project.rootProject.file("local.properties").inputStream())
 
 android {
     namespace = "com.apeun.gidaechi.network.core"
