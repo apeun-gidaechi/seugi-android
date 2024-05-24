@@ -5,12 +5,7 @@ import com.apeun.gidaechi.chatdetail.mapper.toModel
 import com.apeun.gidaechi.chatdetail.mapper.toRoomStatus
 import com.apeun.gidaechi.chatdetail.mapper.toRoomType
 import com.apeun.gidaechi.chatdetail.model.ChatDetailTypeModel
-import com.apeun.gidaechi.chatdetail.model.ChatMessageType
-import com.apeun.gidaechi.chatdetail.model.ChatType
 import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageLoadModel
-import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageModel
-import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageUserModel
-import com.apeun.gidaechi.chatdetail.model.profile.ChatProfileModel
 import com.apeun.gidaechi.chatdetail.model.room.ChatRoomModel
 import com.apeun.gidaechi.common.model.asResult
 import com.apeun.gidaechi.common.utiles.DispatcherType
@@ -25,7 +20,6 @@ import com.apeun.gidaechi.common.model.Result
 import com.apeun.gidaechi.network.core.response.safeResponse
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
-import java.time.LocalDateTime
 
 class ChatDetailRepositoryImpl @Inject constructor(
     private val datasource: ChatDetailDataSource,
@@ -97,15 +91,6 @@ class ChatDetailRepositoryImpl @Inject constructor(
                     chatStatusEnum = roomResponse.chatStatusEnum.toRoomStatus()
                 )
             )
-        }
-            .flowOn(dispatcher)
-            .asResult()
-    }
-
-    override suspend fun loadProfile(workspaceId: String): Flow<Result<ChatProfileModel>> {
-        return flow {
-            val response = datasource.loadUserInfo(workspaceId).safeResponse()
-            emit(response.toModel())
         }
             .flowOn(dispatcher)
             .asResult()

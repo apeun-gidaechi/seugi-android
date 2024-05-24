@@ -2,7 +2,6 @@ package com.apeun.gidaechi.network.chatdetail
 
 import com.apeun.gidaechi.network.chatdetail.response.ChatDetailTypeResponse
 import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageLoadResponse
-import com.apeun.gidaechi.network.chatdetail.response.profile.ChatDetailProfileResponse
 import com.apeun.gidaechi.network.chatdetail.response.room.ChatDetailRoomResponse
 import com.apeun.gidaechi.network.chatdetail.response.room.ChatDetailRoomMemberResponse
 import com.apeun.gidaechi.network.core.response.BaseResponse
@@ -25,5 +24,4 @@ interface ChatDetailDataSource {
 
     suspend fun loadRoomMember(roomId: Int):  BaseResponse<ChatDetailRoomMemberResponse>
 
-    suspend fun loadUserInfo(workspaceId: String): BaseResponse<ChatDetailProfileResponse>
 }
