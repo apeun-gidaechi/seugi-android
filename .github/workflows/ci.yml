@@ -24,7 +24,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Set up local.properties
-      run: echo "BASE_URL=${{ secrets.SERVER_URL }}\nWS_URLl=${{ secrets.WS_URL }}" > $GITHUB_WORKSPACE/local.properties
+      run: echo "BASE_URL=${{ secrets.SERVER_URL }}\nWS_URL=${{ secrets.WS_URL }}" > $GITHUB_WORKSPACE/local.properties
 
     - name: Build with Gradle
       run: ./gradlew build
@@ -34,10 +34,6 @@ jobs:
 
     - name: Assemble
       run: ./gradlew assemble
-
-    - name: Set up local.properties
-      run: echo "${{ secrets.LOCAL_PROPERTIES }}" > $GITHUB_WORKSPACE/local.properties
-
 
     - name: Upload Debug APK
       uses: actions/upload-artifact@v3
