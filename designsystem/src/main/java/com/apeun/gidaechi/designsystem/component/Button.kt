@@ -352,7 +352,6 @@ private fun SeugiButtonPreview() {
             coroutineScope.launch {
                 testState = false
                 loadingState = true
-                Log.d("TAG", "SeugiButtonPreview: $loadingState")
                 delay(2000)
                 loadingState = false
                 testState = true

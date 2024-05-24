@@ -150,7 +150,6 @@ private fun PreviewSeugiChatTextField() {
                 onAddClick = {
                 },
                 onSendClick = {
-                    Log.d("TAG", "PreviewSeugiChatTextField: qewwe")
                 },
             )
         }

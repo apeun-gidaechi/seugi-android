@@ -124,7 +124,6 @@ private fun PreviewSeugiTopBar() {
                     Text(text = "로그인", style = MaterialTheme.typography.titleLarge)
                 },
                 onNavigationIconClick = {
-                    Log.d("TAG", "backClick: ")
                 },
                 actions = {
                     Icon(
@@ -134,7 +133,6 @@ private fun PreviewSeugiTopBar() {
                         contentDescription = null,
                         modifier = Modifier.bounceClick(
                             {
-                                Log.d("TAG", "menuClick: ")
                             },
                         ),
                     )
@@ -146,7 +144,6 @@ private fun PreviewSeugiTopBar() {
                         contentDescription = null,
                         modifier = Modifier.bounceClick(
                             {
-                                Log.d("TAG", "SearchClick: ")
                             },
                         ),
                     )

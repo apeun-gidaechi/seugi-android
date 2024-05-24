@@ -474,7 +474,6 @@ internal fun View.isKeyboardOpen(): Pair<Boolean, Int> {
     getWindowVisibleDisplayFrame(rect)
     val screenHeight = rootView.height
     val keypadHeight = screenHeight - rect.bottom
-    Log.d("TAG", "isKeyboardOpen: $screenHeight, $keypadHeight")
     return Pair(keypadHeight > screenHeight * 0.15, screenHeight - rect.bottom)
 }
 

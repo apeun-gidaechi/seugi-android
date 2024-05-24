@@ -122,7 +122,6 @@ private fun PreviewSeugiChatList() {
                 message = "나 사실..",
                 createdAt = "12:39",
                 onClick = {
-                    Log.d("TAG", "PreviewSeugiChatList: ")
                 },
             )
             SeugiChatList(

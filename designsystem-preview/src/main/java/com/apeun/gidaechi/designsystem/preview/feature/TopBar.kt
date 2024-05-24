@@ -27,7 +27,6 @@ fun TopBar() {
                     Text(text = "로그인", style = MaterialTheme.typography.titleLarge)
                 },
                 onNavigationIconClick = {
-                    Log.d("TAG", "backClick: ")
                 },
                 actions = {
                     Icon(
@@ -37,7 +36,6 @@ fun TopBar() {
                         contentDescription = null,
                         modifier = Modifier.bounceClick(
                             {
-                                Log.d("TAG", "menuClick: ")
                             },
                         ),
                     )
@@ -49,7 +47,6 @@ fun TopBar() {
                         contentDescription = null,
                         modifier = Modifier.bounceClick(
                             {
-                                Log.d("TAG", "SearchClick: ")
                             },
                         ),
                     )

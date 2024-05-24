@@ -49,7 +49,6 @@ class EmailSignInVIewModel @Inject constructor(
                     }
 
                     is Result.Error -> {
-                        Log.d("TAG", "Error: $it")
                         _emailSignInSideEffect.send(
                             EmailSignInSideEffect.FailedLogin(
                                 it.throwable,

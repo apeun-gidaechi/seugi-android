@@ -432,10 +432,8 @@ private fun PreviewSeugiChatItem() {
                     count = 1,
                 ),
                 onChatLongClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
                 onDateClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -450,10 +448,8 @@ private fun PreviewSeugiChatItem() {
                     count = 1,
                 ),
                 onChatLongClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
                 onDateClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -466,10 +462,8 @@ private fun PreviewSeugiChatItem() {
                     count = 1,
                 ),
                 onChatLongClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
                 onDateClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -482,10 +476,8 @@ private fun PreviewSeugiChatItem() {
                     count = 1,
                 ),
                 onChatLongClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
                 onDateClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
             )
             Spacer(modifier = Modifier.height(32.dp))
