@@ -2,7 +2,6 @@
 
 package com.apeun.gidaechi.designsystem.component
 
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
