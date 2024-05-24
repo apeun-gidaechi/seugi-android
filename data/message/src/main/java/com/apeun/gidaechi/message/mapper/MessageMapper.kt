@@ -5,13 +5,13 @@ import com.apeun.gidaechi.message.model.message.MessageEmojiModel
 import com.apeun.gidaechi.message.model.message.MessageLoadModel
 import com.apeun.gidaechi.message.model.message.MessageMessageModel
 import com.apeun.gidaechi.message.model.message.MessageUserModel
-import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageDeleteResponse
-import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageEmojiResponse
-import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageLoadResponse
-import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageResponse
-import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageUserResponse
+import com.apeun.gidaechi.network.message.response.message.MessageDeleteResponse
+import com.apeun.gidaechi.network.message.response.message.MessageEmojiResponse
+import com.apeun.gidaechi.network.message.response.message.MessageLoadResponse
+import com.apeun.gidaechi.network.message.response.message.MessageMessageResponse
+import com.apeun.gidaechi.network.message.response.message.MessageUserResponse
 
-internal fun ChatDetailMessageResponse.toModel() =
+internal fun MessageMessageResponse.toModel() =
     MessageMessageModel(
         id = id,
         chatRoomId = chatRoomId,
@@ -28,39 +28,39 @@ internal fun ChatDetailMessageResponse.toModel() =
     )
 
 @JvmName("ListChatDetailMessageResponseToModels")
-internal fun List<ChatDetailMessageResponse>.toModels() =
+internal fun List<MessageMessageResponse>.toModels() =
     this.map {
         it.toModel()
     }
 
 
-internal fun ChatDetailMessageDeleteResponse.toModel() =
+internal fun MessageDeleteResponse.toModel() =
     MessageMessageDeleteModel(
         type = type.toMessageType(),
         eventList = eventList,
         messageId = messageId,
     )
 
-internal fun ChatDetailMessageEmojiResponse.toModel() =
+internal fun MessageEmojiResponse.toModel() =
     MessageEmojiModel(
         emojiId = emojiId,
         userId = userId
     )
 
 @JvmName("ListChatDetailMessageEmojiResponseToModels")
-internal fun List<ChatDetailMessageEmojiResponse>.toModels() =
+internal fun List<MessageEmojiResponse>.toModels() =
     this.map {
         it.toModel()
     }
 
-internal fun ChatDetailMessageUserResponse.toModel() =
+internal fun MessageUserResponse.toModel() =
     MessageUserModel(
         id = id,
         name = name,
         profile = null
     )
 
-internal fun ChatDetailMessageLoadResponse.toModel() =
+internal fun MessageLoadResponse.toModel() =
     MessageLoadModel(
         firstMessageId = firstMessageId,
         messages = messages.toModels()

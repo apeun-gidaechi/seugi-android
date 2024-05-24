@@ -12,5 +12,5 @@ import dagger.hilt.components.SingletonComponent
 internal interface RepositoryModule {
 
     @Binds
-    fun provideChatDetailRepository(chatDetailRepositoryImpl: MessageRepositoryImpl): MessageRepository
+    fun provideMessageRepository(chatDetailRepositoryImpl: MessageRepositoryImpl): MessageRepository
 }

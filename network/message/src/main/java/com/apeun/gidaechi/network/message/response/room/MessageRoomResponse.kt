@@ -1,8 +1,8 @@
-package com.apeun.gidaechi.network.chatdetail.response.room
+package com.apeun.gidaechi.network.message.response.room
 
 import java.time.LocalDateTime
 
-data class ChatDetailRoomResponse(
+data class MessageRoomResponse(
     val id: Int,
     val type: String,
     val chatName: String,

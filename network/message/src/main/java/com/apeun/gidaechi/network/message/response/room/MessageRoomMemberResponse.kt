@@ -1,6 +1,6 @@
-package com.apeun.gidaechi.network.chatdetail.response.room
+package com.apeun.gidaechi.network.message.response.room
 
-data class ChatDetailRoomMemberResponse(
+data class MessageRoomMemberResponse(
     val chatRoomId: Int,
     val workspaceId: String,
     val roomType: String,

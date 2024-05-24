@@ -1,18 +1,18 @@
-package com.apeun.gidaechi.network.chatdetail.datasource
+package com.apeun.gidaechi.network.message.datasource
 
 import android.util.Log
 import com.apeun.gidaechi.common.utiles.DispatcherType
 import com.apeun.gidaechi.common.utiles.SeugiDispatcher
-import com.apeun.gidaechi.network.chatdetail.ChatDetailDataSource
-import com.apeun.gidaechi.network.chatdetail.request.ChatDetailMessageRequest
-import com.apeun.gidaechi.network.chatdetail.response.ChatDetailTypeResponse
-import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageDeleteResponse
-import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageEmojiResponse
-import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageLoadResponse
-import com.apeun.gidaechi.network.chatdetail.response.message.ChatDetailMessageResponse
-import com.apeun.gidaechi.network.chatdetail.response.room.ChatDetailRoomMemberResponse
-import com.apeun.gidaechi.network.chatdetail.response.room.ChatDetailRoomResponse
-import com.apeun.gidaechi.network.chatdetail.response.sub.ChatDetailSubResponse
+import com.apeun.gidaechi.network.message.MessageDataSource
+import com.apeun.gidaechi.network.message.request.MessageRequest
+import com.apeun.gidaechi.network.message.response.MessageTypeResponse
+import com.apeun.gidaechi.network.message.response.message.MessageDeleteResponse
+import com.apeun.gidaechi.network.message.response.message.MessageEmojiResponse
+import com.apeun.gidaechi.network.message.response.message.MessageLoadResponse
+import com.apeun.gidaechi.network.message.response.message.MessageMessageResponse
+import com.apeun.gidaechi.network.message.response.room.MessageRoomMemberResponse
+import com.apeun.gidaechi.network.message.response.room.MessageRoomResponse
+import com.apeun.gidaechi.network.message.response.sub.MessageSubResponse
 import com.apeun.gidaechi.network.core.SeugiUrl
 import com.apeun.gidaechi.network.core.Test
 import com.apeun.gidaechi.network.core.response.BaseResponse
@@ -33,11 +33,11 @@ import ua.naiksoftware.stomp.dto.StompMessage
 import javax.inject.Inject
 
 
-class ChatDetailDataSourceImpl @Inject constructor(
+class MessageDataSourceImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
     private val stompClient: StompClient,
     private val httpClient: HttpClient
-): ChatDetailDataSource {
+): MessageDataSource {
 
     override suspend fun connectStomp(accessToken: String) {
         val header = listOf(StompHeader("Authorization", accessToken))
@@ -54,47 +54,47 @@ class ChatDetailDataSourceImpl @Inject constructor(
 
     override suspend fun getIsConnect(): Boolean = stompClient.isConnected
 
-    override suspend fun getMessage(chatRoomId: Int, page: Int, size: Int): BaseResponse<ChatDetailMessageLoadResponse> =
+    override suspend fun getMessage(chatRoomId: Int, page: Int, size: Int): BaseResponse<MessageLoadResponse> =
         httpClient.get("${SeugiUrl.Message.GET_MESSAGE}/${chatRoomId}?page=${page}&size=${size}") {
             addTestHeader(Test.TEST_TOKEN)
-        }.body<BaseResponse<ChatDetailMessageLoadResponse>>()
+        }.body<BaseResponse<MessageLoadResponse>>()
 
     override suspend fun loadRoomInfo(
         isPersonal: Boolean,
         roomId: Int,
-    ): BaseResponse<ChatDetailRoomResponse> {
+    ): BaseResponse<MessageRoomResponse> {
         val url = "${SeugiUrl.Chat.ROOT}/${if (isPersonal) "personal" else "group"}/search/room/${roomId}"
         return httpClient.get(url) {
             addTestHeader(Test.TEST_TOKEN)
         }.body()
     }
 
-    override suspend fun loadRoomMember(roomId: Int): BaseResponse<ChatDetailRoomMemberResponse> =
+    override suspend fun loadRoomMember(roomId: Int): BaseResponse<MessageRoomMemberResponse> =
         httpClient.get("${SeugiUrl.Chat.LOAD_MEMBER}/${roomId}") {
             addTestHeader(Test.TEST_TOKEN)
         }.body()
 
     override suspend fun subscribeRoom(
         chatRoomId: Int,
-    ): Flow<ChatDetailTypeResponse> = flow {
+    ): Flow<MessageTypeResponse> = flow {
 
         stompClient.topic(SeugiUrl.Message.SUBSCRIPTION + chatRoomId)
             .asFlow()
             .flowOn(dispatcher)
             .collect { message ->
-                val type = message.payload.toResponse(ChatDetailMessageResponse::class.java).type
+                val type = message.payload.toResponse(MessageMessageResponse::class.java).type
                 when (type) {
                     "MESSAGE", "FILE", "IMG", "ENTER", "LEFT" -> {
-                        emit(message.payload.toResponse(ChatDetailMessageResponse::class.java))
+                        emit(message.payload.toResponse(MessageMessageResponse::class.java))
                     }
                     "SUB" -> {
-                        emit(message.payload.toResponse(ChatDetailSubResponse::class.java))
+                        emit(message.payload.toResponse(MessageSubResponse::class.java))
                     }
                     "DELETE_MESSAGE" -> {
-                        emit(message.payload.toResponse(ChatDetailMessageDeleteResponse::class.java))
+                        emit(message.payload.toResponse(MessageDeleteResponse::class.java))
                     }
                     "ADD_EMOJI", "REMOVE_EMOJI" -> {
-                        emit(message.payload.toResponse(ChatDetailMessageEmojiResponse::class.java))
+                        emit(message.payload.toResponse(MessageEmojiResponse::class.java))
                     }
                     else -> {}
                 }
@@ -108,7 +108,7 @@ class ChatDetailDataSourceImpl @Inject constructor(
             return false
         }
 
-        val body = ChatDetailMessageRequest(
+        val body = MessageRequest(
             roomId = chatRoomId,
             message = message
         ).toJsonString()

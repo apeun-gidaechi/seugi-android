@@ -1,6 +1,6 @@
-package com.apeun.gidaechi.network.chatdetail.request
+package com.apeun.gidaechi.network.message.request
 
-data class ChatDetailMessageRequest(
+data class MessageRequest(
     val roomId: Int,
     val type: String,
     val message: String,

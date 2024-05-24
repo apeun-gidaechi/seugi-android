@@ -10,7 +10,7 @@ import com.apeun.gidaechi.message.model.room.MessageRoomModel
 import com.apeun.gidaechi.common.model.asResult
 import com.apeun.gidaechi.common.utiles.DispatcherType
 import com.apeun.gidaechi.common.utiles.SeugiDispatcher
-import com.apeun.gidaechi.network.chatdetail.ChatDetailDataSource
+import com.apeun.gidaechi.network.message.MessageDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -22,7 +22,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 
 class MessageRepositoryImpl @Inject constructor(
-    private val datasource: ChatDetailDataSource,
+    private val datasource: MessageDataSource,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher
 ): MessageRepository {
     override suspend fun sendMessage(chatRoomId: Int, message: String): Result<Boolean> {
