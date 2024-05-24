@@ -39,6 +39,6 @@ include(
     ":feature-onboarding:onboarding",
     ":feature-onboarding:login",
     ":feature-onboarding:join",
-    ":data:chat-detail",
+    ":data:message",
     ":data:profile"
 )

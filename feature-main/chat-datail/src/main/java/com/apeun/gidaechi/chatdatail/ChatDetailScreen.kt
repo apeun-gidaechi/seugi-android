@@ -37,7 +37,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -45,7 +44,6 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
@@ -60,7 +58,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apeun.gidaechi.chatdatail.model.ChatDetailChatTypeState
-import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageUserModel
+import com.apeun.gidaechi.message.model.message.MessageUserModel
 import com.apeun.gidaechi.common.utiles.toAmShortString
 import com.apeun.gidaechi.common.utiles.toFullFormatString
 import com.apeun.gidaechi.designsystem.R
@@ -86,9 +84,7 @@ import com.apeun.gidaechi.designsystem.theme.Primary500
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -387,9 +383,9 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
 
 @Composable
 private fun ChatSideBarScreen(
-    members: ImmutableList<ChatDetailMessageUserModel>,
+    members: ImmutableList<MessageUserModel>,
     notificationState: Boolean,
-    onClickMember: (ChatDetailMessageUserModel) -> Unit,
+    onClickMember: (MessageUserModel) -> Unit,
     onClickInviteMember: () -> Unit,
     onClickLeft: () -> Unit,
     onClickNotification: () -> Unit,

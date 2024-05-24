@@ -10,7 +10,7 @@ dependencies {
 
     implementation(projects.designsystem)
     implementation(projects.common)
-    implementation(projects.data.chatDetail)
+    implementation(projects.data.message)
     implementation(projects.data.profile)
     implementation(libs.kotlinx.collections.immutable)
 }

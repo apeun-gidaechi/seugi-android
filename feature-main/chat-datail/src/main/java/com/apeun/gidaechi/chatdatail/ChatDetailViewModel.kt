@@ -1,8 +1,6 @@
 package com.apeun.gidaechi.chatdatail
 
 import android.util.Log
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apeun.gidaechi.chatdatail.mapper.toState
@@ -10,12 +8,11 @@ import com.apeun.gidaechi.chatdatail.model.ChatDetailChatTypeState
 import com.apeun.gidaechi.chatdatail.model.ChatDetailMessageState
 import com.apeun.gidaechi.chatdatail.model.ChatDetailUiState
 import com.apeun.gidaechi.chatdatail.model.ChatRoomState
-import com.apeun.gidaechi.chatdetail.ChatDetailRepository
-import com.apeun.gidaechi.chatdetail.model.ChatType
-import com.apeun.gidaechi.chatdetail.model.isMessage
-import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageLoadModel
-import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageModel
-import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageUserModel
+import com.apeun.gidaechi.message.MessageRepository
+import com.apeun.gidaechi.message.model.isMessage
+import com.apeun.gidaechi.message.model.message.MessageLoadModel
+import com.apeun.gidaechi.message.model.message.MessageMessageModel
+import com.apeun.gidaechi.message.model.message.MessageUserModel
 import com.apeun.gidaechi.common.model.Result
 import com.apeun.gidaechi.data.profile.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,13 +25,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.invoke
 import kotlinx.coroutines.launch
 import java.time.Duration
 
 @HiltViewModel
 class ChatDetailViewModel @Inject constructor(
-    private val repository: ChatDetailRepository,
+    private val repository: MessageRepository,
     private val profileRepository: ProfileRepository
 ) : ViewModel() {
 
@@ -70,7 +66,7 @@ class ChatDetailViewModel @Inject constructor(
             when (it) {
                 is Result.Success -> {
                     _state.value = _state.value.copy(
-                        userInfo = ChatDetailMessageUserModel(
+                        userInfo = MessageUserModel(
                             id = 2,
                             name = it.data.nick,
                             profile = null,
@@ -101,7 +97,7 @@ class ChatDetailViewModel @Inject constructor(
                             chatRoomId,
                             it.data.chatName,
                             members = it.data.memberList.map {
-                                ChatDetailMessageUserModel(
+                                MessageUserModel(
                                     id = it,
                                     name = "test ${it}",
                                     profile = null
@@ -138,7 +134,7 @@ class ChatDetailViewModel @Inject constructor(
                         is Result.Success -> {
                             val dataType = it.data.type
                             if (dataType.isMessage()) {
-                                val data = it.data as ChatDetailMessageModel
+                                val data = it.data as MessageMessageModel
                                 val message = _state.value.message.toMutableList()
                                 val formerItem = _state.value.message.getOrNull(_state.value.message.lastIndex)
 
@@ -212,7 +208,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun Result<ChatDetailMessageLoadModel>.collectMessage() {
+    private fun Result<MessageLoadModel>.collectMessage() {
         viewModelScope.launch(Dispatchers.IO) {
             when (this@collectMessage) {
                 is Result.Success -> {

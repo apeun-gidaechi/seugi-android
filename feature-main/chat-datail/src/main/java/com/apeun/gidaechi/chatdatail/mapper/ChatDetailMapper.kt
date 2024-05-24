@@ -2,11 +2,10 @@ package com.apeun.gidaechi.chatdatail.mapper
 
 import com.apeun.gidaechi.chatdatail.model.ChatDetailChatTypeState
 import com.apeun.gidaechi.chatdatail.model.ChatDetailMessageState
-import com.apeun.gidaechi.chatdetail.model.ChatDetailTypeModel
-import com.apeun.gidaechi.chatdetail.model.ChatType
-import com.apeun.gidaechi.chatdetail.model.message.ChatDetailMessageModel
+import com.apeun.gidaechi.message.model.MessageType
+import com.apeun.gidaechi.message.model.message.MessageMessageModel
 
-internal fun ChatDetailMessageModel.toState(
+internal fun MessageMessageModel.toState(
     isFirst: Boolean,
     isLast: Boolean,
     isMe: Boolean
@@ -33,13 +32,13 @@ internal fun ChatDetailMessageModel.toState(
  * ChatType To ChatTypeState
  * Is not message type on throw RuntimeException
  */
-internal fun ChatType.toState() =
+internal fun MessageType.toState() =
     when(this) {
-        ChatType.MESSAGE -> ChatDetailChatTypeState.MESSAGE
-        ChatType.FILE -> ChatDetailChatTypeState.MESSAGE
-        ChatType.IMG -> ChatDetailChatTypeState.AI
-        ChatType.LEFT -> ChatDetailChatTypeState.LEFT
-        ChatType.ENTER -> ChatDetailChatTypeState.ENTER
+        MessageType.MESSAGE -> ChatDetailChatTypeState.MESSAGE
+        MessageType.FILE -> ChatDetailChatTypeState.MESSAGE
+        MessageType.IMG -> ChatDetailChatTypeState.AI
+        MessageType.LEFT -> ChatDetailChatTypeState.LEFT
+        MessageType.ENTER -> ChatDetailChatTypeState.ENTER
         else -> {
             throw RuntimeException()
         }
