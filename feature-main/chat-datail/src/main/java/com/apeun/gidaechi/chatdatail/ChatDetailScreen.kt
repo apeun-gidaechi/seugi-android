@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -48,6 +49,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalView
@@ -58,6 +60,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apeun.gidaechi.chatdatail.model.ChatDetailChatTypeState
+import com.apeun.gidaechi.chatdatail.model.ChatDetailSideEffect
 import com.apeun.gidaechi.message.model.message.MessageUserModel
 import com.apeun.gidaechi.common.utiles.toAmShortString
 import com.apeun.gidaechi.common.utiles.toFullFormatString
@@ -90,8 +93,10 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), workspace: String = "664bdd0b9dfce726abd30462", isPersonal: Boolean = false, chatRoomId: String = "665d9ec15e65717b19a62701", onNavigationVisibleChange: (Boolean) -> Unit, popBackStack: () -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val sideEffect: ChatDetailSideEffect? by viewModel.sideEffect.collectAsStateWithLifecycle(initialValue = null)
     val scrollState = rememberLazyListState()
 
+    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     var text by remember { mutableStateOf("") }
     var notificationState by remember { mutableStateOf(false) }
@@ -125,6 +130,20 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
         )
     }
     var nowIndex by remember { mutableIntStateOf(0) }
+
+    LaunchedEffect(key1 = sideEffect) {
+        if (sideEffect == null) { return@LaunchedEffect }
+        when(val nowSideEffect= sideEffect!!) {
+            is ChatDetailSideEffect.SuccessLeft -> {
+                popBackStack()
+            }
+            is ChatDetailSideEffect.FailedLeft -> {
+                coroutineScope.launch {
+                    Toast.makeText(context, nowSideEffect.throwable.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
     LaunchedEffect(key1 = true) {
         onNavigationVisibleChange(false)
@@ -306,7 +325,11 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                     notificationState = notificationState,
                     onClickInviteMember = {},
                     onClickMember = {},
-                    onClickLeft = {},
+                    onClickLeft = {
+                        if (!isPersonal) {
+                            viewModel.leftRoom(chatRoomId)
+                        }
+                    },
                     onClickNotification = {
                         notificationState = !notificationState
                     },

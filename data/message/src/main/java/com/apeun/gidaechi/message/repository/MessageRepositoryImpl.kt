@@ -84,6 +84,15 @@ class MessageRepositoryImpl @Inject constructor(
             .asResult()
     }
 
+    override suspend fun leftRoom(chatRoomId: String): Flow<Result<Unit>> {
+        return flow {
+            val response = datasource.leftRoom(chatRoomId).safeResponse()
+            emit(response?: Unit)
+        }
+            .flowOn(dispatcher)
+            .asResult()
+    }
+
     companion object {
         const val TEST_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTcxNTg1ODkwMywiZXhwIjoxNzIxODU4OTAzfQ.F5_W4wAay4FbssM6XxJSCiUIvGCAcjAXqPxb-PXvUDo"
     }

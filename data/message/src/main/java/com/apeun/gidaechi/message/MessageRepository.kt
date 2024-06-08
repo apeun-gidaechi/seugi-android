@@ -18,4 +18,6 @@ interface MessageRepository {
     suspend fun getMessage(chatRoomId: String, page: Int, size: Int): Flow<Result<MessageLoadModel>>
 
     suspend fun loadRoomInfo(isPersonal: Boolean, roomId: String): Flow<Result<MessageRoomModel>>
+
+    suspend fun leftRoom(chatRoomId: String): Flow<Result<Unit>>
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.apeun.gidaechi.chatdatail.mapper.toState
 import com.apeun.gidaechi.chatdatail.model.ChatDetailChatTypeState
 import com.apeun.gidaechi.chatdatail.model.ChatDetailMessageState
+import com.apeun.gidaechi.chatdatail.model.ChatDetailSideEffect
 import com.apeun.gidaechi.chatdatail.model.ChatDetailUiState
 import com.apeun.gidaechi.chatdatail.model.ChatRoomState
 import com.apeun.gidaechi.message.MessageRepository
@@ -24,8 +25,10 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.time.Duration
 
@@ -37,6 +40,9 @@ class ChatDetailViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(ChatDetailUiState())
     val state = _state.asStateFlow()
+
+    private val _sideEffect = Channel<ChatDetailSideEffect>()
+    val sideEffect = _sideEffect.receiveAsFlow()
 
     private var subscribeChat: Job? = null
 
@@ -179,6 +185,25 @@ class ChatDetailViewModel @Inject constructor(
     fun subscribeCancel() {
         subscribeChat?.cancel()
         subscribeChat = null
+    }
+
+    fun leftRoom(chatRoomId: String) {
+        viewModelScope.launch {
+            messageRepository.leftRoom(chatRoomId).collect {
+                when(it) {
+                    is Result.Success -> {
+                        Log.d("TAG", "leftRoom: sucesss")
+                        _sideEffect.send(ChatDetailSideEffect.SuccessLeft)
+                    }
+                    is Result.Error -> {
+                        Log.d("TAG", "leftRoom: failed")
+                        it.throwable.printStackTrace()
+                        _sideEffect.send(ChatDetailSideEffect.FailedLeft(it.throwable))
+                    }
+                    is Result.Loading -> {}
+                }
+            }
+        }
     }
 
     fun nextPage() {

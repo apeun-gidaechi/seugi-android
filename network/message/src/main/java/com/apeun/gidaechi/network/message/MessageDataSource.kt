@@ -24,4 +24,5 @@ interface MessageDataSource {
 
     suspend fun loadRoomMember(roomId: String):  BaseResponse<MessageRoomMemberResponse>
 
+    suspend fun leftRoom(chatRoomId: String): BaseResponse<Unit?>
 }

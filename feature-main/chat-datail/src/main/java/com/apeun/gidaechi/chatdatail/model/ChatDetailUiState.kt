@@ -60,3 +60,8 @@ data class ChatDetailMessageState(
         isMe = false
     )
 }
+
+sealed interface ChatDetailSideEffect {
+    data object SuccessLeft: ChatDetailSideEffect
+    data class FailedLeft(val throwable: Throwable): ChatDetailSideEffect
+}

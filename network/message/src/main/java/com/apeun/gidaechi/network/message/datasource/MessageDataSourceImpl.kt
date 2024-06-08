@@ -22,6 +22,7 @@ import com.apeun.gidaechi.network.core.utiles.toResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.patch
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -71,6 +72,11 @@ class MessageDataSourceImpl @Inject constructor(
 
     override suspend fun loadRoomMember(roomId: String): BaseResponse<MessageRoomMemberResponse> =
         httpClient.get("${SeugiUrl.Chat.LOAD_MEMBER}/${roomId}") {
+            addTestHeader(Test.TEST_TOKEN)
+        }.body()
+
+    override suspend fun leftRoom(chatRoomId: String): BaseResponse<Unit?> =
+        httpClient.patch("${SeugiUrl.Chat.LEFT}/${chatRoomId}") {
             addTestHeader(Test.TEST_TOKEN)
         }.body()
 
