@@ -16,14 +16,14 @@ internal fun MessageMessageResponse.toModel() =
         id = id,
         chatRoomId = chatRoomId,
         type = type.toMessageType(),
-        author = author.toModel(),
+        author = userId,
         message = message,
         emojiList = emojiList.toModels(),
         mention = mention,
         mentionAll = mentionAll,
         timestamp = timestamp,
         read = read,
-        joined = joined,
+        joined = joined?: emptyList(),
         messageStatus = messageStatus.toMessageLifeType()
     )
 

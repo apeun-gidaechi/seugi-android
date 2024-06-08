@@ -4,11 +4,13 @@ import com.apeun.gidaechi.chatdatail.model.ChatDetailChatTypeState
 import com.apeun.gidaechi.chatdatail.model.ChatDetailMessageState
 import com.apeun.gidaechi.message.model.MessageType
 import com.apeun.gidaechi.message.model.message.MessageMessageModel
+import com.apeun.gidaechi.message.model.message.MessageUserModel
 
 internal fun MessageMessageModel.toState(
     isFirst: Boolean,
     isLast: Boolean,
-    isMe: Boolean
+    isMe: Boolean,
+    author: MessageUserModel
 ) =
     ChatDetailMessageState(
         id = id,

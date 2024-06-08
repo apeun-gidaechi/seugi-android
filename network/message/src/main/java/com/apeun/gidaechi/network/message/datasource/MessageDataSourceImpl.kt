@@ -54,14 +54,14 @@ class MessageDataSourceImpl @Inject constructor(
 
     override suspend fun getIsConnect(): Boolean = stompClient.isConnected
 
-    override suspend fun getMessage(chatRoomId: Int, page: Int, size: Int): BaseResponse<MessageLoadResponse> =
+    override suspend fun getMessage(chatRoomId: String, page: Int, size: Int): BaseResponse<MessageLoadResponse> =
         httpClient.get("${SeugiUrl.Message.GET_MESSAGE}/${chatRoomId}?page=${page}&size=${size}") {
             addTestHeader(Test.TEST_TOKEN)
         }.body<BaseResponse<MessageLoadResponse>>()
 
     override suspend fun loadRoomInfo(
         isPersonal: Boolean,
-        roomId: Int,
+        roomId: String,
     ): BaseResponse<MessageRoomResponse> {
         val url = "${SeugiUrl.Chat.ROOT}/${if (isPersonal) "personal" else "group"}/search/room/${roomId}"
         return httpClient.get(url) {
@@ -69,13 +69,13 @@ class MessageDataSourceImpl @Inject constructor(
         }.body()
     }
 
-    override suspend fun loadRoomMember(roomId: Int): BaseResponse<MessageRoomMemberResponse> =
+    override suspend fun loadRoomMember(roomId: String): BaseResponse<MessageRoomMemberResponse> =
         httpClient.get("${SeugiUrl.Chat.LOAD_MEMBER}/${roomId}") {
             addTestHeader(Test.TEST_TOKEN)
         }.body()
 
     override suspend fun subscribeRoom(
-        chatRoomId: Int,
+        chatRoomId: String,
     ): Flow<MessageTypeResponse> = flow {
 
         stompClient.topic(SeugiUrl.Message.SUBSCRIPTION + chatRoomId)
@@ -102,7 +102,7 @@ class MessageDataSourceImpl @Inject constructor(
 
     }
 
-    override suspend fun sendMessage(chatRoomId: Int, message: String): Boolean {
+    override suspend fun sendMessage(chatRoomId: String, message: String): Boolean {
         // 연결이 되지 않는 경우 연결 강제성 부여
         if (!stompClient.isConnected) {
             return false

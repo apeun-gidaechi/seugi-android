@@ -7,9 +7,9 @@ import java.time.LocalDateTime
 
 data class MessageMessageModel(
     val id: String,
-    val chatRoomId: Int,
+    val chatRoomId: String,
     override val type: MessageType,
-    val author: MessageUserModel,
+    val author: Int,
     val message: String,
     val emojiList: List<MessageEmojiModel>,
     val mention: List<Int>,

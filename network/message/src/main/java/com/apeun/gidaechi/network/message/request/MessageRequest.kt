@@ -1,11 +1,11 @@
 package com.apeun.gidaechi.network.message.request
 
 data class MessageRequest(
-    val roomId: Int,
+    val roomId: String,
     val type: String,
     val message: String,
     val mention: List<Long>,
     val mentionAll: Boolean
 ) {
-    constructor(roomId: Int, message: String): this(roomId, "MESSAGE", message, emptyList(), false)
+    constructor(roomId: String, message: String): this(roomId, "MESSAGE", message, emptyList(), false)
 }

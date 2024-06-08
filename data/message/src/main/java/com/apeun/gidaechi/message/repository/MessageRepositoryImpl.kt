@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import com.apeun.gidaechi.common.model.Result
+import com.apeun.gidaechi.message.model.message.MessageUserModel
 import com.apeun.gidaechi.network.core.response.safeResponse
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
@@ -25,7 +26,7 @@ class MessageRepositoryImpl @Inject constructor(
     private val datasource: MessageDataSource,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher
 ): MessageRepository {
-    override suspend fun sendMessage(chatRoomId: Int, message: String): Result<Boolean> {
+    override suspend fun sendMessage(chatRoomId: String, message: String): Result<Boolean> {
         return Result.Success(
             datasource.sendMessage(
                 chatRoomId = chatRoomId,
@@ -34,7 +35,7 @@ class MessageRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun subscribeRoom(chatRoomId: Int): Flow<Result<MessageTypeModel>> {
+    override suspend fun subscribeRoom(chatRoomId: String): Flow<Result<MessageTypeModel>> {
         if (!datasource.getIsConnect()) {
             datasource.connectStomp(TEST_TOKEN)
         }
@@ -46,7 +47,7 @@ class MessageRepositoryImpl @Inject constructor(
             .asResult()
     }
 
-    override suspend fun reSubscribeRoom(chatRoomId: Int): Flow<Result<MessageTypeModel>> {
+    override suspend fun reSubscribeRoom(chatRoomId: String): Flow<Result<MessageTypeModel>> {
         datasource.reConnectStomp(TEST_TOKEN)
         delay(200)
         return datasource.subscribeRoom(chatRoomId)
@@ -58,7 +59,7 @@ class MessageRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getMessage(
-        chatRoomId: Int,
+        chatRoomId: String,
         page: Int,
         size: Int
     ): Flow<Result<MessageLoadModel>> {
@@ -73,24 +74,11 @@ class MessageRepositoryImpl @Inject constructor(
 
     override suspend fun loadRoomInfo(
         isPersonal: Boolean,
-        roomId: Int,
+        roomId: String,
     ): Flow<Result<MessageRoomModel>> {
         return flow {
             val roomResponse = datasource.loadRoomInfo(isPersonal, roomId).safeResponse()
-            val memberResponse = datasource.loadRoomMember(roomId).safeResponse()
-            emit(
-                MessageRoomModel(
-                    id = roomResponse.id,
-                    type = roomResponse.type.toMessageRoomType(),
-                    chatName = roomResponse.chatName,
-                    containUserCnt = roomResponse.containUserCnt,
-                    chatRoomImg = roomResponse.chatRoomImg,
-                    createdAt = roomResponse.createdAt,
-                    memberList = memberResponse.joinUserId,
-                    workspaceId = memberResponse.workspaceId,
-                    chatStatusEnum = roomResponse.chatStatusEnum.toMessageRoomStatus()
-                )
-            )
+            emit(roomResponse.toModel())
         }
             .flowOn(dispatcher)
             .asResult()

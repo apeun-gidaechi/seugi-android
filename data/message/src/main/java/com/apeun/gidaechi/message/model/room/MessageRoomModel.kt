@@ -1,15 +1,16 @@
 package com.apeun.gidaechi.message.model.room
 
+import com.apeun.gidaechi.message.model.message.MessageUserModel
 import java.time.LocalDateTime
 
 data class MessageRoomModel(
-    val id: Int,
+    val id: String,
+    val workspaceId: String,
     val type: MessageRoomType,
     val chatName: String,
-    val containUserCnt: Int,
-    val chatRoomImg: String,
+    val roomAdmin: Int,
     val createdAt: LocalDateTime,
-    val workspaceId: String,
-    val memberList: List<Int>,
-    val chatStatusEnum: MessageRoomStatusType
+    val chatRoomImg: String,
+    val chatStatusEnum: MessageRoomStatusType,
+    val memberList: List<MessageUserModel>,
 )

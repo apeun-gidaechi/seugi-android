@@ -5,16 +5,17 @@ import java.time.LocalDateTime
 
 data class MessageMessageResponse(
     val id: String,
-    val chatRoomId: Int,
+    val chatRoomId: String,
     override val type: String,
-    val author: MessageUserResponse,
-    val eventList: List<Int>,
+    val userId: Int,
     val message: String,
+    val emoticon: String?,
+    val eventList: List<Int>?,
     val emojiList: List<MessageEmojiResponse>,
     val mention: List<Int>,
     val mentionAll: Boolean,
     val timestamp: LocalDateTime,
     val read: List<Int>,
-    val joined: List<Int>,
+    val joined: List<Int>? = emptyList(),
     val messageStatus: String
 ): MessageTypeResponse()

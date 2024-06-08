@@ -88,7 +88,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), workspace: String = "664bdd0b9dfce726abd30462", isPersonal: Boolean = false, chatRoomId: Int = 99, onNavigationVisibleChange: (Boolean) -> Unit, popBackStack: () -> Unit) {
+internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), workspace: String = "664bdd0b9dfce726abd30462", isPersonal: Boolean = false, chatRoomId: String = "665d9ec15e65717b19a62701", onNavigationVisibleChange: (Boolean) -> Unit, popBackStack: () -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scrollState = rememberLazyListState()
 
@@ -361,7 +361,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                                     ChatItemType.Others(
                                         isFirst = item.isFirst,
                                         isLast = item.isLast,
-                                        userName = item.author.name,
+                                        userName = state.users.get(item.author.id)?.name?: "",
                                         userProfile = null,
                                         message = item.message,
                                         createdAt = item.timestamp.toAmShortString(),

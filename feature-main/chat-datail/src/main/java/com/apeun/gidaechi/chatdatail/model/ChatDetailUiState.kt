@@ -5,7 +5,9 @@ import com.apeun.gidaechi.message.model.message.MessageEmojiModel
 import com.apeun.gidaechi.message.model.message.MessageUserModel
 import java.time.LocalDateTime
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentMapOf
 
 data class ChatDetailUiState(
     val roomInfo: ChatRoomState? = null,
@@ -14,17 +16,18 @@ data class ChatDetailUiState(
     val isInit: Boolean = false,
     val isLastPage: Boolean = false,
     val message: ImmutableList<ChatDetailMessageState> = persistentListOf(),
+    val users: ImmutableMap<Int, MessageUserModel> = persistentMapOf(),
 )
 
 data class ChatRoomState(
-    val id: Int,
+    val id: String,
     val roomName: String,
     val members: ImmutableList<MessageUserModel> = persistentListOf(),
 )
 
 data class ChatDetailMessageState(
     val id: String,
-    val chatRoomId: Int,
+    val chatRoomId: String,
     val type: ChatDetailChatTypeState,
     val author: MessageUserModel,
     val message: String,
@@ -39,7 +42,7 @@ data class ChatDetailMessageState(
     val isLast: Boolean,
     val isMe: Boolean
 ) {
-    constructor(chatRoomId: Int, type: ChatDetailChatTypeState, timestamp: LocalDateTime): this(
+    constructor(chatRoomId: String, type: ChatDetailChatTypeState, timestamp: LocalDateTime): this(
         id = "id",
         chatRoomId = chatRoomId,
         type = type,
