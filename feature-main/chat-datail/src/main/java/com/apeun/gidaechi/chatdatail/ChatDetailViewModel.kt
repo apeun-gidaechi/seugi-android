@@ -31,7 +31,7 @@ import java.time.Duration
 
 @HiltViewModel
 class ChatDetailViewModel @Inject constructor(
-    private val repository: MessageRepository,
+    private val messageRepository: MessageRepository,
     private val profileRepository: ProfileRepository
 ) : ViewModel() {
 
@@ -87,7 +87,7 @@ class ChatDetailViewModel @Inject constructor(
         chatRoomId: String,
         isPersonal: Boolean
     ) = viewModelScope.launch {
-        repository.loadRoomInfo(
+        messageRepository.loadRoomInfo(
             isPersonal = isPersonal,
             roomId = chatRoomId
         ).collect {
@@ -118,7 +118,7 @@ class ChatDetailViewModel @Inject constructor(
         content: String
     ) {
         viewModelScope.launch {
-            val e = repository.sendMessage("665d9ec15e65717b19a62701", content)
+            val e = messageRepository.sendMessage("665d9ec15e65717b19a62701", content)
             Log.d("TAG", "testSend: $e")
         }
     }
@@ -129,7 +129,7 @@ class ChatDetailViewModel @Inject constructor(
         viewModelScope.launch {
             subscribeChat?.cancel()
             subscribeChat = viewModelScope.async {
-                repository.reSubscribeRoom(
+                messageRepository.reSubscribeRoom(
                     chatRoomId = "665d9ec15e65717b19a62701"
                 ).collect {
                     when (it) {
@@ -202,14 +202,14 @@ class ChatDetailViewModel @Inject constructor(
     }
 
     private fun initPage() = viewModelScope.launch(Dispatchers.IO) {
-        repository.getMessage(state.value.roomInfo?.id?: "665d9ec15e65717b19a62701", state.value.nowPage, PAGE_SIZE).collect {
+        messageRepository.getMessage(state.value.roomInfo?.id?: "665d9ec15e65717b19a62701", state.value.nowPage, PAGE_SIZE).collect {
             it.collectMessage()
         }
     }
 
     private fun loadNowPage() {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getMessage(state.value.roomInfo?.id?: "665d9ec15e65717b19a62701", state.value.nowPage, PAGE_SIZE).collect {
+            messageRepository.getMessage(state.value.roomInfo?.id?: "665d9ec15e65717b19a62701", state.value.nowPage, PAGE_SIZE).collect {
                 it.collectMessage()
             }
         }
