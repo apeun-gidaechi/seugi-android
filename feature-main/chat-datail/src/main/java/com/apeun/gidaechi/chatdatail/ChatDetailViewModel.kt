@@ -57,11 +57,6 @@ class ChatDetailViewModel @Inject constructor(
                 "",
                 members = persistentListOf(),
             ),
-//            userInfo = ChatDetailMessageUserModel(
-//                2,
-//                "박병준",
-//                null
-//            ),
         )
         initProfile(workspaceId)
         initPage()
@@ -124,7 +119,7 @@ class ChatDetailViewModel @Inject constructor(
         content: String
     ) {
         viewModelScope.launch {
-            val e = messageRepository.sendMessage("665d9ec15e65717b19a62701", content)
+            val e = messageRepository.sendMessage(state.value.roomInfo?.id?: "", content)
             Log.d("TAG", "testSend: $e")
         }
     }
@@ -136,7 +131,7 @@ class ChatDetailViewModel @Inject constructor(
             subscribeChat?.cancel()
             subscribeChat = viewModelScope.async {
                 messageRepository.reSubscribeRoom(
-                    chatRoomId = "665d9ec15e65717b19a62701"
+                    chatRoomId = state.value.roomInfo?.id?: ""
                 ).collect {
                     when (it) {
                         is Result.Success -> {
