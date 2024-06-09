@@ -16,6 +16,5 @@ data class MessageMessageResponse(
     val mentionAll: Boolean,
     val timestamp: LocalDateTime,
     val read: List<Int>,
-    val joined: List<Int>? = emptyList(),
     val messageStatus: String
 ): MessageTypeResponse()

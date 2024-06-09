@@ -23,7 +23,6 @@ internal fun MessageMessageResponse.toModel() =
         mentionAll = mentionAll,
         timestamp = timestamp,
         read = read,
-        joined = joined?: emptyList(),
         messageStatus = messageStatus.toMessageLifeType()
     )
 

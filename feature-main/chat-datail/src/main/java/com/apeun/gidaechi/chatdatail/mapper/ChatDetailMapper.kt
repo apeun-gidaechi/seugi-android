@@ -23,7 +23,6 @@ internal fun MessageMessageModel.toState(
         mentionAll = mentionAll,
         timestamp = timestamp,
         read = read,
-        joined = joined,
         messageStatus = messageStatus,
         isFirst = isFirst,
         isLast = isLast,

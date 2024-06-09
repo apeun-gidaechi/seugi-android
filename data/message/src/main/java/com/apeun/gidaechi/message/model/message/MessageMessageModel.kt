@@ -16,6 +16,5 @@ data class MessageMessageModel(
     val mentionAll: Boolean,
     val timestamp: LocalDateTime,
     val read: List<Int>,
-    val joined: List<Int>,
     val messageStatus: MessageLifeType
 ): MessageTypeModel()
