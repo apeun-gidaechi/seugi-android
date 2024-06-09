@@ -74,8 +74,8 @@ sealed class ChatItemType {
         val count: Int,
     ) : ChatItemType()
     data class Else(
-        val message: String
-    ): ChatItemType()
+        val message: String,
+    ) : ChatItemType()
 }
 
 @Composable

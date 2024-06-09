@@ -6,4 +6,4 @@ data class MessageEmojiResponse(
     override val type: String,
     val emojiId: Int,
     val userId: List<Int>,
-): MessageTypeResponse()
+) : MessageTypeResponse()

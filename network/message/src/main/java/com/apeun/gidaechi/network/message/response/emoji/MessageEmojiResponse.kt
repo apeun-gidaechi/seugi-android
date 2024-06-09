@@ -6,5 +6,5 @@ data class MessageEmojiResponse(
     override val type: String,
     val eventList: List<Int>,
     val messageId: String,
-    val emojiId : Int
-): MessageTypeResponse()
+    val emojiId: Int,
+) : MessageTypeResponse()

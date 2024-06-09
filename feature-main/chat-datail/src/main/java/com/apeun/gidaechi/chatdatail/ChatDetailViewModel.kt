@@ -9,14 +9,15 @@ import com.apeun.gidaechi.chatdatail.model.ChatDetailMessageState
 import com.apeun.gidaechi.chatdatail.model.ChatDetailSideEffect
 import com.apeun.gidaechi.chatdatail.model.ChatDetailUiState
 import com.apeun.gidaechi.chatdatail.model.ChatRoomState
+import com.apeun.gidaechi.common.model.Result
+import com.apeun.gidaechi.data.profile.ProfileRepository
 import com.apeun.gidaechi.message.MessageRepository
 import com.apeun.gidaechi.message.model.isMessage
 import com.apeun.gidaechi.message.model.message.MessageLoadModel
 import com.apeun.gidaechi.message.model.message.MessageMessageModel
 import com.apeun.gidaechi.message.model.message.MessageUserModel
-import com.apeun.gidaechi.common.model.Result
-import com.apeun.gidaechi.data.profile.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.Duration
 import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -30,12 +31,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.time.Duration
 
 @HiltViewModel
 class ChatDetailViewModel @Inject constructor(
     private val messageRepository: MessageRepository,
-    private val profileRepository: ProfileRepository
+    private val profileRepository: ProfileRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ChatDetailUiState())
@@ -46,11 +46,7 @@ class ChatDetailViewModel @Inject constructor(
 
     private var subscribeChat: Job? = null
 
-    fun loadInfo(
-        chatRoomId: String,
-        isPersonal: Boolean,
-        workspaceId: String
-    ) = viewModelScope.launch(Dispatchers.IO) {
+    fun loadInfo(chatRoomId: String, isPersonal: Boolean, workspaceId: String) = viewModelScope.launch(Dispatchers.IO) {
         _state.value = _state.value.copy(
             roomInfo = ChatRoomState(
                 chatRoomId,
@@ -72,7 +68,7 @@ class ChatDetailViewModel @Inject constructor(
                             id = 2,
                             name = it.data.nick,
                             profile = null,
-                        )
+                        ),
                     )
                     Log.d("TAG", "initProfile: ${_state.value.userInfo?.id}")
                 }
@@ -84,13 +80,10 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun loadRoom(
-        chatRoomId: String,
-        isPersonal: Boolean
-    ) = viewModelScope.launch {
+    private fun loadRoom(chatRoomId: String, isPersonal: Boolean) = viewModelScope.launch {
         messageRepository.loadRoomInfo(
             isPersonal = isPersonal,
-            roomId = chatRoomId
+            roomId = chatRoomId,
         ).collect {
             when (it) {
                 is Result.Success -> {
@@ -104,7 +97,7 @@ class ChatDetailViewModel @Inject constructor(
                             roomName = it.data.chatName,
                             members = it.data.memberList.toImmutableList(),
                         ),
-                        users = users.toImmutableMap()
+                        users = users.toImmutableMap(),
                     )
                 }
                 is Result.Loading -> {}
@@ -115,23 +108,19 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelSend(
-        content: String
-    ) {
+    fun channelSend(content: String) {
         viewModelScope.launch {
-            val e = messageRepository.sendMessage(state.value.roomInfo?.id?: "", content)
+            val e = messageRepository.sendMessage(state.value.roomInfo?.id ?: "", content)
             Log.d("TAG", "testSend: $e")
         }
     }
 
-    fun channelReconnect(
-
-    ) {
+    fun channelReconnect() {
         viewModelScope.launch {
             subscribeChat?.cancel()
             subscribeChat = viewModelScope.async {
                 messageRepository.reSubscribeRoom(
-                    chatRoomId = state.value.roomInfo?.id?: ""
+                    chatRoomId = state.value.roomInfo?.id ?: "",
                 ).collect {
                     when (it) {
                         is Result.Success -> {
@@ -147,8 +136,8 @@ class ChatDetailViewModel @Inject constructor(
                                 if (formerItem?.isLast == true && formerItem.author.id == data.author) {
                                     message.add(
                                         message.removeLast().copy(
-                                            isLast = false
-                                        )
+                                            isLast = false,
+                                        ),
                                     )
                                 }
                                 message.add(
@@ -156,17 +145,16 @@ class ChatDetailViewModel @Inject constructor(
                                         isFirst = isFirst,
                                         isLast = true,
                                         isMe = isMe,
-                                        author = _state.value.users.getOrDefault(data.author, MessageUserModel(data.author))
-                                    )
+                                        author = _state.value.users.getOrDefault(data.author, MessageUserModel(data.author)),
+                                    ),
                                 )
                                 _state.value = _state.value.copy(
-                                    message = message.toImmutableList()
+                                    message = message.toImmutableList(),
                                 )
                             }
                         }
                         is Result.Loading -> {}
                         is Result.Error -> {
-
                         }
                     }
                 }
@@ -185,7 +173,7 @@ class ChatDetailViewModel @Inject constructor(
     fun leftRoom(chatRoomId: String) {
         viewModelScope.launch {
             messageRepository.leftRoom(chatRoomId).collect {
-                when(it) {
+                when (it) {
                     is Result.Success -> {
                         Log.d("TAG", "leftRoom: sucesss")
                         _sideEffect.send(ChatDetailSideEffect.SuccessLeft)
@@ -203,9 +191,11 @@ class ChatDetailViewModel @Inject constructor(
 
     fun nextPage() {
         with(state.value) {
-            if (!isInit || isLastPage) { return }
+            if (!isInit || isLastPage) {
+                return
+            }
             _state.value = _state.value.copy(
-                nowPage = state.value.nowPage + 1
+                nowPage = state.value.nowPage + 1,
             )
             loadNowPage()
         }
@@ -213,23 +203,25 @@ class ChatDetailViewModel @Inject constructor(
 
     fun prevPage() {
         with(state.value) {
-            if (!isInit || nowPage == 0) { return }
+            if (!isInit || nowPage == 0) {
+                return
+            }
             _state.value = _state.value.copy(
-                nowPage = nowPage - 1
+                nowPage = nowPage - 1,
             )
             loadNowPage()
         }
     }
 
     private fun initPage() = viewModelScope.launch(Dispatchers.IO) {
-        messageRepository.getMessage(state.value.roomInfo?.id?: "665d9ec15e65717b19a62701", state.value.nowPage, PAGE_SIZE).collect {
+        messageRepository.getMessage(state.value.roomInfo?.id ?: "665d9ec15e65717b19a62701", state.value.nowPage, PAGE_SIZE).collect {
             it.collectMessage()
         }
     }
 
     private fun loadNowPage() {
         viewModelScope.launch(Dispatchers.IO) {
-            messageRepository.getMessage(state.value.roomInfo?.id?: "665d9ec15e65717b19a62701", state.value.nowPage, PAGE_SIZE).collect {
+            messageRepository.getMessage(state.value.roomInfo?.id ?: "665d9ec15e65717b19a62701", state.value.nowPage, PAGE_SIZE).collect {
                 it.collectMessage()
             }
         }
@@ -247,12 +239,12 @@ class ChatDetailViewModel @Inject constructor(
 
                         val isMe = item.author == state.value.userInfo?.id
                         val isLast = item.author != nextItem?.author ||
-                                (
-                                        Duration.between(
-                                            item.timestamp,
-                                            nextItem.timestamp,
-                                        ).seconds >= 86400 && item.author == nextItem.author
-                                        )
+                            (
+                                Duration.between(
+                                    item.timestamp,
+                                    nextItem.timestamp,
+                                ).seconds >= 86400 && item.author == nextItem.author
+                                )
 
                         var isFirst = formerItem == null || item.author != formerItem.author
                         if (formerItem != null && Duration.between(
@@ -265,8 +257,8 @@ class ChatDetailViewModel @Inject constructor(
                                 ChatDetailMessageState(
                                     chatRoomId = item.chatRoomId,
                                     type = ChatDetailChatTypeState.DATE,
-                                    timestamp = item.timestamp
-                                )
+                                    timestamp = item.timestamp,
+                                ),
                             )
                         }
 //                        if (item.type == ChatType.ENTER) {
@@ -281,8 +273,8 @@ class ChatDetailViewModel @Inject constructor(
                                 isFirst = isFirst,
                                 isLast = true,
                                 isMe = isMe,
-                                author = _state.value.users.getOrDefault(item.author, MessageUserModel(item.author))
-                            )
+                                author = _state.value.users.getOrDefault(item.author, MessageUserModel(item.author)),
+                            ),
                         )
                     }
                     var isLast = state.value.isLastPage
@@ -294,7 +286,7 @@ class ChatDetailViewModel @Inject constructor(
                             it.timestamp
                         }.toImmutableList(),
                         isInit = true,
-                        isLastPage = isLast
+                        isLastPage = isLast,
                     )
                 }
 

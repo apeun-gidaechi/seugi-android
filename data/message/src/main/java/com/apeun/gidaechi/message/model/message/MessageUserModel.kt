@@ -3,9 +3,9 @@ package com.apeun.gidaechi.message.model.message
 data class MessageUserModel(
     val id: Int,
     val name: String,
-    val profile: String?
+    val profile: String?,
 ) {
-    constructor(): this(0, "", null)
+    constructor() : this(0, "", null)
 
-    constructor(id: Int): this(id, "", null)
+    constructor(id: Int) : this(id, "", null)
 }

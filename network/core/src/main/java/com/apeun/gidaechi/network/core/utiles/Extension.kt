@@ -28,11 +28,9 @@ inline fun <reified T> T.toJsonString(): String {
     }
 }
 
-fun HttpRequestBuilder.addTestHeader(token: String) =
-    this.headers {
-        append("Authorization", token)
-    }
-
+fun HttpRequestBuilder.addTestHeader(token: String) = this.headers {
+    append("Authorization", token)
+}
 
 object GsonConverter {
 

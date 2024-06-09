@@ -5,5 +5,5 @@ data class MessageRoomMemberResponse(
     val workspaceId: String,
     val roomType: String,
     val roomAdmin: Int?,
-    val joinUserId: List<Int>
+    val joinUserId: List<Int>,
 )

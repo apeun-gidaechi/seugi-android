@@ -16,5 +16,5 @@ data class MessageMessageResponse(
     val mentionAll: Boolean,
     val timestamp: LocalDateTime,
     val read: List<Int>,
-    val messageStatus: String
-): MessageTypeResponse()
+    val messageStatus: String,
+) : MessageTypeResponse()

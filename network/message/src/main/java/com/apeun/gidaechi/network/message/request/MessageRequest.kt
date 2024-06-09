@@ -5,7 +5,7 @@ data class MessageRequest(
     val type: String,
     val message: String,
     val mention: List<Long>,
-    val mentionAll: Boolean
+    val mentionAll: Boolean,
 ) {
-    constructor(roomId: String, message: String): this(roomId, "MESSAGE", message, emptyList(), false)
+    constructor(roomId: String, message: String) : this(roomId, "MESSAGE", message, emptyList(), false)
 }

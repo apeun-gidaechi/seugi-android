@@ -61,7 +61,6 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apeun.gidaechi.chatdatail.model.ChatDetailChatTypeState
 import com.apeun.gidaechi.chatdatail.model.ChatDetailSideEffect
-import com.apeun.gidaechi.message.model.message.MessageUserModel
 import com.apeun.gidaechi.common.utiles.toAmShortString
 import com.apeun.gidaechi.common.utiles.toFullFormatString
 import com.apeun.gidaechi.designsystem.R
@@ -84,6 +83,7 @@ import com.apeun.gidaechi.designsystem.theme.Gray500
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary050
 import com.apeun.gidaechi.designsystem.theme.Primary500
+import com.apeun.gidaechi.message.model.message.MessageUserModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
@@ -91,7 +91,14 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), workspace: String = "664bdd0b9dfce726abd30462", isPersonal: Boolean = false, chatRoomId: String = "665d9ec15e65717b19a62701", onNavigationVisibleChange: (Boolean) -> Unit, popBackStack: () -> Unit) {
+internal fun ChatDetailScreen(
+    viewModel: ChatDetailViewModel = hiltViewModel(),
+    workspace: String = "664bdd0b9dfce726abd30462",
+    isPersonal: Boolean = false,
+    chatRoomId: String = "665d9ec15e65717b19a62701",
+    onNavigationVisibleChange: (Boolean) -> Unit,
+    popBackStack: () -> Unit,
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val sideEffect: ChatDetailSideEffect? by viewModel.sideEffect.collectAsStateWithLifecycle(initialValue = null)
     val scrollState = rememberLazyListState()
@@ -132,8 +139,10 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     var nowIndex by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(key1 = sideEffect) {
-        if (sideEffect == null) { return@LaunchedEffect }
-        when(val nowSideEffect= sideEffect!!) {
+        if (sideEffect == null) {
+            return@LaunchedEffect
+        }
+        when (val nowSideEffect = sideEffect!!) {
             is ChatDetailSideEffect.SuccessLeft -> {
                 popBackStack()
             }
@@ -150,7 +159,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
         viewModel.loadInfo(
             isPersonal = isPersonal,
             chatRoomId = chatRoomId,
-            workspaceId = workspace
+            workspaceId = workspace,
         )
     }
 
@@ -173,7 +182,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
         val chatIndex = state.message.size
         if (nowIndex != chatIndex) {
             coroutineScope.launch {
-                scrollState.scrollToItem(chatIndex-nowIndex)
+                scrollState.scrollToItem(chatIndex - nowIndex)
                 scrollState.scrollBy(-50f)
                 nowIndex = chatIndex
             }
@@ -369,7 +378,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                             .`if`(item.isMe) {
                                 align(Alignment.End)
                             },
-                        type = when(item.type) {
+                        type = when (item.type) {
                             ChatDetailChatTypeState.DATE -> ChatItemType.Date(item.timestamp.toFullFormatString())
 
                             ChatDetailChatTypeState.MESSAGE -> {
@@ -384,7 +393,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                                     ChatItemType.Others(
                                         isFirst = item.isFirst,
                                         isLast = item.isLast,
-                                        userName = state.users.get(item.author.id)?.name?: "",
+                                        userName = state.users.get(item.author.id)?.name ?: "",
                                         userProfile = null,
                                         message = item.message,
                                         createdAt = item.timestamp.toAmShortString(),

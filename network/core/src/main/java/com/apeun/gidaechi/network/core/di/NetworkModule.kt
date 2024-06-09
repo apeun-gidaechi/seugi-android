@@ -19,13 +19,13 @@ import io.ktor.client.request.accept
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.gson.gson
+import java.time.LocalDateTime
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
-import java.time.LocalDateTime
-import java.util.concurrent.TimeUnit
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -69,11 +69,9 @@ object NetworkModule {
         .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
         .build()
 
-
     @Provides
-    fun providesStompClient(
-        okHttpClient: OkHttpClient
-    ): StompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, SeugiUrl.Message.HANDSHAKE, null, okHttpClient)
+    fun providesStompClient(okHttpClient: OkHttpClient): StompClient =
+        Stomp.over(Stomp.ConnectionProvider.OKHTTP, SeugiUrl.Message.HANDSHAKE, null, okHttpClient)
 }
 
 private const val TIME_OUT = 60_000L

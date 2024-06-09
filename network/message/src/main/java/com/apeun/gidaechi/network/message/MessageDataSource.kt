@@ -1,10 +1,10 @@
 package com.apeun.gidaechi.network.message
 
+import com.apeun.gidaechi.network.core.response.BaseResponse
 import com.apeun.gidaechi.network.message.response.MessageTypeResponse
 import com.apeun.gidaechi.network.message.response.message.MessageLoadResponse
-import com.apeun.gidaechi.network.message.response.room.MessageRoomResponse
 import com.apeun.gidaechi.network.message.response.room.MessageRoomMemberResponse
-import com.apeun.gidaechi.network.core.response.BaseResponse
+import com.apeun.gidaechi.network.message.response.room.MessageRoomResponse
 import kotlinx.coroutines.flow.Flow
 
 interface MessageDataSource {
@@ -22,7 +22,7 @@ interface MessageDataSource {
 
     suspend fun loadRoomInfo(isPersonal: Boolean, roomId: String): BaseResponse<MessageRoomResponse>
 
-    suspend fun loadRoomMember(roomId: String):  BaseResponse<MessageRoomMemberResponse>
+    suspend fun loadRoomMember(roomId: String): BaseResponse<MessageRoomMemberResponse>
 
     suspend fun leftRoom(chatRoomId: String): BaseResponse<Unit?>
 }

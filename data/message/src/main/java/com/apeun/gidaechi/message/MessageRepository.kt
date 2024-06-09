@@ -1,11 +1,10 @@
 package com.apeun.gidaechi.message
 
+import com.apeun.gidaechi.common.model.Result
 import com.apeun.gidaechi.message.model.MessageTypeModel
 import com.apeun.gidaechi.message.model.message.MessageLoadModel
 import com.apeun.gidaechi.message.model.room.MessageRoomModel
-import com.apeun.gidaechi.common.model.Result
 import kotlinx.coroutines.flow.Flow
-
 
 interface MessageRepository {
 

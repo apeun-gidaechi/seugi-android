@@ -5,5 +5,5 @@ data class MessageRoomUserResponse(
     val email: String,
     val birth: String,
     val name: String,
-    val picture: String
+    val picture: String,
 )

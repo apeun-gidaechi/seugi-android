@@ -5,5 +5,5 @@ enum class ChatDetailChatTypeState {
     AI,
     DATE,
     LEFT,
-    ENTER
+    ENTER,
 }

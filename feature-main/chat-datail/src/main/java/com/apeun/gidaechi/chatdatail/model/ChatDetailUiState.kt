@@ -39,9 +39,9 @@ data class ChatDetailMessageState(
     val messageStatus: MessageLifeType,
     val isFirst: Boolean,
     val isLast: Boolean,
-    val isMe: Boolean
+    val isMe: Boolean,
 ) {
-    constructor(chatRoomId: String, type: ChatDetailChatTypeState, timestamp: LocalDateTime): this(
+    constructor(chatRoomId: String, type: ChatDetailChatTypeState, timestamp: LocalDateTime) : this(
         id = "id",
         chatRoomId = chatRoomId,
         type = type,
@@ -55,11 +55,11 @@ data class ChatDetailMessageState(
         messageStatus = MessageLifeType.ALIVE,
         isFirst = false,
         isLast = false,
-        isMe = false
+        isMe = false,
     )
 }
 
 sealed interface ChatDetailSideEffect {
-    data object SuccessLeft: ChatDetailSideEffect
-    data class FailedLeft(val throwable: Throwable): ChatDetailSideEffect
+    data object SuccessLeft : ChatDetailSideEffect
+    data class FailedLeft(val throwable: Throwable) : ChatDetailSideEffect
 }

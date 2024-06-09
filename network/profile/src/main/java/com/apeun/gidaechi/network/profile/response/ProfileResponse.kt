@@ -7,5 +7,5 @@ data class ProfileResponse(
     val belong: String,
     val phone: String,
     val wire: String,
-    val location: String
+    val location: String,
 )

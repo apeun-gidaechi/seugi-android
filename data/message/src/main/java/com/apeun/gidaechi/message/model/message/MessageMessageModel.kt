@@ -1,8 +1,8 @@
 package com.apeun.gidaechi.message.model.message
 
-import com.apeun.gidaechi.message.model.MessageTypeModel
 import com.apeun.gidaechi.message.model.MessageLifeType
 import com.apeun.gidaechi.message.model.MessageType
+import com.apeun.gidaechi.message.model.MessageTypeModel
 import java.time.LocalDateTime
 
 data class MessageMessageModel(
@@ -16,5 +16,5 @@ data class MessageMessageModel(
     val mentionAll: Boolean,
     val timestamp: LocalDateTime,
     val read: List<Int>,
-    val messageStatus: MessageLifeType
-): MessageTypeModel()
+    val messageStatus: MessageLifeType,
+) : MessageTypeModel()

@@ -12,12 +12,11 @@ import java.time.format.DateTimeFormatter
 class LocalDateTimeTypeAdapter : JsonDeserializer<LocalDateTime>, JsonSerializer<LocalDateTime> {
     private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
 
-
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): LocalDateTime {
         var dateString = json?.asString
         val dateStrings = dateString!!.split(".")
         if (dateStrings[1].length != 6) {
-            dateString = dateStrings[0] + "."+ dateStrings[1] + "0".repeat(if (0 > 6 - dateStrings[1].length) 0 else 6 - dateStrings[1].length)
+            dateString = dateStrings[0] + "." + dateStrings[1] + "0".repeat(if (0 > 6 - dateStrings[1].length) 0 else 6 - dateStrings[1].length)
         }
         return LocalDateTime.parse(dateString.substring(startIndex = 0, endIndex = 26), formatter)
     }

@@ -13,11 +13,10 @@ import io.ktor.client.request.parameter
 import javax.inject.Inject
 
 class ProfileDataSourceImpl @Inject constructor(
-    private val httpClient: HttpClient
-): ProfileDataSource {
-    override suspend fun loadUserInfo(workspaceId: String): BaseResponse<ProfileResponse> =
-        httpClient.get(SeugiUrl.Profile.ME) {
-            parameter("workspaceId", workspaceId)
-            addTestHeader(Test.TEST_TOKEN)
-        }.body()
+    private val httpClient: HttpClient,
+) : ProfileDataSource {
+    override suspend fun loadUserInfo(workspaceId: String): BaseResponse<ProfileResponse> = httpClient.get(SeugiUrl.Profile.ME) {
+        parameter("workspaceId", workspaceId)
+        addTestHeader(Test.TEST_TOKEN)
+    }.body()
 }
