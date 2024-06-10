@@ -271,7 +271,7 @@ class ChatDetailViewModel @Inject constructor(
                         chatData.add(
                             item.toState(
                                 isFirst = isFirst,
-                                isLast = true,
+                                isLast = isLast,
                                 isMe = isMe,
                                 author = _state.value.users.getOrDefault(item.author, MessageUserModel(item.author)),
                             ),
