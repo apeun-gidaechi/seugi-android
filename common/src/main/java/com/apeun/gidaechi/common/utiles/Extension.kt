@@ -1,15 +1,11 @@
 package com.apeun.gidaechi.common.utiles
 
-import java.lang.System.Logger
-import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
-import java.util.logging.LogRecord
 
-fun LocalDateTime.toDeviceLocalDateTime(): LocalDateTime =
-    this.atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
+fun LocalDateTime.toDeviceLocalDateTime(): LocalDateTime = this.atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
 
 fun LocalDateTime.toFullFormatString(): String {
     val formatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일 E요일", Locale.KOREAN)
