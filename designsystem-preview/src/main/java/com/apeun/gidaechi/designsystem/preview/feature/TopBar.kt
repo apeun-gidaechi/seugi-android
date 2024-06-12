@@ -1,6 +1,5 @@
 package com.apeun.gidaechi.designsystem.preview.feature
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,7 +26,6 @@ fun TopBar() {
                     Text(text = "로그인", style = MaterialTheme.typography.titleLarge)
                 },
                 onNavigationIconClick = {
-                    Log.d("TAG", "backClick: ")
                 },
                 actions = {
                     Icon(
@@ -37,7 +35,6 @@ fun TopBar() {
                         contentDescription = null,
                         modifier = Modifier.bounceClick(
                             {
-                                Log.d("TAG", "menuClick: ")
                             },
                         ),
                     )
@@ -49,7 +46,6 @@ fun TopBar() {
                         contentDescription = null,
                         modifier = Modifier.bounceClick(
                             {
-                                Log.d("TAG", "SearchClick: ")
                             },
                         ),
                     )

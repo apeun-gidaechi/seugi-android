@@ -1,6 +1,5 @@
 package com.apeun.gidaechi.designsystem.component.chat
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -438,10 +437,8 @@ private fun PreviewSeugiChatItem() {
                     count = 1,
                 ),
                 onChatLongClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
                 onDateClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -456,10 +453,8 @@ private fun PreviewSeugiChatItem() {
                     count = 1,
                 ),
                 onChatLongClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
                 onDateClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -472,10 +467,8 @@ private fun PreviewSeugiChatItem() {
                     count = 1,
                 ),
                 onChatLongClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
                 onDateClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -488,10 +481,8 @@ private fun PreviewSeugiChatItem() {
                     count = 1,
                 ),
                 onChatLongClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
                 onDateClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
             )
             Spacer(modifier = Modifier.height(32.dp))

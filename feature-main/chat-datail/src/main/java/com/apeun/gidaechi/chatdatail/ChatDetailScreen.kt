@@ -1,7 +1,6 @@
 package com.apeun.gidaechi.chatdatail
 
 import android.graphics.Rect
-import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Toast
@@ -544,7 +543,6 @@ internal fun View.isKeyboardOpen(): Pair<Boolean, Int> {
     getWindowVisibleDisplayFrame(rect)
     val screenHeight = rootView.height
     val keypadHeight = screenHeight - rect.bottom
-    Log.d("TAG", "isKeyboardOpen: $screenHeight, $keypadHeight")
     return Pair(keypadHeight > screenHeight * 0.15, screenHeight - rect.bottom)
 }
 

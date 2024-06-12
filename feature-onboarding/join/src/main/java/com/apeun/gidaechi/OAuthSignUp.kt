@@ -1,6 +1,5 @@
 package com.apeun.gidaechi
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.ButtonType
@@ -31,74 +29,74 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun OAuthSignUpScreen() {
+internal fun OAuthSignUpScreen(popBackStack: () -> Unit, navigateToEmailSignUp: () -> Unit) {
     var text by remember { mutableStateOf("") }
     var error by remember { mutableStateOf(false) }
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            SeugiTopBar(
-                title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
-                onNavigationIconClick = { Log.d("TAG", "뒤로가기: ") },
-                backIconCheck = true,
-            )
-        },
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(it)
-                .padding(top = 6.dp)
-                .padding(horizontal = 20.dp),
-        ) {
-            Column {
-                Row(
-                    modifier = Modifier.padding(start = 4.dp),
-                ) {
-                    Text(text = "이름", style = MaterialTheme.typography.titleMedium)
-                    Text(text = " *", style = MaterialTheme.typography.titleMedium, color = Red500)
-                }
-                SeugiTextField(
-                    value = text,
-                    onValueChange = { text = it },
-                    onClickDelete = { text = "" },
-                    placeholder = "이름을 입력해 주세요",
-                    modifier = Modifier.padding(vertical = 4.dp),
+    SeugiTheme {
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                SeugiTopBar(
+                    title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
+                    onNavigationIconClick = popBackStack,
+                    backIconCheck = true,
                 )
-                if (error) {
-                    Text(
-                        text = "이름을 입력해 주세요",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Red500,
+            },
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(it)
+                    .padding(top = 6.dp)
+                    .padding(horizontal = 20.dp),
+            ) {
+                Column {
+                    Row(
                         modifier = Modifier.padding(start = 4.dp),
+                    ) {
+                        Text(text = "이름", style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            text = " *",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Red500,
+                        )
+                    }
+                    SeugiTextField(
+                        value = text,
+                        onValueChange = { text = it },
+                        onClickDelete = { text = "" },
+                        placeholder = "이름을 입력해 주세요",
+                        modifier = Modifier.padding(vertical = 4.dp),
+                    )
+                    if (error) {
+                        Text(
+                            text = "이름을 입력해 주세요",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Red500,
+                            modifier = Modifier.padding(start = 4.dp),
+                        )
+                    }
+                }
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom,
+                    modifier = Modifier.fillMaxHeight(),
+                ) {
+                    Text(
+                        text = "이미 계정이 있으신가요?",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Primary500,
+                        modifier = Modifier.bounceClick({
+                            navigateToEmailSignUp()
+                        }),
+                    )
+                    SeugiFullWidthButton(
+                        onClick = { error = true },
+                        type = ButtonType.Primary,
+                        text = "계속하기",
+                        modifier = Modifier.padding(vertical = 16.dp),
                     )
                 }
             }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom,
-                modifier = Modifier.fillMaxHeight(),
-            ) {
-                Text(
-                    text = "이미 계정이 있으신가요?",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Primary500,
-                    modifier = Modifier.bounceClick({}),
-                )
-                SeugiFullWidthButton(
-                    onClick = { error = true },
-                    type = ButtonType.Primary,
-                    text = "계속하기",
-                    modifier = Modifier.padding(vertical = 16.dp),
-                )
-            }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewOAuthSignUp() {
-    SeugiTheme {
-        OAuthSignUpScreen()
     }
 }

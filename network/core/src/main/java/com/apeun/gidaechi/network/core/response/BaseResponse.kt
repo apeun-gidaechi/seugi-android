@@ -1,5 +1,8 @@
 package com.apeun.gidaechi.network.core.response
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class BaseResponse<T>(
     val data: T,
     val message: String,

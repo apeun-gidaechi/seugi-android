@@ -1,6 +1,5 @@
 package com.apeun.gidaechi.designsystem.component
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -124,7 +123,6 @@ private fun PreviewSeugiTopBar() {
                     Text(text = "로그인", style = MaterialTheme.typography.titleLarge)
                 },
                 onNavigationIconClick = {
-                    Log.d("TAG", "backClick: ")
                 },
                 actions = {
                     Icon(
@@ -134,7 +132,6 @@ private fun PreviewSeugiTopBar() {
                         contentDescription = null,
                         modifier = Modifier.bounceClick(
                             {
-                                Log.d("TAG", "menuClick: ")
                             },
                         ),
                     )
@@ -146,7 +143,6 @@ private fun PreviewSeugiTopBar() {
                         contentDescription = null,
                         modifier = Modifier.bounceClick(
                             {
-                                Log.d("TAG", "SearchClick: ")
                             },
                         ),
                     )

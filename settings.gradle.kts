@@ -29,16 +29,20 @@ include(
     ":network:core",
     ":network:message",
     ":network:profile",
+    ":network:sign-in",
     ":common",
+    ":data:email-sign-in",
     ":feature-main:main",
     ":feature-main:chat",
     ":feature-main:chat-datail",
     ":feature-main:home",
     ":feature-main:room",
     ":feature-main:room-create",
-    ":feature-onboarding:onboarding",
     ":feature-onboarding:login",
     ":feature-onboarding:join",
     ":data:message",
     ":data:profile"
+    ":feature-onboarding:join",
+    ":feature-onboarding:start",
+    ":feature-onboarding:onabording"
 )

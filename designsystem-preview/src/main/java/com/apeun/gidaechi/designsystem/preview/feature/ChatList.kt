@@ -1,6 +1,5 @@
 package com.apeun.gidaechi.designsystem.preview.feature
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -19,7 +18,6 @@ fun ChatList() {
                 message = "나 사실..",
                 createdAt = "12:39",
                 onClick = {
-                    Log.d("TAG", "PreviewSeugiChatList: ")
                 },
             )
             SeugiChatList(
