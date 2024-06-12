@@ -41,7 +41,7 @@ include(
     ":feature-onboarding:login",
     ":feature-onboarding:join",
     ":data:message",
-    ":data:profile"
+    ":data:profile",
     ":feature-onboarding:join",
     ":feature-onboarding:start",
     ":feature-onboarding:onabording"
