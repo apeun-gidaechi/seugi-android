@@ -18,7 +18,7 @@ fun NavGraphBuilder.chatDetailScreen(
     popBackStack: () -> Unit
 ) {
     composable(
-        route = "${CHAT_DETAIL_ROUTE}/{workspace}/{isPersonal}/chatRoomId}",
+        route = "${CHAT_DETAIL_ROUTE}/{workspace}/{isPersonal}/{chatRoomId}",
         arguments = listOf(
             navArgument("workspace") { NavType.StringType},
             navArgument("isPersonal") { NavType.BoolType},
