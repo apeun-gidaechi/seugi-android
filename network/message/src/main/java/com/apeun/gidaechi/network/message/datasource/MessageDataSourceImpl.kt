@@ -74,6 +74,8 @@ class MessageDataSourceImpl @Inject constructor(
         addTestHeader(Test.TEST_TOKEN)
     }.body()
 
+    override suspend fun testGetToken(): String = Test.TEST_TOKEN
+
     override suspend fun subscribeRoom(chatRoomId: String): Flow<MessageTypeResponse> = flow {
         stompClient.topic(SeugiUrl.Message.SUBSCRIPTION + chatRoomId)
             .asFlow()

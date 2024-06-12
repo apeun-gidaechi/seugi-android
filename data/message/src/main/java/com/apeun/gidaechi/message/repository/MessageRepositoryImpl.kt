@@ -34,7 +34,7 @@ class MessageRepositoryImpl @Inject constructor(
 
     override suspend fun subscribeRoom(chatRoomId: String): Flow<Result<MessageTypeModel>> {
         if (!datasource.getIsConnect()) {
-            datasource.connectStomp(TEST_TOKEN)
+            datasource.connectStomp(datasource.testGetToken())
         }
         return datasource.subscribeRoom(chatRoomId)
             .flowOn(dispatcher)
@@ -45,7 +45,7 @@ class MessageRepositoryImpl @Inject constructor(
     }
 
     override suspend fun reSubscribeRoom(chatRoomId: String): Flow<Result<MessageTypeModel>> {
-        datasource.reConnectStomp(TEST_TOKEN)
+        datasource.reConnectStomp(datasource.testGetToken())
         delay(200)
         return datasource.subscribeRoom(chatRoomId)
             .flowOn(dispatcher)
@@ -81,14 +81,5 @@ class MessageRepositoryImpl @Inject constructor(
         }
             .flowOn(dispatcher)
             .asResult()
-    }
-
-    companion object {
-        const val TEST_TOKEN = (
-            "Bearer eyJhbGciOiJIUzI1NiJ9." +
-                "eyJpZCI6MiwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJyb2xlIjoi" +
-                "Uk9MRV9BRE1JTiIsImlhdCI6MTcxNTg1ODkwMywiZXhwIjoxNzIxODU4" +
-                "OTAzfQ.F5_W4wAay4FbssM6XxJSCiUIvGCAcjAXqPxb-PXvUDo"
-            )
     }
 }
