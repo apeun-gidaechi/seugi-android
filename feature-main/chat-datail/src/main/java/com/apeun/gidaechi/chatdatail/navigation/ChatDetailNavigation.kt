@@ -11,7 +11,7 @@ import com.apeun.gidaechi.chatdatail.ChatDetailScreen
 
 const val CHAT_DETAIL_ROUTE = "chat_detail"
 
-fun NavController.navigateToChatDetail(workspace: String = "664bdd0b9dfce726abd30462", isPersonal: Boolean = false, chatRoomId: String = "665d9ec15e65717b19a62701", navOptions: NavOptions? = null) = navigate("${CHAT_DETAIL_ROUTE}/${workspace}/${isPersonal}/${chatRoomId}", navOptions)
+fun NavController.navigateToChatDetail(workspace: String = "664bdd0b9dfce726abd30462", isPersonal: Boolean = false, chatRoomId: String = "66698a18d3f6963445f6f84f", navOptions: NavOptions? = null) = navigate("${CHAT_DETAIL_ROUTE}/${workspace}/${isPersonal}/${chatRoomId}", navOptions)
 
 fun NavGraphBuilder.chatDetailScreen(
     onNavigationVisibleChange: (Boolean) -> Unit,
