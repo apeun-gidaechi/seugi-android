@@ -27,7 +27,7 @@ fun NavGraphBuilder.chatDetailScreen(
     ) {
         ChatDetailScreen(
             workspace = it.arguments?.getString("workspace")?: "",
-            isPersonal = it.arguments?.getBoolean("isPersonal")?: false,
+            isPersonal = it.arguments?.getString("isPersonal") == "true",
             chatRoomId = it.arguments?.getString("chatRoomId")?: "",
             onNavigationVisibleChange = onNavigationVisibleChange,
             popBackStack = popBackStack,
