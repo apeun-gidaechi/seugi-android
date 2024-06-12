@@ -24,7 +24,6 @@ include(
     ":network:core",
     ":network:sign-in",
     ":common",
-    ":data",
     ":data:email-sign-in",
     ":feature-main:main",
     ":feature-main:chat",
