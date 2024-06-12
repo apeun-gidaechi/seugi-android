@@ -24,11 +24,16 @@ jobs:
       run: chmod +x gradlew
 
     - name: Set up local.properties
-      run: echo "BASE_URL=${{ secrets.SERVER_URL }}\nWS_URLl=${{ secrets.WS_URL }}" > $GITHUB_WORKSPACE/local.properties
+      run: |
+        echo "BASE_URL=${SERVER_URL}" > $GITHUB_WORKSPACE/local.properties
+        echo "WS_URL=${WS_URL}" >> $GITHUB_WORKSPACE/local.properties
+      env:
+        SERVER_URL: ${{ secrets.SERVER_URL }}
+        WS_URL: ${{ secrets.WS_URL }}
 
     - name: Build with Gradle
       run: ./gradlew build
-      
+
     - name: Run spotless
       run: ./gradlew spotlessCheck
 

@@ -11,11 +11,18 @@ plugins {
 val properties = Properties()
 properties.load(project.rootProject.file("local.properties").inputStream())
 
+
 android {
     namespace = "com.apeun.gidaechi.network.core"
 
     defaultConfig {
+        buildConfigField("String", "BASE_URL", "${properties["BASE_URL"]}")
+        buildConfigField("String", "WS_URL", "${properties["WS_URL"]}")
+
         consumerProguardFiles("consumer-rules.pro")
+    }
+    buildFeatures{
+        buildConfig = true
     }
 }
 

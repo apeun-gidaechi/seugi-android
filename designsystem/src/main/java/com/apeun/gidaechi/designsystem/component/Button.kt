@@ -2,7 +2,6 @@
 
 package com.apeun.gidaechi.designsystem.component
 
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -352,7 +351,6 @@ private fun SeugiButtonPreview() {
             coroutineScope.launch {
                 testState = false
                 loadingState = true
-                Log.d("TAG", "SeugiButtonPreview: $loadingState")
                 delay(2000)
                 loadingState = false
                 testState = true

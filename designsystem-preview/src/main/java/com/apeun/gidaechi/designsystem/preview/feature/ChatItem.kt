@@ -1,6 +1,5 @@
 package com.apeun.gidaechi.designsystem.preview.feature
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -34,10 +33,8 @@ fun ChatItem() {
                     count = 1,
                 ),
                 onChatLongClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
                 onDateClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -52,10 +49,8 @@ fun ChatItem() {
                     count = 1,
                 ),
                 onChatLongClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
                 onDateClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -68,10 +63,8 @@ fun ChatItem() {
                     count = 1,
                 ),
                 onChatLongClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
                 onDateClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -84,10 +77,8 @@ fun ChatItem() {
                     count = 1,
                 ),
                 onChatLongClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
                 onDateClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -106,10 +97,8 @@ fun ChatItem() {
                     count = 1,
                 ),
                 onChatLongClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
                 onDateClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -122,10 +111,8 @@ fun ChatItem() {
                     count = 1,
                 ),
                 onChatLongClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
                 onDateClick = {
-                    Log.d("TAG", "PreviewSeugiChatItem: ")
                 },
             )
         }

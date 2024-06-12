@@ -1,6 +1,5 @@
 package com.apeun.gidaechi.navigation
 
-import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -13,7 +12,6 @@ fun NavController.navigateToStart(navOptions: NavOptions? = null) = navigate(STA
 
 fun NavGraphBuilder.startScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignIn: () -> Unit) {
     composable(route = START_ROUTE) {
-        Log.d("TAG", "$navigateToEmailSignIn: ")
         StartScreen(navigateToEmailSignIn = navigateToEmailSignIn, navigateToOAuthSignIn = navigateToOAuthSignIn)
     }
 }

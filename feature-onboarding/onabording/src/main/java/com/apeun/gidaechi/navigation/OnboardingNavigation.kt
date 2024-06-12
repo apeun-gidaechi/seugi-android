@@ -10,8 +10,8 @@ const val ONBOARDING_ROUTE = "onboarding"
 
 fun NavController.navigateToOnboarding(navOptions: NavOptions? = null) = navigate(ONBOARDING_ROUTE, navOptions)
 
-fun NavGraphBuilder.onboardingScreen() {
+fun NavGraphBuilder.onboardingScreen(onboardingToMain: () -> Unit) {
     composable(route = ONBOARDING_ROUTE) {
-        OnboardingScreen()
+        OnboardingScreen(onboardingToMain = onboardingToMain)
     }
 }
