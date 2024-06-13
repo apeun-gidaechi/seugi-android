@@ -261,13 +261,6 @@ class ChatDetailViewModel @Inject constructor(
                                 ),
                             )
                         }
-//                        if (item.type == ChatType.ENTER) {
-//                            formerItem?.let {
-//                                Log.d("TAG", "collectMessage: ${it.message}")
-//                            }
-//                            Log.d("TAG", "collectMessage: $formerItem $nextItem")
-//                            Log.d("TAG", "collectMessage: $item")
-//                        }
                         chatData.add(
                             item.toState(
                                 isFirst = isFirst,
