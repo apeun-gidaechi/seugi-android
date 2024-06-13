@@ -18,7 +18,7 @@ class EmailSignInDatasourceImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
     private val httpClient: HttpClient,
 ) : EmailSignInDatasource {
-    override suspend fun emailSignIn(body: EmailSignInRequest): BaseResponse<EmailSignInResponse> = httpClient.post("${SeugiUrl.Auth.EMAIL_SIGN_IN}") {
+    override suspend fun emailSignIn(body: EmailSignInRequest): BaseResponse<EmailSignInResponse> = httpClient.post("${SeugiUrl.Member.EMAIL_SIGN_IN}") {
         setBody(body = body)
     }.body<BaseResponse<EmailSignInResponse>>()
 }

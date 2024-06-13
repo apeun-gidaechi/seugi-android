@@ -21,7 +21,8 @@ object SeugiUrl {
         const val ME = "${BASE_URL}/profile/me"
     }
 
-    object Auth {
+    object Member {
         const val EMAIL_SIGN_IN = "$BASE_URL/member/login"
+        const val EMAIL_SIGN_UP = "$BASE_URL/member/register"
     }
 }
