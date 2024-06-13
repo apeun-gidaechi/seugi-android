@@ -1,3 +1,7 @@
+import java.net.URI
+
+
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -13,6 +17,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://jitpack.io") }
     }
 }
 
@@ -22,6 +27,8 @@ include(
     ":designsystem",
     ":designsystem-preview",
     ":network:core",
+    ":network:message",
+    ":network:profile",
     ":network:sign-in",
     ":common",
     ":data:email-sign-in",
@@ -32,6 +39,9 @@ include(
     ":feature-main:room",
     ":feature-main:room-create",
     ":feature-onboarding:login",
+    ":feature-onboarding:join",
+    ":data:message",
+    ":data:profile",
     ":feature-onboarding:join",
     ":feature-onboarding:start",
     ":feature-onboarding:onabording"

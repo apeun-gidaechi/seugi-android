@@ -8,7 +8,7 @@ versionCode = "1"
 
 # kotlin
 kotlin = "1.9.22"
-kotlinx-coroutines = "1.7.3"
+kotlinx-coroutines = "1.8.0"
 kotlinx-collections-immutable = "0.3.7"
 kotlinx-serialization-json = "1.6.2"
 kotlinx-datetime = "0.5.0"
@@ -19,7 +19,7 @@ androidx-compose-compiler = "1.5.8"
 androidx-compose-bom = "2024.03.00"
 androidx-core = "1.12.0"
 androidx-lifecycle = "2.7.0"
-androidx-navigation = "2.7.6"
+androidx-navigation = "2.7.7"
 androidx-hilt-navigation-compose = "1.1.0"
 androidx-material = "1.5.4"
 androidx-startup-runtime = "1.1.1"
@@ -33,6 +33,11 @@ bottomsheetdialog = "1.3.1"
 ktor = "2.3.8"
 coil = "2.6.0"
 rive = "8.7.0"
+gson = "2.10.1"
+okhttp3 = "4.9.0"
+
+#socket
+stomp-android = "1.6.6"
 
 # test
 junit = "4.13.2"
@@ -64,6 +69,7 @@ kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref =
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-rx = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-rx2", version.ref = "kotlinx-coroutines" }
 kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
@@ -102,11 +108,16 @@ ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
-ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-serialization-kotlinx-gson = { group = "io.ktor", name = "ktor-serialization-gson", version.ref = "ktor" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 ktor-client-auth = { group = "io.ktor", name = "ktor-client-auth", version.ref = "ktor" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 rive = { group = "app.rive", name = "rive-android", version.ref = "rive" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3"}
+
+# socket
+stomp-android = { group = "com.github.NaikSoftware", name = "StompProtocolAndroid", version.ref = "stomp-android" }
 
 # test
 junit = { group = "junit", name = "junit", version.ref = "junit" }

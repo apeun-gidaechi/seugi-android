@@ -3,6 +3,7 @@ package com.apeun.gidaechi.chatdatail
 import android.graphics.Rect
 import android.view.View
 import android.view.ViewTreeObserver
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -11,6 +12,7 @@ import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.gestures.animateTo
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -36,6 +38,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
@@ -45,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalView
@@ -54,7 +58,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.apeun.gidaechi.chatdatail.model.TestUserModel
+import com.apeun.gidaechi.chatdatail.model.ChatDetailChatTypeState
+import com.apeun.gidaechi.chatdatail.model.ChatDetailSideEffect
 import com.apeun.gidaechi.common.utiles.toAmShortString
 import com.apeun.gidaechi.common.utiles.toFullFormatString
 import com.apeun.gidaechi.designsystem.R
@@ -69,6 +74,7 @@ import com.apeun.gidaechi.designsystem.component.chat.ChatItemType
 import com.apeun.gidaechi.designsystem.component.chat.SeugiChatItem
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
+import com.apeun.gidaechi.designsystem.component.modifier.`if`
 import com.apeun.gidaechi.designsystem.component.textfield.SeugiChatTextField
 import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.Gray400
@@ -76,17 +82,27 @@ import com.apeun.gidaechi.designsystem.theme.Gray500
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary050
 import com.apeun.gidaechi.designsystem.theme.Primary500
-import java.time.Duration
+import com.apeun.gidaechi.message.model.message.MessageUserModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), onNavigationVisibleChange: (Boolean) -> Unit, popBackStack: () -> Unit) {
+internal fun ChatDetailScreen(
+    viewModel: ChatDetailViewModel = hiltViewModel(),
+    workspace: String = "664bdd0b9dfce726abd30462",
+    isPersonal: Boolean = false,
+    chatRoomId: String = "665d9ec15e65717b19a62701",
+    onNavigationVisibleChange: (Boolean) -> Unit,
+    popBackStack: () -> Unit,
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val sideEffect: ChatDetailSideEffect? by viewModel.sideEffect.collectAsStateWithLifecycle(initialValue = null)
     val scrollState = rememberLazyListState()
 
+    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     var text by remember { mutableStateOf("") }
     var notificationState by remember { mutableStateOf(false) }
@@ -99,6 +115,8 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     val screenSizeDp = LocalConfiguration.current.screenWidthDp.dp
     val screenSizePx = with(density) { screenSizeDp.toPx() }
 
+    var canScrollForward by remember { mutableStateOf(false) }
+    var isOpenSidebar by remember { mutableStateOf(false) }
     val anchors = remember {
         DraggableAnchors {
             DragState.START at 0f
@@ -117,15 +135,38 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
             },
         )
     }
+    var nowIndex by remember { mutableIntStateOf(0) }
+
+    LaunchedEffect(key1 = sideEffect) {
+        if (sideEffect == null) {
+            return@LaunchedEffect
+        }
+        when (val nowSideEffect = sideEffect!!) {
+            is ChatDetailSideEffect.SuccessLeft -> {
+                popBackStack()
+            }
+            is ChatDetailSideEffect.FailedLeft -> {
+                coroutineScope.launch {
+                    Toast.makeText(context, nowSideEffect.throwable.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
     LaunchedEffect(key1 = true) {
         onNavigationVisibleChange(false)
-        viewModel.loadMessage()
+        viewModel.loadInfo(
+            isPersonal = isPersonal,
+            chatRoomId = chatRoomId,
+            workspaceId = workspace,
+        )
     }
 
     LifecycleResumeEffect(key1 = Unit) {
         onNavigationVisibleChange(false)
+        viewModel.channelReconnect()
         onPauseOrDispose {
+            viewModel.subscribeCancel()
             onNavigationVisibleChange(true)
         }
     }
@@ -137,18 +178,54 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
     }
 
     LaunchedEffect(key1 = state) {
+        val chatIndex = state.message.size
+        if (nowIndex != chatIndex) {
+            coroutineScope.launch {
+                scrollState.scrollToItem(chatIndex - nowIndex)
+                scrollState.scrollBy(-50f)
+                nowIndex = chatIndex
+            }
+        }
+
         if (isFirst) {
             coroutineScope.launch {
-                isFirst = !isFirst
-                scrollState.scrollToItem(state.message.lastIndex)
+                if (state.message.lastIndex != -1) {
+                    isFirst = !isFirst
+                    scrollState.scrollToItem(state.message.lastIndex)
+                }
+            }
+        } else {
+            coroutineScope.launch {
+                if (state.message.lastIndex != -1 && !canScrollForward) {
+                    scrollState.scrollToItem(state.message.lastIndex)
+                }
             }
         }
     }
 
+    LaunchedEffect(key1 = scrollState.canScrollBackward) {
+        if (!scrollState.canScrollBackward) {
+            viewModel.nextPage()
+        }
+    }
+
+    LaunchedEffect(key1 = scrollState.canScrollForward) {
+        coroutineScope.launch {
+            delay(50)
+            canScrollForward = scrollState.canScrollForward
+        }
+    }
+
     BackHandler(
-        enabled = isSearch,
+        enabled = isSearch || isOpenSidebar,
     ) {
-        isSearch = !isSearch
+        isSearch = false
+        if (isOpenSidebar) {
+            coroutineScope.launch {
+                anchoredState.animateTo(DragState.END)
+            }
+            isOpenSidebar = false
+        }
     }
 
     SideEffect {
@@ -201,6 +278,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                             resId = R.drawable.ic_hamburger_horizontal_line,
                             size = 28.dp,
                             onClick = {
+                                isOpenSidebar = true
                                 coroutineScope.launch {
                                     anchoredState.animateTo(DragState.START)
                                 }
@@ -235,9 +313,12 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                         text = it
                     },
                     onSendClick = {
+                        viewModel.channelSend(text)
                         text = ""
                         coroutineScope.launch {
-                            scrollState.animateScrollToItem(state.message.size - 1)
+                            if (state.message.lastIndex != -1) {
+                                scrollState.animateScrollToItem(state.message.size - 1)
+                            }
                         }
                     },
                 )
@@ -252,7 +333,11 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                     notificationState = notificationState,
                     onClickInviteMember = {},
                     onClickMember = {},
-                    onClickLeft = {},
+                    onClickLeft = {
+                        if (!isPersonal) {
+                            viewModel.leftRoom(chatRoomId)
+                        }
+                    },
                     onClickNotification = {
                         notificationState = !notificationState
                     },
@@ -263,6 +348,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
         onSideBarClose = {
             coroutineScope.launch {
                 anchoredState.animateTo(DragState.END)
+                isOpenSidebar = false
             }
         },
         startPadding = 62.dp,
@@ -278,7 +364,7 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
             ),
             state = scrollState,
         ) {
-            items(state.message.size) { index ->
+            items(state.message) { item ->
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -286,54 +372,38 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
                             bottom = 8.dp,
                         ),
                 ) {
-                    val formerItem = state.message.getOrNull(index - 1)
-                    val nextItem = state.message.getOrNull(index + 1)
-                    val item = state.message[index]
-
-                    val isMe = item.userId == state.userInfo?.id
-                    val isLast = item.userId != nextItem?.userId ||
-                        (
-                            Duration.between(
-                                item.createdAt,
-                                nextItem.createdAt,
-                            ).seconds >= 86400 && item.userId == nextItem.userId
-                            )
-
-                    var isFirst = item.userId != formerItem?.userId
-                    if (formerItem != null && Duration.between(
-                            formerItem.createdAt,
-                            item.createdAt,
-                        ).seconds >= 86400
-                    ) {
-                        isFirst = true
-                        Spacer(modifier = Modifier.height(12.dp))
-                        SeugiChatItem(type = ChatItemType.Date(item.createdAt.toFullFormatString()))
-                        Spacer(modifier = Modifier.height(12.dp))
-                    }
-
-                    val alignModifier =
-                        if (isMe) Modifier.align(Alignment.End) else Modifier
-
                     SeugiChatItem(
                         modifier = Modifier
-                            .then(alignModifier),
-                        type = when {
-                            isMe -> ChatItemType.Me(
-                                isLast = isLast,
-                                message = item.message,
-                                createdAt = item.createdAt.toAmShortString(),
-                                count = 1,
-                            )
+                            .`if`(item.isMe) {
+                                align(Alignment.End)
+                            },
+                        type = when (item.type) {
+                            ChatDetailChatTypeState.DATE -> ChatItemType.Date(item.timestamp.toFullFormatString())
 
-                            else -> ChatItemType.Others(
-                                isFirst = isFirst,
-                                isLast = isLast,
-                                userName = item.userName,
-                                userProfile = null,
-                                message = item.message,
-                                createdAt = item.createdAt.toAmShortString(),
-                                count = 1,
-                            )
+                            ChatDetailChatTypeState.MESSAGE -> {
+                                if (item.isMe) {
+                                    ChatItemType.Me(
+                                        isLast = item.isLast,
+                                        message = item.message,
+                                        createdAt = item.timestamp.toAmShortString(),
+                                        count = 1,
+                                    )
+                                } else {
+                                    ChatItemType.Others(
+                                        isFirst = item.isFirst,
+                                        isLast = item.isLast,
+                                        userName = state.users.get(item.author.id)?.name ?: "",
+                                        userProfile = null,
+                                        message = item.message,
+                                        createdAt = item.timestamp.toAmShortString(),
+                                        count = 1,
+                                    )
+                                }
+                            }
+
+                            ChatDetailChatTypeState.AI -> ChatItemType.Else(item.toString())
+                            ChatDetailChatTypeState.LEFT -> ChatItemType.Else("${item.author.name}님이 방에서 퇴장하셨습니다.")
+                            ChatDetailChatTypeState.ENTER -> ChatItemType.Else("${item.author.name}님이 방에서 입장하셨습니다.")
                         },
                     )
                 }
@@ -344,9 +414,9 @@ internal fun ChatDetailScreen(viewModel: ChatDetailViewModel = hiltViewModel(), 
 
 @Composable
 private fun ChatSideBarScreen(
-    members: ImmutableList<TestUserModel>,
+    members: ImmutableList<MessageUserModel>,
     notificationState: Boolean,
-    onClickMember: (TestUserModel) -> Unit,
+    onClickMember: (MessageUserModel) -> Unit,
     onClickInviteMember: () -> Unit,
     onClickLeft: () -> Unit,
     onClickNotification: () -> Unit,
@@ -416,8 +486,8 @@ private fun ChatSideBarScreen(
             }
             items(members) {
                 SeugiMemberList(
-                    userName = it.userName,
-                    userProfile = it.userProfile,
+                    userName = it.name,
+                    userProfile = it.profile,
                     onClick = {
                         onClickMember(it)
                     },

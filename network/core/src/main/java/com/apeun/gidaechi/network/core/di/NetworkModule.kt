@@ -1,6 +1,8 @@
 package com.apeun.gidaechi.network.core.di
 
 import android.util.Log
+import com.apeun.gidaechi.network.core.SeugiUrl
+import com.apeun.gidaechi.network.core.utiles.LocalDateTimeTypeAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,9 +18,14 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.accept
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import io.ktor.serialization.kotlinx.json.json
+import io.ktor.serialization.gson.gson
+import java.time.LocalDateTime
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import kotlinx.serialization.json.Json
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import ua.naiksoftware.stomp.Stomp
+import ua.naiksoftware.stomp.StompClient
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -28,13 +35,11 @@ object NetworkModule {
     @Singleton
     fun provideHttpClient(): HttpClient = HttpClient(CIO) {
         install(ContentNegotiation) {
-            json(
-                Json {
-                    prettyPrint = true
-                    isLenient = true
-                    ignoreUnknownKeys = true
-                },
-            )
+            gson {
+                registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeTypeAdapter())
+                setPrettyPrinting()
+                setLenient()
+            }
         }
         install(Logging) {
             logger = object : Logger {
@@ -54,6 +59,19 @@ object NetworkModule {
             accept(ContentType.Application.Json)
         }
     }
+
+    @Provides
+    @Singleton
+    fun providesOkhttpClient(): OkHttpClient = OkHttpClient.Builder()
+        .readTimeout(10, TimeUnit.SECONDS)
+        .writeTimeout(10, TimeUnit.SECONDS)
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
+        .build()
+
+    @Provides
+    fun providesStompClient(okHttpClient: OkHttpClient): StompClient =
+        Stomp.over(Stomp.ConnectionProvider.OKHTTP, SeugiUrl.Message.HANDSHAKE, null, okHttpClient)
 }
 
 private const val TIME_OUT = 60_000L
