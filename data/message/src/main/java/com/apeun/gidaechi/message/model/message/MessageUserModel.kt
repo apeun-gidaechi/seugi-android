@@ -5,7 +5,5 @@ data class MessageUserModel(
     val name: String,
     val profile: String?,
 ) {
-    constructor() : this(0, "", null)
-
     constructor(id: Int) : this(id, "", null)
 }
