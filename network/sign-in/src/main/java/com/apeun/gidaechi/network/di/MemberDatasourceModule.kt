@@ -14,9 +14,7 @@ interface MemberDatasourceModule {
 
     @Binds
     @Singleton
-    fun provideEmailSignInDataSource(emailSignInDatasourceImpl: MemberDatasourceImpl): MemberDatasource
+    fun provideMemberDataSource(memberDatasourceImpl: MemberDatasourceImpl): MemberDatasource
 
-    @Binds
-    @Singleton
-    fun provideEmailSignUpDatasource(emailSignUpDatasourceImpl: EmailSignUpDatasourceImpl): EmailSignUpDatasource
+
 }

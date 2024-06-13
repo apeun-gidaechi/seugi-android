@@ -14,5 +14,6 @@ interface MemberRepositoryModule {
 
     @Binds
     @Singleton
-    fun provideEmailSignInRepository(emailSignInRepositoryImpl: MemberRepositoryImpl): MemberRepository
+    fun provideMemberRepository(memberRepositoryImpl: MemberRepositoryImpl): MemberRepository
+
 }
