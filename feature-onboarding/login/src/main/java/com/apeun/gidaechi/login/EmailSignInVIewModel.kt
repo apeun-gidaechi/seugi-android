@@ -3,7 +3,7 @@ package com.apeun.gidaechi.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apeun.gidaechi.common.model.Result
-import com.apeun.gidaechi.data.repository.EmailSignInRepositoryImpl
+import com.apeun.gidaechi.data.repository.MemberRepositoryImpl
 import com.apeun.gidaechi.login.model.EmailSignInSideEffect
 import com.apeun.gidaechi.login.model.EmailSignInState
 import com.apeun.gidaechi.network.request.EmailSignInRequest
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class EmailSignInVIewModel @Inject constructor(
-    private val emailSignInRepositoryImpl: EmailSignInRepositoryImpl,
+    private val emailSignInRepositoryImpl: MemberRepositoryImpl,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(EmailSignInState())
