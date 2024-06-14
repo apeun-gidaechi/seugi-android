@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
@@ -27,12 +28,16 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackStack: () -> Unit) {
+internal fun EmailSignUpScreen(
+    navigateToEmailVerification: () -> Unit,
+    popBackStack: () -> Unit,
+    viewModel: EmailSignUpViewModel = hiltViewModel()
+) {
     var nameText by remember { mutableStateOf("") }
     var emailText by remember { mutableStateOf("") }
     var pwText by remember { mutableStateOf("") }
     var pwCheckText by remember { mutableStateOf("") }
-    var error by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf("") }
     SeugiTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -72,7 +77,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                         placeholder = "이름을 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error) {
+                    if (error == "blank_name") {
                         Text(
                             text = "이름을 입력해 주세요",
                             style = MaterialTheme.typography.bodyLarge,
@@ -101,7 +106,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                         placeholder = "이메일을 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error) {
+                    if (error == "blank_email") {
                         Text(
                             text = "이메일을 입력해 주세요",
                             style = MaterialTheme.typography.bodyLarge,
@@ -129,7 +134,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                         placeholder = "비밀번호를 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error) {
+                    if (error == "blank_pw") {
                         Text(
                             text = "비밀번호를 입력해 주세요",
                             style = MaterialTheme.typography.bodyLarge,
@@ -157,7 +162,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                         placeholder = "비밀번호를 다시 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error) {
+                    if (error == "different_pw") {
                         Text(
                             text = "비밀번호를 다시 입력해 주세요",
                             style = MaterialTheme.typography.bodyLarge,
@@ -170,7 +175,12 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                 Spacer(modifier = Modifier.weight(1f))
 
                 SeugiFullWidthButton(
-                    onClick = navigateToEmailVerification,
+                    onClick = {
+                        error = errorCheck(nameText, emailText, pwText, pwCheckText)
+                        if (error == "true") {
+                            navigateToEmailVerification()
+                        }
+                    },
                     type = ButtonType.Primary,
                     text = "계속하기",
                     modifier = Modifier
@@ -179,4 +189,17 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
             }
         }
     }
+}
+
+private fun errorCheck(
+    name: String = "",
+    email: String = "",
+    firstPw: String = "",
+    secondPw: String = ""
+): String {
+    return if(name.isEmpty()) "blank_name"
+    else if(email.isEmpty()) "blank_email"
+    else if(firstPw.isEmpty()) "blank_pw"
+    else if (firstPw != secondPw) "different_pw"
+    else "true"
 }
