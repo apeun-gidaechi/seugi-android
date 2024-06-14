@@ -31,7 +31,6 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 internal fun EmailSignUpScreen(
     navigateToEmailVerification: (name: String, email: String, password: String) -> Unit,
     popBackStack: () -> Unit,
-    viewModel: EmailSignUpViewModel = hiltViewModel()
 ) {
     var nameText by remember { mutableStateOf("") }
     var emailText by remember { mutableStateOf("") }

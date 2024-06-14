@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiButton
 import com.apeun.gidaechi.designsystem.component.SeugiDialog
@@ -42,6 +43,7 @@ import kotlinx.coroutines.delay
 fun EmailVerificationScreen(
     navigateToSchoolCode: () -> Unit,
     popBackStack: () -> Unit,
+    viewModel: EmailVerificationViewModel = hiltViewModel(),
     name: String?,
     email: String?,
     password: String?,
@@ -172,7 +174,16 @@ fun EmailVerificationScreen(
 
                     SeugiFullWidthButton(
                         enabled = if (verificationCode.text.length == 6) true else false,
-                        onClick = navigateToSchoolCode,
+                        onClick = {
+                            if (verificationCode.text.isNotEmpty()) {
+                                viewModel.emailSignUp(
+                                    name = name.toString(),
+                                    email = email.toString(),
+                                    password = password.toString(),
+                                    code = verificationCode.text
+                                )
+                            }
+                        },
                         type = ButtonType.Primary,
                         text = "확인",
                         modifier = Modifier.padding(vertical = 16.dp),
