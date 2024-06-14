@@ -1,5 +1,6 @@
 package com.apeun.gidaechi
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,8 +39,15 @@ import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -> Unit) {
+fun EmailVerificationScreen(
+    navigateToSchoolCode: () -> Unit,
+    popBackStack: () -> Unit,
+    name: String?,
+    email: String?,
+    password: String?,
+) {
     var timeLeft by remember { mutableStateOf(0) }
+    Log.d("TAG", "$name $email $password ")
 
     val minutes = timeLeft / 60
     val seconds = timeLeft % 60

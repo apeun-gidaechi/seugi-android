@@ -29,7 +29,7 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun EmailSignUpScreen(
-    navigateToEmailVerification: () -> Unit,
+    navigateToEmailVerification: (name: String, email: String, password: String) -> Unit,
     popBackStack: () -> Unit,
     viewModel: EmailSignUpViewModel = hiltViewModel()
 ) {
@@ -178,7 +178,11 @@ internal fun EmailSignUpScreen(
                     onClick = {
                         error = errorCheck(nameText, emailText, pwText, pwCheckText)
                         if (error == "true") {
-                            navigateToEmailVerification()
+                            navigateToEmailVerification(
+                                nameText,
+                                emailText,
+                                pwText,
+                                )
                         }
                     },
                     type = ButtonType.Primary,
