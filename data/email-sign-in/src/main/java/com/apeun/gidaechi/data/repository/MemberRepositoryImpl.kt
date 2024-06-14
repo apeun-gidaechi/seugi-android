@@ -46,4 +46,14 @@ class MemberRepositoryImpl @Inject constructor(
             .flowOn(dispatcher)
             .asResult()
     }
+
+    override suspend fun getCode(email: String): Flow<Result<String>> {
+        return flow {
+            val data = datasource.getCode(email)
+
+            emit(data.message)
+        }
+            .flowOn(dispatcher)
+            .asResult()
+    }
 }

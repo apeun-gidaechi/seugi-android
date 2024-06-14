@@ -11,6 +11,7 @@ import com.apeun.gidaechi.network.request.EmailSignUpReqest
 import com.apeun.gidaechi.network.response.EmailSignInResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import javax.inject.Inject
@@ -27,5 +28,10 @@ class MemberDatasourceImpl @Inject constructor(
     override suspend fun emailSignUp(body: EmailSignUpReqest): Response =
         httpClient.post("${SeugiUrl.Member.EMAIL_SIGN_UP}"){
             setBody(body = body)
+        }.body()
+
+    override suspend fun getCode(email: String): Response =
+        httpClient.get("${SeugiUrl.Member.GET_CODE}$email"){
+
         }.body()
 }

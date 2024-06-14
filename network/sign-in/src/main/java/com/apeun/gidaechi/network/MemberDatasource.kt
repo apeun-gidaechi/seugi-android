@@ -9,4 +9,5 @@ import com.apeun.gidaechi.network.response.EmailSignInResponse
 interface MemberDatasource {
     suspend fun emailSignIn(body: EmailSignInRequest): BaseResponse<EmailSignInResponse>
     suspend fun emailSignUp(body: EmailSignUpReqest): Response
+    suspend fun getCode(email: String): Response
 }

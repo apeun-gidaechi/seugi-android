@@ -11,7 +11,9 @@ import javax.inject.Inject
 import com.apeun.gidaechi.common.model.Result
 import com.apeun.gidaechi.model.EmailSignUpSIdeEffect
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlin.math.log
 
 @HiltViewModel
 class EmailVerificationViewModel @Inject constructor(
@@ -49,5 +51,23 @@ class EmailVerificationViewModel @Inject constructor(
             }
         }
 
+    }
+
+    fun getCode(email: String){
+        viewModelScope.launch(Dispatchers.IO){
+            memberRepository.getCode(email).collectLatest {
+                when(it){
+                    is Result.Success ->{
+                        Log.d("TAG", "성공: ${it.data}")
+                    }
+                    is  Result.Error ->{
+                        Log.d("TAG", "실패: ${it.throwable}")
+                    }
+                    Result.Loading ->{
+
+                    }
+                }
+            }
+        }
     }
 }

@@ -154,6 +154,7 @@ fun EmailVerificationScreen(
                             if (!verificationClick) {
                                 SeugiButton(
                                     onClick = {
+                                        viewModel.getCode(email = email!!)
                                         verificationClick = true
                                         timeLeft = 300
                                         dialogState = true
