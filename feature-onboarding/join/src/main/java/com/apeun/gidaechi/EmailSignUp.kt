@@ -198,7 +198,7 @@ private fun errorCheck(
     secondPw: String = ""
 ): String {
     return if(name.isEmpty()) "blank_name"
-    else if(email.isEmpty()) "blank_email"
+    else if(email.isEmpty() || !email.contains("@") || email.split("@")[1].isEmpty()) "blank_email"
     else if(firstPw.isEmpty()) "blank_pw"
     else if (firstPw != secondPw) "different_pw"
     else "true"
