@@ -87,8 +87,12 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
             homeScreen()
 
             chatScreen(
-                navigateToChatDetail = {
-                    navHostController.navigateToChatDetail()
+                navigateToChatDetail = { chatId, workspaceId ->
+                    navHostController.navigateToChatDetail(
+                        chatRoomId = chatId,
+                        workspace = workspaceId,
+                        isPersonal = true,
+                    )
                 },
             )
             chatDetailScreen(

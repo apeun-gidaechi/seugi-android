@@ -27,12 +27,12 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email: String, password: String) -> Unit, popBackStack: () -> Unit) {
+internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackStack: () -> Unit) {
     var nameText by remember { mutableStateOf("") }
     var emailText by remember { mutableStateOf("") }
     var pwText by remember { mutableStateOf("") }
     var pwCheckText by remember { mutableStateOf("") }
-    var error by remember { mutableStateOf("") }
+    var error by remember { mutableStateOf(false) }
     SeugiTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -72,7 +72,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                         placeholder = "이름을 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error == "blank_name") {
+                    if (error) {
                         Text(
                             text = "이름을 입력해 주세요",
                             style = MaterialTheme.typography.bodyLarge,
@@ -101,7 +101,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                         placeholder = "이메일을 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error == "blank_email") {
+                    if (error) {
                         Text(
                             text = "이메일을 입력해 주세요",
                             style = MaterialTheme.typography.bodyLarge,
@@ -129,7 +129,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                         placeholder = "비밀번호를 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error == "blank_pw") {
+                    if (error) {
                         Text(
                             text = "비밀번호를 입력해 주세요",
                             style = MaterialTheme.typography.bodyLarge,
@@ -157,7 +157,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                         placeholder = "비밀번호를 다시 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error == "different_pw") {
+                    if (error) {
                         Text(
                             text = "비밀번호를 다시 입력해 주세요",
                             style = MaterialTheme.typography.bodyLarge,
@@ -170,16 +170,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                 Spacer(modifier = Modifier.weight(1f))
 
                 SeugiFullWidthButton(
-                    onClick = {
-                        error = errorCheck(nameText, emailText, pwText, pwCheckText)
-                        if (error == "true") {
-                            navigateToEmailVerification(
-                                nameText,
-                                emailText,
-                                pwText,
-                            )
-                        }
-                    },
+                    onClick = navigateToEmailVerification,
                     type = ButtonType.Primary,
                     text = "계속하기",
                     modifier = Modifier
@@ -187,19 +178,5 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                 )
             }
         }
-    }
-}
-
-private fun errorCheck(name: String = "", email: String = "", firstPw: String = "", secondPw: String = ""): String {
-    return if (name.isEmpty()) {
-        "blank_name"
-    } else if (email.isEmpty() || !email.contains("@") || email.split("@")[1].isEmpty()) {
-        "blank_email"
-    } else if (firstPw.isEmpty()) {
-        "blank_pw"
-    } else if (firstPw != secondPw) {
-        "different_pw"
-    } else {
-        "true"
     }
 }

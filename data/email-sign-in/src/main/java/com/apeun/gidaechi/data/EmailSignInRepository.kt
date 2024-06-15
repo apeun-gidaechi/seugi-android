@@ -5,8 +5,6 @@ import com.apeun.gidaechi.data.model.EmailSignInModel
 import com.apeun.gidaechi.network.request.EmailSignInRequest
 import kotlinx.coroutines.flow.Flow
 
-interface MemberRepository {
+interface EmailSignInRepository {
     suspend fun emailSignIn(body: EmailSignInRequest): Flow<Result<EmailSignInModel>>
-    suspend fun emailSignUp(name: String, email: String, password: String, code: String): Flow<Result<String>>
-    suspend fun getCode(email: String): Flow<Result<String>>
 }

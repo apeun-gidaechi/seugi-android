@@ -1,13 +1,9 @@
 package com.apeun.gidaechi.network
 
 import com.apeun.gidaechi.network.core.response.BaseResponse
-import com.apeun.gidaechi.network.core.response.Response
 import com.apeun.gidaechi.network.request.EmailSignInRequest
-import com.apeun.gidaechi.network.request.EmailSignUpReqest
 import com.apeun.gidaechi.network.response.EmailSignInResponse
 
-interface MemberDatasource {
+interface EmailSignInDatasource {
     suspend fun emailSignIn(body: EmailSignInRequest): BaseResponse<EmailSignInResponse>
-    suspend fun emailSignUp(body: EmailSignUpReqest): Response
-    suspend fun getCode(email: String): Response
 }

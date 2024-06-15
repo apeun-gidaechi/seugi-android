@@ -1,6 +1,5 @@
 package com.apeun.gidaechi
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,7 +25,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiButton
 import com.apeun.gidaechi.designsystem.component.SeugiDialog
@@ -40,16 +38,8 @@ import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailVerificationScreen(
-    navigateToSchoolCode: () -> Unit,
-    popBackStack: () -> Unit,
-    viewModel: EmailVerificationViewModel = hiltViewModel(),
-    name: String?,
-    email: String?,
-    password: String?,
-) {
+fun EmailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -> Unit) {
     var timeLeft by remember { mutableStateOf(0) }
-    Log.d("TAG", "$name $email $password ")
 
     val minutes = timeLeft / 60
     val seconds = timeLeft % 60
@@ -154,7 +144,6 @@ fun EmailVerificationScreen(
                             if (!verificationClick) {
                                 SeugiButton(
                                     onClick = {
-                                        viewModel.getCode(email = email!!)
                                         verificationClick = true
                                         timeLeft = 300
                                         dialogState = true
@@ -175,16 +164,7 @@ fun EmailVerificationScreen(
 
                     SeugiFullWidthButton(
                         enabled = if (verificationCode.text.length == 6) true else false,
-                        onClick = {
-                            if (verificationCode.text.isNotEmpty()) {
-                                viewModel.emailSignUp(
-                                    name = name.toString(),
-                                    email = email.toString(),
-                                    password = password.toString(),
-                                    code = verificationCode.text,
-                                )
-                            }
-                        },
+                        onClick = navigateToSchoolCode,
                         type = ButtonType.Primary,
                         text = "확인",
                         modifier = Modifier.padding(vertical = 16.dp),

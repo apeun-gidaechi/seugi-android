@@ -17,13 +17,16 @@ object SeugiUrl {
         const val LEFT = "${BASE_URL}/chat/group/left"
     }
 
+    object PersonalChat {
+        const val ROOT = "${BASE_URL}/chat/personal"
+        const val LOAD_ALL = "${ROOT}/search"
+    }
+
     object Profile {
         const val ME = "${BASE_URL}/profile/me"
     }
 
-    object Member {
+    object Auth {
         const val EMAIL_SIGN_IN = "$BASE_URL/member/login"
-        const val EMAIL_SIGN_UP = "$BASE_URL/member/register"
-        const val GET_CODE = "$BASE_URL/email/send?email="
     }
 }

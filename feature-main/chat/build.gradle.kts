@@ -10,4 +10,6 @@ dependencies {
 
     implementation(projects.designsystem)
     implementation(libs.kotlinx.collections.immutable)
+    implementation(projects.data.perosnalChat)
+    implementation(projects.common)
 }

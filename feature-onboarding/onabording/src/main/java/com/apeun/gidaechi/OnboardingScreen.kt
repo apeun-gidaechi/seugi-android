@@ -48,13 +48,7 @@ internal fun OnboardingScreen(navHostController: NavHostController = rememberNav
             popBackStack = { navHostController.popBackStack() },
         )
         emailSignUpScreen(
-            navigateToEmailVerification = { name, email, password ->
-                navHostController.navigateToEmailVerification(
-                    name = name,
-                    email = email,
-                    password = password,
-                )
-            },
+            navigateToEmailVerification = { navHostController.navigateToEmailVerification() },
             popBackStack = { navHostController.popBackStack() },
         )
         emailVerificationScreen(
