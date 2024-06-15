@@ -181,7 +181,7 @@ fun EmailVerificationScreen(
                                     name = name.toString(),
                                     email = email.toString(),
                                     password = password.toString(),
-                                    code = verificationCode.text
+                                    code = verificationCode.text,
                                 )
                             }
                         },

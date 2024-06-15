@@ -25,13 +25,10 @@ class MemberDatasourceImpl @Inject constructor(
         setBody(body = body)
     }.body<BaseResponse<EmailSignInResponse>>()
 
-    override suspend fun emailSignUp(body: EmailSignUpReqest): Response =
-        httpClient.post("${SeugiUrl.Member.EMAIL_SIGN_UP}"){
-            setBody(body = body)
-        }.body()
+    override suspend fun emailSignUp(body: EmailSignUpReqest): Response = httpClient.post("${SeugiUrl.Member.EMAIL_SIGN_UP}") {
+        setBody(body = body)
+    }.body()
 
-    override suspend fun getCode(email: String): Response =
-        httpClient.get("${SeugiUrl.Member.GET_CODE}$email"){
-
-        }.body()
+    override suspend fun getCode(email: String): Response = httpClient.get("${SeugiUrl.Member.GET_CODE}$email") {
+    }.body()
 }

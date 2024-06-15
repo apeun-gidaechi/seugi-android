@@ -15,6 +15,4 @@ interface MemberDatasourceModule {
     @Binds
     @Singleton
     fun provideMemberDataSource(memberDatasourceImpl: MemberDatasourceImpl): MemberDatasource
-
-
 }

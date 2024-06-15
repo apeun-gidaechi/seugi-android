@@ -15,5 +15,4 @@ interface MemberRepositoryModule {
     @Binds
     @Singleton
     fun provideMemberRepository(memberRepositoryImpl: MemberRepositoryImpl): MemberRepository
-
 }

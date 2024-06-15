@@ -17,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
@@ -28,10 +27,7 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun EmailSignUpScreen(
-    navigateToEmailVerification: (name: String, email: String, password: String) -> Unit,
-    popBackStack: () -> Unit,
-) {
+internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email: String, password: String) -> Unit, popBackStack: () -> Unit) {
     var nameText by remember { mutableStateOf("") }
     var emailText by remember { mutableStateOf("") }
     var pwText by remember { mutableStateOf("") }
@@ -181,7 +177,7 @@ internal fun EmailSignUpScreen(
                                 nameText,
                                 emailText,
                                 pwText,
-                                )
+                            )
                         }
                     },
                     type = ButtonType.Primary,
@@ -194,15 +190,16 @@ internal fun EmailSignUpScreen(
     }
 }
 
-private fun errorCheck(
-    name: String = "",
-    email: String = "",
-    firstPw: String = "",
-    secondPw: String = ""
-): String {
-    return if(name.isEmpty()) "blank_name"
-    else if(email.isEmpty() || !email.contains("@") || email.split("@")[1].isEmpty()) "blank_email"
-    else if(firstPw.isEmpty()) "blank_pw"
-    else if (firstPw != secondPw) "different_pw"
-    else "true"
+private fun errorCheck(name: String = "", email: String = "", firstPw: String = "", secondPw: String = ""): String {
+    return if (name.isEmpty()) {
+        "blank_name"
+    } else if (email.isEmpty() || !email.contains("@") || email.split("@")[1].isEmpty()) {
+        "blank_email"
+    } else if (firstPw.isEmpty()) {
+        "blank_pw"
+    } else if (firstPw != secondPw) {
+        "different_pw"
+    } else {
+        "true"
+    }
 }
