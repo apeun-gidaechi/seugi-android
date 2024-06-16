@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 data class MessageRoomResponse(
     val id: String,
-    val workspaceID: String,
+    val workspaceId: String,
     val type: String,
     val chatName: String,
     val roomAdmin: Int,
