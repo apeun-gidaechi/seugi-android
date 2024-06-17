@@ -13,5 +13,5 @@ data class PersonalChatRoomResponse(
     val chatStatusEnum: String,
     val joinUserId: List<PersonalChatUserResponse>,
     val lastMessage: String,
-    val lastMessageTimestamp: LocalDateTime
+    val lastMessageTimestamp: LocalDateTime,
 )

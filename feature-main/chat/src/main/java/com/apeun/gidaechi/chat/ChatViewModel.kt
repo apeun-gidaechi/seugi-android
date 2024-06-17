@@ -4,22 +4,19 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apeun.gidaechi.chat.model.ChatUiState
-import com.apeun.gidaechi.chat.model.TestChatItem
 import com.apeun.gidaechi.common.model.Result
 import com.apeun.gidaechi.data.personalchat.PersonalChatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlin.random.Random
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ChatViewModel @Inject constructor(
-    private val personalChatRepository: PersonalChatRepository
+    private val personalChatRepository: PersonalChatRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ChatUiState())
@@ -31,7 +28,7 @@ class ChatViewModel @Inject constructor(
                 is Result.Success -> {
                     Log.d("TAG", "loadChats: ${it.data}")
                     _state.value = _state.value.copy(
-                        chatItems = it.data.toImmutableList()
+                        chatItems = it.data.toImmutableList(),
                     )
                 }
                 is Result.Error -> {
