@@ -68,19 +68,19 @@ fun EmailVerificationScreen(
         viewModel.emailSignUpSideEffect.collectLatest { value ->
             when (value) {
                 // Handle events
-                is EmailSignUpSideEffect.Success ->{
+                is EmailSignUpSideEffect.Success -> {
                     navigateToSchoolCode()
                 }
-                is EmailSignUpSideEffect.FailedVeritication ->{
+                is EmailSignUpSideEffect.FailedVeritication -> {
                     dialogState = Pair("인증코드가 올바르지 않습니다", "")
                 }
-                is EmailSignUpSideEffect.FailedJoin ->{
+                is EmailSignUpSideEffect.FailedJoin -> {
                     dialogState = Pair("오류가 발생했습니다", "다시 시도해 주세요")
                 }
-                is EmailSignUpSideEffect.FailedGetCode ->{
+                is EmailSignUpSideEffect.FailedGetCode -> {
                     dialogState = Pair("인증코드 전송에 실패했습니다.", "")
                 }
-                is EmailSignUpSideEffect.SuccessGetCode ->{
+                is EmailSignUpSideEffect.SuccessGetCode -> {
                     dialogState = Pair("인증코드를 전송했어요", "이메일 함을 확인해 보세요")
                 }
             }
