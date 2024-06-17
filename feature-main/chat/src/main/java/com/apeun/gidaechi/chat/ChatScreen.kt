@@ -59,8 +59,8 @@ internal fun ChatScreen(viewModel: ChatViewModel = hiltViewModel(), navigateToCh
             items(state.chatItems) { item ->
                 SeugiChatList(
                     userName = item.chatName,
-                    message = "",
-                    createdAt = item.createdAt.toAmShortString(),
+                    message = item.lastMessage,
+                    createdAt = item.lastMessageTimestamp.toAmShortString(),
                     count = 0,
                     onClick = {
                         navigateToChatDetail(item.id, item.workspaceId)

@@ -12,4 +12,6 @@ data class PersonalChatRoomModel(
     val chatRoomImg: String,
     val chatStatusEnum: PersonalChatRoomStatusType,
     val memberList: List<PersonalChatUserModel>,
+    val lastMessage: String,
+    val lastMessageTimestamp: LocalDateTime
 )
