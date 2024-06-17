@@ -57,10 +57,12 @@ class EmailVerificationViewModel @Inject constructor(
                 when (it) {
                     is Result.Success -> {
                         Log.d("TAG", "성공: ${it.data}")
+                        _emailSignUpSideEffect.send(EmailSignUpSideEffect.SuccessGetCode)
                     }
 
                     is Result.Error -> {
                         Log.d("TAG", "실패: ${it.throwable}")
+                        _emailSignUpSideEffect.send(EmailSignUpSideEffect.FailedGetCode)
                     }
 
                     Result.Loading -> {
