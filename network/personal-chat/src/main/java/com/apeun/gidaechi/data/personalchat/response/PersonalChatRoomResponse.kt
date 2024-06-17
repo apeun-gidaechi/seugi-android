@@ -14,4 +14,5 @@ data class PersonalChatRoomResponse(
     val joinUserId: List<PersonalChatUserResponse>,
     val lastMessage: String,
     val lastMessageTimestamp: LocalDateTime,
+    val notReadCnt: Int,
 )

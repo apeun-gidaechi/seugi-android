@@ -14,4 +14,5 @@ data class PersonalChatRoomModel(
     val memberList: List<PersonalChatUserModel>,
     val lastMessage: String,
     val lastMessageTimestamp: LocalDateTime,
+    val notReadCnt: Int,
 )

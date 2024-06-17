@@ -25,6 +25,7 @@ internal fun PersonalChatRoomResponse.toModel() = PersonalChatRoomModel(
     chatStatusEnum = chatStatusEnum.toPersonalChatRoomStatusType(),
     lastMessage = lastMessage,
     lastMessageTimestamp = lastMessageTimestamp,
+    notReadCnt = notReadCnt,
 )
 
 internal fun String.toPersonalChatRoomType() = when (this) {

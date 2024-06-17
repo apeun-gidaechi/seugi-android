@@ -61,7 +61,7 @@ internal fun ChatScreen(viewModel: ChatViewModel = hiltViewModel(), navigateToCh
                     userName = item.chatName,
                     message = item.lastMessage,
                     createdAt = item.lastMessageTimestamp.toAmShortString(),
-                    count = 0,
+                    count = item.notReadCnt,
                     onClick = {
                         navigateToChatDetail(item.id, item.workspaceId)
                     },
