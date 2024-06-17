@@ -34,7 +34,9 @@ import com.apeun.gidaechi.designsystem.component.textfield.SeugiCodeTextField
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Red500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import com.apeun.gidaechi.model.EmailSignUpSideEffect
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,7 +52,22 @@ fun EmailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -
     }
 
     var dialogState by remember {
-        mutableStateOf(false)
+        mutableStateOf(Pair<String, String>("", ""))
+    }
+    LaunchedEffect(key1 = Unit) {
+        viewModel.emailSignUpSideEffect.collectLatest { value ->
+            when (value) {
+                // Handle events
+                is EmailSignUpSideEffect.Success ->{
+                }
+                is EmailSignUpSideEffect.FailedVeritication ->{
+                    dialogState = Pair("인증코드가 올바르지 않습니다", "")
+                }
+                is EmailSignUpSideEffect.FailedJoin ->{
+                    dialogState = Pair("오류가 발생했습니다", "다시 시도해 주세요")
+                }
+            }
+        }
     }
     SeugiTheme {
         LaunchedEffect(key1 = timeLeft) {
@@ -84,12 +101,12 @@ fun EmailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -
                     )
                 },
             ) {
-                if (dialogState) {
+                if (dialogState.first != "") {
                     SeugiDialog(
-                        title = "인증코드를 전송했어요",
-                        content = "이메일 함을 확인해 보세요",
+                        title = "${dialogState.first}",
+                        content = "${dialogState.second}",
                         onDismissRequest = {
-                            dialogState = false
+                            dialogState = Pair("", "")
                         },
                     )
                 }
@@ -146,7 +163,7 @@ fun EmailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -
                                     onClick = {
                                         verificationClick = true
                                         timeLeft = 300
-                                        dialogState = true
+                                        dialogState = Pair("인증코드를 전송했어요", "이메일 함을 확인해 보세요")
                                     },
                                     type = ButtonType.Primary,
                                     text = "인증 코드 전송",
