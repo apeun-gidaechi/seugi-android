@@ -33,11 +33,17 @@ class EmailVerificationViewModel @Inject constructor(
                 when (it) {
                     is Result.Success -> {
                         Log.d("TAG", "emailSignUp: ${it.data}")
-                        _emailSignUpSideEffect.send(EmailSignUpSideEffect.Success)
+                        if (it.data == "코드가 일치하지 않아요") {
+                            _emailSignUpSideEffect.send(EmailSignUpSideEffect.FailedVeritication)
+                        } else {
+                            _emailSignUpSideEffect.send(EmailSignUpSideEffect.Success)
+                        }
                     }
+
                     is Result.Error -> {
-                        _emailSignUpSideEffect.send(EmailSignUpSideEffect.FailedJoin(it.throwable))
+                        _emailSignUpSideEffect.send(EmailSignUpSideEffect.FailedJoin)
                     }
+
                     Result.Loading -> {
                     }
                 }
@@ -52,9 +58,11 @@ class EmailVerificationViewModel @Inject constructor(
                     is Result.Success -> {
                         Log.d("TAG", "성공: ${it.data}")
                     }
+
                     is Result.Error -> {
                         Log.d("TAG", "실패: ${it.throwable}")
                     }
+
                     Result.Loading -> {
                     }
                 }
