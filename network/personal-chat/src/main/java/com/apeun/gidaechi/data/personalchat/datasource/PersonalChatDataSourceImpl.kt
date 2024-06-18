@@ -5,6 +5,7 @@ import com.apeun.gidaechi.data.personalchat.response.PersonalChatRoomResponse
 import com.apeun.gidaechi.network.core.SeugiUrl
 import com.apeun.gidaechi.network.core.Test
 import com.apeun.gidaechi.network.core.response.BaseResponse
+import com.apeun.gidaechi.network.core.response.ChatRoomResponse
 import com.apeun.gidaechi.network.core.utiles.addTestHeader
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -14,8 +15,8 @@ import javax.inject.Inject
 class PersonalChatDataSourceImpl @Inject constructor(
     private val httpClient: HttpClient,
 ) : PersonalChatDataSource {
-    override suspend fun getAllChat(workspaceId: String): BaseResponse<List<PersonalChatRoomResponse>> =
+    override suspend fun getAllChat(workspaceId: String): BaseResponse<List<ChatRoomResponse>> =
         httpClient.get("${SeugiUrl.PersonalChat.LOAD_ALL}/$workspaceId") {
             addTestHeader(Test.TEST_TOKEN)
-        }.body<BaseResponse<List<PersonalChatRoomResponse>>>()
+        }.body()
 }
