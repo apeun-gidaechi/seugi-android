@@ -8,6 +8,7 @@ import com.apeun.gidaechi.data.MemberRepository
 import com.apeun.gidaechi.data.mapper.toModel
 import com.apeun.gidaechi.data.model.EmailSignInModel
 import com.apeun.gidaechi.network.MemberDatasource
+import com.apeun.gidaechi.network.core.response.Response
 import com.apeun.gidaechi.network.core.response.safeResponse
 import com.apeun.gidaechi.network.request.EmailSignInRequest
 import javax.inject.Inject
@@ -25,6 +26,15 @@ class MemberRepositoryImpl @Inject constructor(
             val e = datasource.emailSignIn(body).safeResponse()
 
             emit(e.toModel())
+        }
+            .flowOn(dispatcher)
+            .asResult()
+    }
+
+    override suspend fun getCode(email: String): Flow<Result<String>> {
+        return flow {
+            val data = datasource.getCode(email).message
+            emit(data)
         }
             .flowOn(dispatcher)
             .asResult()
