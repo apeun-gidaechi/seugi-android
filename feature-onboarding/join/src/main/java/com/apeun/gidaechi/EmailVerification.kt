@@ -40,7 +40,14 @@ import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -> Unit) {
+fun EmailVerificationScreen(
+    navigateToSchoolCode: () -> Unit,
+    popBackStack: () -> Unit,
+    viewModel: EmailVerificationViewModel = hiltViewModel(),
+    name: String,
+    email: String,
+    password: String,
+) {
     var timeLeft by remember { mutableStateOf(0) }
 
     val minutes = timeLeft / 60
@@ -110,8 +117,8 @@ fun EmailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -
             ) {
                 if (dialogState.first != "") {
                     SeugiDialog(
-                        title = "${dialogState.first}",
-                        content = "${dialogState.second}",
+                        title = dialogState.first,
+                        content = dialogState.second,
                         onDismissRequest = {
                             dialogState = Pair("", "")
                         },
@@ -168,6 +175,7 @@ fun EmailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -
                             if (!verificationClick) {
                                 SeugiButton(
                                     onClick = {
+                                        viewModel.getCode(email = email)
                                         verificationClick = true
                                         timeLeft = 300
                                     },
@@ -176,7 +184,7 @@ fun EmailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -
                                 )
                             } else {
                                 Text(
-                                    text = "$formattedTime",
+                                    text = formattedTime,
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = Gray600,
                                 )
