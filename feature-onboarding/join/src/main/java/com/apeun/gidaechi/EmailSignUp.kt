@@ -27,7 +27,7 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackStack: () -> Unit) {
+internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email: String, password: String) -> Unit, popBackStack: () -> Unit) {
     var nameText by remember { mutableStateOf("") }
     var emailText by remember { mutableStateOf("") }
     var pwText by remember { mutableStateOf("") }
@@ -178,7 +178,11 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                             checkPassword = pwCheckText
                         )
                         if (error == "성공"){
-                            navigateToEmailVerification
+                            navigateToEmailVerification(
+                                nameText,
+                                emailText,
+                                pwText
+                            )
                         }
                     },
                     type = ButtonType.Primary,
