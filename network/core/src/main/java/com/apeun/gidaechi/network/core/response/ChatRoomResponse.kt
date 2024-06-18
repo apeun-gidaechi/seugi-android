@@ -1,6 +1,5 @@
 package com.apeun.gidaechi.network.core.response
 
-import com.apeun.gidaechi.network.core.response.UserResponse
 import java.time.LocalDateTime
 
 data class ChatRoomResponse(

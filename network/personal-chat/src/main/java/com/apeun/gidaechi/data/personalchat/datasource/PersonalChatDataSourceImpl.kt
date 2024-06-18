@@ -1,7 +1,6 @@
 package com.apeun.gidaechi.data.personalchat.datasource
 
 import com.apeun.gidaechi.data.personalchat.PersonalChatDataSource
-import com.apeun.gidaechi.data.personalchat.response.PersonalChatRoomResponse
 import com.apeun.gidaechi.network.core.SeugiUrl
 import com.apeun.gidaechi.network.core.Test
 import com.apeun.gidaechi.network.core.response.BaseResponse

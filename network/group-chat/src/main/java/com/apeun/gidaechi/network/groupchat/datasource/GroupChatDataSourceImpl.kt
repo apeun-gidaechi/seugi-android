@@ -12,12 +12,10 @@ import io.ktor.client.request.get
 import javax.inject.Inject
 
 class GroupChatDataSourceImpl @Inject constructor(
-    private val httpClient: HttpClient
-): GroupChatDataSource {
+    private val httpClient: HttpClient,
+) : GroupChatDataSource {
     override suspend fun getGroupRoomList(workspaceId: String): BaseResponse<List<ChatRoomResponse>> =
-        httpClient.get("${SeugiUrl.GroupChat.LOAD_ALL}/${workspaceId}") {
+        httpClient.get("${SeugiUrl.GroupChat.LOAD_ALL}/$workspaceId") {
             addTestHeader(Test.TEST_TOKEN)
         }.body()
-
-
 }

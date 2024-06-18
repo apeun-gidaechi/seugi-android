@@ -8,5 +8,5 @@ fun UserResponse.toModel() = UserModel(
     email = email,
     birth = birth,
     name = name,
-    picture = picture
+    picture = picture,
 )
