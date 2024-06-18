@@ -8,7 +8,7 @@ import com.apeun.gidaechi.network.message.response.room.MessageRoomResponse
 
 internal fun MessageRoomResponse.toModel() = MessageRoomModel(
     id = id,
-    workspaceId = workspaceID,
+    workspaceId = workspaceId,
     type = type.toMessageRoomType(),
     roomAdmin = roomAdmin,
     chatName = chatName,

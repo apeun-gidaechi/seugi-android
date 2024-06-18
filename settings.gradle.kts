@@ -1,5 +1,11 @@
 import java.net.URI
 
+include(":network:personal-chat")
+
+
+include(":data:perosnal-chat")
+
+
 
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

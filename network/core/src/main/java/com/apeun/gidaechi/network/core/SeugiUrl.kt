@@ -17,6 +17,11 @@ object SeugiUrl {
         const val LEFT = "${BASE_URL}/chat/group/left"
     }
 
+    object PersonalChat {
+        const val ROOT = "${BASE_URL}/chat/personal"
+        const val LOAD_ALL = "$ROOT/search"
+    }
+
     object Profile {
         const val ME = "${BASE_URL}/profile/me"
     }

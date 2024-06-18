@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.apeun.gidaechi.common.utiles.toAmShortString
 import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.component.SeugiIconButton
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
@@ -23,7 +24,7 @@ import com.apeun.gidaechi.designsystem.component.chat.SeugiChatList
 
 @ExperimentalMaterial3Api
 @Composable
-internal fun ChatScreen(viewModel: ChatViewModel = hiltViewModel(), navigateToChatDetail: (chatID: Int) -> Unit) {
+internal fun ChatScreen(viewModel: ChatViewModel = hiltViewModel(), navigateToChatDetail: (chatID: String, workspaceId: String) -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = true) {
@@ -57,12 +58,12 @@ internal fun ChatScreen(viewModel: ChatViewModel = hiltViewModel(), navigateToCh
         ) {
             items(state.chatItems) { item ->
                 SeugiChatList(
-                    userName = item.userName,
-                    message = item.message,
-                    createdAt = item.createdAt,
-                    count = item.count,
+                    userName = item.chatName,
+                    message = item.lastMessage,
+                    createdAt = item.lastMessageTimestamp.toAmShortString(),
+                    count = item.notReadCnt,
                     onClick = {
-                        navigateToChatDetail(item.chatId)
+                        navigateToChatDetail(item.id, item.workspaceId)
                     },
                 )
             }
