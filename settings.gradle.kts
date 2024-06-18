@@ -1,5 +1,11 @@
 import java.net.URI
 
+include(":data:group-chat")
+
+
+include(":network:group-chat")
+
+
 include(":data:core")
 
 
