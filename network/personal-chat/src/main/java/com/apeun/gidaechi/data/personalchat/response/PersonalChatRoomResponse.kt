@@ -1,5 +1,6 @@
 package com.apeun.gidaechi.data.personalchat.response
 
+import com.apeun.gidaechi.network.core.response.UserResponse
 import java.time.LocalDateTime
 
 data class PersonalChatRoomResponse(
@@ -11,7 +12,7 @@ data class PersonalChatRoomResponse(
     val chatRoomImg: String,
     val createdAt: LocalDateTime,
     val chatStatusEnum: String,
-    val joinUserId: List<PersonalChatUserResponse>,
+    val joinUserId: List<UserResponse>,
     val lastMessage: String,
     val lastMessageTimestamp: LocalDateTime,
     val notReadCnt: Int,

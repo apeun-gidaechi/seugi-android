@@ -15,5 +15,6 @@ android {
 dependencies {
     implementation(projects.network.core)
     implementation(projects.network.personalChat)
+    implementation(projects.data.core)
     implementation(projects.common)
 }

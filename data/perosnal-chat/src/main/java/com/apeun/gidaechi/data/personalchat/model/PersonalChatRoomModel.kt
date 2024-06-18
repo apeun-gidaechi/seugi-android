@@ -1,5 +1,6 @@
 package com.apeun.gidaechi.data.personalchat.model
 
+import com.apeun.gidaechi.data.core.model.UserModel
 import java.time.LocalDateTime
 
 data class PersonalChatRoomModel(
@@ -11,7 +12,7 @@ data class PersonalChatRoomModel(
     val createdAt: LocalDateTime,
     val chatRoomImg: String,
     val chatStatusEnum: PersonalChatRoomStatusType,
-    val memberList: List<PersonalChatUserModel>,
+    val memberList: List<UserModel>,
     val lastMessage: String,
     val lastMessageTimestamp: LocalDateTime,
     val notReadCnt: Int,
