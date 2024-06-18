@@ -1,6 +1,6 @@
-package com.apeun.gidaechi.data.personalchat.model
+package com.apeun.gidaechi.data.core.model
 
-data class PersonalChatUserModel(
+data class UserModel(
     val id: Int,
     val email: String,
     val birth: String,

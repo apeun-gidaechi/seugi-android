@@ -16,14 +16,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.apeun.gidaechi.common.utiles.toAmShortString
 import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.component.SeugiIconButton
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.chat.SeugiChatList
+import kotlinx.collections.immutable.toImmutableList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun RoomScreen(viewModel: RoomViewModel = hiltViewModel(), navigateToChatDetail: (Int) -> Unit, navigateToCreateRoom: () -> Unit) {
+internal fun RoomScreen(
+    viewModel: RoomViewModel = hiltViewModel(),
+    navigateToChatDetail: (roomId: String, workspaceId: String) -> Unit,
+    navigateToCreateRoom: () -> Unit,
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = true) {
@@ -64,13 +70,13 @@ internal fun RoomScreen(viewModel: RoomViewModel = hiltViewModel(), navigateToCh
         ) {
             items(state.chatItems) { item ->
                 SeugiChatList(
-                    userName = item.userName,
-                    message = item.message,
-                    createdAt = item.createdAt,
-                    count = item.count,
-                    memberCount = item.memberCount,
+                    userName = item.chatName,
+                    message = item.lastMessage,
+                    createdAt = item.lastMessageTimestamp.toAmShortString(),
+                    count = item.notReadCnt,
+                    memberCount = item.memberList.toImmutableList().size,
                     onClick = {
-                        navigateToChatDetail(item.chatId)
+                        navigateToChatDetail(item.id, item.workspaceId)
                     },
                 )
             }

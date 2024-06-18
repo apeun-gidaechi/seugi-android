@@ -103,7 +103,13 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
             )
 
             roomScreen(
-                navigateToChatDetail = {},
+                navigateToChatDetail = { chatId, workspaceId ->
+                    navHostController.navigateToChatDetail(
+                        chatRoomId = chatId,
+                        workspace = workspaceId,
+                        isPersonal = false,
+                    )
+                },
                 navigateToCreateRoom = {
                     navHostController.navigateToRoomCreate()
                 },

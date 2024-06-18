@@ -1,6 +1,6 @@
-package com.apeun.gidaechi.data.personalchat.response
+package com.apeun.gidaechi.network.core.response
 
-data class PersonalChatUserResponse(
+data class UserResponse(
     val id: Int,
     val email: String,
     val birth: String,

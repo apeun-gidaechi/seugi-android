@@ -12,4 +12,5 @@ dependencies {
     implementation(libs.kotlinx.collections.immutable)
     implementation(projects.data.perosnalChat)
     implementation(projects.common)
+    implementation(projects.data.core)
 }

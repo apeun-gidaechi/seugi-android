@@ -1,21 +1,21 @@
-package com.apeun.gidaechi.data.personalchat.datasource
+package com.apeun.gidaechi.network.groupchat.datasource
 
-import com.apeun.gidaechi.data.personalchat.PersonalChatDataSource
 import com.apeun.gidaechi.network.core.SeugiUrl
 import com.apeun.gidaechi.network.core.Test
 import com.apeun.gidaechi.network.core.response.BaseResponse
 import com.apeun.gidaechi.network.core.response.ChatRoomResponse
 import com.apeun.gidaechi.network.core.utiles.addTestHeader
+import com.apeun.gidaechi.network.groupchat.GroupChatDataSource
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import javax.inject.Inject
 
-class PersonalChatDataSourceImpl @Inject constructor(
+class GroupChatDataSourceImpl @Inject constructor(
     private val httpClient: HttpClient,
-) : PersonalChatDataSource {
-    override suspend fun getAllChat(workspaceId: String): BaseResponse<List<ChatRoomResponse>> =
-        httpClient.get("${SeugiUrl.PersonalChat.LOAD_ALL}/$workspaceId") {
+) : GroupChatDataSource {
+    override suspend fun getGroupRoomList(workspaceId: String): BaseResponse<List<ChatRoomResponse>> =
+        httpClient.get("${SeugiUrl.GroupChat.LOAD_ALL}/$workspaceId") {
             addTestHeader(Test.TEST_TOKEN)
         }.body()
 }

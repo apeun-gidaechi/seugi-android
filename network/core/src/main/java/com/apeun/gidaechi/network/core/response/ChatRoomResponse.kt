@@ -1,9 +1,8 @@
-package com.apeun.gidaechi.data.personalchat.response
+package com.apeun.gidaechi.network.core.response
 
-import com.apeun.gidaechi.network.core.response.UserResponse
 import java.time.LocalDateTime
 
-data class PersonalChatRoomResponse(
+data class ChatRoomResponse(
     val id: String,
     val workspaceId: String,
     val type: String,

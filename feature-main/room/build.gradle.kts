@@ -9,4 +9,7 @@ android {
 dependencies {
 
     implementation(projects.designsystem)
+    implementation(projects.common)
+    implementation(projects.data.core)
+    implementation(projects.data.groupChat)
 }

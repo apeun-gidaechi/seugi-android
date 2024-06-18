@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.data.personalchat"
+    namespace = "com.apeun.gidaechi.data.groupchat"
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -14,7 +14,7 @@ android {
 
 dependencies {
     implementation(projects.network.core)
-    implementation(projects.network.personalChat)
+    implementation(projects.network.groupChat)
     implementation(projects.data.core)
     implementation(projects.common)
 }
