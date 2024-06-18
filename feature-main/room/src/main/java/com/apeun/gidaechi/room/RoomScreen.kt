@@ -25,7 +25,7 @@ import kotlinx.collections.immutable.toImmutableList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun RoomScreen(viewModel: RoomViewModel = hiltViewModel(), navigateToChatDetail: (String) -> Unit, navigateToCreateRoom: () -> Unit) {
+internal fun RoomScreen(viewModel: RoomViewModel = hiltViewModel(), navigateToChatDetail: (roomId: String, workspaceId: String) -> Unit, navigateToCreateRoom: () -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = true) {
@@ -72,7 +72,7 @@ internal fun RoomScreen(viewModel: RoomViewModel = hiltViewModel(), navigateToCh
                     count = item.notReadCnt,
                     memberCount = item.memberList.toImmutableList().size,
                     onClick = {
-                        navigateToChatDetail(item.id)
+                        navigateToChatDetail(item.id, item.workspaceId)
                     },
                 )
             }
