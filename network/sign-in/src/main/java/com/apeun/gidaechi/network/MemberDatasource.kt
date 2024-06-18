@@ -4,6 +4,6 @@ import com.apeun.gidaechi.network.core.response.BaseResponse
 import com.apeun.gidaechi.network.request.EmailSignInRequest
 import com.apeun.gidaechi.network.response.EmailSignInResponse
 
-interface EmailSignInDatasource {
+interface MemberDatasource {
     suspend fun emailSignIn(body: EmailSignInRequest): BaseResponse<EmailSignInResponse>
 }

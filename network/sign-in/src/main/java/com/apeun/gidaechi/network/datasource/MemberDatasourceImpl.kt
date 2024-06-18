@@ -2,7 +2,7 @@ package com.apeun.gidaechi.network.datasource
 
 import com.apeun.gidaechi.common.utiles.DispatcherType
 import com.apeun.gidaechi.common.utiles.SeugiDispatcher
-import com.apeun.gidaechi.network.EmailSignInDatasource
+import com.apeun.gidaechi.network.MemberDatasource
 import com.apeun.gidaechi.network.core.SeugiUrl
 import com.apeun.gidaechi.network.core.response.BaseResponse
 import com.apeun.gidaechi.network.request.EmailSignInRequest
@@ -14,10 +14,10 @@ import io.ktor.client.request.setBody
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 
-class EmailSignInDatasourceImpl @Inject constructor(
+class MemberDatasourceImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
     private val httpClient: HttpClient,
-) : EmailSignInDatasource {
+) : MemberDatasource {
     override suspend fun emailSignIn(body: EmailSignInRequest): BaseResponse<EmailSignInResponse> = httpClient.post("${SeugiUrl.Auth.EMAIL_SIGN_IN}") {
         setBody(body = body)
     }.body<BaseResponse<EmailSignInResponse>>()
