@@ -46,9 +46,9 @@ fun EmailVerificationScreen(
     navigateToSchoolCode: () -> Unit,
     popBackStack: () -> Unit,
     viewModel: EmailVerificationViewModel = hiltViewModel(),
-    name: String?,
-    email: String?,
-    password: String?,
+    name: String,
+    email: String,
+    password: String,
 ) {
     var timeLeft by remember { mutableStateOf(0) }
     Log.d("TAG", "$name $email $password ")
@@ -120,8 +120,8 @@ fun EmailVerificationScreen(
             ) {
                 if (dialogState.first != "") {
                     SeugiDialog(
-                        title = "${dialogState.first}",
-                        content = "${dialogState.second}",
+                        title = dialogState.first,
+                        content = dialogState.second,
                         onDismissRequest = {
                             dialogState = Pair("", "")
                         },
@@ -178,7 +178,7 @@ fun EmailVerificationScreen(
                             if (!verificationClick) {
                                 SeugiButton(
                                     onClick = {
-                                        viewModel.getCode(email = email!!)
+                                        viewModel.getCode(email = email)
                                         verificationClick = true
                                         timeLeft = 300
                                     },
@@ -187,7 +187,7 @@ fun EmailVerificationScreen(
                                 )
                             } else {
                                 Text(
-                                    text = "$formattedTime",
+                                    text = formattedTime,
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = Gray600,
                                 )
