@@ -39,6 +39,7 @@ import com.apeun.gidaechi.designsystem.theme.Red500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.model.EmailVerificationSideEffect
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,7 +54,9 @@ fun EmailVerificationScreen(
     Log.d("TAG", "$name/$email/$password: ")
     var timeLeft by remember { mutableStateOf(0) }
 
-    val sideEffect: EmailVerificationSideEffect? by viewModel.sideEffect.collectAsStateWithLifecycle(initialValue = null)
+    val sideEffect: EmailVerificationSideEffect? by viewModel.sideEffect.collectAsStateWithLifecycle(
+        initialValue = null
+    )
 
 
     val minutes = timeLeft / 60
@@ -75,24 +78,29 @@ fun EmailVerificationScreen(
             }
             verificationClick = false
         }
-        LaunchedEffect(sideEffect) {
-            if (sideEffect == null) {
-                return@LaunchedEffect
-            }
-            when(sideEffect!!){
-                EmailVerificationSideEffect.SuccessGetCode ->{
-                    dialogState = Pair("인증코드를 전송했어요", "이메일 함을 확인해 보세요")
-                    verificationClick = true
-                    timeLeft = 300
-                }
-                EmailVerificationSideEffect.SuccessJoin ->{
+        LaunchedEffect(key1 = Unit) {
+            viewModel.sideEffect.collectLatest {
+                when (it) {
+                    is EmailVerificationSideEffect.SuccessGetCode -> {
+                        Log.d("TAG", "이메일 인증 성공: ")
+                        dialogState = Pair("인증코드를 전송했어요", "이메일 함을 확인해 보세요")
+                        verificationClick = true
+                        timeLeft = 300
+                    }
 
-                }
-                EmailVerificationSideEffect.FiledJoin ->{
-                    dialogState = Pair("인증코드가 올바르지 않습니다", null)
-                }
-                EmailVerificationSideEffect.Error ->{
-                    dialogState = Pair("오류가 발생했습니다. 다시시도 해주세요", null)
+                    is EmailVerificationSideEffect.SuccessJoin -> {
+
+                    }
+
+                    is EmailVerificationSideEffect.FiledJoin -> {
+                        Log.d("TAG", "인증실패: ")
+                        dialogState = Pair("인증코드가 올바르지 않습니다", null)
+                    }
+
+                    is EmailVerificationSideEffect.Error -> {
+                        Log.d("TAG", "오류발생: ")
+                        dialogState = Pair("오류가 발생했습니다. 다시시도 해주세요", null)
+                    }
                 }
             }
         }
@@ -124,7 +132,7 @@ fun EmailVerificationScreen(
                 if (dialogState.first.isNotEmpty()) {
                     SeugiDialog(
                         title = dialogState.first,
-                        content = dialogState.second?:"",
+                        content = dialogState.second ?: "",
                         onDismissRequest = {
                             dialogState = Pair("", "")
                         },
@@ -198,8 +206,15 @@ fun EmailVerificationScreen(
                     Spacer(modifier = Modifier.weight(1f))
 
                     SeugiFullWidthButton(
-                        enabled = if (verificationCode.text.length == 6) true else false,
-                        onClick = navigateToSchoolCode,
+                        enabled = verificationCode.text.length == 6,
+                        onClick = {
+                            viewModel.emailSignUp(
+                                name = name,
+                                email = email,
+                                password = password,
+                                code = verificationCode.text
+                            )
+                        },
                         type = ButtonType.Primary,
                         text = "확인",
                         modifier = Modifier.padding(vertical = 16.dp),

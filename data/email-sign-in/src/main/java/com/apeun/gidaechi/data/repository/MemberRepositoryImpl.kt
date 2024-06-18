@@ -31,10 +31,29 @@ class MemberRepositoryImpl @Inject constructor(
             .asResult()
     }
 
-    override suspend fun getCode(email: String): Flow<Result<String>> {
+    override suspend fun getCode(email: String): Flow<Result<Int>> {
         return flow {
-            val data = datasource.getCode(email).message
+            val data = datasource.getCode(email).status
             emit(data)
+        }
+            .flowOn(dispatcher)
+            .asResult()
+    }
+
+    override suspend fun emailSignUp(
+        name: String,
+        email: String,
+        password: String,
+        code: String
+    ): Flow<Result<Int>> {
+        return flow {
+            val data = datasource.emailSignUp(
+                name = name,
+                email = email,
+                password = password,
+                code = code
+            )
+            emit(data.status)
         }
             .flowOn(dispatcher)
             .asResult()

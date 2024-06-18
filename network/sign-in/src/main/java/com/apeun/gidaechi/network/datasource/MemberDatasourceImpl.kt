@@ -7,6 +7,7 @@ import com.apeun.gidaechi.network.core.SeugiUrl
 import com.apeun.gidaechi.network.core.response.BaseResponse
 import com.apeun.gidaechi.network.core.response.Response
 import com.apeun.gidaechi.network.request.EmailSignInRequest
+import com.apeun.gidaechi.network.request.EmailSignUpRequest
 import com.apeun.gidaechi.network.response.EmailSignInResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -26,5 +27,14 @@ class MemberDatasourceImpl @Inject constructor(
 
     override suspend fun getCode(email: String): Response = httpClient.get("${SeugiUrl.Auth.GET_CODE}$email"){
 
+    }.body()
+
+    override suspend fun emailSignUp(name: String, email: String, password: String, code: String): Response = httpClient.post("${SeugiUrl.Auth.EMAIL_SIGN_UP}"){
+        setBody(body = EmailSignUpRequest(
+            name = name,
+            email = email,
+            password = password,
+            code = code
+        ))
     }.body()
 }

@@ -29,5 +29,6 @@ object SeugiUrl {
     object Auth {
         const val EMAIL_SIGN_IN = "$BASE_URL/member/login"
         const val GET_CODE = "$BASE_URL/email/send?email="
+        const val EMAIL_SIGN_UP = "$BASE_URL/member/register"
     }
 }

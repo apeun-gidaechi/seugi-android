@@ -1,5 +1,6 @@
 package com.apeun.gidaechi
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apeun.gidaechi.common.model.Result
@@ -27,7 +28,7 @@ class EmailVerificationViewModel @Inject constructor(
         memberRepository.getCode(email).collectLatest {
             when (it) {
                 is Result.Success -> {
-                    if (it.data == "전송 성공 !") {
+                    if (it.data == 200) {
                         _sideEffect.send(EmailVerificationSideEffect.SuccessGetCode)
                     } else {
                         _sideEffect.send(EmailVerificationSideEffect.Error)
@@ -35,10 +36,45 @@ class EmailVerificationViewModel @Inject constructor(
                 }
 
                 is Result.Error -> {
+                    it.throwable.printStackTrace()
                     _sideEffect.send(EmailVerificationSideEffect.Error)
                 }
 
-                Result.Loading -> {
+                is Result.Loading -> {
+
+                }
+            }
+        }
+    }
+
+    fun emailSignUp(
+        name: String,
+        email: String,
+        password: String,
+        code: String
+    ) = viewModelScope.launch(dispatcher) {
+        memberRepository.emailSignUp(
+            name = name,
+            email = email,
+            password = password,
+            code = code
+        ).collectLatest {
+            when (it) {
+                is Result.Success -> {
+                    Log.d("TAG", "emailSignUp: ${it.data}")
+                    if (it.data == 200) {
+                        _sideEffect.send(EmailVerificationSideEffect.SuccessJoin)
+                    } else if(it.data == 400 || it.data == 404 || it.data == 409) {
+                        _sideEffect.send(EmailVerificationSideEffect.FiledJoin)
+                    }else{
+                        _sideEffect.send(EmailVerificationSideEffect.Error)
+
+                    }
+                }
+                is Result.Error ->{
+                    _sideEffect.send(EmailVerificationSideEffect.Error)
+                }
+                is Result.Loading ->{
 
                 }
             }
