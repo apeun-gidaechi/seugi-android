@@ -1,4 +1,4 @@
-package com.apeun.gidaechi
+package com.apeun.gidaechi.screen
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

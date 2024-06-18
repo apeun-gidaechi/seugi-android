@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.apeun.gidaechi.JoinSuccessScreen
+import com.apeun.gidaechi.screen.JoinSuccessScreen
 
 const val JOIN_SUCCESS = "joinSuccess"
 

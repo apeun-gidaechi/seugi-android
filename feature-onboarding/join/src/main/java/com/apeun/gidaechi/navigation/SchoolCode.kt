@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.apeun.gidaechi.SchoolScreen
+import com.apeun.gidaechi.screen.SchoolScreen
 
 const val SCHOOL_CODE = "schoolCode"
 
