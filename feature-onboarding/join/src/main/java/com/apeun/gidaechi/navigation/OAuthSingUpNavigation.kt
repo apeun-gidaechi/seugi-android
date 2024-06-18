@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.apeun.gidaechi.OAuthSignUpScreen
+import com.apeun.gidaechi.screen.OAuthSignUpScreen
 
 const val OAUTH_SIGN_UP = "oauthSignUp"
 

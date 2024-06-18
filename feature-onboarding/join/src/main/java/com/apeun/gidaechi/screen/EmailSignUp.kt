@@ -1,4 +1,4 @@
-package com.apeun.gidaechi
+package com.apeun.gidaechi.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

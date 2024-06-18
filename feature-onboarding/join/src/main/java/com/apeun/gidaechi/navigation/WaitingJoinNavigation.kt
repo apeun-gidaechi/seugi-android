@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.apeun.gidaechi.WaitingJoinScreen
+import com.apeun.gidaechi.screen.WaitingJoinScreen
 
 const val WAITING_JOIN = "waitingJoin"
 

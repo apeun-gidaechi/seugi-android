@@ -4,7 +4,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.apeun.gidaechi.EmailVerificationScreen
+import androidx.navigation.navArgument
+import com.apeun.gidaechi.screen.EmailVerificationScreen
 
 const val EMAIL_VERIFICATION_ROUTE = "emailVerification"
 
