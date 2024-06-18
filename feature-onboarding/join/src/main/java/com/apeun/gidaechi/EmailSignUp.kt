@@ -32,7 +32,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
     var emailText by remember { mutableStateOf("") }
     var pwText by remember { mutableStateOf("") }
     var pwCheckText by remember { mutableStateOf("") }
-    var error by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf("") }
     SeugiTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -72,9 +72,9 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                         placeholder = "이름을 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error) {
+                    if (error == "이름을 입력해 주세요") {
                         Text(
-                            text = "이름을 입력해 주세요",
+                            text = "$error",
                             style = MaterialTheme.typography.bodyLarge,
                             color = Red500,
                             modifier = Modifier.padding(start = 4.dp),
@@ -101,9 +101,9 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                         placeholder = "이메일을 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error) {
+                    if (error == "이메일을 입력해 주세요" || error == "이메일 형식을 맞춰주세요") {
                         Text(
-                            text = "이메일을 입력해 주세요",
+                            text = "$error",
                             style = MaterialTheme.typography.bodyLarge,
                             color = Red500,
                             modifier = Modifier.padding(start = 4.dp),
@@ -129,9 +129,9 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                         placeholder = "비밀번호를 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error) {
+                    if (error == "비밀번호를 입력해 주세요" ) {
                         Text(
-                            text = "비밀번호를 입력해 주세요",
+                            text = "$error",
                             style = MaterialTheme.typography.bodyLarge,
                             color = Red500,
                             modifier = Modifier.padding(start = 4.dp),
@@ -157,9 +157,9 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                         placeholder = "비밀번호를 다시 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error) {
+                    if (error == "비밀번호가 다릅니다") {
                         Text(
-                            text = "비밀번호를 다시 입력해 주세요",
+                            text = "$error",
                             style = MaterialTheme.typography.bodyLarge,
                             color = Red500,
                             modifier = Modifier.padding(start = 4.dp),
@@ -170,7 +170,17 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                 Spacer(modifier = Modifier.weight(1f))
 
                 SeugiFullWidthButton(
-                    onClick = navigateToEmailVerification,
+                    onClick = {
+                        error = errorCheck(
+                            name = nameText,
+                            email = emailText,
+                            password = pwText,
+                            checkPassword = pwCheckText
+                        )
+                        if (error == "성공"){
+                            navigateToEmailVerification
+                        }
+                    },
                     type = ButtonType.Primary,
                     text = "계속하기",
                     modifier = Modifier
@@ -179,4 +189,28 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
             }
         }
     }
+}
+
+private fun errorCheck(
+    name: String,
+    email: String,
+    password: String,
+    checkPassword: String
+): String {
+    if (name.isEmpty()) {
+        return "이름을 입력해 주세요"
+    }
+    else if (email.isEmpty()) {
+        return "이메일을 입력해 주세요"
+    }
+    else if (!email.contains("@") || email.split("@").size != 2 || email.split("@")[1].isEmpty()) {
+        return "이메일 형식을 맞춰주세요"
+    }
+    else if (password.isEmpty()) {
+        return "비밀번호를 입력해 주세요"
+    }
+    else if (password != checkPassword) {
+        return "비밀번호가 다릅니다"
+    }
+    return "성공"
 }
