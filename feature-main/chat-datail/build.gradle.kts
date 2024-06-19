@@ -12,5 +12,6 @@ dependencies {
     implementation(projects.common)
     implementation(projects.data.message)
     implementation(projects.data.profile)
+    implementation(projects.data.core)
     implementation(libs.kotlinx.collections.immutable)
 }

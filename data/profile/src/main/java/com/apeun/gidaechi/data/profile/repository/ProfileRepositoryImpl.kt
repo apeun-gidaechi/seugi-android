@@ -4,9 +4,9 @@ import com.apeun.gidaechi.common.model.Result
 import com.apeun.gidaechi.common.model.asResult
 import com.apeun.gidaechi.common.utiles.DispatcherType
 import com.apeun.gidaechi.common.utiles.SeugiDispatcher
+import com.apeun.gidaechi.data.core.mapper.toModel
+import com.apeun.gidaechi.data.core.model.ProfileModel
 import com.apeun.gidaechi.data.profile.ProfileRepository
-import com.apeun.gidaechi.data.profile.mapper.toModel
-import com.apeun.gidaechi.data.profile.model.ProfileModel
 import com.apeun.gidaechi.network.core.response.safeResponse
 import com.apeun.gidaechi.network.profile.ProfileDataSource
 import javax.inject.Inject

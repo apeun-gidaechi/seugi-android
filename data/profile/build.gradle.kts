@@ -13,4 +13,5 @@ dependencies {
     implementation(projects.common)
     implementation(projects.network.profile)
     implementation(projects.network.core)
+    implementation(projects.data.core)
 }
