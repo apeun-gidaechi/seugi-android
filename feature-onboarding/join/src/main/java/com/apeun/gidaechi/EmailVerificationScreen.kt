@@ -25,6 +25,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiButton
 import com.apeun.gidaechi.designsystem.component.SeugiDialog
@@ -34,12 +36,26 @@ import com.apeun.gidaechi.designsystem.component.textfield.SeugiCodeTextField
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Red500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import com.apeun.gidaechi.model.EmailVerificationSideEffect
+import com.apeun.gidaechi.viewModel.EmailVerificationViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -> Unit) {
+fun EmailVerificationScreen(
+    navigateToSchoolCode: () -> Unit,
+    popBackStack: () -> Unit,
+    viewModel: EmailVerificationViewModel = hiltViewModel(),
+    name: String,
+    email: String,
+    password: String,
+) {
     var timeLeft by remember { mutableStateOf(0) }
+
+    val sideEffect: EmailVerificationSideEffect? by viewModel.sideEffect.collectAsStateWithLifecycle(
+        initialValue = null,
+    )
 
     val minutes = timeLeft / 60
     val seconds = timeLeft % 60
@@ -50,7 +66,7 @@ fun EmailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -
     }
 
     var dialogState by remember {
-        mutableStateOf(false)
+        mutableStateOf(Pair<String, String?>("", ""))
     }
     SeugiTheme {
         LaunchedEffect(key1 = timeLeft) {
@@ -59,6 +75,28 @@ fun EmailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -
                 timeLeft--
             }
             verificationClick = false
+        }
+        LaunchedEffect(key1 = Unit) {
+            viewModel.sideEffect.collectLatest {
+                when (it) {
+                    is EmailVerificationSideEffect.SuccessGetCode -> {
+                        dialogState = Pair("인증코드를 전송했어요", "이메일 함을 확인해 보세요")
+                        verificationClick = true
+                        timeLeft = 300
+                    }
+
+                    is EmailVerificationSideEffect.SuccessJoin -> {
+                    }
+
+                    is EmailVerificationSideEffect.FiledJoin -> {
+                        dialogState = Pair("인증코드가 올바르지 않습니다", null)
+                    }
+
+                    is EmailVerificationSideEffect.Error -> {
+                        dialogState = Pair("오류가 발생했습니다. 다시시도 해주세요", null)
+                    }
+                }
+            }
         }
 
         var verificationCode by remember {
@@ -84,12 +122,12 @@ fun EmailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -
                     )
                 },
             ) {
-                if (dialogState) {
+                if (dialogState.first.isNotEmpty()) {
                     SeugiDialog(
-                        title = "인증코드를 전송했어요",
-                        content = "이메일 함을 확인해 보세요",
+                        title = dialogState.first,
+                        content = dialogState.second ?: "",
                         onDismissRequest = {
-                            dialogState = false
+                            dialogState = Pair("", "")
                         },
                     )
                 }
@@ -144,9 +182,7 @@ fun EmailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -
                             if (!verificationClick) {
                                 SeugiButton(
                                     onClick = {
-                                        verificationClick = true
-                                        timeLeft = 300
-                                        dialogState = true
+                                        viewModel.getCode(email = email)
                                     },
                                     type = ButtonType.Primary,
                                     text = "인증 코드 전송",
@@ -163,8 +199,15 @@ fun EmailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -
                     Spacer(modifier = Modifier.weight(1f))
 
                     SeugiFullWidthButton(
-                        enabled = if (verificationCode.text.length == 6) true else false,
-                        onClick = navigateToSchoolCode,
+                        enabled = verificationCode.text.length == 6,
+                        onClick = {
+                            viewModel.emailSignUp(
+                                name = name,
+                                email = email,
+                                password = password,
+                                code = verificationCode.text,
+                            )
+                        },
                         type = ButtonType.Primary,
                         text = "확인",
                         modifier = Modifier.padding(vertical = 16.dp),

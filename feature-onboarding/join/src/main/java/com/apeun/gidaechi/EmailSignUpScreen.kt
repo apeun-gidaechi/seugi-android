@@ -27,12 +27,12 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackStack: () -> Unit) {
+internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email: String, password: String) -> Unit, popBackStack: () -> Unit) {
     var nameText by remember { mutableStateOf("") }
     var emailText by remember { mutableStateOf("") }
     var pwText by remember { mutableStateOf("") }
     var pwCheckText by remember { mutableStateOf("") }
-    var error by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf("") }
     SeugiTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -72,7 +72,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                         placeholder = "이름을 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error) {
+                    if (error == "blank_name") {
                         Text(
                             text = "이름을 입력해 주세요",
                             style = MaterialTheme.typography.bodyLarge,
@@ -101,9 +101,9 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                         placeholder = "이메일을 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error) {
+                    if (error == "blank_email" || error == "email_fomat_is_not") {
                         Text(
-                            text = "이메일을 입력해 주세요",
+                            text = if (error == "blank_email") "이메일을 입력해주세요" else if (error == "email_fomat_is_not")"이메일 형식을 맞춰주세요" else "",
                             style = MaterialTheme.typography.bodyLarge,
                             color = Red500,
                             modifier = Modifier.padding(start = 4.dp),
@@ -129,7 +129,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                         placeholder = "비밀번호를 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error) {
+                    if (error == "blank_password") {
                         Text(
                             text = "비밀번호를 입력해 주세요",
                             style = MaterialTheme.typography.bodyLarge,
@@ -157,9 +157,9 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                         placeholder = "비밀번호를 다시 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error) {
+                    if (error == "different_password") {
                         Text(
-                            text = "비밀번호를 다시 입력해 주세요",
+                            text = "비밀번호가 다릅니다",
                             style = MaterialTheme.typography.bodyLarge,
                             color = Red500,
                             modifier = Modifier.padding(start = 4.dp),
@@ -170,7 +170,21 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
                 Spacer(modifier = Modifier.weight(1f))
 
                 SeugiFullWidthButton(
-                    onClick = navigateToEmailVerification,
+                    onClick = {
+                        error = errorCheck(
+                            name = nameText,
+                            email = emailText,
+                            password = pwText,
+                            checkPassword = pwCheckText,
+                        )
+                        if (error == "success") {
+                            navigateToEmailVerification(
+                                nameText,
+                                emailText,
+                                pwText,
+                            )
+                        }
+                    },
                     type = ButtonType.Primary,
                     text = "계속하기",
                     modifier = Modifier
@@ -179,4 +193,19 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: () -> Unit, popBackS
             }
         }
     }
+}
+
+private fun errorCheck(name: String, email: String, password: String, checkPassword: String): String {
+    if (name.isEmpty()) {
+        return "blank_name"
+    } else if (email.isEmpty()) {
+        return "blank_email"
+    } else if (!email.contains("@") || email.split("@").size != 2 || email.split("@")[1].isEmpty()) {
+        return "email_fomat_is_not"
+    } else if (password.isEmpty()) {
+        return "blank_password"
+    } else if (password != checkPassword) {
+        return "different_password"
+    }
+    return "success"
 }
