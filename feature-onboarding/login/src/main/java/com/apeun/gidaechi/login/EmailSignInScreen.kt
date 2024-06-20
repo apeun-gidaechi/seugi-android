@@ -84,8 +84,8 @@ internal fun EmailSignInScreen(
         ) {
             if (failedLogin) {
                 SeugiDialog(
-                    title = "인증코드를 전송했어요",
-                    content = "이메일 함을 확인해 보세요",
+                    title = "로그인 실패",
+                    content = "아이디 또는 비밀번호를 다시 입력해 주세요",
                     onDismissRequest = {
                         failedLogin = false
                     },
