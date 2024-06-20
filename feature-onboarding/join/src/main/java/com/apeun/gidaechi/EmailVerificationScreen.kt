@@ -52,7 +52,6 @@ fun EmailVerificationScreen(
     email: String,
     password: String,
 ) {
-    Log.d("TAG", "$name/$email/$password: ")
     var timeLeft by remember { mutableStateOf(0) }
 
     val sideEffect: EmailVerificationSideEffect? by viewModel.sideEffect.collectAsStateWithLifecycle(
@@ -82,7 +81,6 @@ fun EmailVerificationScreen(
             viewModel.sideEffect.collectLatest {
                 when (it) {
                     is EmailVerificationSideEffect.SuccessGetCode -> {
-                        Log.d("TAG", "이메일 인증 성공: ")
                         dialogState = Pair("인증코드를 전송했어요", "이메일 함을 확인해 보세요")
                         verificationClick = true
                         timeLeft = 300
@@ -92,12 +90,10 @@ fun EmailVerificationScreen(
                     }
 
                     is EmailVerificationSideEffect.FiledJoin -> {
-                        Log.d("TAG", "인증실패: ")
                         dialogState = Pair("인증코드가 올바르지 않습니다", null)
                     }
 
                     is EmailVerificationSideEffect.Error -> {
-                        Log.d("TAG", "오류발생: ")
                         dialogState = Pair("오류가 발생했습니다. 다시시도 해주세요", null)
                     }
                 }

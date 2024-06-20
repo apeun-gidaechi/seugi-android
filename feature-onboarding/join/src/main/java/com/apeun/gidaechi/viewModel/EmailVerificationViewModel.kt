@@ -55,7 +55,6 @@ class EmailVerificationViewModel @Inject constructor(
         ).collectLatest {
             when (it) {
                 is Result.Success -> {
-                    Log.d("TAG", "emailSignUp: ${it.data}")
                     if (it.data == 200) {
                         _sideEffect.send(EmailVerificationSideEffect.SuccessJoin)
                     } else if (it.data == 400 || it.data == 404 || it.data == 409) {
