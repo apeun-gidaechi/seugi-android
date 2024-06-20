@@ -1,4 +1,4 @@
-package com.apeun.gidaechi
+package com.apeun.gidaechi.viewModel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
