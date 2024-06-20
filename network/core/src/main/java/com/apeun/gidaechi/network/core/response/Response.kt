@@ -7,5 +7,5 @@ data class Response(
     val message: String,
     val status: Int,
     val state: String,
-    val success: Boolean
+    val success: Boolean,
 )

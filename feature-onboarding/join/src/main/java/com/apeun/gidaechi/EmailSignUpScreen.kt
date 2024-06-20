@@ -129,7 +129,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                         placeholder = "비밀번호를 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error == "비밀번호를 입력해 주세요" ) {
+                    if (error == "비밀번호를 입력해 주세요") {
                         Text(
                             text = "$error",
                             style = MaterialTheme.typography.bodyLarge,
@@ -175,13 +175,13 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                             name = nameText,
                             email = emailText,
                             password = pwText,
-                            checkPassword = pwCheckText
+                            checkPassword = pwCheckText,
                         )
-                        if (error == "성공"){
+                        if (error == "성공") {
                             navigateToEmailVerification(
                                 nameText,
                                 emailText,
-                                pwText
+                                pwText,
                             )
                         }
                     },
@@ -195,25 +195,16 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
     }
 }
 
-private fun errorCheck(
-    name: String,
-    email: String,
-    password: String,
-    checkPassword: String
-): String {
+private fun errorCheck(name: String, email: String, password: String, checkPassword: String): String {
     if (name.isEmpty()) {
         return "이름을 입력해 주세요"
-    }
-    else if (email.isEmpty()) {
+    } else if (email.isEmpty()) {
         return "이메일을 입력해 주세요"
-    }
-    else if (!email.contains("@") || email.split("@").size != 2 || email.split("@")[1].isEmpty()) {
+    } else if (!email.contains("@") || email.split("@").size != 2 || email.split("@")[1].isEmpty()) {
         return "이메일 형식을 맞춰주세요"
-    }
-    else if (password.isEmpty()) {
+    } else if (password.isEmpty()) {
         return "비밀번호를 입력해 주세요"
-    }
-    else if (password != checkPassword) {
+    } else if (password != checkPassword) {
         return "비밀번호가 다릅니다"
     }
     return "성공"

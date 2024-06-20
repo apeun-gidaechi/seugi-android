@@ -50,15 +50,14 @@ fun EmailVerificationScreen(
     viewModel: EmailVerificationViewModel = hiltViewModel(),
     name: String,
     email: String,
-    password: String
+    password: String,
 ) {
     Log.d("TAG", "$name/$email/$password: ")
     var timeLeft by remember { mutableStateOf(0) }
 
     val sideEffect: EmailVerificationSideEffect? by viewModel.sideEffect.collectAsStateWithLifecycle(
-        initialValue = null
+        initialValue = null,
     )
-
 
     val minutes = timeLeft / 60
     val seconds = timeLeft % 60
@@ -90,7 +89,6 @@ fun EmailVerificationScreen(
                     }
 
                     is EmailVerificationSideEffect.SuccessJoin -> {
-
                     }
 
                     is EmailVerificationSideEffect.FiledJoin -> {
@@ -105,7 +103,6 @@ fun EmailVerificationScreen(
                 }
             }
         }
-
 
         var verificationCode by remember {
             mutableStateOf(TextFieldValue())
@@ -213,7 +210,7 @@ fun EmailVerificationScreen(
                                 name = name,
                                 email = email,
                                 password = password,
-                                code = verificationCode.text
+                                code = verificationCode.text,
                             )
                         },
                         type = ButtonType.Primary,

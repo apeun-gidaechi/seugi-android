@@ -9,17 +9,17 @@ import com.apeun.gidaechi.common.utiles.SeugiDispatcher
 import com.apeun.gidaechi.data.MemberRepository
 import com.apeun.gidaechi.model.EmailVerificationSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class EmailVerificationViewModel @Inject constructor(
     private val memberRepository: MemberRepository,
-    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher
+    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
     private val _sideEffect = Channel<EmailVerificationSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
@@ -41,41 +41,33 @@ class EmailVerificationViewModel @Inject constructor(
                 }
 
                 is Result.Loading -> {
-
                 }
             }
         }
     }
 
-    fun emailSignUp(
-        name: String,
-        email: String,
-        password: String,
-        code: String
-    ) = viewModelScope.launch(dispatcher) {
+    fun emailSignUp(name: String, email: String, password: String, code: String) = viewModelScope.launch(dispatcher) {
         memberRepository.emailSignUp(
             name = name,
             email = email,
             password = password,
-            code = code
+            code = code,
         ).collectLatest {
             when (it) {
                 is Result.Success -> {
                     Log.d("TAG", "emailSignUp: ${it.data}")
                     if (it.data == 200) {
                         _sideEffect.send(EmailVerificationSideEffect.SuccessJoin)
-                    } else if(it.data == 400 || it.data == 404 || it.data == 409) {
+                    } else if (it.data == 400 || it.data == 404 || it.data == 409) {
                         _sideEffect.send(EmailVerificationSideEffect.FiledJoin)
-                    }else{
+                    } else {
                         _sideEffect.send(EmailVerificationSideEffect.Error)
-
                     }
                 }
-                is Result.Error ->{
+                is Result.Error -> {
                     _sideEffect.send(EmailVerificationSideEffect.Error)
                 }
-                is Result.Loading ->{
-
+                is Result.Loading -> {
                 }
             }
         }

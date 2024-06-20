@@ -7,5 +7,5 @@ data class EmailSignUpRequest(
     val name: String,
     val email: String,
     val password: String,
-    val code: String
+    val code: String,
 )
