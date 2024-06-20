@@ -103,7 +103,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                     )
                     if (error == "blank_email" || error == "email_fomat_is_not") {
                         Text(
-                            text = if (error == "blank_email") "이메일을 입력해수세요" else if (error == "email_fomat_is_not")"이메일 형식을 맞춰주세요" else "",
+                            text = if (error == "blank_email") "이메일을 입력해주세요" else if (error == "email_fomat_is_not")"이메일 형식을 맞춰주세요" else "",
                             style = MaterialTheme.typography.bodyLarge,
                             color = Red500,
                             modifier = Modifier.padding(start = 4.dp),
