@@ -10,8 +10,8 @@ import com.apeun.gidaechi.login.model.EmailSignInSideEffect
 import com.apeun.gidaechi.login.model.EmailSignInState
 import com.apeun.gidaechi.network.request.EmailSignInRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
