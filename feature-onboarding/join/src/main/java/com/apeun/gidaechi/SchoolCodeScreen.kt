@@ -21,16 +21,22 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.apeun.gidaechi.designsystem.animation.NoInteractionSource
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.textfield.SeugiCodeTextField
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import com.apeun.gidaechi.viewModel.SchoolCodeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SchoolScreen(navigateToJoinSuccess: () -> Unit, popBackStack: () -> Unit) {
+fun SchoolScreen(
+    navigateToJoinSuccess: () -> Unit,
+    popBackStack: () -> Unit,
+    viewModel: SchoolCodeViewModel = hiltViewModel()
+) {
     var schoolCode by remember {
         mutableStateOf(TextFieldValue())
     }
@@ -88,7 +94,7 @@ fun SchoolScreen(navigateToJoinSuccess: () -> Unit, popBackStack: () -> Unit) {
                 Spacer(modifier = Modifier.weight(1f))
                 SeugiFullWidthButton(
                     enabled = if (schoolCode.text.length == 6) true else false,
-                    onClick = navigateToJoinSuccess,
+                    onClick = { viewModel.checkWorkspace(schoolCode = schoolCode.text) },
                     type = ButtonType.Primary,
                     text = "계속하기",
                     modifier = Modifier.padding(vertical = 16.dp),

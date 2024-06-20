@@ -36,4 +36,8 @@ object SeugiUrl {
         const val GET_CODE = "$BASE_URL/email/send?email="
         const val EMAIL_SIGN_UP = "$BASE_URL/member/register"
     }
+
+    object Workspace{
+        const val CHECK_WORKSPACE = "$BASE_URL/workspace/"
+    }
 }
