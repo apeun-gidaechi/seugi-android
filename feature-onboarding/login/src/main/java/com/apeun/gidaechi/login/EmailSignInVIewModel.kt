@@ -3,11 +3,14 @@ package com.apeun.gidaechi.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apeun.gidaechi.common.model.Result
-import com.apeun.gidaechi.data.repository.MemberRepositoryImpl
+import com.apeun.gidaechi.common.utiles.DispatcherType
+import com.apeun.gidaechi.common.utiles.SeugiDispatcher
+import com.apeun.gidaechi.data.MemberRepository
 import com.apeun.gidaechi.login.model.EmailSignInSideEffect
 import com.apeun.gidaechi.login.model.EmailSignInState
 import com.apeun.gidaechi.network.request.EmailSignInRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +20,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class EmailSignInVIewModel @Inject constructor(
-    private val emailSignInRepositoryImpl: MemberRepositoryImpl,
+    private val emailSignInRepository: MemberRepository,
+    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(EmailSignInState())
@@ -27,8 +31,8 @@ class EmailSignInVIewModel @Inject constructor(
     val emailSignInSideEffect = _emailSignInSideEffect.receiveAsFlow()
 
     fun emailSignIn(email: String, password: String) {
-        viewModelScope.launch {
-            emailSignInRepositoryImpl.emailSignIn(
+        viewModelScope.launch(dispatcher) {
+            emailSignInRepository.emailSignIn(
                 body = EmailSignInRequest(
                     email = email,
                     password = password,
@@ -54,6 +58,7 @@ class EmailSignInVIewModel @Inject constructor(
                             ),
                         )
                     }
+
                     is Result.Loading -> {}
                 }
             }
