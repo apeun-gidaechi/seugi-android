@@ -72,9 +72,9 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                         placeholder = "이름을 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error == "이름을 입력해 주세요") {
+                    if (error == "blank_name") {
                         Text(
-                            text = "$error",
+                            text = "이름을 입력해 주세요",
                             style = MaterialTheme.typography.bodyLarge,
                             color = Red500,
                             modifier = Modifier.padding(start = 4.dp),
@@ -101,9 +101,9 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                         placeholder = "이메일을 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error == "이메일을 입력해 주세요" || error == "이메일 형식을 맞춰주세요") {
+                    if (error == "blank_email" || error == "email_fomat_is_not") {
                         Text(
-                            text = "$error",
+                            text = if (error == "blank_email") "이메일을 입력해수세요" else if(error == "email_fomat_is_not")"이메일 형식을 맞춰주세요" else "",
                             style = MaterialTheme.typography.bodyLarge,
                             color = Red500,
                             modifier = Modifier.padding(start = 4.dp),
@@ -129,9 +129,9 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                         placeholder = "비밀번호를 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error == "비밀번호를 입력해 주세요") {
+                    if (error == "blank_password") {
                         Text(
-                            text = "$error",
+                            text = "비밀번호를 입력해 주세요",
                             style = MaterialTheme.typography.bodyLarge,
                             color = Red500,
                             modifier = Modifier.padding(start = 4.dp),
@@ -157,9 +157,9 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                         placeholder = "비밀번호를 다시 입력해 주세요",
                         modifier = Modifier.padding(vertical = 4.dp),
                     )
-                    if (error == "비밀번호가 다릅니다") {
+                    if (error == "different_password") {
                         Text(
-                            text = "$error",
+                            text = "비밀번호가 다릅니다",
                             style = MaterialTheme.typography.bodyLarge,
                             color = Red500,
                             modifier = Modifier.padding(start = 4.dp),
@@ -177,7 +177,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                             password = pwText,
                             checkPassword = pwCheckText,
                         )
-                        if (error == "성공") {
+                        if (error == "success") {
                             navigateToEmailVerification(
                                 nameText,
                                 emailText,
@@ -197,15 +197,15 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
 
 private fun errorCheck(name: String, email: String, password: String, checkPassword: String): String {
     if (name.isEmpty()) {
-        return "이름을 입력해 주세요"
+        return "blank_name"
     } else if (email.isEmpty()) {
-        return "이메일을 입력해 주세요"
+        return "blank_email"
     } else if (!email.contains("@") || email.split("@").size != 2 || email.split("@")[1].isEmpty()) {
-        return "이메일 형식을 맞춰주세요"
+        return "email_fomat_is_not"
     } else if (password.isEmpty()) {
-        return "비밀번호를 입력해 주세요"
+        return "blank_password"
     } else if (password != checkPassword) {
-        return "비밀번호가 다릅니다"
+        return "different_password"
     }
-    return "성공"
+    return "success"
 }
