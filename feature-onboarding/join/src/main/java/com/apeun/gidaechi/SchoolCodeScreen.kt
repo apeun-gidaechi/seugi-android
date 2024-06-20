@@ -50,7 +50,7 @@ fun SchoolScreen(navigateToJoinSuccess: () -> Unit, popBackStack: () -> Unit) {
             Column(
                 modifier = Modifier
                     .padding(it)
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = 20.dp, vertical = 16.dp)
                     .focusRequester(focusRequester)
                     .clickable(
                         interactionSource = NoInteractionSource(),
@@ -61,7 +61,7 @@ fun SchoolScreen(navigateToJoinSuccess: () -> Unit, popBackStack: () -> Unit) {
             ) {
                 Text(
                     text = "학교 코드",
-                    modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
+                    modifier = Modifier.padding(start = 4.dp, bottom = 4.dp),
                     style = MaterialTheme.typography.titleMedium,
                 )
                 SeugiCodeTextField(
