@@ -9,6 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.apeun.gidaechi.login.navigation.emailSignInScreen
 import com.apeun.gidaechi.login.navigation.navigateToEmailSignIn
+import com.apeun.gidaechi.navigation.EMAIL_SIGN_UP_ROUTE
+import com.apeun.gidaechi.navigation.EMAIL_VERIFICATION_ROUTE
 import com.apeun.gidaechi.navigation.START_ROUTE
 import com.apeun.gidaechi.navigation.emailSignUpScreen
 import com.apeun.gidaechi.navigation.emailVerificationScreen
@@ -19,6 +21,7 @@ import com.apeun.gidaechi.navigation.navigateToJoinSuccess
 import com.apeun.gidaechi.navigation.navigateToOAuthSignUp
 import com.apeun.gidaechi.navigation.navigateToSchoolCode
 import com.apeun.gidaechi.navigation.navigateToSelectingJob
+import com.apeun.gidaechi.navigation.navigateToStart
 import com.apeun.gidaechi.navigation.navigateToWaitingJoin
 import com.apeun.gidaechi.navigation.oauthSignUp
 import com.apeun.gidaechi.navigation.schoolCode
@@ -45,7 +48,7 @@ internal fun OnboardingScreen(navHostController: NavHostController = rememberNav
         emailSignInScreen(
             onboardingToMain = onboardingToMain,
             navigateToOAuthSignUp = { navHostController.navigateToEmailSignUp() },
-            popBackStack = { navHostController.popBackStack() },
+            popBackStack = { navHostController.navigateToStart() },
         )
         emailSignUpScreen(
             navigateToEmailVerification = { name, email, password ->
@@ -55,11 +58,11 @@ internal fun OnboardingScreen(navHostController: NavHostController = rememberNav
                     password = password,
                 )
             },
-            popBackStack = { navHostController.popBackStack() },
+            popBackStack = { navHostController.navigateToStart() },
         )
         emailVerificationScreen(
             navigateToSchoolCode = { navHostController.navigateToSchoolCode() },
-            popBackStack = { navHostController.popBackStack() },
+            popBackStack = { navHostController.navigateToStart() },
         )
         schoolCode(
             navigateToJoinSuccess = { navHostController.navigateToJoinSuccess() },
