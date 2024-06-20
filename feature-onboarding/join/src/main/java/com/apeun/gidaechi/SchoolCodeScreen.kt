@@ -1,5 +1,6 @@
 package com.apeun.gidaechi
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
@@ -28,7 +31,9 @@ import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.textfield.SeugiCodeTextField
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import com.apeun.gidaechi.model.SchoolCodeSideEffect
 import com.apeun.gidaechi.viewModel.SchoolCodeViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,6 +48,20 @@ fun SchoolScreen(
 
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.schoolCodeSideEffect.collectLatest {
+            when(it){
+                is SchoolCodeSideEffect.SuccessSearchWorkspace ->{
+                    navigateToJoinSuccess()
+                }
+                is SchoolCodeSideEffect.FiledSearchWorkspace ->{
+                    Toast.makeText(context, it.throwable.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
     SeugiTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
