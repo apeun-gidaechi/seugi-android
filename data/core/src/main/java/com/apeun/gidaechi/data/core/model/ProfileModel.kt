@@ -2,7 +2,7 @@ package com.apeun.gidaechi.data.core.model
 
 data class ProfileModel(
     val status: String,
-    val memberId: Int,
+    val member: UserModel,
     val workspaceId: String,
     val nick: String,
     val spot: String,
