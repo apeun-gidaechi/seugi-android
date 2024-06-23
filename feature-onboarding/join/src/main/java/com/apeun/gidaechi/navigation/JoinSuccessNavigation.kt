@@ -11,18 +11,19 @@ import com.apeun.gidaechi.JoinSuccessScreen
 
 const val JOIN_SUCCESS = "joinSuccess"
 
-fun NavController.navigateToJoinSuccess(navOptions: NavOptions? = null, workspaceId: String, workspaceName: String, workspaceImageUrl: String, studentCount: Int, teacherCount: Int) {
+fun NavController.navigateToJoinSuccess(navOptions: NavOptions? = null, schoolCode: String, workspaceId: String, workspaceName: String, workspaceImageUrl: String, studentCount: Int, teacherCount: Int) {
     val encodedWorkspaceImageUrl = Uri.encode(workspaceImageUrl)
     navigate(
-        "$JOIN_SUCCESS/$workspaceId/$workspaceName/$encodedWorkspaceImageUrl/$studentCount/$teacherCount",
+        "$JOIN_SUCCESS/$schoolCode/$workspaceId/$workspaceName/$encodedWorkspaceImageUrl/$studentCount/$teacherCount",
         navOptions
     )
 }
 
 fun NavGraphBuilder.joinSuccess(navigateToSelectingJob: () -> Unit, popBackStack: () -> Unit) {
     composable(
-        route = "$JOIN_SUCCESS/{workspaceId}/{workspaceName}/{workspaceImageUrl}/{studentCount}/{teacherCount}",
+        route = "$JOIN_SUCCESS/{schoolCode}/{workspaceId}/{workspaceName}/{workspaceImageUrl}/{studentCount}/{teacherCount}",
         arguments = listOf(
+            navArgument("schoolCode") { NavType.StringType },
             navArgument("workspaceId") { NavType.StringType },
             navArgument("workspaceName") { NavType.StringType },
             navArgument("workspaceImageUrl") { NavType.StringType },
@@ -32,6 +33,7 @@ fun NavGraphBuilder.joinSuccess(navigateToSelectingJob: () -> Unit, popBackStack
         JoinSuccessScreen(
             navigateToSelectingJob = navigateToSelectingJob,
             popBackStack = popBackStack,
+            schoolCode = it.arguments?.getString("schoolCode")?:"",
             workspaceId = it.arguments?.getString("workspaceId")?:"",
             workspaceName = it.arguments?.getString("workspaceName")?:"",
             workspaceImageUrl = it.arguments?.getString("workspaceImageUrl")?:"",

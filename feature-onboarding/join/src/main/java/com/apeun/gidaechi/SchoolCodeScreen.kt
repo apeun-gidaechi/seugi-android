@@ -39,7 +39,7 @@ import kotlinx.coroutines.flow.collectLatest
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchoolScreen(
-    navigateToJoinSuccess: (workspaceId: String, workspaceName: String, workspaceImageUrl: String, studentCount: Int, teacherCount: Int) -> Unit,
+    navigateToJoinSuccess: (schoolCode: String, workspaceId: String, workspaceName: String, workspaceImageUrl: String, studentCount: Int, teacherCount: Int) -> Unit,
     popBackStack: () -> Unit,
     viewModel: SchoolCodeViewModel = hiltViewModel()
 ) {
@@ -60,6 +60,7 @@ fun SchoolScreen(
                         Log.d("TAG", "$data: ")
 
                         navigateToJoinSuccess(
+                            schoolCode.text,
                             data.workspaceId,
                             data.workspaceName,
                             data.workspaceImageUrl,

@@ -28,6 +28,7 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 fun JoinSuccessScreen(
     navigateToSelectingJob: () -> Unit,
     popBackStack: () -> Unit,
+    schoolCode: String,
     workspaceId: String,
     workspaceName: String,
     workspaceImageUrl: String,
