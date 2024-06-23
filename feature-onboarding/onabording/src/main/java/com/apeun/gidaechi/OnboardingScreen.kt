@@ -9,8 +9,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.apeun.gidaechi.login.navigation.emailSignInScreen
 import com.apeun.gidaechi.login.navigation.navigateToEmailSignIn
-import com.apeun.gidaechi.navigation.EMAIL_SIGN_UP_ROUTE
-import com.apeun.gidaechi.navigation.EMAIL_VERIFICATION_ROUTE
 import com.apeun.gidaechi.navigation.START_ROUTE
 import com.apeun.gidaechi.navigation.emailSignUpScreen
 import com.apeun.gidaechi.navigation.emailVerificationScreen
@@ -49,6 +47,7 @@ internal fun OnboardingScreen(navHostController: NavHostController = rememberNav
             onboardingToMain = onboardingToMain,
             navigateToOAuthSignUp = { navHostController.navigateToEmailSignUp() },
             popBackStack = { navHostController.navigateToStart() },
+            signUpToSchoolJoin = { navHostController.navigateToSchoolCode() }
         )
         emailSignUpScreen(
             navigateToEmailVerification = { name, email, password ->
