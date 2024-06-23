@@ -65,7 +65,15 @@ internal fun OnboardingScreen(navHostController: NavHostController = rememberNav
             popBackStack = { navHostController.navigateToStart() },
         )
         schoolCode(
-            navigateToJoinSuccess = { navHostController.navigateToJoinSuccess() },
+            navigateToJoinSuccess = { workspaceId, workspaceName, workspaceImageUrl, studentCount, teacherCount ->
+                navHostController.navigateToJoinSuccess(
+                    workspaceId = workspaceId,
+                    workspaceName = workspaceName,
+                    workspaceImageUrl = workspaceImageUrl,
+                    studentCount = studentCount,
+                    teacherCount = teacherCount
+                )
+            },
             popBackStack = { navHostController.popBackStack() },
         )
         joinSuccess(

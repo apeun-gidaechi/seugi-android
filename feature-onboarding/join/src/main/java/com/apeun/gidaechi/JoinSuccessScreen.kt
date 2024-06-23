@@ -1,5 +1,6 @@
 package com.apeun.gidaechi
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,7 +25,16 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun JoinSuccessScreen(navigateToSelectingJob: () -> Unit, popBackStack: () -> Unit) {
+fun JoinSuccessScreen(
+    navigateToSelectingJob: () -> Unit,
+    popBackStack: () -> Unit,
+    workspaceId: String,
+    workspaceName: String,
+    workspaceImageUrl: String,
+    studentCount: Int,
+    teacherCount: Int
+) {
+    Log.d("TAG", "$workspaceId, $workspaceName, $workspaceImageUrl, $studentCount, $teacherCount: ")
     SeugiTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),

@@ -1,5 +1,6 @@
 package com.apeun.gidaechi
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -38,7 +39,7 @@ import kotlinx.coroutines.flow.collectLatest
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchoolScreen(
-    navigateToJoinSuccess: () -> Unit,
+    navigateToJoinSuccess: (workspaceId: String, workspaceName: String, workspaceImageUrl: String, studentCount: Int, teacherCount: Int) -> Unit,
     popBackStack: () -> Unit,
     viewModel: SchoolCodeViewModel = hiltViewModel()
 ) {
@@ -50,19 +51,28 @@ fun SchoolScreen(
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
 
-    LaunchedEffect(key1 = Unit) {
-        viewModel.schoolCodeSideEffect.collectLatest {
-            when(it){
-                is SchoolCodeSideEffect.SuccessSearchWorkspace ->{
-                    navigateToJoinSuccess()
-                }
-                is SchoolCodeSideEffect.FiledSearchWorkspace ->{
-                    Toast.makeText(context, it.throwable.message, Toast.LENGTH_SHORT).show()
+    SeugiTheme {
+        LaunchedEffect(key1 = Unit) {
+            viewModel.schoolCodeSideEffect.collectLatest {
+                when(it){
+                    is SchoolCodeSideEffect.SuccessSearchWorkspace ->{
+                        val data = viewModel.schoolCodeModel.value
+                        Log.d("TAG", "$data: ")
+
+                        navigateToJoinSuccess(
+                            data.workspaceId,
+                            data.workspaceName,
+                            data.workspaceImageUrl,
+                            data.studentCount,
+                            data.teacherCount
+                        )
+                    }
+                    is SchoolCodeSideEffect.FiledSearchWorkspace ->{
+                        Toast.makeText(context, it.throwable.message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
-    }
-    SeugiTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
