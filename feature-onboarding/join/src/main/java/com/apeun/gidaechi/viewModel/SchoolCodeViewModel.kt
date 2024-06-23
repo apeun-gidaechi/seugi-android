@@ -25,8 +25,7 @@ class SchoolCodeViewModel @Inject constructor(
     private val workspaceRepository: WorkspaceRepository
 ) : ViewModel() {
 
-    private val _schoolCodeModel =
-        MutableStateFlow<SchoolCodeModel>(SchoolCodeModel("", "", "", 0, 0))
+    private val _schoolCodeModel = MutableStateFlow(SchoolCodeModel())
     val schoolCodeModel = _schoolCodeModel.asStateFlow()
 
     private val _schoolCodeSideEffect = Channel<SchoolCodeSideEffect>()
