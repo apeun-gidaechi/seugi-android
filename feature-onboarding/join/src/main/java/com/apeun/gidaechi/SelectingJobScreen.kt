@@ -1,6 +1,5 @@
 package com.apeun.gidaechi
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -57,7 +56,7 @@ internal fun SelectingJobScreen(
     popBackStack: () -> Unit,
     workspaceId: String,
     schoolCode: String,
-    viewModel: SelectingCodeViewModel = hiltViewModel()
+    viewModel: SelectingCodeViewModel = hiltViewModel(),
 ) {
     var studentOnOff by remember {
         mutableStateOf(true)
@@ -69,15 +68,14 @@ internal fun SelectingJobScreen(
     val context = LocalContext.current
 
     SeugiTheme {
-
         LaunchedEffect(key1 = Unit) {
             viewModel.selectingCodeSideEffect.collectLatest {
-                when(it){
-                    is SelectingCodeSideEffect.SuccessApplication ->{
+                when (it) {
+                    is SelectingCodeSideEffect.SuccessApplication -> {
                         navigateToWaitingJoin()
                     }
-                    is SelectingCodeSideEffect.FiledApplication ->{
-                        Toast.makeText(context,it.throwable.message,  Toast.LENGTH_SHORT).show()
+                    is SelectingCodeSideEffect.FiledApplication -> {
+                        Toast.makeText(context, it.throwable.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -226,7 +224,7 @@ internal fun SelectingJobScreen(
                             viewModel.workspaceApplication(
                                 workspaceId = workspaceId,
                                 workspaceCode = schoolCode,
-                                role = if (studentOnOff) "STUDENT" else "TEACHER"
+                                role = if (studentOnOff) "STUDENT" else "TEACHER",
                             )
                         },
                         type = ButtonType.Primary,

@@ -44,7 +44,7 @@ internal fun EmailSignInScreen(
     navigateToEmailSignUp: () -> Unit,
     popBackStack: () -> Unit,
     onboardingToMain: () -> Unit,
-    signUpToSchoolJoin:() -> Unit,
+    signUpToSchoolJoin: () -> Unit,
     viewModel: EmailSignInViewModel = hiltViewModel(),
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -63,7 +63,6 @@ internal fun EmailSignInScreen(
                 // Handle events
                 is EmailSignInSideEffect.SuccessLogin -> {
                     signUpToSchoolJoin()
-
                 }
 
                 is EmailSignInSideEffect.FailedLogin -> {

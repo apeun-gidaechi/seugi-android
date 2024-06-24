@@ -11,11 +11,19 @@ import com.apeun.gidaechi.JoinSuccessScreen
 
 const val JOIN_SUCCESS = "joinSuccess"
 
-fun NavController.navigateToJoinSuccess(navOptions: NavOptions? = null, schoolCode: String, workspaceId: String, workspaceName: String, workspaceImageUrl: String, studentCount: Int, teacherCount: Int) {
+fun NavController.navigateToJoinSuccess(
+    navOptions: NavOptions? = null,
+    schoolCode: String,
+    workspaceId: String,
+    workspaceName: String,
+    workspaceImageUrl: String,
+    studentCount: Int,
+    teacherCount: Int,
+) {
     val encodedWorkspaceImageUrl = Uri.encode(workspaceImageUrl)
     navigate(
         "$JOIN_SUCCESS/$schoolCode/$workspaceId/$workspaceName/$encodedWorkspaceImageUrl/$studentCount/$teacherCount",
-        navOptions
+        navOptions,
     )
 }
 
@@ -29,16 +37,17 @@ fun NavGraphBuilder.joinSuccess(navigateToSelectingJob: (workspaceId: String, wo
             navArgument("workspaceImageUrl") { NavType.StringType },
             navArgument("studentCount") { NavType.IntType },
             navArgument("teacherCount") { NavType.IntType },
-        )) {
+        ),
+    ) {
         JoinSuccessScreen(
             navigateToSelectingJob = navigateToSelectingJob,
             popBackStack = popBackStack,
-            schoolCode = it.arguments?.getString("schoolCode")?:"",
-            workspaceId = it.arguments?.getString("workspaceId")?:"",
-            workspaceName = it.arguments?.getString("workspaceName")?:"",
-            workspaceImageUrl = it.arguments?.getString("workspaceImageUrl")?:"",
-            studentCount = it.arguments?.getInt("studentCount")?:0,
-            teacherCount = it.arguments?.getInt("teacherCount")?:0
+            schoolCode = it.arguments?.getString("schoolCode") ?: "",
+            workspaceId = it.arguments?.getString("workspaceId") ?: "",
+            workspaceName = it.arguments?.getString("workspaceName") ?: "",
+            workspaceImageUrl = it.arguments?.getString("workspaceImageUrl") ?: "",
+            studentCount = it.arguments?.getInt("studentCount") ?: 0,
+            teacherCount = it.arguments?.getInt("teacherCount") ?: 0,
         )
     }
 }

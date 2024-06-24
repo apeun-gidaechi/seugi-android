@@ -1,6 +1,5 @@
 package com.apeun.gidaechi
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -33,7 +32,7 @@ fun JoinSuccessScreen(
     workspaceName: String,
     workspaceImageUrl: String,
     studentCount: Int,
-    teacherCount: Int
+    teacherCount: Int,
 ) {
     SeugiTheme {
         Scaffold(
@@ -76,7 +75,7 @@ fun JoinSuccessScreen(
                     onClick = {
                         navigateToSelectingJob(
                             workspaceId,
-                            schoolCode
+                            schoolCode,
                         )
                     },
                     type = ButtonType.Primary,

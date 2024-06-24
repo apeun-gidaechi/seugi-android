@@ -37,7 +37,7 @@ object SeugiUrl {
         const val EMAIL_SIGN_UP = "$BASE_URL/member/register"
     }
 
-    object Workspace{
+    object Workspace {
         const val CHECK_WORKSPACE = "$BASE_URL/workspace/"
         const val APPLICATION = "${BASE_URL}/workspace/join"
     }

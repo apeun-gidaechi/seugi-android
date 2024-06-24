@@ -8,5 +8,4 @@ interface WorkspaceDatasource {
 
     suspend fun checkSchoolCode(schoolCode: String): BaseResponse<CheckWorkspaceResponse>
     suspend fun workspaceApplication(workspaceId: String, workspaceCode: String, role: String): Response
-
 }

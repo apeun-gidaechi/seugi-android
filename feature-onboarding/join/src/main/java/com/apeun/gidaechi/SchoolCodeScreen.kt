@@ -1,6 +1,5 @@
 package com.apeun.gidaechi
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -39,9 +38,16 @@ import kotlinx.coroutines.flow.collectLatest
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SchoolScreen(
-    navigateToJoinSuccess: (schoolCode: String, workspaceId: String, workspaceName: String, workspaceImageUrl: String, studentCount: Int, teacherCount: Int) -> Unit,
+    navigateToJoinSuccess: (
+        schoolCode: String,
+        workspaceId: String,
+        workspaceName: String,
+        workspaceImageUrl: String,
+        studentCount: Int,
+        teacherCount: Int,
+    ) -> Unit,
     popBackStack: () -> Unit,
-    viewModel: SchoolCodeViewModel = hiltViewModel()
+    viewModel: SchoolCodeViewModel = hiltViewModel(),
 ) {
     var schoolCode by remember {
         mutableStateOf(TextFieldValue())
@@ -54,8 +60,8 @@ fun SchoolScreen(
     SeugiTheme {
         LaunchedEffect(key1 = Unit) {
             viewModel.schoolCodeSideEffect.collectLatest {
-                when(it){
-                    is SchoolCodeSideEffect.SuccessSearchWorkspace ->{
+                when (it) {
+                    is SchoolCodeSideEffect.SuccessSearchWorkspace -> {
                         val data = viewModel.schoolCodeModel.value
 
                         navigateToJoinSuccess(
@@ -64,10 +70,10 @@ fun SchoolScreen(
                             data.workspaceName,
                             data.workspaceImageUrl,
                             data.studentCount,
-                            data.teacherCount
+                            data.teacherCount,
                         )
                     }
-                    is SchoolCodeSideEffect.FiledSearchWorkspace ->{
+                    is SchoolCodeSideEffect.FiledSearchWorkspace -> {
                         Toast.makeText(context, it.throwable.message, Toast.LENGTH_SHORT).show()
                     }
                 }

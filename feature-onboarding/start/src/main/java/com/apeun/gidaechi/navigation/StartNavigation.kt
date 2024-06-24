@@ -8,8 +8,8 @@ import com.apeun.gidaechi.StartScreen
 
 const val START_ROUTE = "start"
 
-fun NavController.navigateToStart(navOptions: NavOptions? = null) = navigate(START_ROUTE, ){
-    popUpTo(EMAIL_VERIFICATION_ROUTE){
+fun NavController.navigateToStart(navOptions: NavOptions? = null) = navigate(START_ROUTE) {
+    popUpTo(EMAIL_VERIFICATION_ROUTE) {
         inclusive = false
     }
 }
