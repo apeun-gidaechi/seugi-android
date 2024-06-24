@@ -9,16 +9,16 @@ import com.apeun.gidaechi.data.workspace.mapper.toModel
 import com.apeun.gidaechi.data.workspace.model.CheckWorkspaceModel
 import com.apeun.gidaechi.network.core.response.safeResponse
 import com.apeun.gidaechi.network.workspace.WorkspaceDatasource
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
 class WorkspaceRepositoryImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
-    private val workspaceDatasource: WorkspaceDatasource
-): WorkspaceRepository {
+    private val workspaceDatasource: WorkspaceDatasource,
+) : WorkspaceRepository {
     override suspend fun checkWorkspace(schoolCode: String): Flow<Result<CheckWorkspaceModel>> {
         return flow {
             val data = workspaceDatasource.checkSchoolCode(schoolCode = schoolCode).safeResponse()
@@ -26,19 +26,14 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }
             .flowOn(dispatcher)
             .asResult()
-
     }
 
-    override suspend fun workspaceApplication(
-        workspaceId: String,
-        workspaceCode: String,
-        role: String
-    ): Flow<Result<String>> {
+    override suspend fun workspaceApplication(workspaceId: String, workspaceCode: String, role: String): Flow<Result<String>> {
         return flow {
             val data = workspaceDatasource.workspaceApplication(
                 workspaceId = workspaceId,
                 workspaceCode = workspaceCode,
-                role = role
+                role = role,
             )
             emit(data.message)
         }

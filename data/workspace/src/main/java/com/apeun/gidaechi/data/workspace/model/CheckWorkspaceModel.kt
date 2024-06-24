@@ -5,5 +5,5 @@ data class CheckWorkspaceModel(
     val workspaceName: String,
     val workspaceImageUrl: String,
     val studentCount: Int,
-    val teacherCount: Int
+    val teacherCount: Int,
 )
