@@ -34,4 +34,9 @@ object SeugiUrl {
     object Auth {
         const val EMAIL_SIGN_IN = "$BASE_URL/member/login"
     }
+
+    object WorkSpace {
+        const val ROOT = "${BASE_URL}/workspace"
+        const val MEMBERS = "${ROOT}/members"
+    }
 }

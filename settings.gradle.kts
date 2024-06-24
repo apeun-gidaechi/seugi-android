@@ -1,5 +1,11 @@
 import java.net.URI
 
+include(":data:workspace")
+
+
+include(":network:workspace")
+
+
 include(":data:group-chat")
 
 
