@@ -80,7 +80,12 @@ internal fun OnboardingScreen(
             popBackStack = { navHostController.popBackStack() },
         )
         joinSuccess(
-            navigateToSelectingJob = { navHostController.navigateToSelectingJob() },
+            navigateToSelectingJob = { workspaceId, schoolCode ->
+                navHostController.navigateToSelectingJob(
+                    workspaceId = workspaceId,
+                    schoolCode = schoolCode
+                )
+            },
             popBackStack = { navHostController.popBackStack() },
         )
         selectingJob(
