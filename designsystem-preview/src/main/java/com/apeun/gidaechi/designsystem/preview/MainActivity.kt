@@ -25,6 +25,7 @@ import com.apeun.gidaechi.designsystem.preview.feature.HomeScreen
 import com.apeun.gidaechi.designsystem.preview.feature.ListItem
 import com.apeun.gidaechi.designsystem.preview.feature.MemberList
 import com.apeun.gidaechi.designsystem.preview.feature.OAuthButton
+import com.apeun.gidaechi.designsystem.preview.feature.RoomImage
 import com.apeun.gidaechi.designsystem.preview.feature.Shadow
 import com.apeun.gidaechi.designsystem.preview.feature.Toggle
 import com.apeun.gidaechi.designsystem.preview.feature.ToolTip
@@ -106,6 +107,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(NavRoot.ERROR) {
                             Error()
+                        }
+                        composable(NavRoot.ROOMIMAGE) {
+                            RoomImage()
                         }
                     }
                 }
