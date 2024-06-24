@@ -1,5 +1,6 @@
 package com.apeun.gidaechi
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -41,10 +42,18 @@ import com.apeun.gidaechi.designsystem.theme.Gray500
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.join.R
+import com.apeun.gidaechi.viewModel.SelectingCodeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun SelectingJobScreen(navigateToWaitingJoin: () -> Unit, popBackStack: () -> Unit) {
+internal fun SelectingJobScreen(
+    navigateToWaitingJoin: () -> Unit,
+    popBackStack: () -> Unit,
+    workspaceId: String,
+    schoolCode: String,
+    viewModel: SelectingCodeViewModel = hiltViewModel()
+) {
+    Log.d("TAG", "$workspaceId, $schoolCode: ")
     var studentOnOff by remember {
         mutableStateOf(true)
     }

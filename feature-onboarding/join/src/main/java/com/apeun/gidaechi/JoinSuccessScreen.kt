@@ -26,7 +26,7 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JoinSuccessScreen(
-    navigateToSelectingJob: () -> Unit,
+    navigateToSelectingJob: (workspaceId: String, workspaceCode: String) -> Unit,
     popBackStack: () -> Unit,
     schoolCode: String,
     workspaceId: String,
@@ -73,7 +73,12 @@ fun JoinSuccessScreen(
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 SeugiFullWidthButton(
-                    onClick = navigateToSelectingJob,
+                    onClick = {
+                        navigateToSelectingJob(
+                            workspaceId,
+                            schoolCode
+                        )
+                    },
                     type = ButtonType.Primary,
                     text = "계속하기",
                     modifier = Modifier.padding(vertical = 16.dp),

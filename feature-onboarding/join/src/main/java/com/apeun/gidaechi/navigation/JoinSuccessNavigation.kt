@@ -19,7 +19,7 @@ fun NavController.navigateToJoinSuccess(navOptions: NavOptions? = null, schoolCo
     )
 }
 
-fun NavGraphBuilder.joinSuccess(navigateToSelectingJob: () -> Unit, popBackStack: () -> Unit) {
+fun NavGraphBuilder.joinSuccess(navigateToSelectingJob: (workspaceId: String, workspaceCode: String) -> Unit, popBackStack: () -> Unit) {
     composable(
         route = "$JOIN_SUCCESS/{schoolCode}/{workspaceId}/{workspaceName}/{workspaceImageUrl}/{studentCount}/{teacherCount}",
         arguments = listOf(
