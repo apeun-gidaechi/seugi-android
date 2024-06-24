@@ -57,7 +57,6 @@ fun SchoolScreen(
                 when(it){
                     is SchoolCodeSideEffect.SuccessSearchWorkspace ->{
                         val data = viewModel.schoolCodeModel.value
-                        Log.d("TAG", "$data: ")
 
                         navigateToJoinSuccess(
                             schoolCode.text,

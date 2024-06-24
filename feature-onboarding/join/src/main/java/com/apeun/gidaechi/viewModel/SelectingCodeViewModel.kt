@@ -38,11 +38,9 @@ class SelectingCodeViewModel @Inject constructor(
             ).collectLatest {
                 when(it){
                     is Result.Success->{
-                        Log.d("TAG", "성공:${it.data} ")
                         _selectingCodeSideEffect.send(SelectingCodeSideEffect.SuccessApplication)
                     }
                     is Result.Error ->{
-                        Log.d("TAG", "실패:${it.throwable} ")
                         _selectingCodeSideEffect.send(SelectingCodeSideEffect.FiledApplication(it.throwable))
 
                     }

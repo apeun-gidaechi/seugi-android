@@ -59,7 +59,6 @@ internal fun SelectingJobScreen(
     schoolCode: String,
     viewModel: SelectingCodeViewModel = hiltViewModel()
 ) {
-    Log.d("TAG", "$workspaceId, $schoolCode: ")
     var studentOnOff by remember {
         mutableStateOf(true)
     }
@@ -75,7 +74,6 @@ internal fun SelectingJobScreen(
             viewModel.selectingCodeSideEffect.collectLatest {
                 when(it){
                     is SelectingCodeSideEffect.SuccessApplication ->{
-                        Log.d("TAG", "SelectingJobScreen: ")
                         navigateToWaitingJoin()
                     }
                     is SelectingCodeSideEffect.FiledApplication ->{
