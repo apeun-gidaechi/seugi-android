@@ -1,6 +1,7 @@
 package com.apeun.gidaechi
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -43,7 +46,9 @@ import com.apeun.gidaechi.designsystem.theme.Gray500
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.join.R
+import com.apeun.gidaechi.model.SelectingCodeSideEffect
 import com.apeun.gidaechi.viewModel.SelectingCodeViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,7 +66,25 @@ internal fun SelectingJobScreen(
 
     val studentPainter = painterResource(id = R.drawable.img_student)
     val teacherPainter = painterResource(id = R.drawable.img_teacher)
+
+    val context = LocalContext.current
+
     SeugiTheme {
+
+        LaunchedEffect(key1 = Unit) {
+            viewModel.selectingCodeSideEffect.collectLatest {
+                when(it){
+                    is SelectingCodeSideEffect.SuccessApplication ->{
+                        Log.d("TAG", "SelectingJobScreen: ")
+                        navigateToWaitingJoin()
+                    }
+                    is SelectingCodeSideEffect.FiledApplication ->{
+                        Toast.makeText(context,it.throwable.message,  Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
