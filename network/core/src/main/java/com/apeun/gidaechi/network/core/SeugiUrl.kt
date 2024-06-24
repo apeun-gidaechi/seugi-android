@@ -39,5 +39,6 @@ object SeugiUrl {
 
     object Workspace{
         const val CHECK_WORKSPACE = "$BASE_URL/workspace/"
+        const val APPLICATION = "${BASE_URL}/workspace/join"
     }
 }

@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
@@ -200,7 +201,13 @@ internal fun SelectingJobScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     SeugiFullWidthButton(
-                        onClick = navigateToWaitingJoin,
+                        onClick = {
+                            viewModel.workspaceApplication(
+                                workspaceId = workspaceId,
+                                workspaceCode = schoolCode,
+                                role = if (studentOnOff) "STUDENT" else "TEACHER"
+                            )
+                        },
                         type = ButtonType.Primary,
                         text = "계속하기",
                         modifier = Modifier.padding(vertical = 16.dp),

@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface WorkspaceRepository {
     suspend fun checkWorkspace(schoolCode: String): Flow<Result<CheckWorkspaceModel>>
+
+    suspend fun workspaceApplication(workspaceId: String, workspaceCode: String, role: String): Flow<Result<String>>
 }

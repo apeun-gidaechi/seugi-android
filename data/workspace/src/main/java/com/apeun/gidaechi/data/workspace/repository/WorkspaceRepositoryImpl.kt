@@ -28,4 +28,21 @@ class WorkspaceRepositoryImpl @Inject constructor(
             .asResult()
 
     }
+
+    override suspend fun workspaceApplication(
+        workspaceId: String,
+        workspaceCode: String,
+        role: String
+    ): Flow<Result<String>> {
+        return flow {
+            val data = workspaceDatasource.workspaceApplication(
+                workspaceId = workspaceId,
+                workspaceCode = workspaceCode,
+                role = role
+            )
+            emit(data.message)
+        }
+            .flowOn(dispatcher)
+            .asResult()
+    }
 }
