@@ -65,5 +65,6 @@ include(
     ":data:profile",
     ":feature-onboarding:join",
     ":feature-onboarding:start",
-    ":feature-onboarding:onabording"
+    ":feature-onboarding:onabording",
+    ":ui"
 )
