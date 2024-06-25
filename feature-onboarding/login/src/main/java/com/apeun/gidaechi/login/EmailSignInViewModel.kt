@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class EmailSignInVIewModel @Inject constructor(
+class EmailSignInViewModel @Inject constructor(
     private val emailSignInRepository: MemberRepository,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {

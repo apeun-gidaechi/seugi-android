@@ -13,7 +13,17 @@ fun NavController.navigateToSchoolCode(navOptions: NavOptions? = null) = navigat
     navOptions,
 )
 
-fun NavGraphBuilder.schoolCode(navigateToJoinSuccess: () -> Unit, popBackStack: () -> Unit) {
+fun NavGraphBuilder.schoolCode(
+    navigateToJoinSuccess: (
+        schoolCode: String,
+        workspaceId: String,
+        workspaceName: String,
+        workspaceImageUrl: String,
+        studentCount: Int,
+        teacherCount: Int,
+    ) -> Unit,
+    popBackStack: () -> Unit,
+) {
     composable(route = SCHOOL_CODE) {
         SchoolScreen(
             navigateToJoinSuccess = navigateToJoinSuccess,

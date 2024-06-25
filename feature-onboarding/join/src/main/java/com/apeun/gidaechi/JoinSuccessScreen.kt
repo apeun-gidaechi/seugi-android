@@ -24,7 +24,16 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun JoinSuccessScreen(navigateToSelectingJob: () -> Unit, popBackStack: () -> Unit) {
+fun JoinSuccessScreen(
+    navigateToSelectingJob: (workspaceId: String, workspaceCode: String) -> Unit,
+    popBackStack: () -> Unit,
+    schoolCode: String,
+    workspaceId: String,
+    workspaceName: String,
+    workspaceImageUrl: String,
+    studentCount: Int,
+    teacherCount: Int,
+) {
     SeugiTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -50,20 +59,25 @@ fun JoinSuccessScreen(navigateToSelectingJob: () -> Unit, popBackStack: () -> Un
                 ) {
                     SeugiRoundedCircleImage(
                         size = Size.Small,
-                        image = "https://images-na.ssl-images-amazon.com/images/I/41VTLQ%2BH-oL._UL1200_.jpg",
+                        image = workspaceImageUrl,
                         onClick = {},
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = "대구 소프트웨어 마이스터 고등학교", style = MaterialTheme.typography.titleLarge)
+                    Text(text = workspaceName, style = MaterialTheme.typography.titleLarge)
                     Text(
-                        text = "학생 213명 선생님 32명",
+                        text = "학생 ${studentCount}명 선생님 ${teacherCount}명",
                         style = MaterialTheme.typography.titleMedium,
                         color = Gray600,
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 SeugiFullWidthButton(
-                    onClick = navigateToSelectingJob,
+                    onClick = {
+                        navigateToSelectingJob(
+                            workspaceId,
+                            schoolCode,
+                        )
+                    },
                     type = ButtonType.Primary,
                     text = "계속하기",
                     modifier = Modifier.padding(vertical = 16.dp),
