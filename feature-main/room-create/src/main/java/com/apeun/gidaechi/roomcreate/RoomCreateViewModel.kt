@@ -81,26 +81,47 @@ class RoomCreateViewModel @Inject constructor(
     }
 
     fun createRoom(workspaceId: String, roomName: String) = viewModelScope.launch(dispatcher) {
-        if (_state.value.checkedMemberState.size == 1) {
-            personalChatRepository.createChat(
-                workspaceId = workspaceId,
-                roomName = roomName,
-                joinUsers = _state.value.checkedMemberState.map { it.id },
-                chatRoomImg = ""
-            ).collect {
-                when(it) {
-                    is Result.Success -> {
-                        Log.d("TAG", "createRoom: ${it.data}")
-                        _sideEffect.send(RoomCreateSideEffect.SuccessCreateRoom(it.data, true))
-                    }
-                    is Result.Loading -> {}
-                    is Result.Error -> {
-                        it.throwable.printStackTrace()
-                    }
+        if (_state.value.checkedMemberState.size <= 1) {
+            return@launch
+        }
+//        personalChatRepository.createChat(
+//            workspaceId = workspaceId,
+//            roomName = roomName,
+//            joinUsers = _state.value.checkedMemberState.map { it.id },
+//            chatRoomImg = ""
+//        ).collect {
+//            when(it) {
+//                is Result.Success -> {
+//                    Log.d("TAG", "createRoom: ${it.data}")
+//                    _sideEffect.send(RoomCreateSideEffect.SuccessCreateRoom(it.data, true))
+//                }
+//                is Result.Loading -> {}
+//                is Result.Error -> {
+//                    it.throwable.printStackTrace()
+//                }
+//            }
+//        }
+    }
+
+    fun createRoom(workspaceId: String) = viewModelScope.launch(dispatcher) {
+        if (_state.value.checkedMemberState.size != 1) { return@launch }
+        personalChatRepository.createChat(
+            workspaceId = workspaceId,
+            roomName = "",
+            joinUsers = _state.value.checkedMemberState.map { it.id },
+            chatRoomImg = ""
+        ).collect {
+            when (it) {
+                is Result.Success -> {
+                    Log.d("TAG", "createRoom: ${it.data}")
+                    _sideEffect.send(RoomCreateSideEffect.SuccessCreateRoom(it.data, true))
+                }
+
+                is Result.Loading -> {}
+                is Result.Error -> {
+                    it.throwable.printStackTrace()
                 }
             }
-        } else {
-
         }
     }
 }

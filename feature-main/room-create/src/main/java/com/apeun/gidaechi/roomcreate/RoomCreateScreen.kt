@@ -57,8 +57,7 @@ internal fun RoomCreateScreen(viewModel: RoomCreateViewModel = hiltViewModel(), 
                 }
                 if (state.checkedMemberState.size == 1) {
                     viewModel.createRoom(
-                        workspaceId = workspaceId,
-                        roomName = state.checkedMemberState[0].name.substring(0, 1)
+                        workspaceId = workspaceId
                     )
                     return@FirstScreen
                 }
