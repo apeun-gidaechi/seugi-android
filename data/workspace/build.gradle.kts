@@ -14,4 +14,5 @@ dependencies {
     implementation(projects.network.workspace)
     implementation(projects.network.core)
     implementation(projects.data.core)
+    implementation(libs.kotlinx.coroutines.android)
 }

@@ -35,10 +35,14 @@ object SeugiUrl {
 
     object Auth {
         const val EMAIL_SIGN_IN = "$BASE_URL/member/login"
+        const val GET_CODE = "$BASE_URL/email/send?email="
+        const val EMAIL_SIGN_UP = "$BASE_URL/member/register"
     }
 
-    object WorkSpace {
+    object Workspace {
         const val ROOT = "${BASE_URL}/workspace"
         const val MEMBERS = "$ROOT/members"
+        const val CHECK_WORKSPACE = "$BASE_URL/workspace/"
+        const val APPLICATION = "${BASE_URL}/workspace/join"
     }
 }

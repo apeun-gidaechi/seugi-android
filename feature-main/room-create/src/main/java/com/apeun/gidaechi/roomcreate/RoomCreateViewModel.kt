@@ -8,7 +8,7 @@ import com.apeun.gidaechi.common.utiles.DispatcherType
 import com.apeun.gidaechi.common.utiles.SeugiDispatcher
 import com.apeun.gidaechi.data.groupchat.GroupChatRepository
 import com.apeun.gidaechi.data.personalchat.PersonalChatRepository
-import com.apeun.gidaechi.data.workspace.WorkSpaceRepository
+import com.apeun.gidaechi.data.workspace.WorkspaceRepository
 import com.apeun.gidaechi.roomcreate.model.RoomCreateSideEffect
 import com.apeun.gidaechi.roomcreate.model.RoomCreateUiState
 import com.apeun.gidaechi.roomcreate.model.RoomMemberItem
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class RoomCreateViewModel @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
-    private val workSpaceRepository: WorkSpaceRepository,
+    private val workspaceRepository: WorkspaceRepository,
     private val personalChatRepository: PersonalChatRepository,
     private val groupChatRepository: GroupChatRepository,
 ) : ViewModel() {
@@ -37,7 +37,7 @@ class RoomCreateViewModel @Inject constructor(
     val sideEffect = _sideEffect.receiveAsFlow()
 
     fun loadUser(workspaceId: String) = viewModelScope.launch(dispatcher) {
-        workSpaceRepository.getMembers(workspaceId).collect {
+        workspaceRepository.getMembers(workspaceId).collect {
             when (it) {
                 is Result.Success -> {
                     val users = mutableListOf<RoomMemberItem>()

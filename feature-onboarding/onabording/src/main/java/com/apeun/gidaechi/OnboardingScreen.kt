@@ -19,6 +19,7 @@ import com.apeun.gidaechi.navigation.navigateToJoinSuccess
 import com.apeun.gidaechi.navigation.navigateToOAuthSignUp
 import com.apeun.gidaechi.navigation.navigateToSchoolCode
 import com.apeun.gidaechi.navigation.navigateToSelectingJob
+import com.apeun.gidaechi.navigation.navigateToStart
 import com.apeun.gidaechi.navigation.navigateToWaitingJoin
 import com.apeun.gidaechi.navigation.oauthSignUp
 import com.apeun.gidaechi.navigation.schoolCode
@@ -45,22 +46,43 @@ internal fun OnboardingScreen(navHostController: NavHostController = rememberNav
         emailSignInScreen(
             onboardingToMain = onboardingToMain,
             navigateToOAuthSignUp = { navHostController.navigateToEmailSignUp() },
-            popBackStack = { navHostController.popBackStack() },
+            popBackStack = { navHostController.navigateToStart() },
+            signUpToSchoolJoin = { navHostController.navigateToSchoolCode() },
         )
         emailSignUpScreen(
-            navigateToEmailVerification = { navHostController.navigateToEmailVerification() },
-            popBackStack = { navHostController.popBackStack() },
+            navigateToEmailVerification = { name, email, password ->
+                navHostController.navigateToEmailVerification(
+                    name = name,
+                    email = email,
+                    password = password,
+                )
+            },
+            popBackStack = { navHostController.navigateToStart() },
         )
         emailVerificationScreen(
             navigateToSchoolCode = { navHostController.navigateToSchoolCode() },
-            popBackStack = { navHostController.popBackStack() },
+            popBackStack = { navHostController.navigateToStart() },
         )
         schoolCode(
-            navigateToJoinSuccess = { navHostController.navigateToJoinSuccess() },
+            navigateToJoinSuccess = { schoolCode, workspaceId, workspaceName, workspaceImageUrl, studentCount, teacherCount ->
+                navHostController.navigateToJoinSuccess(
+                    schoolCode = schoolCode,
+                    workspaceId = workspaceId,
+                    workspaceName = workspaceName,
+                    workspaceImageUrl = workspaceImageUrl,
+                    studentCount = studentCount,
+                    teacherCount = teacherCount,
+                )
+            },
             popBackStack = { navHostController.popBackStack() },
         )
         joinSuccess(
-            navigateToSelectingJob = { navHostController.navigateToSelectingJob() },
+            navigateToSelectingJob = { workspaceId, schoolCode ->
+                navHostController.navigateToSelectingJob(
+                    workspaceId = workspaceId,
+                    schoolCode = schoolCode,
+                )
+            },
             popBackStack = { navHostController.popBackStack() },
         )
         selectingJob(

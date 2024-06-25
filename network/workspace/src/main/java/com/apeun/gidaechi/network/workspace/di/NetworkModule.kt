@@ -1,7 +1,7 @@
 package com.apeun.gidaechi.network.workspace.di
 
-import com.apeun.gidaechi.network.workspace.WorkSpaceDataSource
-import com.apeun.gidaechi.network.workspace.datasource.WorkSpaceDataSourceImpl
+import com.apeun.gidaechi.network.workspace.WorkspaceDatasource
+import com.apeun.gidaechi.network.workspace.datasource.WorkspaceDatasourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,5 +14,5 @@ interface NetworkModule {
 
     @Binds
     @Singleton
-    fun providesWorkSpaceDataSource(workSpaceDataSourceImpl: WorkSpaceDataSourceImpl): WorkSpaceDataSource
+    fun providesWorkSpaceDataSource(workspaceDataSourceImpl: WorkspaceDatasourceImpl): WorkspaceDatasource
 }

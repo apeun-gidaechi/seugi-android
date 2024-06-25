@@ -1,11 +1,5 @@
 import java.net.URI
 
-include(":data:workspace")
-
-
-include(":network:workspace")
-
-
 include(":data:group-chat")
 
 
@@ -51,8 +45,10 @@ include(
     ":network:message",
     ":network:profile",
     ":network:sign-in",
+    ":network:workspace",
     ":common",
     ":data:email-sign-in",
+    ":data:workspace",
     ":feature-main:main",
     ":feature-main:chat",
     ":feature-main:chat-datail",
