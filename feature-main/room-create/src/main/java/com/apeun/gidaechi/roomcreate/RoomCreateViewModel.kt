@@ -25,9 +25,11 @@ class RoomCreateViewModel @Inject constructor(
     private val _state = MutableStateFlow(RoomCreateUiState())
     val state = _state.asStateFlow()
 
-    fun loadUser() = viewModelScope.launch(dispatcher) {
+    fun loadUser(
+        workspaceId: String
+    ) = viewModelScope.launch(dispatcher) {
 
-        workSpaceRepository.getMembers("664bdd0b9dfce726abd30462").collect {
+        workSpaceRepository.getMembers(workspaceId).collect {
             when(it) {
                 is Result.Success -> {
                     val users = mutableListOf<RoomMemberItem>()

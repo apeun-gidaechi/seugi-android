@@ -14,12 +14,12 @@ import com.apeun.gidaechi.roomcreate.screen.FirstScreen
 import com.apeun.gidaechi.roomcreate.screen.SecondScreen
 
 @Composable
-internal fun RoomCreateScreen(viewModel: RoomCreateViewModel = hiltViewModel(), popBackStack: () -> Unit, onNavigationVisibleChange: (Boolean) -> Unit) {
+internal fun RoomCreateScreen(viewModel: RoomCreateViewModel = hiltViewModel(), workspaceId: String, popBackStack: () -> Unit, onNavigationVisibleChange: (Boolean) -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var nowScreen by remember { mutableStateOf(1) }
     LaunchedEffect(key1 = true) {
         onNavigationVisibleChange(false)
-        viewModel.loadUser()
+        viewModel.loadUser(workspaceId)
     }
 
     LifecycleResumeEffect(key1 = Unit) {
