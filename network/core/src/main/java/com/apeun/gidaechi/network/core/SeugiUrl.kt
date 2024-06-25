@@ -26,7 +26,7 @@ object SeugiUrl {
     object GroupChat {
         const val ROOT = "${BASE_URL}/chat/group"
         const val LOAD_ALL = "$ROOT/search"
-        const val CREATE = "${ROOT}/create"
+        const val CREATE = "$ROOT/create"
     }
 
     object Profile {
@@ -39,6 +39,6 @@ object SeugiUrl {
 
     object WorkSpace {
         const val ROOT = "${BASE_URL}/workspace"
-        const val MEMBERS = "${ROOT}/members"
+        const val MEMBERS = "$ROOT/members"
     }
 }

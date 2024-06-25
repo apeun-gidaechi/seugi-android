@@ -112,7 +112,7 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                 },
                 navigateToCreateRoom = { workspaceId ->
                     navHostController.navigateToRoomCreate(
-                        workspaceId = workspaceId
+                        workspaceId = workspaceId,
                     )
                 },
             )

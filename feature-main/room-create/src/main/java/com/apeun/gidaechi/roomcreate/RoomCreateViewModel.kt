@@ -36,12 +36,9 @@ class RoomCreateViewModel @Inject constructor(
     private val _sideEffect = Channel<RoomCreateSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
 
-    fun loadUser(
-        workspaceId: String
-    ) = viewModelScope.launch(dispatcher) {
-
+    fun loadUser(workspaceId: String) = viewModelScope.launch(dispatcher) {
         workSpaceRepository.getMembers(workspaceId).collect {
-            when(it) {
+            when (it) {
                 is Result.Success -> {
                     val users = mutableListOf<RoomMemberItem>()
                     for (datum in it.data) {
@@ -50,8 +47,8 @@ class RoomCreateViewModel @Inject constructor(
                                 id = datum.member.id,
                                 name = datum.nick,
                                 memberProfile = datum.member.picture,
-                                checked = false
-                            )
+                                checked = false,
+                            ),
                         )
                     }
 
@@ -60,8 +57,8 @@ class RoomCreateViewModel @Inject constructor(
                             id = 3,
                             name = "test",
                             memberProfile = "",
-                            checked = false
-                        )
+                            checked = false,
+                        ),
                     )
                     _state.value = _state.value.copy(
                         userItem = users.toImmutableList(),
@@ -97,9 +94,9 @@ class RoomCreateViewModel @Inject constructor(
             workspaceId = workspaceId,
             roomName = roomName,
             joinUsers = _state.value.checkedMemberState.map { it.id },
-            chatRoomImg = ""
+            chatRoomImg = "",
         ).collect {
-            when(it) {
+            when (it) {
                 is Result.Success -> {
                     Log.d("TAG", "createRoom: ${it.data}")
                     _sideEffect.send(RoomCreateSideEffect.SuccessCreateRoom(it.data, false))
@@ -113,12 +110,14 @@ class RoomCreateViewModel @Inject constructor(
     }
 
     fun createRoom(workspaceId: String) = viewModelScope.launch(dispatcher) {
-        if (_state.value.checkedMemberState.size != 1) { return@launch }
+        if (_state.value.checkedMemberState.size != 1) {
+            return@launch
+        }
         personalChatRepository.createChat(
             workspaceId = workspaceId,
             roomName = "",
             joinUsers = _state.value.checkedMemberState.map { it.id },
-            chatRoomImg = ""
+            chatRoomImg = "",
         ).collect {
             when (it) {
                 is Result.Success -> {

@@ -13,32 +13,31 @@ import com.apeun.gidaechi.designsystem.component.SeugiRoomImage
 fun RoomImage() {
     val text = "엄준식"
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         SeugiRoomImage(
             text = text,
-            type = RoomImageType.ExtraSmall
+            type = RoomImageType.ExtraSmall,
         )
         SeugiRoomImage(
             text = text,
-            type = RoomImageType.Small
+            type = RoomImageType.Small,
         )
         SeugiRoomImage(
             text = text,
-            type = RoomImageType.Medium
+            type = RoomImageType.Medium,
         )
         SeugiRoomImage(
             text = text,
-            type = RoomImageType.Large
+            type = RoomImageType.Large,
         )
         SeugiRoomImage(
             text = text,
-            type = RoomImageType.ExtraLarge
+            type = RoomImageType.ExtraLarge,
         )
         SeugiRoomImage(
             text = text,
-            type = RoomImageType.XXL
+            type = RoomImageType.XXL,
         )
-
     }
 }

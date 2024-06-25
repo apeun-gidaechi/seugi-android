@@ -91,30 +91,29 @@ val Pretendard = Typography(
     ),
 )
 
-
 sealed class SeugiTextTheme {
-    data object DisplayLarge: SeugiTextTheme()
-    data object DisplayMedium: SeugiTextTheme()
-    data object HeadlineLarge: SeugiTextTheme()
-    data object HeadlineMedium: SeugiTextTheme()
-    data object TitleLarge: SeugiTextTheme()
-    data object TitleMedium: SeugiTextTheme()
-    data object BodyLarge: SeugiTextTheme()
-    data object BodyMedium: SeugiTextTheme()
-    data object LabelLarge: SeugiTextTheme()
-    data object LabelMedium: SeugiTextTheme()
+    data object DisplayLarge : SeugiTextTheme()
+    data object DisplayMedium : SeugiTextTheme()
+    data object HeadlineLarge : SeugiTextTheme()
+    data object HeadlineMedium : SeugiTextTheme()
+    data object TitleLarge : SeugiTextTheme()
+    data object TitleMedium : SeugiTextTheme()
+    data object BodyLarge : SeugiTextTheme()
+    data object BodyMedium : SeugiTextTheme()
+    data object LabelLarge : SeugiTextTheme()
+    data object LabelMedium : SeugiTextTheme()
+
     @Composable
-    fun toTextStyle() =
-        when (this) {
-            is BodyLarge -> MaterialTheme.typography.bodyLarge
-            is BodyMedium -> MaterialTheme.typography.bodyMedium
-            is DisplayLarge -> MaterialTheme.typography.displayLarge
-            is DisplayMedium -> MaterialTheme.typography.displayMedium
-            is HeadlineLarge -> MaterialTheme.typography.headlineLarge
-            is HeadlineMedium -> MaterialTheme.typography.headlineMedium
-            is LabelLarge -> MaterialTheme.typography.labelLarge
-            is LabelMedium -> MaterialTheme.typography.labelMedium
-            is TitleLarge -> MaterialTheme.typography.titleLarge
-            is TitleMedium -> MaterialTheme.typography.titleMedium
-        }
+    fun toTextStyle() = when (this) {
+        is BodyLarge -> MaterialTheme.typography.bodyLarge
+        is BodyMedium -> MaterialTheme.typography.bodyMedium
+        is DisplayLarge -> MaterialTheme.typography.displayLarge
+        is DisplayMedium -> MaterialTheme.typography.displayMedium
+        is HeadlineLarge -> MaterialTheme.typography.headlineLarge
+        is HeadlineMedium -> MaterialTheme.typography.headlineMedium
+        is LabelLarge -> MaterialTheme.typography.labelLarge
+        is LabelMedium -> MaterialTheme.typography.labelMedium
+        is TitleLarge -> MaterialTheme.typography.titleLarge
+        is TitleMedium -> MaterialTheme.typography.titleMedium
+    }
 }

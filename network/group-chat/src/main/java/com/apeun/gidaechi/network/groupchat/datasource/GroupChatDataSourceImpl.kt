@@ -22,12 +22,7 @@ class GroupChatDataSourceImpl @Inject constructor(
             addTestHeader(Test.TEST_TOKEN)
         }.body()
 
-    override suspend fun createChat(
-        workspaceId: String,
-        roomName: String,
-        joinUsers: List<Int>,
-        chatRoomImg: String,
-    ): BaseResponse<String> =
+    override suspend fun createChat(workspaceId: String, roomName: String, joinUsers: List<Int>, chatRoomImg: String): BaseResponse<String> =
         httpClient.post(SeugiUrl.GroupChat.CREATE) {
             addTestHeader(Test.TEST_TOKEN)
             setBody(
@@ -35,8 +30,8 @@ class GroupChatDataSourceImpl @Inject constructor(
                     workspaceId = workspaceId,
                     roomName = roomName,
                     joinUsers = joinUsers,
-                    chatRoomImg = chatRoomImg
-                )
+                    chatRoomImg = chatRoomImg,
+                ),
             )
         }.body()
 }

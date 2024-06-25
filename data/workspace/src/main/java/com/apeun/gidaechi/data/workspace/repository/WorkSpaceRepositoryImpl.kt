@@ -6,20 +6,19 @@ import com.apeun.gidaechi.common.utiles.DispatcherType
 import com.apeun.gidaechi.common.utiles.SeugiDispatcher
 import com.apeun.gidaechi.data.core.mapper.toModels
 import com.apeun.gidaechi.data.core.model.ProfileModel
-import com.apeun.gidaechi.data.core.model.UserModel
 import com.apeun.gidaechi.data.workspace.WorkSpaceRepository
 import com.apeun.gidaechi.network.core.response.safeResponse
 import com.apeun.gidaechi.network.workspace.WorkSpaceDataSource
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
 class WorkSpaceRepositoryImpl @Inject constructor(
     private val dataSource: WorkSpaceDataSource,
-    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher
-): WorkSpaceRepository {
+    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
+) : WorkSpaceRepository {
     override suspend fun getMembers(workspaceId: String): Flow<Result<List<ProfileModel>>> = flow {
         val response = dataSource.getMembers(workspaceId).safeResponse()
 
@@ -27,6 +26,4 @@ class WorkSpaceRepositoryImpl @Inject constructor(
     }
         .flowOn(dispatcher)
         .asResult()
-
-
 }

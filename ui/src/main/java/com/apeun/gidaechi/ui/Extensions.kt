@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 fun <SIDE_EFFECT : Any> Flow<SIDE_EFFECT>.CollectAsSideEffect(
     lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,
-    sideEffect: (suspend (sideEffect: SIDE_EFFECT) -> Unit)
+    sideEffect: (suspend (sideEffect: SIDE_EFFECT) -> Unit),
 ) {
     val sideEffectFlow = this
     val lifecycleOwner = LocalLifecycleOwner.current

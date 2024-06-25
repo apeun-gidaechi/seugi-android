@@ -2,7 +2,6 @@ package com.apeun.gidaechi.data.groupchat
 
 import com.apeun.gidaechi.common.model.Result
 import com.apeun.gidaechi.data.core.model.ChatRoomModel
-import com.apeun.gidaechi.network.core.response.BaseResponse
 import kotlinx.coroutines.flow.Flow
 
 interface GroupChatRepository {
