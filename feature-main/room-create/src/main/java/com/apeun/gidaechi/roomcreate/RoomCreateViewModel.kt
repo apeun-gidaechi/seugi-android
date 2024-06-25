@@ -51,15 +51,6 @@ class RoomCreateViewModel @Inject constructor(
                             ),
                         )
                     }
-
-                    users.add(
-                        RoomMemberItem(
-                            id = 3,
-                            name = "test",
-                            memberProfile = "",
-                            checked = false,
-                        ),
-                    )
                     _state.value = _state.value.copy(
                         userItem = users.toImmutableList(),
                     )
