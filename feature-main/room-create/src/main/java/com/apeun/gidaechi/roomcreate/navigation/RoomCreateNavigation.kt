@@ -18,7 +18,11 @@ fun NavController.navigateToRoomCreate(
     navOptions = navOptions
 )
 
-fun NavGraphBuilder.roomCreateScreen(popBackStack: () -> Unit, onNavigationVisibleChange: (Boolean) -> Unit) {
+fun NavGraphBuilder.roomCreateScreen(
+    popBackStack: () -> Unit,
+    onNavigationVisibleChange: (Boolean) -> Unit,
+    navigateToChatDetail: (chatId: String, workspaceId: String, isPersonal: Boolean) -> Unit,
+) {
     composable(
         route = "${ROOM_CREATE_ROUTE}/{workspaceId}",
         arguments = listOf(
@@ -29,6 +33,7 @@ fun NavGraphBuilder.roomCreateScreen(popBackStack: () -> Unit, onNavigationVisib
             popBackStack = popBackStack,
             onNavigationVisibleChange = onNavigationVisibleChange,
             workspaceId = it.arguments?.getString("workspaceId")?: "",
+            navigateToChatDetail = navigateToChatDetail
         )
     }
 }

@@ -122,6 +122,13 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                     navHostController.popBackStack()
                 },
                 onNavigationVisibleChange = onNavigationVisibleChange,
+                navigateToChatDetail = { chatId, workspaceId, isPersonal ->
+                    navHostController.navigateToChatDetail(
+                        chatRoomId = chatId,
+                        workspace = workspaceId,
+                        isPersonal = isPersonal,
+                    )
+                },
             )
         }
     }

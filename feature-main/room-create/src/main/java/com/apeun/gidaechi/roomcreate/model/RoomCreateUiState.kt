@@ -18,3 +18,7 @@ data class RoomMemberItem(
     val memberProfile: String? = null,
     val checked: Boolean = false,
 )
+
+sealed interface RoomCreateSideEffect {
+    data class SuccessCreateRoom(val chatRoomUid: String, val isPersonal: Boolean) : RoomCreateSideEffect
+}

@@ -14,6 +14,8 @@ dependencies {
     implementation(projects.common)
     implementation(projects.data.core)
     implementation(projects.data.workspace)
+    implementation(projects.data.perosnalChat)
+    implementation(projects.data.groupChat)
     implementation(projects.network.core)
-    implementation(projects.network.workspace)
+    implementation(projects.ui)
 }
