@@ -1,6 +1,6 @@
 package com.apeun.gidaechi.network.workspace.request
 
-data class WorkspaceApplication(
+data class WorkspaceApplicationRequest(
     val workspaceId: String,
     val workspaceCode: String,
     val role: String,
