@@ -26,4 +26,22 @@ class GroupChatRepositoryImpl @Inject constructor(
     }
         .flowOn(dispatcher)
         .asResult()
+
+    override suspend fun createChat(
+        workspaceId: String,
+        roomName: String,
+        joinUsers: List<Int>,
+        chatRoomImg: String,
+    ): Flow<Result<String>> = flow {
+        val response = dataSource.createChat(
+            workspaceId = workspaceId,
+            roomName = roomName,
+            joinUsers = joinUsers,
+            chatRoomImg = chatRoomImg
+        ).safeResponse()
+
+        emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
 }

@@ -54,6 +54,15 @@ class RoomCreateViewModel @Inject constructor(
                             )
                         )
                     }
+
+                    users.add(
+                        RoomMemberItem(
+                            id = 3,
+                            name = "test",
+                            memberProfile = "",
+                            checked = false
+                        )
+                    )
                     _state.value = _state.value.copy(
                         userItem = users.toImmutableList(),
                     )
@@ -84,23 +93,23 @@ class RoomCreateViewModel @Inject constructor(
         if (_state.value.checkedMemberState.size <= 1) {
             return@launch
         }
-//        personalChatRepository.createChat(
-//            workspaceId = workspaceId,
-//            roomName = roomName,
-//            joinUsers = _state.value.checkedMemberState.map { it.id },
-//            chatRoomImg = ""
-//        ).collect {
-//            when(it) {
-//                is Result.Success -> {
-//                    Log.d("TAG", "createRoom: ${it.data}")
-//                    _sideEffect.send(RoomCreateSideEffect.SuccessCreateRoom(it.data, true))
-//                }
-//                is Result.Loading -> {}
-//                is Result.Error -> {
-//                    it.throwable.printStackTrace()
-//                }
-//            }
-//        }
+        groupChatRepository.createChat(
+            workspaceId = workspaceId,
+            roomName = roomName,
+            joinUsers = _state.value.checkedMemberState.map { it.id },
+            chatRoomImg = ""
+        ).collect {
+            when(it) {
+                is Result.Success -> {
+                    Log.d("TAG", "createRoom: ${it.data}")
+                    _sideEffect.send(RoomCreateSideEffect.SuccessCreateRoom(it.data, false))
+                }
+                is Result.Loading -> {}
+                is Result.Error -> {
+                    it.throwable.printStackTrace()
+                }
+            }
+        }
     }
 
     fun createRoom(workspaceId: String) = viewModelScope.launch(dispatcher) {

@@ -26,6 +26,7 @@ object SeugiUrl {
     object GroupChat {
         const val ROOT = "${BASE_URL}/chat/group"
         const val LOAD_ALL = "$ROOT/search"
+        const val CREATE = "${ROOT}/create"
     }
 
     object Profile {
