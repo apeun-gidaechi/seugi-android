@@ -37,8 +37,7 @@ class WorkspaceDataSourceImpl @Inject constructor(
             )
         }.body()
 
-    override suspend fun getMembers(workspaceId: String): BaseResponse<List<ProfileResponse>> =
-        httpClient.get(SeugiUrl.Workspace.MEMBERS) {
+    override suspend fun getMembers(workspaceId: String): BaseResponse<List<ProfileResponse>> = httpClient.get(SeugiUrl.Workspace.MEMBERS) {
         parameter("workspaceId", workspaceId)
         addTestHeader(Test.TEST_TOKEN)
     }.body()
