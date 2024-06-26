@@ -8,9 +8,11 @@ import android.view.View
 import android.view.Window
 import android.view.WindowInsetsController
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -34,6 +36,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -50,8 +53,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
@@ -70,11 +76,14 @@ import com.apeun.gidaechi.designsystem.animation.NoInteractionSource
 import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.DividerType
+import com.apeun.gidaechi.designsystem.component.GradientPrimary
 import com.apeun.gidaechi.designsystem.component.SeugiButton
 import com.apeun.gidaechi.designsystem.component.SeugiDivider
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
+import com.apeun.gidaechi.designsystem.component.modifier.brushDraw
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
+import com.apeun.gidaechi.designsystem.component.textfield.SeugiTextField
 import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.Gray100
 import com.apeun.gidaechi.designsystem.theme.Gray300
@@ -117,6 +126,7 @@ internal fun HomeScreen() {
 
     Column(
         modifier = Modifier
+            .animateContentSize()
             .verticalScroll(rememberScrollState())
             .background(Primary050)
             .fillMaxSize(),
@@ -328,6 +338,98 @@ internal fun HomeScreen() {
                                     shape = RoundedCornerShape(4.dp)
                                 )
                         )
+                    }
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            HomeCard(
+                text = "캣스기",
+                image = painterResource(id = R.drawable.ic_appicon_round)
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(
+                                width = (1.5).dp,
+                                brush = GradientPrimary,
+                                shape = CircleShape
+                            ),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            modifier = Modifier.padding(vertical = (15.5).dp),
+                            text = "2학년 4반에 아무나 한명 뽑아줘...",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Gray500
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        Image(
+                            modifier = Modifier.brushDraw(GradientPrimary),
+                            painter = painterResource(id = R.drawable.ic_search),
+                            contentDescription = "",
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "지난주",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Gray600
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = Gray100,
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Text(
+                                modifier = Modifier.padding(vertical = (12).dp),
+                                text = "급식에 복어가 나오는 날이 언제..",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Black
+                            )
+                            Spacer(modifier = Modifier.weight(1f))
+                            Text(
+                                text = "6월 21일",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Gray600
+                            )
+                            Spacer(modifier = Modifier.width(12.dp))
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Text(
+                                modifier = Modifier.padding(vertical = (12).dp),
+                                text = "우리 학교 대회 담당하는 분이 누구...",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Black
+                            )
+                            Spacer(modifier = Modifier.weight(1f))
+                            Text(
+                                text = "6월 21일",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Gray600
+                            )
+                            Spacer(modifier = Modifier.width(12.dp))
+                        }
                     }
                 }
             }
