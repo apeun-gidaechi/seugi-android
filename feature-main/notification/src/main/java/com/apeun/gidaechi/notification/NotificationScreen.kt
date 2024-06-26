@@ -16,9 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -50,9 +48,7 @@ import com.apeun.gidaechi.ui.changeNavigationColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun NotificationScreen(
-
-) {
+internal fun NotificationScreen() {
     val view = LocalView.current
 
     LifecycleResumeEffect(Unit) {
@@ -96,7 +92,7 @@ internal fun NotificationScreen(
         )
         Spacer(modifier = Modifier.height(4.dp))
         LazyColumn(
-            modifier = Modifier.padding(horizontal = 20.dp)
+            modifier = Modifier.padding(horizontal = 20.dp),
         ) {
             items(40) {
                 Spacer(modifier = Modifier.height(8.dp))
@@ -108,7 +104,7 @@ internal fun NotificationScreen(
                     createdAt = "5월 3일 수요일",
                     onClickAddEmoji = { /*TODO*/ },
                     onClickDetailInfo = { /*TODO*/ },
-                    onClickNotification = { /*TODO*/ }
+                    onClickNotification = { /*TODO*/ },
                 )
             }
         }
@@ -133,20 +129,20 @@ internal fun NotificationCard(
             .dropShadow(DropShadowType.EvBlack1)
             .background(
                 color = White,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(8.dp),
             )
             .bounceClick(
-                onClick = onClickNotification
-            )
+                onClick = onClickNotification,
+            ),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(12.dp)
+                .padding(12.dp),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = "$author · $createdAt",
@@ -159,11 +155,11 @@ internal fun NotificationCard(
                     modifier = Modifier
                         .size(24.dp)
                         .bounceClick(
-                            onClick = onClickDetailInfo
+                            onClick = onClickDetailInfo,
                         ),
                     painter = painterResource(id = R.drawable.ic_detail_vertical_line),
                     contentDescription = "자세히",
-                    colorFilter = ColorFilter.tint(Gray500)
+                    colorFilter = ColorFilter.tint(Gray500),
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -179,18 +175,18 @@ internal fun NotificationCard(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Image(
                     modifier = Modifier
                         .padding(4.dp)
                         .size(28.dp)
                         .bounceClick(
-                            onClick = onClickAddEmoji
+                            onClick = onClickAddEmoji,
                         ),
                     painter = painterResource(id = R.drawable.ic_add_emoji),
                     contentDescription = "이모지 추가하기",
-                    colorFilter = ColorFilter.tint(Gray600)
+                    colorFilter = ColorFilter.tint(Gray600),
                 )
                 emojiList.fastForEach {
                     Spacer(modifier = Modifier.width(6.dp))
@@ -198,14 +194,14 @@ internal fun NotificationCard(
                         modifier = Modifier
                             .background(
                                 color = Gray100,
-                                shape = RoundedCornerShape(8.dp)
+                                shape = RoundedCornerShape(8.dp),
                             )
                             .border(
                                 width = 1.dp,
                                 color = Gray200,
-                                shape = RoundedCornerShape(8.dp)
+                                shape = RoundedCornerShape(8.dp),
                             ),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
