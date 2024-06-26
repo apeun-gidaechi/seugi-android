@@ -415,70 +415,67 @@ internal fun HomeCard(
     onChangeButtonState: (ButtonState) -> Unit = {},
     content: @Composable () -> Unit,
 ) {
-    Box(
-        modifier = Modifier
-            .bounceClick(
-                onClick = onClickDetail,
-                onChangeButtonState = onChangeButtonState,
-                requireUnconsumed = true
+    Column(
+        modifier = modifier
+            .dropShadow(DropShadowType.EvBlack1)
+            .background(
+                color = White,
+                shape = RoundedCornerShape(12.dp)
             )
     ) {
-        Column(
-            modifier = modifier
-                .dropShadow(DropShadowType.EvBlack1)
-                .background(
-                    color = White,
-                    shape = RoundedCornerShape(12.dp)
+        Spacer(modifier = Modifier.height(12.dp))
+        Row(
+            modifier = Modifier
+                .bounceClick(
+                    onClick = onClickDetail,
+                    onChangeButtonState = onChangeButtonState,
+                    requireUnconsumed = true
                 )
         ) {
-            Spacer(modifier = Modifier.height(12.dp))
-            Row(
-                modifier = Modifier.padding(horizontal = 12.dp)
-            ) {
-                Spacer(modifier = Modifier.width(4.dp))
-                Box(
-                    modifier = Modifier
-                        .padding(vertical = 4.dp)
-                        .size(32.dp)
-                        .background(
-                            color = Gray100,
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .align(Alignment.Center),
-                        painter = image,
-                        contentDescription = "",
-                        colorFilter = colorFilter
+            Spacer(modifier = Modifier.width(16.dp))
+            Box(
+                modifier = Modifier
+                    .padding(vertical = 4.dp)
+                    .size(32.dp)
+                    .background(
+                        color = Gray100,
+                        shape = RoundedCornerShape(8.dp)
                     )
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                    text = text,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = Black
-                )
-                Spacer(modifier = Modifier.weight(1f))
+            ) {
                 Image(
                     modifier = Modifier
                         .size(24.dp)
-                        .align(Alignment.CenterVertically),
-                    painter = painterResource(id = R.drawable.ic_expand_right_line),
-                    contentDescription = "상세보기",
-                    colorFilter = ColorFilter.tint(Gray500)
+                        .align(Alignment.Center),
+                    painter = image,
+                    contentDescription = "",
+                    colorFilter = colorFilter
                 )
             }
-            Spacer(modifier = Modifier.height(12.dp))
-            Box(
-                modifier = Modifier.padding(horizontal = 12.dp)
-            ) {
-                content()
-            }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                modifier = Modifier.align(Alignment.CenterVertically),
+                text = text,
+                style = MaterialTheme.typography.titleMedium,
+                color = Black
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Image(
+                modifier = Modifier
+                    .size(24.dp)
+                    .align(Alignment.CenterVertically),
+                painter = painterResource(id = R.drawable.ic_expand_right_line),
+                contentDescription = "상세보기",
+                colorFilter = ColorFilter.tint(Gray500)
+            )
+            Spacer(modifier = Modifier.width(12.dp))
         }
+        Spacer(modifier = Modifier.height(12.dp))
+        Box(
+            modifier = Modifier.padding(horizontal = 12.dp)
+        ) {
+            content()
+        }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
