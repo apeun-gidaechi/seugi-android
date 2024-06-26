@@ -254,8 +254,8 @@ internal fun HomeCard(
             Spacer(modifier = Modifier.width(4.dp))
             Box(
                 modifier = Modifier
-                    .size(32.dp)
                     .padding(vertical = 4.dp)
+                    .size(32.dp)
                     .background(
                         color = Gray100,
                         shape = RoundedCornerShape(8.dp)
@@ -310,8 +310,8 @@ internal fun HomeCard(
                 Spacer(modifier = Modifier.width(4.dp))
                 Box(
                     modifier = Modifier
-                        .size(32.dp)
                         .padding(vertical = 4.dp)
+                        .size(32.dp)
                         .background(
                             color = Gray100,
                             shape = RoundedCornerShape(8.dp)
