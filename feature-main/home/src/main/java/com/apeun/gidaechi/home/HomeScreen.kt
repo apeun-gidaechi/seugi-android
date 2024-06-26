@@ -44,6 +44,7 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter.State.Empty.painter
 import com.apeun.gidaechi.designsystem.R
+import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.DividerType
 import com.apeun.gidaechi.designsystem.component.SeugiButton
@@ -52,6 +53,7 @@ import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
 import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.Gray100
+import com.apeun.gidaechi.designsystem.theme.Gray500
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary050
 import com.apeun.gidaechi.designsystem.theme.White
@@ -149,5 +151,71 @@ internal fun HomeCard(
             content()
         }
         Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+@Composable
+internal fun HomeCard(
+    modifier: Modifier = Modifier,
+    text: String,
+    onClickDetail: () -> Unit,
+    image: @Composable BoxScope.() -> Unit,
+    content: @Composable () -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .bounceClick(
+                onClick = onClickDetail
+            )
+    ) {
+        Column(
+            modifier = modifier
+                .dropShadow(DropShadowType.EvBlack1)
+                .background(
+                    color = White,
+                    shape = RoundedCornerShape(12.dp)
+                )
+        ) {
+            Spacer(modifier = Modifier.height(12.dp))
+            Row(
+                modifier = Modifier.padding(horizontal = 12.dp)
+            ) {
+                Spacer(modifier = Modifier.width(4.dp))
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .padding(vertical = 4.dp)
+                        .background(
+                            color = Gray100,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                ) {
+                    image()
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                    text = text,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Black
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Image(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .align(Alignment.CenterVertically),
+                    painter = painterResource(id = R.drawable.ic_expand_right_line),
+                    contentDescription = "상세보기",
+                    colorFilter = ColorFilter.tint(Gray500)
+                )
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            Box(
+                modifier = Modifier.padding(horizontal = 12.dp)
+            ) {
+                content()
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+        }
     }
 }
