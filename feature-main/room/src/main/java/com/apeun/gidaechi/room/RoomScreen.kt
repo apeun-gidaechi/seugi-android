@@ -28,7 +28,7 @@ import kotlinx.collections.immutable.toImmutableList
 internal fun RoomScreen(
     viewModel: RoomViewModel = hiltViewModel(),
     navigateToChatDetail: (roomId: String, workspaceId: String) -> Unit,
-    navigateToCreateRoom: () -> Unit,
+    navigateToCreateRoom: (workspaceId: String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -49,7 +49,9 @@ internal fun RoomScreen(
                     SeugiIconButton(
                         resId = R.drawable.ic_add_fill,
                         size = 28.dp,
-                        onClick = navigateToCreateRoom,
+                        onClick = {
+                            navigateToCreateRoom("664bdd0b9dfce726abd30462")
+                        },
                     )
                     Spacer(modifier = Modifier.width(16.dp))
                     SeugiIconButton(

@@ -7,4 +7,6 @@ import kotlinx.coroutines.flow.Flow
 interface GroupChatRepository {
 
     suspend fun getGroupRoomList(workspaceId: String): Flow<Result<List<ChatRoomModel>>>
+
+    suspend fun createChat(workspaceId: String, roomName: String, joinUsers: List<Int>, chatRoomImg: String): Flow<Result<String>>
 }

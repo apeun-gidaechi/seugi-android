@@ -65,7 +65,7 @@ class ChatDetailViewModel @Inject constructor(
                 is Result.Success -> {
                     _state.value = _state.value.copy(
                         userInfo = MessageUserModel(
-                            id = it.data.memberId,
+                            id = it.data.member.id,
                             name = it.data.nick,
                             profile = null,
                         ),

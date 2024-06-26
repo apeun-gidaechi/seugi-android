@@ -1,8 +1,9 @@
-package com.apeun.gidaechi.network.profile.response
+package com.apeun.gidaechi.network.core.response
 
 data class ProfileResponse(
     val status: String,
-    val memberId: Int,
+    val workspaceId: String,
+    val member: UserResponse,
     val nick: String,
     val spot: String,
     val belong: String,

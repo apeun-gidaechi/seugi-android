@@ -144,6 +144,12 @@ fun HomeScreen(navController: NavController) {
                 navController.navigate(NavRoot.ERROR)
             },
         )
+        HomeButton(
+            text = "ROOMIMAGE",
+            onClick = {
+                navController.navigate(NavRoot.ROOMIMAGE)
+            },
+        )
     }
 }
 

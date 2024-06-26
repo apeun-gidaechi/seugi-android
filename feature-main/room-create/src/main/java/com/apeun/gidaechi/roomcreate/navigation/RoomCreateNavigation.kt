@@ -3,18 +3,34 @@ package com.apeun.gidaechi.roomcreate.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.apeun.gidaechi.roomcreate.RoomCreateScreen
 
 const val ROOM_CREATE_ROUTE = "room_create"
 
-fun NavController.navigateToRoomCreate(navOptions: NavOptions? = null) = navigate(ROOM_CREATE_ROUTE, navOptions)
+fun NavController.navigateToRoomCreate(workspaceId: String, navOptions: NavOptions? = null) = navigate(
+    route = "${ROOM_CREATE_ROUTE}/$workspaceId",
+    navOptions = navOptions,
+)
 
-fun NavGraphBuilder.roomCreateScreen(popBackStack: () -> Unit, onNavigationVisibleChange: (Boolean) -> Unit) {
-    composable(ROOM_CREATE_ROUTE) {
+fun NavGraphBuilder.roomCreateScreen(
+    popBackStack: () -> Unit,
+    onNavigationVisibleChange: (Boolean) -> Unit,
+    navigateToChatDetail: (chatId: String, workspaceId: String, isPersonal: Boolean) -> Unit,
+) {
+    composable(
+        route = "${ROOM_CREATE_ROUTE}/{workspaceId}",
+        arguments = listOf(
+            navArgument("workspaceId") { NavType.StringType },
+        ),
+    ) {
         RoomCreateScreen(
             popBackStack = popBackStack,
             onNavigationVisibleChange = onNavigationVisibleChange,
+            workspaceId = it.arguments?.getString("workspaceId") ?: "",
+            navigateToChatDetail = navigateToChatDetail,
         )
     }
 }
