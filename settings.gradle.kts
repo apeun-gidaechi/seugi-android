@@ -1,5 +1,8 @@
 import java.net.URI
 
+include(":feature-main:profile")
+
+
 include(":data:group-chat")
 
 
