@@ -3,6 +3,7 @@ package com.apeun.gidaechi.home
 import android.app.Activity
 import android.graphics.Color.toArgb
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowInsetsController
@@ -15,17 +16,21 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,6 +54,7 @@ import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.DividerType
 import com.apeun.gidaechi.designsystem.component.SeugiButton
 import com.apeun.gidaechi.designsystem.component.SeugiDivider
+import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
 import com.apeun.gidaechi.designsystem.theme.Black
@@ -56,11 +62,18 @@ import com.apeun.gidaechi.designsystem.theme.Gray100
 import com.apeun.gidaechi.designsystem.theme.Gray500
 import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary050
+import com.apeun.gidaechi.designsystem.theme.Primary100
+import com.apeun.gidaechi.designsystem.theme.Primary200
+import com.apeun.gidaechi.designsystem.theme.Primary300
+import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.designsystem.theme.White
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeScreen() {
     val view = LocalView.current
+    val items = (1..7).toList()
+    val selectIndex = 6
 
     LifecycleResumeEffect(Unit) {
         onPauseOrDispose {
@@ -84,10 +97,124 @@ internal fun HomeScreen() {
             .background(Primary050)
             .fillMaxSize(),
     ) {
+        SeugiTopBar(
+            title = {
+                Text(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    text = "홈",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Black
+                )
+            },
+            colors = TopAppBarColors(
+                containerColor = Color.Transparent,
+                scrolledContainerColor = Color.Transparent,
+                navigationIconContentColor = Color.Transparent,
+                titleContentColor = Black,
+                actionIconContentColor = Color.Transparent
+            )
+        )
         Column(
             modifier = Modifier.padding(horizontal = 20.dp)
         ) {
-            
+            Spacer(modifier = Modifier.height(8.dp))
+            HomeCard(
+                text = "내 학교",
+                image = {
+                    Image(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .align(Alignment.Center),
+                        painter = painterResource(id = R.drawable.ic_school),
+                        contentDescription = "",
+                        colorFilter = ColorFilter.tint(Gray600)
+                    )
+                }
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        modifier = Modifier.padding(vertical = (6.5).dp),
+                        text = "대구 소프트웨어 마이스터 고등학교",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Gray600
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    SeugiButton(
+                        onClick = { /*TODO*/ },
+                        type = ButtonType.Gray,
+                        text = "전환"
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            HomeCard(
+                text = "오늘의 시간표",
+                onClickDetail = { /*TODO*/ },
+                image = {
+                    Image(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .align(Alignment.Center),
+                        painter = painterResource(id = R.drawable.ic_book_fill),
+                        contentDescription = "",
+                        colorFilter = ColorFilter.tint(Gray600)
+                    )
+                }
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .fillMaxWidth()
+                            .height(34.dp)
+                            .background(
+                                color = Primary100,
+                                shape = RoundedCornerShape(23.dp)
+                            )
+                    )
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(34.dp)
+                            .align(Alignment.BottomStart)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .weight(selectIndex.toFloat() + 0.9f)
+                                .fillMaxHeight()
+                                .background(
+                                    color = Primary500,
+                                    shape = RoundedCornerShape(23.dp)
+                                )
+                        )
+
+                        val weight = (items.size - selectIndex.toFloat()) - 1f
+                        // index 계산후 weight가 음수를 넘어가지 않은 경우
+                        if (weight > 0) {
+                            Spacer(modifier = Modifier.weight(weight))
+                        }
+                    }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        items.forEachIndexed { index, itme ->
+                            HomeSubjectCard(
+                                modifier = Modifier.weight(1f),
+                                index = index,
+                                selectIndex = selectIndex,
+                                subject = "안드"
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -216,6 +343,50 @@ internal fun HomeCard(
                 content()
             }
             Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
+}
+
+@Composable
+internal fun HomeSubjectCard(
+    modifier: Modifier,
+    index: Int,
+    selectIndex: Int,
+    subject: String,
+) {
+    val isNowSelected = index == selectIndex
+    Column(
+        modifier = modifier
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .align(Alignment.Center),
+                text = (index+1).toString(),
+                style = MaterialTheme.typography.bodyLarge,
+                color = if (isNowSelected) Primary500 else Primary300
+            )
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(34.dp)
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(
+                        vertical = 8.dp,
+                        horizontal = (8.64).dp
+                    )
+                    .align(Alignment.Center),
+                text = subject,
+                style = MaterialTheme.typography.bodyLarge,
+                color = if (isNowSelected) White else if (index > selectIndex) Primary300 else Primary200
+            )
         }
     }
 }
