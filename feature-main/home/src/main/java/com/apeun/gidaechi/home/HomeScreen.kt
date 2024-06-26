@@ -294,7 +294,11 @@ internal fun HomeScreen() {
                                     Image(
                                         modifier = Modifier
                                             .size(94.dp),
-                                        painter = painterResource(id = R.drawable.ic_book_fill),
+                                        painter = painterResource(id = when(index) {
+                                            0 -> R.drawable.ic_apple
+                                            1 -> R.drawable.ic_taco
+                                            else -> R.drawable.ic_chicken
+                                        }),
                                         contentDescription = ""
                                     )
                                     Spacer(modifier = Modifier.height(4.dp))
