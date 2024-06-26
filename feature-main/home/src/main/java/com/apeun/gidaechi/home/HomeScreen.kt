@@ -386,13 +386,14 @@ internal fun HomeScreen() {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(
-                                color = Gray100,
-                                shape = RoundedCornerShape(4.dp)
-                            )
                     ) {
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(
+                                    color = Gray100,
+                                    shape = RoundedCornerShape(4.dp)
+                                ),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Spacer(modifier = Modifier.width(12.dp))
@@ -412,7 +413,12 @@ internal fun HomeScreen() {
                         }
                         Spacer(modifier = Modifier.height(4.dp))
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(
+                                    color = Gray100,
+                                    shape = RoundedCornerShape(4.dp)
+                                ),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Spacer(modifier = Modifier.width(12.dp))
@@ -433,7 +439,25 @@ internal fun HomeScreen() {
                     }
                 }
             }
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            HomeCard(
+                text = "다가오는 일정",
+                onClickDetail = { /*TODO*/ },
+                image = painterResource(id = R.drawable.ic_calendar_line)
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    HomeCalendarCard(date = "7/21", content = "체육대회", dDay = "D-3")
+                    Spacer(modifier = Modifier.height(16.dp))
+                    HomeCalendarCard(date = "7/23", content = "여름 교내 해커톤", dDay = "D-5")
+                    Spacer(modifier = Modifier.height(16.dp))
+                    HomeCalendarCard(date = "7/25", content = "KBS 촬영", dDay = "D-7")
+                }
+            }
         }
+        Spacer(modifier = Modifier.height(32.dp))
     }
 }
 
@@ -622,5 +646,35 @@ internal fun HomeSubjectCard(
                 color = if (isNowSelected) White else if (index > selectIndex) Primary300 else Primary200
             )
         }
+    }
+}
+
+@Composable
+internal fun HomeCalendarCard(
+    modifier: Modifier = Modifier,
+    date: String,
+    content: String,
+    dDay: String
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = date,
+            style = MaterialTheme.typography.bodyLarge,
+            color = Primary500
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(
+            text = content,
+            style = MaterialTheme.typography.bodyMedium,
+            color = Black
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = dDay,
+            style = MaterialTheme.typography.bodyMedium,
+            color = Gray600
+        )
     }
 }
