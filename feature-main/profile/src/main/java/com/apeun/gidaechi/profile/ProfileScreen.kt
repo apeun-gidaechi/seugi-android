@@ -9,31 +9,100 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeGesturesPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.rememberBottomSheetState
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.apeun.gidaechi.designsystem.R.drawable
+import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.AvatarType
+import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.DividerType
 import com.apeun.gidaechi.designsystem.component.SeugiAvatar
 import com.apeun.gidaechi.designsystem.component.SeugiDivider
+import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
+import com.apeun.gidaechi.designsystem.component.textfield.SeugiTextField
 import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.Gray500
 import com.apeun.gidaechi.designsystem.theme.White
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ProfileScreen() {
+    var isShowDialog by remember { mutableStateOf(false) }
+    val modalBottomSheetState = rememberModalBottomSheetState()
+    val coroutineScope = rememberCoroutineScope()
+
+    val dialogDismissRequest: () -> Unit = {
+        coroutineScope.launch {
+            isShowDialog = false
+        }
+    }
+
+    if (isShowDialog) {
+        ModalBottomSheet(
+            onDismissRequest = { dialogDismissRequest() },
+            sheetState = modalBottomSheetState,
+            dragHandle = { BottomSheetDefaults.DragHandle() },
+            containerColor = White,
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(White)
+                    .safeGesturesPadding(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            horizontal = 20.dp
+                        )
+                ) {
+                    Text(
+                        text = "직위 수정",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Black
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    SeugiTextField(value = "qew", onValueChange = {}, onClickDelete = { /*TODO*/ })
+                }
+                Spacer(modifier = Modifier.height(32.dp))
+                SeugiFullWidthButton(
+                    modifier = Modifier.padding(horizontal = 20.dp),
+                    onClick = { dialogDismissRequest() },
+                    type = ButtonType.Primary,
+                    text = "저장"
+                )
+                Spacer(modifier = Modifier.imePadding())
+            }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -81,7 +150,9 @@ internal fun ProfileScreen() {
         ProfileCard(
             title = "상태메세지",
             content = "대소고 어딘가",
-            onClickEdit = {}
+            onClickEdit = {
+                isShowDialog = true
+            }
         )
         Spacer(modifier = Modifier.height(8.dp))
         SeugiDivider(
@@ -167,6 +238,9 @@ internal fun ProfileCard(
         }
         Box(
             modifier = Modifier
+                .bounceClick(
+                    onClick = onClickEdit
+                )
                 .fillMaxWidth()
                 .height(56.dp),
         ) {
