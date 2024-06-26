@@ -8,7 +8,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.apeun.gidaechi.designsystem.component.RoomImageType
 import com.apeun.gidaechi.designsystem.component.SeugiRoomImage
 
-@Preview
 @Composable
 fun RoomImage() {
     val text = "엄준식"
