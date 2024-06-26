@@ -73,7 +73,7 @@ import com.apeun.gidaechi.designsystem.theme.White
 internal fun HomeScreen() {
     val view = LocalView.current
     val items = (1..7).toList()
-    val selectIndex = 6
+    val selectIndex = 4
 
     LifecycleResumeEffect(Unit) {
         onPauseOrDispose {
@@ -120,16 +120,8 @@ internal fun HomeScreen() {
             Spacer(modifier = Modifier.height(8.dp))
             HomeCard(
                 text = "내 학교",
-                image = {
-                    Image(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .align(Alignment.Center),
-                        painter = painterResource(id = R.drawable.ic_school),
-                        contentDescription = "",
-                        colorFilter = ColorFilter.tint(Gray600)
-                    )
-                }
+                image = painterResource(id = R.drawable.ic_school),
+                colorFilter = ColorFilter.tint(Gray600)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth()
@@ -152,16 +144,8 @@ internal fun HomeScreen() {
             HomeCard(
                 text = "오늘의 시간표",
                 onClickDetail = { /*TODO*/ },
-                image = {
-                    Image(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .align(Alignment.Center),
-                        painter = painterResource(id = R.drawable.ic_book_fill),
-                        contentDescription = "",
-                        colorFilter = ColorFilter.tint(Gray600)
-                    )
-                }
+                image = painterResource(id = R.drawable.ic_book_fill),
+                colorFilter = ColorFilter.tint(Gray600)
             ) {
                 Box(
                     modifier = Modifier.fillMaxWidth()
@@ -236,7 +220,8 @@ private fun changeNavigationColor(window: Window, backgroundColor: Color, isDark
 internal fun HomeCard(
     modifier: Modifier = Modifier,
     text: String,
-    image: @Composable BoxScope.() -> Unit,
+    image: Painter,
+    colorFilter: ColorFilter? = null,
     content: @Composable () -> Unit,
 ) {
     Column(
@@ -261,7 +246,14 @@ internal fun HomeCard(
                         shape = RoundedCornerShape(8.dp)
                     )
             ) {
-                image()
+                Image(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .align(Alignment.Center),
+                    painter = image,
+                    contentDescription = "",
+                    colorFilter = colorFilter
+                )
             }
             Spacer(modifier = Modifier.width(8.dp))
             Text(
@@ -286,7 +278,8 @@ internal fun HomeCard(
     modifier: Modifier = Modifier,
     text: String,
     onClickDetail: () -> Unit,
-    image: @Composable BoxScope.() -> Unit,
+    image: Painter,
+    colorFilter: ColorFilter? = null,
     content: @Composable () -> Unit,
 ) {
     Box(
@@ -317,7 +310,14 @@ internal fun HomeCard(
                             shape = RoundedCornerShape(8.dp)
                         )
                 ) {
-                    image()
+                    Image(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .align(Alignment.Center),
+                        painter = image,
+                        contentDescription = "",
+                        colorFilter = colorFilter
+                    )
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
