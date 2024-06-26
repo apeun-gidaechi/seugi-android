@@ -45,6 +45,8 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastForEach
+import androidx.compose.ui.util.fastForEachIndexed
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter.State.Empty.painter
@@ -188,7 +190,7 @@ internal fun HomeScreen() {
                     Row(
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        items.forEachIndexed { index, itme ->
+                        items.fastForEachIndexed { index, itme ->
                             HomeSubjectCard(
                                 modifier = Modifier.weight(1f),
                                 index = index,
