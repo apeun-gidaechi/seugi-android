@@ -3,24 +3,16 @@ package com.apeun.gidaechi.home
 import android.app.Activity
 import android.graphics.Color.toArgb
 import android.os.Build
-import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowInsetsController
-import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.detectTransformGestures
-import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -32,7 +24,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -52,38 +43,28 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastForEachIndexed
 import androidx.lifecycle.compose.LifecycleResumeEffect
-import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter.State.Empty.painter
 import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.animation.ButtonState
 import com.apeun.gidaechi.designsystem.animation.NoInteractionSource
 import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.ButtonType
-import com.apeun.gidaechi.designsystem.component.DividerType
 import com.apeun.gidaechi.designsystem.component.GradientPrimary
 import com.apeun.gidaechi.designsystem.component.SeugiButton
-import com.apeun.gidaechi.designsystem.component.SeugiDivider
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.brushDraw
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
-import com.apeun.gidaechi.designsystem.component.textfield.SeugiTextField
 import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.Gray100
 import com.apeun.gidaechi.designsystem.theme.Gray300
@@ -101,11 +82,11 @@ import com.apeun.gidaechi.designsystem.theme.White
 @Composable
 internal fun HomeScreen() {
     val view = LocalView.current
-    val pagerState = rememberPagerState() { 3 }
+    val pagerState = rememberPagerState { 3 }
     val items = (1..7).toList()
     val selectIndex = 4
     val indicatorOffset by remember {
-        derivedStateOf { (pagerState.currentPage*10).dp }
+        derivedStateOf { (pagerState.currentPage * 10).dp }
     }
 
     LifecycleResumeEffect(Unit) {
@@ -137,7 +118,7 @@ internal fun HomeScreen() {
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     text = "홈",
                     style = MaterialTheme.typography.titleLarge,
-                    color = Black
+                    color = Black,
                 )
             },
             colors = TopAppBarColors(
@@ -145,32 +126,32 @@ internal fun HomeScreen() {
                 scrolledContainerColor = Color.Transparent,
                 navigationIconContentColor = Color.Transparent,
                 titleContentColor = Black,
-                actionIconContentColor = Color.Transparent
-            )
+                actionIconContentColor = Color.Transparent,
+            ),
         )
         Column(
-            modifier = Modifier.padding(horizontal = 20.dp)
+            modifier = Modifier.padding(horizontal = 20.dp),
         ) {
             Spacer(modifier = Modifier.height(8.dp))
             HomeCard(
                 text = "내 학교",
                 image = painterResource(id = R.drawable.ic_school),
-                colorFilter = ColorFilter.tint(Gray600)
+                colorFilter = ColorFilter.tint(Gray600),
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     Text(
                         modifier = Modifier.padding(vertical = (6.5).dp),
                         text = "대구 소프트웨어 마이스터 고등학교",
                         style = MaterialTheme.typography.titleMedium,
-                        color = Gray600
+                        color = Gray600,
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     SeugiButton(
                         onClick = { /*TODO*/ },
                         type = ButtonType.Gray,
-                        text = "전환"
+                        text = "전환",
                     )
                 }
             }
@@ -179,12 +160,11 @@ internal fun HomeScreen() {
                 text = "오늘의 시간표",
                 onClickDetail = { /*TODO*/ },
                 image = painterResource(id = R.drawable.ic_book_fill),
-                colorFilter = ColorFilter.tint(Gray600)
+                colorFilter = ColorFilter.tint(Gray600),
             ) {
                 Box(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
-
                     Box(
                         modifier = Modifier
                             .align(Alignment.BottomStart)
@@ -192,15 +172,15 @@ internal fun HomeScreen() {
                             .height(34.dp)
                             .background(
                                 color = Primary100,
-                                shape = RoundedCornerShape(23.dp)
-                            )
+                                shape = RoundedCornerShape(23.dp),
+                            ),
                     )
 
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(34.dp)
-                            .align(Alignment.BottomStart)
+                            .align(Alignment.BottomStart),
                     ) {
                         Box(
                             modifier = Modifier
@@ -208,8 +188,8 @@ internal fun HomeScreen() {
                                 .fillMaxHeight()
                                 .background(
                                     color = Primary500,
-                                    shape = RoundedCornerShape(23.dp)
-                                )
+                                    shape = RoundedCornerShape(23.dp),
+                                ),
                         )
 
                         val weight = (items.size - selectIndex.toFloat()) - 1f
@@ -220,14 +200,14 @@ internal fun HomeScreen() {
                     }
 
                     Row(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         items.fastForEachIndexed { index, itme ->
                             HomeSubjectCard(
                                 modifier = Modifier.weight(1f),
                                 index = index,
                                 selectIndex = selectIndex,
-                                subject = "안드"
+                                subject = "안드",
                             )
                         }
                     }
@@ -242,7 +222,7 @@ internal fun HomeScreen() {
                 onClickDetail = {},
                 onChangeButtonState = {
                     nowButtonState = it
-                }
+                },
             ) {
                 Column {
                     HorizontalPager(
@@ -251,55 +231,57 @@ internal fun HomeScreen() {
                             .clickable(
                                 interactionSource = NoInteractionSource(),
                                 indication = null,
-                                onClick = {}
+                                onClick = {},
                             )
                             .pointerInput(Unit) { },
-                        state = pagerState
+                        state = pagerState,
                     ) { index ->
                         Row {
                             Column(
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f),
                             ) {
                                 Text(
                                     modifier = Modifier.padding(vertical = (6.5).dp),
                                     text = "오리훈제볶음밥\n간장두조림\n배추김치\n초코첵스시리얼+우유\n오렌지",
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = Gray700
+                                    color = Gray700,
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Box(
                                     modifier = Modifier
                                         .background(
                                             color = Primary500,
-                                            shape = RoundedCornerShape(34.dp)
-                                        )
+                                            shape = RoundedCornerShape(34.dp),
+                                        ),
                                 ) {
                                     Text(
                                         modifier = Modifier.padding(
                                             vertical = 4.dp,
-                                            horizontal = 8.dp
+                                            horizontal = 8.dp,
                                         ),
                                         text = "872Kcal",
                                         style = MaterialTheme.typography.labelLarge,
-                                        color = White
+                                        color = White,
                                     )
                                 }
                             }
                             Box(
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f),
                             ) {
                                 Column(
-                                    modifier = Modifier.align(Alignment.Center)
+                                    modifier = Modifier.align(Alignment.Center),
                                 ) {
                                     Image(
                                         modifier = Modifier
                                             .size(94.dp),
-                                        painter = painterResource(id = when(index) {
-                                            0 -> R.drawable.ic_apple
-                                            1 -> R.drawable.ic_taco
-                                            else -> R.drawable.ic_chicken
-                                        }),
-                                        contentDescription = ""
+                                        painter = painterResource(
+                                            id = when (index) {
+                                                0 -> R.drawable.ic_apple
+                                                1 -> R.drawable.ic_taco
+                                                else -> R.drawable.ic_chicken
+                                            },
+                                        ),
+                                        contentDescription = "",
                                     )
                                     Spacer(modifier = Modifier.height(4.dp))
                                     Text(
@@ -310,7 +292,7 @@ internal fun HomeScreen() {
                                             else -> "저녁"
                                         },
                                         style = MaterialTheme.typography.labelLarge,
-                                        color = Gray500
+                                        color = Gray500,
                                     )
                                 }
                             }
@@ -321,15 +303,15 @@ internal fun HomeScreen() {
                         modifier = Modifier
                             .width(36.dp)
                             .height(6.dp)
-                            .align(Alignment.CenterHorizontally)
+                            .align(Alignment.CenterHorizontally),
                     ) {
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .background(
                                     color = Gray300,
-                                    shape = RoundedCornerShape(4.dp)
-                                )
+                                    shape = RoundedCornerShape(4.dp),
+                                ),
                         )
                         Box(
                             modifier = Modifier
@@ -339,20 +321,20 @@ internal fun HomeScreen() {
                                 .fillMaxHeight()
                                 .background(
                                     color = Primary500,
-                                    shape = RoundedCornerShape(4.dp)
-                                )
+                                    shape = RoundedCornerShape(4.dp),
+                                ),
                         )
                     }
                 }
             }
-            
+
             Spacer(modifier = Modifier.height(8.dp))
             HomeCard(
                 text = "캣스기",
-                image = painterResource(id = R.drawable.ic_appicon_round)
+                image = painterResource(id = R.drawable.ic_appicon_round),
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     Row(
                         modifier = Modifier
@@ -360,16 +342,16 @@ internal fun HomeScreen() {
                             .border(
                                 width = (1.5).dp,
                                 brush = GradientPrimary,
-                                shape = CircleShape
+                                shape = CircleShape,
                             ),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             modifier = Modifier.padding(vertical = (15.5).dp),
                             text = "2학년 4반에 아무나 한명 뽑아줘...",
                             style = MaterialTheme.typography.titleMedium,
-                            color = Gray500
+                            color = Gray500,
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         Image(
@@ -384,34 +366,34 @@ internal fun HomeScreen() {
                     Text(
                         text = "지난주",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Gray600
+                        color = Gray600,
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Column(
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
                     ) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(
                                     color = Gray100,
-                                    shape = RoundedCornerShape(4.dp)
+                                    shape = RoundedCornerShape(4.dp),
                                 ),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Spacer(modifier = Modifier.width(12.dp))
                             Text(
                                 modifier = Modifier.padding(vertical = (12).dp),
                                 text = "급식에 복어가 나오는 날이 언제..",
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = Black
+                                color = Black,
                             )
                             Spacer(modifier = Modifier.weight(1f))
                             Text(
                                 text = "6월 21일",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Gray600
+                                color = Gray600,
                             )
                             Spacer(modifier = Modifier.width(12.dp))
                         }
@@ -421,37 +403,37 @@ internal fun HomeScreen() {
                                 .fillMaxWidth()
                                 .background(
                                     color = Gray100,
-                                    shape = RoundedCornerShape(4.dp)
+                                    shape = RoundedCornerShape(4.dp),
                                 ),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Spacer(modifier = Modifier.width(12.dp))
                             Text(
                                 modifier = Modifier.padding(vertical = (12).dp),
                                 text = "우리 학교 대회 담당하는 분이 누구...",
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = Black
+                                color = Black,
                             )
                             Spacer(modifier = Modifier.weight(1f))
                             Text(
                                 text = "6월 21일",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Gray600
+                                color = Gray600,
                             )
                             Spacer(modifier = Modifier.width(12.dp))
                         }
                     }
                 }
             }
-            
+
             Spacer(modifier = Modifier.height(8.dp))
             HomeCard(
                 text = "다가오는 일정",
                 onClickDetail = { /*TODO*/ },
-                image = painterResource(id = R.drawable.ic_calendar_line)
+                image = painterResource(id = R.drawable.ic_calendar_line),
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     HomeCalendarCard(date = "7/21", content = "체육대회", dDay = "D-3")
                     Spacer(modifier = Modifier.height(16.dp))
@@ -479,24 +461,18 @@ private fun changeNavigationColor(window: Window, backgroundColor: Color, isDark
 }
 
 @Composable
-internal fun HomeCard(
-    modifier: Modifier = Modifier,
-    text: String,
-    image: Painter,
-    colorFilter: ColorFilter? = null,
-    content: @Composable () -> Unit,
-) {
+internal fun HomeCard(modifier: Modifier = Modifier, text: String, image: Painter, colorFilter: ColorFilter? = null, content: @Composable () -> Unit) {
     Column(
         modifier = modifier
             .dropShadow(DropShadowType.EvBlack1)
             .background(
                 color = White,
-                shape = RoundedCornerShape(12.dp)
-            )
+                shape = RoundedCornerShape(12.dp),
+            ),
     ) {
         Spacer(modifier = Modifier.height(12.dp))
         Row(
-            modifier = Modifier.padding(horizontal = 12.dp)
+            modifier = Modifier.padding(horizontal = 12.dp),
         ) {
             Spacer(modifier = Modifier.width(4.dp))
             Box(
@@ -505,8 +481,8 @@ internal fun HomeCard(
                     .size(32.dp)
                     .background(
                         color = Gray100,
-                        shape = RoundedCornerShape(8.dp)
-                    )
+                        shape = RoundedCornerShape(8.dp),
+                    ),
             ) {
                 Image(
                     modifier = Modifier
@@ -514,7 +490,7 @@ internal fun HomeCard(
                         .align(Alignment.Center),
                     painter = image,
                     contentDescription = "",
-                    colorFilter = colorFilter
+                    colorFilter = colorFilter,
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
@@ -522,12 +498,12 @@ internal fun HomeCard(
                 modifier = Modifier.align(Alignment.CenterVertically),
                 text = text,
                 style = MaterialTheme.typography.titleMedium,
-                color = Black
+                color = Black,
             )
         }
         Spacer(modifier = Modifier.height(12.dp))
         Box(
-            modifier = Modifier.padding(horizontal = 12.dp)
+            modifier = Modifier.padding(horizontal = 12.dp),
         ) {
             content()
         }
@@ -550,8 +526,8 @@ internal fun HomeCard(
             .dropShadow(DropShadowType.EvBlack1)
             .background(
                 color = White,
-                shape = RoundedCornerShape(12.dp)
-            )
+                shape = RoundedCornerShape(12.dp),
+            ),
     ) {
         Spacer(modifier = Modifier.height(12.dp))
         Row(
@@ -559,8 +535,8 @@ internal fun HomeCard(
                 .bounceClick(
                     onClick = onClickDetail,
                     onChangeButtonState = onChangeButtonState,
-                    requireUnconsumed = true
-                )
+                    requireUnconsumed = true,
+                ),
         ) {
             Spacer(modifier = Modifier.width(16.dp))
             Box(
@@ -569,8 +545,8 @@ internal fun HomeCard(
                     .size(32.dp)
                     .background(
                         color = Gray100,
-                        shape = RoundedCornerShape(8.dp)
-                    )
+                        shape = RoundedCornerShape(8.dp),
+                    ),
             ) {
                 Image(
                     modifier = Modifier
@@ -578,7 +554,7 @@ internal fun HomeCard(
                         .align(Alignment.Center),
                     painter = image,
                     contentDescription = "",
-                    colorFilter = colorFilter
+                    colorFilter = colorFilter,
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
@@ -586,7 +562,7 @@ internal fun HomeCard(
                 modifier = Modifier.align(Alignment.CenterVertically),
                 text = text,
                 style = MaterialTheme.typography.titleMedium,
-                color = Black
+                color = Black,
             )
             Spacer(modifier = Modifier.weight(1f))
             Image(
@@ -595,13 +571,13 @@ internal fun HomeCard(
                     .align(Alignment.CenterVertically),
                 painter = painterResource(id = R.drawable.ic_expand_right_line),
                 contentDescription = "상세보기",
-                colorFilter = ColorFilter.tint(Gray500)
+                colorFilter = ColorFilter.tint(Gray500),
             )
             Spacer(modifier = Modifier.width(12.dp))
         }
         Spacer(modifier = Modifier.height(12.dp))
         Box(
-            modifier = Modifier.padding(horizontal = 12.dp)
+            modifier = Modifier.padding(horizontal = 12.dp),
         ) {
             content()
         }
@@ -610,75 +586,65 @@ internal fun HomeCard(
 }
 
 @Composable
-internal fun HomeSubjectCard(
-    modifier: Modifier,
-    index: Int,
-    selectIndex: Int,
-    subject: String,
-) {
+internal fun HomeSubjectCard(modifier: Modifier, index: Int, selectIndex: Int, subject: String) {
     val isNowSelected = index == selectIndex
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Text(
                 modifier = Modifier
                     .padding(vertical = 8.dp)
                     .align(Alignment.Center),
-                text = (index+1).toString(),
+                text = (index + 1).toString(),
                 style = MaterialTheme.typography.bodyLarge,
-                color = if (isNowSelected) Primary500 else Primary300
+                color = if (isNowSelected) Primary500 else Primary300,
             )
         }
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(34.dp)
+                .height(34.dp),
         ) {
             Text(
                 modifier = Modifier
                     .padding(
                         vertical = 8.dp,
-                        horizontal = (8.64).dp
+                        horizontal = (8.64).dp,
                     )
                     .align(Alignment.Center),
                 text = subject,
                 style = MaterialTheme.typography.bodyLarge,
-                color = if (isNowSelected) White else if (index > selectIndex) Primary300 else Primary200
+                color = if (isNowSelected) White else if (index > selectIndex) Primary300 else Primary200,
             )
         }
     }
 }
 
 @Composable
-internal fun HomeCalendarCard(
-    modifier: Modifier = Modifier,
-    date: String,
-    content: String,
-    dDay: String
-) {
+internal fun HomeCalendarCard(modifier: Modifier = Modifier, date: String, content: String, dDay: String) {
     Row(
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = date,
             style = MaterialTheme.typography.bodyLarge,
-            color = Primary500
+            color = Primary500,
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(
             text = content,
             style = MaterialTheme.typography.bodyMedium,
-            color = Black
+            color = Black,
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = dDay,
             style = MaterialTheme.typography.bodyMedium,
-            color = Gray600
+            color = Gray600,
         )
     }
 }

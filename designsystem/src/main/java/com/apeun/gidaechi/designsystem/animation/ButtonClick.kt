@@ -16,11 +16,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 
 enum class ButtonState { Idle, Hold }
 
-fun Modifier.bounceClick(
-    onClick: () -> Unit,
-    requireUnconsumed: Boolean = false,
-    onChangeButtonState: (ButtonState) -> Unit = {}
-) = composed {
+fun Modifier.bounceClick(onClick: () -> Unit, requireUnconsumed: Boolean = false, onChangeButtonState: (ButtonState) -> Unit = {}) = composed {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val scale by animateFloatAsState(
         targetValue = if (buttonState == ButtonState.Idle) 1f else 0.95f,
