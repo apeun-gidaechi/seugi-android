@@ -96,7 +96,7 @@ internal fun ProfileScreen(
                         )
                 ) {
                     Text(
-                        text = "$editTextTarget 수정",
+                        text = "${getTargetTextToString(editTextTarget)} 수정",
                         style = MaterialTheme.typography.titleMedium,
                         color = Black
                     )
@@ -113,7 +113,15 @@ internal fun ProfileScreen(
                 Spacer(modifier = Modifier.height(32.dp))
                 SeugiFullWidthButton(
                     modifier = Modifier.padding(horizontal = 20.dp),
-                    onClick = { dialogDismissRequest() },
+                    onClick = {
+                        viewModel.updateState(
+                            target = editTextTarget,
+                            text = editText
+                        )
+                        editText = ""
+                        editTextTarget = ""
+                        dialogDismissRequest()
+                    },
                     type = ButtonType.Primary,
                     text = "저장"
                 )
@@ -170,6 +178,7 @@ internal fun ProfileScreen(
             title = "상태메세지",
             content = state.profileInfo.status,
             onClickEdit = {
+                editTextTarget = "status"
                 isShowDialog = true
             }
         )
@@ -183,7 +192,10 @@ internal fun ProfileScreen(
         ProfileCard(
             title = "직위",
             content = state.profileInfo.spot,
-            onClickEdit = {}
+            onClickEdit = {
+                editTextTarget = "spot"
+                isShowDialog = true
+            }
         )
         Spacer(modifier = Modifier.height(8.dp))
         SeugiDivider(
@@ -195,7 +207,10 @@ internal fun ProfileScreen(
         ProfileCard(
             title = "소속",
             content = state.profileInfo.belong,
-            onClickEdit = {}
+            onClickEdit = {
+                editTextTarget = "belong"
+                isShowDialog = true
+            }
         )
         Spacer(modifier = Modifier.height(8.dp))
         SeugiDivider(
@@ -207,7 +222,10 @@ internal fun ProfileScreen(
         ProfileCard(
             title = "휴대전화번호",
             content = state.profileInfo.phone,
-            onClickEdit = {}
+            onClickEdit = {
+                editTextTarget = "phone"
+                isShowDialog = true
+            }
         )
         Spacer(modifier = Modifier.height(8.dp))
         SeugiDivider(
@@ -219,7 +237,10 @@ internal fun ProfileScreen(
         ProfileCard(
             title = "유선전화번호",
             content = state.profileInfo.wire,
-            onClickEdit = {}
+            onClickEdit = {
+                editTextTarget = "wire"
+                isShowDialog = true
+            }
         )
         Spacer(modifier = Modifier.height(8.dp))
         SeugiDivider(
@@ -274,3 +295,13 @@ internal fun ProfileCard(
         }
     }
 }
+
+private fun getTargetTextToString(text: String) =
+    when(text) {
+        "status" -> "상태메세지"
+        "spot" -> "직위"
+        "belong" -> "소속"
+        "phone" -> "휴대전화번호"
+        "wire" -> "유선전화번호"
+        else -> ""
+    }

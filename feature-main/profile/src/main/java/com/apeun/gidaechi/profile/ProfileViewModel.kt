@@ -39,4 +39,25 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
+
+    fun updateState(target: String, text: String) {
+        val info = _state.value.profileInfo
+        with(info) {
+            _state.update {
+                it.copy(
+                    profileInfo = info.copy(
+                        status = if (target == "status") text else status,
+                        member = member,
+                        workspaceId = workspaceId,
+                        nick = if (target == "nick") text else nick,
+                        spot = if (target == "spot") text else spot,
+                        belong = if (target == "belong") text else belong,
+                        phone = if (target == "phone") text else phone,
+                        wire = if (target == "wire") text else wire,
+                        location = location
+                    )
+                )
+            }
+        }
+    }
 }
