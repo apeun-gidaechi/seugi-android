@@ -3,6 +3,7 @@ package com.apeun.gidaechi.designsystem.component
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -69,6 +70,7 @@ fun SeugiRoundedCircleImage(modifier: Modifier = Modifier, size: Size, image: St
         modifier = modifier
             .bounceClick(onClick)
             .size(size.size)
+            .border(width = 2.dp, shape = RoundedCornerShape(size.radius), color = Gray400)
             .clip(shape = RoundedCornerShape(size.radius)),
         model = image,
         contentDescription = "",
