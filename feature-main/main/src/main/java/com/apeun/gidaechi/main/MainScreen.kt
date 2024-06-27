@@ -57,8 +57,8 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                             is BottomNavigationItemType.Home -> HOME_ROUTE
                             is BottomNavigationItemType.Chat -> CHAT_ROUTE
                             is BottomNavigationItemType.Group -> ROOM_ROUTE
-                            is BottomNavigationItemType.Notification -> "route"
-                            is BottomNavigationItemType.Profile -> "route"
+                            is BottomNavigationItemType.Notification -> NOTIFICATION_ROUTE
+                            is BottomNavigationItemType.Profile -> PROFILE_ROUTE
                             else -> "route"
                         },
                     ) {
