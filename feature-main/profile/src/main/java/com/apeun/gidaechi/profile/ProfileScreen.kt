@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGesturesPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +22,7 @@ import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,6 +34,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apeun.gidaechi.designsystem.R.drawable
 import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.AvatarType
@@ -51,8 +53,14 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ProfileScreen() {
+internal fun ProfileScreen(
+    viewModel: ProfileViewModel = hiltViewModel(),
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     var isShowDialog by remember { mutableStateOf(false) }
+    var editTextTarget by remember { mutableStateOf("") }
+    var editText by remember { mutableStateOf("") }
     val modalBottomSheetState = rememberModalBottomSheetState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -60,6 +68,10 @@ internal fun ProfileScreen() {
         coroutineScope.launch {
             isShowDialog = false
         }
+    }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.load()
     }
 
     if (isShowDialog) {
@@ -84,12 +96,19 @@ internal fun ProfileScreen() {
                         )
                 ) {
                     Text(
-                        text = "직위 수정",
+                        text = "$editTextTarget 수정",
                         style = MaterialTheme.typography.titleMedium,
                         color = Black
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    SeugiTextField(value = "qew", onValueChange = {}, onClickDelete = { /*TODO*/ })
+
+                    SeugiTextField(
+                        value = editText,
+                        onValueChange = {
+                            editText = it
+                        },
+                        onClickDelete = { /*TODO*/ }
+                    )
                 }
                 Spacer(modifier = Modifier.height(32.dp))
                 SeugiFullWidthButton(
@@ -125,7 +144,7 @@ internal fun ProfileScreen() {
             SeugiAvatar(type = AvatarType.Medium)
             Spacer(modifier = Modifier.width(10.dp))
             Text(
-                text = "노영재",
+                text = state.profileInfo.member.name,
                 style = MaterialTheme.typography.titleMedium,
                 color = Black
             )
@@ -149,7 +168,7 @@ internal fun ProfileScreen() {
         Spacer(modifier = Modifier.height(8.dp))
         ProfileCard(
             title = "상태메세지",
-            content = "대소고 어딘가",
+            content = state.profileInfo.status,
             onClickEdit = {
                 isShowDialog = true
             }
@@ -163,7 +182,7 @@ internal fun ProfileScreen() {
         Spacer(modifier = Modifier.height(8.dp))
         ProfileCard(
             title = "직위",
-            content = "제갈 여친",
+            content = state.profileInfo.spot,
             onClickEdit = {}
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -175,7 +194,7 @@ internal fun ProfileScreen() {
         Spacer(modifier = Modifier.height(8.dp))
         ProfileCard(
             title = "소속",
-            content = "대소고 어딘가",
+            content = state.profileInfo.belong,
             onClickEdit = {}
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -187,7 +206,7 @@ internal fun ProfileScreen() {
         Spacer(modifier = Modifier.height(8.dp))
         ProfileCard(
             title = "휴대전화번호",
-            content = "010-1234-5678",
+            content = state.profileInfo.phone,
             onClickEdit = {}
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -199,7 +218,7 @@ internal fun ProfileScreen() {
         Spacer(modifier = Modifier.height(8.dp))
         ProfileCard(
             title = "유선전화번호",
-            content = "02-1234-5678",
+            content = state.profileInfo.wire,
             onClickEdit = {}
         )
         Spacer(modifier = Modifier.height(8.dp))
