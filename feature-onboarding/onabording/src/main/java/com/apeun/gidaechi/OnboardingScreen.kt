@@ -47,7 +47,6 @@ internal fun OnboardingScreen(navHostController: NavHostController = rememberNav
             onboardingToMain = onboardingToMain,
             navigateToOAuthSignUp = { navHostController.navigateToEmailSignUp() },
             popBackStack = { navHostController.navigateToStart() },
-            signUpToSchoolJoin = { navHostController.navigateToSchoolCode() },
         )
         emailSignUpScreen(
             navigateToEmailVerification = { name, email, password ->
