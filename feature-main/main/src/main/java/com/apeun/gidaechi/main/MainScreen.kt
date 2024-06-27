@@ -26,6 +26,8 @@ import com.apeun.gidaechi.designsystem.component.BottomNavigationItemType
 import com.apeun.gidaechi.designsystem.component.SeugiBottomNavigation
 import com.apeun.gidaechi.home.navigation.HOME_ROUTE
 import com.apeun.gidaechi.home.navigation.homeScreen
+import com.apeun.gidaechi.notification.navigation.NOTIFICATION_ROUTE
+import com.apeun.gidaechi.notification.navigation.notificationScreen
 import com.apeun.gidaechi.room.navigation.ROOM_ROUTE
 import com.apeun.gidaechi.room.navigation.roomScreen
 import com.apeun.gidaechi.roomcreate.navigation.navigateToRoomCreate
@@ -53,7 +55,7 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                             is BottomNavigationItemType.Home -> HOME_ROUTE
                             is BottomNavigationItemType.Chat -> CHAT_ROUTE
                             is BottomNavigationItemType.Group -> ROOM_ROUTE
-                            is BottomNavigationItemType.Notification -> "route"
+                            is BottomNavigationItemType.Notification -> NOTIFICATION_ROUTE
                             is BottomNavigationItemType.Profile -> "route"
                             else -> "route"
                         },
@@ -130,6 +132,8 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                     )
                 },
             )
+
+            notificationScreen()
         }
     }
 }
