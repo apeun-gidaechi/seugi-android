@@ -14,6 +14,7 @@ import com.apeun.gidaechi.designsystem.theme.SeugiTheme
 import com.apeun.gidaechi.main.navigation.MAIN_ROUTE
 import com.apeun.gidaechi.main.navigation.mainScreen
 import com.apeun.gidaechi.main.navigation.navigateToMain
+import com.apeun.gidaechi.navigation.ONBOARDING_ROUTE
 import com.apeun.gidaechi.navigation.onboardingScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,7 +32,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = navHostController,
-                        startDestination = MAIN_ROUTE,
+                        startDestination = ONBOARDING_ROUTE,
                     ) {
                         mainScreen()
                         onboardingScreen(

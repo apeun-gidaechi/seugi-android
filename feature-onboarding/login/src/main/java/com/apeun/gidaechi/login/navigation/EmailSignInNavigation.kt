@@ -14,14 +14,12 @@ fun NavGraphBuilder.emailSignInScreen(
     navigateToOAuthSignUp: () -> Unit,
     popBackStack: () -> Unit,
     onboardingToMain: () -> Unit,
-    signUpToSchoolJoin: () -> Unit,
 ) {
     composable(route = EMAIL_SIGN_IN) {
         EmailSignInScreen(
             navigateToEmailSignUp = navigateToOAuthSignUp,
             popBackStack = popBackStack,
             onboardingToMain = onboardingToMain,
-            signUpToSchoolJoin = signUpToSchoolJoin,
         )
     }
 }
