@@ -15,4 +15,6 @@ dependencies {
     implementation(projects.featureMain.room)
     implementation(projects.featureMain.roomCreate)
     implementation(projects.featureMain.profile)
+    implementation(projects.featureMain.notification)
+
 }

@@ -3,6 +3,9 @@ import java.net.URI
 include(":feature-main:profile")
 
 
+include(":feature-main:notification")
+
+
 include(":data:group-chat")
 
 
