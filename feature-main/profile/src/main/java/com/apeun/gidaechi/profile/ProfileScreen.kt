@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -61,6 +62,7 @@ internal fun ProfileScreen(
     var isShowDialog by remember { mutableStateOf(false) }
     var editTextTarget by remember { mutableStateOf("") }
     var editText by remember { mutableStateOf("") }
+    val editTextString by remember { derivedStateOf { getTargetTextToString(editTextTarget) } }
     val modalBottomSheetState = rememberModalBottomSheetState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -96,7 +98,7 @@ internal fun ProfileScreen(
                         )
                 ) {
                     Text(
-                        text = "${getTargetTextToString(editTextTarget)} 수정",
+                        text = "${editTextString.first} 수정",
                         style = MaterialTheme.typography.titleMedium,
                         color = Black
                     )
@@ -107,7 +109,10 @@ internal fun ProfileScreen(
                         onValueChange = {
                             editText = it
                         },
-                        onClickDelete = { /*TODO*/ }
+                        placeholder = "${editTextString.first}${editTextString.second} 입력해주세요",
+                        onClickDelete = {
+                            editText = ""
+                        }
                     )
                 }
                 Spacer(modifier = Modifier.height(32.dp))
@@ -296,12 +301,12 @@ internal fun ProfileCard(
     }
 }
 
-private fun getTargetTextToString(text: String) =
+private fun getTargetTextToString(text: String): Pair<String, String> =
     when(text) {
-        "status" -> "상태메세지"
-        "spot" -> "직위"
-        "belong" -> "소속"
-        "phone" -> "휴대전화번호"
-        "wire" -> "유선전화번호"
-        else -> ""
+        "status" -> Pair("상태메세지", "를")
+        "spot" -> Pair("직위", "를")
+        "belong" -> Pair("소속", "을")
+        "phone" -> Pair("휴대전화번호", "를")
+        "wire" -> Pair("유선전화번호", "를")
+        else -> Pair("", "")
     }
