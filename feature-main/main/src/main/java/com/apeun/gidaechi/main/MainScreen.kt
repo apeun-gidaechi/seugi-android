@@ -1,5 +1,6 @@
 package com.apeun.gidaechi.main
 
+import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -8,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,6 +20,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.apeun.gidaechi.chat.navigation.CHAT_ROUTE
 import com.apeun.gidaechi.chat.navigation.chatScreen
@@ -39,11 +43,34 @@ private const val NAVIGATION_ANIM = 400
 
 @Composable
 internal fun MainScreen(navHostController: NavHostController = rememberNavController()) {
-    var selectItemState: BottomNavigationItemType by remember { mutableStateOf(BottomNavigationItemType.Home) }
+    val backstackEntry by navHostController.currentBackStackEntryAsState()
+    val selectItemState: BottomNavigationItemType by remember {
+        derivedStateOf {
+            when(backstackEntry?.destination?.route) {
+                HOME_ROUTE -> BottomNavigationItemType.Home
+                CHAT_ROUTE -> BottomNavigationItemType.Chat
+                ROOM_ROUTE -> BottomNavigationItemType.Group
+                NOTIFICATION_ROUTE -> BottomNavigationItemType.Notification
+                PROFILE_ROUTE -> BottomNavigationItemType.Profile
+                else -> BottomNavigationItemType.Home
+            }
+        }
+    }
     var navigationVisible by remember { mutableStateOf(true) }
-
     val onNavigationVisibleChange: (Boolean) -> Unit = {
         navigationVisible = it
+    }
+
+    LaunchedEffect(key1 = backstackEntry?.destination?.route) {
+        val test = when(backstackEntry?.destination?.route) {
+            HOME_ROUTE -> BottomNavigationItemType.Home
+            CHAT_ROUTE -> BottomNavigationItemType.Chat
+            ROOM_ROUTE -> BottomNavigationItemType.Group
+            NOTIFICATION_ROUTE -> BottomNavigationItemType.Notification
+            PROFILE_ROUTE -> BottomNavigationItemType.Profile
+            else -> BottomNavigationItemType.Home
+        }
+        Log.d("TAG", "MainScreen: ${test} ${backstackEntry?.destination?.route} ${backstackEntry?.destination?.id}")
     }
 
     Scaffold(
@@ -51,7 +78,6 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
         bottomBar = {
             if (navigationVisible) {
                 SeugiBottomNavigation(selected = selectItemState) {
-                    selectItemState = it
                     navHostController.navigate(
                         when (it) {
                             is BottomNavigationItemType.Home -> HOME_ROUTE
