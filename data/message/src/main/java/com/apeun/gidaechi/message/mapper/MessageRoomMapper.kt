@@ -5,6 +5,7 @@ import com.apeun.gidaechi.message.model.room.MessageRoomModel
 import com.apeun.gidaechi.message.model.room.MessageRoomStatusType
 import com.apeun.gidaechi.message.model.room.MessageRoomType
 import com.apeun.gidaechi.network.message.response.room.MessageRoomResponse
+import kotlinx.collections.immutable.toImmutableList
 
 internal fun MessageRoomResponse.toModel() = MessageRoomModel(
     id = id,
@@ -20,7 +21,7 @@ internal fun MessageRoomResponse.toModel() = MessageRoomModel(
             name = it.name,
             profile = null,
         )
-    },
+    }.toImmutableList(),
     chatStatusEnum = chatStatusEnum.toMessageRoomStatus(),
 )
 
