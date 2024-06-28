@@ -85,7 +85,7 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                             is BottomNavigationItemType.Group -> ROOM_ROUTE
                             is BottomNavigationItemType.Notification -> NOTIFICATION_ROUTE
                             is BottomNavigationItemType.Profile -> PROFILE_ROUTE
-                            else -> "route"
+                            else -> HOME_ROUTE
                         },
                     ) {
                         popUpTo(navHostController.graph.findStartDestination().id) {
@@ -109,10 +109,6 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
             popEnterTransition = { fadeIn(animationSpec = tween(NAVIGATION_ANIM)) },
             popExitTransition = { fadeOut(animationSpec = tween(NAVIGATION_ANIM)) },
         ) {
-            // TODO("DELETE DUMMY ROUTE")
-            composable("route") {
-                Text(text = "hi")
-            }
 
             homeScreen()
 
