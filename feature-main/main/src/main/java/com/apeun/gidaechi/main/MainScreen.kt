@@ -61,18 +61,6 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
         navigationVisible = it
     }
 
-    LaunchedEffect(key1 = backstackEntry?.destination?.route) {
-        val test = when(backstackEntry?.destination?.route) {
-            HOME_ROUTE -> BottomNavigationItemType.Home
-            CHAT_ROUTE -> BottomNavigationItemType.Chat
-            ROOM_ROUTE -> BottomNavigationItemType.Group
-            NOTIFICATION_ROUTE -> BottomNavigationItemType.Notification
-            PROFILE_ROUTE -> BottomNavigationItemType.Profile
-            else -> BottomNavigationItemType.Home
-        }
-        Log.d("TAG", "MainScreen: ${test} ${backstackEntry?.destination?.route} ${backstackEntry?.destination?.id}")
-    }
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
