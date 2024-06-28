@@ -4,6 +4,7 @@ import com.apeun.gidaechi.data.core.model.ChatRoomModel
 import com.apeun.gidaechi.data.core.model.ChatRoomStatusType
 import com.apeun.gidaechi.data.core.model.ChatRoomType
 import com.apeun.gidaechi.network.core.response.ChatRoomResponse
+import kotlinx.collections.immutable.toImmutableList
 
 fun List<ChatRoomResponse>.toModels() = this.map {
     it.toModel()
@@ -19,7 +20,7 @@ fun ChatRoomResponse.toModel() = ChatRoomModel(
     createdAt = createdAt,
     memberList = joinUserId.map {
         it.toModel()
-    },
+    }.toImmutableList(),
     chatStatusEnum = chatStatusEnum.toChatRoomStatusType(),
     lastMessage = lastMessage,
     lastMessageTimestamp = lastMessageTimestamp,

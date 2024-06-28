@@ -1,6 +1,7 @@
 package com.apeun.gidaechi.message.model.room
 
 import com.apeun.gidaechi.message.model.message.MessageUserModel
+import kotlinx.collections.immutable.ImmutableList
 import java.time.LocalDateTime
 
 data class MessageRoomModel(
@@ -12,5 +13,5 @@ data class MessageRoomModel(
     val createdAt: LocalDateTime,
     val chatRoomImg: String,
     val chatStatusEnum: MessageRoomStatusType,
-    val memberList: List<MessageUserModel>,
+    val memberList: ImmutableList<MessageUserModel>,
 )

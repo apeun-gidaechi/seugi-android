@@ -1,6 +1,8 @@
 package com.apeun.gidaechi.message.model.message
 
+import kotlinx.collections.immutable.ImmutableList
+
 data class MessageLoadModel(
     val firstMessageId: String?,
-    val messages: List<MessageMessageModel>,
+    val messages: ImmutableList<MessageMessageModel>,
 )

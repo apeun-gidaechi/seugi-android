@@ -3,6 +3,7 @@ package com.apeun.gidaechi.message.model.message
 import com.apeun.gidaechi.message.model.MessageLifeType
 import com.apeun.gidaechi.message.model.MessageType
 import com.apeun.gidaechi.message.model.MessageTypeModel
+import kotlinx.collections.immutable.ImmutableList
 import java.time.LocalDateTime
 
 data class MessageMessageModel(
@@ -11,10 +12,10 @@ data class MessageMessageModel(
     override val type: MessageType,
     val author: Int,
     val message: String,
-    val emojiList: List<MessageEmojiModel>,
-    val mention: List<Int>,
+    val emojiList: ImmutableList<MessageEmojiModel>,
+    val mention: ImmutableList<Int>,
     val mentionAll: Boolean,
     val timestamp: LocalDateTime,
-    val read: List<Int>,
+    val read: ImmutableList<Int>,
     val messageStatus: MessageLifeType,
 ) : MessageTypeModel()
