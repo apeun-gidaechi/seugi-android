@@ -1,8 +1,8 @@
 package com.apeun.gidaechi.message.model.room
 
 import com.apeun.gidaechi.message.model.message.MessageUserModel
-import kotlinx.collections.immutable.ImmutableList
 import java.time.LocalDateTime
+import kotlinx.collections.immutable.ImmutableList
 
 data class MessageRoomModel(
     val id: String,

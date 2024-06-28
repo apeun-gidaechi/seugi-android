@@ -3,8 +3,8 @@ package com.apeun.gidaechi.message.model.message
 import com.apeun.gidaechi.message.model.MessageLifeType
 import com.apeun.gidaechi.message.model.MessageType
 import com.apeun.gidaechi.message.model.MessageTypeModel
-import kotlinx.collections.immutable.ImmutableList
 import java.time.LocalDateTime
+import kotlinx.collections.immutable.ImmutableList
 
 data class MessageMessageModel(
     val id: String,

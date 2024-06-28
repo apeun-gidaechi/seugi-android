@@ -1,7 +1,7 @@
 package com.apeun.gidaechi.data.core.model
 
-import kotlinx.collections.immutable.ImmutableList
 import java.time.LocalDateTime
+import kotlinx.collections.immutable.ImmutableList
 
 data class ChatRoomModel(
     val id: String,
