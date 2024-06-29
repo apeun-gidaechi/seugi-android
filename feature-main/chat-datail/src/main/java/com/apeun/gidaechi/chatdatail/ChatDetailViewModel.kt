@@ -29,7 +29,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -63,6 +65,7 @@ class ChatDetailViewModel @Inject constructor(
         profileRepository.getProfile(workspaceId).collect {
             when (it) {
                 is Result.Success -> {
+                    val state = _state.value
                     _state.value = _state.value.copy(
                         userInfo = MessageUserModel(
                             id = it.data.member.id,
@@ -70,6 +73,18 @@ class ChatDetailViewModel @Inject constructor(
                             profile = null,
                         ),
                     )
+                    if (state.message.size > 0) {
+                        val messageList = state.message.map { messageState ->
+                            messageState.copy(
+                                isMe = messageState.author.id == it.data.member.id
+                            )
+                        }
+                        _state.update {
+                            it.copy(
+                                message = messageList.toImmutableList()
+                            )
+                        }
+                    }
                     Log.d("TAG", "initProfile: ${_state.value.userInfo?.id}")
                 }
                 is Result.Loading -> {}
