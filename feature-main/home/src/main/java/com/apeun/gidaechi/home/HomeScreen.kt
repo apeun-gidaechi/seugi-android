@@ -431,7 +431,7 @@ internal fun HomeScreen() {
                 text = "다가오는 일정",
                 onClickDetail = { /*TODO*/ },
                 image = painterResource(id = R.drawable.ic_calendar_line),
-                colorFilter = ColorFilter.tint(Gray600)
+                colorFilter = ColorFilter.tint(Gray600),
             ) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
