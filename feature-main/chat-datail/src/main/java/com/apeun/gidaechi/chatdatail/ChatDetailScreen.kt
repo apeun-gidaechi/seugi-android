@@ -381,12 +381,13 @@ internal fun ChatDetailScreen(
                             ChatDetailChatTypeState.DATE -> ChatItemType.Date(item.timestamp.toFullFormatString())
 
                             ChatDetailChatTypeState.MESSAGE -> {
+                                val count = (state.roomInfo?.members?.size?: 0)-item.read.size
                                 if (item.isMe) {
                                     ChatItemType.Me(
                                         isLast = item.isLast,
                                         message = item.message,
                                         createdAt = item.timestamp.toAmShortString(),
-                                        count = 1,
+                                        count = if (count < 0) 0 else count,
                                     )
                                 } else {
                                     ChatItemType.Others(
@@ -396,7 +397,7 @@ internal fun ChatDetailScreen(
                                         userProfile = null,
                                         message = item.message,
                                         createdAt = item.timestamp.toAmShortString(),
-                                        count = 1,
+                                        count = if (count < 0) 0 else count,
                                     )
                                 }
                             }

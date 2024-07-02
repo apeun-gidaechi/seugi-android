@@ -13,9 +13,11 @@ import com.apeun.gidaechi.common.model.Result
 import com.apeun.gidaechi.data.profile.ProfileRepository
 import com.apeun.gidaechi.message.MessageRepository
 import com.apeun.gidaechi.message.model.isMessage
+import com.apeun.gidaechi.message.model.isSub
 import com.apeun.gidaechi.message.model.message.MessageLoadModel
 import com.apeun.gidaechi.message.model.message.MessageMessageModel
 import com.apeun.gidaechi.message.model.message.MessageUserModel
+import com.apeun.gidaechi.message.model.sub.MessageSubModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Duration
 import javax.inject.Inject
@@ -140,32 +142,52 @@ class ChatDetailViewModel @Inject constructor(
                     when (it) {
                         is Result.Success -> {
                             val dataType = it.data.type
-                            if (dataType.isMessage()) {
-                                val data = it.data as MessageMessageModel
-                                val message = _state.value.message.toMutableList()
-                                val formerItem = _state.value.message.getOrNull(_state.value.message.lastIndex)
+                            when {
+                                dataType.isMessage() -> {
+                                    val data = it.data as MessageMessageModel
+                                    val message = _state.value.message.toMutableList()
+                                    val formerItem = _state.value.message.getOrNull(_state.value.message.lastIndex)
 
-                                val isFirst = data.author != formerItem?.author?.id
-                                val isMe = data.author == _state.value.userInfo?.id
+                                    val isFirst = data.author != formerItem?.author?.id
+                                    val isMe = data.author == _state.value.userInfo?.id
 
-                                if (formerItem?.isLast == true && formerItem.author.id == data.author) {
+                                    if (formerItem?.isLast == true && formerItem.author.id == data.author) {
+                                        message.add(
+                                            message.removeLast().copy(
+                                                isLast = false,
+                                            ),
+                                        )
+                                    }
                                     message.add(
-                                        message.removeLast().copy(
-                                            isLast = false,
+                                        data.toState(
+                                            isFirst = isFirst,
+                                            isLast = true,
+                                            isMe = isMe,
+                                            author = _state.value.users.getOrDefault(data.author, MessageUserModel(data.author)),
                                         ),
                                     )
+                                    _state.value = _state.value.copy(
+                                        message = message.toImmutableList(),
+                                    )
                                 }
-                                message.add(
-                                    data.toState(
-                                        isFirst = isFirst,
-                                        isLast = true,
-                                        isMe = isMe,
-                                        author = _state.value.users.getOrDefault(data.author, MessageUserModel(data.author)),
-                                    ),
-                                )
-                                _state.value = _state.value.copy(
-                                    message = message.toImmutableList(),
-                                )
+                                dataType.isSub() -> {
+                                    val messageSubModel = it.data as MessageSubModel
+                                    _state.update {
+                                        it.copy(
+                                            message = it.message.map { nowMessage ->
+                                                nowMessage.copy(
+                                                    read = nowMessage.read
+                                                        .toMutableList()
+                                                        .apply {
+                                                            add(messageSubModel.userId)
+                                                        }
+                                                        .distinct()
+                                                        .toImmutableList()
+                                                )
+                                            }.toImmutableList()
+                                        )
+                                    }
+                                }
                             }
                         }
                         is Result.Loading -> {}

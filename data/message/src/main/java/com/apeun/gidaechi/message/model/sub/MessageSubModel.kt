@@ -6,5 +6,6 @@ import kotlinx.collections.immutable.ImmutableList
 
 data class MessageSubModel(
     override val type: MessageType,
+    val userId: Int,
     val eventList: ImmutableList<Int>,
 ) : MessageTypeModel()
