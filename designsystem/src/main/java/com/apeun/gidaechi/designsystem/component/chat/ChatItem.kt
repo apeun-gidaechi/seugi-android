@@ -54,13 +54,13 @@ sealed class ChatItemType {
         val userProfile: String?,
         val message: String,
         val createdAt: String,
-        val count: Int,
+        val count: Int?,
     ) : ChatItemType()
     data class Me(
         val isLast: Boolean,
         val message: String,
         val createdAt: String,
-        val count: Int,
+        val count: Int?,
     ) : ChatItemType()
     data class Date(
         val createdAt: String,
@@ -139,7 +139,7 @@ private fun SeugiChatItemOthers(
     userProfile: String?,
     message: String,
     createdAt: String,
-    count: Int,
+    count: Int?,
     onChatLongClick: () -> Unit,
     onDateClick: () -> Unit,
 ) {
@@ -231,7 +231,7 @@ private fun SeugiChatItemMe(
     isLast: Boolean,
     message: String,
     createdAt: String,
-    count: Int,
+    count: Int?,
     onChatLongClick: () -> Unit,
     onDateClick: () -> Unit,
 ) {
