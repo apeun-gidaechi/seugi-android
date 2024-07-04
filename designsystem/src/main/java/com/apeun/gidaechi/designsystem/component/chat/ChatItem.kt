@@ -70,7 +70,7 @@ sealed class ChatItemType {
         val isLast: Boolean,
         val message: String,
         val createdAt: String,
-        val count: Int,
+        val count: Int?,
     ) : ChatItemType()
     data class Else(
         val message: String,
@@ -208,7 +208,7 @@ private fun SeugiChatItemOthers(
                         verticalArrangement = Arrangement.Bottom,
                     ) {
                         Text(
-                            text = count.toString(),
+                            text = count?.toString() ?: "",
                             color = Gray600,
                             style = MaterialTheme.typography.labelLarge,
                         )
@@ -255,7 +255,7 @@ private fun SeugiChatItemMe(
                 horizontalAlignment = Alignment.End,
             ) {
                 Text(
-                    text = count.toString(),
+                    text = count?.toString()?: "",
                     color = Gray600,
                     style = MaterialTheme.typography.labelLarge,
                 )
@@ -326,7 +326,7 @@ private fun SeugiChatItemAi(
     isLast: Boolean,
     message: String,
     createdAt: String,
-    count: Int,
+    count: Int?,
     onChatLongClick: () -> Unit,
     onDateClick: () -> Unit,
 ) {
@@ -401,7 +401,7 @@ private fun SeugiChatItemAi(
                         verticalArrangement = Arrangement.Bottom,
                     ) {
                         Text(
-                            text = count.toString(),
+                            text = count?.toString() ?: "",
                             color = Gray600,
                             style = MaterialTheme.typography.labelLarge,
                         )

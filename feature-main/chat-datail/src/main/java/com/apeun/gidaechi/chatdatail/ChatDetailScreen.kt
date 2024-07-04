@@ -387,7 +387,7 @@ internal fun ChatDetailScreen(
                                         isLast = item.isLast,
                                         message = item.message,
                                         createdAt = item.timestamp.toAmShortString(),
-                                        count = if (count < 0) null else count,
+                                        count = if (count <= 0) null else count,
                                     )
                                 } else {
                                     ChatItemType.Others(
@@ -397,7 +397,7 @@ internal fun ChatDetailScreen(
                                         userProfile = null,
                                         message = item.message,
                                         createdAt = item.timestamp.toAmShortString(),
-                                        count = if (count < 0) null else count,
+                                        count = if (count <= 0) null else count,
                                     )
                                 }
                             }
