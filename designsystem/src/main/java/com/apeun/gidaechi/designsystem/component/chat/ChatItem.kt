@@ -255,7 +255,7 @@ private fun SeugiChatItemMe(
                 horizontalAlignment = Alignment.End,
             ) {
                 Text(
-                    text = count?.toString()?: "",
+                    text = count?.toString() ?: "",
                     color = Gray600,
                     style = MaterialTheme.typography.labelLarge,
                 )

@@ -73,8 +73,8 @@ internal fun RoomScreen(
             items(state.chatItems) { item ->
                 SeugiChatList(
                     userName = item.chatName,
-                    message = item.lastMessage?: "",
-                    createdAt = item.lastMessageTimestamp?.toAmShortString()?: "",
+                    message = item.lastMessage ?: "",
+                    createdAt = item.lastMessageTimestamp?.toAmShortString() ?: "",
                     count = item.notReadCnt,
                     memberCount = item.memberList.toImmutableList().size,
                     onClick = {

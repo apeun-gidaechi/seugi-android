@@ -31,7 +31,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -78,12 +77,12 @@ class ChatDetailViewModel @Inject constructor(
                     if (state.message.size > 0) {
                         val messageList = state.message.map { messageState ->
                             messageState.copy(
-                                isMe = messageState.author.id == it.data.member.id
+                                isMe = messageState.author.id == it.data.member.id,
                             )
                         }
                         _state.update {
                             it.copy(
-                                message = messageList.toImmutableList()
+                                message = messageList.toImmutableList(),
                             )
                         }
                     }
@@ -182,9 +181,9 @@ class ChatDetailViewModel @Inject constructor(
                                                             add(messageSubModel.userId)
                                                         }
                                                         .distinct()
-                                                        .toImmutableList()
+                                                        .toImmutableList(),
                                                 )
-                                            }.toImmutableList()
+                                            }.toImmutableList(),
                                         )
                                     }
                                 }

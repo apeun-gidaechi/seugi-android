@@ -381,7 +381,7 @@ internal fun ChatDetailScreen(
                             ChatDetailChatTypeState.DATE -> ChatItemType.Date(item.timestamp.toFullFormatString())
 
                             ChatDetailChatTypeState.MESSAGE -> {
-                                val count = (state.roomInfo?.members?.size?: 0)-item.read.size
+                                val count = (state.roomInfo?.members?.size ?: 0) - item.read.size
                                 if (item.isMe) {
                                     ChatItemType.Me(
                                         isLast = item.isLast,
