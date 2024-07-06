@@ -191,6 +191,7 @@ class ChatDetailViewModel @Inject constructor(
                         }
                         is Result.Loading -> {}
                         is Result.Error -> {
+                            it.throwable.printStackTrace()
                         }
                     }
                 }
@@ -320,7 +321,9 @@ class ChatDetailViewModel @Inject constructor(
                 }
 
                 is Result.Loading -> {}
-                is Result.Error -> {}
+                is Result.Error -> {
+                    this@collectMessage.throwable.printStackTrace()
+                }
             }
         }
     }
