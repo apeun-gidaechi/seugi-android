@@ -13,9 +13,11 @@ import com.apeun.gidaechi.common.model.Result
 import com.apeun.gidaechi.data.profile.ProfileRepository
 import com.apeun.gidaechi.message.MessageRepository
 import com.apeun.gidaechi.message.model.isMessage
+import com.apeun.gidaechi.message.model.isSub
 import com.apeun.gidaechi.message.model.message.MessageLoadModel
 import com.apeun.gidaechi.message.model.message.MessageMessageModel
 import com.apeun.gidaechi.message.model.message.MessageUserModel
+import com.apeun.gidaechi.message.model.sub.MessageSubModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Duration
 import javax.inject.Inject
@@ -30,6 +32,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -63,6 +66,7 @@ class ChatDetailViewModel @Inject constructor(
         profileRepository.getProfile(workspaceId).collect {
             when (it) {
                 is Result.Success -> {
+                    val state = _state.value
                     _state.value = _state.value.copy(
                         userInfo = MessageUserModel(
                             id = it.data.member.id,
@@ -70,6 +74,18 @@ class ChatDetailViewModel @Inject constructor(
                             profile = null,
                         ),
                     )
+                    if (state.message.size > 0) {
+                        val messageList = state.message.map { messageState ->
+                            messageState.copy(
+                                isMe = messageState.author.id == it.data.member.id,
+                            )
+                        }
+                        _state.update {
+                            it.copy(
+                                message = messageList.toImmutableList(),
+                            )
+                        }
+                    }
                     Log.d("TAG", "initProfile: ${_state.value.userInfo?.id}")
                 }
                 is Result.Loading -> {}
@@ -125,36 +141,57 @@ class ChatDetailViewModel @Inject constructor(
                     when (it) {
                         is Result.Success -> {
                             val dataType = it.data.type
-                            if (dataType.isMessage()) {
-                                val data = it.data as MessageMessageModel
-                                val message = _state.value.message.toMutableList()
-                                val formerItem = _state.value.message.getOrNull(_state.value.message.lastIndex)
+                            when {
+                                dataType.isMessage() -> {
+                                    val data = it.data as MessageMessageModel
+                                    val message = _state.value.message.toMutableList()
+                                    val formerItem = _state.value.message.getOrNull(_state.value.message.lastIndex)
 
-                                val isFirst = data.author != formerItem?.author?.id
-                                val isMe = data.author == _state.value.userInfo?.id
+                                    val isFirst = data.author != formerItem?.author?.id
+                                    val isMe = data.author == _state.value.userInfo?.id
 
-                                if (formerItem?.isLast == true && formerItem.author.id == data.author) {
+                                    if (formerItem?.isLast == true && formerItem.author.id == data.author) {
+                                        message.add(
+                                            message.removeLast().copy(
+                                                isLast = false,
+                                            ),
+                                        )
+                                    }
                                     message.add(
-                                        message.removeLast().copy(
-                                            isLast = false,
+                                        data.toState(
+                                            isFirst = isFirst,
+                                            isLast = true,
+                                            isMe = isMe,
+                                            author = _state.value.users.getOrDefault(data.author, MessageUserModel(data.author)),
                                         ),
                                     )
+                                    _state.value = _state.value.copy(
+                                        message = message.toImmutableList(),
+                                    )
                                 }
-                                message.add(
-                                    data.toState(
-                                        isFirst = isFirst,
-                                        isLast = true,
-                                        isMe = isMe,
-                                        author = _state.value.users.getOrDefault(data.author, MessageUserModel(data.author)),
-                                    ),
-                                )
-                                _state.value = _state.value.copy(
-                                    message = message.toImmutableList(),
-                                )
+                                dataType.isSub() -> {
+                                    val messageSubModel = it.data as MessageSubModel
+                                    _state.update {
+                                        it.copy(
+                                            message = it.message.map { nowMessage ->
+                                                nowMessage.copy(
+                                                    read = nowMessage.read
+                                                        .toMutableList()
+                                                        .apply {
+                                                            add(messageSubModel.userId)
+                                                        }
+                                                        .distinct()
+                                                        .toImmutableList(),
+                                                )
+                                            }.toImmutableList(),
+                                        )
+                                    }
+                                }
                             }
                         }
                         is Result.Loading -> {}
                         is Result.Error -> {
+                            it.throwable.printStackTrace()
                         }
                     }
                 }
@@ -284,7 +321,9 @@ class ChatDetailViewModel @Inject constructor(
                 }
 
                 is Result.Loading -> {}
-                is Result.Error -> {}
+                is Result.Error -> {
+                    this@collectMessage.throwable.printStackTrace()
+                }
             }
         }
     }

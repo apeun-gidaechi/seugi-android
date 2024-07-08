@@ -10,10 +10,10 @@ data class ChatRoomModel(
     val chatName: String,
     val roomAdmin: Int,
     val createdAt: LocalDateTime,
-    val chatRoomImg: String,
+    val chatRoomImg: String?,
     val chatStatusEnum: ChatRoomStatusType,
     val memberList: ImmutableList<UserModel>,
-    val lastMessage: String,
-    val lastMessageTimestamp: LocalDateTime,
+    val lastMessage: String?,
+    val lastMessageTimestamp: LocalDateTime?,
     val notReadCnt: Int,
 )

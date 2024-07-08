@@ -6,5 +6,6 @@ import kotlinx.collections.immutable.toImmutableList
 
 internal fun MessageSubResponse.toModel() = MessageSubModel(
     type = type.toMessageType(),
+    userId = userId,
     eventList = eventList.toImmutableList(),
 )
