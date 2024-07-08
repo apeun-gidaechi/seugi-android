@@ -57,8 +57,7 @@ fun SeugiOAuthButton(@DrawableRes image: Int, text: String, onClick: () -> Unit,
             .graphicsLayer {
                 scaleX = scale
                 scaleY = scale
-            }
-            .dropShadow(DropShadowType.EvBlack2),
+            },
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = White,
@@ -66,7 +65,6 @@ fun SeugiOAuthButton(@DrawableRes image: Int, text: String, onClick: () -> Unit,
             disabledContainerColor = White.copy(alpha = 0.5f),
             disabledContentColor = White.copy(alpha = 0.5f),
         ),
-
         shape = RoundedCornerShape(12.dp),
         border = BorderStroke((1.5).dp, Gray300),
     ) {
