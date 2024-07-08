@@ -122,11 +122,19 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
                             Spacer(modifier = Modifier.height(8.dp))
                             // TODO: google icon
                             SeugiOAuthButton(
-                                image = R.drawable.ic_menu,
+                                image = R.drawable.ic_google,
                                 text = "Google로 계속하기",
                                 onClick = {
                                     navigateToOAuthSignIn()
-
+                                    showBottomSheet = false
+                                },
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            SeugiOAuthButton(
+                                image = R.drawable.ic_apple,
+                                text = "Apple로로 계속하기",
+                                onClick = {
+                                    navigateToOAuthSignIn()
                                     showBottomSheet = false
                                 },
                             )
