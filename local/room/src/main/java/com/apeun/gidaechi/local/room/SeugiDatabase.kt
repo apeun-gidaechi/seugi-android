@@ -9,7 +9,7 @@ import com.apeun.gidaechi.local.room.model.TokenEntity
     entities = [
         TokenEntity::class,
     ],
-    version = 14,
+    version = 1,
     exportSchema = false,
 )
 internal abstract class SeugiDatabase : RoomDatabase() {
