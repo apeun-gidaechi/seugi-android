@@ -12,6 +12,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -112,39 +114,38 @@ internal fun HomeScreen(
         }
     }
 
-    Column(
+    LazyColumn(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
             .background(Primary050)
             .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        SeugiTopBar(
-            title = {
-                Text(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    text = "홈",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = Black,
-                )
-            },
-            colors = TopAppBarColors(
-                containerColor = Color.Transparent,
-                scrolledContainerColor = Color.Transparent,
-                navigationIconContentColor = Color.Transparent,
-                titleContentColor = Black,
-                actionIconContentColor = Color.Transparent,
-            ),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = 20.dp),
-        ) {
-            Spacer(modifier = Modifier.height(8.dp))
+        item {
+            SeugiTopBar(
+                title = {
+                    Text(
+                        text = "홈",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = Black,
+                    )
+                },
+                colors = TopAppBarColors(
+                    containerColor = Color.Transparent,
+                    scrolledContainerColor = Color.Transparent,
+                    navigationIconContentColor = Color.Transparent,
+                    titleContentColor = Black,
+                    actionIconContentColor = Color.Transparent,
+                ),
+            )
+        }
+
+        item {
             HomeCard(
                 text = "내 학교",
                 image = painterResource(id = R.drawable.ic_school),
                 colorFilter = ColorFilter.tint(Gray600),
             ) {
-                when(val schoolState = state.schoolState) {
+                when (val schoolState = state.schoolState) {
                     is CommonUiState.Success -> {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -163,6 +164,7 @@ internal fun HomeScreen(
                             )
                         }
                     }
+
                     is CommonUiState.NotFound -> {
                         Column(
                             modifier = Modifier.fillMaxWidth(),
@@ -198,17 +200,20 @@ internal fun HomeScreen(
                             }
                         }
                     }
+
                     else -> {}
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
+        }
+
+        item {
             HomeCard(
                 text = "오늘의 시간표",
                 onClickDetail = { /*TODO*/ },
                 image = painterResource(id = R.drawable.ic_book_fill),
                 colorFilter = ColorFilter.tint(Gray600),
             ) {
-                when(state.timeScheduleState) {
+                when (state.timeScheduleState) {
                     is CommonUiState.Success -> {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
@@ -261,15 +266,19 @@ internal fun HomeScreen(
                             }
                         }
                     }
+
                     is CommonUiState.NotFound -> {
                         HomeNotFoundText(text = "학교를 등록하고 시간표를 확인하세요")
                     }
+
                     else -> {
 
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
+        }
+
+        item {
             var nowButtonState by remember { mutableStateOf(ButtonState.Idle) }
             HomeCard(
                 text = "오늘의 급식",
@@ -385,14 +394,17 @@ internal fun HomeScreen(
                             }
                         }
                     }
+
                     is CommonUiState.NotFound -> {
                         HomeNotFoundText(text = "학교를 등록하고 급식을 확인하세요")
                     }
+
                     else -> {}
                 }
             }
+        }
 
-            Spacer(modifier = Modifier.height(8.dp))
+        item {
             HomeCard(
                 text = "캣스기",
                 image = painterResource(id = R.drawable.ic_appicon_round),
@@ -491,21 +503,24 @@ internal fun HomeScreen(
                             }
                         }
                     }
+
                     is CommonUiState.NotFound -> {
                         HomeNotFoundText(text = "학교를 등록하고 캣스기와 대화해 보세요")
                     }
+
                     else -> {}
                 }
             }
+        }
 
-            Spacer(modifier = Modifier.height(8.dp))
+        item {
             HomeCard(
                 text = "다가오는 일정",
                 onClickDetail = { /*TODO*/ },
                 image = painterResource(id = R.drawable.ic_calendar_line),
                 colorFilter = ColorFilter.tint(Gray600),
             ) {
-                when(state.schoolScheduleState) {
+                when (state.schoolScheduleState) {
                     is CommonUiState.Success -> {
                         Column(
                             modifier = Modifier.fillMaxWidth(),
@@ -517,14 +532,18 @@ internal fun HomeScreen(
                             HomeCalendarCard(date = "7/25", content = "KBS 촬영", dDay = "D-7")
                         }
                     }
+
                     is CommonUiState.NotFound -> {
                         HomeNotFoundText(text = "학교를 등록하고 일정을 확인하세요")
                     }
+
                     else -> {}
                 }
             }
         }
-        Spacer(modifier = Modifier.height(32.dp))
+        item {
+            Spacer(modifier = Modifier.height(32.dp))
+        }
     }
 }
 
@@ -545,6 +564,8 @@ private fun changeNavigationColor(window: Window, backgroundColor: Color, isDark
 internal fun HomeCard(modifier: Modifier = Modifier, text: String, image: Painter, colorFilter: ColorFilter? = null, content: @Composable () -> Unit) {
     Column(
         modifier = modifier
+            .padding(horizontal = 20.dp)
+            .fillMaxWidth()
             .animateContentSize()
             .dropShadow(DropShadowType.EvBlack1)
             .background(
@@ -605,6 +626,9 @@ internal fun HomeCard(
 ) {
     Column(
         modifier = modifier
+            .padding(horizontal = 20.dp)
+            .fillMaxWidth()
+            .animateContentSize()
             .dropShadow(DropShadowType.EvBlack1)
             .background(
                 color = White,
