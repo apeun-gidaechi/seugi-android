@@ -12,11 +12,9 @@ class KotlinPlugin : Plugin<Project> {
         with(pluginManager) {
             apply("java-library")
             apply("org.jetbrains.kotlin.jvm")
-            apply("org.jetbrains.kotlin.kapt")
         }
         dependencies {
             implementation(libs.library("kotlinx-coroutines-core"))
-            implementation(libs.library("hilt.compiler"))
         }
     }
 }
