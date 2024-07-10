@@ -64,6 +64,7 @@ import com.apeun.gidaechi.designsystem.animation.NoInteractionSource
 import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.GradientPrimary
+import com.apeun.gidaechi.designsystem.component.LoadingDotsIndicator
 import com.apeun.gidaechi.designsystem.component.SeugiButton
 import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
@@ -201,7 +202,14 @@ internal fun HomeScreen(
                         }
                     }
 
-                    else -> {}
+                    else -> {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            LoadingDotsIndicator()
+                        }
+                    }
                 }
             }
         }
@@ -272,7 +280,12 @@ internal fun HomeScreen(
                     }
 
                     else -> {
-
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            LoadingDotsIndicator()
+                        }
                     }
                 }
             }
@@ -399,7 +412,14 @@ internal fun HomeScreen(
                         HomeNotFoundText(text = "학교를 등록하고 급식을 확인하세요")
                     }
 
-                    else -> {}
+                    else -> {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            LoadingDotsIndicator()
+                        }
+                    }
                 }
             }
         }
@@ -508,7 +528,14 @@ internal fun HomeScreen(
                         HomeNotFoundText(text = "학교를 등록하고 캣스기와 대화해 보세요")
                     }
 
-                    else -> {}
+                    else -> {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            LoadingDotsIndicator()
+                        }
+                    }
                 }
             }
         }
@@ -537,7 +564,14 @@ internal fun HomeScreen(
                         HomeNotFoundText(text = "학교를 등록하고 일정을 확인하세요")
                     }
 
-                    else -> {}
+                    else -> {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            LoadingDotsIndicator()
+                        }
+                    }
                 }
             }
         }

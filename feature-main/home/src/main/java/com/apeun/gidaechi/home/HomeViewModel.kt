@@ -23,16 +23,16 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    showShimmer = true,
-                    schoolState = CommonUiState.NotFound,
-                    timeScheduleState = CommonUiState.NotFound,
-                    mealState = CommonUiState.NotFound,
-                    catSeugiState = CommonUiState.NotFound,
-                    schoolScheduleState = CommonUiState.NotFound,
-                )
-            }
+//            _state.update {
+//                it.copy(
+//                    showShimmer = true,
+//                    schoolState = CommonUiState.NotFound,
+//                    timeScheduleState = CommonUiState.NotFound,
+//                    mealState = CommonUiState.NotFound,
+//                    catSeugiState = CommonUiState.NotFound,
+//                    schoolScheduleState = CommonUiState.NotFound,
+//                )
+//            }
             delay(4000)
             _state.update {
                 it.copy(
