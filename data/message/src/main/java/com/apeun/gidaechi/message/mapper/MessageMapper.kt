@@ -10,6 +10,7 @@ import com.apeun.gidaechi.network.message.response.message.MessageEmojiResponse
 import com.apeun.gidaechi.network.message.response.message.MessageLoadResponse
 import com.apeun.gidaechi.network.message.response.message.MessageMessageResponse
 import com.apeun.gidaechi.network.message.response.message.MessageUserResponse
+import kotlinx.collections.immutable.toImmutableList
 
 internal fun MessageMessageResponse.toModel() = MessageMessageModel(
     id = id,
@@ -17,11 +18,11 @@ internal fun MessageMessageResponse.toModel() = MessageMessageModel(
     type = type.toMessageType(),
     author = userId,
     message = message,
-    emojiList = emojiList.toModels(),
-    mention = mention,
+    emojiList = emojiList.toModels().toImmutableList(),
+    mention = mention.toImmutableList(),
     mentionAll = mentionAll,
     timestamp = timestamp,
-    read = read,
+    read = read.toImmutableList(),
     messageStatus = messageStatus.toMessageLifeType(),
 )
 
@@ -32,13 +33,13 @@ internal fun List<MessageMessageResponse>.toModels() = this.map {
 
 internal fun MessageDeleteResponse.toModel() = MessageMessageDeleteModel(
     type = type.toMessageType(),
-    eventList = eventList,
+    eventList = eventList.toImmutableList(),
     messageId = messageId,
 )
 
 internal fun MessageEmojiResponse.toModel() = MessageEmojiModel(
     emojiId = emojiId,
-    userId = userId,
+    userId = userId.toImmutableList(),
 )
 
 @JvmName("ListChatDetailMessageEmojiResponseToModels")
@@ -54,5 +55,5 @@ internal fun MessageUserResponse.toModel() = MessageUserModel(
 
 internal fun MessageLoadResponse.toModel() = MessageLoadModel(
     firstMessageId = firstMessageId,
-    messages = messages.toModels(),
+    messages = messages.toModels().toImmutableList(),
 )

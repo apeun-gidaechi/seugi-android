@@ -33,8 +33,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.animation.ButtonState
-import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
-import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
 import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.Gray300
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
@@ -57,8 +55,7 @@ fun SeugiOAuthButton(@DrawableRes image: Int, text: String, onClick: () -> Unit,
             .graphicsLayer {
                 scaleX = scale
                 scaleY = scale
-            }
-            .dropShadow(DropShadowType.EvBlack2),
+            },
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
             containerColor = White,
@@ -66,7 +63,6 @@ fun SeugiOAuthButton(@DrawableRes image: Int, text: String, onClick: () -> Unit,
             disabledContainerColor = White.copy(alpha = 0.5f),
             disabledContentColor = White.copy(alpha = 0.5f),
         ),
-
         shape = RoundedCornerShape(12.dp),
         border = BorderStroke((1.5).dp, Gray300),
     ) {
