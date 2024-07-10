@@ -23,12 +23,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoadingDotsIndicator(
-    count: Int = 3,
-    pointColor: Color = White,
-    color: Color = Gray400,
-    delay: Long = 150
-) {
+fun LoadingDotsIndicator(count: Int = 3, pointColor: Color = White, color: Color = Gray400, delay: Long = 150) {
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         repeat(count) {
             val animColor = remember { Animatable(pointColor) }

@@ -28,10 +28,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -66,7 +64,6 @@ import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.GradientPrimary
 import com.apeun.gidaechi.designsystem.component.LoadingDotsIndicator
 import com.apeun.gidaechi.designsystem.component.SeugiButton
-import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.brushDraw
@@ -87,9 +84,7 @@ import com.apeun.gidaechi.home.model.CommonUiState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-internal fun HomeScreen(
-    viewModel: HomeViewModel = hiltViewModel(),
-) {
+internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState { 3 }
@@ -182,13 +177,12 @@ internal fun HomeScreen(
                                     .fillMaxWidth()
                                     .background(
                                         color = Gray100,
-                                        shape = RoundedCornerShape(8.dp)
+                                        shape = RoundedCornerShape(8.dp),
                                     )
                                     .bounceClick(
                                         onClick = {
-
-                                        }
-                                    )
+                                        },
+                                    ),
                             ) {
                                 Text(
                                     modifier = Modifier
@@ -205,7 +199,7 @@ internal fun HomeScreen(
                     else -> {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             LoadingDotsIndicator()
                         }
@@ -282,7 +276,7 @@ internal fun HomeScreen(
                     else -> {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             LoadingDotsIndicator()
                         }
@@ -415,7 +409,7 @@ internal fun HomeScreen(
                     else -> {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             LoadingDotsIndicator()
                         }
@@ -531,7 +525,7 @@ internal fun HomeScreen(
                     else -> {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             LoadingDotsIndicator()
                         }
@@ -567,7 +561,7 @@ internal fun HomeScreen(
                     else -> {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             LoadingDotsIndicator()
                         }
@@ -790,11 +784,9 @@ internal fun HomeCalendarCard(modifier: Modifier = Modifier, date: String, conte
 }
 
 @Composable
-internal fun HomeNotFoundText(
-    text: String
-) {
+internal fun HomeNotFoundText(text: String) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Text(
             modifier = Modifier

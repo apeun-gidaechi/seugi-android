@@ -6,7 +6,7 @@ data class HomeUiState(
     val timeScheduleState: CommonUiState<String> = CommonUiState.Loading,
     val mealState: CommonUiState<Triple<String, String, String>> = CommonUiState.Loading,
     val catSeugiState: CommonUiState<List<String>> = CommonUiState.Loading,
-    val schoolScheduleState: CommonUiState<List<Triple<String, String, String>>> = CommonUiState.Loading
+    val schoolScheduleState: CommonUiState<List<Triple<String, String, String>>> = CommonUiState.Loading,
 )
 
 sealed interface CommonUiState<out T> {
