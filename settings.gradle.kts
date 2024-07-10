@@ -1,8 +1,5 @@
 import java.net.URI
 
-include(":local:room")
-
-
 include(":feature-main:profile")
 
 
