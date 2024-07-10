@@ -114,7 +114,6 @@ internal fun HomeScreen(
 
     Column(
         modifier = Modifier
-            .animateContentSize()
             .verticalScroll(rememberScrollState())
             .background(Primary050)
             .fillMaxSize(),
@@ -546,6 +545,7 @@ private fun changeNavigationColor(window: Window, backgroundColor: Color, isDark
 internal fun HomeCard(modifier: Modifier = Modifier, text: String, image: Painter, colorFilter: ColorFilter? = null, content: @Composable () -> Unit) {
     Column(
         modifier = modifier
+            .animateContentSize()
             .dropShadow(DropShadowType.EvBlack1)
             .background(
                 color = White,
