@@ -8,7 +8,7 @@ import com.apeun.gidaechi.local.room.util.SeugiTable
 data class TokenEntity(
     @PrimaryKey val idx: Int,
     val token: String,
-    val refreshToken: String
+    val refreshToken: String,
 ) {
     constructor(token: String, refreshToken: String) : this(0, token, refreshToken)
 }

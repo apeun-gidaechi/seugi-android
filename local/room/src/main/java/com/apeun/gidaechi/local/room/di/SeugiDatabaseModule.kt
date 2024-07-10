@@ -11,17 +11,14 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 internal object SeugiDatabaseModule {
     @Provides
     @Singleton
-    fun providesSeugiDatabase(
-        @ApplicationContext context: Context
-    ):SeugiDatabase = Room.databaseBuilder(
+    fun providesSeugiDatabase(@ApplicationContext context: Context): SeugiDatabase = Room.databaseBuilder(
         context,
         SeugiDatabase::class.java,
-        SeugiTable.SEUGI_TABLE
+        SeugiTable.SEUGI_TABLE,
     ).build()
 }

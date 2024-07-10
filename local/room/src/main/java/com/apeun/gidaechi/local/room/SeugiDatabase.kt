@@ -7,11 +7,11 @@ import com.apeun.gidaechi.local.room.model.TokenEntity
 
 @Database(
     entities = [
-        TokenEntity::class
+        TokenEntity::class,
     ],
-    version =  14,
-    exportSchema = false
+    version = 14,
+    exportSchema = false,
 )
-internal abstract class SeugiDatabase: RoomDatabase() {
+internal abstract class SeugiDatabase : RoomDatabase() {
     abstract fun tokenDao(): TokenDao
 }
