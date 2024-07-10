@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 class EmailSignInViewModel @Inject constructor(
     private val emailSignInRepository: MemberRepository,
     private val tokenRepository: TokenRepository,
-    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher
+    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(EmailSignInState())
@@ -49,7 +49,7 @@ class EmailSignInViewModel @Inject constructor(
                         val refreshToken = it.data.refreshToken
                         tokenRepository.insertToken(
                             accessToken = accessToken,
-                            refreshToken = refreshToken
+                            refreshToken = refreshToken,
                         )
                     }
 
