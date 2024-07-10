@@ -62,6 +62,10 @@ material3Android = "1.2.1"
 #compose-bom = "2024.03.00"
 
 
+## room
+room = "2.6.1"
+
+
 [libraries]
 
 # kotlin
