@@ -6,6 +6,7 @@ import com.apeun.gidaechi.common.model.Result
 import com.apeun.gidaechi.common.utiles.DispatcherType
 import com.apeun.gidaechi.common.utiles.SeugiDispatcher
 import com.apeun.gidaechi.data.MemberRepository
+import com.apeun.gidaechi.data.token.TokenRepository
 import com.apeun.gidaechi.login.model.EmailSignInSideEffect
 import com.apeun.gidaechi.login.model.EmailSignInState
 import com.apeun.gidaechi.network.request.EmailSignInRequest
@@ -21,7 +22,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class EmailSignInViewModel @Inject constructor(
     private val emailSignInRepository: MemberRepository,
-    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
+    private val tokenRepository: TokenRepository,
+    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(EmailSignInState())
@@ -45,9 +47,9 @@ class EmailSignInViewModel @Inject constructor(
                         )
                         val accessToken = it.data.accessToken
                         val refreshToken = it.data.refreshToken
-                        _state.value = _state.value.copy(
+                        tokenRepository.insertToken(
                             accessToken = accessToken,
-                            refreshToken = refreshToken,
+                            refreshToken = refreshToken
                         )
                     }
 
