@@ -12,4 +12,5 @@ dependencies {
     implementation(projects.data.emailSignIn)
     implementation(projects.network.signIn)
     implementation(projects.common)
+    implementation(projects.data.token)
 }

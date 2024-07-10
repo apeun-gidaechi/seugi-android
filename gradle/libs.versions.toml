@@ -62,6 +62,10 @@ material3Android = "1.2.1"
 #compose-bom = "2024.03.00"
 
 
+## room
+room = "2.6.1"
+
+
 [libraries]
 
 # kotlin
@@ -118,6 +122,11 @@ okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-
 
 # socket
 stomp-android = { group = "com.github.NaikSoftware", name = "StompProtocolAndroid", version.ref = "stomp-android" }
+
+# room
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
 # test
 junit = { group = "junit", name = "junit", version.ref = "junit" }

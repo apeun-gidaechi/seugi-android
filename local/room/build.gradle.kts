@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.seugi.android.kotlin)
     alias(libs.plugins.seugi.kotlin.serialization)
     alias(libs.plugins.seugi.android.hilt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -10,6 +11,9 @@ android {
 }
 
 dependencies{
-    implementation ("androidx.room:room-runtime:2.2.6")
-    annotationProcessor ("androidx.room:room-compiler:2.2.6")
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+
+
 }
