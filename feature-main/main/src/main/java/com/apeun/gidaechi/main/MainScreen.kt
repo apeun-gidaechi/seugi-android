@@ -1,5 +1,8 @@
 package com.apeun.gidaechi.main
 
+import android.util.Log
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -38,7 +41,7 @@ import com.apeun.gidaechi.roomcreate.navigation.roomCreateScreen
 private const val NAVIGATION_ANIM = 400
 
 @Composable
-internal fun MainScreen(navHostController: NavHostController = rememberNavController()) {
+internal fun MainScreen(navHostController: NavHostController = rememberNavController(), mainToOnboarding: () -> Unit) {
     val backstackEntry by navHostController.currentBackStackEntryAsState()
     val selectItemState: BottomNavigationItemType by remember {
         derivedStateOf {
@@ -55,6 +58,13 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
     var navigationVisible by remember { mutableStateOf(true) }
     val onNavigationVisibleChange: (Boolean) -> Unit = {
         navigationVisible = it
+    }
+
+    val backPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
+    BackHandler {
+        Log.d("MainScreen", "Back button pressed")
+        mainToOnboarding()
     }
 
     Scaffold(
