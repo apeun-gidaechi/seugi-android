@@ -525,6 +525,12 @@ private fun PreviewSeugiChatItem() {
                     createdAt = "2024년 3월 21일 목요일",
                 ),
             )
+            SeugiChatItem(
+                type = ChatItemType.Else(
+                    message = "챗스기님이 입장하셨습니다.",
+                ),
+            )
+
         }
     }
 }
