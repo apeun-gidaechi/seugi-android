@@ -5,7 +5,12 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.AnchoredDraggableState
@@ -26,6 +31,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -62,6 +68,7 @@ import com.apeun.gidaechi.chatseugi.model.ChatData
 import com.apeun.gidaechi.common.utiles.toAmShortString
 import com.apeun.gidaechi.common.utiles.toFullFormatString
 import com.apeun.gidaechi.designsystem.R
+import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.DividerType
 import com.apeun.gidaechi.designsystem.component.DragState
 import com.apeun.gidaechi.designsystem.component.SeugiDivider
@@ -79,7 +86,9 @@ import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.Gray400
 import com.apeun.gidaechi.designsystem.theme.Gray500
 import com.apeun.gidaechi.designsystem.theme.Gray600
+import com.apeun.gidaechi.designsystem.theme.Gray700
 import com.apeun.gidaechi.designsystem.theme.Primary050
+import com.apeun.gidaechi.designsystem.theme.Primary100
 import com.apeun.gidaechi.designsystem.theme.Primary500
 import com.apeun.gidaechi.message.model.message.MessageUserModel
 import kotlinx.collections.immutable.ImmutableList
@@ -308,60 +317,92 @@ internal fun ChatSeugiScreen(
         startPadding = 62.dp,
         state = anchoredState,
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
                 .background(Primary050)
         ) {
-            LazyColumn(
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Primary050),
-                contentPadding = PaddingValues(
-                    horizontal = 8.dp,
-                ),
-                state = scrollState,
-                reverseLayout = true
+                    .fillMaxSize()
+                    .background(Primary050)
             ) {
-                items(state.chatMessage) { data ->
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp)
-                    ) {
-                        when (data) {
-                            is ChatData.AI -> {
-                                SeugiChatItem(
-                                    type = ChatItemType.Ai(
-                                        isFirst = data.isFirst,
-                                        isLast = data.isLast,
-                                        message = data.message,
-                                        createdAt = data.timestamp.toAmShortString(),
-                                        count = null
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Primary050),
+                    contentPadding = PaddingValues(
+                        horizontal = 8.dp,
+                    ),
+                    state = scrollState,
+                    reverseLayout = true
+                ) {
+                    items(state.chatMessage) { data ->
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 8.dp)
+                        ) {
+                            when (data) {
+                                is ChatData.AI -> {
+                                    SeugiChatItem(
+                                        type = ChatItemType.Ai(
+                                            isFirst = data.isFirst,
+                                            isLast = data.isLast,
+                                            message = data.message,
+                                            createdAt = data.timestamp.toAmShortString(),
+                                            count = null
+                                        )
                                     )
-                                )
-                            }
+                                }
 
-                            is ChatData.User -> {
-                                SeugiChatItem(
-                                    modifier = Modifier
-                                        .align(Alignment.End),
-                                    type = ChatItemType.Me(
-                                        isLast = data.isLast,
-                                        message = data.message,
-                                        createdAt = data.timestamp.toAmShortString(),
-                                        count = null
+                                is ChatData.User -> {
+                                    SeugiChatItem(
+                                        modifier = Modifier
+                                            .align(Alignment.End),
+                                        type = ChatItemType.Me(
+                                            isLast = data.isLast,
+                                            message = data.message,
+                                            createdAt = data.timestamp.toAmShortString(),
+                                            count = null
+                                        )
                                     )
-                                )
-                            }
+                                }
 
-                            else -> {}
+                                else -> {}
+                            }
                         }
                     }
                 }
+                Spacer(modifier = Modifier.weight(1f))
             }
-            Spacer(modifier = Modifier.weight(1f))
+            AnimatedVisibility(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 13.dp),
+                visible = text.isNotEmpty(),
+                enter = fadeIn(TweenSpec(200)),
+                exit = fadeOut(TweenSpec(200))
+            ) {
+                Row {
+                    ChatSeugiExampleText(
+                        text = "오늘 급식 뭐야?",
+                        onClick = {
+                            text = ""
+                            viewModel.sendMessage("오늘 급식 뭐야?")
+                        }
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    ChatSeugiExampleText(
+                        text = "8월 행사 알려줘",
+                        onClick = {
+                            text = ""
+                            viewModel.sendMessage("8월 행사 알려줘")
+                        }
+                    )
+                }
+            }
         }
     }
 }
@@ -519,6 +560,36 @@ internal fun rememberKeyboardOpen(): State<ExKeyboardState> {
 
         awaitDispose {
             viewTreeObserver.removeOnGlobalLayoutListener(listener)
+        }
+    }
+}
+
+
+@Composable
+internal fun ChatSeugiExampleText(
+    text: String,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .bounceClick(onClick = onClick),
+    ) {
+        Box(
+            modifier = Modifier
+                .background(
+                    color = Primary100,
+                    shape = RoundedCornerShape(12.dp)
+                )
+        ) {
+            Text(
+                modifier = Modifier.padding(
+                    vertical = 8.dp,
+                    horizontal = 12.dp
+                ),
+                text = text,
+                color = Gray700,
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
     }
 }
