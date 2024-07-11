@@ -23,6 +23,8 @@ import com.apeun.gidaechi.chat.navigation.CHAT_ROUTE
 import com.apeun.gidaechi.chat.navigation.chatScreen
 import com.apeun.gidaechi.chatdatail.navigation.chatDetailScreen
 import com.apeun.gidaechi.chatdatail.navigation.navigateToChatDetail
+import com.apeun.gidaechi.chatseugi.navigation.chatSeugiScreen
+import com.apeun.gidaechi.chatseugi.navigation.navigateToChatSeugi
 import com.apeun.gidaechi.designsystem.component.BottomNavigationItemType
 import com.apeun.gidaechi.designsystem.component.SeugiBottomNavigation
 import com.apeun.gidaechi.home.navigation.HOME_ROUTE
@@ -98,7 +100,11 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
             popEnterTransition = { fadeIn(animationSpec = tween(NAVIGATION_ANIM)) },
             popExitTransition = { fadeOut(animationSpec = tween(NAVIGATION_ANIM)) },
         ) {
-            homeScreen()
+            homeScreen(
+                navigateToChatSeugi = {
+                    navHostController.navigateToChatSeugi()
+                },
+            )
 
             chatScreen(
                 navigateToChatDetail = { chatId, workspaceId ->
@@ -148,6 +154,13 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
             profileScreen()
 
             notificationScreen()
+
+            chatSeugiScreen(
+                onNavigationVisibleChange = onNavigationVisibleChange,
+                popBackStack = {
+                    navHostController.popBackStack()
+                },
+            )
         }
     }
 }

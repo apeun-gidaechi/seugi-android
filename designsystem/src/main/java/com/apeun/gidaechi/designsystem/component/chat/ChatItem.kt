@@ -175,6 +175,10 @@ private fun SeugiChatItemOthers(
             ) {
                 Box(
                     modifier = Modifier
+                        .weight(
+                            weight = 1f,
+                            fill = false,
+                        )
                         .dropShadow(
                             type = DropShadowType.EvBlack1,
                         )
@@ -352,7 +356,7 @@ private fun SeugiChatItemAi(
         Column {
             if (isFirst) {
                 Text(
-                    text = "AI",
+                    text = "캣스기",
                     style = MaterialTheme.typography.bodyLarge,
                     color = Gray600,
                 )
@@ -363,6 +367,10 @@ private fun SeugiChatItemAi(
             ) {
                 Box(
                     modifier = Modifier
+                        .weight(
+                            weight = 1f,
+                            fill = false,
+                        )
                         .dropShadow(
                             type = DropShadowType.EvBlack1,
                         )

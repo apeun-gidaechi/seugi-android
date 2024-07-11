@@ -1,5 +1,8 @@
 import java.net.URI
 
+include(":feature-main:chat-seugi")
+
+
 include(":data:token")
 
 
