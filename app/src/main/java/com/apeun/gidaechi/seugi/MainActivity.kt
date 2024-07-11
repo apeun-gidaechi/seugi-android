@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = navHostController,
-                        startDestination = MAIN_ROUTE,
+                        startDestination = ONBOARDING_ROUTE,
                     ) {
                         mainScreen()
                         onboardingScreen(

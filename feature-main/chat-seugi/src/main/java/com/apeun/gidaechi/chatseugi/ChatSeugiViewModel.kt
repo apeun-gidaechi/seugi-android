@@ -22,24 +22,6 @@ class ChatSeugiViewModel @Inject constructor(
     private val _state = MutableStateFlow(ChatSeugiUiState())
     val state = _state.asStateFlow()
 
-    init {
-        _state.update {
-            it.copy(
-                chatMessage = listOf(
-
-                    ChatData.AI("오리훈제볶음밥\n간장두부조립\n배추김치\n초코첵스시리얼+우유\n오렌지", LocalDateTime.now(), false, true),
-                    ChatData.AI("오늘 급식은 다음과 같습니다.", LocalDateTime.now(), true, false),
-                    ChatData.User("오늘 급식 뭐야?", LocalDateTime.now(), true),
-
-                    ChatData.AI("잏 학교는 내꺼야ㅑ", LocalDateTime.now(), false, true),
-
-                    ChatData.AI("스기스기스기", LocalDateTime.now(), true, false),
-
-                ).toImmutableList()
-            )
-        }
-    }
-
     fun sendMessage(message: String) = viewModelScope.launch {
         _state.update {
             it.copy(
