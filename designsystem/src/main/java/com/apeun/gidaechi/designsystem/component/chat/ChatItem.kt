@@ -124,7 +124,10 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType, onChatLongC
             )
         }
         is ChatItemType.Else -> {
-            Text(text = type.message)
+            SeugiChatItemElse(
+                modifier = modifier,
+                message = type.message,
+            )
         }
     }
 }
@@ -425,6 +428,29 @@ private fun SeugiChatItemAi(
     }
 }
 
+@Composable
+private fun SeugiChatItemElse(modifier: Modifier, message: String) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+    ) {
+        Text(
+            modifier = Modifier
+                .background(
+                    color = Gray100,
+                    shape = RoundedCornerShape(24.dp),
+                )
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 8.dp,
+                ),
+            text = message,
+            color = Gray600,
+            style = MaterialTheme.typography.labelMedium,
+        )
+    }
+}
+
 @Preview
 @Composable
 private fun PreviewSeugiChatItem() {
@@ -497,6 +523,11 @@ private fun PreviewSeugiChatItem() {
             SeugiChatItem(
                 type = ChatItemType.Date(
                     createdAt = "2024년 3월 21일 목요일",
+                ),
+            )
+            SeugiChatItem(
+                type = ChatItemType.Else(
+                    message = "챗스기님이 입장하셨습니다.",
                 ),
             )
         }

@@ -28,7 +28,9 @@ class ChatViewModel @Inject constructor(
                 is Result.Success -> {
                     Log.d("TAG", "loadChats: ${it.data}")
                     _state.value = _state.value.copy(
-                        chatItems = it.data.toImmutableList(),
+                        chatItems = it.data.sortedByDescending {
+                            it.lastMessageTimestamp
+                        }.toImmutableList(),
                     )
                 }
                 is Result.Error -> {
