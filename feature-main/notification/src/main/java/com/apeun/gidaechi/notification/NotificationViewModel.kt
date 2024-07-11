@@ -25,12 +25,21 @@ class NotificationViewModel @Inject constructor(
     private val _state = MutableStateFlow(NotificationUiState())
     val state = _state.asStateFlow()
 
+    fun enabledRefresh() = viewModelScope.launch(dispatcher) {
+        _state.update {
+            it.copy(
+                isRefresh = true
+            )
+        }
+    }
+
     fun loadNotices(workspaceId: String) = viewModelScope.launch(dispatcher) {
         noticeRepository.getNotices(workspaceId).collect { result ->
             when(result) {
                 is Result.Success -> {
                     _state.update {
                         it.copy(
+                            isRefresh = false,
                             notices = result.data.toImmutableList()
                         )
                     }
