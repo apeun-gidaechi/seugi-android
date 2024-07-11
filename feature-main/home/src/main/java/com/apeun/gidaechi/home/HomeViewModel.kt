@@ -47,9 +47,9 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                     catSeugiState = CommonUiState.Success(listOf("급식에 복어가 나오는 날이 언제...", "우리 학교 대회 담당하는 분이 누구...").toImmutableList()),
                     schoolScheduleState = CommonUiState.Success(
                         listOf(
-                            Triple("7/21", "체육대회", "D-3"),
-                            Triple("7/23", "여름 교내 해커톤", "D-5"),
-                            Triple("7/25", "KBS 촬영", "D-7"),
+                            Triple("7/21", "체육대회", "D-9"),
+                            Triple("7/23", "여름 교내 해커톤", "D-11"),
+                            Triple("7/25", "KBS 촬영", "D-13"),
                         ).toImmutableList(),
                     ),
                 )
@@ -85,9 +85,9 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                     catSeugiState = CommonUiState.Success(listOf("급식에 복어가 나오는 날이 언제...", "우리 학교 대회 담당하는 분이 누구...").toImmutableList()),
                     schoolScheduleState = CommonUiState.Success(
                         listOf(
-                            Triple("7/21", "체육대회", "D-3"),
-                            Triple("7/23", "여름 교내 해커톤", "D-5"),
-                            Triple("7/25", "KBS 촬영", "D-7"),
+                            Triple("7/21", "체육대회", "D-9"),
+                            Triple("7/23", "여름 교내 해커톤", "D-11"),
+                            Triple("7/25", "KBS 촬영", "D-13"),
                         ).toImmutableList(),
                     ),
                 )
