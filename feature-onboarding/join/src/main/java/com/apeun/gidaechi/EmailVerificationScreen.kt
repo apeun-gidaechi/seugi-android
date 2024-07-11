@@ -44,7 +44,7 @@ import kotlinx.coroutines.flow.collectLatest
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailVerificationScreen(
-    navigateToSchoolCode: () -> Unit,
+    navigateToStart: () -> Unit,
     popBackStack: () -> Unit,
     viewModel: EmailVerificationViewModel = hiltViewModel(),
     name: String,

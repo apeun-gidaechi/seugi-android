@@ -13,7 +13,7 @@ const val EMAIL_VERIFICATION_ROUTE = "emailVerification"
 fun NavController.navigateToEmailVerification(navOptions: NavOptions? = null, name: String, email: String, password: String) =
     navigate("$EMAIL_VERIFICATION_ROUTE/$name/$email/$password", navOptions)
 
-fun NavGraphBuilder.emailVerificationScreen(navigateToSchoolCode: () -> Unit, popBackStack: () -> Unit) {
+fun NavGraphBuilder.emailVerificationScreen(navigateToStart: () -> Unit, popBackStack: () -> Unit) {
     composable(
         route = "$EMAIL_VERIFICATION_ROUTE/{name}/{email}/{password}",
         arguments = listOf(
@@ -23,7 +23,7 @@ fun NavGraphBuilder.emailVerificationScreen(navigateToSchoolCode: () -> Unit, po
         ),
     ) {
         EmailVerificationScreen(
-            navigateToSchoolCode = navigateToSchoolCode,
+            navigateToStart = navigateToStart,
             popBackStack = popBackStack,
             name = it.arguments?.getString("name") ?: "",
             email = it.arguments?.getString("email") ?: "",
