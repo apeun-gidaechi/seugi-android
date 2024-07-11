@@ -29,7 +29,9 @@ class RoomViewModel @Inject constructor(
             when (it) {
                 is Result.Success -> {
                     _state.value = _state.value.copy(
-                        chatItems = it.data.toImmutableList(),
+                        chatItems = it.data.sortedByDescending {
+                            it.lastMessageTimestamp
+                        }.toImmutableList(),
                     )
                 }
                 is Result.Loading -> {}
