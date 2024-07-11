@@ -11,14 +11,11 @@ const val CHAT_SEUGI_ROUTE = "chat_seugi"
 
 fun NavController.navigateToChatSeugi(navOptions: NavOptions? = null) = navigate(CHAT_SEUGI_ROUTE, navOptions)
 
-fun NavGraphBuilder.chatSeugiScreen(
-    onNavigationVisibleChange: (Boolean) -> Unit,
-    popBackStack: () -> Unit
-) {
+fun NavGraphBuilder.chatSeugiScreen(onNavigationVisibleChange: (Boolean) -> Unit, popBackStack: () -> Unit) {
     composable(CHAT_SEUGI_ROUTE) {
         ChatSeugiScreen(
             onNavigationVisibleChange = onNavigationVisibleChange,
-            popBackStack = popBackStack
+            popBackStack = popBackStack,
         )
     }
 }

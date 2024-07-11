@@ -98,7 +98,7 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
             homeScreen(
                 navigateToChatSeugi = {
                     navHostController.navigateToChatSeugi()
-                }
+                },
             )
 
             chatScreen(
@@ -154,7 +154,7 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                 onNavigationVisibleChange = onNavigationVisibleChange,
                 popBackStack = {
                     navHostController.popBackStack()
-                }
+                },
             )
         }
     }

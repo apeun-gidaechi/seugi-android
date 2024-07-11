@@ -84,10 +84,7 @@ import com.apeun.gidaechi.home.model.CommonUiState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-internal fun HomeScreen(
-    viewModel: HomeViewModel = hiltViewModel(),
-    navigateToChatSeugi: () -> Unit,
-) {
+internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToChatSeugi: () -> Unit) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState { 3 }
@@ -440,7 +437,7 @@ internal fun HomeScreen(
                                         shape = CircleShape,
                                     )
                                     .bounceClick(
-                                        onClick = navigateToChatSeugi
+                                        onClick = navigateToChatSeugi,
                                     ),
                                 verticalAlignment = Alignment.CenterVertically,
                             ) {

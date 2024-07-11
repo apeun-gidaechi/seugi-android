@@ -3,21 +3,13 @@ package com.apeun.gidaechi.chatseugi
 import android.graphics.Rect
 import android.view.View
 import android.view.ViewTreeObserver
-import android.widget.Toast
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.TweenSpec
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.AnchoredDraggableState
-import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.animateScrollBy
-import androidx.compose.foundation.gestures.animateTo
-import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,19 +24,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
@@ -52,11 +39,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -66,35 +49,17 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apeun.gidaechi.chatseugi.model.ChatData
 import com.apeun.gidaechi.common.utiles.toAmShortString
-import com.apeun.gidaechi.common.utiles.toFullFormatString
-import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.animation.bounceClick
-import com.apeun.gidaechi.designsystem.component.DividerType
-import com.apeun.gidaechi.designsystem.component.DragState
-import com.apeun.gidaechi.designsystem.component.SeugiDivider
-import com.apeun.gidaechi.designsystem.component.SeugiIconButton
-import com.apeun.gidaechi.designsystem.component.SeugiMemberList
-import com.apeun.gidaechi.designsystem.component.SeugiRightSideScaffold
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.chat.ChatItemType
 import com.apeun.gidaechi.designsystem.component.chat.SeugiChatItem
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
-import com.apeun.gidaechi.designsystem.component.modifier.`if`
 import com.apeun.gidaechi.designsystem.component.textfield.SeugiChatTextField
 import com.apeun.gidaechi.designsystem.theme.Black
-import com.apeun.gidaechi.designsystem.theme.Gray400
-import com.apeun.gidaechi.designsystem.theme.Gray500
-import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Gray700
 import com.apeun.gidaechi.designsystem.theme.Primary050
 import com.apeun.gidaechi.designsystem.theme.Primary100
-import com.apeun.gidaechi.designsystem.theme.Primary500
-import com.apeun.gidaechi.message.model.message.MessageUserModel
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -117,7 +82,6 @@ internal fun ChatSeugiScreen(
 
     val density = LocalDensity.current
     var isOpenSidebar by remember { mutableStateOf(false) }
-
 
     LifecycleResumeEffect(key1 = Unit) {
         onNavigationVisibleChange(false)
@@ -183,12 +147,12 @@ internal fun ChatSeugiScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                .background(Primary050)
+                .background(Primary050),
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Primary050)
+                    .background(Primary050),
             ) {
                 LazyColumn(
                     modifier = Modifier
@@ -198,13 +162,13 @@ internal fun ChatSeugiScreen(
                         horizontal = 8.dp,
                     ),
                     state = scrollState,
-                    reverseLayout = true
+                    reverseLayout = true,
                 ) {
                     items(state.chatMessage) { data ->
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = 8.dp)
+                                .padding(bottom = 8.dp),
                         ) {
                             when (data) {
                                 is ChatData.AI -> {
@@ -214,8 +178,8 @@ internal fun ChatSeugiScreen(
                                             isLast = data.isLast,
                                             message = data.message,
                                             createdAt = data.timestamp.toAmShortString(),
-                                            count = null
-                                        )
+                                            count = null,
+                                        ),
                                     )
                                 }
 
@@ -227,8 +191,8 @@ internal fun ChatSeugiScreen(
                                             isLast = data.isLast,
                                             message = data.message,
                                             createdAt = data.timestamp.toAmShortString(),
-                                            count = null
-                                        )
+                                            count = null,
+                                        ),
                                     )
                                 }
 
@@ -243,9 +207,9 @@ internal fun ChatSeugiScreen(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 13.dp),
-                visible = text.isNotEmpty(),
+                visible = text.isNotEmpty() || state.chatMessage.size == 0,
                 enter = fadeIn(TweenSpec(200)),
-                exit = fadeOut(TweenSpec(200))
+                exit = fadeOut(TweenSpec(200)),
             ) {
                 Row {
                     ChatSeugiExampleText(
@@ -253,7 +217,7 @@ internal fun ChatSeugiScreen(
                         onClick = {
                             text = ""
                             viewModel.sendMessage("오늘 급식 뭐야?")
-                        }
+                        },
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     ChatSeugiExampleText(
@@ -261,7 +225,7 @@ internal fun ChatSeugiScreen(
                         onClick = {
                             text = ""
                             viewModel.sendMessage("8월 행사 알려줘")
-                        }
+                        },
                     )
                 }
             }
@@ -305,12 +269,8 @@ internal fun rememberKeyboardOpen(): State<ExKeyboardState> {
     }
 }
 
-
 @Composable
-internal fun ChatSeugiExampleText(
-    text: String,
-    onClick: () -> Unit
-) {
+internal fun ChatSeugiExampleText(text: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .bounceClick(onClick = onClick),
@@ -319,17 +279,17 @@ internal fun ChatSeugiExampleText(
             modifier = Modifier
                 .background(
                     color = Primary100,
-                    shape = RoundedCornerShape(12.dp)
-                )
+                    shape = RoundedCornerShape(12.dp),
+                ),
         ) {
             Text(
                 modifier = Modifier.padding(
                     vertical = 8.dp,
-                    horizontal = 12.dp
+                    horizontal = 12.dp,
                 ),
                 text = text,
                 color = Gray700,
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
             )
         }
     }
