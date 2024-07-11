@@ -316,11 +316,16 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                                     ) {
                                         Text(
                                             modifier = Modifier.padding(vertical = (6.5).dp),
-                                            text = "오리훈제볶음밥\n간장두조림\n배추김치\n초코첵스시리얼+우유\n오렌지",
+                                            text = when (index) {
+                                                0 -> "쇠고기 야채죽\n연유프렌치토스트\n배추김치\n포도\n허니초코크런치시리얼+우유"
+                                                1 -> "추가 밥\n매콥로제 해물 파스타\n#브리오슈수제버거\n모둠야채피클\n멕케인\n망고사고"
+                                                else -> "현미밥\n돼지국밥\n삼색나물무침\n-오징어야채볶음\n석박지"
+                                            },
                                             style = MaterialTheme.typography.bodyMedium,
                                             color = Gray700,
                                         )
                                         Spacer(modifier = Modifier.height(8.dp))
+
                                         Box(
                                             modifier = Modifier
                                                 .background(
@@ -333,7 +338,11 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                                                     vertical = 4.dp,
                                                     horizontal = 8.dp,
                                                 ),
-                                                text = "872Kcal",
+                                                text = when (index) {
+                                                    0 -> "602Kcal"
+                                                    1 -> "1,443Kcal"
+                                                    else -> "774Kcal"
+                                                },
                                                 style = MaterialTheme.typography.labelLarge,
                                                 color = White,
                                             )
@@ -584,12 +593,19 @@ private fun changeNavigationColor(window: Window, backgroundColor: Color, isDark
         )
     } else {
         @Suppress("DEPRECATION")
-        window.decorView.systemUiVisibility = if (isDark) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        window.decorView.systemUiVisibility =
+            if (isDark) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
     }
 }
 
 @Composable
-internal fun HomeCard(modifier: Modifier = Modifier, text: String, image: Painter, colorFilter: ColorFilter? = null, content: @Composable () -> Unit) {
+internal fun HomeCard(
+    modifier: Modifier = Modifier,
+    text: String,
+    image: Painter,
+    colorFilter: ColorFilter? = null,
+    content: @Composable () -> Unit
+) {
     Column(
         modifier = modifier
             .padding(horizontal = 20.dp)
@@ -759,7 +775,12 @@ internal fun HomeSubjectCard(modifier: Modifier, index: Int, selectIndex: Int, s
 }
 
 @Composable
-internal fun HomeCalendarCard(modifier: Modifier = Modifier, date: String, content: String, dDay: String) {
+internal fun HomeCalendarCard(
+    modifier: Modifier = Modifier,
+    date: String,
+    content: String,
+    dDay: String
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
     ) {
