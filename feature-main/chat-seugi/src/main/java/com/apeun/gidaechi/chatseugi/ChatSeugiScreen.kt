@@ -326,14 +326,13 @@ internal fun ChatSeugiScreen(
             ) {
                 items(state.chatMessage) { data ->
                     Column(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp)
                     ) {
                         when (data) {
                             is ChatData.AI -> {
                                 SeugiChatItem(
-                                    modifier = Modifier.padding(
-                                        bottom = 8.dp,
-                                    ),
                                     type = ChatItemType.Ai(
                                         isFirst = data.isFirst,
                                         isLast = data.isLast,
