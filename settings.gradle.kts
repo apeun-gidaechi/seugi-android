@@ -1,5 +1,11 @@
 import java.net.URI
 
+include(":data:notice")
+
+
+include(":network:notice")
+
+
 include(":feature-main:chat-seugi")
 
 

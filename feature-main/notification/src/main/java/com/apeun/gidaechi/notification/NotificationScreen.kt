@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,7 +32,11 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.apeun.gidaechi.common.utiles.toShortString
+import com.apeun.gidaechi.common.utiles.toTimeString
 import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.animation.bounceClick
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
@@ -45,11 +50,15 @@ import com.apeun.gidaechi.designsystem.theme.Gray600
 import com.apeun.gidaechi.designsystem.theme.Primary050
 import com.apeun.gidaechi.designsystem.theme.White
 import com.apeun.gidaechi.ui.changeNavigationColor
+import kotlinx.collections.immutable.ImmutableList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun NotificationScreen() {
+internal fun NotificationScreen(
+    viewModel: NotificationViewModel = hiltViewModel(),
+) {
     val view = LocalView.current
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     LifecycleResumeEffect(Unit) {
         onPauseOrDispose {
@@ -61,6 +70,7 @@ internal fun NotificationScreen() {
     }
 
     LaunchedEffect(key1 = true) {
+        viewModel.loadNotices("664bdd0b9dfce726abd30462")
         if (!view.isInEditMode) {
             val window = (view.context as Activity).window
             changeNavigationColor(window, Primary050, false)
@@ -94,14 +104,14 @@ internal fun NotificationScreen() {
         LazyColumn(
             modifier = Modifier.padding(horizontal = 20.dp),
         ) {
-            items(40) {
+            items(state.notices) {
                 Spacer(modifier = Modifier.height(8.dp))
                 NotificationCard(
-                    title = "교내 체육대회 안내",
-                    description = "5월말 체육대회 합니다. 깔쌈하게 준비해오십시오",
-                    author = "캣스기",
-                    emojiList = listOf("17", "32"),
-                    createdAt = "5월 3일 수요일",
+                    title = it.title,
+                    description = it.content,
+                    author = it.userName,
+                    emojiList = it.emoji,
+                    createdAt = it.creationDate.toTimeString(),
                     onClickAddEmoji = { /*TODO*/ },
                     onClickDetailInfo = { /*TODO*/ },
                     onClickNotification = { /*TODO*/ },
@@ -117,7 +127,7 @@ internal fun NotificationCard(
     title: String,
     description: String,
     author: String,
-    emojiList: List<String>,
+    emojiList: ImmutableList<String>,
     createdAt: String,
     onClickAddEmoji: () -> Unit,
     onClickDetailInfo: () -> Unit,
