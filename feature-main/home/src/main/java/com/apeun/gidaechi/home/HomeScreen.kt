@@ -68,6 +68,7 @@ import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.brushDraw
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
+import com.apeun.gidaechi.designsystem.component.modifier.`if`
 import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.Gray100
 import com.apeun.gidaechi.designsystem.theme.Gray300
@@ -634,7 +635,10 @@ internal fun HomeCard(
                 Image(
                     modifier = Modifier
                         .size(24.dp)
-                        .align(Alignment.Center),
+                        .align(Alignment.Center)
+                        .`if`(true){
+                            Modifier.background(White)
+                        },
                     painter = image,
                     contentDescription = "",
                     colorFilter = colorFilter,
