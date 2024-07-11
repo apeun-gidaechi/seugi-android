@@ -107,40 +107,16 @@ internal fun ChatSeugiScreen(
     popBackStack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-//    val sideEffect: ChatDetailSideEffect? by viewModel.sideEffect.collectAsStateWithLifecycle(initialValue = null)
     val scrollState = rememberLazyListState()
 
-    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     var text by remember { mutableStateOf("") }
-    var notificationState by remember { mutableStateOf(false) }
     var isSearch by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
     val keyboardState by rememberKeyboardOpen()
-    var isFirst by remember { mutableStateOf(true) }
 
     val density = LocalDensity.current
-    val screenSizeDp = LocalConfiguration.current.screenWidthDp.dp
-    val screenSizePx = with(density) { screenSizeDp.toPx() }
     var isOpenSidebar by remember { mutableStateOf(false) }
-    val anchors = remember {
-        DraggableAnchors {
-            DragState.START at 0f
-            DragState.END at screenSizePx
-        }
-    }
-    val anchoredState = remember {
-        AnchoredDraggableState(
-            initialValue = DragState.START,
-            animationSpec = tween(),
-            positionalThreshold = {
-                0f
-            },
-            velocityThreshold = {
-                0f
-            },
-        )
-    }
 
 
     LifecycleResumeEffect(key1 = Unit) {
@@ -156,23 +132,7 @@ internal fun ChatSeugiScreen(
         }
     }
 
-    BackHandler(
-        enabled = isSearch || isOpenSidebar,
-    ) {
-        isSearch = false
-        if (isOpenSidebar) {
-            coroutineScope.launch {
-                anchoredState.animateTo(DragState.END)
-            }
-            isOpenSidebar = false
-        }
-    }
-
-    SideEffect {
-        anchoredState.updateAnchors(anchors, DragState.END)
-    }
-
-    SeugiRightSideScaffold(
+    Scaffold(
         modifier = Modifier
             .fillMaxSize()
             .background(Primary050),
@@ -180,61 +140,19 @@ internal fun ChatSeugiScreen(
             SeugiTopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = {
-                    if (isSearch) {
-                        ChatDetailTextField(
-                            searchText = searchText,
-                            onValueChange = {
-                                searchText = it
-                            },
-                            enabled = true,
-                            placeholder = "메세지 검색",
-                            onDone = {
-                                searchText = ""
-                                isSearch = false
-                            },
-                        )
-                    } else {
-                        Text(
-                            text = "캣스기",
-                            style = MaterialTheme.typography.titleLarge,
-                            color = Black,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
+                    Text(
+                        text = "캣스기",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = Black,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 },
-                actions = {
-                    if (!isSearch) {
-                        SeugiIconButton(
-                            resId = R.drawable.ic_search,
-                            size = 28.dp,
-                            onClick = {
-                                isSearch = true
-                                searchText = ""
-                            },
-                        )
-                        Spacer(modifier = Modifier.width(16.dp))
-                        SeugiIconButton(
-                            resId = R.drawable.ic_hamburger_horizontal_line,
-                            size = 28.dp,
-                            onClick = {
-                                isOpenSidebar = true
-                                coroutineScope.launch {
-                                    anchoredState.animateTo(DragState.START)
-                                }
-                            },
-                        )
-                        Spacer(modifier = Modifier.width(16.dp))
-                    }
-                },
+                actions = {},
                 backIconCheck = true,
                 shadow = true,
                 onNavigationIconClick = {
-                    if (isSearch) {
-                        isSearch = !isSearch
-                    } else {
-                        popBackStack()
-                    }
+                    popBackStack()
                 },
             )
         },
@@ -255,45 +173,11 @@ internal fun ChatSeugiScreen(
                     onSendClick = {
                         viewModel.sendMessage(text)
                         text = ""
-//                        text = ""
-//                        coroutineScope.launch {
-//                            if (state.message.lastIndex != -1) {
-//                                scrollState.animateScrollToItem(state.message.size - 1)
-//                            }
-//                        }
                     },
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
         },
-        sideBar = {
-            Row {
-                SeugiDivider(type = DividerType.HEIGHT)
-//                ChatSideBarScreen(
-//                    members = state.roomInfo?.members ?: persistentListOf(),
-//                    notificationState = notificationState,
-//                    onClickInviteMember = {},
-//                    onClickMember = {},
-//                    onClickLeft = {
-//                        if (!isPersonal) {
-//                            viewModel.leftRoom(chatRoomId)
-//                        }
-//                    },
-//                    onClickNotification = {
-//                        notificationState = !notificationState
-//                    },
-//                    onClickSetting = { },
-//                )
-            }
-        },
-        onSideBarClose = {
-            coroutineScope.launch {
-                anchoredState.animateTo(DragState.END)
-                isOpenSidebar = false
-            }
-        },
-        startPadding = 62.dp,
-        state = anchoredState,
     ) {
         Box(
             modifier = Modifier
@@ -383,127 +267,6 @@ internal fun ChatSeugiScreen(
             }
         }
     }
-}
-
-@Composable
-private fun ChatSideBarScreen(
-    members: ImmutableList<MessageUserModel>,
-    notificationState: Boolean,
-    onClickMember: (MessageUserModel) -> Unit,
-    onClickInviteMember: () -> Unit,
-    onClickLeft: () -> Unit,
-    onClickNotification: () -> Unit,
-    onClickSetting: () -> Unit,
-) {
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            Column {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = 16.dp,
-                            top = (9.5).dp,
-                            bottom = (9.5).dp,
-                        ),
-                    text = "멤버",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = Black,
-                )
-            }
-        },
-        bottomBar = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(39.dp)
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                SeugiIconButton(
-                    resId = R.drawable.ic_logout_line,
-                    onClick = onClickLeft,
-                    size = 28.dp,
-                    colors = IconButtonDefaults.iconButtonColors(contentColor = Gray600),
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                SeugiIconButton(
-                    resId = if (notificationState) R.drawable.ic_notification_fill else R.drawable.ic_notification_disabled_fill,
-                    onClick = {
-                        onClickNotification()
-                    },
-                    size = 28.dp,
-                    colors = IconButtonDefaults.iconButtonColors(contentColor = Gray600),
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                SeugiIconButton(
-                    resId = R.drawable.ic_setting_fill,
-                    onClick = onClickSetting,
-                    size = 28.dp,
-                    colors = IconButtonDefaults.iconButtonColors(contentColor = Gray600),
-                )
-            }
-        },
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it),
-        ) {
-            item {
-                SeugiMemberList(
-                    text = "멤버 초대하기",
-                    onClick = onClickInviteMember,
-                )
-            }
-            items(members) {
-                SeugiMemberList(
-                    userName = it.name,
-                    userProfile = it.profile,
-                    onClick = {
-                        onClickMember(it)
-                    },
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun ChatDetailTextField(searchText: String, onValueChange: (String) -> Unit, placeholder: String = "", enabled: Boolean = true, onDone: () -> Unit) {
-    val focusManager = LocalFocusManager.current
-
-    BasicTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(end = 16.dp),
-        value = searchText,
-        onValueChange = onValueChange,
-        textStyle = MaterialTheme.typography.titleLarge,
-        enabled = enabled,
-        cursorBrush = SolidColor(Primary500),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                onDone()
-                focusManager.clearFocus()
-            },
-        ),
-        singleLine = true,
-        maxLines = 1,
-        decorationBox = { innerTextField ->
-            Box {
-                if (searchText.isEmpty()) {
-                    Text(
-                        text = placeholder,
-                        color = if (enabled) Gray500 else Gray400,
-                        style = MaterialTheme.typography.titleLarge,
-                    )
-                }
-                innerTextField()
-            }
-        },
-    )
 }
 
 data class ExKeyboardState(
