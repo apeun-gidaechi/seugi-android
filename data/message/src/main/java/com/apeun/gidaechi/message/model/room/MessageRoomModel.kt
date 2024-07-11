@@ -11,7 +11,7 @@ data class MessageRoomModel(
     val chatName: String,
     val roomAdmin: Int,
     val createdAt: LocalDateTime,
-    val chatRoomImg: String,
+    val chatRoomImg: String?,
     val chatStatusEnum: MessageRoomStatusType,
     val memberList: ImmutableList<MessageUserModel>,
 )

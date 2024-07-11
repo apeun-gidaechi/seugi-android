@@ -8,7 +8,7 @@ data class MessageRoomResponse(
     val type: String,
     val chatName: String,
     val roomAdmin: Int,
-    val chatRoomImg: String,
+    val chatRoomImg: String?,
     val createdAt: LocalDateTime,
     val chatStatusEnum: String,
     val joinUserId: List<MessageRoomUserResponse>,
