@@ -60,10 +60,8 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
         navigationVisible = it
     }
 
-    val backPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     BackHandler {
-        Log.d("MainScreen", "Back button pressed")
         mainToOnboarding()
     }
 

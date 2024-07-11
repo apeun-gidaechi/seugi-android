@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    CompositionLocalProvider(LocalOnBackPressedDispatcherOwner provides this) {
+
                         NavHost(
                             navController = navHostController,
                             startDestination = ONBOARDING_ROUTE,
@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
                                 },
                             )
                         }
-                    }
+
                 }
             }
         }
