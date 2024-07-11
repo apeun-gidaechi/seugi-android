@@ -1,12 +1,14 @@
 package com.apeun.gidaechi.home.model
 
+import kotlinx.collections.immutable.ImmutableList
+
 data class HomeUiState(
     val showShimmer: Boolean = true,
     val schoolState: CommonUiState<String> = CommonUiState.Loading,
-    val timeScheduleState: CommonUiState<String> = CommonUiState.Loading,
-    val mealState: CommonUiState<Triple<String, String, String>> = CommonUiState.Loading,
-    val catSeugiState: CommonUiState<List<String>> = CommonUiState.Loading,
-    val schoolScheduleState: CommonUiState<List<Triple<String, String, String>>> = CommonUiState.Loading,
+    val timeScheduleState: CommonUiState<ImmutableList<String>> = CommonUiState.Loading,
+    val mealState: CommonUiState<Triple<Pair<String, String>, Pair<String, String>, Pair<String, String>>> = CommonUiState.Loading,
+    val catSeugiState: CommonUiState<ImmutableList<String>> = CommonUiState.Loading,
+    val schoolScheduleState: CommonUiState<ImmutableList<Triple<String, String, String>>> = CommonUiState.Loading,
 )
 
 sealed interface CommonUiState<out T> {

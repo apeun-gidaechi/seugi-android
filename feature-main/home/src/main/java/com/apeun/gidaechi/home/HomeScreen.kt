@@ -51,6 +51,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -62,6 +63,7 @@ import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.GradientPrimary
 import com.apeun.gidaechi.designsystem.component.LoadingDotsIndicator
 import com.apeun.gidaechi.designsystem.component.SeugiButton
+import com.apeun.gidaechi.designsystem.component.SeugiDialog
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.brushDraw
@@ -93,6 +95,8 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
         derivedStateOf { (pagerState.currentPage * 10).dp }
     }
     val dummyList = listOf("진로", "소공", "소공", "인공지능 수학", "한국사", "실용영어", "웹프")
+    var selectSchool by remember { mutableStateOf("대구소프트웨어마이스터고등학교") }
+    var isShowSelectSchoolDialog by remember { mutableStateOf(false) }
 
     LifecycleResumeEffect(Unit) {
         onPauseOrDispose {
@@ -107,6 +111,71 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
         if (!view.isInEditMode) {
             val window = (view.context as Activity).window
             changeNavigationColor(window, Primary050, false)
+        }
+    }
+
+    if (isShowSelectSchoolDialog) {
+        Dialog(
+            onDismissRequest = {
+                isShowSelectSchoolDialog = false
+            },
+        ) {
+            Box(
+                modifier = Modifier
+                    .dropShadow(DropShadowType.EvBlack2)
+                    .background(
+                        color = White,
+                        shape = RoundedCornerShape(16.dp),
+                    ),
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp),
+                ) {
+                    HomeSchoolSelectCard(
+                        text = "대구소프트웨마이스고...",
+                        isSelect = selectSchool == "대구소프트웨어마이스터고등학교",
+                        onClick = {
+                            if (selectSchool == "대구소프트웨어마이스터고등학교") {
+                                isShowSelectSchoolDialog = false
+                                return@HomeSchoolSelectCard
+                            }
+                            selectSchool = "대구소프트웨어마이스터고등학교"
+                            isShowSelectSchoolDialog = false
+                            viewModel.schoolChange(selectSchool)
+                        }
+                    )
+                    HomeSchoolSelectCard(
+                        text = "한국디지털미디어고등학교",
+                        isSelect = selectSchool == "한국디지털미디어고등학교",
+                        onClick = {
+                            if (selectSchool == "한국디지털미디어고등학교") {
+                                isShowSelectSchoolDialog = false
+                                return@HomeSchoolSelectCard
+                            }
+                            selectSchool = "한국디지털미디어고등학교"
+                            isShowSelectSchoolDialog = false
+                            viewModel.schoolChange(selectSchool)
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        modifier = Modifier.padding(start = 4.dp),
+                        text = "가입 대기 중",
+                        color = Gray600,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Column {
+                        HomeSchoolSelectCard(
+                            text = "경북대학교사범대학..",
+                            isSelect = selectSchool == "경북대학교사범대학..",
+                            onClick = {
+
+                            }
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -154,7 +223,9 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
                             )
                             Spacer(modifier = Modifier.weight(1f))
                             SeugiButton(
-                                onClick = { /*TODO*/ },
+                                onClick = {
+                                    isShowSelectSchoolDialog = true
+                                },
                                 type = ButtonType.Gray,
                                 text = "전환",
                             )
@@ -215,7 +286,7 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
                 image = painterResource(id = R.drawable.ic_book_fill),
                 colorFilter = ColorFilter.tint(Gray600),
             ) {
-                when (state.timeScheduleState) {
+                when (val timeScheduleState = state.timeScheduleState) {
                     is CommonUiState.Success -> {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
@@ -257,12 +328,12 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                             ) {
-                                items.fastForEachIndexed { index, itme ->
+                                timeScheduleState.data.fastForEachIndexed { index, subject ->
                                     HomeSubjectCard(
                                         modifier = Modifier.weight(1f),
                                         index = index,
                                         selectIndex = selectIndex,
-                                        subject = dummyList[index],
+                                        subject = subject,
                                     )
                                 }
                             }
@@ -296,7 +367,7 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
                     nowButtonState = it
                 },
             ) {
-                when (state.mealState) {
+                when (val mealState = state.mealState) {
                     is CommonUiState.Success -> {
                         Column {
                             HorizontalPager(
@@ -317,9 +388,9 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
                                         Text(
                                             modifier = Modifier.padding(vertical = (6.5).dp),
                                             text = when (index) {
-                                                0 -> "쇠고기 야채죽\n연유프렌치토스트\n배추김치\n포도\n허니초코크런치시리얼+우유"
-                                                1 -> "추가 밥\n매콥로제 해물 파스타\n#브리오슈수제버거\n모둠야채피클\n멕케인\n망고사고"
-                                                else -> "현미밥\n돼지국밥\n삼색나물무침\n-오징어야채볶음\n석박지"
+                                                0 ->  mealState.data.first.first
+                                                1 -> mealState.data.second.first
+                                                else -> mealState.data.third.first
                                             },
                                             style = MaterialTheme.typography.bodyMedium,
                                             color = Gray700,
@@ -339,9 +410,9 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
                                                     horizontal = 8.dp,
                                                 ),
                                                 text = when (index) {
-                                                    0 -> "602Kcal"
-                                                    1 -> "1,443Kcal"
-                                                    else -> "774Kcal"
+                                                    0 ->  mealState.data.first.second
+                                                    1 -> mealState.data.second.second
+                                                    else -> mealState.data.third.second
                                                 },
                                                 style = MaterialTheme.typography.labelLarge,
                                                 color = White,
@@ -554,16 +625,17 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
                 image = painterResource(id = R.drawable.ic_calendar_line),
                 colorFilter = ColorFilter.tint(Gray600),
             ) {
-                when (state.schoolScheduleState) {
+                when (val scheduleState = state.schoolScheduleState) {
                     is CommonUiState.Success -> {
                         Column(
                             modifier = Modifier.fillMaxWidth(),
                         ) {
-                            HomeCalendarCard(date = "7/21", content = "체육대회", dDay = "D-3")
-                            Spacer(modifier = Modifier.height(16.dp))
-                            HomeCalendarCard(date = "7/23", content = "여름 교내 해커톤", dDay = "D-5")
-                            Spacer(modifier = Modifier.height(16.dp))
-                            HomeCalendarCard(date = "7/25", content = "KBS 촬영", dDay = "D-7")
+                            scheduleState.data.fastForEachIndexed { i, data ->
+                                HomeCalendarCard(date = data.first, content = data.second, dDay = data.third)
+                                if (i != 2) {
+                                    Spacer(modifier = Modifier.height(16.dp))
+                                }
+                            }
                         }
                     }
 
@@ -813,5 +885,53 @@ internal fun HomeNotFoundText(text: String) {
             style = MaterialTheme.typography.bodyMedium,
             color = Gray600,
         )
+    }
+}
+
+@Composable
+internal fun HomeSchoolSelectCard(
+    text: String,
+    isSelect: Boolean,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier.bounceClick(
+            onClick = onClick
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = Primary050,
+                    shape = RoundedCornerShape(8.dp)
+                )
+        ) {
+            Row(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = text,
+                    color = Black,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                if (isSelect) {
+                    Image(
+                        modifier = Modifier.size(24.dp),
+                        painter = painterResource(id = R.drawable.ic_setting_fill),
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(Gray500)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
+                Image(
+                    modifier = Modifier.size(24.dp),
+                    painter = painterResource(id = R.drawable.ic_expand_right_line),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(Gray500)
+                )
+            }
+        }
     }
 }
