@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.apeun.gidaechi.chatseugi.model.ChatData
 import com.apeun.gidaechi.common.utiles.toAmShortString
 import com.apeun.gidaechi.common.utiles.toFullFormatString
 import com.apeun.gidaechi.designsystem.R
@@ -89,14 +90,14 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 internal fun ChatSeugiScreen(
-//    viewModel: ChatDetailViewModel = hiltViewModel(),
+    viewModel: ChatSeugiViewModel = hiltViewModel(),
     workspace: String = "664bdd0b9dfce726abd30462",
     isPersonal: Boolean = false,
     chatRoomId: String = "665d9ec15e65717b19a62701",
     onNavigationVisibleChange: (Boolean) -> Unit,
     popBackStack: () -> Unit,
 ) {
-//    val state by viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 //    val sideEffect: ChatDetailSideEffect? by viewModel.sideEffect.collectAsStateWithLifecycle(initialValue = null)
     val scrollState = rememberLazyListState()
 
@@ -265,7 +266,8 @@ internal fun ChatSeugiScreen(
                         text = it
                     },
                     onSendClick = {
-//                        viewModel.channelSend(text)
+                        viewModel.sendMessage(text)
+                        text = ""
 //                        text = ""
 //                        coroutineScope.launch {
 //                            if (state.message.lastIndex != -1) {
@@ -306,17 +308,61 @@ internal fun ChatSeugiScreen(
         startPadding = 62.dp,
         state = anchoredState,
     ) {
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                .background(Primary050),
-            contentPadding = PaddingValues(
-                horizontal = 8.dp,
-            ),
-            state = scrollState,
-            reverseLayout = true
+                .background(Primary050)
         ) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Primary050),
+                contentPadding = PaddingValues(
+                    horizontal = 8.dp,
+                ),
+                state = scrollState,
+                reverseLayout = true
+            ) {
+                items(state.chatMessage) { data ->
+                    Column(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        when (data) {
+                            is ChatData.AI -> {
+                                SeugiChatItem(
+                                    modifier = Modifier.padding(
+                                        bottom = 8.dp,
+                                    ),
+                                    type = ChatItemType.Ai(
+                                        isFirst = data.isFirst,
+                                        isLast = data.isLast,
+                                        message = data.message,
+                                        createdAt = data.timestamp.toAmShortString(),
+                                        count = null
+                                    )
+                                )
+                            }
+
+                            is ChatData.User -> {
+                                SeugiChatItem(
+                                    modifier = Modifier
+                                        .align(Alignment.End),
+                                    type = ChatItemType.Me(
+                                        isLast = data.isLast,
+                                        message = data.message,
+                                        createdAt = data.timestamp.toAmShortString(),
+                                        count = null
+                                    )
+                                )
+                            }
+
+                            else -> {}
+                        }
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.weight(1f))
         }
     }
 }

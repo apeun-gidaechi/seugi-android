@@ -38,7 +38,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.zIndex
-import androidx.constraintlayout.compose.ConstraintLayout
 import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.animation.AlphaIndication
 import com.apeun.gidaechi.designsystem.component.AvatarType
@@ -366,7 +365,7 @@ private fun SeugiChatItemAi(
         Column {
             if (isFirst) {
                 Text(
-                    text = "AI",
+                    text = "캣스기",
                     style = MaterialTheme.typography.bodyLarge,
                     color = Gray600,
                 )
