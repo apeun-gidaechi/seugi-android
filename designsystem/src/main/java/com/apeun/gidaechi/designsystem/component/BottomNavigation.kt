@@ -73,7 +73,7 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
             SeugiBottomNavigationItem(
                 type = BottomNavigationItemType.Home,
                 selected = selected is BottomNavigationItemType.Home,
-                isNew = true,
+                isNew = false,
                 onClick = {
                     onClick(BottomNavigationItemType.Home)
                 },
