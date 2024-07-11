@@ -126,7 +126,7 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType, onChatLongC
         is ChatItemType.Else -> {
             SeugiChatItemElse(
                 modifier = modifier,
-                message = type.message
+                message = type.message,
             )
         }
     }
@@ -429,10 +429,7 @@ private fun SeugiChatItemAi(
 }
 
 @Composable
-private fun SeugiChatItemElse(
-    modifier: Modifier,
-    message: String
-) {
+private fun SeugiChatItemElse(modifier: Modifier, message: String) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,

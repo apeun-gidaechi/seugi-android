@@ -403,8 +403,8 @@ internal fun ChatDetailScreen(
                             }
 
                             ChatDetailChatTypeState.AI -> ChatItemType.Else(item.toString())
-                            ChatDetailChatTypeState.LEFT -> ChatItemType.Else("${state.users[item.author.id]?.name?: ""}님이 방에서 퇴장하셨습니다.")
-                            ChatDetailChatTypeState.ENTER -> ChatItemType.Else("${state.users[item.author.id]?.name?: ""}님이 방에서 입장하셨습니다.")
+                            ChatDetailChatTypeState.LEFT -> ChatItemType.Else("${state.users[item.author.id]?.name ?: ""}님이 방에서 퇴장하셨습니다.")
+                            ChatDetailChatTypeState.ENTER -> ChatItemType.Else("${state.users[item.author.id]?.name ?: ""}님이 방에서 입장하셨습니다.")
                         },
                     )
                 }
