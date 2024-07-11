@@ -530,7 +530,6 @@ private fun PreviewSeugiChatItem() {
                     message = "챗스기님이 입장하셨습니다.",
                 ),
             )
-
         }
     }
 }
