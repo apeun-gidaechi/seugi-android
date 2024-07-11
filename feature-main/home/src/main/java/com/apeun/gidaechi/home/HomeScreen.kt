@@ -432,6 +432,7 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
             HomeCard(
                 text = "캣스기",
                 image = painterResource(id = R.drawable.ic_appicon_round),
+                modifier = Modifier,
             ) {
                 when (state.catSeugiState) {
                     is CommonUiState.Success -> {
@@ -600,13 +601,7 @@ private fun changeNavigationColor(window: Window, backgroundColor: Color, isDark
 }
 
 @Composable
-internal fun HomeCard(
-    modifier: Modifier = Modifier,
-    text: String,
-    image: Painter,
-    colorFilter: ColorFilter? = null,
-    content: @Composable () -> Unit
-) {
+internal fun HomeCard(modifier: Modifier = Modifier, text: String, image: Painter, colorFilter: ColorFilter? = null, content: @Composable () -> Unit) {
     Column(
         modifier = modifier
             .padding(horizontal = 20.dp)
@@ -636,7 +631,7 @@ internal fun HomeCard(
                     modifier = Modifier
                         .size(24.dp)
                         .align(Alignment.Center)
-                        .`if`(true){
+                        .`if`(true) {
                             Modifier.background(White)
                         },
                     painter = image,
@@ -779,12 +774,7 @@ internal fun HomeSubjectCard(modifier: Modifier, index: Int, selectIndex: Int, s
 }
 
 @Composable
-internal fun HomeCalendarCard(
-    modifier: Modifier = Modifier,
-    date: String,
-    content: String,
-    dDay: String
-) {
+internal fun HomeCalendarCard(modifier: Modifier = Modifier, date: String, content: String, dDay: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
     ) {
