@@ -122,8 +122,6 @@ internal fun ChatSeugiScreen(
     val density = LocalDensity.current
     val screenSizeDp = LocalConfiguration.current.screenWidthDp.dp
     val screenSizePx = with(density) { screenSizeDp.toPx() }
-
-    var canScrollForward by remember { mutableStateOf(false) }
     var isOpenSidebar by remember { mutableStateOf(false) }
     val anchors = remember {
         DraggableAnchors {
@@ -143,41 +141,21 @@ internal fun ChatSeugiScreen(
             },
         )
     }
-    var nowIndex by remember { mutableIntStateOf(0) }
 
-//    LaunchedEffect(key1 = sideEffect) {
-//        if (sideEffect == null) {
-//            return@LaunchedEffect
-//        }
-//        when (val nowSideEffect = sideEffect!!) {
-//            is ChatDetailSideEffect.SuccessLeft -> {
-//                popBackStack()
-//            }
-//            is ChatDetailSideEffect.FailedLeft -> {
-//                coroutineScope.launch {
-//                    Toast.makeText(context, nowSideEffect.throwable.message, Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
-//    }
 
-//    LaunchedEffect(key1 = true) {
-//        onNavigationVisibleChange(false)
-//        viewModel.loadInfo(
-//            isPersonal = isPersonal,
-//            chatRoomId = chatRoomId,
-//            workspaceId = workspace,
-//        )
-//    }
-//
     LifecycleResumeEffect(key1 = Unit) {
         onNavigationVisibleChange(false)
-//        viewModel.channelReconnect()
         onPauseOrDispose {
-//            viewModel.subscribeCancel()
             onNavigationVisibleChange(true)
         }
     }
+
+    LaunchedEffect(key1 = keyboardState) {
+        if (keyboardState.isOpen) {
+            scrollState.animateScrollBy(with(density) { -keyboardState.height.toPx() })
+        }
+    }
+
     BackHandler(
         enabled = isSearch || isOpenSidebar,
     ) {
