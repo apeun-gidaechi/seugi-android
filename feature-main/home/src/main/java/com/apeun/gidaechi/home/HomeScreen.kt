@@ -1,7 +1,6 @@
 package com.apeun.gidaechi.home
 
 import android.app.Activity
-import android.graphics.Color.toArgb
 import android.os.Build
 import android.view.View
 import android.view.Window
@@ -55,7 +54,6 @@ import androidx.compose.ui.util.fastForEachIndexed
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImagePainter.State.Empty.painter
 import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.animation.ButtonState
 import com.apeun.gidaechi.designsystem.animation.NoInteractionSource
@@ -361,7 +359,7 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                                                     .size(94.dp),
                                                 painter = painterResource(
                                                     id = when (index) {
-                                                        0 -> R.drawable.ic_apple
+                                                        0 -> R.drawable.ic_morning
                                                         1 -> R.drawable.ic_taco
                                                         else -> R.drawable.ic_chicken
                                                     },
