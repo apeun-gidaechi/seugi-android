@@ -63,7 +63,6 @@ import com.apeun.gidaechi.designsystem.component.ButtonType
 import com.apeun.gidaechi.designsystem.component.GradientPrimary
 import com.apeun.gidaechi.designsystem.component.LoadingDotsIndicator
 import com.apeun.gidaechi.designsystem.component.SeugiButton
-import com.apeun.gidaechi.designsystem.component.SeugiDialog
 import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.brushDraw
@@ -143,7 +142,7 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
                             selectSchool = "대구소프트웨어마이스터고등학교"
                             isShowSelectSchoolDialog = false
                             viewModel.schoolChange(selectSchool)
-                        }
+                        },
                     )
                     HomeSchoolSelectCard(
                         text = "한국디지털미디어고등학교",
@@ -156,22 +155,21 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
                             selectSchool = "한국디지털미디어고등학교"
                             isShowSelectSchoolDialog = false
                             viewModel.schoolChange(selectSchool)
-                        }
+                        },
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         modifier = Modifier.padding(start = 4.dp),
                         text = "가입 대기 중",
                         color = Gray600,
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyLarge,
                     )
                     Column {
                         HomeSchoolSelectCard(
                             text = "경북대학교사범대학..",
                             isSelect = selectSchool == "경북대학교사범대학..",
                             onClick = {
-
-                            }
+                            },
                         )
                     }
                 }
@@ -388,7 +386,7 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
                                         Text(
                                             modifier = Modifier.padding(vertical = (6.5).dp),
                                             text = when (index) {
-                                                0 ->  mealState.data.first.first
+                                                0 -> mealState.data.first.first
                                                 1 -> mealState.data.second.first
                                                 else -> mealState.data.third.first
                                             },
@@ -410,7 +408,7 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
                                                     horizontal = 8.dp,
                                                 ),
                                                 text = when (index) {
-                                                    0 ->  mealState.data.first.second
+                                                    0 -> mealState.data.first.second
                                                     1 -> mealState.data.second.second
                                                     else -> mealState.data.third.second
                                                 },
@@ -889,31 +887,27 @@ internal fun HomeNotFoundText(text: String) {
 }
 
 @Composable
-internal fun HomeSchoolSelectCard(
-    text: String,
-    isSelect: Boolean,
-    onClick: () -> Unit
-) {
+internal fun HomeSchoolSelectCard(text: String, isSelect: Boolean, onClick: () -> Unit) {
     Box(
         modifier = Modifier.bounceClick(
-            onClick = onClick
-        )
+            onClick = onClick,
+        ),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
                     color = Primary050,
-                    shape = RoundedCornerShape(8.dp)
-                )
+                    shape = RoundedCornerShape(8.dp),
+                ),
         ) {
             Row(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp),
             ) {
                 Text(
                     text = text,
                     color = Black,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 if (isSelect) {
@@ -921,7 +915,7 @@ internal fun HomeSchoolSelectCard(
                         modifier = Modifier.size(24.dp),
                         painter = painterResource(id = R.drawable.ic_setting_fill),
                         contentDescription = null,
-                        colorFilter = ColorFilter.tint(Gray500)
+                        colorFilter = ColorFilter.tint(Gray500),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                 }
@@ -929,7 +923,7 @@ internal fun HomeSchoolSelectCard(
                     modifier = Modifier.size(24.dp),
                     painter = painterResource(id = R.drawable.ic_expand_right_line),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(Gray500)
+                    colorFilter = ColorFilter.tint(Gray500),
                 )
             }
         }

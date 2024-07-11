@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.apeun.gidaechi.home.model.CommonUiState
 import com.apeun.gidaechi.home.model.HomeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -41,7 +41,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                         Triple(
                             first = Pair("쇠고기 야채죽\n연유프렌치토스트\n배추김치\n포도\n허니초코크런치시리얼+우유", "602Kcal"),
                             second = Pair("추가밥\n매콤로제해물파스타\n#브리오슈수제버거\n모듬야채피클\n맥케인\n망고사고", "1,443Kcal"),
-                            third = Pair("현미밥\n돼지국밥\n삼색나물무침\n-오징어야채볶음\n석박지", "774Kcal")
+                            third = Pair("현미밥\n돼지국밥\n삼색나물무침\n-오징어야채볶음\n석박지", "774Kcal"),
                         ),
                     ),
                     catSeugiState = CommonUiState.Success(listOf("급식에 복어가 나오는 날이 언제...", "우리 학교 대회 담당하는 분이 누구...").toImmutableList()),
@@ -79,7 +79,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                         Triple(
                             first = Pair("쇠고기 야채죽\n연유프렌치토스트\n배추김치\n포도\n허니초코크런치시리얼+우유", "602Kcal"),
                             second = Pair("추가밥\n매콤로제해물파스타\n#브리오슈수제버거\n모듬야채피클\n맥케인\n망고사고", "1,443Kcal"),
-                            third = Pair("현미밥\n돼지국밥\n삼색나물무침\n-오징어야채볶음\n석박지", "774Kcal")
+                            third = Pair("현미밥\n돼지국밥\n삼색나물무침\n-오징어야채볶음\n석박지", "774Kcal"),
                         ),
                     ),
                     catSeugiState = CommonUiState.Success(listOf("급식에 복어가 나오는 날이 언제...", "우리 학교 대회 담당하는 분이 누구...").toImmutableList()),
@@ -114,10 +114,8 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                         ).toImmutableList(),
                     ),
 
-                    )
+                )
             }
         }
-
     }
-
 }
