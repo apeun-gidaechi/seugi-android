@@ -1,8 +1,6 @@
 package com.apeun.gidaechi.main
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -59,7 +57,6 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
     val onNavigationVisibleChange: (Boolean) -> Unit = {
         navigationVisible = it
     }
-
 
     BackHandler {
         mainToOnboarding()
