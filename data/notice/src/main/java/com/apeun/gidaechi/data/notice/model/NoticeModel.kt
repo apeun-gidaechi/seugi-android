@@ -1,7 +1,7 @@
 package com.apeun.gidaechi.data.notice.model
 
-import kotlinx.collections.immutable.ImmutableList
 import java.time.LocalDateTime
+import kotlinx.collections.immutable.ImmutableList
 
 data class NoticeModel(
     val id: Long,
@@ -11,5 +11,5 @@ data class NoticeModel(
     val content: String,
     val emoji: ImmutableList<String>,
     val creationDate: LocalDateTime,
-    val lastModifiedDate: LocalDateTime
+    val lastModifiedDate: LocalDateTime,
 )

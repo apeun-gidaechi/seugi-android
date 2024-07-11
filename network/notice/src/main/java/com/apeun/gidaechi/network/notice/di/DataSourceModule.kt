@@ -15,5 +15,4 @@ interface DataSourceModule {
     @Singleton
     @Binds
     fun bindsNoticeDataSource(noticeDataSourceImpl: NoticeDataSourceImpl): NoticeDataSource
-
 }

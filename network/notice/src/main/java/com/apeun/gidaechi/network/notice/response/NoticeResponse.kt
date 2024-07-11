@@ -10,5 +10,5 @@ data class NoticeResponse(
     val content: String,
     val emoji: List<String>,
     val creationDate: LocalDateTime,
-    val lastModifiedDate: LocalDateTime
+    val lastModifiedDate: LocalDateTime,
 )

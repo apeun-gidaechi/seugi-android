@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.PullRefreshState
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,7 +41,6 @@ import androidx.compose.ui.util.fastForEach
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.apeun.gidaechi.common.utiles.toShortString
 import com.apeun.gidaechi.common.utiles.toTimeString
 import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.animation.bounceClick
@@ -61,9 +59,7 @@ import kotlinx.collections.immutable.ImmutableList
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-internal fun NotificationScreen(
-    viewModel: NotificationViewModel = hiltViewModel(),
-) {
+internal fun NotificationScreen(viewModel: NotificationViewModel = hiltViewModel()) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
     val pullRefreshState = rememberPullRefreshState(
@@ -71,7 +67,7 @@ internal fun NotificationScreen(
         onRefresh = {
             viewModel.enabledRefresh()
             viewModel.loadNotices("664bdd0b9dfce726abd30462")
-        }
+        },
     )
 
     LifecycleResumeEffect(Unit) {
@@ -94,7 +90,7 @@ internal fun NotificationScreen(
     Scaffold(
         topBar = {
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 SeugiTopBar(
                     title = {
@@ -114,13 +110,13 @@ internal fun NotificationScreen(
                     ),
                 )
             }
-        }
+        },
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                .pullRefresh(pullRefreshState)
+                .pullRefresh(pullRefreshState),
         ) {
             Column(
                 modifier = Modifier
@@ -129,28 +125,28 @@ internal fun NotificationScreen(
                     .fillMaxSize(),
             ) {
                 Spacer(modifier = Modifier.height(4.dp))
-                    LazyColumn(
-                        modifier = Modifier.padding(horizontal = 20.dp),
-                    ) {
-                        items(state.notices) {
-                            Spacer(modifier = Modifier.height(8.dp))
-                            NotificationCard(
-                                title = it.title,
-                                description = it.content,
-                                author = it.userName,
-                                emojiList = it.emoji,
-                                createdAt = it.creationDate.toTimeString(),
-                                onClickAddEmoji = { /*TODO*/ },
-                                onClickDetailInfo = { /*TODO*/ },
-                                onClickNotification = { /*TODO*/ },
-                            )
-                        }
+                LazyColumn(
+                    modifier = Modifier.padding(horizontal = 20.dp),
+                ) {
+                    items(state.notices) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        NotificationCard(
+                            title = it.title,
+                            description = it.content,
+                            author = it.userName,
+                            emojiList = it.emoji,
+                            createdAt = it.creationDate.toTimeString(),
+                            onClickAddEmoji = { /*TODO*/ },
+                            onClickDetailInfo = { /*TODO*/ },
+                            onClickNotification = { /*TODO*/ },
+                        )
                     }
                 }
+            }
             PullRefreshIndicator(
                 modifier = Modifier.align(Alignment.TopCenter),
                 refreshing = state.isRefresh,
-                state = pullRefreshState
+                state = pullRefreshState,
             )
         }
     }

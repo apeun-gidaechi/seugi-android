@@ -12,10 +12,9 @@ import io.ktor.client.request.get
 import javax.inject.Inject
 
 class NoticeDataSourceImpl @Inject constructor(
-    private val httpClient: HttpClient
-): NoticeDataSource {
-    override suspend fun getNotices(workspaceId: String): BaseResponse<List<NoticeResponse>> =
-        httpClient.get("${SeugiUrl.Notice.ROOT}/${workspaceId}") {
-            addTestHeader(Test.TEST_TOKEN)
-        }.body()
+    private val httpClient: HttpClient,
+) : NoticeDataSource {
+    override suspend fun getNotices(workspaceId: String): BaseResponse<List<NoticeResponse>> = httpClient.get("${SeugiUrl.Notice.ROOT}/$workspaceId") {
+        addTestHeader(Test.TEST_TOKEN)
+    }.body()
 }

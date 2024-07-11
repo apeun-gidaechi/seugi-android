@@ -6,5 +6,5 @@ import kotlinx.collections.immutable.persistentListOf
 
 data class NotificationUiState(
     val isRefresh: Boolean = false,
-    val notices: ImmutableList<NoticeModel> = persistentListOf()
+    val notices: ImmutableList<NoticeModel> = persistentListOf(),
 )
