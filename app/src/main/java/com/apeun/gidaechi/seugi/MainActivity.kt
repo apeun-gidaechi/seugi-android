@@ -11,6 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import com.apeun.gidaechi.main.navigation.MAIN_ROUTE
 import com.apeun.gidaechi.main.navigation.mainScreen
 import com.apeun.gidaechi.main.navigation.navigateToMain
 import com.apeun.gidaechi.navigation.ONBOARDING_ROUTE
@@ -33,10 +34,19 @@ class MainActivity : ComponentActivity() {
                         navController = navHostController,
                         startDestination = ONBOARDING_ROUTE,
                     ) {
-                        mainScreen()
+                        mainScreen(
+                            mainToOnboarding = {
+                                navHostController.popBackStack()
+                            },
+                        )
                         onboardingScreen(
                             onboardingToMain = {
-                                navHostController.navigateToMain()
+                                while (navHostController.popBackStack()) {
+                                }
+                                navHostController.navigateToMain(
+                                    toRoute = MAIN_ROUTE,
+                                    fromRoute = ONBOARDING_ROUTE,
+                                )
                             },
                         )
                     }

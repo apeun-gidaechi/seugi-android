@@ -17,7 +17,6 @@ import com.apeun.gidaechi.navigation.navigateToEmailSignUp
 import com.apeun.gidaechi.navigation.navigateToEmailVerification
 import com.apeun.gidaechi.navigation.navigateToJoinSuccess
 import com.apeun.gidaechi.navigation.navigateToOAuthSignUp
-import com.apeun.gidaechi.navigation.navigateToSchoolCode
 import com.apeun.gidaechi.navigation.navigateToSelectingJob
 import com.apeun.gidaechi.navigation.navigateToStart
 import com.apeun.gidaechi.navigation.navigateToWaitingJoin
@@ -59,7 +58,7 @@ internal fun OnboardingScreen(navHostController: NavHostController = rememberNav
             popBackStack = { navHostController.navigateToStart() },
         )
         emailVerificationScreen(
-            navigateToSchoolCode = { navHostController.navigateToSchoolCode() },
+            navigateToStart = { navHostController.navigateToStart() },
             popBackStack = { navHostController.navigateToStart() },
         )
         schoolCode(
