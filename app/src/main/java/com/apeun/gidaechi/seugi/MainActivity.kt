@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                             startDestination = ONBOARDING_ROUTE,
                         ) {
                             mainScreen(
-                                mainToOnboarding = { navHostController.navigateToOnboarding() }
+                                mainToOnboarding = { navHostController.navigateToOnboarding() },
                             )
                             onboardingScreen(
                                 onboardingToMain = {
