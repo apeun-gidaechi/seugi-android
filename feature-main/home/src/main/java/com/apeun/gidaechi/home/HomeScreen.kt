@@ -94,6 +94,7 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     val indicatorOffset by remember {
         derivedStateOf { (pagerState.currentPage * 10).dp }
     }
+    val dummyList = listOf("진로", "소공", "소공", "인공지능 수학", "한국사", "실용영어", "웹프")
 
     LifecycleResumeEffect(Unit) {
         onPauseOrDispose {
@@ -263,7 +264,7 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                                         modifier = Modifier.weight(1f),
                                         index = index,
                                         selectIndex = selectIndex,
-                                        subject = "안드",
+                                        subject = dummyList[index],
                                     )
                                 }
                             }
