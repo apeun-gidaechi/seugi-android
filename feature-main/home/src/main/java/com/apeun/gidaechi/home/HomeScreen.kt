@@ -1,7 +1,6 @@
 package com.apeun.gidaechi.home
 
 import android.app.Activity
-import android.graphics.Color.toArgb
 import android.os.Build
 import android.view.View
 import android.view.Window
@@ -55,7 +54,6 @@ import androidx.compose.ui.util.fastForEachIndexed
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImagePainter.State.Empty.painter
 import com.apeun.gidaechi.designsystem.R
 import com.apeun.gidaechi.designsystem.animation.ButtonState
 import com.apeun.gidaechi.designsystem.animation.NoInteractionSource
@@ -68,6 +66,7 @@ import com.apeun.gidaechi.designsystem.component.SeugiTopBar
 import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
 import com.apeun.gidaechi.designsystem.component.modifier.brushDraw
 import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
+import com.apeun.gidaechi.designsystem.component.modifier.`if`
 import com.apeun.gidaechi.designsystem.theme.Black
 import com.apeun.gidaechi.designsystem.theme.Gray100
 import com.apeun.gidaechi.designsystem.theme.Gray300
@@ -93,6 +92,7 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
     val indicatorOffset by remember {
         derivedStateOf { (pagerState.currentPage * 10).dp }
     }
+    val dummyList = listOf("진로", "소공", "소공", "인공지능 수학", "한국사", "실용영어", "웹프")
 
     LifecycleResumeEffect(Unit) {
         onPauseOrDispose {
@@ -262,7 +262,7 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
                                         modifier = Modifier.weight(1f),
                                         index = index,
                                         selectIndex = selectIndex,
-                                        subject = "안드",
+                                        subject = dummyList[index],
                                     )
                                 }
                             }
@@ -316,11 +316,16 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
                                     ) {
                                         Text(
                                             modifier = Modifier.padding(vertical = (6.5).dp),
-                                            text = "오리훈제볶음밥\n간장두조림\n배추김치\n초코첵스시리얼+우유\n오렌지",
+                                            text = when (index) {
+                                                0 -> "쇠고기 야채죽\n연유프렌치토스트\n배추김치\n포도\n허니초코크런치시리얼+우유"
+                                                1 -> "추가 밥\n매콥로제 해물 파스타\n#브리오슈수제버거\n모둠야채피클\n멕케인\n망고사고"
+                                                else -> "현미밥\n돼지국밥\n삼색나물무침\n-오징어야채볶음\n석박지"
+                                            },
                                             style = MaterialTheme.typography.bodyMedium,
                                             color = Gray700,
                                         )
                                         Spacer(modifier = Modifier.height(8.dp))
+
                                         Box(
                                             modifier = Modifier
                                                 .background(
@@ -333,7 +338,11 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
                                                     vertical = 4.dp,
                                                     horizontal = 8.dp,
                                                 ),
-                                                text = "872Kcal",
+                                                text = when (index) {
+                                                    0 -> "602Kcal"
+                                                    1 -> "1,443Kcal"
+                                                    else -> "774Kcal"
+                                                },
                                                 style = MaterialTheme.typography.labelLarge,
                                                 color = White,
                                             )
@@ -350,7 +359,7 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
                                                     .size(94.dp),
                                                 painter = painterResource(
                                                     id = when (index) {
-                                                        0 -> R.drawable.ic_apple
+                                                        0 -> R.drawable.ic_morning
                                                         1 -> R.drawable.ic_taco
                                                         else -> R.drawable.ic_chicken
                                                     },
@@ -422,6 +431,7 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
             HomeCard(
                 text = "캣스기",
                 image = painterResource(id = R.drawable.ic_appicon_round),
+                modifier = Modifier,
             ) {
                 when (state.catSeugiState) {
                     is CommonUiState.Success -> {
@@ -587,7 +597,8 @@ private fun changeNavigationColor(window: Window, backgroundColor: Color, isDark
         )
     } else {
         @Suppress("DEPRECATION")
-        window.decorView.systemUiVisibility = if (isDark) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        window.decorView.systemUiVisibility =
+            if (isDark) 0 else View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
     }
 }
 
@@ -621,7 +632,10 @@ internal fun HomeCard(modifier: Modifier = Modifier, text: String, image: Painte
                 Image(
                     modifier = Modifier
                         .size(24.dp)
-                        .align(Alignment.Center),
+                        .align(Alignment.Center)
+                        .`if`(true) {
+                            Modifier.background(White)
+                        },
                     painter = image,
                     contentDescription = "",
                     colorFilter = colorFilter,
