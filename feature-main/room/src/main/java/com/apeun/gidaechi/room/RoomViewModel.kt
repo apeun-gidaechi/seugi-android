@@ -48,7 +48,7 @@ class RoomViewModel @Inject constructor(
     fun searchRoom(text: String) {
         _state.update {
             it.copy(
-                filterMessage = text
+                filterMessage = text,
             )
         }
     }

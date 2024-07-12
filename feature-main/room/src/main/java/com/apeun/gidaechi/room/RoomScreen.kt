@@ -60,7 +60,7 @@ internal fun RoomScreen(
 
     BackHandler(
         enabled = isSearchMode,
-        onBack = onDone
+        onBack = onDone,
     )
 
     LaunchedEffect(key1 = true) {
@@ -111,7 +111,7 @@ internal fun RoomScreen(
                 },
                 shadow = true,
                 backIconCheck = isSearchMode,
-                onNavigationIconClick = onDone
+                onNavigationIconClick = onDone,
             )
         },
     ) {
@@ -134,7 +134,6 @@ internal fun RoomScreen(
         }
     }
 }
-
 
 @Composable
 private fun RoomTextField(searchText: String, onValueChange: (String) -> Unit, placeholder: String = "", enabled: Boolean = true, onDone: () -> Unit) {

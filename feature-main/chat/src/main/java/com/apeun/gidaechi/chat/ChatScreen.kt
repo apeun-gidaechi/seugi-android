@@ -55,7 +55,7 @@ internal fun ChatScreen(viewModel: ChatViewModel = hiltViewModel(), navigateToCh
 
     BackHandler(
         enabled = isSearchMode,
-        onBack = onDone
+        onBack = onDone,
     )
 
     LaunchedEffect(key1 = true) {
@@ -98,7 +98,7 @@ internal fun ChatScreen(viewModel: ChatViewModel = hiltViewModel(), navigateToCh
                 },
                 shadow = true,
                 backIconCheck = isSearchMode,
-                onNavigationIconClick = onDone
+                onNavigationIconClick = onDone,
             )
         },
     ) {
