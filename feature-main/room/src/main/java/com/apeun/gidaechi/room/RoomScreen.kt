@@ -110,6 +110,8 @@ internal fun RoomScreen(
                     }
                 },
                 shadow = true,
+                backIconCheck = isSearchMode,
+                onNavigationIconClick = onDone
             )
         },
     ) {
