@@ -703,7 +703,7 @@ internal fun HomeCard(modifier: Modifier = Modifier, text: String, image: Painte
                     modifier = Modifier
                         .size(24.dp)
                         .align(Alignment.Center)
-                        .`if`(true) {
+                        .`if`(text =="캣스기") {
                             Modifier.background(White)
                         },
                     painter = image,
