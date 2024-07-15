@@ -11,6 +11,5 @@ android {
 dependencies {
 
     implementation(projects.common)
-    implementation(projects.data.core)
     implementation(projects.local.room)
 }
