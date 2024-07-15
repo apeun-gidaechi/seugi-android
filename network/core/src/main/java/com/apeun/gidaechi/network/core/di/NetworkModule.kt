@@ -26,10 +26,10 @@ import io.ktor.client.request.accept
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.gson.gson
-import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import kotlinx.coroutines.flow.collectLatest
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import ua.naiksoftware.stomp.Stomp
@@ -41,9 +41,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHttpClient(
-        tokenRepository: TokenRepository
-    ): HttpClient = HttpClient(CIO) {
+    fun provideHttpClient(tokenRepository: TokenRepository): HttpClient = HttpClient(CIO) {
         install(ContentNegotiation) {
             gson {
                 registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeTypeAdapter())
@@ -64,13 +62,13 @@ object NetworkModule {
             connectTimeoutMillis = TIME_OUT
             socketTimeoutMillis = TIME_OUT
         }
-        install(Auth){
+        install(Auth) {
             bearer {
                 loadTokens {
                     try {
-                        var accessToken: String =""
+                        var accessToken: String = ""
                         tokenRepository.getToken().collectLatest {
-                            when(it){
+                            when (it) {
                                 is Result.Success -> {
                                     accessToken = removeBearer(it.data.accessToken.toString())
                                 }
@@ -79,12 +77,12 @@ object NetworkModule {
                             }
                         }
                         BearerTokens(removeBearer(accessToken), "")
-                    }catch (e: IndexOutOfBoundsException){
+                    } catch (e: IndexOutOfBoundsException) {
                         throw UnauthorizedException("${e.message}")
                     }
                 }
                 sendWithoutRequest {
-                    when(it.url.toString()){
+                    when (it.url.toString()) {
                         SeugiUrl.Auth.EMAIL_SIGN_UP -> false
                         SeugiUrl.Auth.EMAIL_SIGN_IN -> false
                         SeugiUrl.Auth.GET_CODE -> false

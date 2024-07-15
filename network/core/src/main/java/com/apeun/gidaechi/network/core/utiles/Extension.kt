@@ -43,8 +43,7 @@ object GsonConverter {
     }
 }
 
-
-fun removeBearer(token: String): String{
+fun removeBearer(token: String): String {
     return if (token.startsWith("Bearer ")) {
         token.substring(7)
     } else {
