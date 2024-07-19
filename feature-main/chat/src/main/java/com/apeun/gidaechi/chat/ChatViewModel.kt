@@ -12,6 +12,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -28,7 +29,7 @@ class ChatViewModel @Inject constructor(
                 is Result.Success -> {
                     Log.d("TAG", "loadChats: ${it.data}")
                     _state.value = _state.value.copy(
-                        chatItems = it.data.sortedByDescending {
+                        _chatItems = it.data.sortedByDescending {
                             it.lastMessageTimestamp
                         }.toImmutableList(),
                     )
@@ -132,5 +133,13 @@ class ChatViewModel @Inject constructor(
 //                ),
 //            ).toImmutableList(),
 //        )
+    }
+
+    fun searchRoom(text: String) {
+        _state.update {
+            it.copy(
+                filterMessage = text,
+            )
+        }
     }
 }
