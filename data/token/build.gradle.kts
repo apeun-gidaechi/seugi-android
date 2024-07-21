@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.data.token"
+    namespace = "com.seugi.data.token"
 }
 
 dependencies {

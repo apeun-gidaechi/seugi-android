@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.seugi
+package com.seugi.seugi
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

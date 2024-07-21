@@ -1,9 +1,9 @@
-package com.apeun.gidaechi.local.room.di
+package com.seugi.local.room.di
 
 import android.content.Context
 import androidx.room.Room
-import com.apeun.gidaechi.local.room.SeugiDatabase
-import com.apeun.gidaechi.local.room.util.SeugiTable
+import com.seugi.local.room.SeugiDatabase
+import com.seugi.local.room.util.SeugiTable
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

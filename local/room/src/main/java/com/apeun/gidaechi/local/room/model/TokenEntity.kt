@@ -1,8 +1,8 @@
-package com.apeun.gidaechi.local.room.model
+package com.seugi.local.room.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.apeun.gidaechi.local.room.util.SeugiTable
+import com.seugi.local.room.util.SeugiTable
 
 @Entity(tableName = SeugiTable.TOKEN_TABLE)
 data class TokenEntity(

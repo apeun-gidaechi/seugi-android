@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.network.notice.response
+package com.seugi.network.notice.response
 
 import java.time.LocalDateTime
 

@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.network.message.request
+package com.seugi.network.message.request
 
 data class MessageRequest(
     val roomId: String,

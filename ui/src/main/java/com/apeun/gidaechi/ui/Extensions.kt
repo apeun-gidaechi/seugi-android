@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.ui
+package com.seugi.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

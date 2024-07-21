@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.ui"
+    namespace = "com.seugi.ui"
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
     }

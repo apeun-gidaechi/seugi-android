@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.roomcreate"
+    namespace = "com.seugi.roomcreate"
 }
 dependencies {
     implementation(libs.kotlinx.collections.immutable)

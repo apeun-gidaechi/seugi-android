@@ -173,14 +173,14 @@ kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", vers
 
 
 #custom
-seugi-android-application = { id = "com.apeun.gidaechi.android.application", version = "unspecified" }
-seugi-android-feature = { id = "com.apeun.gidaechi.android.feature", version = "unspecified" }
-seugi-android-compose = { id = "com.apeun.gidaechi.android.compose", version = "unspecified" }
-seugi-android-hilt = { id = "com.apeun.gidaechi.android.hilt", version = "unspecified" }
-seugi-android-kotlin = { id = "com.apeun.gidaechi.android.kotlin", version = "unspecified" }
-seugi-android = { id = "com.apeun.gidaechi.android", version = "unspecified" }
-seugi-hilt = { id = "com.apeun.gidaechi.hilt", version = "unspecified"}
-seugi-kotlin-serialization = { id = "com.apeun.gidaechi.kotlin.serialization", version = "unspecified" }
-seugi-kotlin = { id = "com.apeun.gidaechi.convention.kotlin", version = "unspecified" }
+seugi-android-application = { id = "com.seugi.android.application", version = "unspecified" }
+seugi-android-feature = { id = "com.seugi.android.feature", version = "unspecified" }
+seugi-android-compose = { id = "com.seugi.android.compose", version = "unspecified" }
+seugi-android-hilt = { id = "com.seugi.android.hilt", version = "unspecified" }
+seugi-android-kotlin = { id = "com.seugi.android.kotlin", version = "unspecified" }
+seugi-android = { id = "com.seugi.android", version = "unspecified" }
+seugi-hilt = { id = "com.seugi.hilt", version = "unspecified"}
+seugi-kotlin-serialization = { id = "com.seugi.kotlin.serialization", version = "unspecified" }
+seugi-kotlin = { id = "com.seugi.convention.kotlin", version = "unspecified" }
 
 

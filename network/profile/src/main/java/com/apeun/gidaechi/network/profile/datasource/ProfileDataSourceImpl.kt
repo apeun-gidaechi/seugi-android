@@ -1,11 +1,11 @@
-package com.apeun.gidaechi.network.profile.datasource
+package com.seugi.network.profile.datasource
 
-import com.apeun.gidaechi.network.core.SeugiUrl
-import com.apeun.gidaechi.network.core.Test
-import com.apeun.gidaechi.network.core.response.BaseResponse
-import com.apeun.gidaechi.network.core.response.ProfileResponse
-import com.apeun.gidaechi.network.core.utiles.addTestHeader
-import com.apeun.gidaechi.network.profile.ProfileDataSource
+import com.seugi.network.core.SeugiUrl
+import com.seugi.network.core.Test
+import com.seugi.network.core.response.BaseResponse
+import com.seugi.network.core.response.ProfileResponse
+import com.seugi.network.core.utiles.addTestHeader
+import com.seugi.network.profile.ProfileDataSource
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get

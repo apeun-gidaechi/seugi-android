@@ -1,7 +1,7 @@
-package com.apeun.gidaechi.network.profile.di
+package com.seugi.network.profile.di
 
-import com.apeun.gidaechi.network.profile.ProfileDataSource
-import com.apeun.gidaechi.network.profile.datasource.ProfileDataSourceImpl
+import com.seugi.network.profile.ProfileDataSource
+import com.seugi.network.profile.datasource.ProfileDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

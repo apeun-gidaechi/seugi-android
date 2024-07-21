@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.designsystem.preview.feature
+package com.seugi.designsystem.preview.feature
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.apeun.gidaechi.designsystem.component.modifier.DropShadowType
-import com.apeun.gidaechi.designsystem.component.modifier.dropShadow
-import com.apeun.gidaechi.designsystem.theme.White
+import com.seugi.designsystem.component.modifier.DropShadowType
+import com.seugi.designsystem.component.modifier.dropShadow
+import com.seugi.designsystem.theme.White
 
 @Composable
 fun Shadow() {

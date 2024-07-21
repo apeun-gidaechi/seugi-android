@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.network.core.utiles
+package com.seugi.network.core.utiles
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement

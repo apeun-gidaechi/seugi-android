@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.network.message.response.message
+package com.seugi.network.message.response.message
 
 data class MessageUserResponse(
     val id: Int,

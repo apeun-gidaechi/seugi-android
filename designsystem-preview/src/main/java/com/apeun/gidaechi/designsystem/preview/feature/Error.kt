@@ -1,19 +1,19 @@
-package com.apeun.gidaechi.designsystem.preview.feature
+package com.seugi.designsystem.preview.feature
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import com.apeun.gidaechi.designsystem.component.SeugiError
-import com.apeun.gidaechi.designsystem.preview.R
+import com.seugi.designsystem.component.SeugiError
+import com.seugi.designsystem.preview.R
 
 @Composable
 fun Error() {
     Column {
         SeugiError(
-            resId = com.apeun.gidaechi.designsystem.R.drawable.ic_emoji_sad,
+            resId = com.seugi.designsystem.R.drawable.ic_emoji_sad,
             text = "페이지를 찾을 수 없습니다.",
         )
         SeugiError(
-            resId = com.apeun.gidaechi.designsystem.R.drawable.ic_emoji_happy,
+            resId = com.seugi.designsystem.R.drawable.ic_emoji_happy,
             text = "페이지를 찾을 수 없습니다.",
         )
     }

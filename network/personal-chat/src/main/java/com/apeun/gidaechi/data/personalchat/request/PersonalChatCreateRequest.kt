@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.data.personalchat.request
+package com.seugi.data.personalchat.request
 
 data class PersonalChatCreateRequest(
     val workspaceId: String,

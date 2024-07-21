@@ -6,9 +6,9 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.designsystem.preview"
+    namespace = "com.seugi.designsystem.preview"
     defaultConfig {
-        applicationId = "com.apeun.gidaechi.seugi"
+        applicationId = "com.seugi.seugi"
         versionCode = 1
         versionName = "1.0"
 

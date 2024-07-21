@@ -1,7 +1,7 @@
-package com.apeun.gidaechi.network.groupchat.di
+package com.seugi.network.groupchat.di
 
-import com.apeun.gidaechi.network.groupchat.GroupChatDataSource
-import com.apeun.gidaechi.network.groupchat.datasource.GroupChatDataSourceImpl
+import com.seugi.network.groupchat.GroupChatDataSource
+import com.seugi.network.groupchat.datasource.GroupChatDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.network.notice"
+    namespace = "com.seugi.network.notice"
 }
 
 dependencies {

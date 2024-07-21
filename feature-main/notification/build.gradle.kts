@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.notification"
+    namespace = "com.seugi.notification"
 }
 
 dependencies {

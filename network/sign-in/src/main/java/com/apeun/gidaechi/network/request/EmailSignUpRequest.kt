@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.network.request
+package com.seugi.network.request
 
 import kotlinx.serialization.Serializable
 

@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.network.core
+package com.seugi.network.core
 
 object SeugiUrl {
     private const val BASE_URL = BuildConfig.BASE_URL

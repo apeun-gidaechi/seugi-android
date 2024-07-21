@@ -1,7 +1,7 @@
-package com.apeun.gidaechi.network.profile
+package com.seugi.network.profile
 
-import com.apeun.gidaechi.network.core.response.BaseResponse
-import com.apeun.gidaechi.network.core.response.ProfileResponse
+import com.seugi.network.core.response.BaseResponse
+import com.seugi.network.core.response.ProfileResponse
 
 interface ProfileDataSource {
     suspend fun loadUserInfo(workspaceId: String): BaseResponse<ProfileResponse>

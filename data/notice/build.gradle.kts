@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.data.notice"
+    namespace = "com.seugi.data.notice"
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
     }

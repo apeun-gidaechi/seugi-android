@@ -1,7 +1,7 @@
-package com.apeun.gidaechi.local.room.di
+package com.seugi.local.room.di
 
-import com.apeun.gidaechi.local.room.SeugiDatabase
-import com.apeun.gidaechi.local.room.dao.TokenDao
+import com.seugi.local.room.SeugiDatabase
+import com.seugi.local.room.dao.TokenDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

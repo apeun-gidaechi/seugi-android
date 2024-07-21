@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.network.message.response.room
+package com.seugi.network.message.response.room
 
 import java.time.LocalDateTime
 

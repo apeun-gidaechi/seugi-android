@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.data.personalchat"
+    namespace = "com.seugi.data.personalchat"
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
     }

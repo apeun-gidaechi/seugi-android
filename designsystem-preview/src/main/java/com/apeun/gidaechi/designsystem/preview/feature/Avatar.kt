@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.designsystem.preview.feature
+package com.seugi.designsystem.preview.feature
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,9 +9,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.apeun.gidaechi.designsystem.component.AvatarType
-import com.apeun.gidaechi.designsystem.component.SeugiAvatar
-import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import com.seugi.designsystem.component.AvatarType
+import com.seugi.designsystem.component.SeugiAvatar
+import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
 fun Avatar() {

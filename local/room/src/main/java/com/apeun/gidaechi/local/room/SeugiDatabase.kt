@@ -1,9 +1,9 @@
-package com.apeun.gidaechi.local.room
+package com.seugi.local.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.apeun.gidaechi.local.room.dao.TokenDao
-import com.apeun.gidaechi.local.room.model.TokenEntity
+import com.seugi.local.room.dao.TokenDao
+import com.seugi.local.room.model.TokenEntity
 
 @Database(
     entities = [

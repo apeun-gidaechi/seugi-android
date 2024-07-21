@@ -1,8 +1,8 @@
-package com.apeun.gidaechi.network.core.di
+package com.seugi.network.core.di
 
 import android.util.Log
-import com.apeun.gidaechi.network.core.SeugiUrl
-import com.apeun.gidaechi.network.core.utiles.LocalDateTimeTypeAdapter
+import com.seugi.network.core.SeugiUrl
+import com.seugi.network.core.utiles.LocalDateTimeTypeAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

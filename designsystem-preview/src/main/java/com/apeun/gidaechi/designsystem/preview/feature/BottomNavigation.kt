@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.designsystem.preview.feature
+package com.seugi.designsystem.preview.feature
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -10,10 +10,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.apeun.gidaechi.designsystem.component.BottomNavigationItemType
-import com.apeun.gidaechi.designsystem.component.SeugiBottomNavigation
-import com.apeun.gidaechi.designsystem.theme.SeugiTheme
-import com.apeun.gidaechi.designsystem.theme.White
+import com.seugi.designsystem.component.BottomNavigationItemType
+import com.seugi.designsystem.component.SeugiBottomNavigation
+import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.designsystem.theme.White
 
 @Composable
 fun BottomNavigation() {

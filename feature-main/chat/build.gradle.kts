@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.chat"
+    namespace = "com.seugi.chat"
 }
 
 dependencies {

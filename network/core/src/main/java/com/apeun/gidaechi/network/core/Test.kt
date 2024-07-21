@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.network.core
+package com.seugi.network.core
 
 object Test {
     const val TEST_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9." +

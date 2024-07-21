@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.designsystem.preview.feature
+package com.seugi.designsystem.preview.feature
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -9,10 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.apeun.gidaechi.designsystem.component.chat.ChatItemType
-import com.apeun.gidaechi.designsystem.component.chat.SeugiChatItem
-import com.apeun.gidaechi.designsystem.theme.Primary050
-import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import com.seugi.designsystem.component.chat.ChatItemType
+import com.seugi.designsystem.component.chat.SeugiChatItem
+import com.seugi.designsystem.theme.Primary050
+import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
 fun ChatItem() {

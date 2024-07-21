@@ -12,12 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SeugiTest"
-        android:name=".util.SeugiApplication"
+        android:name="com.seugi.util.SeugiApplication"
         android:enableOnBackInvokedCallback="true"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name="com.seugi.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.SeugiTest"

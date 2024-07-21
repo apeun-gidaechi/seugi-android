@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.designsystem.preview.feature
+package com.seugi.designsystem.preview.feature
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.apeun.gidaechi.designsystem.component.SeugiToolTip
-import com.apeun.gidaechi.designsystem.component.ToolTipType
+import com.seugi.designsystem.component.SeugiToolTip
+import com.seugi.designsystem.component.ToolTipType
 
 @Composable
 fun ToolTip() {

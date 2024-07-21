@@ -1,7 +1,7 @@
-package com.apeun.gidaechi.network.message.di
+package com.seugi.network.message.di
 
-import com.apeun.gidaechi.network.message.MessageDataSource
-import com.apeun.gidaechi.network.message.datasource.MessageDataSourceImpl
+import com.seugi.network.message.MessageDataSource
+import com.seugi.network.message.datasource.MessageDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

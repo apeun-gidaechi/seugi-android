@@ -1,10 +1,10 @@
-package com.apeun.gidaechi.network.message
+package com.seugi.network.message
 
-import com.apeun.gidaechi.network.core.response.BaseResponse
-import com.apeun.gidaechi.network.message.response.MessageTypeResponse
-import com.apeun.gidaechi.network.message.response.message.MessageLoadResponse
-import com.apeun.gidaechi.network.message.response.room.MessageRoomMemberResponse
-import com.apeun.gidaechi.network.message.response.room.MessageRoomResponse
+import com.seugi.network.core.response.BaseResponse
+import com.seugi.network.message.response.MessageTypeResponse
+import com.seugi.network.message.response.message.MessageLoadResponse
+import com.seugi.network.message.response.room.MessageRoomMemberResponse
+import com.seugi.network.message.response.room.MessageRoomResponse
 import kotlinx.coroutines.flow.Flow
 
 interface MessageDataSource {

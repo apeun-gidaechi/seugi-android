@@ -1,14 +1,14 @@
-package com.apeun.gidaechi.network.datasource
+package com.seugi.network.datasource
 
-import com.apeun.gidaechi.common.utiles.DispatcherType
-import com.apeun.gidaechi.common.utiles.SeugiDispatcher
-import com.apeun.gidaechi.network.MemberDatasource
-import com.apeun.gidaechi.network.core.SeugiUrl
-import com.apeun.gidaechi.network.core.response.BaseResponse
-import com.apeun.gidaechi.network.core.response.Response
-import com.apeun.gidaechi.network.request.EmailSignInRequest
-import com.apeun.gidaechi.network.request.EmailSignUpRequest
-import com.apeun.gidaechi.network.response.EmailSignInResponse
+import com.seugi.common.utiles.DispatcherType
+import com.seugi.common.utiles.SeugiDispatcher
+import com.seugi.network.MemberDatasource
+import com.seugi.network.core.SeugiUrl
+import com.seugi.network.core.response.BaseResponse
+import com.seugi.network.core.response.Response
+import com.seugi.network.request.EmailSignInRequest
+import com.seugi.network.request.EmailSignUpRequest
+import com.seugi.network.response.EmailSignInResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get

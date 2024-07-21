@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.network.core.response
+package com.seugi.network.core.response
 
 data class ProfileResponse(
     val status: String,
