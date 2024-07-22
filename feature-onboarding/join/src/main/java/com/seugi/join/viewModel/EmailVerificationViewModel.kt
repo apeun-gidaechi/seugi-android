@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
-import com.seugi.data.MemberRepository
+import com.seugi.data.member.MemberRepository
 import com.seugi.join.model.EmailVerificationSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

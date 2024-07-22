@@ -12,5 +12,5 @@ dependencies {
     implementation(projects.common)
     implementation(projects.ui)
     implementation(projects.data.core)
-    implementation(projects.data.notice)
+    implementation(projects.data.notification)
 }

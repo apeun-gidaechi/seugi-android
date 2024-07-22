@@ -4,12 +4,10 @@ plugins {
 }
 
 android {
-    namespace = "com.seugi.data.member"
+    namespace = "com.seugi.network.notification"
 }
 
 dependencies {
-    implementation(projects.network.signIn)
     implementation(projects.network.core)
     implementation(projects.common)
-    implementation(libs.kotlinx.coroutines.android)
 }
