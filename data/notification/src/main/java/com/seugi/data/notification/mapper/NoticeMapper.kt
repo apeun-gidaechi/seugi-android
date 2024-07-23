@@ -1,7 +1,7 @@
-package com.seugi.data.notice.mapper
+package com.seugi.data.notification.mapper
 
-import com.seugi.data.notice.model.NoticeModel
-import com.seugi.network.notice.response.NoticeResponse
+import com.seugi.data.notification.model.NoticeModel
+import com.seugi.network.notification.response.NoticeResponse
 import kotlinx.collections.immutable.toImmutableList
 
 internal fun NoticeResponse.toModel() = NoticeModel(

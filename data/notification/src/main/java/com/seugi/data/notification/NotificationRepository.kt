@@ -1,10 +1,10 @@
-package com.seugi.data.notice
+package com.seugi.data.notification
 
 import com.seugi.common.model.Result
-import com.seugi.data.notice.model.NoticeModel
+import com.seugi.data.notification.model.NoticeModel
 import kotlinx.coroutines.flow.Flow
 
-interface NoticeRepository {
+interface NotificationRepository {
 
     suspend fun getNotices(workspaceId: String): Flow<Result<List<NoticeModel>>>
 }

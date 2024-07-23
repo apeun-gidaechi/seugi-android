@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
-import com.seugi.data.notice.NoticeRepository
+import com.seugi.data.notification.NotificationRepository
 import com.seugi.notification.model.NotificationUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class NotificationViewModel @Inject constructor(
-    private val noticeRepository: NoticeRepository,
+    private val notificationRepository: NotificationRepository,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
@@ -34,7 +34,7 @@ class NotificationViewModel @Inject constructor(
     }
 
     fun loadNotices(workspaceId: String) = viewModelScope.launch(dispatcher) {
-        noticeRepository.getNotices(workspaceId).collect { result ->
+        notificationRepository.getNotices(workspaceId).collect { result ->
             when (result) {
                 is Result.Success -> {
                     _state.update {
