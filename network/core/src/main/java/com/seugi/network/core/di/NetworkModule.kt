@@ -1,8 +1,12 @@
 package com.seugi.network.core.di
 
 import android.util.Log
+import com.seugi.common.exception.UnauthorizedException
+import com.seugi.common.model.Result
+import com.seugi.data.token.TokenRepository
 import com.seugi.network.core.SeugiUrl
 import com.seugi.network.core.utiles.LocalDateTimeTypeAdapter
+import com.seugi.network.core.utiles.removeBearer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,6 +14,9 @@ import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BearerTokens
+import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
@@ -22,6 +29,7 @@ import io.ktor.serialization.gson.gson
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import kotlinx.coroutines.flow.collectLatest
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import ua.naiksoftware.stomp.Stomp
@@ -33,7 +41,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHttpClient(): HttpClient = HttpClient(CIO) {
+    fun provideHttpClient(tokenRepository: TokenRepository): HttpClient = HttpClient(CIO) {
         install(ContentNegotiation) {
             gson {
                 registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeTypeAdapter())
@@ -53,6 +61,35 @@ object NetworkModule {
             requestTimeoutMillis = TIME_OUT
             connectTimeoutMillis = TIME_OUT
             socketTimeoutMillis = TIME_OUT
+        }
+        install(Auth) {
+            bearer {
+                loadTokens {
+                    try {
+                        var accessToken: String = ""
+                        tokenRepository.getToken().collectLatest {
+                            when (it) {
+                                is Result.Success -> {
+                                    accessToken = removeBearer(it.data.accessToken.toString())
+                                }
+                                is Result.Error -> {}
+                                is Result.Loading -> {}
+                            }
+                        }
+                        BearerTokens(removeBearer(accessToken), "")
+                    } catch (e: IndexOutOfBoundsException) {
+                        throw UnauthorizedException("${e.message}")
+                    }
+                }
+                sendWithoutRequest {
+                    when (it.url.toString()) {
+                        SeugiUrl.Auth.EMAIL_SIGN_UP -> false
+                        SeugiUrl.Auth.EMAIL_SIGN_IN -> false
+                        SeugiUrl.Auth.GET_CODE -> false
+                        else -> true
+                    }
+                }
+            }
         }
         defaultRequest {
             contentType(ContentType.Application.Json)

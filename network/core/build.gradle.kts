@@ -37,6 +37,7 @@ dependencies {
     implementation(projects.common)
     implementation(libs.gson)
     implementation(libs.okhttp3.logging.interceptor)
+    implementation(projects.data.token)
 
     implementation(libs.stomp.android)
 }
