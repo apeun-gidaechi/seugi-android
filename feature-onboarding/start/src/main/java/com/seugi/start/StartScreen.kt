@@ -31,7 +31,6 @@ import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiOAuthButton
 import com.seugi.designsystem.theme.Gradient
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.start.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

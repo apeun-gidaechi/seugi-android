@@ -44,7 +44,6 @@ import com.seugi.designsystem.theme.Gray100
 import com.seugi.designsystem.theme.Gray500
 import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.join.R
 import com.seugi.join.model.SelectingCodeSideEffect
 import com.seugi.join.viewModel.SelectingCodeViewModel
 import kotlinx.coroutines.flow.collectLatest

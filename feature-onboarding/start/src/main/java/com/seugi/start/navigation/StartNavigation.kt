@@ -4,8 +4,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.seugi.start.StartScreen
 import com.seugi.join.navigation.EMAIL_VERIFICATION_ROUTE
+import com.seugi.start.StartScreen
 
 const val START_ROUTE = "start"
 

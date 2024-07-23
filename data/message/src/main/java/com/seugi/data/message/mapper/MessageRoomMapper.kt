@@ -1,10 +1,10 @@
 package com.seugi.data.message.mapper
 
 import com.seugi.data.message.model.message.MessageUserModel
-import com.seugi.network.message.response.room.MessageRoomResponse
 import com.seugi.data.message.model.room.MessageRoomModel
 import com.seugi.data.message.model.room.MessageRoomStatusType
 import com.seugi.data.message.model.room.MessageRoomType
+import com.seugi.network.message.response.room.MessageRoomResponse
 import kotlinx.collections.immutable.toImmutableList
 
 internal fun MessageRoomResponse.toModel() = MessageRoomModel(

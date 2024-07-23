@@ -27,7 +27,6 @@ import com.seugi.designsystem.component.SeugiToolTip
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.ToolTipType
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.join.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

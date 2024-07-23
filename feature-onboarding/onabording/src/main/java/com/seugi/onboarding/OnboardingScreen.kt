@@ -7,9 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.seugi.login.navigation.emailSignInScreen
-import com.seugi.login.navigation.navigateToEmailSignIn
-import com.seugi.start.navigation.START_ROUTE
 import com.seugi.join.navigation.emailSignUpScreen
 import com.seugi.join.navigation.emailVerificationScreen
 import com.seugi.join.navigation.joinSuccess
@@ -18,13 +15,16 @@ import com.seugi.join.navigation.navigateToEmailVerification
 import com.seugi.join.navigation.navigateToJoinSuccess
 import com.seugi.join.navigation.navigateToOAuthSignUp
 import com.seugi.join.navigation.navigateToSelectingJob
-import com.seugi.start.navigation.navigateToStart
 import com.seugi.join.navigation.navigateToWaitingJoin
 import com.seugi.join.navigation.oauthSignUp
 import com.seugi.join.navigation.schoolCode
 import com.seugi.join.navigation.selectingJob
-import com.seugi.start.navigation.startScreen
 import com.seugi.join.navigation.waitingJoin
+import com.seugi.login.navigation.emailSignInScreen
+import com.seugi.login.navigation.navigateToEmailSignIn
+import com.seugi.start.navigation.START_ROUTE
+import com.seugi.start.navigation.navigateToStart
+import com.seugi.start.navigation.startScreen
 
 private const val NAVIGATION_ANIM = 400
 

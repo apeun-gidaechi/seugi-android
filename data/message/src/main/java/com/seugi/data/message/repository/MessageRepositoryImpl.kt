@@ -5,12 +5,12 @@ import com.seugi.common.model.asResult
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.message.MessageRepository
-import com.seugi.network.core.response.safeResponse
-import com.seugi.network.message.MessageDataSource
 import com.seugi.data.message.mapper.toModel
 import com.seugi.data.message.model.MessageTypeModel
 import com.seugi.data.message.model.message.MessageLoadModel
 import com.seugi.data.message.model.room.MessageRoomModel
+import com.seugi.network.core.response.safeResponse
+import com.seugi.network.message.MessageDataSource
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
