@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.local.room.util
+package com.seugi.local.room.util
 
 object SeugiTable {
     const val SEUGI_TABLE = "SEUGI_TABLE"

@@ -1,4 +1,4 @@
-import com.apeun.gidaechi.dsl.android
+import com.seugi.dsl.android
 
 plugins {
     alias(libs.plugins.seugi.android)
@@ -8,7 +8,7 @@ plugins {
 
 android {
     android {
-        namespace = "com.apeun.gidaechi.data.core"
+        namespace = "com.seugi.data.core"
 
         defaultConfig {
             consumerProguardFiles("consumer-rules.pro")

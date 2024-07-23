@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.network.emailsignin"
+    namespace = "com.seugi.network.emailsignin"
 }
 
 dependencies {

@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.designsystem.preview.feature
+package com.seugi.designsystem.preview.feature
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,9 +11,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.apeun.gidaechi.designsystem.component.SeugiToggle
-import com.apeun.gidaechi.designsystem.theme.Black
-import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import com.seugi.designsystem.component.SeugiToggle
+import com.seugi.designsystem.theme.Black
+import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
 fun Toggle() {

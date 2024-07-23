@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.designsystem.preview.feature
+package com.seugi.designsystem.preview.feature
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -12,9 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.apeun.gidaechi.designsystem.animation.bounceClick
-import com.apeun.gidaechi.designsystem.component.SeugiTopBar
-import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import com.seugi.designsystem.R
+import com.seugi.designsystem.animation.bounceClick
+import com.seugi.designsystem.component.SeugiTopBar
+import com.seugi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,7 +31,7 @@ fun TopBar() {
                 actions = {
                     Icon(
                         painter = painterResource(
-                            id = com.apeun.gidaechi.designsystem.R.drawable.ic_search,
+                            id = R.drawable.ic_search,
                         ),
                         contentDescription = null,
                         modifier = Modifier.bounceClick(
@@ -41,7 +42,7 @@ fun TopBar() {
                     Spacer(modifier = Modifier.padding(end = 16.dp))
                     Icon(
                         painter = painterResource(
-                            id = com.apeun.gidaechi.designsystem.R.drawable.ic_menu,
+                            id = R.drawable.ic_menu,
                         ),
                         contentDescription = null,
                         modifier = Modifier.bounceClick(

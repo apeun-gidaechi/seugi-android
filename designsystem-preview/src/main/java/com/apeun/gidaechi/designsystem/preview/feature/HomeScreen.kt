@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.designsystem.preview.feature
+package com.seugi.designsystem.preview.feature
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -18,8 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.apeun.gidaechi.designsystem.preview.NavRoot
-import com.apeun.gidaechi.designsystem.theme.Black
+import com.seugi.designsystem.preview.NavRoot
+import com.seugi.designsystem.theme.Black
 
 @Composable
 fun HomeScreen(navController: NavController) {

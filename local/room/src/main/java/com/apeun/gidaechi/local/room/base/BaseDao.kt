@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.local.room.base
+package com.seugi.local.room.base
 
 import androidx.room.Dao
 import androidx.room.Delete

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.network.workspace"
+    namespace = "com.seugi.network.workspace"
 }
 
 dependencies {

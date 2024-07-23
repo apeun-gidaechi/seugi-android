@@ -1,11 +1,11 @@
-package com.apeun.gidaechi.designsystem.preview.feature
+package com.seugi.designsystem.preview.feature
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.apeun.gidaechi.designsystem.component.chat.SeugiChatList
-import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import com.seugi.designsystem.component.chat.SeugiChatList
+import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
 fun ChatList() {

@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.designsystem.preview
+package com.seugi.designsystem.preview
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,29 +9,29 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.apeun.gidaechi.designsystem.preview.feature.Avatar
-import com.apeun.gidaechi.designsystem.preview.feature.Badge
-import com.apeun.gidaechi.designsystem.preview.feature.BottomNavigation
-import com.apeun.gidaechi.designsystem.preview.feature.Button
-import com.apeun.gidaechi.designsystem.preview.feature.Category
-import com.apeun.gidaechi.designsystem.preview.feature.ChatItem
-import com.apeun.gidaechi.designsystem.preview.feature.ChatList
-import com.apeun.gidaechi.designsystem.preview.feature.CheckBox
-import com.apeun.gidaechi.designsystem.preview.feature.Dialog
-import com.apeun.gidaechi.designsystem.preview.feature.Divider
-import com.apeun.gidaechi.designsystem.preview.feature.Dropdown
-import com.apeun.gidaechi.designsystem.preview.feature.Error
-import com.apeun.gidaechi.designsystem.preview.feature.HomeScreen
-import com.apeun.gidaechi.designsystem.preview.feature.ListItem
-import com.apeun.gidaechi.designsystem.preview.feature.MemberList
-import com.apeun.gidaechi.designsystem.preview.feature.OAuthButton
-import com.apeun.gidaechi.designsystem.preview.feature.RoomImage
-import com.apeun.gidaechi.designsystem.preview.feature.Shadow
-import com.apeun.gidaechi.designsystem.preview.feature.Toggle
-import com.apeun.gidaechi.designsystem.preview.feature.ToolTip
-import com.apeun.gidaechi.designsystem.preview.feature.TopBar
-import com.apeun.gidaechi.designsystem.theme.SeugiTheme
-import com.apeun.gidaechi.designsystem.theme.White
+import com.seugi.designsystem.preview.feature.Avatar
+import com.seugi.designsystem.preview.feature.Badge
+import com.seugi.designsystem.preview.feature.BottomNavigation
+import com.seugi.designsystem.preview.feature.Button
+import com.seugi.designsystem.preview.feature.Category
+import com.seugi.designsystem.preview.feature.ChatItem
+import com.seugi.designsystem.preview.feature.ChatList
+import com.seugi.designsystem.preview.feature.CheckBox
+import com.seugi.designsystem.preview.feature.Dialog
+import com.seugi.designsystem.preview.feature.Divider
+import com.seugi.designsystem.preview.feature.Dropdown
+import com.seugi.designsystem.preview.feature.Error
+import com.seugi.designsystem.preview.feature.HomeScreen
+import com.seugi.designsystem.preview.feature.ListItem
+import com.seugi.designsystem.preview.feature.MemberList
+import com.seugi.designsystem.preview.feature.OAuthButton
+import com.seugi.designsystem.preview.feature.RoomImage
+import com.seugi.designsystem.preview.feature.Shadow
+import com.seugi.designsystem.preview.feature.Toggle
+import com.seugi.designsystem.preview.feature.ToolTip
+import com.seugi.designsystem.preview.feature.TopBar
+import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.designsystem.theme.White
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

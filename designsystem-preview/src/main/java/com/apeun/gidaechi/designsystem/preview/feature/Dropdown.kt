@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.designsystem.preview.feature
+package com.seugi.designsystem.preview.feature
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,9 +16,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.apeun.gidaechi.designsystem.component.DropDownType
-import com.apeun.gidaechi.designsystem.component.SeugiDropDown
-import com.apeun.gidaechi.designsystem.theme.SeugiTheme
+import com.seugi.designsystem.component.DropDownType
+import com.seugi.designsystem.component.SeugiDropDown
+import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
 fun Dropdown() {

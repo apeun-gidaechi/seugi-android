@@ -1,9 +1,9 @@
-package com.apeun.gidaechi.network.workspace
+package com.seugi.network.workspace
 
-import com.apeun.gidaechi.network.core.response.BaseResponse
-import com.apeun.gidaechi.network.core.response.ProfileResponse
-import com.apeun.gidaechi.network.core.response.Response
-import com.apeun.gidaechi.network.workspace.response.CheckWorkspaceResponse
+import com.seugi.network.core.response.BaseResponse
+import com.seugi.network.core.response.ProfileResponse
+import com.seugi.network.core.response.Response
+import com.seugi.network.workspace.response.CheckWorkspaceResponse
 
 interface WorkspaceDataSource {
 

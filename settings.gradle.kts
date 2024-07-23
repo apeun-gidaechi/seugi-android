@@ -1,9 +1,9 @@
 import java.net.URI
 
-include(":data:notice")
+include(":data:notification")
 
 
-include(":network:notice")
+include(":network:notification")
 
 
 include(":feature-main:chat-seugi")
@@ -68,7 +68,7 @@ include(
     ":network:sign-in",
     ":network:workspace",
     ":common",
-    ":data:email-sign-in",
+    ":data:member",
     ":data:workspace",
     ":feature-main:main",
     ":feature-main:chat",

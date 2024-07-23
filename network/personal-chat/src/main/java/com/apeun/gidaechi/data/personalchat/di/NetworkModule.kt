@@ -1,7 +1,7 @@
-package com.apeun.gidaechi.data.personalchat.di
+package com.seugi.data.personalchat.di
 
-import com.apeun.gidaechi.data.personalchat.PersonalChatDataSource
-import com.apeun.gidaechi.data.personalchat.datasource.PersonalChatDataSourceImpl
+import com.seugi.data.personalchat.PersonalChatDataSource
+import com.seugi.data.personalchat.datasource.PersonalChatDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

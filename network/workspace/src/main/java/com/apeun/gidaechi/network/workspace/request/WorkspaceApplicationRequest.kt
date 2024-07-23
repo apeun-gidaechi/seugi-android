@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.network.workspace.request
+package com.seugi.network.workspace.request
 
 data class WorkspaceApplicationRequest(
     val workspaceId: String,

@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.join"
+    namespace = "com.seugi.join"
 }
 
 dependencies {
     implementation(projects.designsystem)
-    implementation(projects.data.emailSignIn)
+    implementation(projects.data.member)
     implementation(projects.data.workspace)
     implementation(projects.common)
 }

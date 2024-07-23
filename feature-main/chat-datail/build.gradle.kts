@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.chatdatail"
+    namespace = "com.seugi.chatdatail"
 }
 
 dependencies {

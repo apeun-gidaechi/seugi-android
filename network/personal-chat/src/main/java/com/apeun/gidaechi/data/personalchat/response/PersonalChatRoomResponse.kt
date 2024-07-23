@@ -1,6 +1,6 @@
-package com.apeun.gidaechi.data.personalchat.response
+package com.seugi.data.personalchat.response
 
-import com.apeun.gidaechi.network.core.response.UserResponse
+import com.seugi.network.core.response.UserResponse
 import java.time.LocalDateTime
 
 data class PersonalChatRoomResponse(

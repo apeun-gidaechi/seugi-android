@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.designsystem.preview.feature
+package com.seugi.designsystem.preview.feature
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
@@ -6,9 +6,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.apeun.gidaechi.designsystem.component.ButtonType
-import com.apeun.gidaechi.designsystem.component.SeugiButton
-import com.apeun.gidaechi.designsystem.component.SeugiDialog
+import com.seugi.designsystem.component.ButtonType
+import com.seugi.designsystem.component.SeugiButton
+import com.seugi.designsystem.component.SeugiDialog
 
 @Composable
 fun Dialog() {

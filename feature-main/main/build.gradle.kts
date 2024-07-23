@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.main"
+    namespace = "com.seugi.main"
 }
 
 dependencies {

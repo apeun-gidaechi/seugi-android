@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.designsystem.preview
+package com.seugi.designsystem.preview
 
 object NavRoot {
     const val HOME = "HOME"

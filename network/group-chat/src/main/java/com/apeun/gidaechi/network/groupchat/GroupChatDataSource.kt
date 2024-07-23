@@ -1,7 +1,7 @@
-package com.apeun.gidaechi.network.groupchat
+package com.seugi.network.groupchat
 
-import com.apeun.gidaechi.network.core.response.BaseResponse
-import com.apeun.gidaechi.network.core.response.ChatRoomResponse
+import com.seugi.network.core.response.BaseResponse
+import com.seugi.network.core.response.ChatRoomResponse
 
 interface GroupChatDataSource {
 

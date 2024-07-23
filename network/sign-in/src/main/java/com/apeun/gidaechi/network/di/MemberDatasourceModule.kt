@@ -1,7 +1,7 @@
-package com.apeun.gidaechi.network.di
+package com.seugi.network.di
 
-import com.apeun.gidaechi.network.MemberDatasource
-import com.apeun.gidaechi.network.datasource.MemberDatasourceImpl
+import com.seugi.network.MemberDatasource
+import com.seugi.network.datasource.MemberDatasourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.ui
+package com.seugi.ui
 
 import android.os.Build
 import android.view.View

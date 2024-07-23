@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.network.personalchat"
+    namespace = "com.seugi.network.personalchat"
 }
 
 dependencies {

@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.designsystem.preview.feature
+package com.seugi.designsystem.preview.feature
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -18,12 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import app.rive.runtime.kotlin.core.Rive
-import com.apeun.gidaechi.designsystem.animation.NoInteractionSource
-import com.apeun.gidaechi.designsystem.component.ButtonType
-import com.apeun.gidaechi.designsystem.component.SeugiButton
-import com.apeun.gidaechi.designsystem.component.SeugiFullWidthButton
-import com.apeun.gidaechi.designsystem.theme.SeugiTheme
-import com.apeun.gidaechi.designsystem.theme.White
+import com.seugi.designsystem.animation.NoInteractionSource
+import com.seugi.designsystem.component.ButtonType
+import com.seugi.designsystem.component.SeugiButton
+import com.seugi.designsystem.component.SeugiFullWidthButton
+import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.designsystem.theme.White
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

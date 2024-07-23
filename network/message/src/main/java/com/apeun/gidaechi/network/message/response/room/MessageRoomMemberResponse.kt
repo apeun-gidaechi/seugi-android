@@ -1,4 +1,4 @@
-package com.apeun.gidaechi.network.message.response.room
+package com.seugi.network.message.response.room
 
 data class MessageRoomMemberResponse(
     val chatRoomId: Int,

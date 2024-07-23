@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.network.profile"
+    namespace = "com.seugi.network.profile"
 }
 
 dependencies {

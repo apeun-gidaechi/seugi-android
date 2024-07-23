@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.login"
+    namespace = "com.seugi.login"
 }
 
 dependencies {
     implementation(projects.designsystem)
     implementation(projects.featureOnboarding.join)
-    implementation(projects.data.emailSignIn)
+    implementation(projects.data.member)
     implementation(projects.network.signIn)
     implementation(projects.common)
     implementation(projects.data.token)

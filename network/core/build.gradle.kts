@@ -11,7 +11,7 @@ val properties = Properties()
 properties.load(project.rootProject.file("local.properties").inputStream())
 
 android {
-    namespace = "com.apeun.gidaechi.network.core"
+    namespace = "com.seugi.network.core"
 
     defaultConfig {
         buildConfigField("String", "BASE_URL", "${properties["BASE_URL"]}")

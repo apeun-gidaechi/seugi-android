@@ -1,4 +1,4 @@
-//import com.apeun.gidaechi.dsl.androidTestImplementation
+//import com.seugi.dsl.androidTestImplementation
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
@@ -9,10 +9,10 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.seugi"
+    namespace = "com.seugi"
 
     defaultConfig {
-        applicationId = "com.apeun.gidaechi.seugi"
+        applicationId = "com.seugi"
         versionCode = 1
         versionName = "1.0"
 
