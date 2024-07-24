@@ -12,7 +12,6 @@ import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.gestures.animateTo
-import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -337,7 +336,7 @@ internal fun ChatDetailScreen(
                 horizontal = 8.dp,
             ),
             state = scrollState,
-            reverseLayout = true
+            reverseLayout = true,
         ) {
             items(state.message) { item ->
                 Column(
