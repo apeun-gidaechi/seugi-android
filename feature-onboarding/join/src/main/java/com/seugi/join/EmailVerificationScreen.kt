@@ -38,6 +38,7 @@ import com.seugi.designsystem.theme.Red500
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.join.model.EmailVerificationSideEffect
 import com.seugi.join.viewModel.EmailVerificationViewModel
+import com.seugi.ui.CollectAsSideEffect
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
@@ -64,6 +65,28 @@ fun EmailVerificationScreen(
     var dialogState by remember {
         mutableStateOf(Pair<String, String?>("", ""))
     }
+
+    viewModel.sideEffect.CollectAsSideEffect {
+        when (it) {
+            is EmailVerificationSideEffect.SuccessGetCode -> {
+                dialogState = Pair("인증코드를 전송했어요", "이메일 함을 확인해 보세요")
+                verificationClick = true
+                timeLeft = 300
+            }
+
+            is EmailVerificationSideEffect.SuccessJoin -> {
+                popBackStack()
+            }
+
+            is EmailVerificationSideEffect.FiledJoin -> {
+                dialogState = Pair("인증코드가 올바르지 않습니다", null)
+            }
+
+            is EmailVerificationSideEffect.Error -> {
+                dialogState = Pair("오류가 발생했습니다. 다시시도 해주세요", null)
+            }
+        }
+    }
     SeugiTheme {
         LaunchedEffect(key1 = timeLeft) {
             while (timeLeft > 0) {
@@ -72,29 +95,7 @@ fun EmailVerificationScreen(
             }
             verificationClick = false
         }
-        LaunchedEffect(key1 = Unit) {
-            viewModel.sideEffect.collectLatest {
-                when (it) {
-                    is EmailVerificationSideEffect.SuccessGetCode -> {
-                        dialogState = Pair("인증코드를 전송했어요", "이메일 함을 확인해 보세요")
-                        verificationClick = true
-                        timeLeft = 300
-                    }
 
-                    is EmailVerificationSideEffect.SuccessJoin -> {
-                        popBackStack()
-                    }
-
-                    is EmailVerificationSideEffect.FiledJoin -> {
-                        dialogState = Pair("인증코드가 올바르지 않습니다", null)
-                    }
-
-                    is EmailVerificationSideEffect.Error -> {
-                        dialogState = Pair("오류가 발생했습니다. 다시시도 해주세요", null)
-                    }
-                }
-            }
-        }
 
         var verificationCode by remember {
             mutableStateOf(TextFieldValue())
