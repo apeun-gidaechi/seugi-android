@@ -6,7 +6,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.seugi.join.EmailVerificationScreen
+import com.seugi.join.emailverification.EmailVerificationScreen
 
 const val EMAIL_VERIFICATION_ROUTE = "emailVerification"
 
