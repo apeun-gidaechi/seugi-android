@@ -1,8 +1,5 @@
 package com.seugi.chatdatail
 
-import android.graphics.Rect
-import android.view.View
-import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.tween
@@ -12,6 +9,7 @@ import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.gestures.animateTo
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -35,11 +33,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -50,9 +46,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
@@ -89,8 +83,8 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-internal fun ChatDetailScreen(
-    viewModel: ChatDetailViewModel = hiltViewModel(),
+internal fun NewChatDetailScreen(
+    viewModel: BackupChatDetailViewModel = hiltViewModel(),
     workspace: String = "664bdd0b9dfce726abd30462",
     isPersonal: Boolean = false,
     chatRoomId: String = "665d9ec15e65717b19a62701",
@@ -173,6 +167,32 @@ internal fun ChatDetailScreen(
     LaunchedEffect(key1 = keyboardState) {
         if (keyboardState.isOpen) {
             scrollState.animateScrollBy(with(density) { keyboardState.height.toPx() })
+        }
+    }
+
+    LaunchedEffect(key1 = state) {
+        val chatIndex = state.message.size
+        if (nowIndex != chatIndex) {
+            coroutineScope.launch {
+                scrollState.scrollToItem(chatIndex - nowIndex)
+                scrollState.scrollBy(-50f)
+                nowIndex = chatIndex
+            }
+        }
+
+        if (isFirst) {
+            coroutineScope.launch {
+                if (state.message.lastIndex != -1) {
+                    isFirst = !isFirst
+                    scrollState.scrollToItem(state.message.lastIndex)
+                }
+            }
+        } else {
+            coroutineScope.launch {
+                if (state.message.lastIndex != -1 && !canScrollForward) {
+                    scrollState.scrollToItem(state.message.lastIndex)
+                }
+            }
         }
     }
 
@@ -336,7 +356,6 @@ internal fun ChatDetailScreen(
                 horizontal = 8.dp,
             ),
             state = scrollState,
-            reverseLayout = true,
         ) {
             items(state.message) { item ->
                 Column(
@@ -506,40 +525,4 @@ private fun ChatDetailTextField(searchText: String, onValueChange: (String) -> U
             }
         },
     )
-}
-
-data class ExKeyboardState(
-    val isOpen: Boolean = false,
-    val height: Dp = 0.dp,
-)
-
-internal fun View.isKeyboardOpen(): Pair<Boolean, Int> {
-    val rect = Rect()
-    getWindowVisibleDisplayFrame(rect)
-    val screenHeight = rootView.height
-    val keypadHeight = screenHeight - rect.bottom
-    return Pair(keypadHeight > screenHeight * 0.15, screenHeight - rect.bottom)
-}
-
-@Composable
-internal fun rememberKeyboardOpen(): State<ExKeyboardState> {
-    val view = LocalView.current
-    val density = LocalDensity.current
-
-    fun Pair<Boolean, Int>.toState() = ExKeyboardState(
-        isOpen = first,
-        height = with(density) { second.toDp() - 48.dp },
-    )
-
-    return produceState(initialValue = view.isKeyboardOpen().toState()) {
-        val viewTreeObserver = view.viewTreeObserver
-        val listener = ViewTreeObserver.OnGlobalLayoutListener {
-            value = view.isKeyboardOpen().toState()
-        }
-        viewTreeObserver.addOnGlobalLayoutListener(listener)
-
-        awaitDispose {
-            viewTreeObserver.removeOnGlobalLayoutListener(listener)
-        }
-    }
 }
