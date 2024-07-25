@@ -26,7 +26,6 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.designsystem.component.ButtonType
 import com.seugi.designsystem.component.SeugiButton
 import com.seugi.designsystem.component.SeugiDialog
@@ -40,7 +39,6 @@ import com.seugi.join.model.EmailVerificationSideEffect
 import com.seugi.join.viewModel.EmailVerificationViewModel
 import com.seugi.ui.CollectAsSideEffect
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -95,7 +93,6 @@ fun EmailVerificationScreen(
             }
             verificationClick = false
         }
-
 
         var verificationCode by remember {
             mutableStateOf(TextFieldValue())
