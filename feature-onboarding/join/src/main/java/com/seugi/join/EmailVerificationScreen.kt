@@ -53,10 +53,6 @@ fun EmailVerificationScreen(
 ) {
     var timeLeft by remember { mutableStateOf(0) }
 
-    val sideEffect: EmailVerificationSideEffect? by viewModel.sideEffect.collectAsStateWithLifecycle(
-        initialValue = null,
-    )
-
     val minutes = timeLeft / 60
     val seconds = timeLeft % 60
     val formattedTime = "%d분 %02d초 남음".format(minutes, seconds)
