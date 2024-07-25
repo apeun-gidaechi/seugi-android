@@ -1,4 +1,4 @@
-package com.seugi.join.viewModel
+package com.seugi.join.selectingCode
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

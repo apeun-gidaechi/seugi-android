@@ -1,4 +1,4 @@
-package com.seugi.join
+package com.seugi.join.schoolCode
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -32,7 +32,6 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiCodeTextField
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.join.model.SchoolCodeSideEffect
-import com.seugi.join.viewModel.SchoolCodeViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
