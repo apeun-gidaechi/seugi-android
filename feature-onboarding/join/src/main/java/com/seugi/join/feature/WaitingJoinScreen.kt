@@ -1,4 +1,4 @@
-package com.seugi.join
+package com.seugi.join.feature
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +27,7 @@ import com.seugi.designsystem.component.SeugiToolTip
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.ToolTipType
 import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.join.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

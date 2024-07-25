@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.seugi.join.EmailSignUpScreen
+import com.seugi.join.feature.EmailSignUpScreen
 
 const val EMAIL_SIGN_UP_ROUTE = "emailSignUp"
 

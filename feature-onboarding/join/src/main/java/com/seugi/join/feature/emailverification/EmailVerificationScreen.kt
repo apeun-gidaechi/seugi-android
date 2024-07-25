@@ -1,4 +1,4 @@
-package com.seugi.join.emailverification
+package com.seugi.join.feature.emailverification
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,7 +35,7 @@ import com.seugi.designsystem.component.textfield.SeugiCodeTextField
 import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.Red500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.join.model.EmailVerificationSideEffect
+import com.seugi.join.feature.model.EmailVerificationSideEffect
 import com.seugi.ui.CollectAsSideEffect
 import kotlinx.coroutines.delay
 
