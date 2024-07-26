@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,6 +30,7 @@ import com.seugi.designsystem.animation.ButtonState
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.theme.Black
 import com.seugi.designsystem.theme.Gray100
+import com.seugi.designsystem.theme.Gray400
 import com.seugi.designsystem.theme.Gray500
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.designsystem.theme.White
@@ -95,9 +97,10 @@ fun SeugiListItem(modifier: Modifier = Modifier, type: ListItemType = ListItemTy
                 }
                 is ListItemType.Icon -> {
                     Image(
-                        modifier = Modifier.size(28.dp),
+                        modifier = Modifier.size(24.dp),
                         painter = painterResource(id = R.drawable.ic_expand_right_line),
                         contentDescription = "오른쪽 방향표",
+                        colorFilter = ColorFilter.tint(Gray400)
                     )
                 }
                 else -> {}
@@ -141,6 +144,13 @@ private fun PreviewSeugiListItem() {
                 },
             )
             Spacer(modifier = Modifier.height(16.dp))
+            SeugiListItem(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                type = ListItemType.Icon,
+                text = "이동",
+                onClick = {
+                },
+            )
         }
     }
 }
