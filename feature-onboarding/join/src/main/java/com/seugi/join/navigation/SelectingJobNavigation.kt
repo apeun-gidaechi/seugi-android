@@ -6,7 +6,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.seugi.join.SelectingJobScreen
+import com.seugi.join.feature.selectingcode.SelectingJobScreen
 
 const val SELECTING_JOB = "selectingJob"
 

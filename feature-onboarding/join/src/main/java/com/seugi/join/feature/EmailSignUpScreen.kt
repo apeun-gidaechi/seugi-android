@@ -1,4 +1,4 @@
-package com.seugi.join
+package com.seugi.join.feature
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
