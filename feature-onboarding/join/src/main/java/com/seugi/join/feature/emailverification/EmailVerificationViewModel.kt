@@ -6,7 +6,7 @@ import com.seugi.common.model.Result
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.member.MemberRepository
-import com.seugi.join.feature.model.EmailVerificationSideEffect
+import com.seugi.join.feature.emailverification.model.EmailVerificationSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
