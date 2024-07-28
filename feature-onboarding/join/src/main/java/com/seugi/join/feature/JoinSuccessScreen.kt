@@ -58,7 +58,7 @@ fun JoinSuccessScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     SeugiRoundedCircleImage(
-                        size = Size.Small,
+                        size = Size.Medium,
                         image = workspaceImageUrl,
                         onClick = {},
                     )
