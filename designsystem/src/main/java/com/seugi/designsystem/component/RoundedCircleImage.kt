@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,6 +22,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -36,17 +35,14 @@ import com.seugi.designsystem.theme.White
 
 sealed class Size(val size: Dp, val radius: Dp) {
     data object Large : Size(180.dp, 64.dp)
-    data object Small : Size(128.dp, 36.dp)
+    data object Medium : Size(128.dp, 36.dp)
+    data object Small : Size(64.dp, 18.dp)
+    data object ExtraSmall : Size(48.dp, (13.5).dp)
 }
 
-sealed class Type(@DrawableRes val image: Int) {
-    data object Add : Type(R.drawable.ic_add)
-    data object School : Type(R.drawable.ic_school)
-    data object Image : Type(R.drawable.ic_image)
-}
 
 @Composable
-fun SeugiRoundedCircleImage(modifier: Modifier = Modifier, size: Size, type: Type, onClick: () -> Unit) {
+fun SeugiRoundedCircleImage(modifier: Modifier = Modifier, size: Size, onClick: () -> Unit) {
     Box(
         modifier = modifier
             .size(size = size.size)
@@ -57,7 +53,7 @@ fun SeugiRoundedCircleImage(modifier: Modifier = Modifier, size: Size, type: Typ
     ) {
         Image(
             modifier = Modifier.size(size.size / 2),
-            painter = painterResource(id = type.image),
+            painter = painterResource(id = R.drawable.ic_image),
             contentDescription = "",
             colorFilter = ColorFilter.tint(Gray400),
         )
@@ -78,7 +74,7 @@ fun SeugiRoundedCircleImage(modifier: Modifier = Modifier, size: Size, image: St
     )
 }
 
-@Preview
+@Preview(widthDp = 500)
 @Composable
 private fun PreviewSeugiRoundedCircleImage() {
     SeugiTheme {
@@ -90,27 +86,23 @@ private fun PreviewSeugiRoundedCircleImage() {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Row {
-                SeugiRoundedCircleImage(size = Size.Large, type = Type.Add, onClick = {})
+                SeugiRoundedCircleImage(size = Size.Large, onClick = {})
                 Spacer(modifier = Modifier.width(30.dp))
-                SeugiRoundedCircleImage(size = Size.Small, type = Type.Add, onClick = {})
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-            Row {
-                SeugiRoundedCircleImage(size = Size.Large, type = Type.School, onClick = {})
+                SeugiRoundedCircleImage(size = Size.Medium, onClick = {})
                 Spacer(modifier = Modifier.width(30.dp))
-                SeugiRoundedCircleImage(size = Size.Small, type = Type.School, onClick = {})
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-            Row {
-                SeugiRoundedCircleImage(size = Size.Large, type = Type.Image, onClick = {})
+                SeugiRoundedCircleImage(size = Size.Small, onClick = {})
                 Spacer(modifier = Modifier.width(30.dp))
-                SeugiRoundedCircleImage(size = Size.Small, type = Type.Image, onClick = {})
+                SeugiRoundedCircleImage(size = Size.ExtraSmall, onClick = {})
             }
             Spacer(modifier = Modifier.height(10.dp))
             Row {
                 SeugiRoundedCircleImage(size = Size.Large, image = "https://images-na.ssl-images-amazon.com/images/I/41VTLQ%2BH-oL._UL1200_.jpg", onClick = {})
                 Spacer(modifier = Modifier.width(30.dp))
+                SeugiRoundedCircleImage(size = Size.Medium, image = "https://images-na.ssl-images-amazon.com/images/I/41VTLQ%2BH-oL._UL1200_.jpg", onClick = {})
+                Spacer(modifier = Modifier.width(30.dp))
                 SeugiRoundedCircleImage(size = Size.Small, image = "https://images-na.ssl-images-amazon.com/images/I/41VTLQ%2BH-oL._UL1200_.jpg", onClick = {})
+                Spacer(modifier = Modifier.width(30.dp))
+                SeugiRoundedCircleImage(size = Size.ExtraSmall, image = "https://images-na.ssl-images-amazon.com/images/I/41VTLQ%2BH-oL._UL1200_.jpg", onClick = {})
             }
         }
     }
