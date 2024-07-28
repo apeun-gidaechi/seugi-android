@@ -1,4 +1,4 @@
-package com.seugi.designsystem.component
+package com.seugi.designsystem.component.chat
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -15,39 +15,39 @@ import com.seugi.designsystem.theme.Primary200
 import com.seugi.designsystem.theme.Primary700
 import com.seugi.designsystem.theme.SeugiTextTheme
 
-sealed class RoomImageType(
+sealed class ChatRoomType(
     val size: Dp,
     val textStyle: SeugiTextTheme,
 ) {
 
-    data object ExtraSmall : RoomImageType(
+    data object ExtraSmall : ChatRoomType(
         size = 16.dp,
         textStyle = SeugiTextTheme.LabelMedium,
     )
-    data object Small : RoomImageType(
+    data object Small : ChatRoomType(
         size = 24.dp,
         textStyle = SeugiTextTheme.LabelLarge,
     )
-    data object Medium : RoomImageType(
+    data object Medium : ChatRoomType(
         size = 32.dp,
         textStyle = SeugiTextTheme.BodyLarge,
     )
-    data object Large : RoomImageType(
+    data object Large : ChatRoomType(
         size = 36.dp,
         textStyle = SeugiTextTheme.TitleLarge,
     )
-    data object ExtraLarge : RoomImageType(
+    data object ExtraLarge : ChatRoomType(
         size = 64.dp,
         textStyle = SeugiTextTheme.HeadlineLarge,
     )
-    data object XXL : RoomImageType(
+    data object XXL : ChatRoomType(
         size = 128.dp,
         textStyle = SeugiTextTheme.DisplayLarge,
     )
 }
 
 @Composable
-fun SeugiRoomImage(modifier: Modifier = Modifier, text: String = "", type: RoomImageType) {
+fun SeugiChatRoom(modifier: Modifier = Modifier, text: String = "", type: ChatRoomType) {
     Box(
         modifier = modifier
             .size(type.size)
