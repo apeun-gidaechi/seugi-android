@@ -64,6 +64,8 @@ fun SeugiDatePicker(
     isFixedSize: Boolean = false,
     colors: SeugiDatePickerColors = SeugiDatePickerDefaults.defaultColor(),
     isValidDate: (date: LocalDate) -> Boolean = { state.validDate(it) },
+    onClickPrevMonth: () -> Unit = { state.prevMonth() },
+    onClickNextMonth: () -> Unit = { state.nextMonth() },
     onClickDate: (date: LocalDate, isValid: Boolean) -> Unit,
     onClickSuccess: () -> Unit,
 ) {
@@ -77,12 +79,8 @@ fun SeugiDatePicker(
         SeugiTimePickerHeader(
             month = state.month,
             colors = colors,
-            onClickPrevMonth = {
-                state.prevMonth()
-            },
-            onClickNextMonth = {
-                state.nextMonth()
-            }
+            onClickPrevMonth = onClickPrevMonth,
+            onClickNextMonth = onClickNextMonth
         )
         Spacer(modifier = Modifier.height(16.dp))
         SeugiTimePickerMonth(
