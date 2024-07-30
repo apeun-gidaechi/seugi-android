@@ -1,6 +1,6 @@
 package com.seugi.designsystem.component
 
-import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -26,7 +27,9 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,12 +37,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
-import com.seugi.designsystem.component.DatePickerDefaults.defaultLocale
+import com.seugi.designsystem.component.SeugiDatePickerDefaults.defaultLocale
 import com.seugi.designsystem.component.modifier.`if`
 import com.seugi.designsystem.theme.Black
 import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.designsystem.theme.Transparent
 import com.seugi.designsystem.theme.White
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -49,10 +53,12 @@ import java.util.Locale
 
 @Composable
 fun SeugiDatePicker(
+    modifier: Modifier = Modifier,
     calendarModel: CalendarModel,
     month: CalendarMonth,
     selectDate: LocalDate? = null,
     isFixedSize: Boolean = false,
+    colors: SeugiDatePickerColors = SeugiDatePickerDefaults.defaultColor(),
     isValidDate: (date: LocalDate) -> Boolean = {
         month.isValidDate(it, calendarModel)
     },
@@ -63,12 +69,14 @@ fun SeugiDatePicker(
 ) {
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(24.dp)
+            .background(color = colors.containerColor)
     ) {
         SeugiTimePickerHeader(
             month = month,
+            colors = colors,
             onClickPrevMonth = onClickPrevMonth,
             onClickNextMonth = onClickNextMonth
         )
@@ -77,6 +85,7 @@ fun SeugiDatePicker(
             month = month,
             selectDate = selectDate,
             weekdayNames = calendarModel.weekdayNames,
+            colors = colors,
             isFixedSize = isFixedSize,
             isValidDate = isValidDate,
             onClickDate = onClickDate
@@ -93,6 +102,7 @@ fun SeugiDatePicker(
 @Composable
 private fun SeugiTimePickerHeader(
     month: CalendarMonth,
+    colors: SeugiDatePickerColors,
     onClickPrevMonth: () -> Unit,
     onClickNextMonth: () -> Unit,
 ) {
@@ -104,7 +114,7 @@ private fun SeugiTimePickerHeader(
         Text(
             text = "${month.year}년 ${month.month}월",
             style = MaterialTheme.typography.titleMedium,
-            color = Black,
+            color = colors.titleContentColor,
         )
         Spacer(modifier = Modifier.weight(1f))
         Box(
@@ -118,7 +128,7 @@ private fun SeugiTimePickerHeader(
             SeugiImage(
                 modifier = Modifier.size(20.dp),
                 resId = R.drawable.ic_expand_left_line,
-                colorFilter = ColorFilter.tint(Primary500)
+                colorFilter = ColorFilter.tint(colors.titleImageColor)
             )
         }
         Spacer(modifier = Modifier.width(8.dp))
@@ -133,7 +143,7 @@ private fun SeugiTimePickerHeader(
             SeugiImage(
                 modifier = Modifier.size(20.dp),
                 resId = R.drawable.ic_expand_right_line,
-                colorFilter = ColorFilter.tint(Primary500)
+                colorFilter = ColorFilter.tint(colors.titleImageColor)
             )
         }
     }
@@ -144,6 +154,7 @@ private fun SeugiTimePickerMonth(
     month: CalendarMonth,
     selectDate: LocalDate?,
     weekdayNames: List<String>,
+    colors: SeugiDatePickerColors,
     isValidDate: (date: LocalDate) -> Boolean,
     isFixedSize: Boolean,
     onClickDate: (date: LocalDate, isValid: Boolean) -> Unit
@@ -158,7 +169,8 @@ private fun SeugiTimePickerMonth(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(18.dp),
+                    .height(18.dp)
+                    .background(colors.weeklyContainerColor),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 weekdayNames.fastForEach { weekdayName ->
@@ -166,7 +178,7 @@ private fun SeugiTimePickerMonth(
                         modifier = Modifier.weight(1f),
                         text = weekdayName,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Gray600,
+                        color = colors.weeklyContentColor,
                         textAlign = TextAlign.Center
                     )
                 }
@@ -212,7 +224,7 @@ private fun SeugiTimePickerMonth(
                                     .`if`(isSelect) {
                                         drawBehind {
                                             drawRoundRect(
-                                                color = Primary500,
+                                                color = colors.selectDayContainerColor,
                                                 cornerRadius = CornerRadius(10.dp.toPx()),
                                                 size = Size(38.dp.toPx(), 38.dp.toPx()),
                                                 topLeft = Offset(
@@ -228,11 +240,10 @@ private fun SeugiTimePickerMonth(
                                     modifier = Modifier,
                                     text = dayNumber.toString(),
                                     style = MaterialTheme.typography.titleMedium,
-                                    color = when {
-                                        isSelect -> White
-                                        isValid -> Gray600
-                                        else -> Gray600.copy(alpha = 0.5f)
-                                    }
+                                    color = colors.dayContentColor(
+                                        selected = isSelect,
+                                        active = isValid
+                                    )
                                 )
                             }
                         }
@@ -245,7 +256,7 @@ private fun SeugiTimePickerMonth(
 }
 
 
-object DatePickerDefaults {
+object SeugiDatePickerDefaults {
 
     @Stable
     fun createCalendarModel(locale: Locale): CalendarModel = CalendarModelImpl(locale)
@@ -255,6 +266,20 @@ object DatePickerDefaults {
     fun defaultLocale(): Locale {
         return LocalConfiguration.current.locales[0]
     }
+
+    @Stable
+    fun defaultColor() =
+        SeugiDatePickerColors(
+            containerColor = White,
+            titleContentColor = Black,
+            titleImageColor = Primary500,
+            weeklyContainerColor = Transparent,
+            weeklyContentColor = Gray600,
+            activeDayContentColor = Gray600,
+            unActiveDayContentColor = Gray600.copy(alpha = 0.5f),
+            selectDayContainerColor = Primary500,
+            selectDayContentColor = White
+        )
 }
 
 
@@ -354,15 +379,62 @@ data class CalendarMonth(
         calendarModel.date <= date
 }
 
+@Immutable
+class SeugiDatePickerColors constructor(
+    val containerColor: Color,
+    val titleContentColor: Color,
+    val titleImageColor: Color,
+    val weeklyContainerColor: Color,
+    val weeklyContentColor: Color,
+    val activeDayContentColor: Color,
+    val unActiveDayContentColor: Color,
+    val selectDayContainerColor: Color,
+    val selectDayContentColor: Color,
+) {
+    fun copy(
+        containerColor: Color = this.containerColor,
+        titleContentColor: Color = this.titleContentColor,
+        titleImageColor: Color = this.titleImageColor,
+        weeklyContainerColor: Color = this.weeklyContainerColor,
+        weeklyContentColor: Color = this.weeklyContentColor,
+        activeDayContentColor: Color = this.activeDayContentColor,
+        unActiveDayContentColor: Color = this.unActiveDayContentColor,
+        selectDayContainerColor: Color = this.selectDayContainerColor,
+        selectDayContentColor: Color = this.selectDayContainerColor,
+    ) = SeugiDatePickerColors(
+        containerColor.takeOrElse { this.containerColor },
+        titleContentColor.takeOrElse { this.titleContentColor },
+        titleImageColor.takeOrElse { this.titleImageColor },
+        weeklyContainerColor.takeOrElse { this.weeklyContainerColor },
+        weeklyContentColor.takeOrElse { this.weeklyContentColor },
+        activeDayContentColor.takeOrElse { this.activeDayContentColor },
+        unActiveDayContentColor.takeOrElse { this.unActiveDayContentColor },
+        selectDayContainerColor.takeOrElse { this.selectDayContainerColor },
+        selectDayContentColor.takeOrElse { this.selectDayContentColor },
+    )
+
+    @Stable
+    internal fun dayContentColor(
+        selected: Boolean,
+        active: Boolean
+    ): Color {
+        return when {
+            selected -> this.selectDayContentColor
+            active -> this.activeDayContentColor
+            else -> this.unActiveDayContentColor
+        }
+    }
+}
+
+
 private const val MaxCalendarRows = 6
 private const val DaysInWeek = 7
-
 
 @Preview
 @Composable
 private fun SeugiDatePickerPreview() {
     val locale = defaultLocale()
-    val calendarModel = remember { DatePickerDefaults.createCalendarModel(locale) }
+    val calendarModel = remember { SeugiDatePickerDefaults.createCalendarModel(locale) }
     var month by remember { mutableStateOf(calendarModel.getMonth(2024, 7)) }
     var selectDate: LocalDate? by remember { mutableStateOf(null) }
     SeugiTheme {
