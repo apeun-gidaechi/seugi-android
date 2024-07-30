@@ -20,6 +20,9 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
+import com.seugi.designsystem.component.SeugiDatePickerDefaults.createCalendarModel
 import com.seugi.designsystem.component.SeugiDatePickerDefaults.defaultLocale
 import com.seugi.designsystem.component.modifier.`if`
 import com.seugi.designsystem.theme.Black
@@ -45,6 +49,8 @@ import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.designsystem.theme.Transparent
 import com.seugi.designsystem.theme.White
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -54,16 +60,10 @@ import java.util.Locale
 @Composable
 fun SeugiDatePicker(
     modifier: Modifier = Modifier,
-    calendarModel: CalendarModel,
-    month: CalendarMonth,
-    selectDate: LocalDate? = null,
+    state: SeugiDatePickerState = rememberSeugiDatePickerState(),
     isFixedSize: Boolean = false,
     colors: SeugiDatePickerColors = SeugiDatePickerDefaults.defaultColor(),
-    isValidDate: (date: LocalDate) -> Boolean = {
-        month.isValidDate(it, calendarModel)
-    },
-    onClickPrevMonth: () -> Unit,
-    onClickNextMonth: () -> Unit,
+    isValidDate: (date: LocalDate) -> Boolean = { state.validDate(it) },
     onClickDate: (date: LocalDate, isValid: Boolean) -> Unit,
     onClickSuccess: () -> Unit,
 ) {
@@ -75,16 +75,20 @@ fun SeugiDatePicker(
             .background(color = colors.containerColor)
     ) {
         SeugiTimePickerHeader(
-            month = month,
+            month = state.month,
             colors = colors,
-            onClickPrevMonth = onClickPrevMonth,
-            onClickNextMonth = onClickNextMonth
+            onClickPrevMonth = {
+                state.prevMonth()
+            },
+            onClickNextMonth = {
+                state.nextMonth()
+            }
         )
         Spacer(modifier = Modifier.height(16.dp))
         SeugiTimePickerMonth(
-            month = month,
-            selectDate = selectDate,
-            weekdayNames = calendarModel.weekdayNames,
+            month = state.month,
+            selectDate = state.selectedDate,
+            weekdayNames = state.weekdayNames,
             colors = colors,
             isFixedSize = isFixedSize,
             isValidDate = isValidDate,
@@ -426,6 +430,90 @@ class SeugiDatePickerColors constructor(
     }
 }
 
+interface SeugiDatePickerState {
+
+    var selectedDate: LocalDate
+
+    val weekdayNames: ImmutableList<String>
+
+    var month: CalendarMonth
+
+    fun prevMonth()
+
+    fun nextMonth()
+
+    fun validDate(date: LocalDate): Boolean
+}
+
+class SeugiDatePickerStateImpl(
+    selectDate: LocalDate,
+    locale: Locale,
+    year: Int,
+    month: Int
+): SeugiDatePickerState {
+
+    private val calendarModel = createCalendarModel(locale)
+
+    override val weekdayNames: ImmutableList<String>
+        get() = calendarModel.weekdayNames.toImmutableList()
+
+    override var month: CalendarMonth by mutableStateOf(calendarModel.getMonth(year, month))
+
+    override fun prevMonth() {
+        month = calendarModel.prevMonth(month)
+    }
+
+    override fun nextMonth() {
+        month = calendarModel.nextMonth(month)
+    }
+
+    override fun validDate(date: LocalDate): Boolean =
+        month.isValidDate(date, calendarModel)
+
+    override var selectedDate: LocalDate by mutableStateOf(selectDate)
+
+    companion object {
+        fun Saver(
+            locale: Locale
+        ): Saver<SeugiDatePickerStateImpl, Any> =
+            listSaver(
+                save = {
+                    listOf(
+                        it.selectedDate.toEpochDay(),
+                        it.month.year,
+                        it.month.month
+                    )
+                },
+                restore = {
+                    SeugiDatePickerStateImpl(
+                        selectDate = LocalDate.ofEpochDay(it[0] as Long),
+                        locale = locale,
+                        year = it[1] as Int,
+                        month = it[2] as Int
+                    )
+                }
+            )
+    }
+}
+
+@Composable
+fun rememberSeugiDatePickerState(
+    selectDate: LocalDate = LocalDate.now(),
+): SeugiDatePickerState {
+    val locale = defaultLocale()
+
+    return rememberSaveable(saver = SeugiDatePickerStateImpl.Saver(locale)) {
+        SeugiDatePickerStateImpl(
+            selectDate = selectDate,
+            locale = locale,
+            year = selectDate.year,
+            month = selectDate.monthValue
+        )
+    }
+}
+
+
+
 
 private const val MaxCalendarRows = 6
 private const val DaysInWeek = 7
@@ -433,25 +521,14 @@ private const val DaysInWeek = 7
 @Preview
 @Composable
 private fun SeugiDatePickerPreview() {
-    val locale = defaultLocale()
-    val calendarModel = remember { SeugiDatePickerDefaults.createCalendarModel(locale) }
-    var month by remember { mutableStateOf(calendarModel.getMonth(2024, 7)) }
-    var selectDate: LocalDate? by remember { mutableStateOf(null) }
+    val datePickerState = rememberSeugiDatePickerState()
     SeugiTheme {
         SeugiDatePicker(
-            calendarModel = calendarModel,
-            selectDate = selectDate,
-            month = month,
+            state = datePickerState,
             isFixedSize = false,
-            onClickPrevMonth = {
-                month = calendarModel.prevMonth(month)
-            },
-            onClickNextMonth = {
-                month = calendarModel.nextMonth(month)
-            },
             onClickDate = { date, isValid ->
                 if (isValid) {
-                    selectDate = date
+                    datePickerState.selectedDate = date
                 }
             },
             onClickSuccess = {
