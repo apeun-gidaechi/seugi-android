@@ -100,7 +100,7 @@ fun SeugiListItem(modifier: Modifier = Modifier, type: ListItemType = ListItemTy
                         modifier = Modifier.size(24.dp),
                         painter = painterResource(id = R.drawable.ic_expand_right_line),
                         contentDescription = "오른쪽 방향표",
-                        colorFilter = ColorFilter.tint(Gray400)
+                        colorFilter = ColorFilter.tint(Gray400),
                     )
                 }
                 else -> {}

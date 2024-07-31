@@ -9,7 +9,6 @@ import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.join.model.SchoolCodeModel
 import com.seugi.join.model.SchoolCodeSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class SchoolCodeViewModel @Inject constructor(

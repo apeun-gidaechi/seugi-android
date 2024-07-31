@@ -10,19 +10,13 @@ import androidx.compose.ui.res.painterResource
 import coil.compose.rememberAsyncImagePainter
 
 @Composable
-fun SeugiImage(
-    modifier: Modifier = Modifier,
-    url: String,
-    contentDescription: String? = null,
-    colorFilter: ColorFilter? = null,
-    alpha: Float = DefaultAlpha,
-) {
+fun SeugiImage(modifier: Modifier = Modifier, url: String, contentDescription: String? = null, colorFilter: ColorFilter? = null, alpha: Float = DefaultAlpha) {
     Image(
         modifier = modifier,
         painter = rememberAsyncImagePainter(model = url),
         contentDescription = contentDescription,
         colorFilter = colorFilter,
-        alpha = alpha
+        alpha = alpha,
     )
 }
 
@@ -39,6 +33,6 @@ fun SeugiImage(
         painter = painterResource(id = resId),
         contentDescription = contentDescription,
         colorFilter = colorFilter,
-        alpha = alpha
+        alpha = alpha,
     )
 }

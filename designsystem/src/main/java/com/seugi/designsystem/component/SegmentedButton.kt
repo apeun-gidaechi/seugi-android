@@ -1,6 +1,5 @@
 package com.seugi.designsystem.component
 
-import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.VectorConverter
@@ -55,7 +54,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun SeugiSegmentedButtonLayout(
     selectedIndex: Int,
@@ -69,7 +67,6 @@ fun SeugiSegmentedButtonLayout(
     border: BorderStroke? = null,
     buttonItems: @Composable () -> Unit,
 ) {
-
     var buttonWidth by remember { mutableStateOf(0.dp) }
     val buttonWidthAnim by animateDpAsState(targetValue = buttonWidth, label = "")
     val scope = remember {
@@ -77,33 +74,31 @@ fun SeugiSegmentedButtonLayout(
 
             val segmentedButtonPositions = mutableStateOf<(List<SegmentedButtonPosition>)>(listOf())
 
-            override fun Modifier.segmentedIndicatorLayout(measure: MeasureScope.(Measurable, Constraints, List<SegmentedButtonPosition>) -> MeasureResult): Modifier {
+            override fun Modifier.segmentedIndicatorLayout(
+                measure: MeasureScope.(Measurable, Constraints, List<SegmentedButtonPosition>) -> MeasureResult,
+            ): Modifier {
                 return this.layout { measurable: Measurable, constraints: Constraints ->
                     this.measure(
                         measurable,
                         constraints,
-                        segmentedButtonPositions.value
+                        segmentedButtonPositions.value,
                     )
                 }
             }
 
-            override fun Modifier.segmentedIndicatorOffset(
-                selectedButtonIndex: Int,
-                matchContentSize: Boolean,
-            ): Modifier {
+            override fun Modifier.segmentedIndicatorOffset(selectedButtonIndex: Int, matchContentSize: Boolean): Modifier {
                 return this.then(
                     SegmentedIndicatorModifier(
                         segmentedButtonPositions,
                         selectedButtonIndex,
-                        matchContentSize
-                    )
+                        matchContentSize,
+                    ),
                 )
             }
 
             override fun setSegmentedButtonPositions(positions: List<SegmentedButtonPosition>) {
                 segmentedButtonPositions.value = positions
             }
-
         }
     }
 
@@ -130,11 +125,11 @@ fun SeugiSegmentedButtonLayout(
                                 .width(buttonWidthAnim)
                                 .padding(
                                     vertical = 4.dp,
-                                    horizontal = 4.dp
+                                    horizontal = 4.dp,
                                 )
                                 .segmentedIndicatorOffset(
                                     selectedButtonIndex = selectedIndex,
-                                    matchContentSize = true
+                                    matchContentSize = true,
                                 ),
                             color = Color.Transparent,
                             shape = indicatorShape,
@@ -143,13 +138,13 @@ fun SeugiSegmentedButtonLayout(
                                 modifier = Modifier
                                     .background(
                                         indicatorColor,
-                                        indicatorShape
-                                    )
+                                        indicatorShape,
+                                    ),
                             )
                         }
                     }
                 },
-            )
+            ),
         ) { (navItemMeasurables, indicatorMeasurables), constraints ->
             require(navItemMeasurables.size > 1) { "Segments size must be higher than 1" }
 
@@ -162,10 +157,12 @@ fun SeugiSegmentedButtonLayout(
                 buttonWidth = navItemWidth.toDp()
             }
 
-            scope.setSegmentedButtonPositions(List(buttonItemCount) { index ->
+            scope.setSegmentedButtonPositions(
+                List(buttonItemCount) { index ->
 
-                SegmentedButtonPosition(navItemWidth.toDp() * index, navItemWidth.toDp())
-            })
+                    SegmentedButtonPosition(navItemWidth.toDp() * index, navItemWidth.toDp())
+                },
+            )
 
             val navItemPlaceables = navItemMeasurables.fastMap {
                 it.measure(Constraints())
@@ -185,7 +182,6 @@ fun SeugiSegmentedButtonLayout(
                 }
             }
         }
-
     }
 }
 
@@ -217,7 +213,7 @@ internal data class SegmentedIndicatorModifier(
 internal class SegmentedIndicatorOffsetNode(
     var navItemPositionsState: State<List<SegmentedButtonPosition>>,
     var selectedNavItemIndex: Int,
-    var followContentSize: Boolean
+    var followContentSize: Boolean,
 ) : Modifier.Node(), LayoutModifierNode {
 
     private var offsetAnimatable: Animatable<Dp, AnimationVector1D>? = null
@@ -225,10 +221,7 @@ internal class SegmentedIndicatorOffsetNode(
     private var initialOffset: Dp? = null
     private var initialWidth: Dp? = null
 
-    override fun MeasureScope.measure(
-        measurable: Measurable,
-        constraints: Constraints
-    ): MeasureResult {
+    override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult {
         if (navItemPositionsState.value.isEmpty()) {
             return layout(0, 0) { }
         }
@@ -261,7 +254,7 @@ internal class SegmentedIndicatorOffsetNode(
                 constraints.copy(minWidth = width.roundToPx(), maxWidth = width.roundToPx())
             } else {
                 constraints
-            }
+            },
         )
 
         return layout(placeable.width, constraints.maxHeight) {
@@ -270,7 +263,6 @@ internal class SegmentedIndicatorOffsetNode(
     }
 }
 
-
 interface SegmentedIndicatorScope {
 
     fun Modifier.segmentedIndicatorLayout(
@@ -278,13 +270,10 @@ interface SegmentedIndicatorScope {
             Measurable,
             Constraints,
             List<SegmentedButtonPosition>,
-        ) -> MeasureResult
+        ) -> MeasureResult,
     ): Modifier
 
-    fun Modifier.segmentedIndicatorOffset(
-        selectedNavigationIndex: Int,
-        matchContentSize: Boolean = false
-    ): Modifier
+    fun Modifier.segmentedIndicatorOffset(selectedNavigationIndex: Int, matchContentSize: Boolean = false): Modifier
 }
 
 internal interface SegmentedButtonPositionsHolder {
@@ -295,28 +284,23 @@ internal interface SegmentedButtonPositionsHolder {
 data class SegmentedButtonPosition(
     val left: Dp,
     val width: Dp,
-    val right: Dp = left + width
+    val right: Dp = left + width,
 )
 
 @Composable
-fun SeugiSegmentedButton(
-    modifier: Modifier = Modifier,
-    text: String,
-    selected: Boolean,
-    onClick: () -> Unit
-) {
+fun SeugiSegmentedButton(modifier: Modifier = Modifier, text: String, selected: Boolean, onClick: () -> Unit) {
     Box(
         modifier = modifier
             .height(48.dp)
             .bounceClick(
-                onClick = onClick
+                onClick = onClick,
             ),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = text,
             color = if (selected) Gray800 else Gray600,
-            style = if (selected) MaterialTheme.typography.bodyLarge else MaterialTheme.typography.bodyMedium
+            style = if (selected) MaterialTheme.typography.bodyLarge else MaterialTheme.typography.bodyMedium,
         )
     }
 }
@@ -329,7 +313,7 @@ private fun SeugiSegmentedButtonPreview() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(White),
-            color = White
+            color = White,
         ) {
             BoxWithConstraints(modifier = Modifier.height(48.dp)) {
                 val dummyItems: ImmutableList<String> = persistentListOf("선생님", "학생")
@@ -342,14 +326,14 @@ private fun SeugiSegmentedButtonPreview() {
                     containerColor = Gray100,
                     shape = RoundedCornerShape(12.dp),
                     indicatorShape = RoundedCornerShape(8.dp),
-                    selectedIndex = selectedTabIndex
+                    selectedIndex = selectedTabIndex,
                 ) {
                     dummyItems.fastForEachIndexed { index, text ->
                         SeugiSegmentedButton(
                             modifier = Modifier
                                 .width(itemWidth),
                             text = text,
-                            selected = index == selectedTabIndex
+                            selected = index == selectedTabIndex,
                         ) {
                             selectedTabIndex = index
                         }

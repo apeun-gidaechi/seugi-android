@@ -10,11 +10,11 @@ import com.seugi.data.member.model.EmailSignInModel
 import com.seugi.network.MemberDatasource
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.request.EmailSignInRequest
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
 
 class MemberRepositoryImpl @Inject constructor(
     private val datasource: MemberDatasource,

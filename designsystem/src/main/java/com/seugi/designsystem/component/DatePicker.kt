@@ -1,6 +1,5 @@
 package com.seugi.designsystem.component
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -18,7 +17,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -77,11 +75,11 @@ fun SeugiDatePickerDialog(
     onClickSuccess: () -> Unit,
 ) {
     Dialog(
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest,
     ) {
         Surface(
             color = White,
-            shape = RoundedCornerShape(28.dp)
+            shape = RoundedCornerShape(28.dp),
         ) {
             SeugiDatePicker(
                 modifier = modifier,
@@ -92,7 +90,7 @@ fun SeugiDatePickerDialog(
                 onClickPrevMonth = onClickPrevMonth,
                 onClickNextMonth = onClickNextMonth,
                 onClickDate = onClickDate,
-                onClickSuccess = onClickSuccess
+                onClickSuccess = onClickSuccess,
             )
         }
     }
@@ -110,18 +108,17 @@ fun SeugiDatePicker(
     onClickDate: (date: LocalDate, isValid: Boolean) -> Unit,
     onClickSuccess: () -> Unit,
 ) {
-
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(24.dp)
-            .background(color = colors.containerColor)
+            .background(color = colors.containerColor),
     ) {
         SeugiTimePickerHeader(
             month = state.month,
             colors = colors,
             onClickPrevMonth = onClickPrevMonth,
-            onClickNextMonth = onClickNextMonth
+            onClickNextMonth = onClickNextMonth,
         )
         Spacer(modifier = Modifier.height(16.dp))
         SeugiTimePickerMonth(
@@ -131,27 +128,22 @@ fun SeugiDatePicker(
             colors = colors,
             isFixedSize = isFixedSize,
             isValidDate = isValidDate,
-            onClickDate = onClickDate
+            onClickDate = onClickDate,
         )
         Spacer(modifier = Modifier.height(8.dp))
         SeugiFullWidthButton(
             onClick = onClickSuccess,
             type = ButtonType.Primary,
-            text = "선택"
+            text = "선택",
         )
     }
 }
 
 @Composable
-private fun SeugiTimePickerHeader(
-    month: CalendarMonth,
-    colors: SeugiDatePickerColors,
-    onClickPrevMonth: () -> Unit,
-    onClickNextMonth: () -> Unit,
-) {
+private fun SeugiTimePickerHeader(month: CalendarMonth, colors: SeugiDatePickerColors, onClickPrevMonth: () -> Unit, onClickNextMonth: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Spacer(modifier = Modifier.width(4.dp))
         Text(
@@ -164,14 +156,14 @@ private fun SeugiTimePickerHeader(
             modifier = Modifier
                 .size(36.dp)
                 .bounceClick(
-                    onClick = onClickPrevMonth
+                    onClick = onClickPrevMonth,
                 ),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             SeugiImage(
                 modifier = Modifier.size(20.dp),
                 resId = R.drawable.ic_expand_left_line,
-                colorFilter = ColorFilter.tint(colors.titleImageColor)
+                colorFilter = ColorFilter.tint(colors.titleImageColor),
             )
         }
         Spacer(modifier = Modifier.width(8.dp))
@@ -179,14 +171,14 @@ private fun SeugiTimePickerHeader(
             modifier = Modifier
                 .size(36.dp)
                 .bounceClick(
-                    onClick = onClickNextMonth
+                    onClick = onClickNextMonth,
                 ),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             SeugiImage(
                 modifier = Modifier.size(20.dp),
                 resId = R.drawable.ic_expand_right_line,
-                colorFilter = ColorFilter.tint(colors.titleImageColor)
+                colorFilter = ColorFilter.tint(colors.titleImageColor),
             )
         }
     }
@@ -200,20 +192,19 @@ private fun SeugiTimePickerMonth(
     colors: SeugiDatePickerColors,
     isValidDate: (date: LocalDate) -> Boolean,
     isFixedSize: Boolean,
-    onClickDate: (date: LocalDate, isValid: Boolean) -> Unit
+    onClickDate: (date: LocalDate, isValid: Boolean) -> Unit,
 ) {
     BoxWithConstraints(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         val layoutMaxWidth = maxWidth
         Column {
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(18.dp)
                     .background(colors.weeklyContainerColor),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 weekdayNames.fastForEach { weekdayName ->
                     Text(
@@ -221,23 +212,26 @@ private fun SeugiTimePickerMonth(
                         text = weekdayName,
                         style = MaterialTheme.typography.bodyMedium,
                         color = colors.weeklyContentColor,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                 }
             }
-            val maxCalendarRows = if (isFixedSize) MaxCalendarRows else
+            val maxCalendarRows = if (isFixedSize) {
+                MaxCalendarRows
+            } else {
                 when {
                     (30 == month.numberOfDays && month.daysFromStartOfWeekToFirstOfMonth == 6) ||
-                    (31 == month.numberOfDays && (month.daysFromStartOfWeekToFirstOfMonth == 5 || month.daysFromStartOfWeekToFirstOfMonth == 6)) -> 6
+                        (31 == month.numberOfDays && (month.daysFromStartOfWeekToFirstOfMonth == 5 || month.daysFromStartOfWeekToFirstOfMonth == 6)) -> 6
                     (28 == month.numberOfDays && month.daysFromStartOfWeekToFirstOfMonth == 0) -> 4
                     else -> 5
                 }
+            }
             for (weekIndex in 0 until maxCalendarRows) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height((34.33).dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     for (dayIndex in 0 until DaysInWeek) {
                         val cellIndex = weekIndex * DaysInWeek + dayIndex
@@ -247,13 +241,13 @@ private fun SeugiTimePickerMonth(
                             (month.daysFromStartOfWeekToFirstOfMonth + month.numberOfDays)
                         ) {
                             Spacer(
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f),
                             )
                         } else {
                             val dayNumber = cellIndex - month.daysFromStartOfWeekToFirstOfMonth + 1
                             val isSelect = dayNumber == selectDate?.dayOfMonth &&
-                                    month.month == selectDate.monthValue &&
-                                    month.year == selectDate.year
+                                month.month == selectDate.monthValue &&
+                                month.year == selectDate.year
                             val date = LocalDate.of(month.year, month.month, dayNumber)
                             val isValid = isValidDate(date)
                             Box(
@@ -262,7 +256,7 @@ private fun SeugiTimePickerMonth(
                                     .bounceClick(
                                         onClick = {
                                             onClickDate(date, isValid)
-                                        }
+                                        },
                                     )
                                     .`if`(isSelect) {
                                         drawBehind {
@@ -272,12 +266,12 @@ private fun SeugiTimePickerMonth(
                                                 size = Size(38.dp.toPx(), 38.dp.toPx()),
                                                 topLeft = Offset(
                                                     x = (layoutMaxWidth.toPx() / 7) / layoutMaxWidth.getIndicatorOffset(),
-                                                    y = -(9).dp.toPx()
-                                                )
+                                                    y = -(9).dp.toPx(),
+                                                ),
                                             )
                                         }
                                     },
-                                contentAlignment = Alignment.Center
+                                contentAlignment = Alignment.Center,
                             ) {
                                 Text(
                                     modifier = Modifier,
@@ -285,8 +279,8 @@ private fun SeugiTimePickerMonth(
                                     style = MaterialTheme.typography.titleMedium,
                                     color = colors.dayContentColor(
                                         selected = isSelect,
-                                        active = isValid
-                                    )
+                                        active = isValid,
+                                    ),
                                 )
                             }
                         }
@@ -297,13 +291,11 @@ private fun SeugiTimePickerMonth(
     }
 }
 
-private fun Dp.getIndicatorOffset(): Int =
-    when {
-        this < 280.dp -> 24
-        this > 310.dp -> 12
-        else -> 10
-    }
-
+private fun Dp.getIndicatorOffset(): Int = when {
+    this < 280.dp -> 24
+    this > 310.dp -> 12
+    else -> 10
+}
 
 object SeugiDatePickerDefaults {
 
@@ -317,20 +309,18 @@ object SeugiDatePickerDefaults {
     }
 
     @Stable
-    fun defaultColor() =
-        SeugiDatePickerColors(
-            containerColor = White,
-            titleContentColor = Black,
-            titleImageColor = Primary500,
-            weeklyContainerColor = Transparent,
-            weeklyContentColor = Gray600,
-            activeDayContentColor = Gray600,
-            unActiveDayContentColor = Gray600.copy(alpha = 0.5f),
-            selectDayContainerColor = Primary500,
-            selectDayContentColor = White
-        )
+    fun defaultColor() = SeugiDatePickerColors(
+        containerColor = White,
+        titleContentColor = Black,
+        titleImageColor = Primary500,
+        weeklyContainerColor = Transparent,
+        weeklyContentColor = Gray600,
+        activeDayContentColor = Gray600,
+        unActiveDayContentColor = Gray600.copy(alpha = 0.5f),
+        selectDayContainerColor = Primary500,
+        selectDayContentColor = White,
+    )
 }
-
 
 abstract class CalendarModel {
 
@@ -342,7 +332,7 @@ abstract class CalendarModel {
 
     abstract val firstDayOfWeek: Int
 
-    abstract val weekdayNames: List<String>
+    abstract val weekdayNames: ImmutableList<String>
 
     @Stable
     abstract fun getMonth(year: Int, month: Int): CalendarMonth
@@ -354,8 +344,7 @@ abstract class CalendarModel {
     abstract fun nextMonth(calendarMonth: CalendarMonth): CalendarMonth
 }
 
-
-internal class CalendarModelImpl(private val locale: Locale): CalendarModel() {
+internal class CalendarModelImpl(private val locale: Locale) : CalendarModel() {
 
     private val _today
         get() = LocalDate.now()
@@ -371,15 +360,15 @@ internal class CalendarModelImpl(private val locale: Locale): CalendarModel() {
     override val date: LocalDate
         get() = _today
 
-    override val firstDayOfWeek: Int =  WeekFields.of(locale).firstDayOfWeek.value
+    override val firstDayOfWeek: Int = WeekFields.of(locale).firstDayOfWeek.value
 
-    override val weekdayNames: List<String> =
+    override val weekdayNames: ImmutableList<String> =
         DayOfWeek.entries.map {
             it.getDisplayName(TextStyle.NARROW, locale)
         }.toMutableList().apply {
             // set sunday to First Day
             add(0, removeLast())
-        }
+        }.toImmutableList()
 
     override fun getMonth(year: Int, month: Int): CalendarMonth {
         return getMonth(LocalDate.of(year, month, 1))
@@ -387,16 +376,16 @@ internal class CalendarModelImpl(private val locale: Locale): CalendarModel() {
 
     override fun prevMonth(calendarMonth: CalendarMonth): CalendarMonth {
         if (calendarMonth.month == 1) {
-            return getMonth(calendarMonth.year-1, 12)
+            return getMonth(calendarMonth.year - 1, 12)
         }
-        return getMonth(calendarMonth.year, calendarMonth.month-1)
+        return getMonth(calendarMonth.year, calendarMonth.month - 1)
     }
 
     override fun nextMonth(calendarMonth: CalendarMonth): CalendarMonth {
         if (calendarMonth.month == 12) {
-            return getMonth(calendarMonth.year+1, 1)
+            return getMonth(calendarMonth.year + 1, 1)
         }
-        return getMonth(calendarMonth.year, calendarMonth.month+1)
+        return getMonth(calendarMonth.year, calendarMonth.month + 1)
     }
 
     private fun getMonth(firstDayLocalDate: LocalDate): CalendarMonth {
@@ -414,22 +403,19 @@ internal class CalendarModelImpl(private val locale: Locale): CalendarModel() {
             daysFromStartOfWeekToFirstOfMonth = daysFromStartOfWeekToFirstOfMonth,
         )
     }
-
 }
-
 
 data class CalendarMonth(
     val year: Int,
     val month: Int,
     val numberOfDays: Int,
-    val daysFromStartOfWeekToFirstOfMonth: Int
+    val daysFromStartOfWeekToFirstOfMonth: Int,
 ) {
-    fun isValidDate(date: LocalDate, calendarModel: CalendarModel): Boolean =
-        calendarModel.date <= date
+    fun isValidDate(date: LocalDate, calendarModel: CalendarModel): Boolean = calendarModel.date <= date
 }
 
 @Immutable
-class SeugiDatePickerColors constructor(
+class SeugiDatePickerColors(
     val containerColor: Color,
     val titleContentColor: Color,
     val titleImageColor: Color,
@@ -463,10 +449,7 @@ class SeugiDatePickerColors constructor(
     )
 
     @Stable
-    internal fun dayContentColor(
-        selected: Boolean,
-        active: Boolean
-    ): Color {
+    internal fun dayContentColor(selected: Boolean, active: Boolean): Color {
         return when {
             selected -> this.selectDayContentColor
             active -> this.activeDayContentColor
@@ -494,8 +477,8 @@ class SeugiDatePickerStateImpl(
     selectDate: LocalDate,
     locale: Locale,
     year: Int,
-    month: Int
-): SeugiDatePickerState {
+    month: Int,
+) : SeugiDatePickerState {
 
     private val calendarModel = createCalendarModel(locale)
 
@@ -512,39 +495,33 @@ class SeugiDatePickerStateImpl(
         month = calendarModel.nextMonth(month)
     }
 
-    override fun validDate(date: LocalDate): Boolean =
-        month.isValidDate(date, calendarModel)
+    override fun validDate(date: LocalDate): Boolean = month.isValidDate(date, calendarModel)
 
     override var selectedDate: LocalDate by mutableStateOf(selectDate)
 
     companion object {
-        fun Saver(
-            locale: Locale
-        ): Saver<SeugiDatePickerStateImpl, Any> =
-            listSaver(
-                save = {
-                    listOf(
-                        it.selectedDate.toEpochDay(),
-                        it.month.year,
-                        it.month.month
-                    )
-                },
-                restore = {
-                    SeugiDatePickerStateImpl(
-                        selectDate = LocalDate.ofEpochDay(it[0] as Long),
-                        locale = locale,
-                        year = it[1] as Int,
-                        month = it[2] as Int
-                    )
-                }
-            )
+        fun Saver(locale: Locale): Saver<SeugiDatePickerStateImpl, Any> = listSaver(
+            save = {
+                listOf(
+                    it.selectedDate.toEpochDay(),
+                    it.month.year,
+                    it.month.month,
+                )
+            },
+            restore = {
+                SeugiDatePickerStateImpl(
+                    selectDate = LocalDate.ofEpochDay(it[0] as Long),
+                    locale = locale,
+                    year = it[1] as Int,
+                    month = it[2] as Int,
+                )
+            },
+        )
     }
 }
 
 @Composable
-fun rememberSeugiDatePickerState(
-    selectDate: LocalDate = LocalDate.now(),
-): SeugiDatePickerState {
+fun rememberSeugiDatePickerState(selectDate: LocalDate = LocalDate.now()): SeugiDatePickerState {
     val locale = defaultLocale()
 
     return rememberSaveable(saver = SeugiDatePickerStateImpl.Saver(locale)) {
@@ -552,13 +529,10 @@ fun rememberSeugiDatePickerState(
             selectDate = selectDate,
             locale = locale,
             year = selectDate.year,
-            month = selectDate.monthValue
+            month = selectDate.monthValue,
         )
     }
 }
-
-
-
 
 private const val MaxCalendarRows = 6
 private const val DaysInWeek = 7
@@ -584,7 +558,7 @@ private fun SeugiDatePickerPreview() {
                 },
                 onClickSuccess = {
                     isShowDialog = false
-                }
+                },
             )
         }
         SeugiFullWidthButton(onClick = { isShowDialog = true }, type = ButtonType.Primary, text = "test")
@@ -597,8 +571,7 @@ private fun SeugiDatePickerPreview() {
                 }
             },
             onClickSuccess = {
-
-            }
+            },
         )
     }
 }

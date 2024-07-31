@@ -34,12 +34,7 @@ import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.designsystem.theme.Yellow500
 
 @Composable
-fun SeugiMemberList(
-    userName: String,
-    userProfile: String?,
-    isCrown: Boolean = false,
-    onClick: () -> Unit,
-) {
+fun SeugiMemberList(userName: String, userProfile: String?, isCrown: Boolean = false, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -74,7 +69,7 @@ fun SeugiMemberList(
                 SeugiImage(
                     modifier = Modifier.size(24.dp),
                     resId = R.drawable.ic_crown_fill,
-                    colorFilter = ColorFilter.tint(Yellow500)
+                    colorFilter = ColorFilter.tint(Yellow500),
                 )
             }
         }
@@ -126,7 +121,7 @@ fun SeugiMemberList(
                 SeugiImage(
                     modifier = Modifier.size(24.dp),
                     resId = R.drawable.ic_crown_fill,
-                    colorFilter = ColorFilter.tint(Yellow500)
+                    colorFilter = ColorFilter.tint(Yellow500),
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -207,7 +202,7 @@ fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile
                 SeugiImage(
                     modifier = Modifier.size(24.dp),
                     resId = R.drawable.ic_crown_fill,
-                    colorFilter = ColorFilter.tint(Yellow500)
+                    colorFilter = ColorFilter.tint(Yellow500),
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
