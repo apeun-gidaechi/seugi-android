@@ -40,6 +40,7 @@ import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.window.Dialog
@@ -270,7 +271,7 @@ private fun SeugiTimePickerMonth(
                                                 cornerRadius = CornerRadius(10.dp.toPx()),
                                                 size = Size(38.dp.toPx(), 38.dp.toPx()),
                                                 topLeft = Offset(
-                                                    x = (layoutMaxWidth.toPx() / 7) / 10,
+                                                    x = (layoutMaxWidth.toPx() / 7) / layoutMaxWidth.getIndicatorOffset(),
                                                     y = -(9).dp.toPx()
                                                 )
                                             )
@@ -295,6 +296,13 @@ private fun SeugiTimePickerMonth(
         }
     }
 }
+
+private fun Dp.getIndicatorOffset(): Int =
+    when {
+        this < 280.dp -> 24
+        this > 310.dp -> 12
+        else -> 10
+    }
 
 
 object SeugiDatePickerDefaults {
