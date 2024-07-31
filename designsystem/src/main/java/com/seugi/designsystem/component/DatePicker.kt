@@ -1,5 +1,6 @@
 package com.seugi.designsystem.component
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -11,10 +12,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -38,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
+import androidx.compose.ui.window.Dialog
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiDatePickerDefaults.createCalendarModel
@@ -56,6 +61,41 @@ import java.time.LocalDate
 import java.time.format.TextStyle
 import java.time.temporal.WeekFields
 import java.util.Locale
+
+@Composable
+fun SeugiDatePickerDialog(
+    modifier: Modifier = Modifier,
+    state: SeugiDatePickerState = rememberSeugiDatePickerState(),
+    isFixedSize: Boolean = false,
+    colors: SeugiDatePickerColors = SeugiDatePickerDefaults.defaultColor(),
+    isValidDate: (date: LocalDate) -> Boolean = { state.validDate(it) },
+    onDismissRequest: () -> Unit,
+    onClickPrevMonth: () -> Unit = { state.prevMonth() },
+    onClickNextMonth: () -> Unit = { state.nextMonth() },
+    onClickDate: (date: LocalDate, isValid: Boolean) -> Unit,
+    onClickSuccess: () -> Unit,
+) {
+    Dialog(
+        onDismissRequest = onDismissRequest
+    ) {
+        Surface(
+            color = White,
+            shape = RoundedCornerShape(28.dp)
+        ) {
+            SeugiDatePicker(
+                modifier = modifier,
+                state = state,
+                isFixedSize = isFixedSize,
+                colors = colors,
+                isValidDate = isValidDate,
+                onClickPrevMonth = onClickPrevMonth,
+                onClickNextMonth = onClickNextMonth,
+                onClickDate = onClickDate,
+                onClickSuccess = onClickSuccess
+            )
+        }
+    }
+}
 
 @Composable
 fun SeugiDatePicker(
@@ -161,7 +201,6 @@ private fun SeugiTimePickerMonth(
     isFixedSize: Boolean,
     onClickDate: (date: LocalDate, isValid: Boolean) -> Unit
 ) {
-    var cellIndex = 0
     BoxWithConstraints(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -200,6 +239,7 @@ private fun SeugiTimePickerMonth(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     for (dayIndex in 0 until DaysInWeek) {
+                        val cellIndex = weekIndex * DaysInWeek + dayIndex
                         if (
                             cellIndex < month.daysFromStartOfWeekToFirstOfMonth ||
                             cellIndex >=
@@ -249,7 +289,6 @@ private fun SeugiTimePickerMonth(
                                 )
                             }
                         }
-                        cellIndex++
                     }
                 }
             }
@@ -520,7 +559,27 @@ private const val DaysInWeek = 7
 @Composable
 private fun SeugiDatePickerPreview() {
     val datePickerState = rememberSeugiDatePickerState()
+    var isShowDialog by remember { mutableStateOf(true) }
+
     SeugiTheme {
+        if (isShowDialog) {
+            SeugiDatePickerDialog(
+                state = datePickerState,
+                isFixedSize = false,
+                onDismissRequest = {
+                    isShowDialog = false
+                },
+                onClickDate = { date, isValid ->
+                    if (isValid) {
+                        datePickerState.selectedDate = date
+                    }
+                },
+                onClickSuccess = {
+                    isShowDialog = false
+                }
+            )
+        }
+        SeugiFullWidthButton(onClick = { isShowDialog = true }, type = ButtonType.Primary, text = "test")
         SeugiDatePicker(
             state = datePickerState,
             isFixedSize = false,
