@@ -9,11 +9,11 @@ import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.profile.ProfileRepository
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.profile.ProfileDataSource
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
 class ProfileRepositoryImpl @Inject constructor(
     private val dataSource: ProfileDataSource,

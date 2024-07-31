@@ -53,13 +53,13 @@ import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.designsystem.theme.Transparent
 import com.seugi.designsystem.theme.White
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.time.temporal.WeekFields
 import java.util.Locale
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun SeugiDatePickerDialog(
@@ -217,7 +217,7 @@ private fun SeugiTimePickerMonth(
                 }
             }
             val maxCalendarRows = if (isFixedSize) {
-                MaxCalendarRows
+                MAX_CALENDAR_ROWS
             } else {
                 when {
                     (30 == month.numberOfDays && month.daysFromStartOfWeekToFirstOfMonth == 6) ||
@@ -233,8 +233,8 @@ private fun SeugiTimePickerMonth(
                         .height((34.33).dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    for (dayIndex in 0 until DaysInWeek) {
-                        val cellIndex = weekIndex * DaysInWeek + dayIndex
+                    for (dayIndex in 0 until DAYS_IN_WEEK) {
+                        val cellIndex = weekIndex * DAYS_IN_WEEK + dayIndex
                         if (
                             cellIndex < month.daysFromStartOfWeekToFirstOfMonth ||
                             cellIndex >=
@@ -392,7 +392,7 @@ internal class CalendarModelImpl(private val locale: Locale) : CalendarModel() {
         val difference = firstDayLocalDate.dayOfWeek.value - firstDayOfWeek
         val daysFromStartOfWeekToFirstOfMonth =
             if (difference < 0) {
-                difference + DaysInWeek
+                difference + DAYS_IN_WEEK
             } else {
                 difference
             }
@@ -534,9 +534,6 @@ fun rememberSeugiDatePickerState(selectDate: LocalDate = LocalDate.now()): Seugi
     }
 }
 
-private const val MaxCalendarRows = 6
-private const val DaysInWeek = 7
-
 @Preview
 @Composable
 private fun SeugiDatePickerPreview() {
@@ -575,3 +572,6 @@ private fun SeugiDatePickerPreview() {
         )
     }
 }
+
+private const val MAX_CALENDAR_ROWS = 6
+private const val DAYS_IN_WEEK = 7

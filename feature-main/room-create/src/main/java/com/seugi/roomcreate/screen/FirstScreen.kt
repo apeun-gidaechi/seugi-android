@@ -47,9 +47,9 @@ import com.seugi.designsystem.theme.Gray100
 import com.seugi.designsystem.theme.Gray300
 import com.seugi.designsystem.theme.Gray600
 import com.seugi.roomcreate.model.RoomCreateUiState
+import kotlin.math.max
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.math.max
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable

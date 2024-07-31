@@ -7,13 +7,13 @@ import com.seugi.chat.model.ChatUiState
 import com.seugi.common.model.Result
 import com.seugi.data.personalchat.PersonalChatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class ChatViewModel @Inject constructor(

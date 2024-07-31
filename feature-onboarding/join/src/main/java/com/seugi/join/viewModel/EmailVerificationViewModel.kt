@@ -8,12 +8,12 @@ import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.member.MemberRepository
 import com.seugi.join.model.EmailVerificationSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class EmailVerificationViewModel @Inject constructor(

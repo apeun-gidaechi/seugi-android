@@ -9,11 +9,11 @@ import com.seugi.data.token.mapper.toModel
 import com.seugi.data.token.model.TokenModel
 import com.seugi.local.room.dao.TokenDao
 import com.seugi.local.room.model.TokenEntity
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
 class TokenRepositoryImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
