@@ -3,11 +3,11 @@ package com.seugi.chatdatail.model
 import com.seugi.data.message.model.MessageLifeType
 import com.seugi.data.message.model.message.MessageEmojiModel
 import com.seugi.data.message.model.message.MessageUserModel
+import java.time.LocalDateTime
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
-import java.time.LocalDateTime
 
 data class ChatDetailUiState(
     val roomInfo: ChatRoomState? = null,

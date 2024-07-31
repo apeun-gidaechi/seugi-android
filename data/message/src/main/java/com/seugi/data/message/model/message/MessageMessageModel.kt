@@ -3,8 +3,8 @@ package com.seugi.data.message.model.message
 import com.seugi.data.message.model.MessageLifeType
 import com.seugi.data.message.model.MessageType
 import com.seugi.data.message.model.MessageTypeModel
-import kotlinx.collections.immutable.ImmutableList
 import java.time.LocalDateTime
+import kotlinx.collections.immutable.ImmutableList
 
 data class MessageMessageModel(
     val id: String,

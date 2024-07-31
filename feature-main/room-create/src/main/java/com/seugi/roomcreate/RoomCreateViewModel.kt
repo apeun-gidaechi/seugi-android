@@ -13,6 +13,7 @@ import com.seugi.roomcreate.model.RoomCreateSideEffect
 import com.seugi.roomcreate.model.RoomCreateUiState
 import com.seugi.roomcreate.model.RoomMemberItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
@@ -20,7 +21,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class RoomCreateViewModel @Inject constructor(

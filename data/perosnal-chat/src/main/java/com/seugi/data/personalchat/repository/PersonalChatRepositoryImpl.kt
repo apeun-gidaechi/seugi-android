@@ -9,11 +9,11 @@ import com.seugi.data.core.model.ChatRoomModel
 import com.seugi.data.personalchat.PersonalChatDataSource
 import com.seugi.data.personalchat.PersonalChatRepository
 import com.seugi.network.core.response.safeResponse
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
 class PersonalChatRepositoryImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,

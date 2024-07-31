@@ -19,6 +19,8 @@ import com.seugi.data.message.model.message.MessageUserModel
 import com.seugi.data.message.model.sub.MessageSubModel
 import com.seugi.data.profile.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.Duration
+import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
@@ -32,8 +34,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.Duration
-import javax.inject.Inject
 
 @HiltViewModel
 class ChatDetailViewModel @Inject constructor(
