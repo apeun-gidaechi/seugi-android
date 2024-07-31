@@ -1,8 +1,8 @@
 package com.seugi.chatseugi.model
 
-import java.time.LocalDateTime
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import java.time.LocalDateTime
 
 data class ChatSeugiUiState(
     val chatMessage: ImmutableList<ChatData> = persistentListOf(),

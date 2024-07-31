@@ -9,11 +9,11 @@ import com.seugi.data.core.model.ChatRoomModel
 import com.seugi.data.groupchat.GroupChatRepository
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.groupchat.GroupChatDataSource
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
 
 class GroupChatRepositoryImpl @Inject constructor(
     private val dataSource: GroupChatDataSource,

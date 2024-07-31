@@ -11,13 +11,13 @@ import com.seugi.data.message.model.message.MessageLoadModel
 import com.seugi.data.message.model.room.MessageRoomModel
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.message.MessageDataSource
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 class MessageRepositoryImpl @Inject constructor(
     private val datasource: MessageDataSource,

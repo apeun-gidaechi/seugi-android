@@ -1,6 +1,5 @@
 package com.seugi.designsystem.component
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,7 +21,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -39,7 +37,6 @@ sealed class Size(val size: Dp, val radius: Dp) {
     data object Small : Size(64.dp, 18.dp)
     data object ExtraSmall : Size(48.dp, (13.5).dp)
 }
-
 
 @Composable
 fun SeugiRoundedCircleImage(modifier: Modifier = Modifier, size: Size, onClick: () -> Unit) {
@@ -102,7 +99,11 @@ private fun PreviewSeugiRoundedCircleImage() {
                 Spacer(modifier = Modifier.width(30.dp))
                 SeugiRoundedCircleImage(size = Size.Small, image = "https://images-na.ssl-images-amazon.com/images/I/41VTLQ%2BH-oL._UL1200_.jpg", onClick = {})
                 Spacer(modifier = Modifier.width(30.dp))
-                SeugiRoundedCircleImage(size = Size.ExtraSmall, image = "https://images-na.ssl-images-amazon.com/images/I/41VTLQ%2BH-oL._UL1200_.jpg", onClick = {})
+                SeugiRoundedCircleImage(
+                    size = Size.ExtraSmall,
+                    image = "https://images-na.ssl-images-amazon.com/images/I/41VTLQ%2BH-oL._UL1200_.jpg",
+                    onClick = {},
+                )
             }
         }
     }

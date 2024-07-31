@@ -9,11 +9,11 @@ import com.seugi.data.notification.mapper.toModels
 import com.seugi.data.notification.model.NoticeModel
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.notification.NotificationDataSource
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
 
 class NotificationRepositoryImpl @Inject constructor(
     private val dataSource: NotificationDataSource,

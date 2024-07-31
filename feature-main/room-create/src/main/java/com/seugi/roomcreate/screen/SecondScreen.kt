@@ -28,9 +28,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.R
+import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.chat.ChatRoomType
 import com.seugi.designsystem.component.chat.SeugiChatRoom
-import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiTextField
 import com.seugi.designsystem.theme.Black
 import com.seugi.designsystem.theme.Gray600

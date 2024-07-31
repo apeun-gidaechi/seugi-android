@@ -1,7 +1,7 @@
 package com.seugi.data.notification.model
 
-import java.time.LocalDateTime
 import kotlinx.collections.immutable.ImmutableList
+import java.time.LocalDateTime
 
 data class NoticeModel(
     val id: Long,

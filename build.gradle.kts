@@ -23,6 +23,11 @@ subprojects {
             targetExclude("${layout.buildDirectory}/**/*.kt")
             ktlint()
                 .setEditorConfigPath("${project.rootDir}/spotless/.editorconfig")
+                .editorConfigOverride(
+                    mapOf(
+                        "ktlint_standard_property-naming" to "disabled"
+                    )
+                )
             trimTrailingWhitespace()
             endWithNewline()
         }

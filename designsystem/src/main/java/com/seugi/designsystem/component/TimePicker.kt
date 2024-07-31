@@ -59,7 +59,7 @@ fun SeugiTimePicker(
     startTime: Int = 1,
     startMinute: Int = 0,
     onSelectTime: (hour: Int, minute: Int) -> Unit,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
 ) {
     val hours = (1..23).toImmutableList()
     val minutes = (0..59).toImmutableList()
@@ -68,20 +68,20 @@ fun SeugiTimePicker(
     var chooseMinute by remember { mutableIntStateOf(startMinute) }
 
     Dialog(
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest,
     ) {
         Surface(
             modifier = modifier,
             color = White,
-            shape = RoundedCornerShape(28.dp)
+            shape = RoundedCornerShape(28.dp),
         ) {
             Column(
-                modifier = Modifier.padding(24.dp)
+                modifier = Modifier.padding(24.dp),
             ) {
                 Text(
                     text = "외출 일시",
                     color = Black,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Box(modifier = Modifier) {
@@ -94,21 +94,21 @@ fun SeugiTimePicker(
                             .absoluteOffset(y = (-7).dp)
                             .background(
                                 color = Gray300,
-                                shape = RoundedCornerShape(10.dp)
+                                shape = RoundedCornerShape(10.dp),
                             ),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Text(
                             text = ":",
                             color = Gray800,
-                            style = MaterialTheme.typography.headlineMedium
+                            style = MaterialTheme.typography.headlineMedium,
                         )
                     }
                     Row(
-                        modifier = Modifier.align(Alignment.Center)
+                        modifier = Modifier.align(Alignment.Center),
                     ) {
                         SeugiWheelRangePicker(
-                            startIndex = startTime-1,
+                            startIndex = startTime - 1,
                             items = hours,
                             textStyles = SeugiTimePickerTextStyles.defaultTextStyles(),
                             size = DpSize(36.dp, 199.dp),
@@ -116,7 +116,7 @@ fun SeugiTimePicker(
                             onScrollFinished = {
                                 chooseHour = it % 24
                                 null
-                            }
+                            },
                         )
                         Spacer(modifier = Modifier.width(55.dp))
                         SeugiWheelRangePicker(
@@ -128,7 +128,7 @@ fun SeugiTimePicker(
                             onScrollFinished = {
                                 chooseMinute = it % 60
                                 null
-                            }
+                            },
                         )
                     }
                 }
@@ -138,7 +138,7 @@ fun SeugiTimePicker(
                         onSelectTime(chooseHour, chooseMinute)
                     },
                     type = ButtonType.Primary,
-                    text = "선택"
+                    text = "선택",
                 )
             }
         }
@@ -165,7 +165,6 @@ internal fun SeugiWheelRangePicker(
         derivedStateOf { getCentralItemIndex(lazyListState)?.index ?: startIndex }
     }
 
-
     LaunchedEffect(isScrollInProgress) {
         if (!isScrollInProgress) {
             onScrollFinished(items[centralItemIndex % items.size])?.let {
@@ -180,7 +179,7 @@ internal fun SeugiWheelRangePicker(
         modifier = modifier
             .height(size.height)
             .width(size.width),
-        contentPadding = PaddingValues(vertical = size.height / rowCount * ((rowCount - 1 )/ 2)),
+        contentPadding = PaddingValues(vertical = size.height / rowCount * ((rowCount - 1) / 2)),
     ) {
         items(Int.MAX_VALUE) { index ->
             val active = (index == centralItemIndex)
@@ -191,7 +190,7 @@ internal fun SeugiWheelRangePicker(
                 text = (items[index % items.size]).toTimeString(),
                 color = colors.textColor(active),
                 style = textStyles.textStyle(active),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         }
     }
@@ -205,7 +204,6 @@ class SeugiWheelItemInfo(
     val size: Int get() = lazyListItem.size
 }
 
-
 private val Center: (LazyListState, SeugiWheelItemInfo) -> Int = { layout, item ->
     layout.startScrollOffset() + (layout.endScrollOffset() - layout.startScrollOffset() - item.size) / 2
 }
@@ -214,15 +212,11 @@ val getCentralItemIndex: (LazyListState) -> SeugiWheelItemInfo? = { layout ->
     layout.layoutInfo.visibleItemsInfo.asSequence().map(::SeugiWheelItemInfo).lastOrNull { it.offset <= Center(layout, it) }
 }
 
-
 fun LazyListState.startScrollOffset() = 0
 
-fun LazyListState.endScrollOffset() =
-    this.layoutInfo.let { it.viewportEndOffset - it.afterContentPadding }
+fun LazyListState.endScrollOffset() = this.layoutInfo.let { it.viewportEndOffset - it.afterContentPadding }
 
-private fun Int.toTimeString(): String =
-    this.toString().padStart(2, '0')
-
+private fun Int.toTimeString(): String = this.toString().padStart(2, '0')
 
 @Stable
 object SeugiTimePickerDefaults {
@@ -236,23 +230,20 @@ object SeugiTimePickerDefaults {
         unActiveTextColor: Color = Color.Unspecified,
         unActiveContainerColor: Color = Color.Unspecified,
     ) = SeugiTimePickerColors.defaultColor().copy(
-            activeTextColor = activeTextColor,
-            activeContainerColor = activeContainerColor,
-            unActiveTextColor = unActiveTextColor,
-            unActiveContainerColor = unActiveContainerColor
-        )
+        activeTextColor = activeTextColor,
+        activeContainerColor = activeContainerColor,
+        unActiveTextColor = unActiveTextColor,
+        unActiveContainerColor = unActiveContainerColor,
+    )
 
     @Composable fun textStyles() = SeugiTimePickerTextStyles.defaultTextStyles()
 
     @Composable
-    fun textStyles(
-        activeTextStyle: TextStyle = TextStyle.Default,
-        unActiveTextStyle: TextStyle = TextStyle.Default,
-    ) = SeugiTimePickerTextStyles.defaultTextStyles().copy(
-        activeTextStyle = activeTextStyle,
-        unActiveTextStyle = unActiveTextStyle
-    )
-
+    fun textStyles(activeTextStyle: TextStyle = TextStyle.Default, unActiveTextStyle: TextStyle = TextStyle.Default) =
+        SeugiTimePickerTextStyles.defaultTextStyles().copy(
+            activeTextStyle = activeTextStyle,
+            unActiveTextStyle = unActiveTextStyle,
+        )
 }
 
 @Immutable
@@ -276,63 +267,55 @@ class SeugiTimePickerColors(
     )
 
     @Stable
-    internal fun textColor(active: Boolean) =
-        if (active) activeTextColor else unActiveTextColor
+    internal fun textColor(active: Boolean) = if (active) activeTextColor else unActiveTextColor
 
     @Stable
-    internal fun containerColor(active: Boolean) =
-        if (active) activeContainerColor else unActiveContainerColor
+    internal fun containerColor(active: Boolean) = if (active) activeContainerColor else unActiveContainerColor
 
     companion object {
         @Stable
-        internal fun defaultColor(): SeugiTimePickerColors =
-            SeugiTimePickerColors(
-                activeTextColor = Gray800,
-                activeContainerColor = Transparent,
-                unActiveTextColor = Gray600,
-                unActiveContainerColor = Transparent
-            )
+        internal fun defaultColor(): SeugiTimePickerColors = SeugiTimePickerColors(
+            activeTextColor = Gray800,
+            activeContainerColor = Transparent,
+            unActiveTextColor = Gray600,
+            unActiveContainerColor = Transparent,
+        )
     }
 }
 
 @Immutable
 class SeugiTimePickerTextStyles(
     private val activeTextStyle: TextStyle,
-    private val unActiveTextStyle: TextStyle
+    private val unActiveTextStyle: TextStyle,
 ) {
 
-    fun copy(
-        activeTextStyle: TextStyle = this.activeTextStyle,
-        unActiveTextStyle: TextStyle = this.unActiveTextStyle
-    ) = SeugiTimePickerTextStyles(
+    fun copy(activeTextStyle: TextStyle = this.activeTextStyle, unActiveTextStyle: TextStyle = this.unActiveTextStyle) = SeugiTimePickerTextStyles(
         activeTextStyle = activeTextStyle,
-        unActiveTextStyle = unActiveTextStyle
+        unActiveTextStyle = unActiveTextStyle,
     )
 
     @Stable
-    internal fun textStyle(active: Boolean) =
-        if (active) this.activeTextStyle else unActiveTextStyle
+    internal fun textStyle(active: Boolean) = if (active) this.activeTextStyle else unActiveTextStyle
 
     companion object {
         @Stable
-        internal fun defaultTextStyles(): SeugiTimePickerTextStyles =
-            SeugiTimePickerTextStyles(
-                activeTextStyle = Pretendard.headlineMedium,
-                unActiveTextStyle = Pretendard.titleLarge
-            )
+        internal fun defaultTextStyles(): SeugiTimePickerTextStyles = SeugiTimePickerTextStyles(
+            activeTextStyle = Pretendard.headlineMedium,
+            unActiveTextStyle = Pretendard.titleLarge,
+        )
     }
 }
-
 
 @Preview
 @Composable
 private fun SeugiTimePickerPreview() {
     var isShowDialog by remember { mutableStateOf(true) }
     SeugiTheme {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .background(White)) {
-
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(White),
+        ) {
             if (isShowDialog) {
                 SeugiTimePicker(
                     modifier = Modifier,
@@ -342,7 +325,7 @@ private fun SeugiTimePickerPreview() {
                     },
                     onDismissRequest = {
                         isShowDialog = false
-                    }
+                    },
                 )
             }
         }

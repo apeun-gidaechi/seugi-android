@@ -11,13 +11,13 @@ import com.seugi.login.model.EmailSignInSideEffect
 import com.seugi.login.model.EmailSignInState
 import com.seugi.network.request.EmailSignInRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class EmailSignInViewModel @Inject constructor(
