@@ -51,10 +51,8 @@ import kotlinx.coroutines.flow.collectLatest
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SelectingJobScreen(
-    navigateToWaitingJoin: () -> Unit,
+    navigateToWaitingJoin: (role: String) -> Unit,
     popBackStack: () -> Unit,
-    workspaceId: String,
-    schoolCode: String,
     viewModel: SelectingCodeViewModel = hiltViewModel(),
 ) {
     var studentOnOff by remember {
@@ -71,7 +69,9 @@ internal fun SelectingJobScreen(
             viewModel.selectingCodeSideEffect.collectLatest {
                 when (it) {
                     is SelectingCodeSideEffect.SuccessApplication -> {
-                        navigateToWaitingJoin()
+                        navigateToWaitingJoin(
+                            if (studentOnOff) "STUDENT" else "TEACHER"
+                        )
                     }
                     is SelectingCodeSideEffect.FiledApplication -> {
                         Toast.makeText(context, it.throwable.message, Toast.LENGTH_SHORT).show()
@@ -221,8 +221,6 @@ internal fun SelectingJobScreen(
                     SeugiFullWidthButton(
                         onClick = {
                             viewModel.workspaceApplication(
-                                workspaceId = workspaceId,
-                                workspaceCode = schoolCode,
                                 role = if (studentOnOff) "STUDENT" else "TEACHER",
                             )
                         },

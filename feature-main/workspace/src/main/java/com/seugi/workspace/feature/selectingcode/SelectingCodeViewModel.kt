@@ -23,11 +23,12 @@ class SelectingCodeViewModel @Inject constructor(
 
     private val _selectingCodeSideEffect = Channel<SelectingCodeSideEffect>()
     val selectingCodeSideEffect = _selectingCodeSideEffect.receiveAsFlow()
-    fun workspaceApplication(workspaceId: String, workspaceCode: String, role: String) {
+    fun workspaceApplication(role: String) {
         viewModelScope.launch(dispatcher) {
             workspaceRepository.workspaceApplication(
-                workspaceId = workspaceId,
-                workspaceCode = workspaceCode,
+                // TODO 임시 땜방 추후 변경
+                workspaceId = "workspaceId",
+                workspaceCode = "workspaceCode",
                 role = role,
             ).collectLatest {
                 when (it) {
