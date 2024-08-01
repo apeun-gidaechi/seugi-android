@@ -84,7 +84,7 @@ import com.seugi.home.model.CommonUiState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToChatSeugi: () -> Unit, navigateToJoinWorkspace:() -> Unit) {
+internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToChatSeugi: () -> Unit, navigateToJoinWorkspace: () -> Unit) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState { 3 }

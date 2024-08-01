@@ -114,7 +114,7 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                 },
                 navigateToJoinWorkspace = {
                     navHostController.navigateToSchoolCode()
-                }
+                },
             )
 
             chatScreen(

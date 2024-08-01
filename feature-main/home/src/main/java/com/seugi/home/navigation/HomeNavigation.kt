@@ -14,7 +14,7 @@ fun NavGraphBuilder.homeScreen(navigateToChatSeugi: () -> Unit, navigateToJoinWo
     composable(HOME_ROUTE) {
         HomeScreen(
             navigateToChatSeugi = navigateToChatSeugi,
-            navigateToJoinWorkspace = navigateToJoinWorkspace
+            navigateToJoinWorkspace = navigateToJoinWorkspace,
         )
     }
 }

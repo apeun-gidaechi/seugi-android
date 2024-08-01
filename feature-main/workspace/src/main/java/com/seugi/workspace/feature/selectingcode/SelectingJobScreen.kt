@@ -35,6 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.ButtonType
 import com.seugi.designsystem.component.SeugiFullWidthButton
@@ -44,7 +45,6 @@ import com.seugi.designsystem.theme.Gray100
 import com.seugi.designsystem.theme.Gray500
 import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.R
 import com.seugi.workspace.feature.selectingcode.model.SelectingCodeSideEffect
 import kotlinx.coroutines.flow.collectLatest
 
