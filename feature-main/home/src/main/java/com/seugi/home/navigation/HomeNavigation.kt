@@ -10,10 +10,11 @@ const val HOME_ROUTE = "home"
 
 fun NavController.navigateToHome(navOptions: NavOptions?) = navigate(HOME_ROUTE, navOptions)
 
-fun NavGraphBuilder.homeScreen(navigateToChatSeugi: () -> Unit) {
+fun NavGraphBuilder.homeScreen(navigateToChatSeugi: () -> Unit, navigateToJoinWorkspace: () -> Unit) {
     composable(HOME_ROUTE) {
         HomeScreen(
             navigateToChatSeugi = navigateToChatSeugi,
+            navigateToJoinWorkspace = navigateToJoinWorkspace
         )
     }
 }

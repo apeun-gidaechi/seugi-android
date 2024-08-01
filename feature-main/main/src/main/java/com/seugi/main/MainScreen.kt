@@ -37,6 +37,14 @@ import com.seugi.room.navigation.ROOM_ROUTE
 import com.seugi.room.navigation.roomScreen
 import com.seugi.roomcreate.navigation.navigateToRoomCreate
 import com.seugi.roomcreate.navigation.roomCreateScreen
+import com.seugi.workspace.feature.joinSuccess
+import com.seugi.workspace.feature.navigateToJoinSuccess
+import com.seugi.workspace.feature.navigateToWaitingJoin
+import com.seugi.workspace.feature.waitingJoin
+import com.seugi.workspace.navigation.navigateToSchoolCode
+import com.seugi.workspace.navigation.navigateToSelectingJob
+import com.seugi.workspace.navigation.schoolCode
+import com.seugi.workspace.navigation.selectingJob
 
 private const val NAVIGATION_ANIM = 400
 
@@ -104,6 +112,9 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                 navigateToChatSeugi = {
                     navHostController.navigateToChatSeugi()
                 },
+                navigateToJoinWorkspace = {
+                    navHostController.navigateToSchoolCode()
+                }
             )
 
             chatScreen(
@@ -160,6 +171,35 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                 popBackStack = {
                     navHostController.popBackStack()
                 },
+            )
+            schoolCode(
+                navigateToJoinSuccess = { schoolCode, workspaceId, workspaceName, workspaceImageUrl, studentCount, teacherCount ->
+                    navHostController.navigateToJoinSuccess(
+                        schoolCode = schoolCode,
+                        workspaceId = workspaceId,
+                        workspaceName = workspaceName,
+                        workspaceImageUrl = workspaceImageUrl,
+                        studentCount = studentCount,
+                        teacherCount = teacherCount,
+                    )
+                },
+                popBackStack = { navHostController.popBackStack() },
+            )
+            joinSuccess(
+                navigateToSelectingJob = { workspaceId, schoolCode ->
+                    navHostController.navigateToSelectingJob(
+                        workspaceId = workspaceId,
+                        schoolCode = schoolCode,
+                    )
+                },
+                popBackStack = { navHostController.popBackStack() },
+            )
+            selectingJob(
+                navigateToWaitingJoin = { navHostController.navigateToWaitingJoin() },
+                popBackStack = { navHostController.popBackStack() },
+            )
+            waitingJoin(
+                popBackStack = { navHostController.popBackStack() },
             )
         }
     }

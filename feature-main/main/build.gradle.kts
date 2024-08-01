@@ -17,5 +17,6 @@ dependencies {
     implementation(projects.featureMain.profile)
     implementation(projects.featureMain.notification)
     implementation(projects.featureMain.chatSeugi)
+    implementation(projects.featureMain.workspace)
 
 }
