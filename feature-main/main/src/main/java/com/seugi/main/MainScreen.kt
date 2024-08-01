@@ -115,6 +115,7 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                 navigateToJoinWorkspace = {
                     navHostController.navigateToSelectingJob()
                 },
+                onNavigationVisibleChange = onNavigationVisibleChange
             )
 
             chatScreen(
