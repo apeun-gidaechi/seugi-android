@@ -130,16 +130,8 @@ fun SchoolScreen(
                 SeugiFullWidthButton(
                     enabled = if (schoolCode.text.length == 6) true else false,
                     onClick = {
-//                        viewModel.checkWorkspace(schoolCode = schoolCode.text)
-                        navigateToJoinSuccess(
-                            schoolCode.text,
-                            "data.workspaceId",
-                            "data.workspaceName",
-                            "data.workspaceImageUrl",
-                            0,
-                            0,
-                        )
-                              },
+                        viewModel.checkWorkspace(schoolCode = schoolCode.text)
+                    },
                     type = ButtonType.Primary,
                     text = "계속하기",
                     modifier = Modifier.padding(vertical = 16.dp),
