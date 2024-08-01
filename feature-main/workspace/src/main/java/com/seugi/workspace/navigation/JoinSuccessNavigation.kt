@@ -1,6 +1,7 @@
 package com.seugi.workspace.navigation
 
 import android.net.Uri
+import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -46,8 +47,9 @@ fun NavGraphBuilder.joinSuccess(navigateToWaiting: () -> Unit, popBackStack: () 
             workspaceId = it.arguments?.getString("workspaceId") ?: "",
             workspaceName = it.arguments?.getString("workspaceName") ?: "",
             workspaceImageUrl = it.arguments?.getString("workspaceImageUrl") ?: "",
-            studentCount = it.arguments?.getInt("studentCount") ?: 0,
-            teacherCount = it.arguments?.getInt("teacherCount") ?: 0,
+            // TODO 이거 뭔 버근지 찾아보기
+            studentCount = it.arguments?.getString("studentCount")?.toInt() ?: 0,
+            teacherCount = it.arguments?.getString("teacherCount")?.toInt() ?: 0,
         )
     }
 }
