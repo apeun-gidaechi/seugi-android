@@ -37,12 +37,12 @@ import com.seugi.room.navigation.ROOM_ROUTE
 import com.seugi.room.navigation.roomScreen
 import com.seugi.roomcreate.navigation.navigateToRoomCreate
 import com.seugi.roomcreate.navigation.roomCreateScreen
-import com.seugi.workspace.feature.joinSuccess
-import com.seugi.workspace.feature.navigateToJoinSuccess
-import com.seugi.workspace.feature.navigateToWaitingJoin
-import com.seugi.workspace.feature.waitingJoin
+import com.seugi.workspace.navigation.joinSuccess
+import com.seugi.workspace.navigation.navigateToJoinSuccess
 import com.seugi.workspace.navigation.navigateToSchoolCode
+import com.seugi.workspace.navigation.waitingJoin
 import com.seugi.workspace.navigation.navigateToSelectingJob
+import com.seugi.workspace.navigation.navigateToWaitingJoin
 import com.seugi.workspace.navigation.schoolCode
 import com.seugi.workspace.navigation.selectingJob
 
@@ -113,7 +113,7 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                     navHostController.navigateToChatSeugi()
                 },
                 navigateToJoinWorkspace = {
-                    navHostController.navigateToSchoolCode()
+                    navHostController.navigateToSelectingJob()
                 },
             )
 
@@ -186,16 +186,17 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                 popBackStack = { navHostController.popBackStack() },
             )
             joinSuccess(
-                navigateToSelectingJob = { workspaceId, schoolCode ->
-                    navHostController.navigateToSelectingJob(
-                        workspaceId = workspaceId,
-                        schoolCode = schoolCode,
-                    )
+                navigateToWaiting = {
+                    navHostController.navigateToWaitingJoin()
                 },
                 popBackStack = { navHostController.popBackStack() },
             )
             selectingJob(
-                navigateToWaitingJoin = { navHostController.navigateToWaitingJoin() },
+                navigateToSelectingRole = { role ->
+                    navHostController.navigateToSchoolCode(
+                        role = role
+                    )
+                                        },
                 popBackStack = { navHostController.popBackStack() },
             )
             waitingJoin(
