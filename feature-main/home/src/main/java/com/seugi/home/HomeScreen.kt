@@ -135,11 +135,10 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
                         text = "대구소프트웨마이스고...",
                         isSelect = selectSchool == "대구소프트웨어마이스터고등학교",
                         onClick = {
-//                            if (selectSchool == "대구소프트웨어마이스터고등학교") {
-//                                isShowSelectSchoolDialog = false
-//                                return@HomeSchoolSelectCard
-//                            }
-                            navigateToJoinWorkspace()
+                            if (selectSchool == "대구소프트웨어마이스터고등학교") {
+                                isShowSelectSchoolDialog = false
+                                return@HomeSchoolSelectCard
+                            }
                             selectSchool = "대구소프트웨어마이스터고등학교"
                             isShowSelectSchoolDialog = false
                             viewModel.schoolChange(selectSchool)
