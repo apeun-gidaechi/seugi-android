@@ -1,4 +1,4 @@
-package com.seugi.join.navigation
+package com.seugi.workspace.feature
 
 import android.net.Uri
 import androidx.navigation.NavController
@@ -7,7 +7,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.seugi.join.feature.JoinSuccessScreen
 
 const val JOIN_SUCCESS = "joinSuccess"
 
@@ -39,7 +38,7 @@ fun NavGraphBuilder.joinSuccess(navigateToSelectingJob: (workspaceId: String, wo
             navArgument("teacherCount") { NavType.IntType },
         ),
     ) {
-        JoinSuccessScreen(
+        com.seugi.workspace.feature.JoinSuccessScreen(
             navigateToSelectingJob = navigateToSelectingJob,
             popBackStack = popBackStack,
             schoolCode = it.arguments?.getString("schoolCode") ?: "",

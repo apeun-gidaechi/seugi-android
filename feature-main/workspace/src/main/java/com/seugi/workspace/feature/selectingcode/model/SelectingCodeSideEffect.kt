@@ -1,4 +1,4 @@
-package com.seugi.join.feature.selectingcode.model
+package com.seugi.workspace.feature.selectingcode.model
 
 sealed class SelectingCodeSideEffect {
     data object SuccessApplication : SelectingCodeSideEffect()

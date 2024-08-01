@@ -1,4 +1,4 @@
-package com.seugi.join.feature.selectingcode
+package com.seugi.workspace.feature.selectingcode
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
@@ -44,8 +44,8 @@ import com.seugi.designsystem.theme.Gray100
 import com.seugi.designsystem.theme.Gray500
 import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.join.R
-import com.seugi.join.feature.selectingcode.model.SelectingCodeSideEffect
+import com.seugi.designsystem.R
+import com.seugi.workspace.feature.selectingcode.model.SelectingCodeSideEffect
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,4 +1,4 @@
-package com.seugi.join.feature.schoolcode
+package com.seugi.workspace.feature.schoolcode
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,8 +6,8 @@ import com.seugi.common.model.Result
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.workspace.WorkspaceRepository
-import com.seugi.join.feature.schoolcode.model.SchoolCodeModel
-import com.seugi.join.feature.schoolcode.model.SchoolCodeSideEffect
+import com.seugi.workspace.feature.schoolcode.model.SchoolCodeModel
+import com.seugi.workspace.feature.schoolcode.model.SchoolCodeSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher

@@ -1,4 +1,4 @@
-package com.seugi.join.feature.schoolcode.model
+package com.seugi.workspace.feature.schoolcode.model
 
 data class SchoolCodeModel(
     val workspaceId: String = "",

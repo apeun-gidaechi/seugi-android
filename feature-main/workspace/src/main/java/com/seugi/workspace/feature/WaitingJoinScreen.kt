@@ -1,4 +1,4 @@
-package com.seugi.join.feature
+package com.seugi.workspace.feature
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -27,8 +27,7 @@ import com.seugi.designsystem.component.SeugiToolTip
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.ToolTipType
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.join.R
-
+import com.seugi.designsystem.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WaitingJoinScreen(popBackStack: () -> Unit) {
