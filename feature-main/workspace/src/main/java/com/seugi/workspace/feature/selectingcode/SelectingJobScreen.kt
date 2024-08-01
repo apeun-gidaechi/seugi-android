@@ -84,7 +84,7 @@ internal fun SelectingJobScreen(
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 SeugiTopBar(
-                    title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
+                    title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
                     onNavigationIconClick = popBackStack,
                     backIconCheck = true,
                 )
