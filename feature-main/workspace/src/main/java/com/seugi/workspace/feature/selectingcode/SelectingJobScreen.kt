@@ -220,8 +220,8 @@ internal fun SelectingJobScreen(
                 ) {
                     SeugiFullWidthButton(
                         onClick = {
-                            viewModel.workspaceApplication(
-                                role = if (studentOnOff) "STUDENT" else "TEACHER",
+                            navigateToWaitingJoin(
+                                if (studentOnOff) "STUDENT" else "TEACHER"
                             )
                         },
                         type = ButtonType.Primary,
