@@ -21,13 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.seugi.designsystem.R
 import com.seugi.designsystem.component.ButtonType
 import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiToolTip
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.ToolTipType
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WaitingJoinScreen(popBackStack: () -> Unit) {

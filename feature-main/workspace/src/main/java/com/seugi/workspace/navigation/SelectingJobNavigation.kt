@@ -8,7 +8,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.seugi.workspace.feature.selectingcode.SelectingJobScreen
 
-
 const val SELECTING_JOB = "selectingJob"
 
 fun NavController.navigateToSelectingJob(navOptions: NavOptions? = null, workspaceId: String, schoolCode: String) = navigate(
