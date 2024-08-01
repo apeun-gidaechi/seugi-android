@@ -38,7 +38,7 @@ fun WaitingJoinScreen(popBackStack: () -> Unit) {
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 SeugiTopBar(
-                    title = { Text(text = "", style = MaterialTheme.typography.titleLarge) },
+                    title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
                     onNavigationIconClick = popBackStack,
                     backIconCheck = true,
                 )
