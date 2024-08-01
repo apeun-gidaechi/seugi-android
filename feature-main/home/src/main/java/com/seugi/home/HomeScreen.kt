@@ -84,7 +84,7 @@ import com.seugi.home.model.CommonUiState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToChatSeugi: () -> Unit, navigateToJoinWorkspace: () -> Unit) {
+internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToChatSeugi: () -> Unit, navigateToJoinWorkspace: () -> Unit, onNavigationVisibleChange: (Boolean) -> Unit) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState { 3 }
@@ -135,10 +135,12 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
                         text = "대구소프트웨마이스고...",
                         isSelect = selectSchool == "대구소프트웨어마이스터고등학교",
                         onClick = {
-                            if (selectSchool == "대구소프트웨어마이스터고등학교") {
-                                isShowSelectSchoolDialog = false
-                                return@HomeSchoolSelectCard
-                            }
+                            onNavigationVisibleChange(false)
+                            navigateToJoinWorkspace()
+//                            if (selectSchool == "대구소프트웨어마이스터고등학교") {
+//                                isShowSelectSchoolDialog = false
+//                                return@HomeSchoolSelectCard
+//                            }
                             selectSchool = "대구소프트웨어마이스터고등학교"
                             isShowSelectSchoolDialog = false
                             viewModel.schoolChange(selectSchool)
