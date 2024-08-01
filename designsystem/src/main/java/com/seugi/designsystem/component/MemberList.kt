@@ -31,9 +31,10 @@ import com.seugi.designsystem.animation.AlphaIndication
 import com.seugi.designsystem.theme.Black
 import com.seugi.designsystem.theme.Primary400
 import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.designsystem.theme.Yellow500
 
 @Composable
-fun SeugiMemberList(userName: String, userProfile: String?, onClick: () -> Unit) {
+fun SeugiMemberList(userName: String, userProfile: String?, isCrown: Boolean = false, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -63,6 +64,14 @@ fun SeugiMemberList(userName: String, userProfile: String?, onClick: () -> Unit)
                 style = MaterialTheme.typography.titleMedium,
                 color = Black,
             )
+            if (isCrown) {
+                Spacer(modifier = Modifier.width(4.dp))
+                SeugiImage(
+                    modifier = Modifier.size(24.dp),
+                    resId = R.drawable.ic_crown_fill,
+                    colorFilter = ColorFilter.tint(Yellow500),
+                )
+            }
         }
     }
 }
@@ -72,6 +81,7 @@ fun SeugiMemberList(
     modifier: Modifier = Modifier,
     userName: String,
     userProfile: String?,
+    isCrown: Boolean = false,
     checked: Boolean = false,
     onCheckedChangeListener: (Boolean) -> Unit = {},
 ) {
@@ -106,6 +116,14 @@ fun SeugiMemberList(
                 style = MaterialTheme.typography.titleMedium,
                 color = Black,
             )
+            if (isCrown) {
+                Spacer(modifier = Modifier.width(4.dp))
+                SeugiImage(
+                    modifier = Modifier.size(24.dp),
+                    resId = R.drawable.ic_crown_fill,
+                    colorFilter = ColorFilter.tint(Yellow500),
+                )
+            }
             Spacer(modifier = Modifier.weight(1f))
             SeugiCheckbox(
                 type = CheckBoxType.Large,
@@ -155,7 +173,7 @@ fun SeugiMemberList(text: String, onClick: () -> Unit) {
 }
 
 @Composable
-fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile: String?, content: @Composable () -> Unit = {}) {
+fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile: String?, isCrown: Boolean = false, content: @Composable () -> Unit = {}) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -179,6 +197,14 @@ fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile
                 style = MaterialTheme.typography.titleMedium,
                 color = Black,
             )
+            if (isCrown) {
+                Spacer(modifier = Modifier.width(4.dp))
+                SeugiImage(
+                    modifier = Modifier.size(24.dp),
+                    resId = R.drawable.ic_crown_fill,
+                    colorFilter = ColorFilter.tint(Yellow500),
+                )
+            }
             Spacer(modifier = Modifier.weight(1f))
             content()
         }
@@ -196,12 +222,14 @@ private fun PreviewSeugiMemberList() {
             SeugiMemberList(
                 userName = "노영재",
                 userProfile = null,
+                isCrown = true,
                 onClick = {
                 },
             )
             SeugiMemberList(
                 userName = "노영재",
                 userProfile = null,
+                isCrown = true,
                 checked = checked,
                 onCheckedChangeListener = {
                     checked = it

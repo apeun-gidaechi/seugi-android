@@ -28,9 +28,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.R
-import com.seugi.designsystem.component.RoomImageType
-import com.seugi.designsystem.component.SeugiRoomImage
 import com.seugi.designsystem.component.SeugiTopBar
+import com.seugi.designsystem.component.chat.ChatRoomType
+import com.seugi.designsystem.component.chat.SeugiChatRoom
 import com.seugi.designsystem.component.textfield.SeugiTextField
 import com.seugi.designsystem.theme.Black
 import com.seugi.designsystem.theme.Gray600
@@ -84,8 +84,8 @@ fun SecondScreen(placeholder: String, onNameSuccess: (String) -> Unit, popBackSt
                 ),
         ) {
             Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                SeugiRoomImage(
-                    type = RoomImageType.ExtraLarge,
+                SeugiChatRoom(
+                    type = ChatRoomType.ExtraLarge,
                     text = placeholder.substring(0, 1),
                 )
                 Image(

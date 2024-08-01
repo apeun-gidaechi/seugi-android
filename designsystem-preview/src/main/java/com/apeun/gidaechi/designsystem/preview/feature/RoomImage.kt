@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.seugi.designsystem.component.RoomImageType
-import com.seugi.designsystem.component.SeugiRoomImage
+import com.seugi.designsystem.component.chat.ChatRoomType
+import com.seugi.designsystem.component.chat.SeugiChatRoom
 
 @Composable
 fun RoomImage() {
@@ -13,29 +13,29 @@ fun RoomImage() {
     Column(
         modifier = Modifier.fillMaxSize(),
     ) {
-        SeugiRoomImage(
+        SeugiChatRoom(
             text = text,
-            type = RoomImageType.ExtraSmall,
+            type = ChatRoomType.ExtraSmall,
         )
-        SeugiRoomImage(
+        SeugiChatRoom(
             text = text,
-            type = RoomImageType.Small,
+            type = ChatRoomType.Small,
         )
-        SeugiRoomImage(
+        SeugiChatRoom(
             text = text,
-            type = RoomImageType.Medium,
+            type = ChatRoomType.Medium,
         )
-        SeugiRoomImage(
+        SeugiChatRoom(
             text = text,
-            type = RoomImageType.Large,
+            type = ChatRoomType.Large,
         )
-        SeugiRoomImage(
+        SeugiChatRoom(
             text = text,
-            type = RoomImageType.ExtraLarge,
+            type = ChatRoomType.ExtraLarge,
         )
-        SeugiRoomImage(
+        SeugiChatRoom(
             text = text,
-            type = RoomImageType.XXL,
+            type = ChatRoomType.XXL,
         )
     }
 }
