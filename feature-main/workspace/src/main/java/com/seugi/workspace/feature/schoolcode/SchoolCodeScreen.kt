@@ -1,5 +1,6 @@
 package com.seugi.workspace.feature.schoolcode
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -44,9 +45,11 @@ fun SchoolScreen(
         workspaceImageUrl: String,
         studentCount: Int,
         teacherCount: Int,
+        role: String
     ) -> Unit,
     popBackStack: () -> Unit,
     viewModel: SchoolCodeViewModel = hiltViewModel(),
+    role: String
 ) {
     var schoolCode by remember {
         mutableStateOf(TextFieldValue())
@@ -70,6 +73,7 @@ fun SchoolScreen(
                             data.workspaceImageUrl,
                             data.studentCount,
                             data.teacherCount,
+                            role
                         )
                     }
                     is SchoolCodeSideEffect.FiledSearchWorkspace -> {

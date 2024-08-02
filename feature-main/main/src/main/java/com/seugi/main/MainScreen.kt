@@ -174,7 +174,7 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                 },
             )
             schoolCode(
-                navigateToJoinSuccess = { schoolCode, workspaceId, workspaceName, workspaceImageUrl, studentCount, teacherCount ->
+                navigateToJoinSuccess = { schoolCode, workspaceId, workspaceName, workspaceImageUrl, studentCount, teacherCount, role ->
                     navHostController.navigateToJoinSuccess(
                         schoolCode = schoolCode,
                         workspaceId = workspaceId,
@@ -182,6 +182,7 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                         workspaceImageUrl = workspaceImageUrl,
                         studentCount = studentCount,
                         teacherCount = teacherCount,
+                        role = role
                     )
                 },
                 popBackStack = { navHostController.popBackStack() },

@@ -18,7 +18,7 @@ fun NavGraphBuilder.selectingJob(navigateToSelectingRole: (role: String) -> Unit
         route = SELECTING_JOB
     ) {
         SelectingJobScreen(
-            navigateToWaitingJoin = navigateToSelectingRole,
+            navigateToSelectingRole = navigateToSelectingRole,
             popBackStack = popBackStack,
         )
     }
