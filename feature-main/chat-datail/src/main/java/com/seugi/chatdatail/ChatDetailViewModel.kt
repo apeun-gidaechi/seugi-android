@@ -34,6 +34,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import kotlin.math.abs
 
 @HiltViewModel
 class ChatDetailViewModel @Inject constructor(
@@ -145,29 +147,33 @@ class ChatDetailViewModel @Inject constructor(
                                 dataType.isMessage() -> {
                                     val data = it.data as MessageMessageModel
                                     val message = _state.value.message.toMutableList()
-                                    val formerItem = _state.value.message.getOrNull(_state.value.message.lastIndex)
+                                    val formerItem = _state.value.message.firstOrNull()
 
                                     val isFirst = data.author != formerItem?.author?.id
                                     val isMe = data.author == _state.value.userInfo?.id
 
-                                    if (formerItem?.isLast == true && formerItem.author.id == data.author) {
+                                    if (formerItem?.isLast == true && formerItem.author.id == data.author && !formerItem.timestamp.isDifferentMin(data.timestamp)) {
                                         message.add(
-                                            message.removeLast().copy(
+                                            index = 0,
+                                            element = message.removeFirst().copy(
                                                 isLast = false,
                                             ),
                                         )
                                     }
                                     message.add(
-                                        data.toState(
+                                        index = 0,
+                                        element = data.toState(
                                             isFirst = isFirst,
                                             isLast = true,
                                             isMe = isMe,
                                             author = _state.value.users.getOrDefault(data.author, MessageUserModel(data.author)),
                                         ),
                                     )
-                                    _state.value = _state.value.copy(
-                                        message = message.toImmutableList(),
-                                    )
+                                    _state.update {
+                                        it.copy(
+                                            message = message.toImmutableList(),
+                                        )
+                                    }
                                 }
                                 dataType.isSub() -> {
                                     val messageSubModel = it.data as MessageSubModel
@@ -269,37 +275,33 @@ class ChatDetailViewModel @Inject constructor(
             when (this@collectMessage) {
                 is Result.Success -> {
                     val chatData = _state.value.message.toMutableList()
-                    val data = this@collectMessage.data.messages.reversed()
+                    val data = this@collectMessage.data.messages
                     data.forEachIndexed { index, item ->
-                        val formerItem = data.getOrNull(index - 1)
-                        val nextItem = data.getOrNull(index + 1)
+                        val formerItem = data.getOrNull(index + 1)
+                        val nextItem = data.getOrNull(index - 1)
 
                         val isMe = item.author == state.value.userInfo?.id
-                        val isLast = item.author != nextItem?.author ||
-                            (
-                                Duration.between(
-                                    item.timestamp,
-                                    nextItem.timestamp,
-                                ).seconds >= 86400 && item.author == nextItem.author
-                                )
-
                         var isFirst = formerItem == null || item.author != formerItem.author
-                        if (formerItem != null && Duration.between(
-                                formerItem.timestamp,
-                                item.timestamp,
-                            ).seconds >= 86400
+
+                        val isLast =
+                            item.author != nextItem?.author ||
+                            (item.author == formerItem?.author && item.timestamp.isDifferentMin(nextItem.timestamp))
+
+                        if (formerItem != null && item.timestamp.isDifferentDay(formerItem.timestamp)
                         ) {
                             isFirst = true
                             chatData.add(
-                                ChatDetailMessageState(
+                                index = 0,
+                                element = ChatDetailMessageState(
                                     chatRoomId = item.chatRoomId,
                                     type = ChatDetailChatTypeState.DATE,
-                                    timestamp = item.timestamp,
+                                    timestamp = LocalDateTime.of(item.timestamp.year, item.timestamp.monthValue, item.timestamp.dayOfMonth, 0, 0),
                                 ),
                             )
                         }
                         chatData.add(
-                            item.toState(
+                            index = 0,
+                            element = item.toState(
                                 isFirst = isFirst,
                                 isLast = isLast,
                                 isMe = isMe,
@@ -312,7 +314,7 @@ class ChatDetailViewModel @Inject constructor(
                         isLast = true
                     }
                     _state.value = _state.value.copy(
-                        message = chatData.sortedBy {
+                        message = chatData.sortedByDescending {
                             it.timestamp
                         }.toImmutableList(),
                         isInit = true,
@@ -332,3 +334,25 @@ class ChatDetailViewModel @Inject constructor(
         const val PAGE_SIZE = 20
     }
 }
+
+internal fun LocalDateTime.isDifferentMin(time: LocalDateTime): Boolean {
+
+    val seconds = abs(Duration.between(this, time).seconds)
+    if (seconds >= 60) {
+        return true
+    }
+    if (this.year != time.year) return true;
+    if (this.monthValue != time.monthValue) return true;
+    if (this.dayOfMonth != time.dayOfMonth) return true;
+    if (this.hour != time.hour) return true;
+    if (this.minute != time.minute) return true;
+    return false
+}
+
+internal fun LocalDateTime.isDifferentDay(time: LocalDateTime): Boolean =
+    when {
+        this.year != time.year -> true
+        this.monthValue != time.monthValue -> true
+        this.dayOfMonth != time.dayOfMonth -> true
+        else -> false
+    }

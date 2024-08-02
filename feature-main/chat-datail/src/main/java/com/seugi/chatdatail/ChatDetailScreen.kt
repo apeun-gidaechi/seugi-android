@@ -1,6 +1,7 @@
 package com.seugi.chatdatail
 
 import android.graphics.Rect
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Toast
@@ -108,7 +109,6 @@ internal fun ChatDetailScreen(
     var isSearch by remember { mutableStateOf(false) }
     var searchText by remember { mutableStateOf("") }
     val keyboardState by rememberKeyboardOpen()
-    var isFirst by remember { mutableStateOf(true) }
 
     val density = LocalDensity.current
     val screenSizeDp = LocalConfiguration.current.screenWidthDp.dp
@@ -134,7 +134,6 @@ internal fun ChatDetailScreen(
             },
         )
     }
-    var nowIndex by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(key1 = sideEffect) {
         if (sideEffect == null) {
@@ -172,20 +171,13 @@ internal fun ChatDetailScreen(
 
     LaunchedEffect(key1 = keyboardState) {
         if (keyboardState.isOpen) {
-            scrollState.animateScrollBy(with(density) { keyboardState.height.toPx() })
-        }
-    }
-
-    LaunchedEffect(key1 = scrollState.canScrollBackward) {
-        if (!scrollState.canScrollBackward) {
-            viewModel.nextPage()
+            scrollState.animateScrollBy(with(density) { -keyboardState.height.toPx() })
         }
     }
 
     LaunchedEffect(key1 = scrollState.canScrollForward) {
-        coroutineScope.launch {
-            delay(50)
-            canScrollForward = scrollState.canScrollForward
+        if (!scrollState.canScrollForward) {
+            viewModel.nextPage()
         }
     }
 
@@ -288,11 +280,6 @@ internal fun ChatDetailScreen(
                     onSendClick = {
                         viewModel.channelSend(text)
                         text = ""
-                        coroutineScope.launch {
-                            if (state.message.lastIndex != -1) {
-                                scrollState.animateScrollToItem(state.message.size - 1)
-                            }
-                        }
                     },
                 )
                 Spacer(modifier = Modifier.height(8.dp))
