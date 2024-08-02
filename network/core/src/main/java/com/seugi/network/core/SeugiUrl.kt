@@ -43,10 +43,10 @@ object SeugiUrl {
     }
 
     object Workspace {
-        const val ROOT = "${WORKSPACE}/workspace"
+        const val ROOT = "${WORKSPACE}/"
         const val MEMBERS = "$ROOT/members"
         const val CHECK_WORKSPACE = "$WORKSPACE/search/"
-        const val APPLICATION = "${WORKSPACE}/workspace/join"
+        const val APPLICATION = "${WORKSPACE}/join"
     }
 
     object Notice {
