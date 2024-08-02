@@ -1,6 +1,5 @@
 package com.seugi.workspace.feature.selectingcode
 
-import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,15 +43,12 @@ import com.seugi.designsystem.theme.Gray100
 import com.seugi.designsystem.theme.Gray500
 import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.workspace.feature.selectingcode.model.SelectingCodeSideEffect
-import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SelectingJobScreen(
     navigateToSelectingRole: (role: String) -> Unit,
     popBackStack: () -> Unit,
-    viewModel: SelectingCodeViewModel = hiltViewModel(),
 ) {
     var studentOnOff by remember {
         mutableStateOf(true)
