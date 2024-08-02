@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.seugi.workspace.feature.selectingcode.SelectingJobScreen
+import com.seugi.workspace.feature.SelectingJobScreen
 
 const val SELECTING_JOB = "selectingJob"
 
