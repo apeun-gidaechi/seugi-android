@@ -80,9 +80,9 @@ fun WaitingJoinScreen(popBackStack: () -> Unit) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     SeugiFullWidthButton(
-                        onClick = { /*TODO*/ },
-                        type = ButtonType.Gray,
-                        text = "확인",
+                        onClick = {},
+                        type = ButtonType.Primary,
+                        text = "완료",
                         modifier = Modifier.padding(vertical = 16.dp),
                     )
                 }

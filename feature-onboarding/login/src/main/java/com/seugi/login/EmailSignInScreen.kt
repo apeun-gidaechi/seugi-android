@@ -163,9 +163,7 @@ internal fun EmailSignInScreen(
                 }
             }
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 16.dp),
+                modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Bottom,
             ) {
                 Row(
@@ -186,7 +184,6 @@ internal fun EmailSignInScreen(
                             .bounceClick({ navigateToEmailSignUp() }),
                     )
                 }
-                Spacer(modifier = Modifier.height(16.dp))
                 SeugiFullWidthButton(
                     onClick = {
                         emailError = emailValue.isEmpty()
@@ -201,7 +198,9 @@ internal fun EmailSignInScreen(
                     },
                     type = ButtonType.Primary,
                     text = "로그인",
-                    modifier = Modifier.padding(horizontal = 20.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp)
+                        .padding(vertical = 16.dp),
                 )
             }
         }
