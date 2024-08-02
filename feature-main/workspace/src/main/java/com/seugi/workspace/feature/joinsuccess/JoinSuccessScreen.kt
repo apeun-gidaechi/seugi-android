@@ -1,4 +1,4 @@
-package com.seugi.workspace.feature
+package com.seugi.workspace.feature.joinsuccess
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement

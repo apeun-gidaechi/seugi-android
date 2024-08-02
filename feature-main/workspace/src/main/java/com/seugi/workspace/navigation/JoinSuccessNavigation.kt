@@ -1,14 +1,13 @@
 package com.seugi.workspace.navigation
 
 import android.net.Uri
-import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.seugi.workspace.feature.JoinSuccessScreen
+import com.seugi.workspace.feature.joinsuccess.JoinSuccessScreen
 
 const val JOIN_SUCCESS = "joinSuccess"
 
