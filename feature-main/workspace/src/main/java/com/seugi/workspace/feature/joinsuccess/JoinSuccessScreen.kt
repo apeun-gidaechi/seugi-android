@@ -106,7 +106,7 @@ fun JoinSuccessScreen(
                     },
                     type = ButtonType.Primary,
                     text = "계속하기",
-                    modifier = Modifier.padding(vertical = 16.dp),
+                    modifier = Modifier.padding(bottom = 16.dp),
                 )
             }
         }
