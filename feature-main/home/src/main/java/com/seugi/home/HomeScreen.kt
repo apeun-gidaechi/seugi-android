@@ -107,6 +107,7 @@ internal fun HomeScreen(viewModel: HomeViewModel = hiltViewModel(), navigateToCh
     }
 
     LaunchedEffect(key1 = true) {
+        onNavigationVisibleChange(true)
         if (!view.isInEditMode) {
             val window = (view.context as Activity).window
             changeNavigationColor(window, Primary050, false)
