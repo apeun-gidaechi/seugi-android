@@ -1,4 +1,4 @@
-package com.seugi.workspace.feature.selectingcode
+package com.seugi.workspace.feature
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
