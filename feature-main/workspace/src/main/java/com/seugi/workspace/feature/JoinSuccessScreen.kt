@@ -1,5 +1,6 @@
 package com.seugi.workspace.feature
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -33,6 +34,7 @@ fun JoinSuccessScreen(
     workspaceImageUrl: String,
     studentCount: Int,
     teacherCount: Int,
+    role: String
 ) {
     SeugiTheme {
         Scaffold(

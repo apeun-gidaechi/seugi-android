@@ -51,7 +51,7 @@ import kotlinx.coroutines.flow.collectLatest
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SelectingJobScreen(
-    navigateToWaitingJoin: (role: String) -> Unit,
+    navigateToSelectingRole: (role: String) -> Unit,
     popBackStack: () -> Unit,
     viewModel: SelectingCodeViewModel = hiltViewModel(),
 ) {
@@ -65,20 +65,6 @@ internal fun SelectingJobScreen(
     val context = LocalContext.current
 
     SeugiTheme {
-        LaunchedEffect(key1 = Unit) {
-            viewModel.selectingCodeSideEffect.collectLatest {
-                when (it) {
-                    is SelectingCodeSideEffect.SuccessApplication -> {
-                        navigateToWaitingJoin(
-                            if (studentOnOff) "STUDENT" else "TEACHER"
-                        )
-                    }
-                    is SelectingCodeSideEffect.FiledApplication -> {
-                        Toast.makeText(context, it.throwable.message, Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -123,7 +109,7 @@ internal fun SelectingJobScreen(
                                     shape = RoundedCornerShape(12.dp),
                                 ),
 
-                        ) {
+                            ) {
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -220,7 +206,7 @@ internal fun SelectingJobScreen(
                 ) {
                     SeugiFullWidthButton(
                         onClick = {
-                            navigateToWaitingJoin(
+                            navigateToSelectingRole(
                                 if (studentOnOff) "STUDENT" else "TEACHER"
                             )
                         },
