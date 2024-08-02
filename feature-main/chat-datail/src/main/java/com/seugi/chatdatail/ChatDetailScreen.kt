@@ -43,7 +43,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
@@ -99,7 +98,6 @@ import com.seugi.designsystem.theme.White
 import com.seugi.ui.addFocusCleaner
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -216,14 +214,14 @@ internal fun ChatDetailScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Primary050)
-            .focusable()
+            .focusable(),
     ) {
         SeugiRightSideScaffold(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Primary050)
                 .addFocusCleaner(
-                    focusManager = focusManager
+                    focusManager = focusManager,
                 ),
             topBar = {
                 SeugiTopBar(
@@ -307,7 +305,7 @@ internal fun ChatDetailScreen(
                         },
                         onAddClick = {
                             isShowUploadDialog = true
-                        }
+                        },
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                 }
@@ -408,7 +406,7 @@ internal fun ChatDetailScreen(
                     Log.d("TAG", "ChatDetailScreen: dismiss")
                 },
                 onFileUploadClick = {},
-                onImageUploadClick = {}
+                onImageUploadClick = {},
             )
         }
     }
@@ -445,58 +443,54 @@ private fun BoxScope.ChatUploadDialog(
             .align(Alignment.BottomStart)
             .padding(
                 start = 26.dp,
-                bottom = 30.dp
+                bottom = 30.dp,
             )
             .dropShadow(DropShadowType.EvBlack3)
             .background(
                 color = White,
-                shape = RoundedCornerShape(16.dp)
-            )
+                shape = RoundedCornerShape(16.dp),
+            ),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
         ) {
             ChatUploadDialogItem(
                 resId = R.drawable.ic_file_line,
                 title = "파일 업로드",
-                onClick = onFileUploadClick
+                onClick = onFileUploadClick,
             )
             Spacer(modifier = Modifier.height(8.dp))
             ChatUploadDialogItem(
                 resId = R.drawable.ic_image,
                 title = "이미지 업로드",
-                onClick = onImageUploadClick
+                onClick = onImageUploadClick,
             )
         }
     }
 }
 
 @Composable
-private fun ChatUploadDialogItem(
-    @DrawableRes resId: Int,
-    title: String,
-    onClick: () -> Unit
-) {
+private fun ChatUploadDialogItem(@DrawableRes resId: Int, title: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .width(188.dp)
             .bounceClick(
-                onClick = onClick
+                onClick = onClick,
             ),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         SeugiImage(
             modifier = Modifier
                 .padding(vertical = 8.dp)
                 .size(24.dp),
             resId = resId,
-            colorFilter = ColorFilter.tint(Black)
+            colorFilter = ColorFilter.tint(Black),
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium,
-            color = Black
+            color = Black,
         )
     }
 }

@@ -20,7 +20,9 @@ import com.seugi.data.message.model.sub.MessageSubModel
 import com.seugi.data.profile.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Duration
+import java.time.LocalDateTime
 import javax.inject.Inject
+import kotlin.math.abs
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
@@ -34,8 +36,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import kotlin.math.abs
 
 @HiltViewModel
 class ChatDetailViewModel @Inject constructor(
@@ -152,7 +152,10 @@ class ChatDetailViewModel @Inject constructor(
                                     val isFirst = data.author != formerItem?.author?.id
                                     val isMe = data.author == _state.value.userInfo?.id
 
-                                    if (formerItem?.isLast == true && formerItem.author.id == data.author && !formerItem.timestamp.isDifferentMin(data.timestamp)) {
+                                    if (
+                                        formerItem?.isLast == true && formerItem.author.id == data.author &&
+                                        !formerItem.timestamp.isDifferentMin(data.timestamp)
+                                    ) {
                                         message.add(
                                             index = 0,
                                             element = message.removeFirst().copy(
@@ -285,7 +288,7 @@ class ChatDetailViewModel @Inject constructor(
 
                         val isLast =
                             item.author != nextItem?.author ||
-                            (item.author == formerItem?.author && item.timestamp.isDifferentMin(nextItem.timestamp))
+                                (item.author == formerItem?.author && item.timestamp.isDifferentMin(nextItem.timestamp))
 
                         if (formerItem != null && item.timestamp.isDifferentDay(formerItem.timestamp)
                         ) {
@@ -336,23 +339,21 @@ class ChatDetailViewModel @Inject constructor(
 }
 
 internal fun LocalDateTime.isDifferentMin(time: LocalDateTime): Boolean {
-
     val seconds = abs(Duration.between(this, time).seconds)
     if (seconds >= 60) {
         return true
     }
-    if (this.year != time.year) return true;
-    if (this.monthValue != time.monthValue) return true;
-    if (this.dayOfMonth != time.dayOfMonth) return true;
-    if (this.hour != time.hour) return true;
-    if (this.minute != time.minute) return true;
+    if (this.year != time.year) return true
+    if (this.monthValue != time.monthValue) return true
+    if (this.dayOfMonth != time.dayOfMonth) return true
+    if (this.hour != time.hour) return true
+    if (this.minute != time.minute) return true
     return false
 }
 
-internal fun LocalDateTime.isDifferentDay(time: LocalDateTime): Boolean =
-    when {
-        this.year != time.year -> true
-        this.monthValue != time.monthValue -> true
-        this.dayOfMonth != time.dayOfMonth -> true
-        else -> false
-    }
+internal fun LocalDateTime.isDifferentDay(time: LocalDateTime): Boolean = when {
+    this.year != time.year -> true
+    this.monthValue != time.monthValue -> true
+    this.dayOfMonth != time.dayOfMonth -> true
+    else -> false
+}
