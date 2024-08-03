@@ -1,8 +1,6 @@
 package com.seugi.workspace.feature.schoolcode
 
-import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,7 +19,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
@@ -47,11 +44,11 @@ fun SchoolScreen(
         workspaceImageUrl: String,
         studentCount: Int,
         teacherCount: Int,
-        role: String
+        role: String,
     ) -> Unit,
     popBackStack: () -> Unit,
     viewModel: SchoolCodeViewModel = hiltViewModel(),
-    role: String
+    role: String,
 ) {
     var schoolCode by remember {
         mutableStateOf(TextFieldValue())
@@ -75,7 +72,7 @@ fun SchoolScreen(
                             data.workspaceImageUrl,
                             data.studentCount,
                             data.teacherCount,
-                            role
+                            role,
                         )
                     }
                     is SchoolCodeSideEffect.FiledSearchWorkspace -> {

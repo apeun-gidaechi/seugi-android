@@ -30,8 +30,6 @@ import com.seugi.designsystem.component.SeugiBottomNavigation
 import com.seugi.home.navigation.HOME_ROUTE
 import com.seugi.home.navigation.homeScreen
 import com.seugi.home.navigation.navigateToHome
-import com.seugi.main.navigation.MAIN_ROUTE
-import com.seugi.main.navigation.navigateToMain
 import com.seugi.notification.navigation.NOTIFICATION_ROUTE
 import com.seugi.notification.navigation.notificationScreen
 import com.seugi.profile.navigation.PROFILE_ROUTE
@@ -44,19 +42,16 @@ import com.seugi.workspace.navigation.WAITING_JOIN
 import com.seugi.workspace.navigation.joinSuccess
 import com.seugi.workspace.navigation.navigateToJoinSuccess
 import com.seugi.workspace.navigation.navigateToSchoolCode
-import com.seugi.workspace.navigation.waitingJoin
 import com.seugi.workspace.navigation.navigateToSelectingJob
 import com.seugi.workspace.navigation.navigateToWaitingJoin
 import com.seugi.workspace.navigation.schoolCode
 import com.seugi.workspace.navigation.selectingJob
+import com.seugi.workspace.navigation.waitingJoin
 
 private const val NAVIGATION_ANIM = 400
 
 @Composable
-internal fun MainScreen(
-    navHostController: NavHostController = rememberNavController(),
-    mainToOnboarding: () -> Unit
-) {
+internal fun MainScreen(navHostController: NavHostController = rememberNavController(), mainToOnboarding: () -> Unit) {
     val backstackEntry by navHostController.currentBackStackEntryAsState()
     val selectItemState: BottomNavigationItemType by remember {
         derivedStateOf {
@@ -122,7 +117,7 @@ internal fun MainScreen(
                 navigateToJoinWorkspace = {
                     navHostController.navigateToSelectingJob()
                 },
-                onNavigationVisibleChange = onNavigationVisibleChange
+                onNavigationVisibleChange = onNavigationVisibleChange,
             )
 
             chatScreen(
@@ -189,7 +184,7 @@ internal fun MainScreen(
                         workspaceImageUrl = workspaceImageUrl,
                         studentCount = studentCount,
                         teacherCount = teacherCount,
-                        role = role
+                        role = role,
                     )
                 },
                 popBackStack = { navHostController.popBackStack() },
@@ -203,7 +198,7 @@ internal fun MainScreen(
             selectingJob(
                 navigateToSelectingRole = { role ->
                     navHostController.navigateToSchoolCode(
-                        role = role
+                        role = role,
                     )
                 },
                 popBackStack = { navHostController.popBackStack() },

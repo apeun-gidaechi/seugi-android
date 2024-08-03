@@ -1,6 +1,5 @@
 package com.seugi.workspace.feature.joinsuccess
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,7 +40,7 @@ fun JoinSuccessScreen(
     studentCount: Int,
     teacherCount: Int,
     role: String,
-    viewModel: JoinSuccessViewModel = hiltViewModel()
+    viewModel: JoinSuccessViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
 
@@ -101,7 +100,7 @@ fun JoinSuccessScreen(
                         viewModel.workspaceApplication(
                             role = role,
                             workspaceId = workspaceId,
-                            workspaceCode = schoolCode
+                            workspaceCode = schoolCode,
                         )
                     },
                     type = ButtonType.Primary,

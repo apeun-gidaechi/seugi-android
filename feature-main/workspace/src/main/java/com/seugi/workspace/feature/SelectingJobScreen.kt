@@ -32,7 +32,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.ButtonType
@@ -46,10 +45,7 @@ import com.seugi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun SelectingJobScreen(
-    navigateToSelectingRole: (role: String) -> Unit,
-    popBackStack: () -> Unit,
-) {
+internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit, popBackStack: () -> Unit) {
     var studentOnOff by remember {
         mutableStateOf(true)
     }
@@ -60,7 +56,6 @@ internal fun SelectingJobScreen(
     val context = LocalContext.current
 
     SeugiTheme {
-
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
@@ -104,7 +99,7 @@ internal fun SelectingJobScreen(
                                     shape = RoundedCornerShape(12.dp),
                                 ),
 
-                            ) {
+                        ) {
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -202,7 +197,7 @@ internal fun SelectingJobScreen(
                     SeugiFullWidthButton(
                         onClick = {
                             navigateToSelectingRole(
-                                if (studentOnOff) "STUDENT" else "TEACHER"
+                                if (studentOnOff) "STUDENT" else "TEACHER",
                             )
                         },
                         type = ButtonType.Primary,
