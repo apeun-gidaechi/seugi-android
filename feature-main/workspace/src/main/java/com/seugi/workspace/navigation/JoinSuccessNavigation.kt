@@ -36,8 +36,8 @@ fun NavGraphBuilder.joinSuccess(navigateToWaiting: () -> Unit, popBackStack: () 
             navArgument("workspaceId") { NavType.StringType },
             navArgument("workspaceName") { NavType.StringType },
             navArgument("workspaceImageUrl") { NavType.StringType },
-            navArgument("studentCount") { NavType.IntType },
-            navArgument("teacherCount") { NavType.IntType },
+            navArgument("studentCount") { type = NavType.IntType },
+            navArgument("teacherCount") { type = NavType.IntType },
             navArgument("role") { NavType.StringType },
         ),
     ) {
@@ -48,9 +48,8 @@ fun NavGraphBuilder.joinSuccess(navigateToWaiting: () -> Unit, popBackStack: () 
             workspaceId = it.arguments?.getString("workspaceId") ?: "",
             workspaceName = it.arguments?.getString("workspaceName") ?: "",
             workspaceImageUrl = it.arguments?.getString("workspaceImageUrl") ?: "",
-            // TODO 이거 뭔 버근지 찾아보기
-            studentCount = it.arguments?.getString("studentCount")?.toInt() ?: 0,
-            teacherCount = it.arguments?.getString("teacherCount")?.toInt() ?: 0,
+            studentCount = it.arguments?.getInt("studentCount") ?: 0,
+            teacherCount = it.arguments?.getInt("teacherCount") ?: 0,
             role = it.arguments?.getString("role") ?: "",
         )
     }
