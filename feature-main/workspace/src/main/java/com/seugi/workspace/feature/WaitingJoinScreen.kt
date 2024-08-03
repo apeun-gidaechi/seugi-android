@@ -1,4 +1,4 @@
-package com.seugi.join.feature
+package com.seugi.workspace.feature
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -21,17 +21,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.seugi.designsystem.R
 import com.seugi.designsystem.component.ButtonType
 import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiToolTip
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.ToolTipType
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.join.R
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WaitingJoinScreen(popBackStack: () -> Unit) {
+fun WaitingJoinScreen(joinToHome: () -> Unit, popBackStack: () -> Unit) {
     val painter = painterResource(id = R.drawable.img_school)
 
     SeugiTheme {
@@ -39,7 +38,7 @@ fun WaitingJoinScreen(popBackStack: () -> Unit) {
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 SeugiTopBar(
-                    title = { Text(text = "", style = MaterialTheme.typography.titleLarge) },
+                    title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
                     onNavigationIconClick = popBackStack,
                     backIconCheck = true,
                 )
@@ -81,9 +80,9 @@ fun WaitingJoinScreen(popBackStack: () -> Unit) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     SeugiFullWidthButton(
-                        onClick = { /*TODO*/ },
-                        type = ButtonType.Gray,
-                        text = "확인",
+                        onClick = { joinToHome() },
+                        type = ButtonType.Primary,
+                        text = "완료",
                         modifier = Modifier.padding(vertical = 16.dp),
                     )
                 }

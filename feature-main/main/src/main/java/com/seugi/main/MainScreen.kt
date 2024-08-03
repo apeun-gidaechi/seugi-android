@@ -29,6 +29,7 @@ import com.seugi.designsystem.component.BottomNavigationItemType
 import com.seugi.designsystem.component.SeugiBottomNavigation
 import com.seugi.home.navigation.HOME_ROUTE
 import com.seugi.home.navigation.homeScreen
+import com.seugi.home.navigation.navigateToHome
 import com.seugi.notification.navigation.NOTIFICATION_ROUTE
 import com.seugi.notification.navigation.notificationScreen
 import com.seugi.profile.navigation.PROFILE_ROUTE
@@ -37,6 +38,15 @@ import com.seugi.room.navigation.ROOM_ROUTE
 import com.seugi.room.navigation.roomScreen
 import com.seugi.roomcreate.navigation.navigateToRoomCreate
 import com.seugi.roomcreate.navigation.roomCreateScreen
+import com.seugi.workspace.navigation.WAITING_JOIN
+import com.seugi.workspace.navigation.joinSuccess
+import com.seugi.workspace.navigation.navigateToJoinSuccess
+import com.seugi.workspace.navigation.navigateToSchoolCode
+import com.seugi.workspace.navigation.navigateToSelectingJob
+import com.seugi.workspace.navigation.navigateToWaitingJoin
+import com.seugi.workspace.navigation.schoolCode
+import com.seugi.workspace.navigation.selectingJob
+import com.seugi.workspace.navigation.waitingJoin
 
 private const val NAVIGATION_ANIM = 400
 
@@ -104,6 +114,10 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                 navigateToChatSeugi = {
                     navHostController.navigateToChatSeugi()
                 },
+                navigateToJoinWorkspace = {
+                    navHostController.navigateToSelectingJob()
+                },
+                onNavigationVisibleChange = onNavigationVisibleChange,
             )
 
             chatScreen(
@@ -160,6 +174,45 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                 popBackStack = {
                     navHostController.popBackStack()
                 },
+            )
+            schoolCode(
+                navigateToJoinSuccess = { schoolCode, workspaceId, workspaceName, workspaceImageUrl, studentCount, teacherCount, role ->
+                    navHostController.navigateToJoinSuccess(
+                        schoolCode = schoolCode,
+                        workspaceId = workspaceId,
+                        workspaceName = workspaceName,
+                        workspaceImageUrl = workspaceImageUrl,
+                        studentCount = studentCount,
+                        teacherCount = teacherCount,
+                        role = role,
+                    )
+                },
+                popBackStack = { navHostController.popBackStack() },
+            )
+            joinSuccess(
+                navigateToWaiting = {
+                    navHostController.navigateToWaitingJoin()
+                },
+                popBackStack = { navHostController.popBackStack() },
+            )
+            selectingJob(
+                navigateToSelectingRole = { role ->
+                    navHostController.navigateToSchoolCode(
+                        role = role,
+                    )
+                },
+                popBackStack = { navHostController.popBackStack() },
+            )
+            waitingJoin(
+                joinToHome = {
+                    while (navHostController.popBackStack()) {
+                    }
+                    navHostController.navigateToHome(
+                        toRoute = HOME_ROUTE,
+                        fromRoute = WAITING_JOIN,
+                    )
+                },
+                popBackStack = { navHostController.popBackStack() },
             )
         }
     }

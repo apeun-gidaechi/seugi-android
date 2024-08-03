@@ -1,4 +1,4 @@
-package com.seugi.join.feature.schoolcode
+package com.seugi.workspace.feature.schoolcode
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -31,7 +31,7 @@ import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiCodeTextField
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.join.feature.schoolcode.model.SchoolCodeSideEffect
+import com.seugi.workspace.feature.schoolcode.model.SchoolCodeSideEffect
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,9 +44,11 @@ fun SchoolScreen(
         workspaceImageUrl: String,
         studentCount: Int,
         teacherCount: Int,
+        role: String,
     ) -> Unit,
     popBackStack: () -> Unit,
     viewModel: SchoolCodeViewModel = hiltViewModel(),
+    role: String,
 ) {
     var schoolCode by remember {
         mutableStateOf(TextFieldValue())
@@ -70,6 +72,7 @@ fun SchoolScreen(
                             data.workspaceImageUrl,
                             data.studentCount,
                             data.teacherCount,
+                            role,
                         )
                     }
                     is SchoolCodeSideEffect.FiledSearchWorkspace -> {
@@ -84,6 +87,7 @@ fun SchoolScreen(
                 SeugiTopBar(
                     title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
                     onNavigationIconClick = popBackStack,
+                    backIconCheck = true,
                 )
             },
         ) {
@@ -128,10 +132,11 @@ fun SchoolScreen(
                 Spacer(modifier = Modifier.weight(1f))
                 SeugiFullWidthButton(
                     enabled = if (schoolCode.text.length == 6) true else false,
-                    onClick = { viewModel.checkWorkspace(schoolCode = schoolCode.text) },
+                    onClick = {
+                        viewModel.checkWorkspace(schoolCode = schoolCode.text)
+                    },
                     type = ButtonType.Primary,
                     text = "계속하기",
-                    modifier = Modifier.padding(vertical = 16.dp),
                 )
             }
         }

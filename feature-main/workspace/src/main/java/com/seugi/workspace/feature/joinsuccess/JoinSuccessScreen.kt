@@ -1,5 +1,6 @@
-package com.seugi.join.feature
+package com.seugi.workspace.feature.joinsuccess
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,9 +12,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.seugi.designsystem.component.ButtonType
 import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiRoundedCircleImage
@@ -21,11 +25,13 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.Size
 import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.workspace.feature.joinsuccess.model.JoinSuccessSideEffect
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JoinSuccessScreen(
-    navigateToSelectingJob: (workspaceId: String, workspaceCode: String) -> Unit,
+    navigateToWaiting: () -> Unit,
     popBackStack: () -> Unit,
     schoolCode: String,
     workspaceId: String,
@@ -33,8 +39,26 @@ fun JoinSuccessScreen(
     workspaceImageUrl: String,
     studentCount: Int,
     teacherCount: Int,
+    role: String,
+    viewModel: JoinSuccessViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
+
     SeugiTheme {
+        LaunchedEffect(key1 = Unit) {
+            viewModel.joinSuccessSideEffect.collectLatest {
+                when (it) {
+                    is JoinSuccessSideEffect.SuccessApplication -> {
+                        navigateToWaiting()
+                    }
+
+                    is JoinSuccessSideEffect.FiledApplication -> {
+                        Toast.makeText(context, it.throwable.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
@@ -73,14 +97,15 @@ fun JoinSuccessScreen(
                 Spacer(modifier = Modifier.weight(1f))
                 SeugiFullWidthButton(
                     onClick = {
-                        navigateToSelectingJob(
-                            workspaceId,
-                            schoolCode,
+                        viewModel.workspaceApplication(
+                            role = role,
+                            workspaceId = workspaceId,
+                            workspaceCode = schoolCode,
                         )
                     },
                     type = ButtonType.Primary,
                     text = "계속하기",
-                    modifier = Modifier.padding(vertical = 16.dp),
+                    modifier = Modifier.padding(bottom = 16.dp),
                 )
             }
         }

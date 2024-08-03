@@ -1,4 +1,4 @@
-package com.seugi.join.feature.selectingcode
+package com.seugi.workspace.feature.joinsuccess
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,7 +6,7 @@ import com.seugi.common.model.Result
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.workspace.WorkspaceRepository
-import com.seugi.join.feature.selectingcode.model.SelectingCodeSideEffect
+import com.seugi.workspace.feature.joinsuccess.model.JoinSuccessSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -16,14 +16,14 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class SelectingCodeViewModel @Inject constructor(
+class JoinSuccessViewModel @Inject constructor(
     private val workspaceRepository: WorkspaceRepository,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
-    private val _selectingCodeSideEffect = Channel<SelectingCodeSideEffect>()
-    val selectingCodeSideEffect = _selectingCodeSideEffect.receiveAsFlow()
-    fun workspaceApplication(workspaceId: String, workspaceCode: String, role: String) {
+    private val _joinSuccessSideEffect = Channel<JoinSuccessSideEffect>()
+    val joinSuccessSideEffect = _joinSuccessSideEffect.receiveAsFlow()
+    fun workspaceApplication(role: String, workspaceId: String, workspaceCode: String) {
         viewModelScope.launch(dispatcher) {
             workspaceRepository.workspaceApplication(
                 workspaceId = workspaceId,
@@ -32,11 +32,13 @@ class SelectingCodeViewModel @Inject constructor(
             ).collectLatest {
                 when (it) {
                     is Result.Success -> {
-                        _selectingCodeSideEffect.send(SelectingCodeSideEffect.SuccessApplication)
+                        _joinSuccessSideEffect.send(JoinSuccessSideEffect.SuccessApplication)
                     }
+
                     is Result.Error -> {
-                        _selectingCodeSideEffect.send(SelectingCodeSideEffect.FiledApplication(it.throwable))
+                        _joinSuccessSideEffect.send(JoinSuccessSideEffect.FiledApplication(it.throwable))
                     }
+
                     is Result.Loading -> {
                     }
                 }

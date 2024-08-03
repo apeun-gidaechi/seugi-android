@@ -1,15 +1,17 @@
-package com.seugi.join.navigation
+package com.seugi.workspace.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import com.seugi.join.feature.schoolcode.SchoolScreen
+import androidx.navigation.navArgument
+import com.seugi.workspace.feature.schoolcode.SchoolScreen
 
 const val SCHOOL_CODE = "schoolCode"
 
-fun NavController.navigateToSchoolCode(navOptions: NavOptions? = null) = navigate(
-    SCHOOL_CODE,
+fun NavController.navigateToSchoolCode(navOptions: NavOptions? = null, role: String) = navigate(
+    "$SCHOOL_CODE/$role",
     navOptions,
 )
 
@@ -21,13 +23,20 @@ fun NavGraphBuilder.schoolCode(
         workspaceImageUrl: String,
         studentCount: Int,
         teacherCount: Int,
+        role: String,
     ) -> Unit,
     popBackStack: () -> Unit,
 ) {
-    composable(route = SCHOOL_CODE) {
+    composable(
+        route = "$SCHOOL_CODE/{role}",
+        arguments = listOf(
+            navArgument("role") { NavType.StringType },
+        ),
+    ) {
         SchoolScreen(
             navigateToJoinSuccess = navigateToJoinSuccess,
             popBackStack = popBackStack,
+            role = it.arguments?.getString("role") ?: "",
         )
     }
 }

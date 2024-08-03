@@ -1,6 +1,5 @@
-package com.seugi.join.feature.selectingcode
+package com.seugi.workspace.feature
 
-import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,7 +32,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.ButtonType
 import com.seugi.designsystem.component.SeugiFullWidthButton
@@ -44,19 +42,10 @@ import com.seugi.designsystem.theme.Gray100
 import com.seugi.designsystem.theme.Gray500
 import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.join.R
-import com.seugi.join.feature.selectingcode.model.SelectingCodeSideEffect
-import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun SelectingJobScreen(
-    navigateToWaitingJoin: () -> Unit,
-    popBackStack: () -> Unit,
-    workspaceId: String,
-    schoolCode: String,
-    viewModel: SelectingCodeViewModel = hiltViewModel(),
-) {
+internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit, popBackStack: () -> Unit) {
     var studentOnOff by remember {
         mutableStateOf(true)
     }
@@ -67,24 +56,11 @@ internal fun SelectingJobScreen(
     val context = LocalContext.current
 
     SeugiTheme {
-        LaunchedEffect(key1 = Unit) {
-            viewModel.selectingCodeSideEffect.collectLatest {
-                when (it) {
-                    is SelectingCodeSideEffect.SuccessApplication -> {
-                        navigateToWaitingJoin()
-                    }
-                    is SelectingCodeSideEffect.FiledApplication -> {
-                        Toast.makeText(context, it.throwable.message, Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
-
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 SeugiTopBar(
-                    title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
+                    title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
                     onNavigationIconClick = popBackStack,
                     backIconCheck = true,
                 )
@@ -220,10 +196,8 @@ internal fun SelectingJobScreen(
                 ) {
                     SeugiFullWidthButton(
                         onClick = {
-                            viewModel.workspaceApplication(
-                                workspaceId = workspaceId,
-                                workspaceCode = schoolCode,
-                                role = if (studentOnOff) "STUDENT" else "TEACHER",
+                            navigateToSelectingRole(
+                                if (studentOnOff) "STUDENT" else "TEACHER",
                             )
                         },
                         type = ButtonType.Primary,

@@ -1,5 +1,8 @@
 import java.net.URI
 
+include(":feature-main:workspace")
+
+
 include(":data:notification")
 
 
