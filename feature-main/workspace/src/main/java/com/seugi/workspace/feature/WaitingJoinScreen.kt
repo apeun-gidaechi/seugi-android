@@ -30,7 +30,10 @@ import com.seugi.designsystem.component.ToolTipType
 import com.seugi.designsystem.theme.SeugiTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WaitingJoinScreen(popBackStack: () -> Unit) {
+fun WaitingJoinScreen(
+    joinToHome:() -> Unit,
+    popBackStack: () -> Unit
+) {
     val painter = painterResource(id = R.drawable.img_school)
 
     SeugiTheme {
@@ -80,7 +83,7 @@ fun WaitingJoinScreen(popBackStack: () -> Unit) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     SeugiFullWidthButton(
-                        onClick = {},
+                        onClick = {joinToHome()},
                         type = ButtonType.Primary,
                         text = "완료",
                         modifier = Modifier.padding(vertical = 16.dp),

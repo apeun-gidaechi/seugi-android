@@ -29,6 +29,9 @@ import com.seugi.designsystem.component.BottomNavigationItemType
 import com.seugi.designsystem.component.SeugiBottomNavigation
 import com.seugi.home.navigation.HOME_ROUTE
 import com.seugi.home.navigation.homeScreen
+import com.seugi.home.navigation.navigateToHome
+import com.seugi.main.navigation.MAIN_ROUTE
+import com.seugi.main.navigation.navigateToMain
 import com.seugi.notification.navigation.NOTIFICATION_ROUTE
 import com.seugi.notification.navigation.notificationScreen
 import com.seugi.profile.navigation.PROFILE_ROUTE
@@ -37,6 +40,7 @@ import com.seugi.room.navigation.ROOM_ROUTE
 import com.seugi.room.navigation.roomScreen
 import com.seugi.roomcreate.navigation.navigateToRoomCreate
 import com.seugi.roomcreate.navigation.roomCreateScreen
+import com.seugi.workspace.navigation.WAITING_JOIN
 import com.seugi.workspace.navigation.joinSuccess
 import com.seugi.workspace.navigation.navigateToJoinSuccess
 import com.seugi.workspace.navigation.navigateToSchoolCode
@@ -49,7 +53,10 @@ import com.seugi.workspace.navigation.selectingJob
 private const val NAVIGATION_ANIM = 400
 
 @Composable
-internal fun MainScreen(navHostController: NavHostController = rememberNavController(), mainToOnboarding: () -> Unit) {
+internal fun MainScreen(
+    navHostController: NavHostController = rememberNavController(),
+    mainToOnboarding: () -> Unit
+) {
     val backstackEntry by navHostController.currentBackStackEntryAsState()
     val selectItemState: BottomNavigationItemType by remember {
         derivedStateOf {
@@ -198,10 +205,18 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                     navHostController.navigateToSchoolCode(
                         role = role
                     )
-                                        },
+                },
                 popBackStack = { navHostController.popBackStack() },
             )
             waitingJoin(
+                joinToHome = {
+                    while (navHostController.popBackStack()) {
+                    }
+                    navHostController.navigateToHome(
+                        toRoute = HOME_ROUTE,
+                        fromRoute = WAITING_JOIN,
+                    )
+                },
                 popBackStack = { navHostController.popBackStack() },
             )
         }
