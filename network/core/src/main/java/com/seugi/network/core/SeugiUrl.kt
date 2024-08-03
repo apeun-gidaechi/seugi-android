@@ -3,7 +3,6 @@ package com.seugi.network.core
 object SeugiUrl {
     private const val BASE_URL = BuildConfig.BASE_URL
 
-
     const val WORKSPACE = "$BASE_URL/workspace"
 
     object Message {
@@ -43,10 +42,10 @@ object SeugiUrl {
     }
 
     object Workspace {
-        const val ROOT = "${WORKSPACE}/"
+        const val ROOT = "$WORKSPACE/"
         const val MEMBERS = "$ROOT/members"
         const val CHECK_WORKSPACE = "$WORKSPACE/search/"
-        const val APPLICATION = "${WORKSPACE}/join"
+        const val APPLICATION = "$WORKSPACE/join"
     }
 
     object Notice {

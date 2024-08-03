@@ -23,11 +23,7 @@ class JoinSuccessViewModel @Inject constructor(
 
     private val _joinSuccessSideEffect = Channel<JoinSuccessSideEffect>()
     val joinSuccessSideEffect = _joinSuccessSideEffect.receiveAsFlow()
-    fun workspaceApplication(
-        role: String,
-        workspaceId: String,
-        workspaceCode: String
-    ) {
+    fun workspaceApplication(role: String, workspaceId: String, workspaceCode: String) {
         viewModelScope.launch(dispatcher) {
             workspaceRepository.workspaceApplication(
                 workspaceId = workspaceId,

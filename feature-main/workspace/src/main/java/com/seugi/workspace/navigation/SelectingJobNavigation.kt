@@ -15,7 +15,7 @@ fun NavController.navigateToSelectingJob(navOptions: NavOptions? = null) = navig
 
 fun NavGraphBuilder.selectingJob(navigateToSelectingRole: (role: String) -> Unit, popBackStack: () -> Unit) {
     composable(
-        route = SELECTING_JOB
+        route = SELECTING_JOB,
     ) {
         SelectingJobScreen(
             navigateToSelectingRole = navigateToSelectingRole,

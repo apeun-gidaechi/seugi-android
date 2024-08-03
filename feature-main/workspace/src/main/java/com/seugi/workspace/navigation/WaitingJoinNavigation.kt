@@ -13,10 +13,11 @@ fun NavController.navigateToWaitingJoin(navOptions: NavOptions? = null) = naviga
     navOptions,
 )
 
-fun NavGraphBuilder.waitingJoin(joinToHome:() -> Unit, popBackStack: () -> Unit) {
+fun NavGraphBuilder.waitingJoin(joinToHome: () -> Unit, popBackStack: () -> Unit) {
     composable(route = WAITING_JOIN) {
         WaitingJoinScreen(
             joinToHome = joinToHome,
-            popBackStack = popBackStack)
+            popBackStack = popBackStack,
+        )
     }
 }

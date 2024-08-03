@@ -19,7 +19,7 @@ fun NavController.navigateToJoinSuccess(
     workspaceImageUrl: String,
     studentCount: Int,
     teacherCount: Int,
-    role: String
+    role: String,
 ) {
     val encodedWorkspaceImageUrl = Uri.encode(workspaceImageUrl)
     navigate(

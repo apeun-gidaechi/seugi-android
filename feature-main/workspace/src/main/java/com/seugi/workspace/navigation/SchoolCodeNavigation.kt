@@ -23,7 +23,7 @@ fun NavGraphBuilder.schoolCode(
         workspaceImageUrl: String,
         studentCount: Int,
         teacherCount: Int,
-        role: String
+        role: String,
     ) -> Unit,
     popBackStack: () -> Unit,
 ) {
@@ -31,11 +31,12 @@ fun NavGraphBuilder.schoolCode(
         route = "$SCHOOL_CODE/{role}",
         arguments = listOf(
             navArgument("role") { NavType.StringType },
-        )) {
+        ),
+    ) {
         SchoolScreen(
             navigateToJoinSuccess = navigateToJoinSuccess,
             popBackStack = popBackStack,
-            role = it.arguments?.getString("role") ?: ""
+            role = it.arguments?.getString("role") ?: "",
         )
     }
 }

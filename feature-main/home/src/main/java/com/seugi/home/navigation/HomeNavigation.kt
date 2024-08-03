@@ -23,7 +23,7 @@ fun NavGraphBuilder.homeScreen(navigateToChatSeugi: () -> Unit, navigateToJoinWo
         HomeScreen(
             navigateToChatSeugi = navigateToChatSeugi,
             navigateToJoinWorkspace = navigateToJoinWorkspace,
-            onNavigationVisibleChange = onNavigationVisibleChange
+            onNavigationVisibleChange = onNavigationVisibleChange,
         )
     }
 }
