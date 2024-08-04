@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.common)
     implementation(projects.network.core)
     implementation(projects.stompClient)
+    implementation(projects.data.token)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.rx)
 }

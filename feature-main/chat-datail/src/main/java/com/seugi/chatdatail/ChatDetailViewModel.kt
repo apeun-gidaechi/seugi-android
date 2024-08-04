@@ -1,5 +1,6 @@
 package com.seugi.chatdatail
 
+import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,8 +17,10 @@ import com.seugi.data.message.model.isSub
 import com.seugi.data.message.model.message.MessageLoadModel
 import com.seugi.data.message.model.message.MessageMessageModel
 import com.seugi.data.message.model.message.MessageUserModel
+import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
 import com.seugi.data.message.model.sub.MessageSubModel
 import com.seugi.data.profile.ProfileRepository
+import com.seugi.data.token.TokenRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Duration
 import java.time.LocalDateTime
@@ -41,6 +44,7 @@ import kotlinx.coroutines.launch
 class ChatDetailViewModel @Inject constructor(
     private val messageRepository: MessageRepository,
     private val profileRepository: ProfileRepository,
+    private val tokenRepository: TokenRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ChatDetailUiState())
@@ -50,6 +54,7 @@ class ChatDetailViewModel @Inject constructor(
     val sideEffect = _sideEffect.receiveAsFlow()
 
     private var subscribeChat: Job? = null
+    private var subscribeLifecycle: Job? = null
 
     fun loadInfo(chatRoomId: String, isPersonal: Boolean, workspaceId: String) = viewModelScope.launch(Dispatchers.IO) {
         _state.value = _state.value.copy(
@@ -126,6 +131,41 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
+    fun collectStompLifecycle() {
+        viewModelScope.launch {
+            val job = viewModelScope.async {
+                messageRepository.collectStompLifecycle().collect {
+                    when (it) {
+                        is Result.Success -> {
+                            when (it.data) {
+                                is MessageStompLifecycleModel.Error -> {
+                                    tokenRepository.newToken().collect {
+                                        when (it) {
+                                            is Result.Success -> {
+                                                messageRepository.getMessage(state.value.roomInfo?.id ?: "665d9ec15e65717b19a62701", 0, PAGE_SIZE).collect {
+                                                    it.collectMessage()
+                                                }
+                                                channelReconnect()
+                                            }
+                                            else -> {}
+                                        }
+                                    }
+                                }
+                                else -> {}
+                            }
+                        }
+                        is Result.Loading -> {}
+                        is Result.Error -> {
+                            it.throwable.printStackTrace()
+                        }
+                    }
+                }
+            }
+            subscribeLifecycle = job
+            job.await()
+        }
+    }
+
     fun channelSend(content: String) {
         viewModelScope.launch {
             val e = messageRepository.sendMessage(state.value.roomInfo?.id ?: "", content)
@@ -136,7 +176,7 @@ class ChatDetailViewModel @Inject constructor(
     fun channelReconnect() {
         viewModelScope.launch {
             subscribeChat?.cancel()
-            subscribeChat = viewModelScope.async {
+            val job = viewModelScope.async {
                 messageRepository.reSubscribeRoom(
                     chatRoomId = state.value.roomInfo?.id ?: "",
                 ).collect {
@@ -205,13 +245,16 @@ class ChatDetailViewModel @Inject constructor(
                     }
                 }
             }
-            (subscribeChat as Deferred<*>).await()
+            subscribeChat = job
+            job.await()
             Log.d("TAG", "testReconnect: ")
             channelReconnect()
         }
     }
 
     fun subscribeCancel() {
+        subscribeLifecycle?.cancel()
+        subscribeLifecycle = null
         subscribeChat?.cancel()
         subscribeChat = null
     }
@@ -273,12 +316,15 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun Result<MessageLoadModel>.collectMessage() {
+    private fun Result<MessageLoadModel>.collectMessage() =
         viewModelScope.launch(Dispatchers.IO) {
             when (this@collectMessage) {
                 is Result.Success -> {
                     val chatData = _state.value.message.toMutableList()
-                    val data = this@collectMessage.data.messages
+                    val filterList = chatData.map { it.id }
+                    val data = this@collectMessage.data.messages.filter { it.id !in filterList }
+
+
                     data.forEachIndexed { index, item ->
                         val formerItem = data.getOrNull(index + 1)
                         val nextItem = data.getOrNull(index - 1)
@@ -331,7 +377,6 @@ class ChatDetailViewModel @Inject constructor(
                 }
             }
         }
-    }
 
     companion object {
         const val PAGE_SIZE = 20

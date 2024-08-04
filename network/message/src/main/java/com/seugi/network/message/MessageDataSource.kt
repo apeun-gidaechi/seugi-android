@@ -5,6 +5,7 @@ import com.seugi.network.message.response.MessageTypeResponse
 import com.seugi.network.message.response.message.MessageLoadResponse
 import com.seugi.network.message.response.room.MessageRoomMemberResponse
 import com.seugi.network.message.response.room.MessageRoomResponse
+import com.seugi.network.message.response.stomp.MessageStompLifecycleResponse
 import kotlinx.coroutines.flow.Flow
 
 interface MessageDataSource {
@@ -14,7 +15,7 @@ interface MessageDataSource {
 
     suspend fun connectStomp(accessToken: String)
 
-    suspend fun reConnectStomp(accessToken: String)
+    suspend fun reConnectStomp(accessToken: String, refreshToken: String)
 
     suspend fun getIsConnect(): Boolean
 
@@ -27,4 +28,6 @@ interface MessageDataSource {
     suspend fun leftRoom(chatRoomId: String): BaseResponse<Unit?>
 
     suspend fun testGetToken(): String
+
+    suspend fun collectStompLifecycle(): Flow<MessageStompLifecycleResponse>
 }

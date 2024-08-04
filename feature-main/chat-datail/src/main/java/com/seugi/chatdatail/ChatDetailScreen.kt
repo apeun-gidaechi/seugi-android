@@ -176,6 +176,8 @@ internal fun ChatDetailScreen(
 
     LifecycleResumeEffect(key1 = Unit) {
         onNavigationVisibleChange(false)
+
+        viewModel.collectStompLifecycle()
         viewModel.channelReconnect()
         onPauseOrDispose {
             viewModel.subscribeCancel()

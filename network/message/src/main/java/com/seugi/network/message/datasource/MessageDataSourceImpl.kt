@@ -3,6 +3,7 @@ package com.seugi.network.message.datasource
 import android.util.Log
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
+import com.seugi.data.token.TokenRepository
 import com.seugi.network.core.SeugiUrl
 import com.seugi.network.core.Test
 import com.seugi.network.core.response.BaseResponse
@@ -18,6 +19,7 @@ import com.seugi.network.message.response.message.MessageLoadResponse
 import com.seugi.network.message.response.message.MessageMessageResponse
 import com.seugi.network.message.response.room.MessageRoomMemberResponse
 import com.seugi.network.message.response.room.MessageRoomResponse
+import com.seugi.network.message.response.stomp.MessageStompLifecycleResponse
 import com.seugi.network.message.response.sub.MessageSubResponse
 import com.seugi.stompclient.StompClient
 import com.seugi.stompclient.dto.LifecycleEvent
@@ -29,6 +31,8 @@ import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -40,17 +44,18 @@ class MessageDataSourceImpl @Inject constructor(
     private val httpClient: HttpClient,
 ) : MessageDataSource {
 
+
     override suspend fun connectStomp(accessToken: String) {
         val header = listOf(StompHeader("Authorization", accessToken))
         stompClient.connect(header)
     }
 
-    override suspend fun reConnectStomp(accessToken: String) {
-        stompClient.disconnectCompletable().subscribe {
-            Log.d("TAG", "reConnectStomp: 시작")
-        }
-        this.connectStomp(accessToken)
-        Log.d("TAG", "reConnectStomp: 끛")
+    override suspend fun reConnectStomp(
+        accessToken: String,
+        refreshToken: String
+    ): Unit = coroutineScope {
+        stompClient.disconnectCompletable().subscribe { }
+        connectStomp(accessToken)
     }
 
     override suspend fun getIsConnect(): Boolean = stompClient.isConnected
@@ -68,6 +73,24 @@ class MessageDataSourceImpl @Inject constructor(
     override suspend fun leftRoom(chatRoomId: String): BaseResponse<Unit?> = httpClient.patch("${SeugiUrl.Chat.LEFT}/$chatRoomId").body()
 
     override suspend fun testGetToken(): String = Test.TEST_TOKEN
+    override suspend fun collectStompLifecycle(): Flow<MessageStompLifecycleResponse> = flow {
+        stompClient.lifecycle().asFlow().collect {
+            when (it.type) {
+                LifecycleEvent.Type.OPENED -> {
+                    emit(MessageStompLifecycleResponse.Open)
+                }
+                LifecycleEvent.Type.ERROR -> {
+                    emit(MessageStompLifecycleResponse.Error(it.exception.message?: ""))
+                }
+                LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> {
+                    emit(MessageStompLifecycleResponse.FailedServerHeartbeat)
+                }
+                LifecycleEvent.Type.CLOSED -> {
+                    emit(MessageStompLifecycleResponse.Closed)
+                }
+            }
+        }
+    }
 
     override suspend fun subscribeRoom(chatRoomId: String): Flow<MessageTypeResponse> = flow {
         stompClient.topic(SeugiUrl.Message.SUBSCRIPTION + chatRoomId)

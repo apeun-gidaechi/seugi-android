@@ -9,6 +9,9 @@ import com.seugi.data.message.mapper.toModel
 import com.seugi.data.message.model.MessageTypeModel
 import com.seugi.data.message.model.message.MessageLoadModel
 import com.seugi.data.message.model.room.MessageRoomModel
+import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
+import com.seugi.local.room.dao.TokenDao
+import com.seugi.local.room.model.TokenEntity
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.message.MessageDataSource
 import javax.inject.Inject
@@ -21,6 +24,7 @@ import kotlinx.coroutines.flow.map
 
 class MessageRepositoryImpl @Inject constructor(
     private val datasource: MessageDataSource,
+    private val tokenDao: TokenDao,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : MessageRepository {
     override suspend fun sendMessage(chatRoomId: String, message: String): Result<Boolean> {
@@ -34,7 +38,10 @@ class MessageRepositoryImpl @Inject constructor(
 
     override suspend fun subscribeRoom(chatRoomId: String): Flow<Result<MessageTypeModel>> {
         if (!datasource.getIsConnect()) {
-            datasource.connectStomp(datasource.testGetToken())
+            val token = tokenDao.getToken()
+            datasource.connectStomp(
+                token?.token?: "",
+            )
         }
         return datasource.subscribeRoom(chatRoomId)
             .flowOn(dispatcher)
@@ -45,7 +52,11 @@ class MessageRepositoryImpl @Inject constructor(
     }
 
     override suspend fun reSubscribeRoom(chatRoomId: String): Flow<Result<MessageTypeModel>> {
-        datasource.reConnectStomp(datasource.testGetToken())
+        val token = tokenDao.getToken()
+        datasource.reConnectStomp(
+            token?.token?: "",
+            token?.refreshToken?: ""
+        )
         delay(200)
         return datasource.subscribeRoom(chatRoomId)
             .flowOn(dispatcher)
@@ -82,4 +93,10 @@ class MessageRepositoryImpl @Inject constructor(
             .flowOn(dispatcher)
             .asResult()
     }
+
+    override suspend fun collectStompLifecycle(): Flow<Result<MessageStompLifecycleModel>> =
+        datasource.collectStompLifecycle()
+            .map { it.toModel() }
+            .flowOn(dispatcher)
+            .asResult()
 }
