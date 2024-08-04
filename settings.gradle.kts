@@ -1,5 +1,8 @@
 import java.net.URI
 
+include(":network:token")
+
+
 include(":stomp-client")
 
 
