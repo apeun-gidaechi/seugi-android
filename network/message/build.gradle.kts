@@ -10,7 +10,7 @@ android {
 dependencies {
     implementation(projects.common)
     implementation(projects.network.core)
-    implementation(libs.stomp.android)
+    implementation(projects.stompClient)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.rx)
 }

@@ -19,6 +19,10 @@ import com.seugi.network.message.response.message.MessageMessageResponse
 import com.seugi.network.message.response.room.MessageRoomMemberResponse
 import com.seugi.network.message.response.room.MessageRoomResponse
 import com.seugi.network.message.response.sub.MessageSubResponse
+import com.seugi.stompclient.StompClient
+import com.seugi.stompclient.dto.LifecycleEvent
+import com.seugi.stompclient.dto.StompHeader
+import com.seugi.stompclient.dto.StompMessage
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -29,9 +33,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.reactive.asFlow
-import ua.naiksoftware.stomp.StompClient
-import ua.naiksoftware.stomp.dto.StompHeader
-import ua.naiksoftware.stomp.dto.StompMessage
 
 class MessageDataSourceImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,

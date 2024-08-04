@@ -39,5 +39,5 @@ dependencies {
     implementation(libs.okhttp3.logging.interceptor)
     implementation(projects.data.token)
 
-    implementation(libs.stomp.android)
+    implementation(projects.stompClient)
 }

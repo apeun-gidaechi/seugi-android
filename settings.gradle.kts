@@ -1,5 +1,8 @@
 import java.net.URI
 
+include(":stomp-client")
+
+
 include(":feature-main:workspace")
 
 
