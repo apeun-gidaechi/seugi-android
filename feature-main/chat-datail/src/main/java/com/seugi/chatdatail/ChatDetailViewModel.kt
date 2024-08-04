@@ -321,10 +321,15 @@ class ChatDetailViewModel @Inject constructor(
             when (this@collectMessage) {
                 is Result.Success -> {
                     val chatData = _state.value.message.toMutableList()
+                    // 기존 채팅과, 새로운 채팅간 중복 문제 해결 로직
                     val filterList = chatData.map { it.id }
                     val data = this@collectMessage.data.messages.filter { it.id !in filterList }
 
-
+                    // 기존 채팅의 마지막 isFirst 변경
+                    if (data.firstOrNull()?.author == chatData.lastOrNull()?.author?.id) {
+                        val changeData = chatData.removeLast()
+                        chatData.add(chatData.lastIndex, changeData.copy(isFirst = false))
+                    }
                     data.forEachIndexed { index, item ->
                         val formerItem = data.getOrNull(index + 1)
                         val nextItem = data.getOrNull(index - 1)
@@ -332,9 +337,21 @@ class ChatDetailViewModel @Inject constructor(
                         val isMe = item.author == state.value.userInfo?.id
                         var isFirst = formerItem == null || item.author != formerItem.author
 
-                        val isLast =
+                        // 새로 불러온 채팅과, 기존 마지막 채팅과 동기화
+                        val isLast = if (index != 0) {
+                            // 기존 로직
                             item.author != nextItem?.author ||
-                                (item.author == formerItem?.author && item.timestamp.isDifferentMin(nextItem.timestamp))
+                                    (item.author == formerItem?.author && item.timestamp.isDifferentMin(
+                                        nextItem.timestamp
+                                    ))
+                        } else {
+                            // 동기화 로직
+                            val chatDataNextItem = chatData.lastOrNull()
+                            item.author != chatDataNextItem?.author?.id ||
+                                    (item.author == formerItem?.author && item.timestamp.isDifferentMin(
+                                        chatDataNextItem.timestamp
+                                    ))
+                        }
 
                         if (formerItem != null && item.timestamp.isDifferentDay(formerItem.timestamp)
                         ) {
