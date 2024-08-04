@@ -51,4 +51,9 @@ object SeugiUrl {
     object Notice {
         const val ROOT = "${BASE_URL}/notice"
     }
+
+    object Member {
+        const val ROOT = "${BASE_URL}/member"
+        const val REFRESH = "${ROOT}/refresh"
+    }
 }

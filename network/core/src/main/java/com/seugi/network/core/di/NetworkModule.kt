@@ -3,10 +3,12 @@ package com.seugi.network.core.di
 import android.util.Log
 import com.seugi.common.exception.UnauthorizedException
 import com.seugi.common.model.Result
-import com.seugi.data.token.TokenRepository
+import com.seugi.local.room.dao.TokenDao
 import com.seugi.network.core.SeugiUrl
 import com.seugi.network.core.utiles.LocalDateTimeTypeAdapter
 import com.seugi.network.core.utiles.removeBearer
+import com.seugi.stompclient.Stomp
+import com.seugi.stompclient.StompClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,8 +34,6 @@ import javax.inject.Singleton
 import kotlinx.coroutines.flow.collectLatest
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import ua.naiksoftware.stomp.Stomp
-import ua.naiksoftware.stomp.StompClient
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -41,7 +41,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHttpClient(tokenRepository: TokenRepository): HttpClient = HttpClient(CIO) {
+    fun provideHttpClient(tokenDao: TokenDao): HttpClient = HttpClient(CIO) {
         install(ContentNegotiation) {
             gson {
                 registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeTypeAdapter())
@@ -66,16 +66,7 @@ object NetworkModule {
             bearer {
                 loadTokens {
                     try {
-                        var accessToken: String = ""
-                        tokenRepository.getToken().collectLatest {
-                            when (it) {
-                                is Result.Success -> {
-                                    accessToken = removeBearer(it.data.accessToken.toString())
-                                }
-                                is Result.Error -> {}
-                                is Result.Loading -> {}
-                            }
-                        }
+                        val accessToken: String = tokenDao.getToken()?.token?: ""
                         BearerTokens(removeBearer(accessToken), "")
                     } catch (e: IndexOutOfBoundsException) {
                         throw UnauthorizedException("${e.message}")
@@ -86,6 +77,7 @@ object NetworkModule {
                         SeugiUrl.Auth.EMAIL_SIGN_UP -> false
                         SeugiUrl.Auth.EMAIL_SIGN_IN -> false
                         SeugiUrl.Auth.GET_CODE -> false
+                        SeugiUrl.Member.REFRESH -> false
                         else -> true
                     }
                 }
