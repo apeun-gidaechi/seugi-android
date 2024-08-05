@@ -27,7 +27,6 @@ interface MessageDataSource {
 
     suspend fun leftRoom(chatRoomId: String): BaseResponse<Unit?>
 
-    suspend fun testGetToken(): String
 
     suspend fun collectStompLifecycle(): Flow<MessageStompLifecycleResponse>
 }

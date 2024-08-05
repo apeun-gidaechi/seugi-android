@@ -1,6 +1,0 @@
-package com.seugi.network.core
-
-object Test {
-    const val TEST_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZW1haWwiOiJsa2gxMDI4NUBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzIyNTc3NTcwLCJleHAiOjE3MjI1ODM1NzB9.LgIyiRMoBrlvuI2dc1r0LDJo29StIvga_j7tR5g9kq0"
-//    const val TEST_TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTcyMjUyOTUxNCwiZXhwIjoxNzIyNTM1NTE0fQ.fnvLFTkQDiJ159q-nrB3XTQJMaL6TBqN7QYOw1QeiCg"
-}

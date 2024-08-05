@@ -1,11 +1,9 @@
 package com.seugi.network.workspace.datasource
 
 import com.seugi.network.core.SeugiUrl
-import com.seugi.network.core.Test
 import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.response.ProfileResponse
 import com.seugi.network.core.response.Response
-import com.seugi.network.core.utiles.addTestHeader
 import com.seugi.network.workspace.WorkspaceDataSource
 import com.seugi.network.workspace.request.WorkspaceApplicationRequest
 import com.seugi.network.workspace.response.CheckWorkspaceResponse
@@ -22,12 +20,10 @@ class WorkspaceDataSourceImpl @Inject constructor(
 ) : WorkspaceDataSource {
     override suspend fun checkSchoolCode(schoolCode: String): BaseResponse<CheckWorkspaceResponse> =
         httpClient.get("${SeugiUrl.Workspace.CHECK_WORKSPACE}$schoolCode") {
-            addTestHeader(Test.TEST_TOKEN)
         }.body()
 
     override suspend fun workspaceApplication(workspaceId: String, workspaceCode: String, role: String): Response =
         httpClient.post("${SeugiUrl.Workspace.APPLICATION}") {
-            addTestHeader(Test.TEST_TOKEN)
             setBody(
                 body = WorkspaceApplicationRequest(
                     workspaceId = workspaceId,
@@ -39,6 +35,5 @@ class WorkspaceDataSourceImpl @Inject constructor(
 
     override suspend fun getMembers(workspaceId: String): BaseResponse<List<ProfileResponse>> = httpClient.get(SeugiUrl.Workspace.MEMBERS) {
         parameter("workspaceId", workspaceId)
-        addTestHeader(Test.TEST_TOKEN)
     }.body()
 }

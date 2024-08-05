@@ -1,13 +1,9 @@
 package com.seugi.network.message.datasource
 
-import android.util.Log
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
-import com.seugi.data.token.TokenRepository
 import com.seugi.network.core.SeugiUrl
-import com.seugi.network.core.Test
 import com.seugi.network.core.response.BaseResponse
-import com.seugi.network.core.utiles.addTestHeader
 import com.seugi.network.core.utiles.toJsonString
 import com.seugi.network.core.utiles.toResponse
 import com.seugi.network.message.MessageDataSource
@@ -31,7 +27,6 @@ import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -72,7 +67,6 @@ class MessageDataSourceImpl @Inject constructor(
 
     override suspend fun leftRoom(chatRoomId: String): BaseResponse<Unit?> = httpClient.patch("${SeugiUrl.Chat.LEFT}/$chatRoomId").body()
 
-    override suspend fun testGetToken(): String = Test.TEST_TOKEN
     override suspend fun collectStompLifecycle(): Flow<MessageStompLifecycleResponse> = flow {
         stompClient.lifecycle().asFlow().collect {
             when (it.type) {
