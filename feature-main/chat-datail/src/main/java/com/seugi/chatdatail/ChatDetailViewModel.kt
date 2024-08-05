@@ -326,7 +326,12 @@ class ChatDetailViewModel @Inject constructor(
                     val data = this@collectMessage.data.messages.filter { it.id !in filterList }
 
                     // 기존 채팅의 마지막 isFirst 변경
-                    if (data.firstOrNull()?.author == chatData.lastOrNull()?.author?.id) {
+                    // 채팅 재 연결시 페이지 0 을 불러오기에, 기존 데이터와 시간 비교
+                    if (
+                        data.firstOrNull() != null &&
+                        data.first().author == chatData.lastOrNull()?.author?.id &&
+                        data.first().timestamp > chatData.last().timestamp
+                    ) {
                         val changeData = chatData.removeLast()
                         chatData.add(chatData.lastIndex, changeData.copy(isFirst = false))
                     }
@@ -338,7 +343,8 @@ class ChatDetailViewModel @Inject constructor(
                         var isFirst = formerItem == null || item.author != formerItem.author
 
                         // 새로 불러온 채팅과, 기존 마지막 채팅과 동기화
-                        val isLast = if (index != 0) {
+                        // 채팅 재 연결시 페이지 0 을 불러오기에, 기존 데이터와 시간 비교
+                        val isLast = if (index != 0 && item.timestamp > chatData.lastOrNull()?.timestamp) {
                             // 기존 로직
                             item.author != nextItem?.author ||
                                     (item.author == formerItem?.author && item.timestamp.isDifferentMin(
@@ -346,8 +352,8 @@ class ChatDetailViewModel @Inject constructor(
                                     ))
                         } else {
                             // 동기화 로직
-                            val chatDataNextItem = chatData.lastOrNull()
-                            item.author != chatDataNextItem?.author?.id ||
+                            val chatDataNextItem = chatData.last()
+                            item.author != chatDataNextItem.author.id ||
                                     (item.author == formerItem?.author && item.timestamp.isDifferentMin(
                                         chatDataNextItem.timestamp
                                     ))
