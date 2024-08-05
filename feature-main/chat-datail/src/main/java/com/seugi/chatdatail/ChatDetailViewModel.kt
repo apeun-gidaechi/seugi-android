@@ -29,7 +29,6 @@ import kotlin.math.abs
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -44,7 +43,7 @@ import kotlinx.coroutines.launch
 class ChatDetailViewModel @Inject constructor(
     private val messageRepository: MessageRepository,
     private val profileRepository: ProfileRepository,
-    private val tokenRepository: TokenRepository
+    private val tokenRepository: TokenRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ChatDetailUiState())
@@ -316,90 +315,93 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun Result<MessageLoadModel>.collectMessage() =
-        viewModelScope.launch(Dispatchers.IO) {
-            when (this@collectMessage) {
-                is Result.Success -> {
-                    val chatData = _state.value.message.toMutableList()
-                    // 기존 채팅과, 새로운 채팅간 중복 문제 해결 로직
-                    val filterList = chatData.map { it.id }
-                    val data = this@collectMessage.data.messages.filter { it.id !in filterList }
+    private fun Result<MessageLoadModel>.collectMessage() = viewModelScope.launch(Dispatchers.IO) {
+        when (this@collectMessage) {
+            is Result.Success -> {
+                val chatData = _state.value.message.toMutableList()
+                // 기존 채팅과, 새로운 채팅간 중복 문제 해결 로직
+                val filterList = chatData.map { it.id }
+                val data = this@collectMessage.data.messages.filter { it.id !in filterList }
 
-                    // 기존 채팅의 마지막 isFirst 변경
+                // 기존 채팅의 마지막 isFirst 변경
+                // 채팅 재 연결시 페이지 0 을 불러오기에, 기존 데이터와 시간 비교
+                if (
+                    data.firstOrNull() != null &&
+                    data.first().author == chatData.lastOrNull()?.author?.id &&
+                    data.first().timestamp > chatData.last().timestamp
+                ) {
+                    val changeData = chatData.removeLast()
+                    chatData.add(chatData.lastIndex, changeData.copy(isFirst = false))
+                }
+                data.forEachIndexed { index, item ->
+                    val formerItem = data.getOrNull(index + 1)
+                    val nextItem = data.getOrNull(index - 1)
+
+                    val isMe = item.author == state.value.userInfo?.id
+                    var isFirst = formerItem == null || item.author != formerItem.author
+
+                    // 새로 불러온 채팅과, 기존 마지막 채팅과 동기화
                     // 채팅 재 연결시 페이지 0 을 불러오기에, 기존 데이터와 시간 비교
-                    if (
-                        data.firstOrNull() != null &&
-                        data.first().author == chatData.lastOrNull()?.author?.id &&
-                        data.first().timestamp > chatData.last().timestamp
-                    ) {
-                        val changeData = chatData.removeLast()
-                        chatData.add(chatData.lastIndex, changeData.copy(isFirst = false))
+                    val isLast = if (index != 0 && item.timestamp > chatData.lastOrNull()?.timestamp) {
+                        // 기존 로직
+                        item.author != nextItem?.author ||
+                            (
+                                item.author == formerItem?.author && item.timestamp.isDifferentMin(
+                                    nextItem.timestamp,
+                                )
+                                )
+                    } else {
+                        // 동기화 로직
+                        val chatDataNextItem = chatData.last()
+                        item.author != chatDataNextItem.author.id ||
+                            (
+                                item.author == formerItem?.author && item.timestamp.isDifferentMin(
+                                    chatDataNextItem.timestamp,
+                                )
+                                )
                     }
-                    data.forEachIndexed { index, item ->
-                        val formerItem = data.getOrNull(index + 1)
-                        val nextItem = data.getOrNull(index - 1)
 
-                        val isMe = item.author == state.value.userInfo?.id
-                        var isFirst = formerItem == null || item.author != formerItem.author
-
-                        // 새로 불러온 채팅과, 기존 마지막 채팅과 동기화
-                        // 채팅 재 연결시 페이지 0 을 불러오기에, 기존 데이터와 시간 비교
-                        val isLast = if (index != 0 && item.timestamp > chatData.lastOrNull()?.timestamp) {
-                            // 기존 로직
-                            item.author != nextItem?.author ||
-                                    (item.author == formerItem?.author && item.timestamp.isDifferentMin(
-                                        nextItem.timestamp
-                                    ))
-                        } else {
-                            // 동기화 로직
-                            val chatDataNextItem = chatData.last()
-                            item.author != chatDataNextItem.author.id ||
-                                    (item.author == formerItem?.author && item.timestamp.isDifferentMin(
-                                        chatDataNextItem.timestamp
-                                    ))
-                        }
-
-                        if (formerItem != null && item.timestamp.isDifferentDay(formerItem.timestamp)
-                        ) {
-                            isFirst = true
-                            chatData.add(
-                                index = 0,
-                                element = ChatDetailMessageState(
-                                    chatRoomId = item.chatRoomId,
-                                    type = ChatDetailChatTypeState.DATE,
-                                    timestamp = LocalDateTime.of(item.timestamp.year, item.timestamp.monthValue, item.timestamp.dayOfMonth, 0, 0),
-                                ),
-                            )
-                        }
+                    if (formerItem != null && item.timestamp.isDifferentDay(formerItem.timestamp)
+                    ) {
+                        isFirst = true
                         chatData.add(
                             index = 0,
-                            element = item.toState(
-                                isFirst = isFirst,
-                                isLast = isLast,
-                                isMe = isMe,
-                                author = _state.value.users.getOrDefault(item.author, MessageUserModel(item.author)),
+                            element = ChatDetailMessageState(
+                                chatRoomId = item.chatRoomId,
+                                type = ChatDetailChatTypeState.DATE,
+                                timestamp = LocalDateTime.of(item.timestamp.year, item.timestamp.monthValue, item.timestamp.dayOfMonth, 0, 0),
                             ),
                         )
                     }
-                    var isLast = state.value.isLastPage
-                    if (data.size < PAGE_SIZE) {
-                        isLast = true
-                    }
-                    _state.value = _state.value.copy(
-                        message = chatData.sortedByDescending {
-                            it.timestamp
-                        }.toImmutableList(),
-                        isInit = true,
-                        isLastPage = isLast,
+                    chatData.add(
+                        index = 0,
+                        element = item.toState(
+                            isFirst = isFirst,
+                            isLast = isLast,
+                            isMe = isMe,
+                            author = _state.value.users.getOrDefault(item.author, MessageUserModel(item.author)),
+                        ),
                     )
                 }
-
-                is Result.Loading -> {}
-                is Result.Error -> {
-                    this@collectMessage.throwable.printStackTrace()
+                var isLast = state.value.isLastPage
+                if (data.size < PAGE_SIZE) {
+                    isLast = true
                 }
+                _state.value = _state.value.copy(
+                    message = chatData.sortedByDescending {
+                        it.timestamp
+                    }.toImmutableList(),
+                    isInit = true,
+                    isLastPage = isLast,
+                )
+            }
+
+            is Result.Loading -> {}
+            is Result.Error -> {
+                this@collectMessage.throwable.printStackTrace()
             }
         }
+    }
 
     companion object {
         const val PAGE_SIZE = 20

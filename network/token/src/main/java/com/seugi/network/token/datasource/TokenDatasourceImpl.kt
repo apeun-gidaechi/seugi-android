@@ -12,11 +12,9 @@ import io.ktor.client.request.parameter
 import javax.inject.Inject
 
 class TokenDatasourceImpl @Inject constructor(
-    private val httpClient: HttpClient
-): TokenDatasource {
-    override suspend fun refreshToken(refreshToken: String): String =
-        httpClient.get(SeugiUrl.Member.ROOT) {
-            parameter("token", removeBearer(refreshToken))
-        }.body<BaseResponse<String>>().safeResponse()
-
+    private val httpClient: HttpClient,
+) : TokenDatasource {
+    override suspend fun refreshToken(refreshToken: String): String = httpClient.get(SeugiUrl.Member.ROOT) {
+        parameter("token", removeBearer(refreshToken))
+    }.body<BaseResponse<String>>().safeResponse()
 }

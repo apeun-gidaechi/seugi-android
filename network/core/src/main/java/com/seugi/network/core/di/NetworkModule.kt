@@ -2,7 +2,6 @@ package com.seugi.network.core.di
 
 import android.util.Log
 import com.seugi.common.exception.UnauthorizedException
-import com.seugi.common.model.Result
 import com.seugi.local.room.dao.TokenDao
 import com.seugi.network.core.SeugiUrl
 import com.seugi.network.core.utiles.LocalDateTimeTypeAdapter
@@ -31,7 +30,6 @@ import io.ktor.serialization.gson.gson
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
-import kotlinx.coroutines.flow.collectLatest
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
@@ -66,7 +64,7 @@ object NetworkModule {
             bearer {
                 loadTokens {
                     try {
-                        val accessToken: String = tokenDao.getToken()?.token?: ""
+                        val accessToken: String = tokenDao.getToken()?.token ?: ""
                         BearerTokens(removeBearer(accessToken), "")
                     } catch (e: IndexOutOfBoundsException) {
                         throw UnauthorizedException("${e.message}")

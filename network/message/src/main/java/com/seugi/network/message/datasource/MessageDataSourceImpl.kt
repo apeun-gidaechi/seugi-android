@@ -39,16 +39,12 @@ class MessageDataSourceImpl @Inject constructor(
     private val httpClient: HttpClient,
 ) : MessageDataSource {
 
-
     override suspend fun connectStomp(accessToken: String) {
         val header = listOf(StompHeader("Authorization", accessToken))
         stompClient.connect(header)
     }
 
-    override suspend fun reConnectStomp(
-        accessToken: String,
-        refreshToken: String
-    ): Unit = coroutineScope {
+    override suspend fun reConnectStomp(accessToken: String, refreshToken: String): Unit = coroutineScope {
         stompClient.disconnectCompletable().subscribe { }
         connectStomp(accessToken)
     }
@@ -74,7 +70,7 @@ class MessageDataSourceImpl @Inject constructor(
                     emit(MessageStompLifecycleResponse.Open)
                 }
                 LifecycleEvent.Type.ERROR -> {
-                    emit(MessageStompLifecycleResponse.Error(it.exception.message?: ""))
+                    emit(MessageStompLifecycleResponse.Error(it.exception.message ?: ""))
                 }
                 LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> {
                     emit(MessageStompLifecycleResponse.FailedServerHeartbeat)

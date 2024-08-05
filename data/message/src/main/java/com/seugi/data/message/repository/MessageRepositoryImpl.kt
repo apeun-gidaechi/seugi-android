@@ -11,7 +11,6 @@ import com.seugi.data.message.model.message.MessageLoadModel
 import com.seugi.data.message.model.room.MessageRoomModel
 import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
 import com.seugi.local.room.dao.TokenDao
-import com.seugi.local.room.model.TokenEntity
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.message.MessageDataSource
 import javax.inject.Inject
@@ -40,7 +39,7 @@ class MessageRepositoryImpl @Inject constructor(
         if (!datasource.getIsConnect()) {
             val token = tokenDao.getToken()
             datasource.connectStomp(
-                token?.token?: "",
+                token?.token ?: "",
             )
         }
         return datasource.subscribeRoom(chatRoomId)
@@ -54,8 +53,8 @@ class MessageRepositoryImpl @Inject constructor(
     override suspend fun reSubscribeRoom(chatRoomId: String): Flow<Result<MessageTypeModel>> {
         val token = tokenDao.getToken()
         datasource.reConnectStomp(
-            token?.token?: "",
-            token?.refreshToken?: ""
+            token?.token ?: "",
+            token?.refreshToken ?: "",
         )
         delay(200)
         return datasource.subscribeRoom(chatRoomId)
@@ -94,9 +93,8 @@ class MessageRepositoryImpl @Inject constructor(
             .asResult()
     }
 
-    override suspend fun collectStompLifecycle(): Flow<Result<MessageStompLifecycleModel>> =
-        datasource.collectStompLifecycle()
-            .map { it.toModel() }
-            .flowOn(dispatcher)
-            .asResult()
+    override suspend fun collectStompLifecycle(): Flow<Result<MessageStompLifecycleModel>> = datasource.collectStompLifecycle()
+        .map { it.toModel() }
+        .flowOn(dispatcher)
+        .asResult()
 }

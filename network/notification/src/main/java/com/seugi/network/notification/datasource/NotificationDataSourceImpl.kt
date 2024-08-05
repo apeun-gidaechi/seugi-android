@@ -12,6 +12,5 @@ import javax.inject.Inject
 class NotificationDataSourceImpl @Inject constructor(
     private val httpClient: HttpClient,
 ) : NotificationDataSource {
-    override suspend fun getNotices(workspaceId: String): BaseResponse<List<NoticeResponse>> =
-        httpClient.get("${SeugiUrl.Notice.ROOT}/$workspaceId").body()
+    override suspend fun getNotices(workspaceId: String): BaseResponse<List<NoticeResponse>> = httpClient.get("${SeugiUrl.Notice.ROOT}/$workspaceId").body()
 }

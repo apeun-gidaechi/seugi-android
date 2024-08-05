@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.flowOn
 class TokenRepositoryImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
     private val tokenDao: TokenDao,
-    private val tokenDatasource: TokenDatasource
+    private val tokenDatasource: TokenDatasource,
 ) : TokenRepository {
     override suspend fun insertToken(accessToken: String, refreshToken: String) {
         tokenDao.insert(
@@ -44,7 +44,7 @@ class TokenRepositoryImpl @Inject constructor(
             tokenDao.getToken()?.apply {
                 val newTokenEntity = TokenEntity(
                     token = tokenDatasource.refreshToken(refreshToken),
-                    refreshToken = refreshToken
+                    refreshToken = refreshToken,
                 )
                 tokenDao.insert(newTokenEntity)
                 emit(newTokenEntity.toModel())
