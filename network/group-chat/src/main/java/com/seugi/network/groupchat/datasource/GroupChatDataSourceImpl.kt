@@ -2,10 +2,8 @@ package com.seugi.network.groupchat.datasource
 
 import com.seugi.data.personalchat.request.GroupChatCreateRequest
 import com.seugi.network.core.SeugiUrl
-import com.seugi.network.core.Test
 import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.response.ChatRoomResponse
-import com.seugi.network.core.utiles.addTestHeader
 import com.seugi.network.groupchat.GroupChatDataSource
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -19,12 +17,10 @@ class GroupChatDataSourceImpl @Inject constructor(
 ) : GroupChatDataSource {
     override suspend fun getGroupRoomList(workspaceId: String): BaseResponse<List<ChatRoomResponse>> =
         httpClient.get("${SeugiUrl.GroupChat.LOAD_ALL}/$workspaceId") {
-            addTestHeader(Test.TEST_TOKEN)
         }.body()
 
     override suspend fun createChat(workspaceId: String, roomName: String, joinUsers: List<Int>, chatRoomImg: String): BaseResponse<String> =
         httpClient.post(SeugiUrl.GroupChat.CREATE) {
-            addTestHeader(Test.TEST_TOKEN)
             setBody(
                 GroupChatCreateRequest(
                     workspaceId = workspaceId,

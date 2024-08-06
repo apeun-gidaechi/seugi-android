@@ -16,4 +16,5 @@ dependencies {
     implementation(projects.network.core)
     implementation(projects.network.message)
     implementation(projects.common)
+    implementation(projects.local.room)
 }

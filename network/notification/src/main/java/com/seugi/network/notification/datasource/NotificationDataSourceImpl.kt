@@ -1,9 +1,7 @@
 package com.seugi.network.notification.datasource
 
 import com.seugi.network.core.SeugiUrl
-import com.seugi.network.core.Test
 import com.seugi.network.core.response.BaseResponse
-import com.seugi.network.core.utiles.addTestHeader
 import com.seugi.network.notification.NotificationDataSource
 import com.seugi.network.notification.response.NoticeResponse
 import io.ktor.client.HttpClient
@@ -14,7 +12,5 @@ import javax.inject.Inject
 class NotificationDataSourceImpl @Inject constructor(
     private val httpClient: HttpClient,
 ) : NotificationDataSource {
-    override suspend fun getNotices(workspaceId: String): BaseResponse<List<NoticeResponse>> = httpClient.get("${SeugiUrl.Notice.ROOT}/$workspaceId") {
-        addTestHeader(Test.TEST_TOKEN)
-    }.body()
+    override suspend fun getNotices(workspaceId: String): BaseResponse<List<NoticeResponse>> = httpClient.get("${SeugiUrl.Notice.ROOT}/$workspaceId").body()
 }

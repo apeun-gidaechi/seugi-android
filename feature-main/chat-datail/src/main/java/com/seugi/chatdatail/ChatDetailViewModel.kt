@@ -1,5 +1,6 @@
 package com.seugi.chatdatail
 
+import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,8 +17,10 @@ import com.seugi.data.message.model.isSub
 import com.seugi.data.message.model.message.MessageLoadModel
 import com.seugi.data.message.model.message.MessageMessageModel
 import com.seugi.data.message.model.message.MessageUserModel
+import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
 import com.seugi.data.message.model.sub.MessageSubModel
 import com.seugi.data.profile.ProfileRepository
+import com.seugi.data.token.TokenRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Duration
 import java.time.LocalDateTime
@@ -26,7 +29,6 @@ import kotlin.math.abs
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableMap
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -41,6 +43,7 @@ import kotlinx.coroutines.launch
 class ChatDetailViewModel @Inject constructor(
     private val messageRepository: MessageRepository,
     private val profileRepository: ProfileRepository,
+    private val tokenRepository: TokenRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ChatDetailUiState())
@@ -50,6 +53,7 @@ class ChatDetailViewModel @Inject constructor(
     val sideEffect = _sideEffect.receiveAsFlow()
 
     private var subscribeChat: Job? = null
+    private var subscribeLifecycle: Job? = null
 
     fun loadInfo(chatRoomId: String, isPersonal: Boolean, workspaceId: String) = viewModelScope.launch(Dispatchers.IO) {
         _state.value = _state.value.copy(
@@ -126,6 +130,41 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
+    fun collectStompLifecycle() {
+        viewModelScope.launch {
+            val job = viewModelScope.async {
+                messageRepository.collectStompLifecycle().collect {
+                    when (it) {
+                        is Result.Success -> {
+                            when (it.data) {
+                                is MessageStompLifecycleModel.Error -> {
+                                    tokenRepository.newToken().collect {
+                                        when (it) {
+                                            is Result.Success -> {
+                                                messageRepository.getMessage(state.value.roomInfo?.id ?: "665d9ec15e65717b19a62701", 0, PAGE_SIZE).collect {
+                                                    it.collectMessage()
+                                                }
+                                                channelReconnect()
+                                            }
+                                            else -> {}
+                                        }
+                                    }
+                                }
+                                else -> {}
+                            }
+                        }
+                        is Result.Loading -> {}
+                        is Result.Error -> {
+                            it.throwable.printStackTrace()
+                        }
+                    }
+                }
+            }
+            subscribeLifecycle = job
+            job.await()
+        }
+    }
+
     fun channelSend(content: String) {
         viewModelScope.launch {
             val e = messageRepository.sendMessage(state.value.roomInfo?.id ?: "", content)
@@ -136,7 +175,7 @@ class ChatDetailViewModel @Inject constructor(
     fun channelReconnect() {
         viewModelScope.launch {
             subscribeChat?.cancel()
-            subscribeChat = viewModelScope.async {
+            val job = viewModelScope.async {
                 messageRepository.reSubscribeRoom(
                     chatRoomId = state.value.roomInfo?.id ?: "",
                 ).collect {
@@ -205,13 +244,16 @@ class ChatDetailViewModel @Inject constructor(
                     }
                 }
             }
-            (subscribeChat as Deferred<*>).await()
+            subscribeChat = job
+            job.await()
             Log.d("TAG", "testReconnect: ")
             channelReconnect()
         }
     }
 
     fun subscribeCancel() {
+        subscribeLifecycle?.cancel()
+        subscribeLifecycle = null
         subscribeChat?.cancel()
         subscribeChat = null
     }
@@ -273,62 +315,90 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun Result<MessageLoadModel>.collectMessage() {
-        viewModelScope.launch(Dispatchers.IO) {
-            when (this@collectMessage) {
-                is Result.Success -> {
-                    val chatData = _state.value.message.toMutableList()
-                    val data = this@collectMessage.data.messages
-                    data.forEachIndexed { index, item ->
-                        val formerItem = data.getOrNull(index + 1)
-                        val nextItem = data.getOrNull(index - 1)
+    private fun Result<MessageLoadModel>.collectMessage() = viewModelScope.launch(Dispatchers.IO) {
+        when (this@collectMessage) {
+            is Result.Success -> {
+                val chatData = _state.value.message.toMutableList()
+                // 기존 채팅과, 새로운 채팅간 중복 문제 해결 로직
+                val filterList = chatData.map { it.id }
+                val data = this@collectMessage.data.messages.filter { it.id !in filterList }
 
-                        val isMe = item.author == state.value.userInfo?.id
-                        var isFirst = formerItem == null || item.author != formerItem.author
+                // 기존 채팅의 마지막 isFirst 변경
+                // 채팅 재 연결시 페이지 0 을 불러오기에, 기존 데이터와 시간 비교
+                if (
+                    data.firstOrNull() != null &&
+                    data.first().author == chatData.lastOrNull()?.author?.id &&
+                    data.first().timestamp > chatData.last().timestamp
+                ) {
+                    val changeData = chatData.removeLast()
+                    chatData.add(chatData.lastIndex, changeData.copy(isFirst = false))
+                }
+                data.forEachIndexed { index, item ->
+                    val formerItem = data.getOrNull(index + 1)
+                    val nextItem = data.getOrNull(index - 1)
 
-                        val isLast =
-                            item.author != nextItem?.author ||
-                                (item.author == formerItem?.author && item.timestamp.isDifferentMin(nextItem.timestamp))
+                    val isMe = item.author == state.value.userInfo?.id
+                    var isFirst = formerItem == null || item.author != formerItem.author
 
-                        if (formerItem != null && item.timestamp.isDifferentDay(formerItem.timestamp)
-                        ) {
-                            isFirst = true
-                            chatData.add(
-                                index = 0,
-                                element = ChatDetailMessageState(
-                                    chatRoomId = item.chatRoomId,
-                                    type = ChatDetailChatTypeState.DATE,
-                                    timestamp = LocalDateTime.of(item.timestamp.year, item.timestamp.monthValue, item.timestamp.dayOfMonth, 0, 0),
-                                ),
-                            )
-                        }
+                    // 새로 불러온 채팅과, 기존 마지막 채팅과 동기화
+                    // 채팅 재 연결시 페이지 0 을 불러오기에, 기존 데이터와 시간 비교
+                    val isLast = if (index != 0 && item.timestamp > chatData.lastOrNull()?.timestamp) {
+                        // 기존 로직
+                        item.author != nextItem?.author ||
+                            (
+                                item.author == formerItem?.author && item.timestamp.isDifferentMin(
+                                    nextItem.timestamp,
+                                )
+                                )
+                    } else {
+                        // 동기화 로직
+                        val chatDataNextItem = chatData.last()
+                        item.author != chatDataNextItem.author.id ||
+                            (
+                                item.author == formerItem?.author && item.timestamp.isDifferentMin(
+                                    chatDataNextItem.timestamp,
+                                )
+                                )
+                    }
+
+                    if (formerItem != null && item.timestamp.isDifferentDay(formerItem.timestamp)
+                    ) {
+                        isFirst = true
                         chatData.add(
                             index = 0,
-                            element = item.toState(
-                                isFirst = isFirst,
-                                isLast = isLast,
-                                isMe = isMe,
-                                author = _state.value.users.getOrDefault(item.author, MessageUserModel(item.author)),
+                            element = ChatDetailMessageState(
+                                chatRoomId = item.chatRoomId,
+                                type = ChatDetailChatTypeState.DATE,
+                                timestamp = LocalDateTime.of(item.timestamp.year, item.timestamp.monthValue, item.timestamp.dayOfMonth, 0, 0),
                             ),
                         )
                     }
-                    var isLast = state.value.isLastPage
-                    if (data.size < PAGE_SIZE) {
-                        isLast = true
-                    }
-                    _state.value = _state.value.copy(
-                        message = chatData.sortedByDescending {
-                            it.timestamp
-                        }.toImmutableList(),
-                        isInit = true,
-                        isLastPage = isLast,
+                    chatData.add(
+                        index = 0,
+                        element = item.toState(
+                            isFirst = isFirst,
+                            isLast = isLast,
+                            isMe = isMe,
+                            author = _state.value.users.getOrDefault(item.author, MessageUserModel(item.author)),
+                        ),
                     )
                 }
-
-                is Result.Loading -> {}
-                is Result.Error -> {
-                    this@collectMessage.throwable.printStackTrace()
+                var isLast = state.value.isLastPage
+                if (data.size < PAGE_SIZE) {
+                    isLast = true
                 }
+                _state.value = _state.value.copy(
+                    message = chatData.sortedByDescending {
+                        it.timestamp
+                    }.toImmutableList(),
+                    isInit = true,
+                    isLastPage = isLast,
+                )
+            }
+
+            is Result.Loading -> {}
+            is Result.Error -> {
+                this@collectMessage.throwable.printStackTrace()
             }
         }
     }

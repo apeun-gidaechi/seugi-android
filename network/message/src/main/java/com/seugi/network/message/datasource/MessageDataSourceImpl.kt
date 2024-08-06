@@ -1,12 +1,9 @@
 package com.seugi.network.message.datasource
 
-import android.util.Log
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.network.core.SeugiUrl
-import com.seugi.network.core.Test
 import com.seugi.network.core.response.BaseResponse
-import com.seugi.network.core.utiles.addTestHeader
 import com.seugi.network.core.utiles.toJsonString
 import com.seugi.network.core.utiles.toResponse
 import com.seugi.network.message.MessageDataSource
@@ -18,20 +15,23 @@ import com.seugi.network.message.response.message.MessageLoadResponse
 import com.seugi.network.message.response.message.MessageMessageResponse
 import com.seugi.network.message.response.room.MessageRoomMemberResponse
 import com.seugi.network.message.response.room.MessageRoomResponse
+import com.seugi.network.message.response.stomp.MessageStompLifecycleResponse
 import com.seugi.network.message.response.sub.MessageSubResponse
+import com.seugi.stompclient.StompClient
+import com.seugi.stompclient.dto.LifecycleEvent
+import com.seugi.stompclient.dto.StompHeader
+import com.seugi.stompclient.dto.StompMessage
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.patch
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.reactive.asFlow
-import ua.naiksoftware.stomp.StompClient
-import ua.naiksoftware.stomp.dto.StompHeader
-import ua.naiksoftware.stomp.dto.StompMessage
 
 class MessageDataSourceImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
@@ -44,37 +44,43 @@ class MessageDataSourceImpl @Inject constructor(
         stompClient.connect(header)
     }
 
-    override suspend fun reConnectStomp(accessToken: String) {
-        stompClient.disconnectCompletable().subscribe {
-            Log.d("TAG", "reConnectStomp: 시작")
-        }
-        this.connectStomp(accessToken)
-        Log.d("TAG", "reConnectStomp: 끛")
+    override suspend fun reConnectStomp(accessToken: String, refreshToken: String): Unit = coroutineScope {
+        stompClient.disconnectCompletable().subscribe { }
+        connectStomp(accessToken)
     }
 
     override suspend fun getIsConnect(): Boolean = stompClient.isConnected
 
     override suspend fun getMessage(chatRoomId: String, page: Int, size: Int): BaseResponse<MessageLoadResponse> =
-        httpClient.get("${SeugiUrl.Message.GET_MESSAGE}/$chatRoomId?page=$page&size=$size") {
-            addTestHeader(Test.TEST_TOKEN)
-        }.body<BaseResponse<MessageLoadResponse>>()
+        httpClient.get("${SeugiUrl.Message.GET_MESSAGE}/$chatRoomId?page=$page&size=$size").body<BaseResponse<MessageLoadResponse>>()
 
     override suspend fun loadRoomInfo(isPersonal: Boolean, roomId: String): BaseResponse<MessageRoomResponse> {
         val url = "${SeugiUrl.Chat.ROOT}/${if (isPersonal) "personal" else "group"}/search/room/$roomId"
-        return httpClient.get(url) {
-            addTestHeader(Test.TEST_TOKEN)
-        }.body()
+        return httpClient.get(url).body()
     }
 
-    override suspend fun loadRoomMember(roomId: String): BaseResponse<MessageRoomMemberResponse> = httpClient.get("${SeugiUrl.Chat.LOAD_MEMBER}/$roomId") {
-        addTestHeader(Test.TEST_TOKEN)
-    }.body()
+    override suspend fun loadRoomMember(roomId: String): BaseResponse<MessageRoomMemberResponse> = httpClient.get("${SeugiUrl.Chat.LOAD_MEMBER}/$roomId").body()
 
-    override suspend fun leftRoom(chatRoomId: String): BaseResponse<Unit?> = httpClient.patch("${SeugiUrl.Chat.LEFT}/$chatRoomId") {
-        addTestHeader(Test.TEST_TOKEN)
-    }.body()
+    override suspend fun leftRoom(chatRoomId: String): BaseResponse<Unit?> = httpClient.patch("${SeugiUrl.Chat.LEFT}/$chatRoomId").body()
 
-    override suspend fun testGetToken(): String = Test.TEST_TOKEN
+    override suspend fun collectStompLifecycle(): Flow<MessageStompLifecycleResponse> = flow {
+        stompClient.lifecycle().asFlow().collect {
+            when (it.type) {
+                LifecycleEvent.Type.OPENED -> {
+                    emit(MessageStompLifecycleResponse.Open)
+                }
+                LifecycleEvent.Type.ERROR -> {
+                    emit(MessageStompLifecycleResponse.Error(it.exception.message ?: ""))
+                }
+                LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> {
+                    emit(MessageStompLifecycleResponse.FailedServerHeartbeat)
+                }
+                LifecycleEvent.Type.CLOSED -> {
+                    emit(MessageStompLifecycleResponse.Closed)
+                }
+            }
+        }
+    }
 
     override suspend fun subscribeRoom(chatRoomId: String): Flow<MessageTypeResponse> = flow {
         stompClient.topic(SeugiUrl.Message.SUBSCRIPTION + chatRoomId)
@@ -112,7 +118,7 @@ class MessageDataSourceImpl @Inject constructor(
         ).toJsonString()
 
         val sendContent = StompMessage("SEND", listOf(StompHeader(StompHeader.DESTINATION, "/pub/chat.message")), body)
-        stompClient.send(sendContent).subscribe {}
+        val result = stompClient.send(sendContent).subscribe {}
         return true
     }
 }

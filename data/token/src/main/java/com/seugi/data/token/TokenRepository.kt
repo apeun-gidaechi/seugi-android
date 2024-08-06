@@ -8,4 +8,6 @@ interface TokenRepository {
     suspend fun insertToken(accessToken: String, refreshToken: String)
 
     suspend fun getToken(): Flow<Result<TokenModel>>
+
+    suspend fun newToken(): Flow<Result<TokenModel>>
 }

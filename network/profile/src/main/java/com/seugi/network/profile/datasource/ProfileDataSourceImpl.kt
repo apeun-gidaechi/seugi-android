@@ -1,10 +1,8 @@
 package com.seugi.network.profile.datasource
 
 import com.seugi.network.core.SeugiUrl
-import com.seugi.network.core.Test
 import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.response.ProfileResponse
-import com.seugi.network.core.utiles.addTestHeader
 import com.seugi.network.profile.ProfileDataSource
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -17,6 +15,5 @@ class ProfileDataSourceImpl @Inject constructor(
 ) : ProfileDataSource {
     override suspend fun loadUserInfo(workspaceId: String): BaseResponse<ProfileResponse> = httpClient.get(SeugiUrl.Profile.ME) {
         parameter("workspaceId", workspaceId)
-        addTestHeader(Test.TEST_TOKEN)
     }.body()
 }

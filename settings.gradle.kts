@@ -1,5 +1,11 @@
 import java.net.URI
 
+include(":network:token")
+
+
+include(":stomp-client")
+
+
 include(":feature-main:workspace")
 
 
