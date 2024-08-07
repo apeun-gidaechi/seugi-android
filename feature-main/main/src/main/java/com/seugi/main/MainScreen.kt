@@ -56,7 +56,7 @@ private const val NAVIGATION_ANIM = 400
 @Composable
 internal fun MainScreen(
     viewModel: MainViewModel = hiltViewModel(),
-    navHostController : NavHostController = rememberNavController (),
+    navHostController: NavHostController = rememberNavController(),
     mainToOnboarding: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -181,7 +181,7 @@ internal fun MainScreen(
             )
 
             profileScreen(
-                workspaceId = state.workspaceId
+                workspaceId = state.workspaceId,
             )
 
             notificationScreen()

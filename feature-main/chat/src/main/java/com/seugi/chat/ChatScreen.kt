@@ -39,11 +39,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
-internal fun ChatScreen(
-    viewModel: ChatViewModel = hiltViewModel(),
-    workspaceId: String,
-    navigateToChatDetail: (chatID: String) -> Unit
-) {
+internal fun ChatScreen(viewModel: ChatViewModel = hiltViewModel(), workspaceId: String, navigateToChatDetail: (chatID: String) -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
     var searchText by remember { mutableStateOf("") }
@@ -64,7 +60,7 @@ internal fun ChatScreen(
 
     LaunchedEffect(key1 = true) {
         viewModel.loadChats(
-            workspaceId = workspaceId
+            workspaceId = workspaceId,
         )
     }
 

@@ -13,7 +13,7 @@ fun NavController.navigateToProfile(navOptions: NavOptions?) = navigate(PROFILE_
 fun NavGraphBuilder.profileScreen(workspaceId: String) {
     composable(PROFILE_ROUTE) {
         ProfileScreen(
-            workspaceId = workspaceId
+            workspaceId = workspaceId,
         )
     }
 }

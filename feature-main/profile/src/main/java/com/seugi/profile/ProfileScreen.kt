@@ -70,7 +70,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
 
     LaunchedEffect(key1 = true) {
         viewModel.load(
-            workspaceId = workspaceId
+            workspaceId = workspaceId,
         )
     }
 
