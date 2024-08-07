@@ -14,7 +14,7 @@ import javax.inject.Inject
 class TokenDatasourceImpl @Inject constructor(
     private val httpClient: HttpClient,
 ) : TokenDatasource {
-    override suspend fun refreshToken(refreshToken: String): String = httpClient.get(SeugiUrl.Member.ROOT) {
+    override suspend fun refreshToken(refreshToken: String): String = httpClient.get(SeugiUrl.Member.REFRESH) {
         parameter("token", removeBearer(refreshToken))
     }.body<BaseResponse<String>>().safeResponse()
 }
