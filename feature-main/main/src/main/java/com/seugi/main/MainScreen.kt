@@ -143,6 +143,7 @@ internal fun MainScreen(
                 },
             )
             chatDetailScreen(
+                userId = state.userId,
                 onNavigationVisibleChange = onNavigationVisibleChange,
                 popBackStack = {
                     navHostController.popBackStack()

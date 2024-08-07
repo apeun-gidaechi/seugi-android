@@ -55,8 +55,9 @@ class ChatDetailViewModel @Inject constructor(
     private var subscribeChat: Job? = null
     private var subscribeLifecycle: Job? = null
 
-    fun loadInfo(chatRoomId: String, isPersonal: Boolean, workspaceId: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun loadInfo(userId: Int, chatRoomId: String, isPersonal: Boolean, workspaceId: String) = viewModelScope.launch(Dispatchers.IO) {
         _state.value = _state.value.copy(
+            userInfo = MessageUserModel(userId),
             roomInfo = ChatRoomState(
                 chatRoomId,
                 "",
