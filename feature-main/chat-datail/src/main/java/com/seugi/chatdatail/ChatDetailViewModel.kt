@@ -189,7 +189,7 @@ class ChatDetailViewModel @Inject constructor(
                                     val message = _state.value.message.toMutableList()
                                     val formerItem = _state.value.message.firstOrNull()
 
-                                    val isFirst = data.author != formerItem?.author?.id
+                                    var isFirst = data.author != formerItem?.author?.id
                                     val isMe = data.author == _state.value.userInfo?.id
 
                                     if (
@@ -203,6 +203,20 @@ class ChatDetailViewModel @Inject constructor(
                                             ),
                                         )
                                     }
+
+                                    if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)
+                                    ) {
+                                        isFirst = true
+                                        message.add(
+                                            index = 0,
+                                            element = ChatDetailMessageState(
+                                                chatRoomId = data.chatRoomId,
+                                                type = ChatDetailChatTypeState.DATE,
+                                                timestamp = LocalDateTime.of(data.timestamp.year, data.timestamp.monthValue, data.timestamp.dayOfMonth, 0, 0),
+                                            ),
+                                        )
+                                    }
+
                                     message.add(
                                         index = 0,
                                         element = data.toState(
