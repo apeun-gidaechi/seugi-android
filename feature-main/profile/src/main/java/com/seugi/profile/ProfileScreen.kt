@@ -52,7 +52,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel()) {
+internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), workspaceId: String) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var isShowDialog by remember { mutableStateOf(false) }
@@ -69,7 +69,9 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel()) {
     }
 
     LaunchedEffect(key1 = true) {
-        viewModel.load()
+        viewModel.load(
+            workspaceId = workspaceId,
+        )
     }
 
     if (isShowDialog) {

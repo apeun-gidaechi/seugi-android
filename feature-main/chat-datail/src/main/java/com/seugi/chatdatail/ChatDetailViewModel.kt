@@ -55,8 +55,9 @@ class ChatDetailViewModel @Inject constructor(
     private var subscribeChat: Job? = null
     private var subscribeLifecycle: Job? = null
 
-    fun loadInfo(chatRoomId: String, isPersonal: Boolean, workspaceId: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun loadInfo(userId: Int, chatRoomId: String, isPersonal: Boolean, workspaceId: String) = viewModelScope.launch(Dispatchers.IO) {
         _state.value = _state.value.copy(
+            userInfo = MessageUserModel(userId),
             roomInfo = ChatRoomState(
                 chatRoomId,
                 "",
@@ -188,7 +189,7 @@ class ChatDetailViewModel @Inject constructor(
                                     val message = _state.value.message.toMutableList()
                                     val formerItem = _state.value.message.firstOrNull()
 
-                                    val isFirst = data.author != formerItem?.author?.id
+                                    var isFirst = data.author != formerItem?.author?.id
                                     val isMe = data.author == _state.value.userInfo?.id
 
                                     if (
@@ -202,6 +203,20 @@ class ChatDetailViewModel @Inject constructor(
                                             ),
                                         )
                                     }
+
+                                    if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)
+                                    ) {
+                                        isFirst = true
+                                        message.add(
+                                            index = 0,
+                                            element = ChatDetailMessageState(
+                                                chatRoomId = data.chatRoomId,
+                                                type = ChatDetailChatTypeState.DATE,
+                                                timestamp = LocalDateTime.of(data.timestamp.year, data.timestamp.monthValue, data.timestamp.dayOfMonth, 0, 0),
+                                            ),
+                                        )
+                                    }
+
                                     message.add(
                                         index = 0,
                                         element = data.toState(
@@ -342,7 +357,7 @@ class ChatDetailViewModel @Inject constructor(
 
                     // 새로 불러온 채팅과, 기존 마지막 채팅과 동기화
                     // 채팅 재 연결시 페이지 0 을 불러오기에, 기존 데이터와 시간 비교
-                    val isLast = if (index != 0 && item.timestamp > chatData.lastOrNull()?.timestamp) {
+                    val isLast = if (chatData.isEmpty() || (index != 0 && item.timestamp > chatData.lastOrNull()?.timestamp)) {
                         // 기존 로직
                         item.author != nextItem?.author ||
                             (

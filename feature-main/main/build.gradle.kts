@@ -9,6 +9,9 @@ android {
 dependencies {
     implementation(projects.designsystem)
 
+    implementation(projects.common)
+    implementation(projects.data.profile)
+
     implementation(projects.featureMain.chat)
     implementation(projects.featureMain.chatDatail)
     implementation(projects.featureMain.home)

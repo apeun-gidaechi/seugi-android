@@ -20,8 +20,8 @@ class ProfileViewModel @Inject constructor(
     private val _state = MutableStateFlow(ProfileUiState())
     val state = _state.asStateFlow()
 
-    fun load() = viewModelScope.launch {
-        profileRepository.getProfile("664bdd0b9dfce726abd30462").collect { result ->
+    fun load(workspaceId: String) = viewModelScope.launch {
+        profileRepository.getProfile(workspaceId).collect { result ->
             when (result) {
                 is Result.Success -> {
                     _state.update {

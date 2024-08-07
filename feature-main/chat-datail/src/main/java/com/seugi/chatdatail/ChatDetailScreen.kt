@@ -104,6 +104,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun ChatDetailScreen(
     viewModel: ChatDetailViewModel = hiltViewModel(),
+    userId: Int,
     workspace: String = "664bdd0b9dfce726abd30462",
     isPersonal: Boolean = false,
     chatRoomId: String = "665d9ec15e65717b19a62701",
@@ -168,6 +169,7 @@ internal fun ChatDetailScreen(
     LaunchedEffect(key1 = true) {
         onNavigationVisibleChange(false)
         viewModel.loadInfo(
+            userId = userId,
             isPersonal = isPersonal,
             chatRoomId = chatRoomId,
             workspaceId = workspace,

@@ -23,8 +23,8 @@ class ChatViewModel @Inject constructor(
     private val _state = MutableStateFlow(ChatUiState())
     val state = _state.asStateFlow()
 
-    fun loadChats() = viewModelScope.launch(Dispatchers.IO) {
-        personalChatRepository.getAllChat("664bdd0b9dfce726abd30462").collect {
+    fun loadChats(workspaceId: String) = viewModelScope.launch(Dispatchers.IO) {
+        personalChatRepository.getAllChat(workspaceId).collect {
             when (it) {
                 is Result.Success -> {
                     Log.d("TAG", "loadChats: ${it.data}")

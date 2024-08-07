@@ -10,8 +10,10 @@ const val PROFILE_ROUTE = "profile"
 
 fun NavController.navigateToProfile(navOptions: NavOptions?) = navigate(PROFILE_ROUTE, navOptions)
 
-fun NavGraphBuilder.profileScreen() {
+fun NavGraphBuilder.profileScreen(workspaceId: String) {
     composable(PROFILE_ROUTE) {
-        ProfileScreen()
+        ProfileScreen(
+            workspaceId = workspaceId,
+        )
     }
 }

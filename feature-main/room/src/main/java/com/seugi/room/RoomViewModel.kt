@@ -25,8 +25,8 @@ class RoomViewModel @Inject constructor(
     private val _state = MutableStateFlow(RoomUiState())
     val state = _state.asStateFlow()
 
-    fun loadChats() = viewModelScope.launch(dispatcher) {
-        groupChatRepository.getGroupRoomList("664bdd0b9dfce726abd30462").collect {
+    fun loadChats(workspaceId: String) = viewModelScope.launch(dispatcher) {
+        groupChatRepository.getGroupRoomList(workspaceId).collect {
             when (it) {
                 is Result.Success -> {
                     _state.value = _state.value.copy(

@@ -42,6 +42,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun RoomScreen(
     viewModel: RoomViewModel = hiltViewModel(),
+    workspaceId: String,
     navigateToChatDetail: (roomId: String, workspaceId: String) -> Unit,
     navigateToCreateRoom: (workspaceId: String) -> Unit,
 ) {
@@ -64,7 +65,9 @@ internal fun RoomScreen(
     )
 
     LaunchedEffect(key1 = true) {
-        viewModel.loadChats()
+        viewModel.loadChats(
+            workspaceId = workspaceId,
+        )
     }
 
     Scaffold(
@@ -95,7 +98,7 @@ internal fun RoomScreen(
                             resId = R.drawable.ic_add_fill,
                             size = 28.dp,
                             onClick = {
-                                navigateToCreateRoom("664bdd0b9dfce726abd30462")
+                                navigateToCreateRoom(workspaceId)
                             },
                         )
                         Spacer(modifier = Modifier.width(16.dp))
