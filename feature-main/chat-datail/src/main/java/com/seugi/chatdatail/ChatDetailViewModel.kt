@@ -343,7 +343,7 @@ class ChatDetailViewModel @Inject constructor(
 
                     // 새로 불러온 채팅과, 기존 마지막 채팅과 동기화
                     // 채팅 재 연결시 페이지 0 을 불러오기에, 기존 데이터와 시간 비교
-                    val isLast = if (index != 0 && item.timestamp > chatData.lastOrNull()?.timestamp) {
+                    val isLast = if (chatData.isEmpty() || (index != 0 && item.timestamp > chatData.lastOrNull()?.timestamp)) {
                         // 기존 로직
                         item.author != nextItem?.author ||
                             (
