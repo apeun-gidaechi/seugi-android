@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -51,7 +54,12 @@ import com.seugi.workspace.navigation.waitingJoin
 private const val NAVIGATION_ANIM = 400
 
 @Composable
-internal fun MainScreen(navHostController: NavHostController = rememberNavController(), mainToOnboarding: () -> Unit) {
+internal fun MainScreen(
+    viewModel: MainViewModel = hiltViewModel(),
+    navHostController : NavHostController = rememberNavController (),
+    mainToOnboarding: () -> Unit,
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val backstackEntry by navHostController.currentBackStackEntryAsState()
     val selectItemState: BottomNavigationItemType by remember {
         derivedStateOf {
@@ -68,6 +76,10 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
     var navigationVisible by remember { mutableStateOf(true) }
     val onNavigationVisibleChange: (Boolean) -> Unit = {
         navigationVisible = it
+    }
+
+    LaunchedEffect(key1 = true) {
+        viewModel.load()
     }
 
     BackHandler {
@@ -121,10 +133,11 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
             )
 
             chatScreen(
-                navigateToChatDetail = { chatId, workspaceId ->
+                workspaceId = state.workspaceId,
+                navigateToChatDetail = { chatId ->
                     navHostController.navigateToChatDetail(
+                        workspaceId = state.workspaceId,
                         chatRoomId = chatId,
-                        workspace = workspaceId,
                         isPersonal = true,
                     )
                 },
@@ -137,10 +150,11 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
             )
 
             roomScreen(
+                workspaceId = state.workspaceId,
                 navigateToChatDetail = { chatId, workspaceId ->
                     navHostController.navigateToChatDetail(
                         chatRoomId = chatId,
-                        workspace = workspaceId,
+                        workspaceId = workspaceId,
                         isPersonal = false,
                     )
                 },
@@ -159,13 +173,15 @@ internal fun MainScreen(navHostController: NavHostController = rememberNavContro
                 navigateToChatDetail = { chatId, workspaceId, isPersonal ->
                     navHostController.navigateToChatDetail(
                         chatRoomId = chatId,
-                        workspace = workspaceId,
+                        workspaceId = workspaceId,
                         isPersonal = isPersonal,
                     )
                 },
             )
 
-            profileScreen()
+            profileScreen(
+                workspaceId = state.workspaceId
+            )
 
             notificationScreen()
 
