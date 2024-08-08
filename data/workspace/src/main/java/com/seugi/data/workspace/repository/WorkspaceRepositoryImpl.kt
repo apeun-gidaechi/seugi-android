@@ -8,7 +8,9 @@ import com.seugi.data.core.mapper.toModels
 import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.data.workspace.mapper.toModel
+import com.seugi.data.workspace.mapper.toModels
 import com.seugi.data.workspace.model.CheckWorkspaceModel
+import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.workspace.WorkspaceDataSource
 import javax.inject.Inject
@@ -46,6 +48,13 @@ class WorkspaceRepositoryImpl @Inject constructor(
     override suspend fun getMembers(workspaceId: String): Flow<Result<List<ProfileModel>>> = flow {
         val response = workspaceDatasource.getMembers(workspaceId).safeResponse()
 
+        emit(response.toModels())
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun getMyWorkspaces(): Flow<Result<List<WorkspaceModel>>> = flow {
+        val response = workspaceDatasource.getMyWorkspaces().safeResponse()
         emit(response.toModels())
     }
         .flowOn(dispatcher)

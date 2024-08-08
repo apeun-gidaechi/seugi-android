@@ -11,6 +11,7 @@ dependencies {
 
     implementation(projects.common)
     implementation(projects.data.profile)
+    implementation(projects.data.workspace)
 
     implementation(projects.featureMain.chat)
     implementation(projects.featureMain.chatDatail)
@@ -21,5 +22,4 @@ dependencies {
     implementation(projects.featureMain.notification)
     implementation(projects.featureMain.chatSeugi)
     implementation(projects.featureMain.workspace)
-
 }
