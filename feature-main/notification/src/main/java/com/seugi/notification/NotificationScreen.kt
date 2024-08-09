@@ -59,14 +59,17 @@ import kotlinx.collections.immutable.ImmutableList
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-internal fun NotificationScreen(viewModel: NotificationViewModel = hiltViewModel()) {
+internal fun NotificationScreen(
+    viewModel: NotificationViewModel = hiltViewModel(),
+    workspaceId: String
+) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
     val pullRefreshState = rememberPullRefreshState(
         refreshing = state.isRefresh,
         onRefresh = {
             viewModel.enabledRefresh()
-            viewModel.loadNotices("664bdd0b9dfce726abd30462")
+            viewModel.loadNotices(workspaceId)
         },
     )
 
@@ -80,7 +83,7 @@ internal fun NotificationScreen(viewModel: NotificationViewModel = hiltViewModel
     }
 
     LaunchedEffect(key1 = true) {
-        viewModel.loadNotices("664bdd0b9dfce726abd30462")
+        viewModel.loadNotices(workspaceId)
         if (!view.isInEditMode) {
             val window = (view.context as Activity).window
             changeNavigationColor(window, Primary050, false)

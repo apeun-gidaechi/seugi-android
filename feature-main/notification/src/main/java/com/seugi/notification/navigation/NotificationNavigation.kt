@@ -10,8 +10,12 @@ const val NOTIFICATION_ROUTE = "notification"
 
 fun NavController.navigateToNotification(navOptions: NavOptions?) = navigate(NOTIFICATION_ROUTE, navOptions)
 
-fun NavGraphBuilder.notificationScreen() {
+fun NavGraphBuilder.notificationScreen(
+    workspaceId: String
+) {
     composable(NOTIFICATION_ROUTE) {
-        NotificationScreen()
+        NotificationScreen(
+            workspaceId = workspaceId
+        )
     }
 }

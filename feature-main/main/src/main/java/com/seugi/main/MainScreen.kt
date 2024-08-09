@@ -184,7 +184,9 @@ internal fun MainScreen(
                 workspaceId = state.workspaceId,
             )
 
-            notificationScreen()
+            notificationScreen(
+                workspaceId = state.workspaceId
+            )
 
             chatSeugiScreen(
                 onNavigationVisibleChange = onNavigationVisibleChange,
