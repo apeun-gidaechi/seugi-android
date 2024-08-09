@@ -104,6 +104,7 @@ fun SeugiTopBar(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 actions()
+                Spacer(modifier = Modifier.width(16.dp))
             }
         },
         windowInsets = windowInsets,

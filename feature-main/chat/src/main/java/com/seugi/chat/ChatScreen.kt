@@ -95,7 +95,6 @@ internal fun ChatScreen(viewModel: ChatViewModel = hiltViewModel(), workspaceId:
                                 isSearchMode = true
                             },
                         )
-                        Spacer(modifier = Modifier.width(16.dp))
                     }
                 },
                 shadow = true,

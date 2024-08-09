@@ -275,7 +275,6 @@ internal fun ChatDetailScreen(
                                     }
                                 },
                             )
-                            Spacer(modifier = Modifier.width(16.dp))
                         }
                     },
                     backIconCheck = true,

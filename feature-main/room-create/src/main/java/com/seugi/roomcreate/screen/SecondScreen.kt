@@ -69,7 +69,6 @@ fun SecondScreen(placeholder: String, onNameSuccess: (String) -> Unit, popBackSt
                             color = Black,
                         )
                     }
-                    Spacer(modifier = Modifier.width(16.dp))
                 },
                 backIconCheck = true,
                 onNavigationIconClick = popBackStack,
