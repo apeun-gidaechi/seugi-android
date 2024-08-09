@@ -1,12 +1,17 @@
 package com.seugi.notification
 
 import android.app.Activity
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +24,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Surface
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -30,6 +36,9 @@ import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,12 +47,15 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.common.utiles.toTimeString
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
+import com.seugi.designsystem.animation.combinedBounceClick
+import com.seugi.designsystem.component.SeugiImage
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
@@ -72,6 +84,7 @@ internal fun NotificationScreen(
             viewModel.loadNotices(workspaceId)
         },
     )
+    var isShowPopupDialog by remember { mutableStateOf(false) }
 
     LifecycleResumeEffect(Unit) {
         onPauseOrDispose {
@@ -90,7 +103,22 @@ internal fun NotificationScreen(
         }
     }
 
+    if (isShowPopupDialog) {
+        NotificationPopupDialog(
+            onDismissRequest = {
+                isShowPopupDialog = false
+            },
+            onClickEdit = {
+                isShowPopupDialog = false
+            },
+            onClickDeclaration = {
+                isShowPopupDialog = false
+            }
+        )
+    }
+
     Scaffold(
+        modifier = Modifier.background(Primary050),
         topBar = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -102,6 +130,19 @@ internal fun NotificationScreen(
                             text = "알림",
                             style = MaterialTheme.typography.titleLarge,
                             color = Black,
+                        )
+                    },
+                    actions = {
+                        SeugiImage(
+                            modifier = Modifier
+                                .size(28.dp)
+                                .bounceClick(
+                                    onClick = {
+
+                                    }
+                                ),
+                            resId = R.drawable.ic_write_line,
+                            colorFilter = ColorFilter.tint(Black)
                         )
                     },
                     colors = TopAppBarColors(
@@ -128,6 +169,15 @@ internal fun NotificationScreen(
                     .fillMaxSize(),
             ) {
                 Spacer(modifier = Modifier.height(4.dp))
+
+                AnimatedVisibility(
+                    visible = state.notices.isEmpty(),
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    NotificationNotFound()
+                }
+
                 LazyColumn(
                     modifier = Modifier.padding(horizontal = 20.dp),
                 ) {
@@ -140,8 +190,13 @@ internal fun NotificationScreen(
                             emojiList = it.emoji,
                             createdAt = it.creationDate.toTimeString(),
                             onClickAddEmoji = { /*TODO*/ },
-                            onClickDetailInfo = { /*TODO*/ },
+                            onClickDetailInfo = {
+                                isShowPopupDialog = true
+                            },
                             onClickNotification = { /*TODO*/ },
+                            onLongClick = {
+                                isShowPopupDialog = true
+                            }
                         )
                     }
                 }
@@ -156,6 +211,85 @@ internal fun NotificationScreen(
 }
 
 @Composable
+fun NotificationNotFound() {
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier.padding(
+                vertical = 12.dp
+            ),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            SeugiImage(
+                modifier = Modifier.size(64.dp),
+                resId = R.drawable.ic_emoji_mouth
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "알림이 없어요",
+                color = Black,
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
+    }
+}
+
+@Composable
+fun NotificationPopupDialog(
+    onDismissRequest: () -> Unit,
+    onClickEdit: () -> Unit,
+    onClickDeclaration: () -> Unit
+) {
+    Dialog(
+        onDismissRequest = onDismissRequest
+    ) {
+        Surface(
+            color = White,
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(vertical = 8.dp)
+                            .bounceClick(
+                                onClick = onClickEdit
+                            ),
+                        text = "알림 수정",
+                        color = Black,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(vertical = 8.dp)
+                            .bounceClick(
+                                onClick = onClickDeclaration
+                            ),
+                        text = "알림 신고",
+                        color = Black,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
 internal fun NotificationCard(
     modifier: Modifier = Modifier,
     title: String,
@@ -166,103 +300,112 @@ internal fun NotificationCard(
     onClickAddEmoji: () -> Unit,
     onClickDetailInfo: () -> Unit,
     onClickNotification: () -> Unit,
+    onLongClick: () -> Unit
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .dropShadow(DropShadowType.EvBlack1)
-            .background(
-                color = White,
-                shape = RoundedCornerShape(8.dp),
-            )
-            .bounceClick(
-                onClick = onClickNotification,
-            ),
+    Box(
+        modifier = modifier.combinedBounceClick(
+            onClick = onClickNotification,
+            onLongClick = onLongClick
+        )
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp),
+                .fillMaxWidth()
+                .dropShadow(DropShadowType.EvBlack1)
+                .background(
+                    color = White,
+                    shape = RoundedCornerShape(8.dp),
+                ),
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(12.dp),
             ) {
-                Text(
-                    text = "$author · $createdAt",
-                    color = Gray600,
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 1,
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                Image(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .bounceClick(
-                            onClick = onClickDetailInfo,
-                        ),
-                    painter = painterResource(id = R.drawable.ic_detail_vertical_line),
-                    contentDescription = "자세히",
-                    colorFilter = ColorFilter.tint(Gray500),
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = title,
-                color = Black,
-                style = MaterialTheme.typography.titleMedium,
-            )
-            Text(
-                text = description,
-                color = Black,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Image(
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .size(28.dp)
-                        .bounceClick(
-                            onClick = onClickAddEmoji,
-                        ),
-                    painter = painterResource(id = R.drawable.ic_add_emoji),
-                    contentDescription = "이모지 추가하기",
-                    colorFilter = ColorFilter.tint(Gray600),
-                )
-                emojiList.fastForEach {
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Row(
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = "$author · $createdAt",
+                        color = Gray600,
+                        style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 1,
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Image(
                         modifier = Modifier
-                            .background(
-                                color = Gray100,
-                                shape = RoundedCornerShape(8.dp),
-                            )
-                            .border(
-                                width = 1.dp,
-                                color = Gray200,
-                                shape = RoundedCornerShape(8.dp),
+                            .size(24.dp)
+                            .bounceClick(
+                                onClick = onClickDetailInfo,
                             ),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            modifier = Modifier.padding(4.dp),
-                            text = "❤\uFE0F",
-                            color = Black,
-                            style = MaterialTheme.typography.titleMedium,
+                        painter = painterResource(id = R.drawable.ic_detail_vertical_line),
+                        contentDescription = "자세히",
+                        colorFilter = ColorFilter.tint(Gray500),
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = title,
+                    color = Black,
+                    style = MaterialTheme.typography.titleMedium,
+                )
+                Text(
+                    text = description,
+                    color = Black,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                FlowRow(
+                    modifier = Modifier
+                ) {
+                    emojiList.fastForEach {
+                        NotificationEmoji(
+                            emoji = it,
+                            count = 0
                         )
-                        Text(
-                            text = it,
-                            color = Gray600,
-                            style = MaterialTheme.typography.bodyLarge,
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun NotificationEmoji(
+    modifier: Modifier = Modifier,
+    emoji: String,
+    count: Int
+) {
+    Row(
+        modifier = modifier
+            .background(
+                color = Gray100,
+                shape = RoundedCornerShape(8.dp),
+            )
+            .border(
+                width = 1.dp,
+                color = Gray200,
+                shape = RoundedCornerShape(8.dp),
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            modifier = Modifier.padding(
+                vertical = 4.dp
+            ),
+            text = emoji,
+            color = Black,
+            style = MaterialTheme.typography.titleMedium,
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = count.toString(),
+            color = Gray600,
+            style = MaterialTheme.typography.bodyLarge,
+        )
+        Spacer(modifier = Modifier.width(8.dp))
     }
 }
