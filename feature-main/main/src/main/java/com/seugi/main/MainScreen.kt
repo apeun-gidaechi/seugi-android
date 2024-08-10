@@ -185,7 +185,8 @@ internal fun MainScreen(
             )
 
             notificationScreen(
-                workspaceId = state.workspaceId
+                workspaceId = state.workspaceId,
+                userId = state.userId
             )
 
             chatSeugiScreen(

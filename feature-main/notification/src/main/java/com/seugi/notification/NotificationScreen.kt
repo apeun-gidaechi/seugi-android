@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
@@ -66,6 +67,8 @@ import com.seugi.designsystem.theme.Gray500
 import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.Primary050
 import com.seugi.designsystem.theme.White
+import com.seugi.notification.model.NotificationEmojiState
+import com.seugi.notification.model.getEmojiList
 import com.seugi.ui.changeNavigationColor
 import kotlinx.collections.immutable.ImmutableList
 
@@ -73,7 +76,8 @@ import kotlinx.collections.immutable.ImmutableList
 @Composable
 internal fun NotificationScreen(
     viewModel: NotificationViewModel = hiltViewModel(),
-    workspaceId: String
+    workspaceId: String,
+    userId: Int
 ) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -81,9 +85,10 @@ internal fun NotificationScreen(
         refreshing = state.isRefresh,
         onRefresh = {
             viewModel.enabledRefresh()
-            viewModel.loadNotices(workspaceId)
+            viewModel.refreshFirstPage(workspaceId)
         },
     )
+    val lazyListState = rememberLazyListState()
     var isShowPopupDialog by remember { mutableStateOf(false) }
 
     LifecycleResumeEffect(Unit) {
@@ -96,10 +101,15 @@ internal fun NotificationScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        viewModel.loadNotices(workspaceId)
         if (!view.isInEditMode) {
             val window = (view.context as Activity).window
             changeNavigationColor(window, Primary050, false)
+        }
+    }
+
+    LaunchedEffect(key1 = lazyListState.canScrollForward) {
+        if (!lazyListState.canScrollForward) {
+            viewModel.nextPage(workspaceId)
         }
     }
 
@@ -180,6 +190,7 @@ internal fun NotificationScreen(
 
                 LazyColumn(
                     modifier = Modifier.padding(horizontal = 20.dp),
+                    state = lazyListState
                 ) {
                     items(state.notices) {
                         Spacer(modifier = Modifier.height(8.dp))
@@ -187,7 +198,7 @@ internal fun NotificationScreen(
                             title = it.title,
                             description = it.content,
                             author = it.userName,
-                            emojiList = it.emoji,
+                            emojiList = it.getEmojiList(userId),
                             createdAt = it.creationDate.toTimeString(),
                             onClickAddEmoji = { /*TODO*/ },
                             onClickDetailInfo = {
@@ -295,7 +306,7 @@ internal fun NotificationCard(
     title: String,
     description: String,
     author: String,
-    emojiList: ImmutableList<String>,
+    emojiList: ImmutableList<NotificationEmojiState>,
     createdAt: String,
     onClickAddEmoji: () -> Unit,
     onClickDetailInfo: () -> Unit,
@@ -361,8 +372,8 @@ internal fun NotificationCard(
                 ) {
                     emojiList.fastForEach {
                         NotificationEmoji(
-                            emoji = it,
-                            count = 0
+                            emoji = it.emoji,
+                            count = it.count
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                     }

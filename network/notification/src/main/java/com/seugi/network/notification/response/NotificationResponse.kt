@@ -1,15 +1,14 @@
-package com.seugi.data.notification.model
+package com.seugi.network.notification.response
 
 import java.time.LocalDateTime
-import kotlinx.collections.immutable.ImmutableList
 
-data class NoticeModel(
+data class NotificationResponse(
     val id: Long,
     val workspaceId: String,
     val userName: String,
     val title: String,
     val content: String,
-    val emoji: ImmutableList<String>,
+    val emoji: List<NotificationEmojiResponse>,
     val creationDate: LocalDateTime,
     val lastModifiedDate: LocalDateTime,
 )

@@ -6,7 +6,7 @@ import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.notification.NotificationRepository
 import com.seugi.data.notification.mapper.toModels
-import com.seugi.data.notification.model.NoticeModel
+import com.seugi.data.notification.model.NotificationModel
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.notification.NotificationDataSource
 import javax.inject.Inject
@@ -19,8 +19,12 @@ class NotificationRepositoryImpl @Inject constructor(
     private val dataSource: NotificationDataSource,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : NotificationRepository {
-    override suspend fun getNotices(workspaceId: String): Flow<Result<List<NoticeModel>>> = flow {
-        val response = dataSource.getNotices(workspaceId).safeResponse()
+    override suspend fun getNotices(workspaceId: String, page: Int, size: Int): Flow<Result<List<NotificationModel>>> = flow {
+        val response = dataSource.getNotices(
+            workspaceId = workspaceId,
+            page = page,
+            size = size
+        ).safeResponse()
 
         emit(response.toModels())
     }

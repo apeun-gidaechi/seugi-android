@@ -48,8 +48,8 @@ object SeugiUrl {
         const val APPLICATION = "$WORKSPACE/join"
     }
 
-    object Notice {
-        const val ROOT = "${BASE_URL}/notice"
+    object Notification {
+        const val ROOT = "${BASE_URL}/notification"
     }
 
     object Member {
