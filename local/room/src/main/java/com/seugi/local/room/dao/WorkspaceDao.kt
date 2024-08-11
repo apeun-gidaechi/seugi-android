@@ -9,8 +9,8 @@ import com.seugi.local.room.util.SeugiTable
 
 @Dao
 interface WorkspaceDao: BaseDao<WorkspaceEntity> {
-    @Query("SELECT * FROM ${SeugiTable.WORKSPACE_TABLE} WHERE idx = 0")
-    suspend fun getWorkspace(): WorkspaceEntity?
+    @Query("SELECT * FROM ${SeugiTable.WORKSPACE_TABLE}")
+    suspend fun getWorkspace(): List<WorkspaceEntity?>
 
     @Query("DELETE FROM ${SeugiTable.WORKSPACE_TABLE}")
     suspend fun deleteWorkspace()
