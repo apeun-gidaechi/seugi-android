@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val workspaceRepository: WorkspaceRepository
+    private val workspaceRepository: WorkspaceRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeUiState())
@@ -30,7 +30,7 @@ class HomeViewModel @Inject constructor(
 
             delay(2000)
 
-            if (workspaces.isEmpty()){
+            if (workspaces.isEmpty()) {
 
                 _state.update {
                     it.copy(
@@ -42,7 +42,7 @@ class HomeViewModel @Inject constructor(
                         schoolScheduleState = CommonUiState.NotFound,
                     )
                 }
-            }else{
+            } else {
                 Log.d("TAG", ":있음 ")
                 _state.update {
                     it.copy(

@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.flowOn
 class WorkspaceRepositoryImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
     private val workspaceDatasource: WorkspaceDataSource,
-    private val workspaceDao: WorkspaceDao
+    private val workspaceDao: WorkspaceDao,
 ) : WorkspaceRepository {
     override suspend fun checkWorkspace(schoolCode: String): Flow<Result<CheckWorkspaceModel>> {
         return flow {

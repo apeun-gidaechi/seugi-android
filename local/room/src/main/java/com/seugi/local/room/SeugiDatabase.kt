@@ -10,7 +10,7 @@ import com.seugi.local.room.model.WorkspaceEntity
 @Database(
     entities = [
         TokenEntity::class,
-        WorkspaceEntity::class
+        WorkspaceEntity::class,
     ],
     version = 3,
     exportSchema = false,

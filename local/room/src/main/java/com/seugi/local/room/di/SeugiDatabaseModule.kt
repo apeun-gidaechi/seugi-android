@@ -19,39 +19,48 @@ internal object SeugiDatabaseModule {
 
     val MIGRATION_1_2 = object : Migration(1, 2) {
         override fun migrate(database: SupportSQLiteDatabase) {
-            database.execSQL("""
+            database.execSQL(
+                """
                 CREATE TABLE IF NOT EXISTS ${SeugiTable.WORKSPACE_TABLE} (
                     idx INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                     workspaceId TEXT NOT NULL,
                     workspaceName TEXT NOT NULL,
                     workspaceUrl TEXT NOT NULL,
                 )
-            """)
+            """,
+            )
         }
     }
 
     val MIGRATION_2_3 = object : Migration(2, 3) {
         override fun migrate(database: SupportSQLiteDatabase) {
             // 새로운 테이블을 생성하여 기존 데이터를 복사
-            database.execSQL("""
+            database.execSQL(
+                """
                 CREATE TABLE ${SeugiTable.WORKSPACE_TABLE}_new (
                     idx INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                     workspaceId TEXT NOT NULL,
                     workspaceName TEXT NOT NULL
                 )
-            """)
-            database.execSQL("""
+            """,
+            )
+            database.execSQL(
+                """
                 INSERT INTO ${SeugiTable.WORKSPACE_TABLE}_new (idx, workspaceId, workspaceName)
                 SELECT idx, workspaceId, workspaceName
                 FROM ${SeugiTable.WORKSPACE_TABLE}
-            """)
+            """,
+            )
             database.execSQL("DROP TABLE ${SeugiTable.WORKSPACE_TABLE}")
-            database.execSQL("""
+            database.execSQL(
+                """
                 ALTER TABLE ${SeugiTable.WORKSPACE_TABLE}_new
                 RENAME TO ${SeugiTable.WORKSPACE_TABLE}
-            """)
+            """,
+            )
         }
     }
+
     @Provides
     @Singleton
     fun providesSeugiDatabase(@ApplicationContext context: Context): SeugiDatabase = Room.databaseBuilder(

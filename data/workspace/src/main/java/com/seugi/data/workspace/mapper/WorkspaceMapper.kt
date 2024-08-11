@@ -4,7 +4,6 @@ import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.local.room.model.WorkspaceEntity
 import com.seugi.network.workspace.response.WorkspaceResponse
 
-
 fun List<WorkspaceResponse>.toModels() = this.map {
     it.toModel()
 }
@@ -16,14 +15,14 @@ fun WorkspaceResponse.toModel() = WorkspaceModel(
     workspaceAdmin = workspaceAdmin,
     middleAdmin = middleAdmin,
     teacher = teacher,
-    student = student
+    student = student,
 )
 
-fun List<WorkspaceModel>.toEntities() = this.map{
+fun List<WorkspaceModel>.toEntities() = this.map {
     it.toEntity()
 }
 
 fun WorkspaceModel.toEntity() = WorkspaceEntity(
-        workspaceId = workspaceId,
-        workspaceName = workspaceName,
+    workspaceId = workspaceId,
+    workspaceName = workspaceName,
 )

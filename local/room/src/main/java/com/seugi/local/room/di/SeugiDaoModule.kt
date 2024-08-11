@@ -13,6 +13,7 @@ import dagger.hilt.components.SingletonComponent
 internal object SeugiDaoModule {
     @Provides
     fun providesTokenDao(database: SeugiDatabase): TokenDao = database.tokenDao()
+
     @Provides
     fun providesWorkspaceDao(database: SeugiDatabase): WorkspaceDao = database.workspaceDao()
 }

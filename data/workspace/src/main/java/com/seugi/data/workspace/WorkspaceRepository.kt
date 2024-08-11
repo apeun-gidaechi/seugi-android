@@ -13,7 +13,7 @@ interface WorkspaceRepository {
     suspend fun workspaceApplication(workspaceId: String, workspaceCode: String, role: String): Flow<Result<String>>
 
     suspend fun getMembers(workspaceId: String): Flow<Result<List<ProfileModel>>>
-    suspend fun getMyWorkspaces():Flow<Result<List<WorkspaceModel>>>
+    suspend fun getMyWorkspaces(): Flow<Result<List<WorkspaceModel>>>
     suspend fun addWorkspaces(workspaces: List<WorkspaceEntity>)
     suspend fun getAllWorkspaces(): List<WorkspaceEntity?>
 }

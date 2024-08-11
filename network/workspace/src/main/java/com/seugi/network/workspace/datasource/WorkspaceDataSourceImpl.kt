@@ -38,8 +38,6 @@ class WorkspaceDataSourceImpl @Inject constructor(
         parameter("workspaceId", workspaceId)
     }.body()
 
-    override suspend fun getMyWorkspaces(): BaseResponse<List<WorkspaceResponse>> =
-        httpClient.get(SeugiUrl.Workspace.GET_MY_WORKSPACES){
-
-        }.body()
+    override suspend fun getMyWorkspaces(): BaseResponse<List<WorkspaceResponse>> = httpClient.get(SeugiUrl.Workspace.GET_MY_WORKSPACES) {
+    }.body()
 }
