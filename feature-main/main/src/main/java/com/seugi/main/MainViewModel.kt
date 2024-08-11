@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 class MainViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
     private val workspaceRepository: WorkspaceRepository,
-    private val workspaceDao: WorkspaceDao
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainUiState())

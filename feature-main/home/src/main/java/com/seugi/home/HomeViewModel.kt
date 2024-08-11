@@ -3,9 +3,9 @@ package com.seugi.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.home.model.CommonUiState
 import com.seugi.home.model.HomeUiState
-import com.seugi.local.room.dao.WorkspaceDao
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val workspace: WorkspaceDao
+    private val workspaceRepository: WorkspaceRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeUiState())
@@ -25,8 +25,8 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val workspaces = workspace.getWorkspace()
-            Log.d("TAG", "workspaces ${workspace.getWorkspace()} ")
+            val workspaces = workspaceRepository.getAllWorkspaces()
+            Log.d("TAG", "workspaces ${workspaceRepository.getAllWorkspaces()} ")
 
             delay(2000)
 
