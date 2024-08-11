@@ -46,9 +46,7 @@ class MainViewModel @Inject constructor(
             when(it){
                 is Result.Success -> {
                     val dummy: List<WorkspaceModel> = listOf(WorkspaceModel("0", "0", "0", 0, teacher = listOf(0), student = listOf(0), middleAdmin = listOf(0)),WorkspaceModel("1", "1", "1", 1, teacher = listOf(1), student = listOf(1), middleAdmin = listOf(1)))
-                    val workspaces = dummy.map {
-                       it.toEntity()
-                    }
+                    val workspaces = dummy.toEntities()
                     workspaceDao.insert(workspaces)
                     Log.d("TAG", "워크페이스 ${it.data} ")
                 }
