@@ -6,6 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.data.profile.ProfileRepository
 import com.seugi.data.workspace.WorkspaceRepository
+import com.seugi.data.workspace.mapper.toEntities
+import com.seugi.data.workspace.mapper.toEntity
+import com.seugi.data.workspace.model.WorkspaceModel
+import com.seugi.local.room.dao.WorkspaceDao
+import com.seugi.local.room.model.WorkspaceEntity
 import com.seugi.main.model.MainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -17,7 +22,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
-    private val workspaceRepository: WorkspaceRepository
+    private val workspaceRepository: WorkspaceRepository,
+    private val workspaceDao: WorkspaceDao
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainUiState())
@@ -39,6 +45,11 @@ class MainViewModel @Inject constructor(
         workspaceRepository.getMyWorkspaces().collect {
             when(it){
                 is Result.Success -> {
+                    val dummy: List<WorkspaceModel> = listOf(WorkspaceModel("0", "0", "0", 0, teacher = listOf(0), student = listOf(0), middleAdmin = listOf(0)),WorkspaceModel("1", "1", "1", 1, teacher = listOf(1), student = listOf(1), middleAdmin = listOf(1)))
+                    val workspaces = dummy.map {
+                       it.toEntity()
+                    }
+                    workspaceDao.insert(workspaces)
                     Log.d("TAG", "워크페이스 ${it.data} ")
                 }
                 else ->{
