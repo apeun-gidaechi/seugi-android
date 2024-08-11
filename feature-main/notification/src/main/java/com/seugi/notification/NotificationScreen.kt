@@ -66,6 +66,8 @@ import com.seugi.designsystem.theme.Gray200
 import com.seugi.designsystem.theme.Gray500
 import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.Primary050
+import com.seugi.designsystem.theme.Primary100
+import com.seugi.designsystem.theme.Primary300
 import com.seugi.designsystem.theme.White
 import com.seugi.notification.model.NotificationEmojiState
 import com.seugi.notification.model.getEmojiList
@@ -200,7 +202,7 @@ internal fun NotificationScreen(
                             author = it.userName,
                             emojiList = it.getEmojiList(userId),
                             createdAt = it.creationDate.toTimeString(),
-                            onClickAddEmoji = { /*TODO*/ },
+                            onClickEmoji = { /*TODO*/ },
                             onClickDetailInfo = {
                                 isShowPopupDialog = true
                             },
@@ -308,7 +310,7 @@ internal fun NotificationCard(
     author: String,
     emojiList: ImmutableList<NotificationEmojiState>,
     createdAt: String,
-    onClickAddEmoji: () -> Unit,
+    onClickEmoji: (emoji: String) -> Unit,
     onClickDetailInfo: () -> Unit,
     onClickNotification: () -> Unit,
     onLongClick: () -> Unit
@@ -373,7 +375,11 @@ internal fun NotificationCard(
                     emojiList.fastForEach {
                         NotificationEmoji(
                             emoji = it.emoji,
-                            count = it.count
+                            count = it.count,
+                            isChecked = it.isMe,
+                            onClick = {
+                                onClickEmoji(it.emoji)
+                            }
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                     }
@@ -387,36 +393,42 @@ internal fun NotificationCard(
 private fun NotificationEmoji(
     modifier: Modifier = Modifier,
     emoji: String,
-    count: Int
+    count: Int,
+    isChecked: Boolean,
+    onClick: () -> Unit,
 ) {
-    Row(
-        modifier = modifier
-            .background(
-                color = Gray100,
-                shape = RoundedCornerShape(8.dp),
-            )
-            .border(
-                width = 1.dp,
-                color = Gray200,
-                shape = RoundedCornerShape(8.dp),
-            ),
-        verticalAlignment = Alignment.CenterVertically,
+    Box(
+        modifier = Modifier.bounceClick(onClick)
     ) {
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            modifier = Modifier.padding(
-                vertical = 4.dp
-            ),
-            text = emoji,
-            color = Black,
-            style = MaterialTheme.typography.titleMedium,
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = count.toString(),
-            color = Gray600,
-            style = MaterialTheme.typography.bodyLarge,
-        )
-        Spacer(modifier = Modifier.width(8.dp))
+        Row(
+            modifier = modifier
+                .background(
+                    color = if (isChecked) Primary100 else Gray100,
+                    shape = RoundedCornerShape(8.dp),
+                )
+                .border(
+                    width = 1.dp,
+                    color = if (isChecked) Primary300 else Gray200,
+                    shape = RoundedCornerShape(8.dp),
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                modifier = Modifier.padding(
+                    vertical = 4.dp
+                ),
+                text = emoji,
+                color = Black,
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = count.toString(),
+                color = Gray600,
+                style = MaterialTheme.typography.bodyLarge,
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+        }
     }
 }
