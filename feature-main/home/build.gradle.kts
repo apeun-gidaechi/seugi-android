@@ -9,4 +9,5 @@ android {
 dependencies {
     implementation(libs.coil.compose)
     implementation(projects.designsystem)
+    implementation(projects.data.workspace)
 }
