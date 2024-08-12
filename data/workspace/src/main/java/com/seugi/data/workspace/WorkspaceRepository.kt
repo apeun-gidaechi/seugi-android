@@ -4,7 +4,6 @@ import com.seugi.common.model.Result
 import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.workspace.model.CheckWorkspaceModel
 import com.seugi.data.workspace.model.WorkspaceModel
-import com.seugi.local.room.model.WorkspaceEntity
 import kotlinx.coroutines.flow.Flow
 
 interface WorkspaceRepository {

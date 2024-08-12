@@ -13,7 +13,6 @@ import com.seugi.data.workspace.mapper.toModels
 import com.seugi.data.workspace.model.CheckWorkspaceModel
 import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.local.room.dao.WorkspaceDao
-import com.seugi.local.room.model.WorkspaceEntity
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.workspace.WorkspaceDataSource
 import javax.inject.Inject
