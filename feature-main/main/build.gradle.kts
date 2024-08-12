@@ -23,5 +23,4 @@ dependencies {
     implementation(projects.featureMain.chatSeugi)
     implementation(projects.featureMain.workspace)
 
-    implementation(projects.local.room)
 }
