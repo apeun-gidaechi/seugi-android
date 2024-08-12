@@ -99,7 +99,15 @@ fun SeugiDialog(title: String, content: String, onDismissRequest: () -> Unit) {
 }
 
 @Composable
-fun SeugiDialog(title: String, content: String, onSuccessRequest: () -> Unit, onCancelRequest: () -> Unit, onDismissRequest: () -> Unit) {
+fun SeugiDialog(
+    title: String,
+    content: String,
+    leftText: String = "취소",
+    rightText: String = "확인",
+    onRightRequest: () -> Unit,
+    onLeftRequest: () -> Unit,
+    onDismissRequest: () -> Unit,
+) {
     Dialog(
         onDismissRequest = onDismissRequest,
     ) {
@@ -136,18 +144,18 @@ fun SeugiDialog(title: String, content: String, onSuccessRequest: () -> Unit, on
                 ) {
                     DialogButton(
                         modifier = Modifier.weight(1f),
-                        text = "취소",
+                        text = leftText,
                         textColor = Gray600,
                         backgroundColor = Gray100,
-                        onClick = onCancelRequest,
+                        onClick = onLeftRequest,
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     DialogButton(
                         modifier = Modifier.weight(1f),
-                        text = "확인",
+                        text = rightText,
                         textColor = White,
                         backgroundColor = Primary500,
-                        onClick = onSuccessRequest,
+                        onClick = onRightRequest,
                     )
                 }
             }

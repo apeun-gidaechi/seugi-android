@@ -34,7 +34,7 @@ class HomeViewModel @Inject constructor(
 
                 _state.update {
                     it.copy(
-                        showShimmer = true,
+                        showDialog = true,
                         schoolState = CommonUiState.NotFound,
                         timeScheduleState = CommonUiState.NotFound,
                         mealState = CommonUiState.NotFound,
@@ -46,7 +46,7 @@ class HomeViewModel @Inject constructor(
                 Log.d("TAG", ":있음 ")
                 _state.update {
                     it.copy(
-                        showShimmer = false,
+                        showDialog = false,
                         schoolState = CommonUiState.Success("대구 소프트웨어 마이스터 고등학교"),
                         timeScheduleState = CommonUiState.Success(listOf("진로", "소공", "소공", "인공지능 수학", "한국사", "실용영어", "웹프").toImmutableList()),
                         mealState = CommonUiState.Success(
@@ -73,7 +73,7 @@ class HomeViewModel @Inject constructor(
     fun schoolChange(school: String) = viewModelScope.launch {
         _state.update {
             it.copy(
-                showShimmer = true,
+                showDialog = true,
                 schoolState = CommonUiState.Loading,
                 timeScheduleState = CommonUiState.Loading,
                 mealState = CommonUiState.Loading,
@@ -85,7 +85,7 @@ class HomeViewModel @Inject constructor(
         if (school == "대구소프트웨어마이스터고등학교") {
             _state.update {
                 it.copy(
-                    showShimmer = false,
+                    showDialog = false,
                     schoolState = CommonUiState.Success("대구 소프트웨어 마이스터 고등학교"),
                     timeScheduleState = CommonUiState.Success(listOf("진로", "소공", "소공", "인공지능 수학", "한국사", "실용영어", "웹프").toImmutableList()),
                     mealState = CommonUiState.Success(
@@ -108,7 +108,7 @@ class HomeViewModel @Inject constructor(
         } else {
             _state.update {
                 it.copy(
-                    showShimmer = false,
+                    showDialog = false,
                     schoolState = CommonUiState.Success("한국 디지털미디어 고등학교"),
                     timeScheduleState = CommonUiState.Success(listOf("국어", "체육", "회계 원리", "컴퓨터시스템", "중국어", "수학Ⅰ", "영어").toImmutableList()),
                     mealState = CommonUiState.Success(
