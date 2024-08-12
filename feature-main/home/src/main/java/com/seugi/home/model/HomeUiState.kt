@@ -3,7 +3,7 @@ package com.seugi.home.model
 import kotlinx.collections.immutable.ImmutableList
 
 data class HomeUiState(
-    var showDialog: Boolean? = null,
+    val showDialog: Boolean = false,
     val schoolState: CommonUiState<String> = CommonUiState.Loading,
     val timeScheduleState: CommonUiState<ImmutableList<String>> = CommonUiState.Loading,
     val mealState: CommonUiState<Triple<Pair<String, String>, Pair<String, String>, Pair<String, String>>> = CommonUiState.Loading,
