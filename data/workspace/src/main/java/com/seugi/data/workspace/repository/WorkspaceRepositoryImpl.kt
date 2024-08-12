@@ -7,6 +7,7 @@ import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.core.mapper.toModels
 import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.workspace.WorkspaceRepository
+import com.seugi.data.workspace.mapper.toEntities
 import com.seugi.data.workspace.mapper.toModel
 import com.seugi.data.workspace.mapper.toModels
 import com.seugi.data.workspace.model.CheckWorkspaceModel
@@ -64,8 +65,8 @@ class WorkspaceRepositoryImpl @Inject constructor(
         .asResult()
 
     // 중복 체크 후 워크스페이스를 데이터베이스에 추가
-    override suspend fun addWorkspaces(workspaces: List<WorkspaceEntity>) {
-        val nonDuplicateWorkspaces = mutableListOf<WorkspaceEntity>()
+    override suspend fun addWorkspaces(workspaces: List<WorkspaceModel>) {
+        val nonDuplicateWorkspaces = mutableListOf<WorkspaceModel>()
 
         for (workspace in workspaces) {
             // 데이터베이스에서 동일한 workspaceId 또는 workspaceName을 가진 항목의 개수 조회
@@ -81,11 +82,11 @@ class WorkspaceRepositoryImpl @Inject constructor(
 
         // 중복되지 않는 워크스페이스를 한 번에 데이터베이스에 삽입
         if (nonDuplicateWorkspaces.isNotEmpty()) {
-            workspaceDao.insertWorkspaces(nonDuplicateWorkspaces)
+            workspaceDao.insertWorkspaces(nonDuplicateWorkspaces.toEntities())
         }
     }
 
-    override suspend fun getAllWorkspaces(): List<WorkspaceEntity?> {
-        return workspaceDao.getWorkspace()
+    override suspend fun getAllWorkspaces(): List<WorkspaceModel?> {
+        return workspaceDao.getWorkspace().toModels()
     }
 }

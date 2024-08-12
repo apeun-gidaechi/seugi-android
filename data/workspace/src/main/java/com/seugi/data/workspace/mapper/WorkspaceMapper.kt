@@ -3,6 +3,7 @@ package com.seugi.data.workspace.mapper
 import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.local.room.model.WorkspaceEntity
 import com.seugi.network.workspace.response.WorkspaceResponse
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 fun List<WorkspaceResponse>.toModels() = this.map {
@@ -17,6 +18,20 @@ fun WorkspaceResponse.toModel() = WorkspaceModel(
     middleAdmin = middleAdmin.toImmutableList(),
     teacher = teacher.toImmutableList(),
     student = student.toImmutableList(),
+)
+
+fun List<WorkspaceEntity?>.toModels() = this.map {
+    it?.toModel()
+}
+
+fun WorkspaceEntity.toModel() = WorkspaceModel(
+    workspaceId = workspaceId,
+    workspaceName = workspaceName,
+    workspaceImageUrl = "",
+    workspaceAdmin = 0,
+    middleAdmin = listOf<Long>(0).toImmutableList(),
+    student = listOf<Long>(0).toImmutableList(),
+    teacher = listOf<Long>(0).toImmutableList(),
 )
 
 fun List<WorkspaceModel>.toEntities() = this.map {
