@@ -106,7 +106,7 @@ fun SeugiDialog(
     rightText: String = "확인",
     onRightRequest: () -> Unit,
     onLeftRequest: () -> Unit,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,

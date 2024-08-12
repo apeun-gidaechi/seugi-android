@@ -89,7 +89,6 @@ internal fun HomeScreen(
     navigateToChatSeugi: () -> Unit,
     navigateToJoinWorkspace: () -> Unit,
     onNavigationVisibleChange: (Boolean) -> Unit,
-
 ) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -129,8 +128,9 @@ internal fun HomeScreen(
             onLeftRequest = {},
             onRightRequest = {
                 onNavigationVisibleChange(false)
-                navigateToJoinWorkspace()},
-            onDismissRequest = {}
+                navigateToJoinWorkspace()
+            },
+            onDismissRequest = {},
         )
     }
 
@@ -198,7 +198,6 @@ internal fun HomeScreen(
                                 color = Gray600,
                             )
                             Spacer(modifier = Modifier.height(12.dp))
-
                         }
                     }
 
