@@ -104,8 +104,8 @@ fun SeugiDialog(
     content: String,
     leftText: String = "취소",
     rightText: String = "확인",
-    onSuccessRequest: () -> Unit,
-    onCancelRequest: () -> Unit,
+    onRightRequest: () -> Unit,
+    onLeftRequest: () -> Unit,
     onDismissRequest: () -> Unit
 ) {
     Dialog(
@@ -147,7 +147,7 @@ fun SeugiDialog(
                         text = leftText,
                         textColor = Gray600,
                         backgroundColor = Gray100,
-                        onClick = onCancelRequest,
+                        onClick = onLeftRequest,
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     DialogButton(
@@ -155,7 +155,7 @@ fun SeugiDialog(
                         text = rightText,
                         textColor = White,
                         backgroundColor = Primary500,
-                        onClick = onSuccessRequest,
+                        onClick = onRightRequest,
                     )
                 }
             }
