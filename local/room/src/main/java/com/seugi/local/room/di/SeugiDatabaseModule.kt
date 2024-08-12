@@ -2,8 +2,6 @@ package com.seugi.local.room.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.seugi.local.room.SeugiDatabase
 import com.seugi.local.room.util.SeugiTable
 import dagger.Module

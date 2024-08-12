@@ -6,7 +6,6 @@ import com.seugi.common.model.Result
 import com.seugi.data.profile.ProfileRepository
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.data.workspace.mapper.toEntities
-import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.main.model.MainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
