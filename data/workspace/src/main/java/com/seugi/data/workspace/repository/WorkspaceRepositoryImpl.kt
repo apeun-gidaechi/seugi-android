@@ -7,6 +7,7 @@ import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.core.mapper.toModels
 import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.workspace.WorkspaceRepository
+import com.seugi.data.workspace.mapper.localToModels
 import com.seugi.data.workspace.mapper.toEntities
 import com.seugi.data.workspace.mapper.toModel
 import com.seugi.data.workspace.mapper.toModels
@@ -86,6 +87,6 @@ class WorkspaceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAllWorkspaces(): List<WorkspaceModel?> {
-        return workspaceDao.getWorkspace().toModels()
+        return workspaceDao.getWorkspace().localToModels()
     }
 }
