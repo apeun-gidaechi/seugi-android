@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.data.profile.ProfileRepository
+import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.main.model.MainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -15,6 +16,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
+    private val workspaceRepository: WorkspaceRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainUiState())
@@ -31,6 +33,16 @@ class MainViewModel @Inject constructor(
                     }
                 }
                 else -> {}
+            }
+        }
+        workspaceRepository.getMyWorkspaces().collect {
+            when (it) {
+                is Result.Success -> {
+                    val workspaces = it.data
+                    workspaceRepository.addWorkspaces(workspaces)
+                }
+                else -> {
+                }
             }
         }
     }

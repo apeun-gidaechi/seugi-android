@@ -46,6 +46,7 @@ object SeugiUrl {
         const val MEMBERS = "$ROOT/members"
         const val CHECK_WORKSPACE = "$WORKSPACE/search/"
         const val APPLICATION = "$WORKSPACE/join"
+        const val GET_MY_WORKSPACES = "$WORKSPACE/"
     }
 
     object Notice {
