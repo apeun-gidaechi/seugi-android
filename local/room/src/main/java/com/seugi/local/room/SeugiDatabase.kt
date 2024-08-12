@@ -12,7 +12,7 @@ import com.seugi.local.room.model.WorkspaceEntity
         TokenEntity::class,
         WorkspaceEntity::class,
     ],
-    version = 3,
+    version = 1,
     exportSchema = false,
 )
 internal abstract class SeugiDatabase : RoomDatabase() {
