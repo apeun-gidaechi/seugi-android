@@ -39,7 +39,7 @@ class MainViewModel @Inject constructor(
         workspaceRepository.getMyWorkspaces().collect {
             when (it) {
                 is Result.Success -> {
-                    val workspaces = it.data.toEntities()
+                    val workspaces = it.data
                     workspaceRepository.addWorkspaces(workspaces)
                 }
                 else -> {
