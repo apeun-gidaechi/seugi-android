@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.seugi.designsystem.animation.NoInteractionSource
 import com.seugi.designsystem.theme.Black
 import com.seugi.designsystem.theme.Gray200
 import com.seugi.designsystem.theme.Gray300
@@ -161,6 +162,8 @@ fun SeugiSmallDropDown(
                 onClick = {
                     onExpandedChanged(!isExpanded)
                 },
+                interactionSource = NoInteractionSource(),
+                indication = null,
             ),
     ) {
         Row(
