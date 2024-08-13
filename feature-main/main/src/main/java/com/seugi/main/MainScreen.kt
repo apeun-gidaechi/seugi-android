@@ -236,7 +236,11 @@ internal fun MainScreen(
                 },
                 popBackStack = { navHostController.popBackStack() },
             )
-            workspaceDetailScreen()
+            workspaceDetailScreen(
+                popBackStack = {
+                    navHostController.popBackStack()
+                }
+            )
         }
     }
 }

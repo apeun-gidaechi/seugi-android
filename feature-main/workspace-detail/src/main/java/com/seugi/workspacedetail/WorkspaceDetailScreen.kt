@@ -40,7 +40,9 @@ import com.seugi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WorkspaceDetailScreen() {
+fun WorkspaceDetailScreen(
+    popBackStack: () -> Unit
+) {
     SeugiTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -51,15 +53,17 @@ fun WorkspaceDetailScreen() {
                             text = "내 학교", style = MaterialTheme.typography.titleLarge
                         )
                     },
-                    onNavigationIconClick = {},
+                    onNavigationIconClick = {
+                        popBackStack()
+                    },
                     backIconCheck = true
                 )
             }
         ) {
             Column(
-              modifier = Modifier
-                  .padding(it)
-                  .fillMaxSize()
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize()
             ) {
                 Row(
                     modifier = Modifier

@@ -10,8 +10,10 @@ const val WORKSPACE_DETAIL_ROUTE = "WORKSPACE_DETAIL_ROUTE"
 
 fun NavController.navigateToWorkspaceDetail(navOptions: NavOptions? = null) = navigate(WORKSPACE_DETAIL_ROUTE, navOptions)
 
-fun NavGraphBuilder.workspaceDetailScreen() {
+fun NavGraphBuilder.workspaceDetailScreen(popBackStack: () -> Unit) {
     composable(WORKSPACE_DETAIL_ROUTE) {
-        WorkspaceDetailScreen()
+        WorkspaceDetailScreen(
+            popBackStack = popBackStack
+        )
     }
 }
