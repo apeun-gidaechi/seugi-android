@@ -174,6 +174,7 @@ fun SeugiSmallDropDown(
                 style = MaterialTheme.typography.titleMedium,
                 color = Black,
             )
+            Spacer(modifier = Modifier.width(8.dp))
             Icon(
                 imageVector = icon,
                 contentDescription = null,
