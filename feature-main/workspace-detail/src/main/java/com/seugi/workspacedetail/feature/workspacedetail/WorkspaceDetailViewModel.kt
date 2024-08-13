@@ -1,12 +1,12 @@
-package com.seugi.workspacedetail
+package com.seugi.workspacedetail.feature.workspacedetail
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.data.workspace.WorkspaceRepository
-import com.seugi.workspacedetail.model.WorkspaceDetailSideEffect
-import com.seugi.workspacedetail.model.WorkspaceDetailUiState
+import com.seugi.workspacedetail.feature.model.WorkspaceDetailSideEffect
+import com.seugi.workspacedetail.feature.model.WorkspaceDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.channels.Channel
