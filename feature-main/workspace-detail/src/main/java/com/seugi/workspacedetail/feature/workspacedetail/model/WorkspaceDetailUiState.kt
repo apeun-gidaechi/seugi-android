@@ -1,4 +1,4 @@
-package com.seugi.workspacedetail.feature.model
+package com.seugi.workspacedetail.feature.workspacedetail.model
 
 import com.seugi.data.workspace.model.WaitWorkspaceModel
 import com.seugi.data.workspace.model.WorkspaceModel

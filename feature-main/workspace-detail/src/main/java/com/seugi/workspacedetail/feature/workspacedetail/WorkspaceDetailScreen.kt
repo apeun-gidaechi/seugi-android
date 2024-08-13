@@ -58,7 +58,7 @@ import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.designsystem.theme.White
 import com.seugi.ui.CollectAsSideEffect
-import com.seugi.workspacedetail.feature.model.WorkspaceDetailSideEffect
+import com.seugi.workspacedetail.feature.workspacedetail.model.WorkspaceDetailSideEffect
 
 
 data class TestModel(
