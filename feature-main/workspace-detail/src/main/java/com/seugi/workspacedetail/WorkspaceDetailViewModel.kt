@@ -1,5 +1,6 @@
 package com.seugi.workspacedetail
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
@@ -16,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class WorkspaceDetailViewModel @Inject constructor(
     private val workspaceRepository: WorkspaceRepository
-): ViewModel() {
+) : ViewModel() {
     private val _state = MutableStateFlow(WorkspaceDetailUiState())
     val state = _state.asStateFlow()
 
@@ -30,20 +31,21 @@ class WorkspaceDetailViewModel @Inject constructor(
         }
     }
 
-    fun waitWorkspace(){
+    fun waitWorkspace() {
         viewModelScope.launch {
-            workspaceRepository.getWaitWorkspaces().collect{
-                when(it){
-                    is Result.Success ->{
-                        if (it.data.isEmpty()) {
-                            _state.update { uiState ->
-                                uiState.copy(
-                                    waitWorkspace = it.data.toImmutableList()
-                                )
-                            }
+            workspaceRepository.getWaitWorkspaces().collect {
+                when (it) {
+                    is Result.Success -> {
+                        Log.d("TAG", "위에 ${it.data}: ")
+                        _state.update { uiState ->
+                            uiState.copy(
+                                waitWorkspace = it.data.toImmutableList()
+                            )
                         }
+
                     }
-                    else ->{
+
+                    else -> {
 
                     }
                 }
@@ -54,7 +56,7 @@ class WorkspaceDetailViewModel @Inject constructor(
     fun changeNowWorkspace(
         workspaceName: String,
         workspaceId: String
-    ){
+    ) {
         _state.update {
             it.copy(
                 nowWorkspace = Pair(workspaceName, workspaceId)
