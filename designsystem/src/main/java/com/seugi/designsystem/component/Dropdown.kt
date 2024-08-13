@@ -144,6 +144,7 @@ fun SeugiDropDown(
 
 @Composable
 fun SeugiSmallDropDown(
+    modifier: Modifier = Modifier,
     item: List<String>,
     title: String,
     onItemSelected: (String) -> Unit,
@@ -155,7 +156,7 @@ fun SeugiSmallDropDown(
     val scrollState = rememberScrollState()
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .clickable(
                 onClick = {
                     onExpandedChanged(!isExpanded)
