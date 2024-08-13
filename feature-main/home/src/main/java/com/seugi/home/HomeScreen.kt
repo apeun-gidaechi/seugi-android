@@ -90,7 +90,7 @@ internal fun HomeScreen(
     navigateToChatSeugi: () -> Unit,
     navigateToJoinWorkspace: () -> Unit,
     onNavigationVisibleChange: (Boolean) -> Unit,
-    navigateToWorkspaceDetail: (String ,String) -> Unit
+    navigateToWorkspaceDetail: (String) -> Unit
 ) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -183,7 +183,7 @@ internal fun HomeScreen(
                                 onClick = {
                                     Log.d("TAG", "${state.nowWorkspace.first}, ${state.nowWorkspace.second}: ")
                                     onNavigationVisibleChange(false)
-                                    navigateToWorkspaceDetail("state.nowWorkspace.first", "state.nowWorkspace.second")
+                                    navigateToWorkspaceDetail("state.nowWorkspace.second")
                                 },
                                 type = ButtonType.Gray,
                                 text = "전환",

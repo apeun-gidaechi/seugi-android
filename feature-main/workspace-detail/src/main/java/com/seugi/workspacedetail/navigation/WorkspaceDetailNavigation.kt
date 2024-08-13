@@ -12,29 +12,26 @@ import com.seugi.workspacedetail.WorkspaceDetailScreen
 const val WORKSPACE_DETAIL_ROUTE = "WORKSPACE_DETAIL_ROUTE"
 
 fun NavController.navigateToWorkspaceDetail(
-    workspaceName: String,
     workspaceId: String,
     navOptions: NavOptions? = null
 ) {
     navigate(
-        route = "$WORKSPACE_DETAIL_ROUTE/$workspaceName/$workspaceId",
+        route = "$WORKSPACE_DETAIL_ROUTE/$workspaceId",
         navOptions = navOptions
     )
 }
 
-fun NavGraphBuilder.workspaceDetailScreen( 
+fun NavGraphBuilder.workspaceDetailScreen(
     navigateToJoinWorkspace: () -> Unit,
     popBackStack: () -> Unit
 ) {
     composable(
-        route = "$WORKSPACE_DETAIL_ROUTE/{workspaceName}/{workspaceId}",
+        route = "$WORKSPACE_DETAIL_ROUTE/{workspaceId}",
         arguments = listOf(
-            navArgument("workspaceName") { NavType.StringType },
             navArgument("workspaceId") { NavType.StringType }
         )
     ) {
         WorkspaceDetailScreen(
-            workspaceName = it.arguments?.getString("workspaceName") ?: "",
             workspaceId = it.arguments?.getString("workspaceId") ?: "",
             navigateToJoinWorkspace = navigateToJoinWorkspace,
             popBackStack = popBackStack

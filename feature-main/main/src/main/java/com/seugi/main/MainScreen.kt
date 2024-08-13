@@ -132,9 +132,8 @@ internal fun MainScreen(
                     navHostController.navigateToSelectingJob()
                 },
                 onNavigationVisibleChange = onNavigationVisibleChange,
-                navigateToWorkspaceDetail = { name, id ->
+                navigateToWorkspaceDetail = { id ->
                     navHostController.navigateToWorkspaceDetail(
-                        workspaceName = name,
                         workspaceId = id
                     )
                 }

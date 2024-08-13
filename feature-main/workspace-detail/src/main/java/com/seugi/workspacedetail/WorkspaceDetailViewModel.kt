@@ -50,7 +50,6 @@ class WorkspaceDetailViewModel @Inject constructor(
         }
     }
     fun changeNowWorkspace(
-        workspaceName: String,
         workspaceId: String
     ) {
         viewModelScope.launch{

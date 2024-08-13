@@ -68,7 +68,6 @@ fun WorkspaceDetailScreen(
     viewModel: WorkspaceDetailViewModel = hiltViewModel(),
     navigateToJoinWorkspace: () -> Unit,
     popBackStack: () -> Unit,
-    workspaceName: String,
     workspaceId: String
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -78,7 +77,7 @@ fun WorkspaceDetailScreen(
 
     LaunchedEffect(key1 = true) {
         viewModel.loadWorkspace()
-        viewModel.changeNowWorkspace(workspaceName, workspaceId)
+        viewModel.changeNowWorkspace(workspaceId)
     }
 
 
@@ -119,8 +118,7 @@ fun WorkspaceDetailScreen(
                                                 )
                                                 .bounceClick(onClick = {
                                                     viewModel.changeNowWorkspace(
-                                                        workspaceName = item?.workspaceName!!,
-                                                        workspaceId = item.workspaceId
+                                                        workspaceId = item?.workspaceId!!
                                                     )
                                                     showDialog = false
                                                     loading = true
