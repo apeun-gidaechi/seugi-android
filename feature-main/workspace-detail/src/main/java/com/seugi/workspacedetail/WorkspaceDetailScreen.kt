@@ -110,19 +110,19 @@ fun WorkspaceDetailScreen(
                                     Row {
                                         Row(
                                             modifier = Modifier
-                                                .fillMaxWidth()
-                                                .height(56.dp)
-                                                .background(
-                                                    color = Gray100,
-                                                    shape = RoundedCornerShape(8.dp)
-                                                )
                                                 .bounceClick(onClick = {
                                                     viewModel.changeNowWorkspace(
                                                         workspaceId = item?.workspaceId!!
                                                     )
                                                     showDialog = false
                                                     loading = true
-                                                }),
+                                                })
+                                                .fillMaxWidth()
+                                                .height(56.dp)
+                                                .background(
+                                                    color = Gray100,
+                                                    shape = RoundedCornerShape(8.dp)
+                                                ),
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
                                             Text(
@@ -167,18 +167,13 @@ fun WorkspaceDetailScreen(
                                         Row {
                                             Row(
                                                 modifier = Modifier
+                                                    .bounceClick(onClick = {})
                                                     .fillMaxWidth()
                                                     .height(56.dp)
                                                     .background(
                                                         color = Gray100,
                                                         shape = RoundedCornerShape(8.dp)
-                                                    )
-                                                    .bounceClick(onClick = {
-                                                        Log.d(
-                                                            "TAG",
-                                                            "${item?.workspaceId}: "
-                                                        )
-                                                    }),
+                                                    ),
                                                 verticalAlignment = Alignment.CenterVertically
                                             ) {
                                                 Text(
