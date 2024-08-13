@@ -89,6 +89,7 @@ internal fun HomeScreen(
     navigateToChatSeugi: () -> Unit,
     navigateToJoinWorkspace: () -> Unit,
     onNavigationVisibleChange: (Boolean) -> Unit,
+    navigateToWorkspaceDetail: () -> Unit
 ) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -179,7 +180,7 @@ internal fun HomeScreen(
                             Spacer(modifier = Modifier.weight(1f))
                             SeugiButton(
                                 onClick = {
-                                    isShowSelectSchoolDialog = true
+                                    navigateToWorkspaceDetail()
                                 },
                                 type = ButtonType.Gray,
                                 text = "전환",

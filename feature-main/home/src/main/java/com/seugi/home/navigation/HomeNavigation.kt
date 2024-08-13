@@ -18,12 +18,13 @@ fun NavController.navigateToHome(toRoute: String, fromRoute: String) {
     }
 }
 
-fun NavGraphBuilder.homeScreen(navigateToChatSeugi: () -> Unit, navigateToJoinWorkspace: () -> Unit, onNavigationVisibleChange: (Boolean) -> Unit) {
+fun NavGraphBuilder.homeScreen(navigateToChatSeugi: () -> Unit, navigateToJoinWorkspace: () -> Unit, onNavigationVisibleChange: (Boolean) -> Unit, navigateToWorkspaceDetail: () -> Unit) {
     composable(HOME_ROUTE) {
         HomeScreen(
             navigateToChatSeugi = navigateToChatSeugi,
             navigateToJoinWorkspace = navigateToJoinWorkspace,
             onNavigationVisibleChange = onNavigationVisibleChange,
+            navigateToWorkspaceDetail = navigateToWorkspaceDetail
         )
     }
 }
