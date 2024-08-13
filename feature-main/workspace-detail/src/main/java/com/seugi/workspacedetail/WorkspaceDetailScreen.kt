@@ -80,8 +80,7 @@ fun WorkspaceDetailScreen(
 
 
     LaunchedEffect(key1 = true) {
-        viewModel.getMyWorkspace()
-        viewModel.waitWorkspace()
+        viewModel.loadWorkspace()
     }
 
 

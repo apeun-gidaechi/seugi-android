@@ -21,18 +21,14 @@ class WorkspaceDetailViewModel @Inject constructor(
     private val _state = MutableStateFlow(WorkspaceDetailUiState())
     val state = _state.asStateFlow()
 
-    fun getMyWorkspace() {
+
+    fun loadWorkspace() {
         viewModelScope.launch {
             _state.update {
                 it.copy(
                     myWorkspace = workspaceRepository.getAllWorkspaces().toImmutableList()
                 )
             }
-        }
-    }
-
-    fun waitWorkspace() {
-        viewModelScope.launch {
             workspaceRepository.getWaitWorkspaces().collect {
                 when (it) {
                     is Result.Success -> {
@@ -52,7 +48,6 @@ class WorkspaceDetailViewModel @Inject constructor(
             }
         }
     }
-
     fun changeNowWorkspace(
         workspaceName: String,
         workspaceId: String
