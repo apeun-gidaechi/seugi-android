@@ -1,4 +1,4 @@
-package com.seugi.workspacedetail
+package com.seugi.workspacedetail.feature.workspacedetail
 
 import android.util.Log
 import android.widget.Toast
@@ -58,7 +58,7 @@ import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.designsystem.theme.White
 import com.seugi.ui.CollectAsSideEffect
-import com.seugi.workspacedetail.model.WorkspaceDetailSideEffect
+import com.seugi.workspacedetail.feature.model.WorkspaceDetailSideEffect
 
 
 data class TestModel(

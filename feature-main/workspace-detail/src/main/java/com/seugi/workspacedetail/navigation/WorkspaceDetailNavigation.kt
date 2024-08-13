@@ -1,13 +1,12 @@
 package com.seugi.workspacedetail.navigation
 
-import android.net.Uri
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.seugi.workspacedetail.WorkspaceDetailScreen
+import com.seugi.workspacedetail.feature.workspacedetail.WorkspaceDetailScreen
 
 const val WORKSPACE_DETAIL_ROUTE = "WORKSPACE_DETAIL_ROUTE"
 
