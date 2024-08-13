@@ -47,6 +47,7 @@ object SeugiUrl {
         const val CHECK_WORKSPACE = "$WORKSPACE/search/"
         const val APPLICATION = "$WORKSPACE/join"
         const val GET_MY_WORKSPACES = "$WORKSPACE/"
+        const val GET_MY_WAIT_WORKSPACES = "$WORKSPACE/my/wait-list"
     }
 
     object Notice {

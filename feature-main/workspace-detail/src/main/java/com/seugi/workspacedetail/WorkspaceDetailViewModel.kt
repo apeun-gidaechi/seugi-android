@@ -2,6 +2,7 @@ package com.seugi.workspacedetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.seugi.common.model.Result
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.workspacedetail.model.WorkspaceDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +26,27 @@ class WorkspaceDetailViewModel @Inject constructor(
                 it.copy(
                     myWorkspace = workspaceRepository.getAllWorkspaces().toImmutableList()
                 )
+            }
+        }
+    }
+
+    fun waitWorkspace(){
+        viewModelScope.launch {
+            workspaceRepository.getWaitWorkspaces().collect{
+                when(it){
+                    is Result.Success ->{
+                        if (it.data.isEmpty()) {
+                            _state.update { uiState ->
+                                uiState.copy(
+                                    waitWorkspace = it.data.toImmutableList()
+                                )
+                            }
+                        }
+                    }
+                    else ->{
+
+                    }
+                }
             }
         }
     }
