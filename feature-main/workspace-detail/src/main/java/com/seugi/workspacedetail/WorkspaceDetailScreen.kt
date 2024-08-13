@@ -144,7 +144,8 @@ fun WorkspaceDetailScreen(
                                         }
                                     }
                                     // 마지막 아이템이 아닌 경우에만 Spacer를 추가
-                                    if (index < dummy.size - 1) {
+                                    if (index < dummy.size) {
+                                        Log.d("TAG", "아이템 뛰우기: ")
                                         Spacer(modifier = Modifier.height(4.dp))
                                     }
                                 }
@@ -153,7 +154,7 @@ fun WorkspaceDetailScreen(
                             if (state.waitWorkspace.any{it != null}) {
                                 Spacer(modifier = Modifier.height(16.dp))
 
-                                Log.d("TAG", "${state.waitWorkspace}: ")
+                                Log.d("TAG", "대기중${state.waitWorkspace}: ")
                                 Text(
                                     modifier = Modifier.padding(bottom = 4.dp),
                                     text = "가입 대기 중",
@@ -198,7 +199,7 @@ fun WorkspaceDetailScreen(
                                             }
                                         }
                                         // 마지막 아이템이 아닌 경우에만 Spacer를 추가
-                                        if (index < dummy.size - 1) {
+                                        if (index < dummy.size) {
                                             Spacer(modifier = Modifier.height(4.dp))
                                         }
                                     }
