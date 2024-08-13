@@ -115,7 +115,6 @@ fun WorkspaceDetailScreen(
                                                         workspaceId = item?.workspaceId!!
                                                     )
                                                     showDialog = false
-                                                    loading = true
                                                 })
                                                 .fillMaxWidth()
                                                 .height(56.dp)
@@ -154,7 +153,6 @@ fun WorkspaceDetailScreen(
                             if (state.waitWorkspace.any{it != null}) {
                                 Spacer(modifier = Modifier.height(16.dp))
 
-                                Log.d("TAG", "대기중${state.waitWorkspace}: ")
                                 Text(
                                     modifier = Modifier.padding(bottom = 4.dp),
                                     text = "가입 대기 중",
@@ -213,7 +211,7 @@ fun WorkspaceDetailScreen(
                                             interactionSource = NoInteractionSource(),
                                             indication = null
                                         ) {
-                                            Log.d("TAG", "학교 만들기")
+                                            //TODO 학교 만들기 네비게이션
                                         },
                                     text = "새 학교 만들기",
                                     style = MaterialTheme.typography.bodyMedium,

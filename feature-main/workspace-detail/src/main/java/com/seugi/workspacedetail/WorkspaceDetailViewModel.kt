@@ -33,15 +33,12 @@ class WorkspaceDetailViewModel @Inject constructor(
             workspaceRepository.getWaitWorkspaces().collect {
                 when (it) {
                     is Result.Success -> {
-                        Log.d("TAG", "위에 ${it.data}: ")
                         _state.update { uiState ->
                             uiState.copy(
                                 waitWorkspace = it.data.toImmutableList()
                             )
                         }
-
                     }
-
                     else -> {
 
                     }
