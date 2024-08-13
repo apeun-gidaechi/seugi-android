@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -73,6 +74,14 @@ fun SeugiMemberList(userName: String, userProfile: String?, isCrown: Boolean = f
                 )
             }
         }
+        Spacer(modifier = Modifier.weight(1f))
+        Icon(
+            modifier = Modifier
+                .padding(end = 16.dp)
+                .size(24.dp),
+            painter = painterResource(R.drawable.ic_detail_vertical_line),
+            contentDescription = ""
+        )
     }
 }
 
