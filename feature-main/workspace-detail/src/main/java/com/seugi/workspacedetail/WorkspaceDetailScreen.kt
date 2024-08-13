@@ -1,6 +1,7 @@
 package com.seugi.workspacedetail
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -55,6 +57,8 @@ import com.seugi.designsystem.theme.Gray500
 import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.designsystem.theme.White
+import com.seugi.ui.CollectAsSideEffect
+import com.seugi.workspacedetail.model.WorkspaceDetailSideEffect
 
 
 data class TestModel(
@@ -73,13 +77,20 @@ fun WorkspaceDetailScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val dummy: List<TestModel> = listOf(TestModel("eothrh", "대소고"), TestModel("rudrlrhd", "경기공"))
     var showDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
 
     LaunchedEffect(key1 = true) {
         viewModel.loadWorkspace()
         viewModel.changeNowWorkspace(workspaceId)
     }
-    
+    viewModel.sideEffect.CollectAsSideEffect {
+        when(it){
+            is WorkspaceDetailSideEffect.Error -> {
+                Toast.makeText(context, "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
 
     SeugiTheme {

@@ -12,3 +12,7 @@ data class WorkspaceDetailUiState(
     val myWorkspace: ImmutableList<WorkspaceModel?> = listOf(WorkspaceModel()).toImmutableList(),
     val waitWorkspace: ImmutableList<WaitWorkspaceModel?> = listOf(WaitWorkspaceModel()).toImmutableList()
 )
+
+sealed interface WorkspaceDetailSideEffect {
+    data object Error : WorkspaceDetailSideEffect
+}

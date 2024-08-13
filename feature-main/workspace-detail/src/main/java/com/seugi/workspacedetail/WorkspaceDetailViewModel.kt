@@ -5,12 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.data.workspace.WorkspaceRepository
+import com.seugi.workspacedetail.model.WorkspaceDetailSideEffect
 import com.seugi.workspacedetail.model.WorkspaceDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,6 +24,9 @@ class WorkspaceDetailViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state = MutableStateFlow(WorkspaceDetailUiState())
     val state = _state.asStateFlow()
+
+    private val _sideEffect = Channel<WorkspaceDetailSideEffect>()
+    val sideEffect = _sideEffect.receiveAsFlow()
 
 
     fun loadWorkspace() {
@@ -40,7 +46,7 @@ class WorkspaceDetailViewModel @Inject constructor(
                         }
                     }
                     else -> {
-
+                        _sideEffect.send(WorkspaceDetailSideEffect.Error)
                     }
                 }
             }
@@ -62,7 +68,7 @@ class WorkspaceDetailViewModel @Inject constructor(
                         }
                     }
                     else ->{
-
+                        _sideEffect.send(WorkspaceDetailSideEffect.Error)
                     }
                 }
             }
