@@ -7,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.Absolute.Center
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -38,6 +40,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.designsystem.R
@@ -56,6 +59,7 @@ import com.seugi.designsystem.theme.Gray400
 import com.seugi.designsystem.theme.Gray500
 import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.designsystem.theme.White
 
 
 data class TestModel(
@@ -79,6 +83,10 @@ fun WorkspaceDetailScreen(
         viewModel.getMyWorkspace()
         viewModel.waitWorkspace()
     }
+
+
+    var loading by remember { mutableStateOf(false) }
+
 
     SeugiTheme {
         if (showDialog) {
@@ -118,6 +126,7 @@ fun WorkspaceDetailScreen(
                                                         workspaceId = item.workspaceId
                                                     )
                                                     showDialog = false
+                                                    loading = true
                                                 }),
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
@@ -235,6 +244,21 @@ fun WorkspaceDetailScreen(
                     }
                 }
 
+            }
+        }
+
+        if (loading) {
+            Dialog(
+                onDismissRequest = { loading = false },
+            ) {
+                Box(
+                    contentAlignment= Alignment.Center,
+                    modifier = Modifier
+                        .size(100.dp)
+                        .background(White, shape = RoundedCornerShape(8.dp))
+                ) {
+                    CircularProgressIndicator()
+                }
             }
         }
         Scaffold(
