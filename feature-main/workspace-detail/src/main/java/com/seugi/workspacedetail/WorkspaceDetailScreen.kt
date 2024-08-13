@@ -79,9 +79,7 @@ fun WorkspaceDetailScreen(
         viewModel.loadWorkspace()
         viewModel.changeNowWorkspace(workspaceId)
     }
-
-
-    var loading by remember { mutableStateOf(false) }
+    
 
 
     SeugiTheme {
