@@ -180,6 +180,7 @@ internal fun HomeScreen(
                             Spacer(modifier = Modifier.weight(1f))
                             SeugiButton(
                                 onClick = {
+                                    onNavigationVisibleChange(false)
                                     navigateToWorkspaceDetail()
                                 },
                                 type = ButtonType.Gray,
