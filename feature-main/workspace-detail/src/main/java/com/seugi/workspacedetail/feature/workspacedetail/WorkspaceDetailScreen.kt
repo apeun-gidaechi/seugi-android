@@ -75,7 +75,6 @@ fun WorkspaceDetailScreen(
     workspaceId: String
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val dummy: List<TestModel> = listOf(TestModel("eothrh", "대소고"), TestModel("rudrlrhd", "경기공"))
     var showDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
@@ -152,7 +151,7 @@ fun WorkspaceDetailScreen(
                                         }
                                     }
                                     // 마지막 아이템이 아닌 경우에만 Spacer를 추가
-                                    if (index < dummy.size) {
+                                    if (index < state.myWorkspace.size) {
                                         Log.d("TAG", "아이템 뛰우기: ")
                                         Spacer(modifier = Modifier.height(4.dp))
                                     }
@@ -201,7 +200,7 @@ fun WorkspaceDetailScreen(
                                             }
                                         }
                                         // 마지막 아이템이 아닌 경우에만 Spacer를 추가
-                                        if (index < dummy.size) {
+                                        if (index < state.waitWorkspace.size) {
                                             Spacer(modifier = Modifier.height(4.dp))
                                         }
                                     }
