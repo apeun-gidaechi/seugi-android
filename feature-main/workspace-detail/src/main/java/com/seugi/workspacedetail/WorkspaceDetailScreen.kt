@@ -101,7 +101,7 @@ fun WorkspaceDetailScreen(
                                 color = Gray600
                             )
                             LazyColumn {
-                                itemsIndexed(state.myWorkspace!!) { index, item ->
+                                itemsIndexed(state.myWorkspace) { index, item ->
                                     Row {
                                         Row(
                                             modifier = Modifier
@@ -146,56 +146,56 @@ fun WorkspaceDetailScreen(
 
                             Spacer(modifier = Modifier.height(16.dp))
 
-                            if (state.waitWorkspace != null) {
-                                Text(
-                                    modifier = Modifier.padding(bottom = 4.dp),
-                                    text = "가입 대기 중",
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = Gray600
-                                )
-                                LazyColumn {
-                                    itemsIndexed(state.waitWorkspace!!) { index, item ->
-                                        Row {
-                                            Row(
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                                    .height(56.dp)
-                                                    .background(
-                                                        color = Gray100,
-                                                        shape = RoundedCornerShape(8.dp)
+                            if (state.waitWorkspace.isNotEmpty()){
+                            Text(
+                                modifier = Modifier.padding(bottom = 4.dp),
+                                text = "가입 대기 중",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Gray600
+                            )
+                            }
+                            LazyColumn {
+                                itemsIndexed(state.waitWorkspace) { index, item ->
+                                    Row {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .height(56.dp)
+                                                .background(
+                                                    color = Gray100,
+                                                    shape = RoundedCornerShape(8.dp)
+                                                )
+                                                .bounceClick(onClick = {
+                                                    Log.d(
+                                                        "TAG",
+                                                        "${item?.workspaceId}: "
                                                     )
-                                                    .bounceClick(onClick = {
-                                                        Log.d(
-                                                            "TAG",
-                                                            "${item?.workspaceId}: "
-                                                        )
-                                                    }),
-                                                verticalAlignment = Alignment.CenterVertically
-                                            ) {
-                                                Text(
-                                                    modifier = Modifier.padding(start = 16.dp),
-                                                    text = item?.workspaceName ?:"",
-                                                    style = MaterialTheme.typography.titleMedium
-                                                )
-                                                Spacer(modifier = Modifier.weight(1f))
-                                                Image(
-                                                    modifier = Modifier
-                                                        .padding(end = 20.dp)
-                                                        .size(24.dp),
-                                                    painter = painterResource(id = R.drawable.ic_expand_right_line),
-                                                    contentDescription = "설정 톱니바퀴",
-                                                    colorFilter = ColorFilter.tint(Gray500),
-                                                    contentScale = ContentScale.Crop,
-                                                )
-                                            }
-                                        }
-                                        // 마지막 아이템이 아닌 경우에만 Spacer를 추가
-                                        if (index < dummy.size - 1) {
-                                            Spacer(modifier = Modifier.height(4.dp))
+                                                }),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                modifier = Modifier.padding(start = 16.dp),
+                                                text = item?.workspaceName ?:"",
+                                                style = MaterialTheme.typography.titleMedium
+                                            )
+                                            Spacer(modifier = Modifier.weight(1f))
+                                            Image(
+                                                modifier = Modifier
+                                                    .padding(end = 20.dp)
+                                                    .size(24.dp),
+                                                painter = painterResource(id = R.drawable.ic_expand_right_line),
+                                                contentDescription = "설정 톱니바퀴",
+                                                colorFilter = ColorFilter.tint(Gray500),
+                                                contentScale = ContentScale.Crop,
+                                            )
                                         }
                                     }
-
+                                    // 마지막 아이템이 아닌 경우에만 Spacer를 추가
+                                    if (index < dummy.size - 1) {
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                    }
                                 }
+
                             }
                             Row(
                                 modifier = Modifier.padding(16.dp),
