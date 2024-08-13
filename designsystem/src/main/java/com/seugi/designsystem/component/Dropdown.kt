@@ -156,8 +156,6 @@ fun SeugiSmallDropDown(
 
     Column(
         modifier = Modifier
-            .padding(20.dp)
-            .clip(RoundedCornerShape(12.dp))
             .clickable(
                 onClick = {
                     onExpandedChanged(!isExpanded)
