@@ -2,6 +2,7 @@ package com.seugi.home
 
 import android.app.Activity
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowInsetsController
@@ -89,7 +90,7 @@ internal fun HomeScreen(
     navigateToChatSeugi: () -> Unit,
     navigateToJoinWorkspace: () -> Unit,
     onNavigationVisibleChange: (Boolean) -> Unit,
-    navigateToWorkspaceDetail: () -> Unit
+    navigateToWorkspaceDetail: (String ,String) -> Unit
 ) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -180,8 +181,9 @@ internal fun HomeScreen(
                             Spacer(modifier = Modifier.weight(1f))
                             SeugiButton(
                                 onClick = {
+                                    Log.d("TAG", "${state.nowWorkspace.first}, ${state.nowWorkspace.second}: ")
                                     onNavigationVisibleChange(false)
-                                    navigateToWorkspaceDetail()
+                                    navigateToWorkspaceDetail("state.nowWorkspace.first", "state.nowWorkspace.second")
                                 },
                                 type = ButtonType.Gray,
                                 text = "전환",

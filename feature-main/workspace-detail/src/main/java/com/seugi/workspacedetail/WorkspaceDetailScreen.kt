@@ -67,7 +67,9 @@ data class TestModel(
 fun WorkspaceDetailScreen(
     viewModel: WorkspaceDetailViewModel = hiltViewModel(),
     navigateToJoinWorkspace: () -> Unit,
-    popBackStack: () -> Unit
+    popBackStack: () -> Unit,
+    workspaceName: String,
+    workspaceId: String
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val dummy: List<TestModel> = listOf(TestModel("eothrh", "대소고"), TestModel("rudrlrhd", "경기공"))
@@ -75,6 +77,7 @@ fun WorkspaceDetailScreen(
 
 
     LaunchedEffect(key1 = true) {
+
         viewModel.loadWorkspace()
     }
 
@@ -127,7 +130,7 @@ fun WorkspaceDetailScreen(
                                             Text(
                                                 modifier = Modifier.padding(start = 16.dp),
                                                 // null일 수가 없어서 넣었습니다.
-                                                text = item!!.workspaceName,
+                                                text = item?.workspaceName!!,
                                                 style = MaterialTheme.typography.titleMedium
                                             )
                                             Spacer(modifier = Modifier.weight(1f))
@@ -300,7 +303,7 @@ fun WorkspaceDetailScreen(
                         Text(
                             modifier = Modifier
                                 .padding(start = 4.dp),
-                            text = state.nowWorkspace.first,
+                            text = if(state.nowWorkspace.first == "")workspaceName else state.nowWorkspace.first,
                             style = MaterialTheme.typography.bodyLarge
                         )
                         Spacer(modifier = Modifier.weight(1f))

@@ -132,8 +132,11 @@ internal fun MainScreen(
                     navHostController.navigateToSelectingJob()
                 },
                 onNavigationVisibleChange = onNavigationVisibleChange,
-                navigateToWorkspaceDetail = {
-                    navHostController.navigateToWorkspaceDetail()
+                navigateToWorkspaceDetail = { name, id ->
+                    navHostController.navigateToWorkspaceDetail(
+                        workspaceName = name,
+                        workspaceId = id
+                    )
                 }
             )
 
@@ -242,7 +245,7 @@ internal fun MainScreen(
                 },
                 popBackStack = {
                     navHostController.popBackStack()
-                }
+                },
             )
         }
     }
