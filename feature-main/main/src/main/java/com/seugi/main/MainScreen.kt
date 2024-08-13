@@ -237,6 +237,9 @@ internal fun MainScreen(
                 popBackStack = { navHostController.popBackStack() },
             )
             workspaceDetailScreen(
+                navigateToJoinWorkspace = {
+                    navHostController.navigateToSelectingJob()
+                },
                 popBackStack = {
                     navHostController.popBackStack()
                 }

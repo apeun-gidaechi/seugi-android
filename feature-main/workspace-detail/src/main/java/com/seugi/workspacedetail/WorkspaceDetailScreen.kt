@@ -67,6 +67,7 @@ data class TestModel(
 @Composable
 fun WorkspaceDetailScreen(
     viewModel: WorkspaceDetailViewModel = hiltViewModel(),
+    navigateToJoinWorkspace:() -> Unit,
     popBackStack: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -222,7 +223,7 @@ fun WorkspaceDetailScreen(
                                             interactionSource = NoInteractionSource(),
                                             indication = null
                                         ) {
-                                            Log.d("TAG", "학교 가입")
+                                            navigateToJoinWorkspace()
                                         },
                                     text = "기존 학교 가입",
                                     style = MaterialTheme.typography.bodyMedium,
