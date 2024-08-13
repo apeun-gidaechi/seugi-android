@@ -23,33 +23,26 @@ class WorkspaceDataSourceImpl @Inject constructor(
     override suspend fun checkSchoolCode(schoolCode: String): BaseResponse<CheckWorkspaceResponse> =
         httpClient.get("${SeugiUrl.Workspace.CHECK_WORKSPACE}$schoolCode") {}.body()
 
-    override suspend fun workspaceApplication(
-        workspaceId: String, workspaceCode: String, role: String
-    ): Response = httpClient.post(SeugiUrl.Workspace.APPLICATION) {
-        setBody(
-            body = WorkspaceApplicationRequest(
-                workspaceId = workspaceId,
-                workspaceCode = workspaceCode,
-                role = role,
-            ),
-        )
+    override suspend fun workspaceApplication(workspaceId: String, workspaceCode: String, role: String): Response =
+        httpClient.post(SeugiUrl.Workspace.APPLICATION) {
+            setBody(
+                body = WorkspaceApplicationRequest(
+                    workspaceId = workspaceId,
+                    workspaceCode = workspaceCode,
+                    role = role,
+                ),
+            )
+        }.body()
+
+    override suspend fun getMembers(workspaceId: String): BaseResponse<List<ProfileResponse>> = httpClient.get(SeugiUrl.Workspace.MEMBERS) {
+        parameter("workspaceId", workspaceId)
     }.body()
 
-    override suspend fun getMembers(workspaceId: String): BaseResponse<List<ProfileResponse>> =
-        httpClient.get(SeugiUrl.Workspace.MEMBERS) {
-            parameter("workspaceId", workspaceId)
-        }.body()
+    override suspend fun getMyWorkspaces(): BaseResponse<List<WorkspaceResponse>> = httpClient.get(SeugiUrl.Workspace.GET_MY_WORKSPACES) {}.body()
 
-    override suspend fun getMyWorkspaces(): BaseResponse<List<WorkspaceResponse>> =
-        httpClient.get(SeugiUrl.Workspace.GET_MY_WORKSPACES) {}.body()
+    override suspend fun getWaitWorkspace(): BaseResponse<List<WaitWorkspaceResponse>> = httpClient.get(SeugiUrl.Workspace.GET_MY_WAIT_WORKSPACES) {
+    }.body()
 
-    override suspend fun getWaitWorkspace(): BaseResponse<List<WaitWorkspaceResponse>> =
-        httpClient.get(SeugiUrl.Workspace.GET_MY_WAIT_WORKSPACES) {
-
-        }.body()
-
-    override suspend fun getWorkspaceData(workspaceId: String): BaseResponse<WorkspaceResponse> =
-        httpClient.get("${SeugiUrl.WORKSPACE}/$workspaceId"){
-
-        }.body()
+    override suspend fun getWorkspaceData(workspaceId: String): BaseResponse<WorkspaceResponse> = httpClient.get("${SeugiUrl.WORKSPACE}/$workspaceId") {
+    }.body()
 }

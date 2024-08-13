@@ -134,9 +134,9 @@ internal fun MainScreen(
                 onNavigationVisibleChange = onNavigationVisibleChange,
                 navigateToWorkspaceDetail = { id ->
                     navHostController.navigateToWorkspaceDetail(
-                        workspaceId = id
+                        workspaceId = id,
                     )
-                }
+                },
             )
 
             chatScreen(

@@ -8,5 +8,5 @@ data class WaitWorkspaceResponse(
     val workspaceName: String,
     val workspaceImageUrl: String,
     val studentCount: String,
-    val teacherCount: String
+    val teacherCount: String,
 )

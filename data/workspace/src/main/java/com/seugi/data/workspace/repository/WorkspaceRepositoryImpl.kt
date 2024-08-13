@@ -37,11 +37,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
             .asResult()
     }
 
-    override suspend fun workspaceApplication(
-        workspaceId: String,
-        workspaceCode: String,
-        role: String
-    ): Flow<Result<String>> {
+    override suspend fun workspaceApplication(workspaceId: String, workspaceCode: String, role: String): Flow<Result<String>> {
         return flow {
             val data = workspaceDatasource.workspaceApplication(
                 workspaceId = workspaceId,
@@ -77,7 +73,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
             // 데이터베이스에서 동일한 workspaceId 또는 workspaceName을 가진 항목의 개수 조회
             val existingCount = workspaceDao.countExistingWorkspaceByIdOrName(
                 workspace.workspaceId,
-                workspace.workspaceName
+                workspace.workspaceName,
             )
             if (existingCount == 0) {
                 // 중복되지 않는 워크스페이스를 리스트에 추가
@@ -98,20 +94,17 @@ class WorkspaceRepositoryImpl @Inject constructor(
         return workspaceDao.getWorkspace().localToModels()
     }
 
-    override suspend fun getWaitWorkspaces(): Flow<Result<List<WaitWorkspaceModel?>>> =
-        flow {
-            val response = workspaceDatasource.getWaitWorkspace().safeResponse()
-            emit(response.toModels())
-        }
-            .flowOn(dispatcher)
-            .asResult()
+    override suspend fun getWaitWorkspaces(): Flow<Result<List<WaitWorkspaceModel?>>> = flow {
+        val response = workspaceDatasource.getWaitWorkspace().safeResponse()
+        emit(response.toModels())
+    }
+        .flowOn(dispatcher)
+        .asResult()
 
-    override suspend fun getWorkspaceData(workspaceId: String): Flow<Result<WorkspaceModel>>  = flow {
+    override suspend fun getWorkspaceData(workspaceId: String): Flow<Result<WorkspaceModel>> = flow {
         val response = workspaceDatasource.getWorkspaceData(workspaceId).safeResponse()
         emit(response.toModel())
     }
         .flowOn(dispatcher)
         .asResult()
-
 }
-

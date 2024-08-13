@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
@@ -35,7 +34,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.animation.NoInteractionSource
@@ -167,8 +165,8 @@ fun SeugiSmallDropDown(
             ),
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically
-        ){
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             Text(
                 text = selectedItem,
                 modifier = Modifier
@@ -264,10 +262,10 @@ private fun PreviewSeugiDropdown() {
             SeugiSmallDropDown(
                 item = dummyList,
                 title = "전체",
-                onItemSelected = {selectedItem = it},
+                onItemSelected = { selectedItem = it },
                 isExpanded = isExpanded,
                 selectedItem = selectedItem,
-                icon = icon
+                icon = icon,
             ) {
                 isExpanded = it
             }

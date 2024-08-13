@@ -10,7 +10,7 @@ data class WorkspaceDetailUiState(
     val nowWorkspace: Pair<String, String> = Pair("", ""),
     val workspaceImage: String = "",
     val myWorkspace: ImmutableList<WorkspaceModel?> = listOf(WorkspaceModel()).toImmutableList(),
-    val waitWorkspace: ImmutableList<WaitWorkspaceModel?> = listOf(WaitWorkspaceModel()).toImmutableList()
+    val waitWorkspace: ImmutableList<WaitWorkspaceModel?> = listOf(WaitWorkspaceModel()).toImmutableList(),
 )
 
 sealed interface WorkspaceDetailSideEffect {

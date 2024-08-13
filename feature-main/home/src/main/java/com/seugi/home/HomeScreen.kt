@@ -90,7 +90,7 @@ internal fun HomeScreen(
     navigateToChatSeugi: () -> Unit,
     navigateToJoinWorkspace: () -> Unit,
     onNavigationVisibleChange: (Boolean) -> Unit,
-    navigateToWorkspaceDetail: (String) -> Unit
+    navigateToWorkspaceDetail: (String) -> Unit,
 ) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()

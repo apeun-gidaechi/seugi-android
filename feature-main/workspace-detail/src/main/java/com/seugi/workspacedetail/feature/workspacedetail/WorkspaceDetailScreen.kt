@@ -26,9 +26,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -60,10 +60,9 @@ import com.seugi.designsystem.theme.White
 import com.seugi.ui.CollectAsSideEffect
 import com.seugi.workspacedetail.feature.workspacedetail.model.WorkspaceDetailSideEffect
 
-
 data class TestModel(
     val workspaceId: String,
-    val workspaceName: String
+    val workspaceName: String,
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,25 +71,23 @@ fun WorkspaceDetailScreen(
     viewModel: WorkspaceDetailViewModel = hiltViewModel(),
     navigateToJoinWorkspace: () -> Unit,
     popBackStack: () -> Unit,
-    workspaceId: String
+    workspaceId: String,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
-
 
     LaunchedEffect(key1 = true) {
         viewModel.loadWorkspace()
         viewModel.changeNowWorkspace(workspaceId)
     }
     viewModel.sideEffect.CollectAsSideEffect {
-        when(it){
+        when (it) {
             is WorkspaceDetailSideEffect.Error -> {
                 Toast.makeText(context, "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
             }
         }
     }
-
 
     SeugiTheme {
         if (showDialog) {
@@ -99,19 +96,19 @@ fun WorkspaceDetailScreen(
                     modifier = Modifier
                         .background(
                             color = Color.White,
-                            shape = RoundedCornerShape(12.dp)
-                        )
+                            shape = RoundedCornerShape(12.dp),
+                        ),
                 ) {
                     Column {
                         Column(
                             modifier = Modifier
-                                .padding(16.dp)
+                                .padding(16.dp),
                         ) {
                             Text(
                                 modifier = Modifier.padding(bottom = 4.dp),
                                 text = "가입된 학교",
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = Gray600
+                                color = Gray600,
                             )
                             LazyColumn {
                                 itemsIndexed(state.myWorkspace) { index, item ->
@@ -120,7 +117,7 @@ fun WorkspaceDetailScreen(
                                             modifier = Modifier
                                                 .bounceClick(onClick = {
                                                     viewModel.changeNowWorkspace(
-                                                        workspaceId = item?.workspaceId!!
+                                                        workspaceId = item?.workspaceId!!,
                                                     )
                                                     showDialog = false
                                                 })
@@ -128,15 +125,15 @@ fun WorkspaceDetailScreen(
                                                 .height(56.dp)
                                                 .background(
                                                     color = Gray100,
-                                                    shape = RoundedCornerShape(8.dp)
+                                                    shape = RoundedCornerShape(8.dp),
                                                 ),
-                                            verticalAlignment = Alignment.CenterVertically
+                                            verticalAlignment = Alignment.CenterVertically,
                                         ) {
                                             Text(
                                                 modifier = Modifier.padding(start = 16.dp),
                                                 // null일 수가 없어서 넣었습니다.
                                                 text = item?.workspaceName!!,
-                                                style = MaterialTheme.typography.titleMedium
+                                                style = MaterialTheme.typography.titleMedium,
                                             )
                                             Spacer(modifier = Modifier.weight(1f))
                                             Image(
@@ -158,14 +155,14 @@ fun WorkspaceDetailScreen(
                                 }
                             }
 
-                            if (state.waitWorkspace.any{it != null}) {
+                            if (state.waitWorkspace.any { it != null }) {
                                 Spacer(modifier = Modifier.height(16.dp))
 
                                 Text(
                                     modifier = Modifier.padding(bottom = 4.dp),
                                     text = "가입 대기 중",
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = Gray600
+                                    color = Gray600,
                                 )
 
                                 LazyColumn {
@@ -178,14 +175,14 @@ fun WorkspaceDetailScreen(
                                                     .height(56.dp)
                                                     .background(
                                                         color = Gray100,
-                                                        shape = RoundedCornerShape(8.dp)
+                                                        shape = RoundedCornerShape(8.dp),
                                                     ),
-                                                verticalAlignment = Alignment.CenterVertically
+                                                verticalAlignment = Alignment.CenterVertically,
                                             ) {
                                                 Text(
                                                     modifier = Modifier.padding(start = 16.dp),
                                                     text = item?.workspaceName ?: "",
-                                                    style = MaterialTheme.typography.titleMedium
+                                                    style = MaterialTheme.typography.titleMedium,
                                                 )
                                                 Spacer(modifier = Modifier.weight(1f))
                                                 Image(
@@ -204,12 +201,11 @@ fun WorkspaceDetailScreen(
                                             Spacer(modifier = Modifier.height(4.dp))
                                         }
                                     }
-
                                 }
                             }
                             Row(
                                 modifier = Modifier.padding(16.dp),
-                                horizontalArrangement = Arrangement.End
+                                horizontalArrangement = Arrangement.End,
                             ) {
                                 Spacer(modifier = Modifier.weight(1f))
                                 Text(
@@ -217,32 +213,31 @@ fun WorkspaceDetailScreen(
                                         .padding(vertical = 9.dp, horizontal = 12.dp)
                                         .clickable(
                                             interactionSource = NoInteractionSource(),
-                                            indication = null
+                                            indication = null,
                                         ) {
-                                            //TODO 학교 만들기 네비게이션
+                                            // TODO 학교 만들기 네비게이션
                                         },
                                     text = "새 학교 만들기",
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = Gray600
+                                    color = Gray600,
                                 )
                                 Text(
                                     modifier = Modifier
                                         .padding(vertical = 9.dp, horizontal = 12.dp)
                                         .clickable(
                                             interactionSource = NoInteractionSource(),
-                                            indication = null
+                                            indication = null,
                                         ) {
                                             navigateToJoinWorkspace()
                                         },
                                     text = "기존 학교 가입",
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = Black
+                                    color = Black,
                                 )
                             }
                         }
                     }
                 }
-
             }
         }
 
@@ -254,7 +249,7 @@ fun WorkspaceDetailScreen(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .size(100.dp)
-                        .background(White, shape = RoundedCornerShape(8.dp))
+                        .background(White, shape = RoundedCornerShape(8.dp)),
                 ) {
                     CircularProgressIndicator()
                 }
@@ -266,63 +261,64 @@ fun WorkspaceDetailScreen(
                 SeugiTopBar(
                     title = {
                         Text(
-                            text = "내 학교", style = MaterialTheme.typography.titleLarge
+                            text = "내 학교",
+                            style = MaterialTheme.typography.titleLarge,
                         )
                     },
                     onNavigationIconClick = {
                         popBackStack()
                     },
-                    backIconCheck = true
+                    backIconCheck = true,
                 )
-            }
+            },
         ) {
             Column(
                 modifier = Modifier
                     .padding(it)
-                    .fillMaxSize()
+                    .fillMaxSize(),
             ) {
                 Row(
                     modifier = Modifier
                         .padding(top = 12.dp, bottom = 24.dp)
                         .fillMaxWidth()
                         .height(60.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     SeugiRoundedCircleImage(
                         size = Size.ExtraSmall,
                         image = state.workspaceImage,
                         onClick = {},
-                        modifier = Modifier.padding(start = 20.dp)
+                        modifier = Modifier.padding(start = 20.dp),
                     )
                     Column(
                         modifier = Modifier
                             .padding(start = 16.dp, end = 20.dp)
                             .background(Color.White)
-                            .fillMaxSize()
+                            .fillMaxSize(),
                     ) {
                         Text(
                             modifier = Modifier
                                 .padding(start = 4.dp),
                             text = state.nowWorkspace.first,
-                            style = MaterialTheme.typography.bodyLarge
+                            style = MaterialTheme.typography.bodyLarge,
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         SeugiButton(
                             onClick = { showDialog = true },
                             type = ButtonType.Gray,
-                            text = "학교 전환"
+                            text = "학교 전환",
                         )
                     }
                 }
                 SeugiDivider(
                     type = DividerType.WIDTH,
-                    size = 8.dp
+                    size = 8.dp,
                 )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(40.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Image(
                         modifier = Modifier
@@ -331,18 +327,19 @@ fun WorkspaceDetailScreen(
                         painter = painterResource(id = R.drawable.ic_setting_fill),
                         contentDescription = "설정 톱니바퀴",
                         colorFilter = ColorFilter.tint(Color.Black),
-                        contentScale = ContentScale.Crop
+                        contentScale = ContentScale.Crop,
                     )
                 }
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = "일반", style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(start = 20.dp)
+                        text = "일반",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(start = 20.dp),
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Image(
@@ -359,11 +356,12 @@ fun WorkspaceDetailScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = "알림 설정", style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(start = 20.dp)
+                        text = "알림 설정",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(start = 20.dp),
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Image(
@@ -381,7 +379,7 @@ fun WorkspaceDetailScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(40.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Image(
                         modifier = Modifier
@@ -390,18 +388,19 @@ fun WorkspaceDetailScreen(
                         painter = painterResource(id = R.drawable.ic_person_fill),
                         contentDescription = "설정 톱니바퀴",
                         colorFilter = ColorFilter.tint(Color.Black),
-                        contentScale = ContentScale.Crop
+                        contentScale = ContentScale.Crop,
                     )
                 }
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = "멤버", style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(start = 20.dp)
+                        text = "멤버",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(start = 20.dp),
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Image(
@@ -418,11 +417,12 @@ fun WorkspaceDetailScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = "멤버 초대", style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(start = 20.dp)
+                        text = "멤버 초대",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(start = 20.dp),
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Image(
@@ -439,4 +439,3 @@ fun WorkspaceDetailScreen(
         }
     }
 }
-

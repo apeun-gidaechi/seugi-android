@@ -80,7 +80,7 @@ fun SeugiMemberList(userName: String, userProfile: String?, isCrown: Boolean = f
                 .padding(end = 16.dp)
                 .size(24.dp),
             painter = painterResource(R.drawable.ic_detail_vertical_line),
-            contentDescription = ""
+            contentDescription = "",
         )
     }
 }
