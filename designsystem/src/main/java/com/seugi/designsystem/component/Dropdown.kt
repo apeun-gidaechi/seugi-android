@@ -6,12 +6,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -32,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.theme.Black
@@ -139,6 +143,76 @@ fun SeugiDropDown(
 }
 
 @Composable
+fun SeugiSmallDropDown(
+    item: List<String>,
+    title: String,
+    onItemSelected: (String) -> Unit,
+    isExpanded: Boolean,
+    selectedItem: String,
+    icon: ImageVector,
+    onExpandedChanged: (Boolean) -> Unit,
+) {
+    val scrollState = rememberScrollState()
+
+    Column(
+        modifier = Modifier
+            .padding(20.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .clickable(
+                onClick = {
+                    onExpandedChanged(!isExpanded)
+                },
+            ),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                text = selectedItem,
+                modifier = Modifier
+                    .wrapContentWidth(),
+                style = MaterialTheme.typography.titleMedium,
+                color = Black,
+            )
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+            )
+        }
+        DropdownMenu(
+            expanded = isExpanded,
+            onDismissRequest = {
+                onExpandedChanged(false)
+            },
+            modifier = Modifier
+                .width(300.dp)
+                .align(Alignment.CenterHorizontally)
+                .background(White)
+                .heightIn(max = 240.dp),
+            scrollState = scrollState,
+        ) {
+            item.forEach { label ->
+                DropdownMenuItem(
+                    onClick = {
+                        onItemSelected(label)
+                        onExpandedChanged(false)
+                    },
+                    text = {
+                        Text(
+                            text = label,
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                    },
+                    modifier = Modifier
+                        .background(White)
+                        .wrapContentWidth(),
+                )
+            }
+        }
+    }
+}
+
+@Composable
 @Preview(showBackground = true)
 private fun PreviewSeugiDropdown() {
     val dummyList = listOf("1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2")
@@ -181,6 +255,19 @@ private fun PreviewSeugiDropdown() {
                 icon = icon,
                 onExpandedChanged = { isExpanded = it },
             )
+
+            Spacer(modifier = Modifier.padding(horizontal = 20.dp))
+
+            SeugiSmallDropDown(
+                item = dummyList,
+                title = "전체",
+                onItemSelected = {selectedItem = it},
+                isExpanded = isExpanded,
+                selectedItem = selectedItem,
+                icon = icon
+            ) {
+                isExpanded = it
+            }
         }
     }
 }
