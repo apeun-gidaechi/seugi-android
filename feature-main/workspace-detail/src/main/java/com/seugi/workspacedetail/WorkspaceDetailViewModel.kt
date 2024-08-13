@@ -58,4 +58,12 @@ class WorkspaceDetailViewModel @Inject constructor(
             )
         }
     }
+
+    fun setLoading(isLoading: Boolean) {
+        _state.update {
+            it.copy(
+                loading = isLoading
+            )
+        }
+    }
 }
