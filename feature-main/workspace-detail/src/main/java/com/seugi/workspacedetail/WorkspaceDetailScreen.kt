@@ -113,10 +113,11 @@ fun WorkspaceDetailScreen(
                                                     shape = RoundedCornerShape(8.dp)
                                                 )
                                                 .bounceClick(onClick = {
-                                                    Log.d(
-                                                        "TAG",
-                                                        "${item?.workspaceId}: "
+                                                    viewModel.changeNowWorkspace(
+                                                        workspaceName = item?.workspaceName!!,
+                                                        workspaceId = item.workspaceId
                                                     )
+                                                    showDialog = false
                                                 }),
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
@@ -279,7 +280,7 @@ fun WorkspaceDetailScreen(
                         Text(
                             modifier = Modifier
                                 .padding(start = 4.dp),
-                            text = "경북대학교 사범대학 부설 고등학교",
+                            text = state.nowWorkspace.first,
                             style = MaterialTheme.typography.bodyLarge
                         )
                         Spacer(modifier = Modifier.weight(1f))

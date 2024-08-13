@@ -50,4 +50,15 @@ class WorkspaceDetailViewModel @Inject constructor(
             }
         }
     }
+
+    fun changeNowWorkspace(
+        workspaceName: String,
+        workspaceId: String
+    ){
+        _state.update {
+            it.copy(
+                nowWorkspace = Pair(workspaceName, workspaceId)
+            )
+        }
+    }
 }
