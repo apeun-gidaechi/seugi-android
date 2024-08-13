@@ -106,5 +106,12 @@ class WorkspaceRepositoryImpl @Inject constructor(
             .flowOn(dispatcher)
             .asResult()
 
+    override suspend fun getWorkspaceData(workspaceId: String): Flow<Result<WorkspaceModel>>  = flow {
+        val response = workspaceDatasource.getWorkspaceData(workspaceId).safeResponse()
+        emit(response.toModel())
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
 }
 

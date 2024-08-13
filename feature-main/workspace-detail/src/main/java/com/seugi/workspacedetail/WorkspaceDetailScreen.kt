@@ -77,8 +77,8 @@ fun WorkspaceDetailScreen(
 
 
     LaunchedEffect(key1 = true) {
-
         viewModel.loadWorkspace()
+        viewModel.changeNowWorkspace(workspaceName, workspaceId)
     }
 
 
@@ -303,7 +303,7 @@ fun WorkspaceDetailScreen(
                         Text(
                             modifier = Modifier
                                 .padding(start = 4.dp),
-                            text = if(state.nowWorkspace.first == "")workspaceName else state.nowWorkspace.first,
+                            text = state.nowWorkspace.first,
                             style = MaterialTheme.typography.bodyLarge
                         )
                         Spacer(modifier = Modifier.weight(1f))

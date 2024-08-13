@@ -15,4 +15,5 @@ interface WorkspaceDataSource {
 
     suspend fun getMyWorkspaces(): BaseResponse<List<WorkspaceResponse>>
     suspend fun getWaitWorkspace(): BaseResponse<List<WaitWorkspaceResponse>>
+    suspend fun getWorkspaceData(workspaceId: String): BaseResponse<WorkspaceResponse>
 }

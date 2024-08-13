@@ -8,6 +8,7 @@ import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.workspacedetail.model.WorkspaceDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -52,11 +53,26 @@ class WorkspaceDetailViewModel @Inject constructor(
         workspaceName: String,
         workspaceId: String
     ) {
-        _state.update {
-            it.copy(
-                nowWorkspace = Pair(workspaceName, workspaceId)
-            )
+        viewModelScope.launch{
+            setLoading(true)
+            workspaceRepository.getWorkspaceData(workspaceId).collect{
+                when(it){
+                    is Result.Success ->{
+                        _state.update {uiState ->
+                            uiState.copy(
+                                nowWorkspace = Pair(it.data.workspaceName, it.data.workspaceId),
+                                workspaceImage = it.data.workspaceImageUrl
+                            )
+                        }
+                    }
+                    else ->{
+
+                    }
+                }
+            }
+            setLoading(false)
         }
+
     }
 
     fun setLoading(isLoading: Boolean) {
