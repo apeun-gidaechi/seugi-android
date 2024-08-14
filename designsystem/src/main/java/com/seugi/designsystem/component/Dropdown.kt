@@ -6,12 +6,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -34,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.seugi.designsystem.animation.NoInteractionSource
 import com.seugi.designsystem.theme.Black
 import com.seugi.designsystem.theme.Gray200
 import com.seugi.designsystem.theme.Gray300
@@ -41,6 +44,8 @@ import com.seugi.designsystem.theme.Gray400
 import com.seugi.designsystem.theme.Gray500
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.designsystem.theme.White
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 sealed class DropDownType(
     val textColor: Color,
@@ -53,7 +58,7 @@ sealed class DropDownType(
 
 @Composable
 fun SeugiDropDown(
-    item: List<String>,
+    item: ImmutableList<String>,
     title: String,
     type: DropDownType,
     onItemSelected: (String) -> Unit,
@@ -139,6 +144,78 @@ fun SeugiDropDown(
 }
 
 @Composable
+fun SeugiSmallDropDown(
+    modifier: Modifier = Modifier,
+    item: ImmutableList<String>,
+    title: String,
+    onItemSelected: (String) -> Unit,
+    isExpanded: Boolean,
+    selectedItem: String,
+    icon: ImageVector,
+    onExpandedChanged: (Boolean) -> Unit,
+) {
+    val scrollState = rememberScrollState()
+
+    Column(
+        modifier = modifier
+            .clickable(
+                onClick = {
+                    onExpandedChanged(!isExpanded)
+                },
+                interactionSource = NoInteractionSource(),
+                indication = null,
+            ),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = selectedItem,
+                modifier = Modifier
+                    .wrapContentWidth(),
+                style = MaterialTheme.typography.titleMedium,
+                color = Black,
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+            )
+        }
+        DropdownMenu(
+            expanded = isExpanded,
+            onDismissRequest = {
+                onExpandedChanged(false)
+            },
+            modifier = Modifier
+                .width(300.dp)
+                .align(Alignment.CenterHorizontally)
+                .background(White)
+                .heightIn(max = 240.dp),
+            scrollState = scrollState,
+        ) {
+            item.forEach { label ->
+                DropdownMenuItem(
+                    onClick = {
+                        onItemSelected(label)
+                        onExpandedChanged(false)
+                    },
+                    text = {
+                        Text(
+                            text = label,
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                    },
+                    modifier = Modifier
+                        .background(White)
+                        .wrapContentWidth(),
+                )
+            }
+        }
+    }
+}
+
+@Composable
 @Preview(showBackground = true)
 private fun PreviewSeugiDropdown() {
     val dummyList = listOf("1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2")
@@ -159,7 +236,7 @@ private fun PreviewSeugiDropdown() {
             verticalArrangement = Arrangement.Center,
         ) {
             SeugiDropDown(
-                item = dummyList,
+                item = dummyList.toImmutableList(),
                 title = "비밀번호 선택",
                 type = DropDownType.Disabled,
                 onItemSelected = { selectedItem = it },
@@ -172,7 +249,7 @@ private fun PreviewSeugiDropdown() {
             Spacer(modifier = Modifier.padding(horizontal = 20.dp))
 
             SeugiDropDown(
-                item = dummyList,
+                item = dummyList.toImmutableList(),
                 title = "비밀번호 선택",
                 type = DropDownType.Typing,
                 onItemSelected = { selectedItem = it },
@@ -181,6 +258,19 @@ private fun PreviewSeugiDropdown() {
                 icon = icon,
                 onExpandedChanged = { isExpanded = it },
             )
+
+            Spacer(modifier = Modifier.padding(horizontal = 20.dp))
+
+            SeugiSmallDropDown(
+                item = dummyList.toImmutableList(),
+                title = "전체",
+                onItemSelected = { selectedItem = it },
+                isExpanded = isExpanded,
+                selectedItem = selectedItem,
+                icon = icon,
+            ) {
+                isExpanded = it
+            }
         }
     }
 }

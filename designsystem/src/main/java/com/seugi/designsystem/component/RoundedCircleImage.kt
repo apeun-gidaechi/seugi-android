@@ -63,7 +63,7 @@ fun SeugiRoundedCircleImage(modifier: Modifier = Modifier, size: Size, image: St
         modifier = modifier
             .bounceClick(onClick)
             .size(size.size)
-            .border(width = 2.dp, shape = RoundedCornerShape(size.radius), color = Gray400)
+            .border(width = 1.dp, shape = RoundedCornerShape(size.radius), color = Gray400)
             .clip(shape = RoundedCornerShape(size.radius)),
         model = image,
         contentDescription = "",

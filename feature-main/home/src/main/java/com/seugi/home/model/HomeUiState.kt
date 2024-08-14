@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 
 data class HomeUiState(
     val showDialog: Boolean = false,
+    val nowWorkspace: Pair<String, String> = Pair("", ""),
     val schoolState: CommonUiState<String> = CommonUiState.Loading,
     val timeScheduleState: CommonUiState<ImmutableList<String>> = CommonUiState.Loading,
     val mealState: CommonUiState<Triple<Pair<String, String>, Pair<String, String>, Pair<String, String>>> = CommonUiState.Loading,

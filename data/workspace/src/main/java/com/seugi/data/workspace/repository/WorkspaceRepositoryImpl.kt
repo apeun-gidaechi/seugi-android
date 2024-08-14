@@ -12,6 +12,7 @@ import com.seugi.data.workspace.mapper.toEntities
 import com.seugi.data.workspace.mapper.toModel
 import com.seugi.data.workspace.mapper.toModels
 import com.seugi.data.workspace.model.CheckWorkspaceModel
+import com.seugi.data.workspace.model.WaitWorkspaceModel
 import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.local.room.dao.WorkspaceDao
 import com.seugi.network.core.response.safeResponse
@@ -70,7 +71,10 @@ class WorkspaceRepositoryImpl @Inject constructor(
 
         for (workspace in workspaces) {
             // 데이터베이스에서 동일한 workspaceId 또는 workspaceName을 가진 항목의 개수 조회
-            val existingCount = workspaceDao.countExistingWorkspaceByIdOrName(workspace.workspaceId, workspace.workspaceName)
+            val existingCount = workspaceDao.countExistingWorkspaceByIdOrName(
+                workspace.workspaceId,
+                workspace.workspaceName,
+            )
             if (existingCount == 0) {
                 // 중복되지 않는 워크스페이스를 리스트에 추가
                 nonDuplicateWorkspaces.add(workspace)
@@ -89,4 +93,18 @@ class WorkspaceRepositoryImpl @Inject constructor(
     override suspend fun getAllWorkspaces(): List<WorkspaceModel?> {
         return workspaceDao.getWorkspace().localToModels()
     }
+
+    override suspend fun getWaitWorkspaces(): Flow<Result<List<WaitWorkspaceModel?>>> = flow {
+        val response = workspaceDatasource.getWaitWorkspace().safeResponse()
+        emit(response.toModels())
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun getWorkspaceData(workspaceId: String): Flow<Result<WorkspaceModel>> = flow {
+        val response = workspaceDatasource.getWorkspaceData(workspaceId).safeResponse()
+        emit(response.toModel())
+    }
+        .flowOn(dispatcher)
+        .asResult()
 }

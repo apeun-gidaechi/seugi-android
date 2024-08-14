@@ -4,6 +4,7 @@ import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.response.ProfileResponse
 import com.seugi.network.core.response.Response
 import com.seugi.network.workspace.response.CheckWorkspaceResponse
+import com.seugi.network.workspace.response.WaitWorkspaceResponse
 import com.seugi.network.workspace.response.WorkspaceResponse
 
 interface WorkspaceDataSource {
@@ -13,4 +14,6 @@ interface WorkspaceDataSource {
     suspend fun getMembers(workspaceId: String): BaseResponse<List<ProfileResponse>>
 
     suspend fun getMyWorkspaces(): BaseResponse<List<WorkspaceResponse>>
+    suspend fun getWaitWorkspace(): BaseResponse<List<WaitWorkspaceResponse>>
+    suspend fun getWorkspaceData(workspaceId: String): BaseResponse<WorkspaceResponse>
 }

@@ -47,6 +47,7 @@ class SchoolCodeViewModel @Inject constructor(
                     }
 
                     is Result.Error -> {
+                        it.throwable.printStackTrace()
                         _schoolCodeSideEffect.send(SchoolCodeSideEffect.FiledSearchWorkspace(it.throwable))
                     }
 

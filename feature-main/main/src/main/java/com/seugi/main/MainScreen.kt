@@ -50,6 +50,8 @@ import com.seugi.workspace.navigation.navigateToWaitingJoin
 import com.seugi.workspace.navigation.schoolCode
 import com.seugi.workspace.navigation.selectingJob
 import com.seugi.workspace.navigation.waitingJoin
+import com.seugi.workspacedetail.navigation.navigateToWorkspaceDetail
+import com.seugi.workspacedetail.navigation.workspaceDetailScreen
 
 private const val NAVIGATION_ANIM = 400
 
@@ -130,6 +132,11 @@ internal fun MainScreen(
                     navHostController.navigateToSelectingJob()
                 },
                 onNavigationVisibleChange = onNavigationVisibleChange,
+                navigateToWorkspaceDetail = { id ->
+                    navHostController.navigateToWorkspaceDetail(
+                        workspaceId = id,
+                    )
+                },
             )
 
             chatScreen(
@@ -230,6 +237,14 @@ internal fun MainScreen(
                     )
                 },
                 popBackStack = { navHostController.popBackStack() },
+            )
+            workspaceDetailScreen(
+                navigateToJoinWorkspace = {
+                    navHostController.navigateToSelectingJob()
+                },
+                popBackStack = {
+                    navHostController.popBackStack()
+                },
             )
         }
     }
