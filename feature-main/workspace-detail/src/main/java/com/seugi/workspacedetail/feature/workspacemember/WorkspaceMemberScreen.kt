@@ -42,6 +42,7 @@ import com.seugi.designsystem.theme.Gray100
 import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 data class TestMember(
     val name: String,
@@ -125,7 +126,7 @@ fun WorkspaceMemberScreen() {
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 SeugiSmallDropDown(
-                    item = dummyList,
+                    item = dummyList.toImmutableList(),
                     title = "전체",
                     onItemSelected = { selectedItem = it },
                     isExpanded = isExpanded,

@@ -44,6 +44,8 @@ import com.seugi.designsystem.theme.Gray400
 import com.seugi.designsystem.theme.Gray500
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.designsystem.theme.White
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 sealed class DropDownType(
     val textColor: Color,
@@ -56,7 +58,7 @@ sealed class DropDownType(
 
 @Composable
 fun SeugiDropDown(
-    item: List<String>,
+    item: ImmutableList<String>,
     title: String,
     type: DropDownType,
     onItemSelected: (String) -> Unit,
@@ -144,7 +146,7 @@ fun SeugiDropDown(
 @Composable
 fun SeugiSmallDropDown(
     modifier: Modifier = Modifier,
-    item: List<String>,
+    item: ImmutableList<String>,
     title: String,
     onItemSelected: (String) -> Unit,
     isExpanded: Boolean,
@@ -234,7 +236,7 @@ private fun PreviewSeugiDropdown() {
             verticalArrangement = Arrangement.Center,
         ) {
             SeugiDropDown(
-                item = dummyList,
+                item = dummyList.toImmutableList(),
                 title = "비밀번호 선택",
                 type = DropDownType.Disabled,
                 onItemSelected = { selectedItem = it },
@@ -247,7 +249,7 @@ private fun PreviewSeugiDropdown() {
             Spacer(modifier = Modifier.padding(horizontal = 20.dp))
 
             SeugiDropDown(
-                item = dummyList,
+                item = dummyList.toImmutableList(),
                 title = "비밀번호 선택",
                 type = DropDownType.Typing,
                 onItemSelected = { selectedItem = it },
@@ -260,7 +262,7 @@ private fun PreviewSeugiDropdown() {
             Spacer(modifier = Modifier.padding(horizontal = 20.dp))
 
             SeugiSmallDropDown(
-                item = dummyList,
+                item = dummyList.toImmutableList(),
                 title = "전체",
                 onItemSelected = { selectedItem = it },
                 isExpanded = isExpanded,
