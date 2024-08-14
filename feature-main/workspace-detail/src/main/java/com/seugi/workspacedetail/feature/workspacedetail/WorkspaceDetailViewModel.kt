@@ -43,7 +43,7 @@ class WorkspaceDetailViewModel @Inject constructor(
                             )
                         }
                     }
-                    is Result.Error ->{
+                    is Result.Error -> {
                         it.throwable.printStackTrace()
                         _sideEffect.send(WorkspaceDetailSideEffect.Error(it.throwable))
                     }
@@ -61,11 +61,15 @@ class WorkspaceDetailViewModel @Inject constructor(
                     is Result.Success -> {
                         _state.update { uiState ->
                             uiState.copy(
-                                nowWorkspace = WorkspaceModel(workspaceId = it.data.workspaceId, workspaceName = it.data.workspaceName, workspaceImageUrl = it.data.workspaceImageUrl),
+                                nowWorkspace = WorkspaceModel(
+                                    workspaceId = it.data.workspaceId,
+                                    workspaceName = it.data.workspaceName,
+                                    workspaceImageUrl = it.data.workspaceImageUrl,
+                                ),
                             )
                         }
                     }
-                    is Result.Error ->{
+                    is Result.Error -> {
                         it.throwable.printStackTrace()
                         _sideEffect.send(WorkspaceDetailSideEffect.Error(it.throwable))
                     }
