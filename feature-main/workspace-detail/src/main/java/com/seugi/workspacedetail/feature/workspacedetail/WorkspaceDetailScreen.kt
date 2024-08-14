@@ -286,7 +286,7 @@ fun WorkspaceDetailScreen(
                 ) {
                     SeugiRoundedCircleImage(
                         size = Size.ExtraSmall,
-                        image = state.workspaceImage,
+                        image = state.nowWorkspace.workspaceImageUrl,
                         onClick = {},
                         modifier = Modifier.padding(start = 20.dp),
                     )
@@ -299,7 +299,7 @@ fun WorkspaceDetailScreen(
                         Text(
                             modifier = Modifier
                                 .padding(start = 4.dp),
-                            text = state.nowWorkspace.first,
+                            text = state.nowWorkspace.workspaceName,
                             style = MaterialTheme.typography.bodyLarge,
                         )
                         Spacer(modifier = Modifier.weight(1f))
