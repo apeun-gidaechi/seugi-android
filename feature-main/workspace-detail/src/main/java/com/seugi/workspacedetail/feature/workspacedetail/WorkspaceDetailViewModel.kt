@@ -42,8 +42,11 @@ class WorkspaceDetailViewModel @Inject constructor(
                             )
                         }
                     }
+                    is Result.Error ->{
+                        it.throwable.printStackTrace()
+                        _sideEffect.send(WorkspaceDetailSideEffect.Error(it.throwable))
+                    }
                     else -> {
-                        _sideEffect.send(WorkspaceDetailSideEffect.Error)
                     }
                 }
             }
@@ -62,8 +65,11 @@ class WorkspaceDetailViewModel @Inject constructor(
                             )
                         }
                     }
+                    is Result.Error ->{
+                        it.throwable.printStackTrace()
+                        _sideEffect.send(WorkspaceDetailSideEffect.Error(it.throwable))
+                    }
                     else -> {
-                        _sideEffect.send(WorkspaceDetailSideEffect.Error)
                     }
                 }
             }

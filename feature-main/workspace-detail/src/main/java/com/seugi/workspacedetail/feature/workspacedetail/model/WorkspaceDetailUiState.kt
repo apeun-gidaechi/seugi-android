@@ -14,5 +14,5 @@ data class WorkspaceDetailUiState(
 )
 
 sealed interface WorkspaceDetailSideEffect {
-    data object Error : WorkspaceDetailSideEffect
+    data class Error(val throwable: Throwable) : WorkspaceDetailSideEffect
 }

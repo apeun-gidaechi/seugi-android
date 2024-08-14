@@ -84,7 +84,7 @@ fun WorkspaceDetailScreen(
     viewModel.sideEffect.CollectAsSideEffect {
         when (it) {
             is WorkspaceDetailSideEffect.Error -> {
-                Toast.makeText(context, "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, it.throwable.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
