@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +32,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiMemberList
@@ -51,7 +54,9 @@ data class TestMember(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WorkspaceMemberScreen() {
+fun WorkspaceMemberScreen(
+    viewModel: WorkspaceMemberViewModel = hiltViewModel()
+) {
     val dummyList = listOf("1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2")
     val members = listOf(TestMember("노영재", null), TestMember("노영재", null), TestMember("노영재", null))
     var selectedItem by remember { mutableStateOf("전체") }
@@ -62,7 +67,11 @@ fun WorkspaceMemberScreen() {
     } else {
         Icons.Filled.KeyboardArrowDown
     }
-
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    LaunchedEffect(key1 = true) {
+        viewModel.getAllMember("")
+    }
+    Log.d("TAG", "${state.member}: ")
     SeugiTheme {
         Scaffold(
             topBar = {
