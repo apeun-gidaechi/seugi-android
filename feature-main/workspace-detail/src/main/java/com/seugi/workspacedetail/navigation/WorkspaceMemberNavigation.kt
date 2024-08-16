@@ -7,28 +7,27 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.seugi.workspacedetail.feature.workspacedetail.WorkspaceDetailScreen
+import com.seugi.workspacedetail.feature.workspacemember.WorkspaceMemberScreen
 
-const val WORKSPACE_DETAIL_ROUTE = "WORKSPACE_DETAIL_ROUTE"
+const val WORKSPACE_MEMBER_ROUTE = "WORKSPACE_MEMBER_ROUTE"
 
-fun NavController.navigateToWorkspaceDetail(workspaceId: String, navOptions: NavOptions? = null) {
+fun NavController.navigateToWorkspaceMember(workspaceId: String, navOptions: NavOptions? = null) {
     navigate(
-        route = "$WORKSPACE_DETAIL_ROUTE/$workspaceId",
+        route = "$WORKSPACE_MEMBER_ROUTE/$workspaceId",
         navOptions = navOptions,
     )
 }
 
-fun NavGraphBuilder.workspaceDetailScreen(navigateToJoinWorkspace: () -> Unit, popBackStack: () -> Unit, navigateToWorkspaceMember:(String) -> Unit) {
+fun NavGraphBuilder.workspaceMemberScreen(popBackStack: () -> Unit) {
     composable(
-        route = "$WORKSPACE_DETAIL_ROUTE/{workspaceId}",
+        route = "$WORKSPACE_MEMBER_ROUTE/{workspaceId}",
         arguments = listOf(
             navArgument("workspaceId") { NavType.StringType },
         ),
     ) {
-        WorkspaceDetailScreen(
+        WorkspaceMemberScreen(
             workspaceId = it.arguments?.getString("workspaceId") ?: "",
-            navigateToJoinWorkspace = navigateToJoinWorkspace,
             popBackStack = popBackStack,
-            navigateToWorkspaceMember = navigateToWorkspaceMember
         )
     }
 }

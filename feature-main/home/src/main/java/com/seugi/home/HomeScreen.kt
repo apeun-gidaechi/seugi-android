@@ -181,9 +181,9 @@ internal fun HomeScreen(
                             Spacer(modifier = Modifier.weight(1f))
                             SeugiButton(
                                 onClick = {
-                                    Log.d("TAG", "${state.nowWorkspace.first}, ${state.nowWorkspace.second}: ")
+                                    Log.d("TAG", "홈 워크페이스${state.nowWorkspace.first}, ${state.nowWorkspace.second}: ")
                                     onNavigationVisibleChange(false)
-                                    navigateToWorkspaceDetail("state.nowWorkspace.second")
+                                    navigateToWorkspaceDetail(state.nowWorkspace.first)
                                 },
                                 type = ButtonType.Gray,
                                 text = "전환",

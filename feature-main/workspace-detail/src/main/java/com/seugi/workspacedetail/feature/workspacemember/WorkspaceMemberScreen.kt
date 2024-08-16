@@ -55,7 +55,9 @@ data class TestMember(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WorkspaceMemberScreen(
-    viewModel: WorkspaceMemberViewModel = hiltViewModel()
+    viewModel: WorkspaceMemberViewModel = hiltViewModel(),
+    popBackStack: () -> Unit,
+    workspaceId: String
 ) {
     val dummyList = listOf("1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2")
     val members = listOf(TestMember("노영재", null), TestMember("노영재", null), TestMember("노영재", null))
@@ -69,6 +71,7 @@ fun WorkspaceMemberScreen(
     }
     val state by viewModel.state.collectAsStateWithLifecycle()
     LaunchedEffect(key1 = true) {
+        Log.d("TAG", "workspace Id :$workspaceId ")
         viewModel.getAllMember("")
     }
     Log.d("TAG", "${state.member}: ")

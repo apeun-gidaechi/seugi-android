@@ -72,6 +72,7 @@ fun WorkspaceDetailScreen(
     navigateToJoinWorkspace: () -> Unit,
     popBackStack: () -> Unit,
     workspaceId: String,
+    navigateToWorkspaceMember:(String) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showDialog by remember { mutableStateOf(false) }
@@ -393,6 +394,9 @@ fun WorkspaceDetailScreen(
                 }
                 Row(
                     modifier = Modifier
+                        .clickable {
+                            navigateToWorkspaceMember(state.nowWorkspace.workspaceId)
+                        }
                         .fillMaxWidth()
                         .height(56.dp),
                     verticalAlignment = Alignment.CenterVertically,

@@ -43,9 +43,10 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             } else {
-                Log.d("TAG", ":있음 ")
+                Log.d("TAG", "${workspaces[0]} ")
                 _state.update {
                     it.copy(
+                        nowWorkspace = Pair(workspaces[0]!!.workspaceId, workspaces[0]!!.workspaceName),
                         showDialog = false,
                         schoolState = CommonUiState.Success("대구 소프트웨어 마이스터 고등학교"),
                         timeScheduleState = CommonUiState.Success(listOf("진로", "소공", "소공", "인공지능 수학", "한국사", "실용영어", "웹프").toImmutableList()),
