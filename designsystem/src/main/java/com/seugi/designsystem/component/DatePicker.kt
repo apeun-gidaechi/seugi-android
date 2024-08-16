@@ -197,7 +197,7 @@ private fun SeugiTimePickerMonth(
     BoxWithConstraints(
         modifier = Modifier.fillMaxWidth(),
     ) {
-        val layoutMaxWidth = maxWidth
+        maxWidth
         Column {
             Row(
                 modifier = Modifier
@@ -260,12 +260,15 @@ private fun SeugiTimePickerMonth(
                                     )
                                     .`if`(isSelect) {
                                         drawBehind {
+                                            val boxWidth = size.width
+                                            val indicatorSize = 38.dp.toPx()
+                                            val offsetX = (boxWidth - indicatorSize) / 2
                                             drawRoundRect(
                                                 color = colors.selectDayContainerColor,
                                                 cornerRadius = CornerRadius(10.dp.toPx()),
                                                 size = Size(38.dp.toPx(), 38.dp.toPx()),
                                                 topLeft = Offset(
-                                                    x = (layoutMaxWidth.toPx() / 7) / layoutMaxWidth.getIndicatorOffset(),
+                                                    x = offsetX,
                                                     y = -(9).dp.toPx(),
                                                 ),
                                             )
