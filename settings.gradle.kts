@@ -57,6 +57,9 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
+}
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -92,5 +95,6 @@ include(
     ":feature-onboarding:join",
     ":feature-onboarding:start",
     ":feature-onboarding:onabording",
+    ":feature-main:notification-create",
     ":ui"
 )
