@@ -112,8 +112,7 @@ internal fun RoomScreen(
                     }
                 },
                 shadow = true,
-                backIconCheck = isSearchMode,
-                onNavigationIconClick = onDone,
+                onNavigationIconClick = if (isSearchMode) onDone else null,
             )
         },
     ) {

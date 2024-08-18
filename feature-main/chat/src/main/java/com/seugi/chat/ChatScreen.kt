@@ -98,8 +98,7 @@ internal fun ChatScreen(viewModel: ChatViewModel = hiltViewModel(), workspaceId:
                     }
                 },
                 shadow = true,
-                backIconCheck = isSearchMode,
-                onNavigationIconClick = onDone,
+                onNavigationIconClick = if (isSearchMode) onDone else null,
             )
         },
     ) {

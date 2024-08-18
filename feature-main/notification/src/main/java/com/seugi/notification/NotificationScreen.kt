@@ -157,13 +157,7 @@ internal fun NotificationScreen(
                             colorFilter = ColorFilter.tint(Black)
                         )
                     },
-                    colors = TopAppBarColors(
-                        containerColor = Color.Transparent,
-                        scrolledContainerColor = Color.Transparent,
-                        navigationIconContentColor = Color.Transparent,
-                        titleContentColor = Black,
-                        actionIconContentColor = Color.Transparent,
-                    ),
+                    containerColors = Color.Transparent,
                 )
             }
         },

@@ -277,7 +277,6 @@ internal fun ChatDetailScreen(
                             )
                         }
                     },
-                    backIconCheck = true,
                     shadow = true,
                     onNavigationIconClick = {
                         if (isSearch) {

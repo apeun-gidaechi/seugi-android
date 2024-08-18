@@ -70,7 +70,6 @@ fun SecondScreen(placeholder: String, onNameSuccess: (String) -> Unit, popBackSt
                         )
                     }
                 },
-                backIconCheck = true,
                 onNavigationIconClick = popBackStack,
             )
         },

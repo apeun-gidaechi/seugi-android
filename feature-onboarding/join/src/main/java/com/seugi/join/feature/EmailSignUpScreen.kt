@@ -40,7 +40,6 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                 SeugiTopBar(
                     title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
                     onNavigationIconClick = popBackStack,
-                    backIconCheck = true,
                 )
             },
         ) {

@@ -98,7 +98,6 @@ fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) -> Unit, 
                         )
                     }
                 },
-                backIconCheck = true,
                 onNavigationIconClick = popBackStack,
             )
         },

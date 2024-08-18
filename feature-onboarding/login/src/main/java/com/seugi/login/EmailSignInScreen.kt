@@ -78,7 +78,6 @@ internal fun EmailSignInScreen(
                 SeugiTopBar(
                     title = { Text(text = "로그인", style = MaterialTheme.typography.titleLarge) },
                     onNavigationIconClick = popBackStack,
-                    backIconCheck = true,
                 )
             },
         ) {

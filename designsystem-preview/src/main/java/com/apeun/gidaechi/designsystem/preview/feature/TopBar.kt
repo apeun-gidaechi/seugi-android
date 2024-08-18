@@ -52,7 +52,6 @@ fun TopBar() {
                     )
                     Spacer(modifier = Modifier.padding(end = 12.dp))
                 },
-                backIconCheck = true,
                 shadow = true,
             )
         }
