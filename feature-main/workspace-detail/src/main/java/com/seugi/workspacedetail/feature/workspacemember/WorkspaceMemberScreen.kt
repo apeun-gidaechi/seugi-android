@@ -84,7 +84,7 @@ fun WorkspaceMemberScreen(
                         Text(text = "멤버", style = MaterialTheme.typography.titleLarge)
                     },
                     onNavigationIconClick = {
-                        Log.d("TAG", "뒤로가기: ")
+                        popBackStack()
                     },
                     backIconCheck = true,
                     actions = {
