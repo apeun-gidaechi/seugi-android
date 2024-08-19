@@ -37,6 +37,8 @@ import com.seugi.notification.navigation.NOTIFICATION_ROUTE
 import com.seugi.notification.navigation.notificationScreen
 import com.seugi.notificationcreate.navigation.navigateToNotificationCreate
 import com.seugi.notificationcreate.navigation.notificationCreate
+import com.seugi.notificationedit.navigation.navigateToNotificationEdit
+import com.seugi.notificationedit.navigation.notificationEdit
 import com.seugi.profile.navigation.PROFILE_ROUTE
 import com.seugi.profile.navigation.profileScreen
 import com.seugi.room.navigation.ROOM_ROUTE
@@ -193,7 +195,9 @@ internal fun MainScreen(
                     navHostController.navigateToNotificationCreate()
                 },
                 navigateToNotificationEdit = {
-
+                    navHostController.navigateToNotificationEdit(
+                        id = it
+                    )
                 }
             )
 
@@ -244,6 +248,11 @@ internal fun MainScreen(
             )
 
             notificationCreate(
+                popBackStack = navHostController::popBackStack,
+                onNavigationVisibleChange = onNavigationVisibleChange
+            )
+
+            notificationEdit(
                 popBackStack = navHostController::popBackStack,
                 onNavigationVisibleChange = onNavigationVisibleChange
             )

@@ -18,7 +18,7 @@ class NotificationViewModel @Inject constructor(
     private val _state = MutableStateFlow(NotificationUiState())
     val state = _state.asStateFlow()
 
-    fun load(id: Int) = viewModelScope.launch {
+    fun load(id: Long) = viewModelScope.launch {
         _state.update {
             it.copy(
                 title = "테스트",

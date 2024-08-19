@@ -53,6 +53,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.common.utiles.toTimeString
+import com.seugi.data.notification.model.NotificationModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.animation.combinedBounceClick
@@ -94,6 +95,7 @@ internal fun NotificationScreen(
     )
     val lazyListState = rememberLazyListState()
     var isShowPopupDialog by remember { mutableStateOf(false) }
+    var selectNotificationItem: NotificationModel? by remember { mutableStateOf(null) }
 
     LifecycleResumeEffect(Unit) {
         onPauseOrDispose {
@@ -121,12 +123,16 @@ internal fun NotificationScreen(
         NotificationPopupDialog(
             onDismissRequest = {
                 isShowPopupDialog = false
+                selectNotificationItem = null
             },
             onClickEdit = {
                 isShowPopupDialog = false
+                navigateToNotificationEdit(selectNotificationItem?.id?: 0)
+                selectNotificationItem = null
             },
             onClickDeclaration = {
                 isShowPopupDialog = false
+                selectNotificationItem = null
             }
         )
     }
@@ -198,10 +204,12 @@ internal fun NotificationScreen(
                             createdAt = it.creationDate.toTimeString(),
                             onClickEmoji = { /*TODO*/ },
                             onClickDetailInfo = {
+                                selectNotificationItem = it
                                 isShowPopupDialog = true
                             },
                             onClickNotification = { /*TODO*/ },
                             onLongClick = {
+                                selectNotificationItem = it
                                 isShowPopupDialog = true
                             }
                         )

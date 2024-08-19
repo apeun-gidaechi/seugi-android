@@ -43,6 +43,7 @@ import com.seugi.designsystem.theme.White
 @Composable
 internal fun NotificationEditScreen(
     viewModel: NotificationViewModel = hiltViewModel(),
+    id: Long,
     onNavigationVisibleChange: (visible: Boolean) -> Unit,
     popBackStack: () -> Unit,
 ) {
@@ -51,6 +52,7 @@ internal fun NotificationEditScreen(
 
     LaunchedEffect(true) {
         onNavigationVisibleChange(false)
+        viewModel.load(id)
     }
 
     LifecycleResumeEffect {
@@ -154,6 +156,7 @@ private fun NotificationEditScreenPreview() {
     SeugiTheme {
         NotificationEditScreen(
             viewModel = viewModel(),
+            id = 0,
             onNavigationVisibleChange = {},
             popBackStack = {}
         )
