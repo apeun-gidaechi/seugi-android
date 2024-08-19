@@ -72,7 +72,7 @@ fun WorkspaceDetailScreen(
     navigateToJoinWorkspace: () -> Unit,
     popBackStack: () -> Unit,
     workspaceId: String,
-    navigateToWorkspaceMember:(String) -> Unit
+    navigateToWorkspaceMember: (String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showDialog by remember { mutableStateOf(false) }

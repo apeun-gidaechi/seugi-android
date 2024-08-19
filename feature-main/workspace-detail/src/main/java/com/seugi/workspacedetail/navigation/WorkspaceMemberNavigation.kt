@@ -6,7 +6,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.seugi.workspacedetail.feature.workspacedetail.WorkspaceDetailScreen
 import com.seugi.workspacedetail.feature.workspacemember.WorkspaceMemberScreen
 
 const val WORKSPACE_MEMBER_ROUTE = "WORKSPACE_MEMBER_ROUTE"

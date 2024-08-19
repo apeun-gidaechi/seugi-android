@@ -4,7 +4,6 @@ import com.seugi.data.workspace.model.WaitWorkspaceModel
 import com.seugi.data.workspace.model.WorkspaceModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 data class WorkspaceDetailUiState(
     val loading: Boolean = false,

@@ -49,11 +49,7 @@ import kotlinx.collections.immutable.toImmutableList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WorkspaceMemberScreen(
-    viewModel: WorkspaceMemberViewModel = hiltViewModel(),
-    popBackStack: () -> Unit,
-    workspaceId: String
-) {
+fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(), popBackStack: () -> Unit, workspaceId: String) {
     val dummyList = listOf("1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2")
     var selectedItem by remember { mutableStateOf("전체") }
     var isExpanded by remember { mutableStateOf(false) }
@@ -148,7 +144,7 @@ fun WorkspaceMemberScreen(
                         .fillMaxSize()
                         .padding(horizontal = 4.dp),
                 ) {
-                    items(state.member) {user ->
+                    items(state.member) { user ->
                         SeugiMemberList(
                             userName = user.member.name,
                             userProfile = user.member.picture.ifEmpty { null },

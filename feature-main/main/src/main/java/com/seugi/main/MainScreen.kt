@@ -249,13 +249,12 @@ internal fun MainScreen(
                 },
                 navigateToWorkspaceMember = { workspaceId ->
                     navHostController.navigateToWorkspaceMember(
-                        workspaceId
+                        workspaceId,
                     )
-
-                }
+                },
             )
             workspaceMemberScreen(
-                popBackStack = { navHostController.popBackStack() }
+                popBackStack = { navHostController.popBackStack() },
             )
         }
     }
