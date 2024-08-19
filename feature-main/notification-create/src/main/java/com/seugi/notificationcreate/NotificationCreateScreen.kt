@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,6 +20,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.lifecycle.compose.LifecycleStartEffect
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiTextField
@@ -26,14 +29,25 @@ import com.seugi.designsystem.theme.Black
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.designsystem.theme.White
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NotificationCreateScreen(
-    popBackStack: () -> Unit
+internal fun NotificationCreateScreen(
+    onNavigationVisibleChange: (visible: Boolean) -> Unit,
+    popBackStack: () -> Unit,
 ) {
 
     var titleText by remember { mutableStateOf("") }
     var contentText by remember { mutableStateOf("") }
+
+    LaunchedEffect(true) {
+        onNavigationVisibleChange(false)
+    }
+
+    LifecycleResumeEffect {
+        onNavigationVisibleChange(false)
+        onPauseOrDispose {
+            onNavigationVisibleChange(true)
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -106,16 +120,6 @@ fun NotificationCreateScreen(
                 },
                 singleLine = false
             )
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun NotificationCreateScreenPreview() {
-    SeugiTheme {
-        NotificationCreateScreen {
-
         }
     }
 }

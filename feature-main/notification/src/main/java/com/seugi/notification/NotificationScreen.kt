@@ -79,7 +79,9 @@ import kotlinx.collections.immutable.ImmutableList
 internal fun NotificationScreen(
     viewModel: NotificationViewModel = hiltViewModel(),
     workspaceId: String,
-    userId: Int
+    userId: Int,
+    navigateToNotificationCreate: () -> Unit,
+    navigateToNotificationEdit: (id: Long) -> Unit,
 ) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -149,15 +151,13 @@ internal fun NotificationScreen(
                             modifier = Modifier
                                 .size(28.dp)
                                 .bounceClick(
-                                    onClick = {
-
-                                    }
+                                    onClick = navigateToNotificationCreate
                                 ),
                             resId = R.drawable.ic_write_line,
                             colorFilter = ColorFilter.tint(Black)
                         )
                     },
-                    containerColors = Color.Transparent,
+                    containerColors = Primary050,
                 )
             }
         },

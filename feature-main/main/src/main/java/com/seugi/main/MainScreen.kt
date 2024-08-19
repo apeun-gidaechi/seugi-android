@@ -35,6 +35,8 @@ import com.seugi.home.navigation.homeScreen
 import com.seugi.home.navigation.navigateToHome
 import com.seugi.notification.navigation.NOTIFICATION_ROUTE
 import com.seugi.notification.navigation.notificationScreen
+import com.seugi.notificationcreate.navigation.navigateToNotificationCreate
+import com.seugi.notificationcreate.navigation.notificationCreate
 import com.seugi.profile.navigation.PROFILE_ROUTE
 import com.seugi.profile.navigation.profileScreen
 import com.seugi.room.navigation.ROOM_ROUTE
@@ -186,7 +188,13 @@ internal fun MainScreen(
 
             notificationScreen(
                 workspaceId = state.workspaceId,
-                userId = state.userId
+                userId = state.userId,
+                navigateToNotificationCreate = {
+                    navHostController.navigateToNotificationCreate()
+                },
+                navigateToNotificationEdit = {
+
+                }
             )
 
             chatSeugiScreen(
@@ -233,6 +241,11 @@ internal fun MainScreen(
                     )
                 },
                 popBackStack = { navHostController.popBackStack() },
+            )
+
+            notificationCreate(
+                popBackStack = navHostController::popBackStack,
+                onNavigationVisibleChange = onNavigationVisibleChange
             )
         }
     }
