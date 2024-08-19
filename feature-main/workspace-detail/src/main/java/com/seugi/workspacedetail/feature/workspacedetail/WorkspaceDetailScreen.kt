@@ -59,7 +59,6 @@ import com.seugi.designsystem.theme.White
 import com.seugi.ui.CollectAsSideEffect
 import com.seugi.workspacedetail.feature.workspacedetail.model.WorkspaceDetailSideEffect
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WorkspaceDetailScreen(
