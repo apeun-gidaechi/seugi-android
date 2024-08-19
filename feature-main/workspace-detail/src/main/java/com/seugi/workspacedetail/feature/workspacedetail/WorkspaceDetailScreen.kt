@@ -1,6 +1,5 @@
 package com.seugi.workspacedetail.feature.workspacedetail
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -150,7 +149,6 @@ fun WorkspaceDetailScreen(
                                     }
                                     // 마지막 아이템이 아닌 경우에만 Spacer를 추가
                                     if (index < state.myWorkspace.size) {
-                                        Log.d("TAG", "아이템 뛰우기: ")
                                         Spacer(modifier = Modifier.height(4.dp))
                                     }
                                 }

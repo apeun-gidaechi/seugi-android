@@ -61,10 +61,8 @@ fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(),
     }
     val state by viewModel.state.collectAsStateWithLifecycle()
     LaunchedEffect(key1 = true) {
-        Log.d("TAG", "workspace Id :$workspaceId ")
         viewModel.getAllMember(workspaceId = workspaceId)
     }
-    Log.d("TAG", "${state.member}: ")
     SeugiTheme {
         Scaffold(
             topBar = {

@@ -1,6 +1,5 @@
 package com.seugi.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.data.workspace.WorkspaceRepository
@@ -26,7 +25,6 @@ class HomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val workspaces = workspaceRepository.getAllWorkspaces()
-            Log.d("TAG", "workspaces ${workspaceRepository.getAllWorkspaces()} ")
 
             delay(2000)
 
@@ -43,7 +41,6 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             } else {
-                Log.d("TAG", "${workspaces[0]} ")
                 _state.update {
                     it.copy(
                         nowWorkspace = Pair(workspaces[0]!!.workspaceId, workspaces[0]!!.workspaceName),
