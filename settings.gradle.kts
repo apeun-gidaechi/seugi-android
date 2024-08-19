@@ -96,5 +96,6 @@ include(
     ":feature-onboarding:start",
     ":feature-onboarding:onabording",
     ":feature-main:notification-create",
+    ":feature-main:notification-edit",
     ":ui"
 )
