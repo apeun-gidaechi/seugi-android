@@ -59,10 +59,6 @@ import com.seugi.designsystem.theme.White
 import com.seugi.ui.CollectAsSideEffect
 import com.seugi.workspacedetail.feature.workspacedetail.model.WorkspaceDetailSideEffect
 
-data class TestModel(
-    val workspaceId: String,
-    val workspaceName: String,
-)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
