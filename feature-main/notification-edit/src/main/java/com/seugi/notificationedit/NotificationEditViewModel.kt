@@ -2,7 +2,7 @@ package com.seugi.notificationedit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.seugi.notificationedit.model.NotificationUiState
+import com.seugi.notificationedit.model.NotificationEditUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,11 +11,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NotificationViewModel @Inject constructor(
+class NotificationEditViewModel @Inject constructor(
 
 ): ViewModel() {
 
-    private val _state = MutableStateFlow(NotificationUiState())
+    private val _state = MutableStateFlow(NotificationEditUiState())
     val state = _state.asStateFlow()
 
     fun load(id: Long) = viewModelScope.launch {

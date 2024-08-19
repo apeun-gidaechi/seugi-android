@@ -1,6 +1,6 @@
 package com.seugi.notificationedit.model
 
-data class NotificationUiState(
+data class NotificationEditUiState(
     val title: String = "",
     val content: String = "",
 )
