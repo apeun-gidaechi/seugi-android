@@ -1,5 +1,6 @@
 package com.seugi.main
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -85,6 +87,8 @@ internal fun MainScreen(
     LaunchedEffect(key1 = true) {
         viewModel.load()
     }
+
+    LaunchedEffect(state) {}
 
     BackHandler {
         mainToOnboarding()
