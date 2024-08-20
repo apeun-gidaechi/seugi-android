@@ -20,7 +20,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 
 enum class ButtonState { Idle, Hold }
 
-fun Modifier.bounceClick(onClick: () -> Unit, requireUnconsumed: Boolean = false, onChangeButtonState: (ButtonState) -> Unit = {}) = composed {
+fun Modifier.bounceClick(onClick: () -> Unit, enabled: Boolean = true, requireUnconsumed: Boolean = false, onChangeButtonState: (ButtonState) -> Unit = {}) = composed {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val scale by animateFloatAsState(
         targetValue = if (buttonState == ButtonState.Idle) 1f else 0.95f,
@@ -32,6 +32,7 @@ fun Modifier.bounceClick(onClick: () -> Unit, requireUnconsumed: Boolean = false
             interactionSource = remember { MutableInteractionSource() },
             indication = null,
             onClick = onClick,
+            enabled = enabled
         )
         .graphicsLayer {
             scaleX = scale

@@ -19,6 +19,22 @@ class NotificationRepositoryImpl @Inject constructor(
     private val dataSource: NotificationDataSource,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : NotificationRepository {
+    override suspend fun createNotification(
+        workspaceId: String,
+        title: String,
+        content: String,
+    ): Flow<Result<Boolean>> = flow {
+        val response = dataSource.createNotification(
+            workspaceId = workspaceId,
+            title = title,
+            content = content
+        ).safeResponse()
+
+        emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
     override suspend fun getNotices(workspaceId: String, page: Int, size: Int): Flow<Result<List<NotificationModel>>> = flow {
         val response = dataSource.getNotices(
             workspaceId = workspaceId,

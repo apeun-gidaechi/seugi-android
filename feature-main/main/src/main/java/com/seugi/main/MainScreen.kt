@@ -252,6 +252,7 @@ internal fun MainScreen(
             )
 
             notificationCreate(
+                workspaceId = state.workspaceId,
                 popBackStack = navHostController::popBackStack,
                 onNavigationVisibleChange = onNavigationVisibleChange
             )

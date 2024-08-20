@@ -1,5 +1,6 @@
 package com.seugi.notificationcreate
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,22 +19,44 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.LifecycleStartEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiTextField
 import com.seugi.designsystem.theme.Black
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.designsystem.theme.White
+import com.seugi.notificationcreate.model.NotificationSideEffect
+import com.seugi.ui.CollectAsSideEffect
 
 @Composable
 internal fun NotificationCreateScreen(
+    viewModel: NotificationCreateViewModel = hiltViewModel(),
+    workspaceId: String,
     onNavigationVisibleChange: (visible: Boolean) -> Unit,
     popBackStack: () -> Unit,
 ) {
+    val context = LocalContext.current
+
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    viewModel.sideEffect.CollectAsSideEffect {
+        when (it) {
+            is NotificationSideEffect.Success -> {
+                Toast.makeText(context, "등록에 성공하였습니다", Toast.LENGTH_SHORT).show()
+                popBackStack()
+            }
+            is NotificationSideEffect.Error -> {
+                Toast.makeText(context, it.throwable.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     var titleText by remember { mutableStateOf("") }
     var contentText by remember { mutableStateOf("") }
@@ -65,8 +88,15 @@ internal fun NotificationCreateScreen(
                     Box(
                         modifier = Modifier
                             .bounceClick(
+                                enabled = !state.isLoading,
                                 onClick = {
-
+                                    if (titleText.isEmpty()) { return@bounceClick }
+                                    if (contentText.isEmpty()) { return@bounceClick }
+                                    viewModel.create(
+                                        title = titleText,
+                                        content = contentText,
+                                        workspaceId = workspaceId
+                                    )
                                 }
                             )
                     ) {
@@ -102,7 +132,8 @@ internal fun NotificationCreateScreen(
                 placeholder = "제목을 입력해 주세요",
                 onClickDelete = {
                     titleText = ""
-                }
+                },
+                enabled = !state.isLoading
             )
             Spacer(modifier = Modifier.height(8.dp))
             SeugiTextField(
@@ -118,7 +149,8 @@ internal fun NotificationCreateScreen(
                 onClickDelete = {
                     contentText = ""
                 },
-                singleLine = false
+                singleLine = false,
+                enabled = !state.isLoading
             )
         }
     }

@@ -15,11 +15,13 @@ fun NavController.navigateToNotificationCreate(navOptions: NavOptions? = null) =
 
 fun NavGraphBuilder.notificationCreate(
     onNavigationVisibleChange: (visible: Boolean) -> Unit,
+    workspaceId: String,
     popBackStack: () -> Unit
 ) {
     composable(NOTIFICATION_CREATE_ROUTE) {
         NotificationCreateScreen(
             popBackStack = popBackStack,
+            workspaceId = workspaceId,
             onNavigationVisibleChange = onNavigationVisibleChange
         )
     }
