@@ -110,7 +110,7 @@ fun WorkspaceCreateScreen() {
                         Row(
                             modifier = Modifier.padding(start = 4.dp),
                         ) {
-                            Text(text = "학교", style = MaterialTheme.typography.titleMedium)
+                            Text(text = "학교 이름", style = MaterialTheme.typography.titleMedium)
                             Text(
                                 text = " *",
                                 style = MaterialTheme.typography.titleMedium,
