@@ -1,6 +1,9 @@
 package com.seugi.workspace_create
 
+import android.net.Uri
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.component.SeugiIconButton
 import com.seugi.designsystem.component.SeugiRoundedCircleImage
@@ -41,6 +43,15 @@ import com.seugi.designsystem.theme.Red500
 fun WorkspaceCreateScreen() {
 
     var schoolNameText by remember { mutableStateOf("") }
+
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        selectedImageUri = uri
+    }
+
 
     SeugiTheme {
         Scaffold(
@@ -71,13 +82,21 @@ fun WorkspaceCreateScreen() {
                     Box(
                         contentAlignment = Alignment.BottomEnd
                     ){
-                        SeugiRoundedCircleImage(
-                            size = Size.Small,
-                            onClick = {}
-                        )
+                        if (selectedImageUri != null) {
+                            SeugiRoundedCircleImage(
+                                image = selectedImageUri.toString(),
+                                size = Size.Small,
+                                onClick = {}
+                            )
+                        } else {
+                            SeugiRoundedCircleImage(
+                                size = Size.Small,
+                                onClick = {}
+                            )
+                        }
                         SeugiIconButton(
                             resId = R.drawable.ic_add_fill,
-                            onClick = { /*TODO*/ },
+                            onClick = { galleryLauncher.launch("image/*") },
                             colors = IconButtonDefaults.iconButtonColors(contentColor = Gray600)
                         )
                     }
