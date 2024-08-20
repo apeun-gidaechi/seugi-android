@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.seugi.workspacecreate"
+    namespace = "com.seugi.workspacecdetail"
 }
 
 dependencies {
