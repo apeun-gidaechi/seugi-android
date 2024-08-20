@@ -14,7 +14,11 @@ data class NotificationModel(
     val lastModifiedDate: LocalDateTime,
 ) {
     override fun equals(other: Any?): Boolean {
-        if (other is NotificationModel && other.id == this.id && other.workspaceId == this.workspaceId) return true
+        if (
+            other is NotificationModel && other.id == this.id &&
+            other.workspaceId == this.workspaceId &&
+            other.emoji == this.emoji
+        ) return true
         return super.equals(other)
     }
 

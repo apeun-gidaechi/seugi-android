@@ -202,7 +202,13 @@ internal fun NotificationScreen(
                             author = it.userName,
                             emojiList = it.getEmojiList(userId),
                             createdAt = it.creationDate.toTimeString(),
-                            onClickEmoji = { /*TODO*/ },
+                            onClickEmoji = { emoji ->
+                                viewModel.pressEmoji(
+                                    id = it.id,
+                                    emoji = emoji,
+                                    userId = userId
+                                )
+                            },
                             onClickDetailInfo = {
                                 selectNotificationItem = it
                                 isShowPopupDialog = true
@@ -320,7 +326,8 @@ internal fun NotificationCard(
     Box(
         modifier = modifier.combinedBounceClick(
             onClick = onClickNotification,
-            onLongClick = onLongClick
+            onLongClick = onLongClick,
+            requireUnconsumed = true
         )
     ) {
         Column(
