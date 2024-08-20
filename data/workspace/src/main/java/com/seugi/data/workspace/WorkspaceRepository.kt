@@ -15,7 +15,7 @@ interface WorkspaceRepository {
     suspend fun getMembers(workspaceId: String): Flow<Result<List<ProfileModel>>>
     suspend fun getMyWorkspaces(): Flow<Result<List<WorkspaceModel>>>
     suspend fun addWorkspaces(workspaces: List<WorkspaceModel>)
-    suspend fun getAllWorkspaces(): List<WorkspaceModel?>
-    suspend fun getWaitWorkspaces(): Flow<Result<List<WaitWorkspaceModel?>>>
+    suspend fun getAllWorkspaces(): List<WorkspaceModel>
+    suspend fun getWaitWorkspaces(): Flow<Result<List<WaitWorkspaceModel>>>
     suspend fun getWorkspaceData(workspaceId: String): Flow<Result<WorkspaceModel>>
 }

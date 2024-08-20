@@ -112,7 +112,7 @@ fun WorkspaceDetailScreen(
                                             modifier = Modifier
                                                 .bounceClick(onClick = {
                                                     viewModel.changeNowWorkspace(
-                                                        workspaceId = item?.workspaceId!!,
+                                                        workspaceId = item.workspaceId,
                                                     )
                                                     showDialog = false
                                                 })
@@ -127,7 +127,7 @@ fun WorkspaceDetailScreen(
                                             Text(
                                                 modifier = Modifier.padding(start = 16.dp),
                                                 // null일 수가 없어서 넣었습니다.
-                                                text = item?.workspaceName!!,
+                                                text = item.workspaceName,
                                                 style = MaterialTheme.typography.titleMedium,
                                             )
                                             Spacer(modifier = Modifier.weight(1f))
@@ -149,7 +149,7 @@ fun WorkspaceDetailScreen(
                                 }
                             }
 
-                            if (state.waitWorkspace.any { it != null }) {
+                            if (state.waitWorkspace.size != 0) {
                                 Spacer(modifier = Modifier.height(16.dp))
 
                                 Text(
@@ -175,7 +175,7 @@ fun WorkspaceDetailScreen(
                                             ) {
                                                 Text(
                                                     modifier = Modifier.padding(start = 16.dp),
-                                                    text = item?.workspaceName ?: "",
+                                                    text = item.workspaceName,
                                                     style = MaterialTheme.typography.titleMedium,
                                                 )
                                                 Spacer(modifier = Modifier.weight(1f))
