@@ -30,4 +30,15 @@ class NotificationRepositoryImpl @Inject constructor(
     }
         .flowOn(dispatcher)
         .asResult()
+
+    override suspend fun pathEmoji(emoji: String, notificationId: Long): Flow<Result<Boolean>> = flow {
+        val response = dataSource.pathEmoji(
+            emoji = emoji,
+            notificationId = notificationId
+        ).safeResponse()
+
+        emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
 }

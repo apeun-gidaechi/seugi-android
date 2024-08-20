@@ -50,6 +50,7 @@ object SeugiUrl {
 
     object Notification {
         const val ROOT = "${BASE_URL}/notification"
+        const val EMOJI = "${ROOT}/emoji"
     }
 
     object Member {

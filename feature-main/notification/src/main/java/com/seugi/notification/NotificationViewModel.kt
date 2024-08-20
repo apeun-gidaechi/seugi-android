@@ -19,14 +19,29 @@ import kotlinx.collections.immutable.persistentListOf
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.net.IDN
 import java.time.LocalDateTime
 
+sealed class NotificationDebounce(
+    open val id: Long,
+    open val emoji: String
+) {
+    data class Add(override val id: Long, override val emoji: String): NotificationDebounce(id, emoji)
+    data class Remove(override val id: Long, override val emoji: String): NotificationDebounce(id, emoji)
+}
+
+@OptIn(FlowPreview::class)
 @HiltViewModel
 class NotificationViewModel @Inject constructor(
     private val notificationRepository: NotificationRepository,
@@ -36,7 +51,6 @@ class NotificationViewModel @Inject constructor(
     private val _state = MutableStateFlow(NotificationUiState())
     val state = _state.asStateFlow()
 
-//    private val _debounce = MutableSharedFlow<>()
 
     fun enabledRefresh() = viewModelScope.launch(dispatcher) {
         _state.update {
@@ -86,8 +100,10 @@ class NotificationViewModel @Inject constructor(
 
                     _state.update { state ->
                         state.copy(
-                            notices = (state.notices + it.data)
-                                .distinct()
+                            notices = (it.data + state.notices)
+                                .distinctBy {
+                                    Pair(it.workspaceId, it.id)
+                                }
                                 .sortedBy {
                                     it.creationDate
                                 }
@@ -106,7 +122,7 @@ class NotificationViewModel @Inject constructor(
     }
 
     fun pressEmoji(id: Long, emoji: String, userId: Int) = viewModelScope.launch(dispatcher) {
-
+        Log.d("TAG", "pressEmoji: ${_state.value}")
         _state.update {
             it.copy(
                 notices = it.notices.map { model ->
@@ -128,6 +144,12 @@ class NotificationViewModel @Inject constructor(
                     )
                 }.toImmutableList()
             )
+        }
+        notificationRepository.pathEmoji(
+            emoji = emoji,
+            notificationId = id
+        ).collectLatest {
+
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.seugi.notification
 
 import android.app.Activity
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
@@ -84,6 +85,9 @@ internal fun NotificationScreen(
     navigateToNotificationCreate: () -> Unit,
     navigateToNotificationEdit: (id: Long) -> Unit,
 ) {
+    LaunchedEffect(true) {
+        Log.d("TAG", "NotificationScreen: ${userId}")
+    }
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
     val pullRefreshState = rememberPullRefreshState(
