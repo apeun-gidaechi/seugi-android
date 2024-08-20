@@ -71,8 +71,10 @@ class NotificationViewModel @Inject constructor(
 
                     _state.update { state ->
                         state.copy(
-                            notices = (state.notices + it.data)
-                                .distinct()
+                            notices = (it.data + state.notices)
+                                .distinctBy {
+                                    Pair(it.workspaceId, it.id)
+                                }
                                 .sortedBy {
                                     it.creationDate
                                 }
