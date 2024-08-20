@@ -14,4 +14,6 @@ interface NotificationDataSource {
 
     suspend fun pathEmoji(emoji: String, notificationId: Long): Response
 
+    suspend fun patchNotice(title: String, content: String, notificationId: Long): Response
+
 }

@@ -19,8 +19,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -36,20 +40,40 @@ import com.seugi.designsystem.theme.Black
 import com.seugi.designsystem.theme.Gray500
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.designsystem.theme.White
+import com.seugi.notificationedit.model.NotificationSideEffect
+import com.seugi.ui.CollectAsSideEffect
+import com.seugi.ui.shortToast
 
 @Composable
 internal fun NotificationEditScreen(
     viewModel: NotificationEditViewModel = hiltViewModel(),
     id: Long,
+    title: String,
+    content: String,
     onNavigationVisibleChange: (visible: Boolean) -> Unit,
     popBackStack: () -> Unit,
 ) {
+    val context = LocalContext.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    viewModel.sideEffect.CollectAsSideEffect {
+        when (it) {
+            is NotificationSideEffect.Success -> {
+                context.shortToast(it.message)
+                popBackStack()
+            }
+            is NotificationSideEffect.Error -> {
+                context.shortToast(it.throwable.message)
+            }
+        }
+    }
+
+    var titleText by remember { mutableStateOf(title) }
+    var contentText by remember { mutableStateOf(content) }
+
     LaunchedEffect(true) {
         onNavigationVisibleChange(false)
-        viewModel.load(id)
     }
 
     LifecycleResumeEffect {
@@ -76,8 +100,16 @@ internal fun NotificationEditScreen(
                         modifier = Modifier
                             .bounceClick(
                                 onClick = {
+                                    if (titleText.isEmpty()) { return@bounceClick }
+                                    if (contentText.isEmpty()) { return@bounceClick }
 
-                                }
+                                    viewModel.edit(
+                                        id = id,
+                                        title = titleText,
+                                        content = contentText
+                                    )
+                                },
+                                enabled = !state.isLoading
                             )
                     ) {
                         Text(
@@ -106,12 +138,15 @@ internal fun NotificationEditScreen(
         ) {
             Spacer(modifier = Modifier.height(6.dp))
             SeugiTextField(
-                value = state.title,
-                onValueChange = viewModel::setTitle,
+                value = titleText,
+                onValueChange = {
+                    titleText = it
+                },
                 placeholder = "제목을 입력해 주세요",
                 onClickDelete = {
-                    viewModel.setTitle("")
-                }
+                    titleText = ""
+                },
+                enabled = !state.isLoading
             )
             Spacer(modifier = Modifier.height(8.dp))
             SeugiTextField(
@@ -119,13 +154,16 @@ internal fun NotificationEditScreen(
                     .heightIn(
                         min = 360.dp
                     ),
-                value = state.content,
-                onValueChange = viewModel::setContent,
+                value = contentText,
+                onValueChange = {
+                    contentText = it
+                },
                 placeholder = "내용을 입력해 주세요",
                 onClickDelete = {
-                    viewModel.setContent("")
+                    contentText = ""
                 },
-                singleLine = false
+                singleLine = false,
+                enabled = !state.isLoading
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -137,7 +175,10 @@ internal fun NotificationEditScreen(
                     modifier = Modifier
                         .size(28.dp)
                         .bounceClick(
-                            onClick = {}
+                            onClick = {
+
+                            },
+                            enabled = !state.isLoading
                         ),
                     resId = R.drawable.ic_trash_fill,
                     colorFilter = ColorFilter.tint(Gray500)
@@ -155,7 +196,9 @@ private fun NotificationEditScreenPreview() {
             viewModel = viewModel(),
             id = 0,
             onNavigationVisibleChange = {},
-            popBackStack = {}
+            popBackStack = {},
+            title = "",
+            content = ""
         )
     }
 }

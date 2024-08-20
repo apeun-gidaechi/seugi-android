@@ -198,9 +198,11 @@ internal fun MainScreen(
                 navigateToNotificationCreate = {
                     navHostController.navigateToNotificationCreate()
                 },
-                navigateToNotificationEdit = {
+                navigateToNotificationEdit = { id, title, content ->
                     navHostController.navigateToNotificationEdit(
-                        id = it
+                        id = id,
+                        title = title,
+                        content = content
                     )
                 }
             )

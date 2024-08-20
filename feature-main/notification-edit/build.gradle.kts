@@ -10,6 +10,7 @@ dependencies {
 
     implementation(projects.designsystem)
     implementation(projects.common)
+    implementation(projects.ui)
     implementation(projects.data.notification)
     implementation(projects.data.core)
 }

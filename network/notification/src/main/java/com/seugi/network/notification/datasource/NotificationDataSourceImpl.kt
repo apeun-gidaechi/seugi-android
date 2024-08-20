@@ -6,6 +6,7 @@ import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.response.Response
 import com.seugi.network.notification.NotificationDataSource
 import com.seugi.network.notification.request.NotificationCreateRequest
+import com.seugi.network.notification.request.NotificationEditRequest
 import com.seugi.network.notification.request.NotificationEmojiRequest
 import com.seugi.network.notification.response.NotificationResponse
 import io.ktor.client.HttpClient
@@ -47,6 +48,21 @@ class NotificationDataSourceImpl @Inject constructor(
                 NotificationEmojiRequest(
                     emoji = emoji,
                     notificationId = notificationId
+                )
+            )
+        }.body()
+
+    override suspend fun patchNotice(
+        title: String,
+        content: String,
+        notificationId: Long
+    ): Response =
+        httpClient.patch(SeugiUrl.Notification.ROOT) {
+            setBody(
+                NotificationEditRequest(
+                    title = title,
+                    content = content,
+                    id = notificationId
                 )
             )
         }.body()

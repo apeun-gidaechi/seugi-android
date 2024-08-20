@@ -14,7 +14,7 @@ fun NavGraphBuilder.notificationScreen(
     workspaceId: String,
     userId: Int,
     navigateToNotificationCreate: () -> Unit,
-    navigateToNotificationEdit: (id: Long) -> Unit,
+    navigateToNotificationEdit: (id: Long, title: String, content: String) -> Unit,
 ) {
     composable(NOTIFICATION_ROUTE) {
         NotificationScreen(

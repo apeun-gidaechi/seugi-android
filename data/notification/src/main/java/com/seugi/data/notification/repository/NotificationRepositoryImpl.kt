@@ -57,4 +57,20 @@ class NotificationRepositoryImpl @Inject constructor(
     }
         .flowOn(dispatcher)
         .asResult()
+
+    override suspend fun patchNotice(
+        title: String,
+        content: String,
+        notificationId: Long,
+    ): Flow<Result<Boolean>> = flow {
+        val response = dataSource.patchNotice(
+            title = title,
+            content = content,
+            notificationId = notificationId
+        ).safeResponse()
+
+        emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
 }
