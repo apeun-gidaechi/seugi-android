@@ -1,6 +1,5 @@
 package com.seugi.workspacedetail.feature.workspacedetail
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -60,11 +59,6 @@ import com.seugi.designsystem.theme.White
 import com.seugi.ui.CollectAsSideEffect
 import com.seugi.workspacedetail.feature.workspacedetail.model.WorkspaceDetailSideEffect
 
-data class TestModel(
-    val workspaceId: String,
-    val workspaceName: String,
-)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WorkspaceDetailScreen(
@@ -72,6 +66,7 @@ fun WorkspaceDetailScreen(
     navigateToJoinWorkspace: () -> Unit,
     popBackStack: () -> Unit,
     workspaceId: String,
+    navigateToWorkspaceMember: (String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showDialog by remember { mutableStateOf(false) }
@@ -117,7 +112,7 @@ fun WorkspaceDetailScreen(
                                             modifier = Modifier
                                                 .bounceClick(onClick = {
                                                     viewModel.changeNowWorkspace(
-                                                        workspaceId = item?.workspaceId!!,
+                                                        workspaceId = item.workspaceId,
                                                     )
                                                     showDialog = false
                                                 })
@@ -132,7 +127,7 @@ fun WorkspaceDetailScreen(
                                             Text(
                                                 modifier = Modifier.padding(start = 16.dp),
                                                 // null일 수가 없어서 넣었습니다.
-                                                text = item?.workspaceName!!,
+                                                text = item.workspaceName,
                                                 style = MaterialTheme.typography.titleMedium,
                                             )
                                             Spacer(modifier = Modifier.weight(1f))
@@ -149,13 +144,12 @@ fun WorkspaceDetailScreen(
                                     }
                                     // 마지막 아이템이 아닌 경우에만 Spacer를 추가
                                     if (index < state.myWorkspace.size) {
-                                        Log.d("TAG", "아이템 뛰우기: ")
                                         Spacer(modifier = Modifier.height(4.dp))
                                     }
                                 }
                             }
 
-                            if (state.waitWorkspace.any { it != null }) {
+                            if (state.waitWorkspace.size != 0) {
                                 Spacer(modifier = Modifier.height(16.dp))
 
                                 Text(
@@ -181,7 +175,7 @@ fun WorkspaceDetailScreen(
                                             ) {
                                                 Text(
                                                     modifier = Modifier.padding(start = 16.dp),
-                                                    text = item?.workspaceName ?: "",
+                                                    text = item.workspaceName,
                                                     style = MaterialTheme.typography.titleMedium,
                                                 )
                                                 Spacer(modifier = Modifier.weight(1f))
@@ -393,6 +387,9 @@ fun WorkspaceDetailScreen(
                 }
                 Row(
                     modifier = Modifier
+                        .clickable {
+                            navigateToWorkspaceMember(state.nowWorkspace.workspaceId)
+                        }
                         .fillMaxWidth()
                         .height(56.dp),
                     verticalAlignment = Alignment.CenterVertically,

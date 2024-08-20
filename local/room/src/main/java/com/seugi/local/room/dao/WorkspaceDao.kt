@@ -11,7 +11,7 @@ import com.seugi.local.room.util.SeugiTable
 @Dao
 interface WorkspaceDao : BaseDao<WorkspaceEntity> {
     @Query("SELECT * FROM ${SeugiTable.WORKSPACE_TABLE}")
-    suspend fun getWorkspace(): List<WorkspaceEntity?>
+    suspend fun getWorkspace(): List<WorkspaceEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertWorkspaces(workspaces: List<WorkspaceEntity>)

@@ -2,7 +2,6 @@ package com.seugi.home
 
 import android.app.Activity
 import android.os.Build
-import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowInsetsController
@@ -181,9 +180,8 @@ internal fun HomeScreen(
                             Spacer(modifier = Modifier.weight(1f))
                             SeugiButton(
                                 onClick = {
-                                    Log.d("TAG", "${state.nowWorkspace.first}, ${state.nowWorkspace.second}: ")
                                     onNavigationVisibleChange(false)
-                                    navigateToWorkspaceDetail("state.nowWorkspace.second")
+                                    navigateToWorkspaceDetail(state.nowWorkspace.first)
                                 },
                                 type = ButtonType.Gray,
                                 text = "전환",

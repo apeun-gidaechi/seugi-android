@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +32,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiMemberList
@@ -44,16 +47,10 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
-data class TestMember(
-    val name: String,
-    val profile: String?,
-)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WorkspaceMemberScreen() {
+fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(), popBackStack: () -> Unit, workspaceId: String) {
     val dummyList = listOf("1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2")
-    val members = listOf(TestMember("노영재", null), TestMember("노영재", null), TestMember("노영재", null))
     var selectedItem by remember { mutableStateOf("전체") }
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -62,7 +59,10 @@ fun WorkspaceMemberScreen() {
     } else {
         Icons.Filled.KeyboardArrowDown
     }
-
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    LaunchedEffect(key1 = true) {
+        viewModel.getAllMember(workspaceId = workspaceId)
+    }
     SeugiTheme {
         Scaffold(
             topBar = {
@@ -72,7 +72,7 @@ fun WorkspaceMemberScreen() {
                         Text(text = "멤버", style = MaterialTheme.typography.titleLarge)
                     },
                     onNavigationIconClick = {
-                        Log.d("TAG", "뒤로가기: ")
+                        popBackStack()
                     },
                     backIconCheck = true,
                     actions = {
@@ -142,10 +142,10 @@ fun WorkspaceMemberScreen() {
                         .fillMaxSize()
                         .padding(horizontal = 4.dp),
                 ) {
-                    items(members) {
+                    items(state.member) { user ->
                         SeugiMemberList(
-                            userName = it.name,
-                            userProfile = it.profile,
+                            userName = user.member.name,
+                            userProfile = user.member.picture.ifEmpty { null },
                             onClick = {
                             },
                         )

@@ -51,7 +51,9 @@ import com.seugi.workspace.navigation.schoolCode
 import com.seugi.workspace.navigation.selectingJob
 import com.seugi.workspace.navigation.waitingJoin
 import com.seugi.workspacedetail.navigation.navigateToWorkspaceDetail
+import com.seugi.workspacedetail.navigation.navigateToWorkspaceMember
 import com.seugi.workspacedetail.navigation.workspaceDetailScreen
+import com.seugi.workspacedetail.navigation.workspaceMemberScreen
 
 private const val NAVIGATION_ANIM = 400
 
@@ -245,6 +247,14 @@ internal fun MainScreen(
                 popBackStack = {
                     navHostController.popBackStack()
                 },
+                navigateToWorkspaceMember = { workspaceId ->
+                    navHostController.navigateToWorkspaceMember(
+                        workspaceId,
+                    )
+                },
+            )
+            workspaceMemberScreen(
+                popBackStack = { navHostController.popBackStack() },
             )
         }
     }

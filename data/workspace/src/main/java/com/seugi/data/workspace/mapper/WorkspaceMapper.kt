@@ -19,8 +19,8 @@ fun WorkspaceResponse.toModel() = WorkspaceModel(
     student = student.toImmutableList(),
 )
 
-fun List<WorkspaceEntity?>.localToModels() = this.map {
-    it?.localToModel()
+fun List<WorkspaceEntity>.localToModels() = this.map {
+    it.localToModel()
 }
 
 fun WorkspaceEntity.localToModel() = WorkspaceModel(

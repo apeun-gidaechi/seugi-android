@@ -1,6 +1,5 @@
 package com.seugi.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.data.workspace.WorkspaceRepository
@@ -26,7 +25,6 @@ class HomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val workspaces = workspaceRepository.getAllWorkspaces()
-            Log.d("TAG", "workspaces ${workspaceRepository.getAllWorkspaces()} ")
 
             delay(2000)
 
@@ -43,9 +41,9 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             } else {
-                Log.d("TAG", ":있음 ")
                 _state.update {
                     it.copy(
+                        nowWorkspace = Pair(workspaces[0]!!.workspaceId, workspaces[0]!!.workspaceName),
                         showDialog = false,
                         schoolState = CommonUiState.Success("대구 소프트웨어 마이스터 고등학교"),
                         timeScheduleState = CommonUiState.Success(listOf("진로", "소공", "소공", "인공지능 수학", "한국사", "실용영어", "웹프").toImmutableList()),

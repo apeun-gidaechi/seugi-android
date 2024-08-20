@@ -90,11 +90,11 @@ class WorkspaceRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllWorkspaces(): List<WorkspaceModel?> {
+    override suspend fun getAllWorkspaces(): List<WorkspaceModel> {
         return workspaceDao.getWorkspace().localToModels()
     }
 
-    override suspend fun getWaitWorkspaces(): Flow<Result<List<WaitWorkspaceModel?>>> = flow {
+    override suspend fun getWaitWorkspaces(): Flow<Result<List<WaitWorkspaceModel>>> = flow {
         val response = workspaceDatasource.getWaitWorkspace().safeResponse()
         emit(response.toModels())
     }
