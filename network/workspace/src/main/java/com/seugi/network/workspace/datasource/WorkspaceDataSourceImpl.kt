@@ -50,7 +50,7 @@ class WorkspaceDataSourceImpl @Inject constructor(
     override suspend fun createWorkspace(workspaceName: String, workspaceImage: String): BaseResponse<String> = httpClient.post("${SeugiUrl.WORKSPACE}/"){
         setBody(CreateWorkspaceRequest(
             workspaceName = workspaceName,
-            workspaceImage = workspaceImage
+            workspaceImageUrl = workspaceImage
         ))
     }.body()
 }
