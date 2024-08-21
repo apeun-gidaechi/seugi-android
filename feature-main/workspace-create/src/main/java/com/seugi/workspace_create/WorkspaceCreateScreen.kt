@@ -45,7 +45,8 @@ import java.io.File
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WorkspaceCreateScreen(
-    popBackStack:() -> Unit
+    popBackStack:() -> Unit,
+    viewModel: WorkspaceCreateViewModel = hiltViewModel()
 ) {
 
     var schoolNameText by remember { mutableStateOf("") }
@@ -90,7 +91,6 @@ fun WorkspaceCreateScreen(
                         contentAlignment = Alignment.BottomEnd
                     ){
                         if (selectedImageUri != null) {
-                            Log.d("TAG", "uri $selectedImageUri : ")
                             SeugiRoundedCircleImage(
                                 image = selectedImageUri.toString(),
                                 size = Size.Small,
@@ -137,11 +137,11 @@ fun WorkspaceCreateScreen(
                 Spacer(modifier = Modifier.weight(1f))
                 SeugiFullWidthButton(
                     onClick = {
-                        Log.d("TAG", "$selectedImageUri ")
-//                        viewModel.createWorkspace(
-//                            workspaceName = schoolNameText,
-//                            workspaceImage = selectedImageUri!!
-//                        )
+                        viewModel.createWorkspace(
+                            context = context,
+                            workspaceName = schoolNameText,
+                            workspaceImage = selectedImageUri
+                        )
                     },
                     type = ButtonType.Primary,
                     text = "등록하기",
@@ -152,12 +152,4 @@ fun WorkspaceCreateScreen(
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun dasf() {
-    WorkspaceCreateScreen(
-        viewModel = null
-    )
 }
