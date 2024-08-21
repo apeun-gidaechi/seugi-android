@@ -23,5 +23,6 @@ dependencies {
     implementation(projects.featureMain.chatSeugi)
     implementation(projects.featureMain.workspace)
     implementation(projects.featureMain.workspaceDetail)
+    implementation(projects.featureMain.workspaceCreate)
 
 }

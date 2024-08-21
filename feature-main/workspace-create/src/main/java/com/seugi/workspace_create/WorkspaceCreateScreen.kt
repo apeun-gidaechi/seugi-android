@@ -40,7 +40,9 @@ import com.seugi.designsystem.theme.Red500
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WorkspaceCreateScreen() {
+fun WorkspaceCreateScreen(
+    popBackStack:() -> Unit
+) {
 
     var schoolNameText by remember { mutableStateOf("") }
 
@@ -62,7 +64,7 @@ fun WorkspaceCreateScreen() {
                     },
                     backIconCheck = true,
                     onNavigationIconClick = {
-                        Log.d("TAG", "뒤로가기: ")
+                        popBackStack()
                     }
                 )
             },
