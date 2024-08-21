@@ -25,7 +25,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.seugi.designsystem.component.SeugiIconButton
 import com.seugi.designsystem.component.SeugiRoundedCircleImage
 import com.seugi.designsystem.component.SeugiTopBar
@@ -37,6 +40,7 @@ import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.textfield.SeugiTextField
 import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.Red500
+import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,12 +52,13 @@ fun WorkspaceCreateScreen(
 
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
 
+    val context = LocalContext.current
+
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         selectedImageUri = uri
     }
-
 
     SeugiTheme {
         Scaffold(
@@ -85,6 +90,7 @@ fun WorkspaceCreateScreen(
                         contentAlignment = Alignment.BottomEnd
                     ){
                         if (selectedImageUri != null) {
+                            Log.d("TAG", "uri $selectedImageUri : ")
                             SeugiRoundedCircleImage(
                                 image = selectedImageUri.toString(),
                                 size = Size.Small,
@@ -130,7 +136,13 @@ fun WorkspaceCreateScreen(
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 SeugiFullWidthButton(
-                    onClick = {},
+                    onClick = {
+                        Log.d("TAG", "$selectedImageUri ")
+//                        viewModel.createWorkspace(
+//                            workspaceName = schoolNameText,
+//                            workspaceImage = selectedImageUri!!
+//                        )
+                    },
                     type = ButtonType.Primary,
                     text = "등록하기",
                     modifier = Modifier
@@ -140,4 +152,12 @@ fun WorkspaceCreateScreen(
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun dasf() {
+    WorkspaceCreateScreen(
+        viewModel = null
+    )
 }
