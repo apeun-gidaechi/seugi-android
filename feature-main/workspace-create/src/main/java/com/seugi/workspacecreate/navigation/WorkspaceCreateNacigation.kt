@@ -1,12 +1,10 @@
-package com.seugi.workspace_create.navigation
+package com.seugi.workspacecreate.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import com.seugi.workspace_create.WorkspaceCreateScreen
+import com.seugi.workspacecreate.WorkspaceCreateScreen
 
 const val WORKSPACE_CREATE_ROUTE = "WORKSPACE_CREATE_ROUTE"
 

@@ -50,8 +50,8 @@ import com.seugi.workspace.navigation.navigateToWaitingJoin
 import com.seugi.workspace.navigation.schoolCode
 import com.seugi.workspace.navigation.selectingJob
 import com.seugi.workspace.navigation.waitingJoin
-import com.seugi.workspace_create.navigation.navigateToWorkspaceCreate
-import com.seugi.workspace_create.navigation.workspaceCreateScreen
+import com.seugi.workspacecreate.navigation.navigateToWorkspaceCreate
+import com.seugi.workspacecreate.navigation.workspaceCreateScreen
 import com.seugi.workspacedetail.navigation.navigateToWorkspaceDetail
 import com.seugi.workspacedetail.navigation.navigateToWorkspaceMember
 import com.seugi.workspacedetail.navigation.workspaceDetailScreen

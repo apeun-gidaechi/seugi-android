@@ -1,4 +1,4 @@
-package com.seugi.workspace_create.model
+package com.seugi.workspacecreate.model
 
 sealed interface WorkspaceCreateSideEffect {
     data object SuccessCreate: WorkspaceCreateSideEffect

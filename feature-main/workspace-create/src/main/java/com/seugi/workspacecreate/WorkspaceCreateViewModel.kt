@@ -1,4 +1,4 @@
-package com.seugi.workspace_create
+package com.seugi.workspacecreate
 
 import android.content.ContentResolver
 import android.content.Context
@@ -10,7 +10,7 @@ import com.seugi.common.model.Result
 import com.seugi.data.file.FileRepository
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.file.request.FileType
-import com.seugi.workspace_create.model.WorkspaceCreateSideEffect
+import com.seugi.workspacecreate.model.WorkspaceCreateSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow

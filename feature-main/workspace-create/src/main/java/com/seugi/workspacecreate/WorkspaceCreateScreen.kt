@@ -1,4 +1,4 @@
-package com.seugi.workspace_create
+package com.seugi.workspacecreate
 
 import android.net.Uri
 import android.widget.Toast
@@ -40,7 +40,7 @@ import com.seugi.designsystem.component.textfield.SeugiTextField
 import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.Red500
 import com.seugi.ui.CollectAsSideEffect
-import com.seugi.workspace_create.model.WorkspaceCreateSideEffect
+import com.seugi.workspacecreate.model.WorkspaceCreateSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
