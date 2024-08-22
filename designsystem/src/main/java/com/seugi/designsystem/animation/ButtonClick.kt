@@ -35,8 +35,10 @@ fun Modifier.bounceClick(onClick: () -> Unit, enabled: Boolean = true, requireUn
             enabled = enabled
         )
         .graphicsLayer {
-            scaleX = scale
-            scaleY = scale
+            if (enabled) {
+                scaleX = scale
+                scaleY = scale
+            }
         }
         .pointerInput(buttonState) {
             awaitPointerEventScope {
