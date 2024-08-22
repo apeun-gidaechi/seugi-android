@@ -256,7 +256,7 @@ internal fun MainScreen(
                 },
                 navigateToCreateWorkspace = {
                     navHostController.navigateToWorkspaceCreate()
-                }
+                },
             )
             workspaceMemberScreen(
                 popBackStack = { navHostController.popBackStack() },
@@ -264,7 +264,7 @@ internal fun MainScreen(
             workspaceCreateScreen(
                 popBackStack = {
                     navHostController.popBackStack()
-                }
+                },
             )
         }
     }

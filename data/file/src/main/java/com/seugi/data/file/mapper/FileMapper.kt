@@ -4,5 +4,5 @@ import com.seugi.data.file.model.FileModel
 import com.seugi.file.response.FileResponse
 
 fun FileResponse.toModel(): FileModel = FileModel(
-    fileUrl = fileUrl
+    fileUrl = fileUrl,
 )

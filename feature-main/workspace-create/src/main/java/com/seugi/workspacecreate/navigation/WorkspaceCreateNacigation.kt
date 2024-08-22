@@ -20,7 +20,7 @@ fun NavGraphBuilder.workspaceCreateScreen(popBackStack: () -> Unit) {
         route = WORKSPACE_CREATE_ROUTE,
     ) {
         WorkspaceCreateScreen(
-            popBackStack = popBackStack
+            popBackStack = popBackStack,
         )
     }
 }

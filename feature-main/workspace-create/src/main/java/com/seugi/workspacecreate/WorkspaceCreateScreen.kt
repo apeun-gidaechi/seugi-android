@@ -28,37 +28,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.seugi.designsystem.R
+import com.seugi.designsystem.component.ButtonType
+import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiIconButton
 import com.seugi.designsystem.component.SeugiRoundedCircleImage
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.Size
-import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.R
-import com.seugi.designsystem.component.ButtonType
-import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.textfield.SeugiTextField
 import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.Red500
+import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.ui.CollectAsSideEffect
 import com.seugi.workspacecreate.model.WorkspaceCreateSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WorkspaceCreateScreen(
-    popBackStack:() -> Unit,
-    viewModel: WorkspaceCreateViewModel = hiltViewModel()
-) {
+fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateViewModel = hiltViewModel()) {
     var schoolNameText by remember { mutableStateOf("") }
 
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
 
     var schoolNameError by remember { mutableStateOf(false) }
 
-
     val context = LocalContext.current
 
     val galleryLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
+        contract = ActivityResultContracts.GetContent(),
     ) { uri: Uri? ->
         selectedImageUri = uri
     }
@@ -68,7 +64,7 @@ fun WorkspaceCreateScreen(
             is WorkspaceCreateSideEffect.Error -> {
                 Toast.makeText(context, it.throwable.message, Toast.LENGTH_SHORT).show()
             }
-            is WorkspaceCreateSideEffect.SuccessCreate ->{
+            is WorkspaceCreateSideEffect.SuccessCreate -> {
                 Toast.makeText(context, "워크페이스가 성공적으로 등록되었습니다.", Toast.LENGTH_SHORT).show()
             }
         }
@@ -84,48 +80,48 @@ fun WorkspaceCreateScreen(
                     backIconCheck = true,
                     onNavigationIconClick = {
                         popBackStack()
-                    }
+                    },
                 )
             },
 
-        ) {
+        ) { paddingValues ->
             Column(
                 modifier = Modifier
-                    .padding(it)
-                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .fillMaxSize(),
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 16.dp),
-                    horizontalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.Center,
                 ) {
                     Box(
-                        contentAlignment = Alignment.BottomEnd
-                    ){
+                        contentAlignment = Alignment.BottomEnd,
+                    ) {
                         if (selectedImageUri != null) {
                             SeugiRoundedCircleImage(
                                 image = selectedImageUri.toString(),
                                 size = Size.Small,
-                                onClick = {}
+                                onClick = {},
                             )
                         } else {
                             SeugiRoundedCircleImage(
                                 size = Size.Small,
-                                onClick = {}
+                                onClick = {},
                             )
                         }
                         SeugiIconButton(
                             resId = R.drawable.ic_add_fill,
                             onClick = { galleryLauncher.launch("image/*") },
-                            colors = IconButtonDefaults.iconButtonColors(contentColor = Gray600)
+                            colors = IconButtonDefaults.iconButtonColors(contentColor = Gray600),
                         )
                     }
                 }
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
+                        .padding(horizontal = 20.dp),
                 ) {
                     Column {
                         Row(
@@ -141,7 +137,9 @@ fun WorkspaceCreateScreen(
                         Spacer(modifier = Modifier.height(4.dp))
                         SeugiTextField(
                             value = schoolNameText,
-                            onValueChange = { schoolNameText = it },
+                            onValueChange = { text ->
+                                schoolNameText = text
+                            },
                             onClickDelete = { schoolNameText = "" },
                             placeholder = "학교 이름을 입력해 주세요",
                         )
@@ -163,7 +161,7 @@ fun WorkspaceCreateScreen(
                             viewModel.fileUpload(
                                 workspaceName = schoolNameText,
                                 context = context,
-                                workspaceUri = selectedImageUri
+                                workspaceUri = selectedImageUri,
                             )
                         }
                     },

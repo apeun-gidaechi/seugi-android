@@ -8,12 +8,11 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 interface FileSourceModule {
 
     @Singleton
     @Binds
-    fun providesGroupChatDataSource(fileDataSourceImpl: FileDataSourceImpl):FileDataSource
+    fun providesGroupChatDataSource(fileDataSourceImpl: FileDataSourceImpl): FileDataSource
 }

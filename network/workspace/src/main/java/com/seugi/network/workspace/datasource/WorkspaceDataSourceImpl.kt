@@ -47,10 +47,12 @@ class WorkspaceDataSourceImpl @Inject constructor(
     override suspend fun getWorkspaceData(workspaceId: String): BaseResponse<WorkspaceResponse> = httpClient.get("${SeugiUrl.WORKSPACE}/$workspaceId") {
     }.body()
 
-    override suspend fun createWorkspace(workspaceName: String, workspaceImage: String): BaseResponse<String> = httpClient.post("${SeugiUrl.WORKSPACE}/"){
-        setBody(CreateWorkspaceRequest(
-            workspaceName = workspaceName,
-            workspaceImageUrl = workspaceImage
-        ))
+    override suspend fun createWorkspace(workspaceName: String, workspaceImage: String): BaseResponse<String> = httpClient.post("${SeugiUrl.WORKSPACE}/") {
+        setBody(
+            CreateWorkspaceRequest(
+                workspaceName = workspaceName,
+                workspaceImageUrl = workspaceImage,
+            ),
+        )
     }.body()
 }

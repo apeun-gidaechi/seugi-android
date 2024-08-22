@@ -12,19 +12,19 @@ import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.file.request.FileType
 import com.seugi.workspacecreate.model.WorkspaceCreateSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 import javax.inject.Inject
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class WorkspaceCreateViewModel @Inject constructor(
     private val workspaceRepository: WorkspaceRepository,
-    private val fileRepository: FileRepository
+    private val fileRepository: FileRepository,
 ) : ViewModel() {
 
     private val _sideEffect = Channel<WorkspaceCreateSideEffect>()
@@ -34,61 +34,52 @@ class WorkspaceCreateViewModel @Inject constructor(
         viewModelScope.launch {
             workspaceRepository.createWorkspace(
                 workspaceName = workspaceName,
-                workspaceImage = workspaceImage
-            ).collect{
-                when(it){
-                    is Result.Success ->{
+                workspaceImage = workspaceImage,
+            ).collect {
+                when (it) {
+                    is Result.Success -> {
                         _sideEffect.send(WorkspaceCreateSideEffect.SuccessCreate)
                     }
-                    is Result.Error ->{
+                    is Result.Error -> {
                         it.throwable.printStackTrace()
                         _sideEffect.send(WorkspaceCreateSideEffect.Error(it.throwable))
-
                     }
-                    else ->{
-
+                    else -> {
                     }
                 }
             }
         }
     }
-    
-    fun fileUpload(
-        context: Context,
-        workspaceUri: Uri?,
-        workspaceName: String
-    ){
+
+    fun fileUpload(context: Context, workspaceUri: Uri?, workspaceName: String) {
         viewModelScope.launch {
             var file = ""
-            if (workspaceUri != null){
+            if (workspaceUri != null) {
                 file = uriToFile(context = context, uri = workspaceUri).toString()
-                fileRepository.fileUpload(file = file, type = FileType.IMG).collect{
-                    when(it){
-                        is Result.Success ->{
+                fileRepository.fileUpload(file = file, type = FileType.IMG).collect {
+                    when (it) {
+                        is Result.Success -> {
                             createWorkspace(
                                 workspaceName = workspaceName,
-                                workspaceImage = it.data
+                                workspaceImage = it.data,
                             )
                         }
-                        is Result.Error ->{
+                        is Result.Error -> {
                             it.throwable.printStackTrace()
                             _sideEffect.send(WorkspaceCreateSideEffect.Error(it.throwable))
-
                         }
-                        else ->{
-
+                        else -> {
                         }
                     }
                 }
-            }else{
+            } else {
                 createWorkspace(
                     workspaceName = workspaceName,
-                    workspaceImage = ""
+                    workspaceImage = "",
                 )
             }
         }
     }
-
 
     private fun uriToFile(context: Context, uri: Uri): File? {
         val contentResolver: ContentResolver = context.contentResolver
@@ -114,14 +105,13 @@ class WorkspaceCreateViewModel @Inject constructor(
         return try {
             val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
             File.createTempFile(
-                fileName ?: "temp_image", /* prefix */
-                ".jpg", /* suffix */
-                storageDir /* directory */
+                fileName ?: "temp_image",
+                ".jpg",
+                storageDir,
             )
         } catch (e: Exception) {
             e.printStackTrace()
             null
         }
     }
-
 }

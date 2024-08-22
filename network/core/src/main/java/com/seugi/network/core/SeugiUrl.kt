@@ -59,7 +59,7 @@ object SeugiUrl {
         const val REFRESH = "$ROOT/refresh"
     }
 
-    object File{
-        const val FILE_UPLOAD = "${FILE}/upload"
+    object File {
+        const val FILE_UPLOAD = "$FILE/upload"
     }
 }

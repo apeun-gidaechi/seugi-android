@@ -108,13 +108,10 @@ class WorkspaceRepositoryImpl @Inject constructor(
         .flowOn(dispatcher)
         .asResult()
 
-    override suspend fun createWorkspace(
-        workspaceName: String,
-        workspaceImage: String
-    ): Flow<Result<String>> = flow {
+    override suspend fun createWorkspace(workspaceName: String, workspaceImage: String): Flow<Result<String>> = flow {
         val response = workspaceDatasource.createWorkspace(
             workspaceName = workspaceName,
-            workspaceImage = workspaceImage
+            workspaceImage = workspaceImage,
         ).safeResponse()
 
         emit(response)

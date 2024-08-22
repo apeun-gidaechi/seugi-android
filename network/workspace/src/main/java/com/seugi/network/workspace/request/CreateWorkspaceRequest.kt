@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CreateWorkspaceRequest(
     val workspaceName: String,
-    val workspaceImageUrl: String
+    val workspaceImageUrl: String,
 )
