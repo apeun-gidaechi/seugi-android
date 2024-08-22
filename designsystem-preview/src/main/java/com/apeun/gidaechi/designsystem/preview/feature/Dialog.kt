@@ -31,10 +31,10 @@ fun Dialog() {
             onDismissRequest = {
                 dialogSecondShow = false
             },
-            onCancelRequest = {
+            onLeftRequest = {
                 dialogSecondShow = false
             },
-            onSuccessRequest = {
+            onRightRequest = {
                 dialogSecondShow = false
             },
         )

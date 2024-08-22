@@ -20,5 +20,6 @@ internal object SeugiDatabaseModule {
         context,
         SeugiDatabase::class.java,
         SeugiTable.SEUGI_TABLE,
-    ).build()
+    )
+        .build()
 }

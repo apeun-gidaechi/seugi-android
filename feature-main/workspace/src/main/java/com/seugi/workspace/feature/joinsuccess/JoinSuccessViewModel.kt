@@ -36,6 +36,7 @@ class JoinSuccessViewModel @Inject constructor(
                     }
 
                     is Result.Error -> {
+                        it.throwable.printStackTrace()
                         _joinSuccessSideEffect.send(JoinSuccessSideEffect.FiledApplication(it.throwable))
                     }
 

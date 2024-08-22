@@ -3,11 +3,13 @@ plugins {
 }
 
 android {
-    namespace = "com.seugi.home"
+    namespace = "com.seugi.workspacecreate"
 }
 
 dependencies {
-    implementation(libs.coil.compose)
     implementation(projects.designsystem)
+    implementation(projects.data.member)
     implementation(projects.data.workspace)
+    implementation(projects.common)
+    implementation(projects.ui)
 }

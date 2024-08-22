@@ -54,6 +54,16 @@ class MainViewModel @Inject constructor(
                 }
             }
         }
+        workspaceRepository.getMyWorkspaces().collect {
+            when (it) {
+                is Result.Success -> {
+                    val workspaces = it.data
+                    workspaceRepository.addWorkspaces(workspaces)
+                }
+                else -> {
+                }
+            }
+        }
     }
 
     fun setWorkspaceId(workspaceId: String) = viewModelScope.launch {

@@ -50,7 +50,6 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -62,6 +61,7 @@ import com.seugi.designsystem.component.ButtonType
 import com.seugi.designsystem.component.GradientPrimary
 import com.seugi.designsystem.component.LoadingDotsIndicator
 import com.seugi.designsystem.component.SeugiButton
+import com.seugi.designsystem.component.SeugiDialog
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.brushDraw
@@ -88,6 +88,7 @@ internal fun HomeScreen(
     navigateToChatSeugi: () -> Unit,
     navigateToJoinWorkspace: () -> Unit,
     onNavigationVisibleChange: (Boolean) -> Unit,
+    navigateToWorkspaceDetail: (String) -> Unit,
 ) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -118,70 +119,19 @@ internal fun HomeScreen(
         }
     }
 
-    if (isShowSelectSchoolDialog) {
-        Dialog(
-            onDismissRequest = {
-                isShowSelectSchoolDialog = false
+    if (state.showDialog) {
+        SeugiDialog(
+            title = "학교 등록하기",
+            content = "학교를 등록한 뒤 스기를 사용할 수 있어요",
+            leftText = "새 학교 만들기",
+            rightText = "기존 학교 가입",
+            onLeftRequest = {},
+            onRightRequest = {
+                onNavigationVisibleChange(false)
+                navigateToJoinWorkspace()
             },
-        ) {
-            Box(
-                modifier = Modifier
-                    .dropShadow(DropShadowType.EvBlack2)
-                    .background(
-                        color = White,
-                        shape = RoundedCornerShape(16.dp),
-                    ),
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(16.dp),
-                ) {
-                    HomeSchoolSelectCard(
-                        text = "대구소프트웨마이스고...",
-                        isSelect = selectSchool == "대구소프트웨어마이스터고등학교",
-                        onClick = {
-                            onNavigationVisibleChange(false)
-                            navigateToJoinWorkspace()
-//                            if (selectSchool == "대구소프트웨어마이스터고등학교") {
-//                                isShowSelectSchoolDialog = false
-//                                return@HomeSchoolSelectCard
-//                            }
-                            selectSchool = "대구소프트웨어마이스터고등학교"
-                            isShowSelectSchoolDialog = false
-                            viewModel.schoolChange(selectSchool)
-                        },
-                    )
-                    HomeSchoolSelectCard(
-                        text = "한국디지털미디어고등학교",
-                        isSelect = selectSchool == "한국디지털미디어고등학교",
-                        onClick = {
-                            if (selectSchool == "한국디지털미디어고등학교") {
-                                isShowSelectSchoolDialog = false
-                                return@HomeSchoolSelectCard
-                            }
-                            selectSchool = "한국디지털미디어고등학교"
-                            isShowSelectSchoolDialog = false
-                            viewModel.schoolChange(selectSchool)
-                        },
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(
-                        modifier = Modifier.padding(start = 4.dp),
-                        text = "가입 대기 중",
-                        color = Gray600,
-                        style = MaterialTheme.typography.bodyLarge,
-                    )
-                    Column {
-                        HomeSchoolSelectCard(
-                            text = "경북대학교사범대학..",
-                            isSelect = selectSchool == "경북대학교사범대학..",
-                            onClick = {
-                            },
-                        )
-                    }
-                }
-            }
-        }
+            onDismissRequest = {},
+        )
     }
 
     LazyColumn(
@@ -223,7 +173,8 @@ internal fun HomeScreen(
                             Spacer(modifier = Modifier.weight(1f))
                             SeugiButton(
                                 onClick = {
-                                    isShowSelectSchoolDialog = true
+                                    onNavigationVisibleChange(false)
+                                    navigateToWorkspaceDetail(state.nowWorkspace.first)
                                 },
                                 type = ButtonType.Gray,
                                 text = "전환",
@@ -242,27 +193,6 @@ internal fun HomeScreen(
                                 color = Gray600,
                             )
                             Spacer(modifier = Modifier.height(12.dp))
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(
-                                        color = Gray100,
-                                        shape = RoundedCornerShape(8.dp),
-                                    )
-                                    .bounceClick(
-                                        onClick = {
-                                        },
-                                    ),
-                            ) {
-                                Text(
-                                    modifier = Modifier
-                                        .align(Alignment.Center)
-                                        .padding(vertical = 8.dp),
-                                    text = "등록하러 가기",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = Gray600,
-                                )
-                            }
                         }
                     }
 

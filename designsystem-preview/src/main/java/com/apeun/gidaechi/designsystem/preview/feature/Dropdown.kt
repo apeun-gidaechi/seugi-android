@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.component.DropDownType
 import com.seugi.designsystem.component.SeugiDropDown
 import com.seugi.designsystem.theme.SeugiTheme
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun Dropdown() {
@@ -40,7 +41,7 @@ fun Dropdown() {
             verticalArrangement = Arrangement.Center,
         ) {
             SeugiDropDown(
-                item = dummyList,
+                item = dummyList.toImmutableList(),
                 title = "비밀번호 선택",
                 type = DropDownType.Disabled,
                 onItemSelected = { selectedItem = it },
@@ -53,7 +54,7 @@ fun Dropdown() {
             Spacer(modifier = Modifier.padding(horizontal = 20.dp))
 
             SeugiDropDown(
-                item = dummyList,
+                item = dummyList.toImmutableList(),
                 title = "비밀번호 선택",
                 type = DropDownType.Typing,
                 onItemSelected = { selectedItem = it },
