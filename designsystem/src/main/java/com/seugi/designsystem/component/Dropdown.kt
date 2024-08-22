@@ -265,7 +265,7 @@ private fun PreviewSeugiDropdown() {
                 onItemSelected = { selectedItem = it },
                 isExpanded = isExpanded,
                 selectedItem = selectedItem,
-                icon = icon,
+                icon = icon
             ) {
                 isExpanded = it
             }
