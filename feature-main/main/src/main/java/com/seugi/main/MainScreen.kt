@@ -141,6 +141,9 @@ internal fun MainScreen(
                         workspaceId = id,
                     )
                 },
+                navigateToWorkspaceCreate = {
+                    navHostController.navigateToWorkspaceCreate()
+                }
             )
 
             chatScreen(

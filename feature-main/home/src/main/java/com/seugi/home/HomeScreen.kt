@@ -90,6 +90,7 @@ internal fun HomeScreen(
     navigateToJoinWorkspace: () -> Unit,
     onNavigationVisibleChange: (Boolean) -> Unit,
     navigateToWorkspaceDetail: (String) -> Unit,
+    navigateToWorkspaceCreate: () -> Unit
 ) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -126,7 +127,10 @@ internal fun HomeScreen(
             content = "학교를 등록한 뒤 스기를 사용할 수 있어요",
             leftText = "새 학교 만들기",
             rightText = "기존 학교 가입",
-            onLeftRequest = {},
+            onLeftRequest = {
+                onNavigationVisibleChange(false)
+                navigateToWorkspaceCreate()
+            },
             onRightRequest = {
                 onNavigationVisibleChange(false)
                 navigateToJoinWorkspace()
