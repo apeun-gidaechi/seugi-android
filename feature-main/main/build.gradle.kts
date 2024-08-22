@@ -11,6 +11,7 @@ dependencies {
 
     implementation(projects.common)
     implementation(projects.data.profile)
+    implementation(projects.data.workspace)
 
     implementation(projects.featureMain.chat)
     implementation(projects.featureMain.chatDatail)

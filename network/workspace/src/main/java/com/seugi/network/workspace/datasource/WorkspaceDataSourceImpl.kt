@@ -7,6 +7,7 @@ import com.seugi.network.core.response.Response
 import com.seugi.network.workspace.WorkspaceDataSource
 import com.seugi.network.workspace.request.WorkspaceApplicationRequest
 import com.seugi.network.workspace.response.CheckWorkspaceResponse
+import com.seugi.network.workspace.response.WorkspacePermissionResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -23,7 +24,7 @@ class WorkspaceDataSourceImpl @Inject constructor(
         }.body()
 
     override suspend fun workspaceApplication(workspaceId: String, workspaceCode: String, role: String): Response =
-        httpClient.post("${SeugiUrl.Workspace.APPLICATION}") {
+        httpClient.post(SeugiUrl.Workspace.APPLICATION) {
             setBody(
                 body = WorkspaceApplicationRequest(
                     workspaceId = workspaceId,
@@ -36,4 +37,9 @@ class WorkspaceDataSourceImpl @Inject constructor(
     override suspend fun getMembers(workspaceId: String): BaseResponse<List<ProfileResponse>> = httpClient.get(SeugiUrl.Workspace.MEMBERS) {
         parameter("workspaceId", workspaceId)
     }.body()
+
+    override suspend fun getPermission(workspaceId: String): BaseResponse<WorkspacePermissionResponse> =
+        httpClient.get(SeugiUrl.Workspace.PERMISSION) {
+            parameter("workspaceId", workspaceId)
+        }.body()
 }
