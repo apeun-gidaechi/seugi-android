@@ -138,6 +138,7 @@ fun WorkspaceCreateScreen(
                 SeugiFullWidthButton(
                     onClick = {
                               viewModel.fileUpload(
+                                  workspaceName = schoolNameText,
                                   context = context,
                                   workspaceUri = selectedImageUri)
 //                        viewModel.createWorkspace(

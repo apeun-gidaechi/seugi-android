@@ -25,16 +25,11 @@ class WorkspaceCreateViewModel @Inject constructor(
     private val fileRepository: FileRepository
 ) : ViewModel() {
 
-    fun createWorkspace(context: Context, workspaceName: String, workspaceImage: Uri?) {
+    private fun createWorkspace(workspaceName: String, workspaceImage: String) {
         viewModelScope.launch {
-            var file = ""
-            if (workspaceImage != null){
-                file = uriToFile(context = context, uri = workspaceImage).toString()
-            }
-            Log.d("TAG", "$workspaceName, $file: ")
             workspaceRepository.createWorkspace(
                 workspaceName = workspaceName,
-                workspaceImage = file
+                workspaceImage = workspaceImage
             ).collect{
                 when(it){
                     is Result.Success ->{
@@ -54,6 +49,7 @@ class WorkspaceCreateViewModel @Inject constructor(
     fun fileUpload(
         context: Context,
         workspaceUri: Uri?,
+        workspaceName: String
     ){
         viewModelScope.launch {
             var file = ""
@@ -63,12 +59,17 @@ class WorkspaceCreateViewModel @Inject constructor(
             fileRepository.fileUpload(file = file, type = FileType.IMG).collect{
                 when(it){
                     is Result.Success ->{
-
+                        Log.d("TAG", "성공: ")
+                        createWorkspace(
+                            workspaceName = workspaceName,
+                            workspaceImage = it.data
+                        )
                     }
                     is Result.Error ->{
-
+                        Log.d("TAG", "실패: ")
                     }
                     else ->{
+                        Log.d("TAG", "else: ")
 
                     }
                 }
