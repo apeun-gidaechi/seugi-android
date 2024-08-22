@@ -7,8 +7,8 @@ import com.seugi.network.core.response.Response
 import com.seugi.network.workspace.WorkspaceDataSource
 import com.seugi.network.workspace.request.WorkspaceApplicationRequest
 import com.seugi.network.workspace.response.CheckWorkspaceResponse
-import com.seugi.network.workspace.response.WorkspacePermissionResponse
 import com.seugi.network.workspace.response.WaitWorkspaceResponse
+import com.seugi.network.workspace.response.WorkspacePermissionResponse
 import com.seugi.network.workspace.response.WorkspaceResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body

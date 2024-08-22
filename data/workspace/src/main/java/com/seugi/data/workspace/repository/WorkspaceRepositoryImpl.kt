@@ -12,9 +12,9 @@ import com.seugi.data.workspace.mapper.toEntities
 import com.seugi.data.workspace.mapper.toModel
 import com.seugi.data.workspace.mapper.toModels
 import com.seugi.data.workspace.model.CheckWorkspaceModel
-import com.seugi.data.workspace.model.WorkspacePermissionModel
 import com.seugi.data.workspace.model.WaitWorkspaceModel
 import com.seugi.data.workspace.model.WorkspaceModel
+import com.seugi.data.workspace.model.WorkspacePermissionModel
 import com.seugi.local.room.dao.WorkspaceDao
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.workspace.WorkspaceDataSource
