@@ -16,4 +16,6 @@ interface NotificationDataSource {
 
     suspend fun patchNotice(title: String, content: String, notificationId: Long): Response
 
+    suspend fun deleteNotice(workspaceId: String, notificationId: Long): Response
+
 }

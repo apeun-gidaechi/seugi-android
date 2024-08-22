@@ -31,6 +31,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.seugi.data.workspace.model.WorkspacePermissionModel
+import com.seugi.data.workspace.model.isAdmin
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiImage
@@ -47,9 +49,13 @@ import com.seugi.ui.shortToast
 @Composable
 internal fun NotificationEditScreen(
     viewModel: NotificationEditViewModel = hiltViewModel(),
+    userId: Int,
+    writerId: Int,
     id: Long,
     title: String,
     content: String,
+    workspaceId: String,
+    permission: WorkspacePermissionModel,
     onNavigationVisibleChange: (visible: Boolean) -> Unit,
     popBackStack: () -> Unit,
 ) {
@@ -176,9 +182,14 @@ internal fun NotificationEditScreen(
                         .size(28.dp)
                         .bounceClick(
                             onClick = {
-
+                                viewModel.delete(
+                                    id = id,
+                                    workspaceId = workspaceId
+                                )
                             },
-                            enabled = !state.isLoading
+                            enabled = !state.isLoading && (
+                                    writerId == userId || permission.isAdmin()
+                            )
                         ),
                     resId = R.drawable.ic_trash_fill,
                     colorFilter = ColorFilter.tint(Gray500)
@@ -194,11 +205,15 @@ private fun NotificationEditScreenPreview() {
     SeugiTheme {
         NotificationEditScreen(
             viewModel = viewModel(),
+            userId = 0,
+            writerId = 0,
             id = 0,
             onNavigationVisibleChange = {},
             popBackStack = {},
             title = "",
-            content = ""
+            content = "",
+            workspaceId = "",
+            permission = WorkspacePermissionModel.ADMIN,
         )
     }
 }

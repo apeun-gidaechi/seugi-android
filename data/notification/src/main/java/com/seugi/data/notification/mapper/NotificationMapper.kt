@@ -9,6 +9,7 @@ import kotlinx.collections.immutable.toImmutableList
 internal fun NotificationResponse.toModel() = NotificationModel(
     id = id,
     workspaceId = workspaceId,
+    userId = userId,
     userName = userName,
     title = title,
     content = content,

@@ -83,7 +83,7 @@ internal fun NotificationScreen(
     workspaceId: String,
     userId: Int,
     navigateToNotificationCreate: () -> Unit,
-    navigateToNotificationEdit: (id: Long, title: String, content: String) -> Unit,
+    navigateToNotificationEdit: (id: Long, title: String, content: String, userId: Int) -> Unit,
 ) {
     LaunchedEffect(true) {
         Log.d("TAG", "NotificationScreen: ${userId}")
@@ -134,7 +134,8 @@ internal fun NotificationScreen(
                 navigateToNotificationEdit(
                     selectNotificationItem?.id?: 0,
                     selectNotificationItem?.title?: "",
-                    selectNotificationItem?.content?: ""
+                    selectNotificationItem?.content?: "",
+                    selectNotificationItem?.userId?: 0
                 )
                 selectNotificationItem = null
             },

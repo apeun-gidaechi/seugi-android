@@ -31,7 +31,7 @@ class NotificationEditViewModel @Inject constructor(
     private val _sideEffect = Channel<NotificationSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
 
-    fun edit(id: Long, title: String, content: String) = viewModelScope.launch {
+    fun edit(id: Long, title: String, content: String) = viewModelScope.launch(dispatcher) {
         setLoadingState(true)
         notificationRepository.patchNotice(
             title = title,
@@ -53,7 +53,28 @@ class NotificationEditViewModel @Inject constructor(
         }
     }
 
-    private fun setLoadingState(isLoading: Boolean) = viewModelScope.launch {
+    fun delete(id: Long, workspaceId: String) = viewModelScope.launch(dispatcher) {
+        setLoadingState(true)
+        notificationRepository.deleteNotice(
+            notificationId = id,
+            workspaceId = workspaceId
+        ).collect {
+            when (it) {
+                is Result.Success -> {
+                    setLoadingState(false)
+                    _sideEffect.send(NotificationSideEffect.Success("삭제에 성공하였습니다 "))
+                }
+                is Result.Error -> {
+                    setLoadingState(false)
+                    _sideEffect.send(NotificationSideEffect.Error(it.throwable))
+                }
+
+                is Result.Loading -> {}
+            }
+        }
+    }
+
+    private fun setLoadingState(isLoading: Boolean) = viewModelScope.launch(dispatcher) {
         _state.update {
             it.copy(
                 isLoading = isLoading

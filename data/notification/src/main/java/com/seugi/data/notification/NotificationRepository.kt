@@ -13,4 +13,6 @@ interface NotificationRepository {
     suspend fun pathEmoji(emoji: String, notificationId: Long): Flow<Result<Boolean>>
 
     suspend fun patchNotice(title: String, content: String, notificationId: Long): Flow<Result<Boolean>>
+
+    suspend fun deleteNotice(workspaceId: String, notificationId: Long): Flow<Result<Boolean>>
 }

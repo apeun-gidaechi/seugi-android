@@ -5,6 +5,7 @@ import java.time.LocalDateTime
 data class NotificationResponse(
     val id: Long,
     val workspaceId: String,
+    val userId: Int,
     val userName: String,
     val title: String,
     val content: String,

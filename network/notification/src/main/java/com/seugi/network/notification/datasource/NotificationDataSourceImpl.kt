@@ -11,6 +11,7 @@ import com.seugi.network.notification.request.NotificationEmojiRequest
 import com.seugi.network.notification.response.NotificationResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
@@ -66,4 +67,7 @@ class NotificationDataSourceImpl @Inject constructor(
                 )
             )
         }.body()
+
+    override suspend fun deleteNotice(workspaceId: String, notificationId: Long): Response =
+        httpClient.delete("${SeugiUrl.Notification.ROOT}/${workspaceId}/${notificationId}").body()
 }

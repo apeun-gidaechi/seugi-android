@@ -13,4 +13,5 @@ dependencies {
     implementation(projects.ui)
     implementation(projects.data.notification)
     implementation(projects.data.core)
+    implementation(projects.data.workspace)
 }

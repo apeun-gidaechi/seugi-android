@@ -198,11 +198,12 @@ internal fun MainScreen(
                 navigateToNotificationCreate = {
                     navHostController.navigateToNotificationCreate()
                 },
-                navigateToNotificationEdit = { id, title, content ->
+                navigateToNotificationEdit = { id, title, content, userId ->
                     navHostController.navigateToNotificationEdit(
                         id = id,
                         title = title,
-                        content = content
+                        content = content,
+                        userId = userId
                     )
                 }
             )
@@ -260,6 +261,9 @@ internal fun MainScreen(
             )
 
             notificationEdit(
+                userId = state.userId,
+                workspaceId = state.workspaceId,
+                permission = state.permission,
                 popBackStack = navHostController::popBackStack,
                 onNavigationVisibleChange = onNavigationVisibleChange
             )

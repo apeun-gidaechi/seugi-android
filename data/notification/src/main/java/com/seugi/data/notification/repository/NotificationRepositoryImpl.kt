@@ -73,4 +73,15 @@ class NotificationRepositoryImpl @Inject constructor(
     }
         .flowOn(dispatcher)
         .asResult()
+
+    override suspend fun deleteNotice(workspaceId: String, notificationId: Long): Flow<Result<Boolean>> = flow {
+        val response = dataSource.deleteNotice(
+            workspaceId = workspaceId,
+            notificationId = notificationId
+        ).safeResponse()
+
+        emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
 }
