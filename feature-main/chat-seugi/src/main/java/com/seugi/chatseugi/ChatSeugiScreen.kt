@@ -113,7 +113,6 @@ internal fun ChatSeugiScreen(
                     )
                 },
                 actions = {},
-                backIconCheck = true,
                 shadow = true,
                 onNavigationIconClick = {
                     popBackStack()

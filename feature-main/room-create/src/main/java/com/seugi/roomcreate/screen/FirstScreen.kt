@@ -97,9 +97,7 @@ fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) -> Unit, 
                             color = Black,
                         )
                     }
-                    Spacer(modifier = Modifier.width(16.dp))
                 },
-                backIconCheck = true,
                 onNavigationIconClick = popBackStack,
             )
         },

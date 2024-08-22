@@ -35,6 +35,10 @@ import com.seugi.home.navigation.homeScreen
 import com.seugi.home.navigation.navigateToHome
 import com.seugi.notification.navigation.NOTIFICATION_ROUTE
 import com.seugi.notification.navigation.notificationScreen
+import com.seugi.notificationcreate.navigation.navigateToNotificationCreate
+import com.seugi.notificationcreate.navigation.notificationCreate
+import com.seugi.notificationedit.navigation.navigateToNotificationEdit
+import com.seugi.notificationedit.navigation.notificationEdit
 import com.seugi.profile.navigation.PROFILE_ROUTE
 import com.seugi.profile.navigation.profileScreen
 import com.seugi.room.navigation.ROOM_ROUTE
@@ -87,6 +91,8 @@ internal fun MainScreen(
     LaunchedEffect(key1 = true) {
         viewModel.load()
     }
+
+    LaunchedEffect(state) {}
 
     BackHandler {
         mainToOnboarding()
@@ -198,7 +204,22 @@ internal fun MainScreen(
                 workspaceId = state.workspaceId,
             )
 
-            notificationScreen()
+            notificationScreen(
+                workspaceId = state.workspaceId,
+                userId = state.userId,
+                permission = state.permission,
+                navigateToNotificationCreate = {
+                    navHostController.navigateToNotificationCreate()
+                },
+                navigateToNotificationEdit = { id, title, content, userId ->
+                    navHostController.navigateToNotificationEdit(
+                        id = id,
+                        title = title,
+                        content = content,
+                        userId = userId,
+                    )
+                },
+            )
 
             chatSeugiScreen(
                 onNavigationVisibleChange = onNavigationVisibleChange,
@@ -244,6 +265,20 @@ internal fun MainScreen(
                     )
                 },
                 popBackStack = { navHostController.popBackStack() },
+            )
+
+            notificationCreate(
+                workspaceId = state.workspaceId,
+                popBackStack = navHostController::popBackStack,
+                onNavigationVisibleChange = onNavigationVisibleChange,
+            )
+
+            notificationEdit(
+                userId = state.userId,
+                workspaceId = state.workspaceId,
+                permission = state.permission,
+                popBackStack = navHostController::popBackStack,
+                onNavigationVisibleChange = onNavigationVisibleChange,
             )
             workspaceDetailScreen(
                 navigateToJoinWorkspace = {

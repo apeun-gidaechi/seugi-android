@@ -263,7 +263,6 @@ fun WorkspaceDetailScreen(
                     onNavigationIconClick = {
                         popBackStack()
                     },
-                    backIconCheck = true,
                 )
             },
         ) {

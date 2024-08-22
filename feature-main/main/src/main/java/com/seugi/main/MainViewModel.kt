@@ -23,16 +23,33 @@ class MainViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     fun load() = viewModelScope.launch {
-        profileRepository.getProfile(_state.value.workspaceId).collect {
-            when (it) {
-                is Result.Success -> {
-                    _state.update { state ->
-                        state.copy(
-                            userId = it.data.member.id,
-                        )
+        launch {
+            profileRepository.getProfile(_state.value.workspaceId).collect {
+                when (it) {
+                    is Result.Success -> {
+                        _state.update { state ->
+                            state.copy(
+                                userId = it.data.member.id,
+                            )
+                        }
                     }
+
+                    else -> {}
                 }
-                else -> {}
+            }
+        }
+        launch {
+            workspaceRepository.getPermission(_state.value.workspaceId).collect {
+                when (it) {
+                    is Result.Success -> {
+                        _state.update { state ->
+                            state.copy(
+                                permission = it.data,
+                            )
+                        }
+                    }
+                    else -> {}
+                }
             }
         }
         workspaceRepository.getMyWorkspaces().collect {
