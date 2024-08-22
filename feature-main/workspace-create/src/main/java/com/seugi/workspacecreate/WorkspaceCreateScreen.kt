@@ -77,7 +77,6 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
                     title = {
                         Text(text = "새 학교 등록", style = MaterialTheme.typography.titleLarge)
                     },
-                    backIconCheck = true,
                     onNavigationIconClick = {
                         popBackStack()
                     },

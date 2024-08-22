@@ -9,6 +9,7 @@ android {
 dependencies {
     implementation(projects.designsystem)
     implementation(projects.data.member)
+    implementation(projects.data.profile)
     implementation(projects.data.workspace)
     implementation(projects.common)
     implementation(projects.ui)

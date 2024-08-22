@@ -147,7 +147,6 @@ fun SeugiDropDown(
 fun SeugiSmallDropDown(
     modifier: Modifier = Modifier,
     item: ImmutableList<String>,
-    title: String,
     onItemSelected: (String) -> Unit,
     isExpanded: Boolean,
     selectedItem: String,
@@ -263,7 +262,6 @@ private fun PreviewSeugiDropdown() {
 
             SeugiSmallDropDown(
                 item = dummyList.toImmutableList(),
-                title = "전체",
                 onItemSelected = { selectedItem = it },
                 isExpanded = isExpanded,
                 selectedItem = selectedItem,
