@@ -13,5 +13,5 @@ import javax.inject.Singleton
 interface RepositoryModule {
     @Singleton
     @Binds
-    fun provideTokenRepository(fileRepositoryImpl: FileRepositoryImpl): FileRepository
+    fun provideFileRepository(fileRepositoryImpl: FileRepositoryImpl): FileRepository
 }

@@ -14,5 +14,5 @@ interface FileSourceModule {
 
     @Singleton
     @Binds
-    fun providesGroupChatDataSource(fileDataSourceImpl: FileDataSourceImpl): FileDataSource
+    fun providesFileDataSource(fileDataSourceImpl: FileDataSourceImpl): FileDataSource
 }
