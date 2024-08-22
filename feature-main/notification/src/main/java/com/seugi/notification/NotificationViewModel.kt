@@ -114,7 +114,6 @@ class NotificationViewModel @Inject constructor(
     }
 
     fun pressEmoji(id: Long, emoji: String, userId: Int) = viewModelScope.launch(dispatcher) {
-        Log.d("TAG", "pressEmoji: ${_state.value}")
         _state.update {
             it.copy(
                 notices = it.notices.map { model ->

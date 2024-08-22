@@ -48,7 +48,6 @@ class MainViewModel @Inject constructor(
                                 permission = it.data,
                             )
                         }
-                        Log.d("TAG", "load: ${_state.value}")
                     }
                     else -> {}
                 }
