@@ -202,22 +202,3 @@ internal fun NotificationEditScreen(
         }
     }
 }
-
-@Composable
-@Preview
-private fun NotificationEditScreenPreview() {
-    SeugiTheme {
-        NotificationEditScreen(
-            viewModel = viewModel(),
-            userId = 0,
-            writerId = 0,
-            id = 0,
-            onNavigationVisibleChange = {},
-            popBackStack = {},
-            title = "",
-            content = "",
-            workspaceId = "",
-            permission = WorkspacePermissionModel.ADMIN,
-        )
-    }
-}
