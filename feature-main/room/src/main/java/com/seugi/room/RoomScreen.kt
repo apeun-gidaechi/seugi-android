@@ -109,12 +109,10 @@ internal fun RoomScreen(
                                 isSearchMode = true
                             },
                         )
-                        Spacer(modifier = Modifier.width(16.dp))
                     }
                 },
                 shadow = true,
-                backIconCheck = isSearchMode,
-                onNavigationIconClick = onDone,
+                onNavigationIconClick = if (isSearchMode) onDone else null,
             )
         },
     ) {

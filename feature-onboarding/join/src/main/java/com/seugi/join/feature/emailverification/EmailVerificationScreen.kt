@@ -112,7 +112,6 @@ fun EmailVerificationScreen(
                             )
                         },
                         onNavigationIconClick = { popBackStack() },
-                        backIconCheck = true,
                     )
                 },
             ) {

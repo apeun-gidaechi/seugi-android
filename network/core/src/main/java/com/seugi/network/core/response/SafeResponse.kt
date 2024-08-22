@@ -24,3 +24,19 @@ fun <T> BaseResponse<T>.safeResponse(): T = when (status) {
         this.data
     }
 }
+
+fun Response.safeResponse(): Boolean = when (status) {
+    400 -> throw BadRequestException(message)
+    401 -> throw UnauthorizedException(message)
+    403 -> throw ForbiddenException(message)
+    404 -> throw NotFoundException(message)
+    409 -> throw ConflictException(message)
+    429 -> throw TooManyRequestsException(message)
+    500 -> throw InternalServerException(message)
+    else -> {
+        if (!success) {
+            throw FailedRequestException(message)
+        }
+        this.success
+    }
+}

@@ -22,6 +22,8 @@ dependencies {
     implementation(projects.featureMain.notification)
     implementation(projects.featureMain.chatSeugi)
     implementation(projects.featureMain.workspace)
+    implementation(projects.featureMain.notificationCreate)
+    implementation(projects.featureMain.notificationEdit)
     implementation(projects.featureMain.workspaceDetail)
 
 }

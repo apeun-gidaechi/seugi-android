@@ -39,7 +39,6 @@ internal fun OAuthSignUpScreen(popBackStack: () -> Unit, navigateToEmailSignUp: 
                 SeugiTopBar(
                     title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
                     onNavigationIconClick = popBackStack,
-                    backIconCheck = true,
                 )
             },
         ) {

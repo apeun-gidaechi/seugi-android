@@ -8,6 +8,7 @@ import com.seugi.network.workspace.WorkspaceDataSource
 import com.seugi.network.workspace.request.WorkspaceApplicationRequest
 import com.seugi.network.workspace.response.CheckWorkspaceResponse
 import com.seugi.network.workspace.response.WaitWorkspaceResponse
+import com.seugi.network.workspace.response.WorkspacePermissionResponse
 import com.seugi.network.workspace.response.WorkspaceResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -35,6 +36,10 @@ class WorkspaceDataSourceImpl @Inject constructor(
         }.body()
 
     override suspend fun getMembers(workspaceId: String): BaseResponse<List<ProfileResponse>> = httpClient.get(SeugiUrl.Workspace.MEMBERS) {
+        parameter("workspaceId", workspaceId)
+    }.body()
+
+    override suspend fun getPermission(workspaceId: String): BaseResponse<WorkspacePermissionResponse> = httpClient.get(SeugiUrl.Workspace.PERMISSION) {
         parameter("workspaceId", workspaceId)
     }.body()
 
