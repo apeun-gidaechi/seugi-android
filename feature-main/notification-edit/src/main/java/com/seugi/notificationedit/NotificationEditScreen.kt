@@ -25,7 +25,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
@@ -40,7 +39,6 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiTextField
 import com.seugi.designsystem.theme.Black
 import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.designsystem.theme.White
 import com.seugi.notificationedit.model.NotificationSideEffect
 import com.seugi.ui.CollectAsSideEffect
