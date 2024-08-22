@@ -72,7 +72,7 @@ fun EmailVerificationScreen(
             }
 
             is EmailVerificationSideEffect.SuccessJoin -> {
-                popBackStack()
+                navigateToStart()
             }
 
             is EmailVerificationSideEffect.FiledJoin -> {
