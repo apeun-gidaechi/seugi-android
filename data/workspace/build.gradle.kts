@@ -13,7 +13,7 @@ dependencies {
     implementation(projects.common)
     implementation(projects.network.workspace)
     implementation(projects.network.core)
-    api(projects.data.core)
+    implementation(projects.data.core)
     implementation(projects.local.room)
     implementation(libs.kotlinx.coroutines.android)
 }

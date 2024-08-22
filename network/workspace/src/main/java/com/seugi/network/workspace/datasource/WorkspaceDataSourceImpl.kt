@@ -5,6 +5,7 @@ import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.response.ProfileResponse
 import com.seugi.network.core.response.Response
 import com.seugi.network.workspace.WorkspaceDataSource
+import com.seugi.network.workspace.request.CreateWorkspaceRequest
 import com.seugi.network.workspace.request.WorkspaceApplicationRequest
 import com.seugi.network.workspace.response.CheckWorkspaceResponse
 import com.seugi.network.workspace.response.WaitWorkspaceResponse
@@ -49,5 +50,14 @@ class WorkspaceDataSourceImpl @Inject constructor(
     }.body()
 
     override suspend fun getWorkspaceData(workspaceId: String): BaseResponse<WorkspaceResponse> = httpClient.get("${SeugiUrl.WORKSPACE}/$workspaceId") {
+    }.body()
+
+    override suspend fun createWorkspace(workspaceName: String, workspaceImage: String): BaseResponse<String> = httpClient.post("${SeugiUrl.WORKSPACE}/") {
+        setBody(
+            CreateWorkspaceRequest(
+                workspaceName = workspaceName,
+                workspaceImageUrl = workspaceImage,
+            ),
+        )
     }.body()
 }

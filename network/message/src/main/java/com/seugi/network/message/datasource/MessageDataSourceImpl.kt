@@ -118,7 +118,6 @@ class MessageDataSourceImpl @Inject constructor(
         ).toJsonString()
 
         val sendContent = StompMessage("SEND", listOf(StompHeader(StompHeader.DESTINATION, "/pub/chat.message")), body)
-        val result = stompClient.send(sendContent).subscribe {}
         return true
     }
 }

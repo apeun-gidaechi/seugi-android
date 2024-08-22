@@ -67,6 +67,7 @@ fun WorkspaceDetailScreen(
     popBackStack: () -> Unit,
     workspaceId: String,
     navigateToWorkspaceMember: (String) -> Unit,
+    navigateToCreateWorkspace: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showDialog by remember { mutableStateOf(false) }
@@ -209,7 +210,7 @@ fun WorkspaceDetailScreen(
                                             interactionSource = NoInteractionSource(),
                                             indication = null,
                                         ) {
-                                            // TODO 학교 만들기 네비게이션
+                                            navigateToCreateWorkspace()
                                         },
                                     text = "새 학교 만들기",
                                     style = MaterialTheme.typography.bodyMedium,

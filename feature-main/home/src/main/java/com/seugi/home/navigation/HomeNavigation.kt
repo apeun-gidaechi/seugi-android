@@ -23,6 +23,7 @@ fun NavGraphBuilder.homeScreen(
     navigateToJoinWorkspace: () -> Unit,
     onNavigationVisibleChange: (Boolean) -> Unit,
     navigateToWorkspaceDetail: (String) -> Unit,
+    navigateToWorkspaceCreate: () -> Unit,
 ) {
     composable(HOME_ROUTE) {
         HomeScreen(
@@ -30,6 +31,7 @@ fun NavGraphBuilder.homeScreen(
             navigateToJoinWorkspace = navigateToJoinWorkspace,
             onNavigationVisibleChange = onNavigationVisibleChange,
             navigateToWorkspaceDetail = navigateToWorkspaceDetail,
+            navigateToWorkspaceCreate = navigateToWorkspaceCreate,
         )
     }
 }

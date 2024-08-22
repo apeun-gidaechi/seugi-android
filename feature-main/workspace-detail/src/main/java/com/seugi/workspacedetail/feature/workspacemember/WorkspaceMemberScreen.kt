@@ -126,7 +126,6 @@ fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(),
                 Spacer(modifier = Modifier.height(16.dp))
                 SeugiSmallDropDown(
                     item = dummyList.toImmutableList(),
-                    title = "전체",
                     onItemSelected = { selectedItem = it },
                     isExpanded = isExpanded,
                     selectedItem = selectedItem,

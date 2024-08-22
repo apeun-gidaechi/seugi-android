@@ -86,11 +86,11 @@ fun SeugiSegmentedButtonLayout(
                 }
             }
 
-            override fun Modifier.segmentedIndicatorOffset(selectedButtonIndex: Int, matchContentSize: Boolean): Modifier {
+            override fun Modifier.segmentedIndicatorOffset(selectedNavigationIndex: Int, matchContentSize: Boolean): Modifier {
                 return this.then(
                     SegmentedIndicatorModifier(
                         segmentedButtonPositions,
-                        selectedButtonIndex,
+                        selectedNavigationIndex,
                         matchContentSize,
                     ),
                 )
@@ -128,7 +128,7 @@ fun SeugiSegmentedButtonLayout(
                                     horizontal = 4.dp,
                                 )
                                 .segmentedIndicatorOffset(
-                                    selectedButtonIndex = selectedIndex,
+                                    selectedNavigationIndex = selectedIndex,
                                     matchContentSize = true,
                                 ),
                             color = Color.Transparent,

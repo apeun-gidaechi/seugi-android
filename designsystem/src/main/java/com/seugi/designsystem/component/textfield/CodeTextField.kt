@@ -121,7 +121,7 @@ fun SeugiCodeTextField(
                     focusRequester.clearFocus(true)
                 },
             ),
-            decorationBox = @Composable { innerTextField ->
+            decorationBox = @Composable {
                 Row(horizontalArrangement = Arrangement.Center) {
                     repeat(limit) { index ->
                         Box(
@@ -213,7 +213,7 @@ fun SeugiCodeTextField(
                     focusRequester.clearFocus(true)
                 },
             ),
-            decorationBox = @Composable { innerTextField ->
+            decorationBox = @Composable {
                 Row(horizontalArrangement = Arrangement.Center) {
                     repeat(limit) { index ->
 

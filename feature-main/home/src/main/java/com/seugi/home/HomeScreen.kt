@@ -89,6 +89,7 @@ internal fun HomeScreen(
     navigateToJoinWorkspace: () -> Unit,
     onNavigationVisibleChange: (Boolean) -> Unit,
     navigateToWorkspaceDetail: (String) -> Unit,
+    navigateToWorkspaceCreate: () -> Unit,
 ) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -98,9 +99,6 @@ internal fun HomeScreen(
     val indicatorOffset by remember {
         derivedStateOf { (pagerState.currentPage * 10).dp }
     }
-    val dummyList = listOf("진로", "소공", "소공", "인공지능 수학", "한국사", "실용영어", "웹프")
-    var selectSchool by remember { mutableStateOf("대구소프트웨어마이스터고등학교") }
-    var isShowSelectSchoolDialog by remember { mutableStateOf(false) }
 
     LifecycleResumeEffect(Unit) {
         onPauseOrDispose {
@@ -125,7 +123,10 @@ internal fun HomeScreen(
             content = "학교를 등록한 뒤 스기를 사용할 수 있어요",
             leftText = "새 학교 만들기",
             rightText = "기존 학교 가입",
-            onLeftRequest = {},
+            onLeftRequest = {
+                onNavigationVisibleChange(false)
+                navigateToWorkspaceCreate()
+            },
             onRightRequest = {
                 onNavigationVisibleChange(false)
                 navigateToJoinWorkspace()
