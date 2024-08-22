@@ -4,6 +4,7 @@ object SeugiUrl {
     private const val BASE_URL = BuildConfig.BASE_URL
 
     const val WORKSPACE = "$BASE_URL/workspace"
+    const val FILE = "$BASE_URL/file"
 
     object Message {
         private const val WS_URL = BuildConfig.WS_URL
@@ -56,5 +57,9 @@ object SeugiUrl {
     object Member {
         const val ROOT = "${BASE_URL}/member"
         const val REFRESH = "$ROOT/refresh"
+    }
+
+    object File{
+        const val FILE_UPLOAD = "${FILE}/upload"
     }
 }

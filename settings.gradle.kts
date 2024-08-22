@@ -1,5 +1,11 @@
 import java.net.URI
 
+include(":data:file")
+
+
+include(":network:file")
+
+
 include(":feature-main:workspace-create")
 
 

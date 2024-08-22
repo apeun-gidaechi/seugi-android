@@ -10,6 +10,7 @@ dependencies {
     implementation(projects.designsystem)
     implementation(projects.data.member)
     implementation(projects.data.workspace)
+    implementation(projects.data.file)
     implementation(projects.common)
     implementation(projects.ui)
 }

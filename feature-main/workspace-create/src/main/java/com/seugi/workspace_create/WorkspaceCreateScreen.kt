@@ -137,11 +137,14 @@ fun WorkspaceCreateScreen(
                 Spacer(modifier = Modifier.weight(1f))
                 SeugiFullWidthButton(
                     onClick = {
-                        viewModel.createWorkspace(
-                            context = context,
-                            workspaceName = schoolNameText,
-                            workspaceImage = selectedImageUri
-                        )
+                              viewModel.fileUpload(
+                                  context = context,
+                                  workspaceUri = selectedImageUri)
+//                        viewModel.createWorkspace(
+//                            context = context,
+//                            workspaceName = schoolNameText,
+//                            workspaceImage = selectedImageUri
+//                        )
                     },
                     type = ButtonType.Primary,
                     text = "등록하기",

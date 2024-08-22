@@ -8,7 +8,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
+import com.seugi.data.file.FileRepository
 import com.seugi.data.workspace.WorkspaceRepository
+import com.seugi.file.request.FileType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.File
@@ -19,7 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WorkspaceCreateViewModel @Inject constructor(
-    private val workspaceRepository: WorkspaceRepository
+    private val workspaceRepository: WorkspaceRepository,
+    private val fileRepository: FileRepository
 ) : ViewModel() {
 
     fun createWorkspace(context: Context, workspaceName: String, workspaceImage: Uri?) {
@@ -39,6 +42,31 @@ class WorkspaceCreateViewModel @Inject constructor(
                     }
                     is Result.Error ->{
                         Log.d("TAG", "실패 ${it.throwable}: ")
+                    }
+                    else ->{
+
+                    }
+                }
+            }
+        }
+    }
+    
+    fun fileUpload(
+        context: Context,
+        workspaceUri: Uri?,
+    ){
+        viewModelScope.launch {
+            var file = ""
+            if (workspaceUri != null){
+                file = uriToFile(context = context, uri = workspaceUri).toString()
+            }
+            fileRepository.fileUpload(file = file, type = FileType.IMG).collect{
+                when(it){
+                    is Result.Success ->{
+
+                    }
+                    is Result.Error ->{
+
                     }
                     else ->{
 
