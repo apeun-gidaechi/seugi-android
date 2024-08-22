@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.data.file.FileRepository
+import com.seugi.data.file.model.FileType
 import com.seugi.data.workspace.WorkspaceRepository
-import com.seugi.file.request.FileType
 import com.seugi.workspacecreate.model.WorkspaceCreateSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.io.File

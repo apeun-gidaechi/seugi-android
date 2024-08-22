@@ -1,4 +1,4 @@
-package com.seugi.file.request
+package com.seugi.data.file.model
 
 enum class FileType {
     IMG,

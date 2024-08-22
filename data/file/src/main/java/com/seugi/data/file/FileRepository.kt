@@ -1,7 +1,7 @@
 package com.seugi.data.file
 
 import com.seugi.common.model.Result
-import com.seugi.file.request.FileType
+import com.seugi.data.file.model.FileType
 import kotlinx.coroutines.flow.Flow
 
 interface FileRepository {
