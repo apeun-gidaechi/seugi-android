@@ -58,6 +58,7 @@ import com.seugi.common.utiles.toTimeString
 import com.seugi.data.notification.model.NotificationModel
 import com.seugi.data.workspace.model.WorkspacePermissionModel
 import com.seugi.data.workspace.model.isAdmin
+import com.seugi.data.workspace.model.isTeacher
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.animation.combinedBounceClick
@@ -140,7 +141,7 @@ internal fun NotificationScreen(
 
     if (isShowPopupDialog) {
         NotificationPopupDialog(
-            isEditPermission = selectNotificationItem?.userId == userId || permission.isAdmin(),
+            isEditPermission = selectNotificationItem?.userId == userId,
             isDeletePermission = selectNotificationItem?.userId == userId || permission.isAdmin(),
             onDismissRequest = {
                 isShowPopupDialog = false
@@ -185,15 +186,17 @@ internal fun NotificationScreen(
                         )
                     },
                     actions = {
-                        SeugiImage(
-                            modifier = Modifier
-                                .size(28.dp)
-                                .bounceClick(
-                                    onClick = navigateToNotificationCreate
-                                ),
-                            resId = R.drawable.ic_write_line,
-                            colorFilter = ColorFilter.tint(Black)
-                        )
+                        if (permission.isTeacher()) {
+                            SeugiImage(
+                                modifier = Modifier
+                                    .size(28.dp)
+                                    .bounceClick(
+                                        onClick = navigateToNotificationCreate
+                                    ),
+                                resId = R.drawable.ic_write_line,
+                                colorFilter = ColorFilter.tint(Black)
+                            )
+                        }
                     },
                     containerColors = Primary050,
                 )

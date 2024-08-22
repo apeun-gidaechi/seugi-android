@@ -13,3 +13,6 @@ fun WorkspacePermissionModel.isAdmin() =
         WorkspacePermissionModel.MIDDLE_ADMIN -> true
         else -> false
     }
+
+fun WorkspacePermissionModel.isTeacher() =
+    this != WorkspacePermissionModel.STUDENT
