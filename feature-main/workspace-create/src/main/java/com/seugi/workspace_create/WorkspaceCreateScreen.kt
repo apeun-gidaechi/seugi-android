@@ -2,6 +2,7 @@ package com.seugi.workspace_create
 
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.designsystem.component.SeugiIconButton
 import com.seugi.designsystem.component.SeugiRoundedCircleImage
 import com.seugi.designsystem.component.SeugiTopBar
@@ -40,6 +42,8 @@ import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.textfield.SeugiTextField
 import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.Red500
+import com.seugi.ui.CollectAsSideEffect
+import com.seugi.workspace_create.model.WorkspaceCreateSideEffect
 import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,7 +52,6 @@ fun WorkspaceCreateScreen(
     popBackStack:() -> Unit,
     viewModel: WorkspaceCreateViewModel = hiltViewModel()
 ) {
-
     var schoolNameText by remember { mutableStateOf("") }
 
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
@@ -59,6 +62,17 @@ fun WorkspaceCreateScreen(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         selectedImageUri = uri
+    }
+
+    viewModel.sideEffect.CollectAsSideEffect {
+        when (it) {
+            is WorkspaceCreateSideEffect.Error -> {
+                Toast.makeText(context, it.throwable.message, Toast.LENGTH_SHORT).show()
+            }
+            is WorkspaceCreateSideEffect.SuccessCreate ->{
+                Toast.makeText(context, "워크페이스가 성공적으로 등록되었습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     SeugiTheme {

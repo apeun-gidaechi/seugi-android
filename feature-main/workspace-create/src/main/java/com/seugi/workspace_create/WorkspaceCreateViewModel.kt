@@ -4,14 +4,16 @@ import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.data.file.FileRepository
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.file.request.FileType
+import com.seugi.workspace_create.model.WorkspaceCreateSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -25,6 +27,9 @@ class WorkspaceCreateViewModel @Inject constructor(
     private val fileRepository: FileRepository
 ) : ViewModel() {
 
+    private val _sideEffect = Channel<WorkspaceCreateSideEffect>()
+    val sideEffect = _sideEffect.receiveAsFlow()
+
     private fun createWorkspace(workspaceName: String, workspaceImage: String) {
         viewModelScope.launch {
             workspaceRepository.createWorkspace(
@@ -33,10 +38,12 @@ class WorkspaceCreateViewModel @Inject constructor(
             ).collect{
                 when(it){
                     is Result.Success ->{
-                        Log.d("TAG", "성공 ${it.data}: ")
+                        _sideEffect.send(WorkspaceCreateSideEffect.SuccessCreate)
                     }
                     is Result.Error ->{
-                        Log.d("TAG", "실패 ${it.throwable}: ")
+                        it.throwable.printStackTrace()
+                        _sideEffect.send(WorkspaceCreateSideEffect.Error(it.throwable))
+
                     }
                     else ->{
 
@@ -59,17 +66,17 @@ class WorkspaceCreateViewModel @Inject constructor(
             fileRepository.fileUpload(file = file, type = FileType.IMG).collect{
                 when(it){
                     is Result.Success ->{
-                        Log.d("TAG", "성공: ")
                         createWorkspace(
                             workspaceName = workspaceName,
                             workspaceImage = it.data
                         )
                     }
                     is Result.Error ->{
-                        Log.d("TAG", "실패: ")
+                        it.throwable.printStackTrace()
+                        _sideEffect.send(WorkspaceCreateSideEffect.Error(it.throwable))
+
                     }
                     else ->{
-                        Log.d("TAG", "else: ")
 
                     }
                 }
