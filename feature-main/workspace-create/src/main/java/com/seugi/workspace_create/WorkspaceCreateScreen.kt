@@ -155,11 +155,6 @@ fun WorkspaceCreateScreen(
                                   workspaceName = schoolNameText,
                                   context = context,
                                   workspaceUri = selectedImageUri)
-//                        viewModel.createWorkspace(
-//                            context = context,
-//                            workspaceName = schoolNameText,
-//                            workspaceImage = selectedImageUri
-//                        )
                     },
                     type = ButtonType.Primary,
                     text = "등록하기",
