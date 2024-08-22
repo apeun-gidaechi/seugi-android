@@ -19,10 +19,10 @@ class FileRepositoryImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
     private val fileDataSource: FileDataSource
 ): FileRepository {
-    override suspend fun fileUpload(file: String, type: FileType): Flow<Result<FileModel>> = flow{
+    override suspend fun fileUpload(file: String, type: FileType): Flow<Result<String>> = flow{
         val response =fileDataSource.fileUpload(file = file, type = type).data
 
-        emit(response.toModel())
+        emit(response)
     }
         .flowOn(dispatcher)
         .asResult()

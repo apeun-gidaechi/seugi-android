@@ -6,5 +6,5 @@ import com.seugi.network.core.response.BaseResponse
 import io.ktor.http.ContentType
 
 interface FileDataSource {
-    suspend fun fileUpload(type: FileType, file: String):BaseResponse<FileResponse>
+    suspend fun fileUpload(type: FileType, file: String):BaseResponse<String>
 }

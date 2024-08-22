@@ -27,7 +27,7 @@ class FileDataSourceImpl @Inject constructor(
     override suspend fun fileUpload(
         type: FileType,
         file: String
-    ): BaseResponse<FileResponse> =
+    ): BaseResponse<String> =
         httpClient.post(urlString = "${SeugiUrl.File.FILE_UPLOAD}/${type}") {
             setBody(
                 MultiPartFormDataContent(

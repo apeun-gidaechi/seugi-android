@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface FileRepository {
 
-    suspend fun fileUpload(file: String, type: FileType): Flow<Result<FileModel>>
+    suspend fun fileUpload(file: String, type: FileType): Flow<Result<String>>
 }
