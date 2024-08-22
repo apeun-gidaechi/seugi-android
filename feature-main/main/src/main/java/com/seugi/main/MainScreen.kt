@@ -195,6 +195,7 @@ internal fun MainScreen(
             notificationScreen(
                 workspaceId = state.workspaceId,
                 userId = state.userId,
+                permission = state.permission,
                 navigateToNotificationCreate = {
                     navHostController.navigateToNotificationCreate()
                 },

@@ -45,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -55,6 +56,8 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.common.utiles.toTimeString
 import com.seugi.data.notification.model.NotificationModel
+import com.seugi.data.workspace.model.WorkspacePermissionModel
+import com.seugi.data.workspace.model.isAdmin
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.animation.combinedBounceClick
@@ -70,26 +73,38 @@ import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.Primary050
 import com.seugi.designsystem.theme.Primary100
 import com.seugi.designsystem.theme.Primary300
+import com.seugi.designsystem.theme.Red500
 import com.seugi.designsystem.theme.White
 import com.seugi.notification.model.NotificationEmojiState
+import com.seugi.notification.model.NotificationSideEffect
 import com.seugi.notification.model.getEmojiList
+import com.seugi.ui.CollectAsSideEffect
 import com.seugi.ui.changeNavigationColor
+import com.seugi.ui.shortToast
 import kotlinx.collections.immutable.ImmutableList
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 internal fun NotificationScreen(
     viewModel: NotificationViewModel = hiltViewModel(),
+    permission: WorkspacePermissionModel,
     workspaceId: String,
     userId: Int,
     navigateToNotificationCreate: () -> Unit,
     navigateToNotificationEdit: (id: Long, title: String, content: String, userId: Int) -> Unit,
 ) {
-    LaunchedEffect(true) {
-        Log.d("TAG", "NotificationScreen: ${userId}")
-    }
     val view = LocalView.current
+    val context = LocalContext.current
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    viewModel.sideEffect.CollectAsSideEffect {
+        when (it) {
+            is NotificationSideEffect.Error -> {
+                context.shortToast(it.throwable.message)
+            }
+        }
+    }
+
     val pullRefreshState = rememberPullRefreshState(
         refreshing = state.isRefresh,
         onRefresh = {
@@ -125,6 +140,8 @@ internal fun NotificationScreen(
 
     if (isShowPopupDialog) {
         NotificationPopupDialog(
+            isEditPermission = selectNotificationItem?.userId == userId || permission.isAdmin(),
+            isDeletePermission = selectNotificationItem?.userId == userId || permission.isAdmin(),
             onDismissRequest = {
                 isShowPopupDialog = false
                 selectNotificationItem = null
@@ -142,6 +159,12 @@ internal fun NotificationScreen(
             onClickDeclaration = {
                 isShowPopupDialog = false
                 selectNotificationItem = null
+            },
+            onClickDelete = {
+                viewModel.deleteNotification(
+                    workspaceId = selectNotificationItem?.workspaceId?: "",
+                    notificationId = selectNotificationItem?.id?: 0
+                )
             }
         )
     }
@@ -268,9 +291,12 @@ fun NotificationNotFound() {
 
 @Composable
 fun NotificationPopupDialog(
+    isEditPermission: Boolean,
+    isDeletePermission: Boolean,
     onDismissRequest: () -> Unit,
     onClickEdit: () -> Unit,
-    onClickDeclaration: () -> Unit
+    onClickDeclaration: () -> Unit,
+    onClickDelete: () -> Unit,
 ) {
     Dialog(
         onDismissRequest = onDismissRequest
@@ -282,36 +308,53 @@ fun NotificationPopupDialog(
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
+                if (isEditPermission) {
+                    Row(
                         modifier = Modifier
-                            .padding(vertical = 8.dp)
-                            .bounceClick(
-                                onClick = onClickEdit
-                            ),
-                        text = "알림 수정",
-                        color = Black,
-                        style = MaterialTheme.typography.titleMedium
-                    )
+                            .fillMaxWidth()
+                            .bounceClick(onClickEdit),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .padding(vertical = 8.dp),
+                            text = "알림 수정",
+                            color = Black,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
-                Spacer(modifier = Modifier.height(8.dp))
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .bounceClick(onClickDeclaration),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         modifier = Modifier
-                            .padding(vertical = 8.dp)
-                            .bounceClick(
-                                onClick = onClickDeclaration
-                            ),
+                            .padding(vertical = 8.dp),
                         text = "알림 신고",
                         color = Black,
                         style = MaterialTheme.typography.titleMedium
                     )
+                }
+                if (isDeletePermission) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .bounceClick(onClickDelete),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .padding(vertical = 8.dp),
+                            text = "알림 삭제",
+                            color = Red500,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
                 }
             }
         }

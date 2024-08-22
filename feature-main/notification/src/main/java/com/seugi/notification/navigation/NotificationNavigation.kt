@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.seugi.data.workspace.model.WorkspacePermissionModel
 import com.seugi.notification.NotificationScreen
 
 const val NOTIFICATION_ROUTE = "notification"
@@ -13,6 +14,7 @@ fun NavController.navigateToNotification(navOptions: NavOptions?) = navigate(NOT
 fun NavGraphBuilder.notificationScreen(
     workspaceId: String,
     userId: Int,
+    permission: WorkspacePermissionModel,
     navigateToNotificationCreate: () -> Unit,
     navigateToNotificationEdit: (id: Long, title: String, content: String, userId: Int) -> Unit,
 ) {
@@ -20,6 +22,7 @@ fun NavGraphBuilder.notificationScreen(
         NotificationScreen(
             workspaceId = workspaceId,
             userId = userId,
+            permission = permission,
             navigateToNotificationCreate = navigateToNotificationCreate,
             navigateToNotificationEdit = navigateToNotificationEdit,
         )

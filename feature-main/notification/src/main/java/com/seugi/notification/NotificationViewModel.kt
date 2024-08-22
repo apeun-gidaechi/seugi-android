@@ -12,6 +12,7 @@ import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.notification.NotificationRepository
 import com.seugi.data.notification.model.NotificationEmojiModel
 import com.seugi.data.notification.model.NotificationModel
+import com.seugi.notification.model.NotificationSideEffect
 import com.seugi.notification.model.NotificationUiState
 import com.seugi.notification.model.getEmojiList
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,12 +22,14 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -51,6 +54,8 @@ class NotificationViewModel @Inject constructor(
     private val _state = MutableStateFlow(NotificationUiState())
     val state = _state.asStateFlow()
 
+    private val _sideEffect = Channel<NotificationSideEffect>()
+    val sideEffect = _sideEffect.receiveAsFlow()
 
     fun enabledRefresh() = viewModelScope.launch(dispatcher) {
         _state.update {
@@ -152,6 +157,38 @@ class NotificationViewModel @Inject constructor(
             notificationId = id
         ).collectLatest {
 
+        }
+    }
+
+    fun deleteNotification(
+        workspaceId: String,
+        notificationId: Long
+    ) = viewModelScope.launch(dispatcher) {
+        notificationRepository.deleteNotice(
+            workspaceId = workspaceId,
+            notificationId = notificationId
+        ).collect {
+            when(it) {
+                is Result.Success -> {
+                    if (!it.data) { return@collect }
+                    _state.update { state ->
+                        state.copy(
+                            notices = state.notices
+                                .toMutableList()
+                                .apply {
+                                    removeIf {
+                                        it.id == notificationId && it.workspaceId == workspaceId
+                                    }
+                                }
+                                .toImmutableList()
+                        )
+                    }
+                }
+                is Result.Error -> {
+                    _sideEffect.send(NotificationSideEffect.Error(it.throwable))
+                }
+                is Result.Loading -> {}
+            }
         }
     }
 }
