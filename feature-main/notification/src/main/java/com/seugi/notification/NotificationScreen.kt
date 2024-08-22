@@ -1,7 +1,6 @@
 package com.seugi.notification
 
 import android.app.Activity
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
@@ -34,7 +33,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -43,7 +41,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -150,10 +147,10 @@ internal fun NotificationScreen(
             onClickEdit = {
                 isShowPopupDialog = false
                 navigateToNotificationEdit(
-                    selectNotificationItem?.id?: 0,
-                    selectNotificationItem?.title?: "",
-                    selectNotificationItem?.content?: "",
-                    selectNotificationItem?.userId?: 0
+                    selectNotificationItem?.id ?: 0,
+                    selectNotificationItem?.title ?: "",
+                    selectNotificationItem?.content ?: "",
+                    selectNotificationItem?.userId ?: 0,
                 )
                 selectNotificationItem = null
             },
@@ -163,10 +160,10 @@ internal fun NotificationScreen(
             },
             onClickDelete = {
                 viewModel.deleteNotification(
-                    workspaceId = selectNotificationItem?.workspaceId?: "",
-                    notificationId = selectNotificationItem?.id?: 0
+                    workspaceId = selectNotificationItem?.workspaceId ?: "",
+                    notificationId = selectNotificationItem?.id ?: 0,
                 )
-            }
+            },
         )
     }
 
@@ -191,10 +188,10 @@ internal fun NotificationScreen(
                                 modifier = Modifier
                                     .size(28.dp)
                                     .bounceClick(
-                                        onClick = navigateToNotificationCreate
+                                        onClick = navigateToNotificationCreate,
                                     ),
                                 resId = R.drawable.ic_write_line,
-                                colorFilter = ColorFilter.tint(Black)
+                                colorFilter = ColorFilter.tint(Black),
                             )
                         }
                     },
@@ -220,14 +217,14 @@ internal fun NotificationScreen(
                 AnimatedVisibility(
                     visible = state.notices.isEmpty(),
                     enter = fadeIn(),
-                    exit = fadeOut()
+                    exit = fadeOut(),
                 ) {
                     NotificationNotFound()
                 }
 
                 LazyColumn(
                     modifier = Modifier.padding(horizontal = 20.dp),
-                    state = lazyListState
+                    state = lazyListState,
                 ) {
                     items(state.notices) {
                         Spacer(modifier = Modifier.height(8.dp))
@@ -241,7 +238,7 @@ internal fun NotificationScreen(
                                 viewModel.pressEmoji(
                                     id = it.id,
                                     emoji = emoji,
-                                    userId = userId
+                                    userId = userId,
                                 )
                             },
                             onClickDetailInfo = {
@@ -252,7 +249,7 @@ internal fun NotificationScreen(
                             onLongClick = {
                                 selectNotificationItem = it
                                 isShowPopupDialog = true
-                            }
+                            },
                         )
                     }
                 }
@@ -270,23 +267,23 @@ internal fun NotificationScreen(
 fun NotificationNotFound() {
     Box(
         modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Column(
             modifier = Modifier.padding(
-                vertical = 12.dp
+                vertical = 12.dp,
             ),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             SeugiImage(
                 modifier = Modifier.size(64.dp),
-                resId = R.drawable.ic_emoji_mouth
+                resId = R.drawable.ic_emoji_mouth,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "알림이 없어요",
                 color = Black,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
             )
         }
     }
@@ -302,28 +299,28 @@ fun NotificationPopupDialog(
     onClickDelete: () -> Unit,
 ) {
     Dialog(
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest,
     ) {
         Surface(
             color = White,
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(16.dp),
         ) {
             Column(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp),
             ) {
                 if (isEditPermission) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .bounceClick(onClickEdit),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
                             modifier = Modifier
                                 .padding(vertical = 8.dp),
                             text = "알림 수정",
                             color = Black,
-                            style = MaterialTheme.typography.titleMedium
+                            style = MaterialTheme.typography.titleMedium,
                         )
                     }
                     Spacer(modifier = Modifier.height(8.dp))
@@ -332,14 +329,14 @@ fun NotificationPopupDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .bounceClick(onClickDeclaration),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         modifier = Modifier
                             .padding(vertical = 8.dp),
                         text = "알림 신고",
                         color = Black,
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
                     )
                 }
                 if (isDeletePermission) {
@@ -348,14 +345,14 @@ fun NotificationPopupDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .bounceClick(onClickDelete),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
                             modifier = Modifier
                                 .padding(vertical = 8.dp),
                             text = "알림 삭제",
                             color = Red500,
-                            style = MaterialTheme.typography.titleMedium
+                            style = MaterialTheme.typography.titleMedium,
                         )
                     }
                 }
@@ -376,14 +373,14 @@ internal fun NotificationCard(
     onClickEmoji: (emoji: String) -> Unit,
     onClickDetailInfo: () -> Unit,
     onClickNotification: () -> Unit,
-    onLongClick: () -> Unit
+    onLongClick: () -> Unit,
 ) {
     Box(
         modifier = modifier.combinedBounceClick(
             onClick = onClickNotification,
             onLongClick = onLongClick,
-            requireUnconsumed = true
-        )
+            requireUnconsumed = true,
+        ),
     ) {
         Column(
             modifier = Modifier
@@ -434,7 +431,7 @@ internal fun NotificationCard(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 FlowRow(
-                    modifier = Modifier
+                    modifier = Modifier,
                 ) {
                     emojiList.fastForEach {
                         NotificationEmoji(
@@ -443,7 +440,7 @@ internal fun NotificationCard(
                             isChecked = it.isMe,
                             onClick = {
                                 onClickEmoji(it.emoji)
-                            }
+                            },
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                     }
@@ -454,15 +451,9 @@ internal fun NotificationCard(
 }
 
 @Composable
-private fun NotificationEmoji(
-    modifier: Modifier = Modifier,
-    emoji: String,
-    count: Int,
-    isChecked: Boolean,
-    onClick: () -> Unit,
-) {
+private fun NotificationEmoji(modifier: Modifier = Modifier, emoji: String, count: Int, isChecked: Boolean, onClick: () -> Unit) {
     Box(
-        modifier = Modifier.bounceClick(onClick)
+        modifier = Modifier.bounceClick(onClick),
     ) {
         Row(
             modifier = modifier
@@ -480,7 +471,7 @@ private fun NotificationEmoji(
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 modifier = Modifier.padding(
-                    vertical = 4.dp
+                    vertical = 4.dp,
                 ),
                 text = emoji,
                 color = Black,

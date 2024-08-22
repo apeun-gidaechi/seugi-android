@@ -98,7 +98,7 @@ internal fun NotificationEditScreen(
                     Text(
                         text = "알림 수정",
                         style = MaterialTheme.typography.titleLarge,
-                        color = Black
+                        color = Black,
                     )
                 },
                 actions = {
@@ -106,41 +106,45 @@ internal fun NotificationEditScreen(
                         modifier = Modifier
                             .bounceClick(
                                 onClick = {
-                                    if (titleText.isEmpty()) { return@bounceClick }
-                                    if (contentText.isEmpty()) { return@bounceClick }
+                                    if (titleText.isEmpty()) {
+                                        return@bounceClick
+                                    }
+                                    if (contentText.isEmpty()) {
+                                        return@bounceClick
+                                    }
 
                                     viewModel.edit(
                                         id = id,
                                         title = titleText,
-                                        content = contentText
+                                        content = contentText,
                                     )
                                 },
-                                enabled = !state.isLoading
-                            )
+                                enabled = !state.isLoading,
+                            ),
                     ) {
                         Text(
                             modifier = Modifier
                                 .padding(
                                     vertical = 9.dp,
-                                    horizontal = 12.dp
+                                    horizontal = 12.dp,
                                 ),
                             text = "완료",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = Black
+                            color = Black,
                         )
                     }
                 },
                 onNavigationIconClick = popBackStack,
             )
-        }
+        },
     ) { paddingValue ->
         Column(
             modifier = Modifier
                 .padding(paddingValue)
                 .padding(
-                    horizontal = 20.dp
+                    horizontal = 20.dp,
                 )
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
         ) {
             Spacer(modifier = Modifier.height(6.dp))
             SeugiTextField(
@@ -152,13 +156,13 @@ internal fun NotificationEditScreen(
                 onClickDelete = {
                     titleText = ""
                 },
-                enabled = !state.isLoading
+                enabled = !state.isLoading,
             )
             Spacer(modifier = Modifier.height(8.dp))
             SeugiTextField(
                 modifier = Modifier
                     .heightIn(
-                        min = 360.dp
+                        min = 360.dp,
                     ),
                 value = contentText,
                 onValueChange = {
@@ -169,13 +173,13 @@ internal fun NotificationEditScreen(
                     contentText = ""
                 },
                 singleLine = false,
-                enabled = !state.isLoading
+                enabled = !state.isLoading,
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
+                horizontalArrangement = Arrangement.End,
             ) {
                 SeugiImage(
                     modifier = Modifier
@@ -184,15 +188,15 @@ internal fun NotificationEditScreen(
                             onClick = {
                                 viewModel.delete(
                                     id = id,
-                                    workspaceId = workspaceId
+                                    workspaceId = workspaceId,
                                 )
                             },
                             enabled = !state.isLoading && (
-                                    writerId == userId || permission.isAdmin()
-                            )
+                                writerId == userId || permission.isAdmin()
+                                ),
                         ),
                     resId = R.drawable.ic_trash_fill,
-                    colorFilter = ColorFilter.tint(Gray500)
+                    colorFilter = ColorFilter.tint(Gray500),
                 )
             }
         }

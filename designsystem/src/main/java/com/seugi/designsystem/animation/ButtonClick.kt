@@ -20,7 +20,13 @@ import androidx.compose.ui.input.pointer.pointerInput
 
 enum class ButtonState { Idle, Hold }
 
-fun Modifier.bounceClick(onClick: () -> Unit, enabled: Boolean = true, requireUnconsumed: Boolean = false, onChangeButtonState: (ButtonState) -> Unit = {}) = composed {
+fun Modifier.bounceClick(
+    onClick: () -> Unit,
+    enabled: Boolean = true,
+    requireUnconsumed: Boolean = false,
+    onChangeButtonState: (ButtonState) -> Unit = {
+    },
+) = composed {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val scale by animateFloatAsState(
         targetValue = if (buttonState == ButtonState.Idle) 1f else 0.95f,
@@ -32,7 +38,7 @@ fun Modifier.bounceClick(onClick: () -> Unit, enabled: Boolean = true, requireUn
             interactionSource = remember { MutableInteractionSource() },
             indication = null,
             onClick = onClick,
-            enabled = enabled
+            enabled = enabled,
         )
         .graphicsLayer {
             if (enabled) {
@@ -54,13 +60,12 @@ fun Modifier.bounceClick(onClick: () -> Unit, enabled: Boolean = true, requireUn
         }
 }
 
-
 fun Modifier.combinedBounceClick(
     onClick: () -> Unit,
     onLongClick: () -> Unit = {},
     onDoubleClick: () -> Unit = {},
     requireUnconsumed: Boolean = false,
-    onChangeButtonState: (ButtonState) -> Unit = {}
+    onChangeButtonState: (ButtonState) -> Unit = {},
 ) = composed {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val scale by animateFloatAsState(
@@ -74,7 +79,7 @@ fun Modifier.combinedBounceClick(
             indication = null,
             onClick = onClick,
             onLongClick = onLongClick,
-            onDoubleClick = onDoubleClick
+            onDoubleClick = onDoubleClick,
         )
         .graphicsLayer {
             scaleX = scale

@@ -9,6 +9,7 @@ import com.seugi.data.notification.NotificationRepository
 import com.seugi.notificationedit.model.NotificationEditUiState
 import com.seugi.notificationedit.model.NotificationSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,13 +18,12 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class NotificationEditViewModel @Inject constructor(
     private val notificationRepository: NotificationRepository,
-    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher
-): ViewModel() {
+    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
+) : ViewModel() {
 
     private val _state = MutableStateFlow(NotificationEditUiState())
     val state = _state.asStateFlow()
@@ -36,7 +36,7 @@ class NotificationEditViewModel @Inject constructor(
         notificationRepository.patchNotice(
             title = title,
             content = content,
-            notificationId = id
+            notificationId = id,
         ).collect {
             when (it) {
                 is Result.Success -> {
@@ -57,7 +57,7 @@ class NotificationEditViewModel @Inject constructor(
         setLoadingState(true)
         notificationRepository.deleteNotice(
             notificationId = id,
-            workspaceId = workspaceId
+            workspaceId = workspaceId,
         ).collect {
             when (it) {
                 is Result.Success -> {
@@ -77,7 +77,7 @@ class NotificationEditViewModel @Inject constructor(
     private fun setLoadingState(isLoading: Boolean) = viewModelScope.launch(dispatcher) {
         _state.update {
             it.copy(
-                isLoading = isLoading
+                isLoading = isLoading,
             )
         }
     }

@@ -4,5 +4,5 @@ enum class WorkspacePermissionResponse {
     ADMIN,
     MIDDLE_ADMIN,
     TEACHER,
-    STUDENT
+    STUDENT,
 }

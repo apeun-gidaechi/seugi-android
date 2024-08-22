@@ -25,10 +25,10 @@ internal fun List<NotificationResponse>.toModels() = this.map {
 
 internal fun NotificationEmojiResponse.toModel() = NotificationEmojiModel(
     emoji = emoji,
-    userId = userId
+    userId = userId,
 )
+
 @JvmName("ListNotificationEmojiResponseToModels")
-internal fun List<NotificationEmojiResponse>.toModels() =
-    this.map {
-        it.toModel()
-    }
+internal fun List<NotificationEmojiResponse>.toModels() = this.map {
+    it.toModel()
+}

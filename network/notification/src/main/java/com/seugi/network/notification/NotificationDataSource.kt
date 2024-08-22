@@ -1,10 +1,8 @@
 package com.seugi.network.notification
 
-import com.seugi.common.model.Result
 import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.response.Response
 import com.seugi.network.notification.response.NotificationResponse
-import kotlinx.coroutines.flow.Flow
 
 interface NotificationDataSource {
 
@@ -17,5 +15,4 @@ interface NotificationDataSource {
     suspend fun patchNotice(title: String, content: String, notificationId: Long): Response
 
     suspend fun deleteNotice(workspaceId: String, notificationId: Long): Response
-
 }

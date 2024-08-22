@@ -19,7 +19,9 @@ data class NotificationModel(
             other is NotificationModel && other.id == this.id &&
             other.workspaceId == this.workspaceId &&
             other.emoji == this.emoji
-        ) return true
+        ) {
+            return true
+        }
         return super.equals(other)
     }
 

@@ -10,19 +10,15 @@ const val NOTIFICATION_CREATE_ROUTE = "notification_create"
 
 fun NavController.navigateToNotificationCreate(navOptions: NavOptions? = null) = this.navigate(
     route = NOTIFICATION_CREATE_ROUTE,
-    navOptions = navOptions
+    navOptions = navOptions,
 )
 
-fun NavGraphBuilder.notificationCreate(
-    onNavigationVisibleChange: (visible: Boolean) -> Unit,
-    workspaceId: String,
-    popBackStack: () -> Unit
-) {
+fun NavGraphBuilder.notificationCreate(onNavigationVisibleChange: (visible: Boolean) -> Unit, workspaceId: String, popBackStack: () -> Unit) {
     composable(NOTIFICATION_CREATE_ROUTE) {
         NotificationCreateScreen(
             popBackStack = popBackStack,
             workspaceId = workspaceId,
-            onNavigationVisibleChange = onNavigationVisibleChange
+            onNavigationVisibleChange = onNavigationVisibleChange,
         )
     }
 }

@@ -9,13 +9,13 @@ import kotlinx.collections.immutable.toImmutableList
 data class NotificationUiState(
     val isRefresh: Boolean = false,
     val notices: ImmutableList<NotificationModel> = persistentListOf(),
-    val nowPage: Int = 0
+    val nowPage: Int = 0,
 ) {
     override fun equals(other: Any?): Boolean {
         return other is NotificationUiState &&
-                this.isRefresh == other.isRefresh &&
-                other.notices == this.notices&&
-                this.nowPage == other.nowPage
+            this.isRefresh == other.isRefresh &&
+            other.notices == this.notices &&
+            this.nowPage == other.nowPage
     }
 
     override fun hashCode(): Int {
@@ -29,13 +29,13 @@ data class NotificationUiState(
 data class NotificationEmojiState(
     val emoji: String,
     val count: Int,
-    val isMe: Boolean
+    val isMe: Boolean,
 ) {
     override fun equals(other: Any?): Boolean {
         return other is NotificationEmojiState &&
-                this.emoji == other.emoji &&
-                this.count == other.count &&
-                this.isMe == other.isMe
+            this.emoji == other.emoji &&
+            this.count == other.count &&
+            this.isMe == other.isMe
     }
 
     override fun hashCode(): Int {
@@ -46,9 +46,7 @@ data class NotificationEmojiState(
     }
 }
 
-internal fun NotificationModel.getEmojiList(
-    userId: Int
-): ImmutableList<NotificationEmojiState> {
+internal fun NotificationModel.getEmojiList(userId: Int): ImmutableList<NotificationEmojiState> {
     val emojisState = HashMap<String, NotificationEmojiState>()
 
     this.emoji.fastForEach {
@@ -57,14 +55,14 @@ internal fun NotificationModel.getEmojiList(
             emojisState[it.emoji] = item.copy(
                 emoji = it.emoji,
                 count = item.count + 1,
-                isMe = item.isMe || it.userId == userId
+                isMe = item.isMe || it.userId == userId,
             )
             return@fastForEach
         }
         emojisState[it.emoji] = NotificationEmojiState(
             emoji = it.emoji,
             count = 1,
-            isMe = it.userId == userId
+            isMe = it.userId == userId,
         )
     }
     return emojisState.values.toImmutableList()

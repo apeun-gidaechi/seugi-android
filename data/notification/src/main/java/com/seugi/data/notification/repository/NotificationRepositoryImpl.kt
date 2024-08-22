@@ -19,15 +19,11 @@ class NotificationRepositoryImpl @Inject constructor(
     private val dataSource: NotificationDataSource,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : NotificationRepository {
-    override suspend fun createNotification(
-        workspaceId: String,
-        title: String,
-        content: String,
-    ): Flow<Result<Boolean>> = flow {
+    override suspend fun createNotification(workspaceId: String, title: String, content: String): Flow<Result<Boolean>> = flow {
         val response = dataSource.createNotification(
             workspaceId = workspaceId,
             title = title,
-            content = content
+            content = content,
         ).safeResponse()
 
         emit(response)
@@ -39,7 +35,7 @@ class NotificationRepositoryImpl @Inject constructor(
         val response = dataSource.getNotices(
             workspaceId = workspaceId,
             page = page,
-            size = size
+            size = size,
         ).safeResponse()
 
         emit(response.toModels())
@@ -50,7 +46,7 @@ class NotificationRepositoryImpl @Inject constructor(
     override suspend fun pathEmoji(emoji: String, notificationId: Long): Flow<Result<Boolean>> = flow {
         val response = dataSource.pathEmoji(
             emoji = emoji,
-            notificationId = notificationId
+            notificationId = notificationId,
         ).safeResponse()
 
         emit(response)
@@ -58,15 +54,11 @@ class NotificationRepositoryImpl @Inject constructor(
         .flowOn(dispatcher)
         .asResult()
 
-    override suspend fun patchNotice(
-        title: String,
-        content: String,
-        notificationId: Long,
-    ): Flow<Result<Boolean>> = flow {
+    override suspend fun patchNotice(title: String, content: String, notificationId: Long): Flow<Result<Boolean>> = flow {
         val response = dataSource.patchNotice(
             title = title,
             content = content,
-            notificationId = notificationId
+            notificationId = notificationId,
         ).safeResponse()
 
         emit(response)
@@ -77,7 +69,7 @@ class NotificationRepositoryImpl @Inject constructor(
     override suspend fun deleteNotice(workspaceId: String, notificationId: Long): Flow<Result<Boolean>> = flow {
         val response = dataSource.deleteNotice(
             workspaceId = workspaceId,
-            notificationId = notificationId
+            notificationId = notificationId,
         ).safeResponse()
 
         emit(response)

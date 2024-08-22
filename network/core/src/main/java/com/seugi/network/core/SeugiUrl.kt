@@ -46,12 +46,12 @@ object SeugiUrl {
         const val MEMBERS = "$ROOT/members"
         const val CHECK_WORKSPACE = "$WORKSPACE/search/"
         const val APPLICATION = "$WORKSPACE/join"
-        const val PERMISSION = "${WORKSPACE}/permission"
+        const val PERMISSION = "$WORKSPACE/permission"
     }
 
     object Notification {
         const val ROOT = "${BASE_URL}/notification"
-        const val EMOJI = "${ROOT}/emoji"
+        const val EMOJI = "$ROOT/emoji"
     }
 
     object Member {

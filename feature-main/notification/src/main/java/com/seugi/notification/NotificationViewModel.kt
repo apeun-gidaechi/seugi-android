@@ -1,9 +1,6 @@
 package com.seugi.notification
 
 import android.util.Log
-import androidx.compose.ui.util.fastForEach
-import androidx.compose.ui.util.fastForEachIndexed
-import androidx.compose.ui.util.fastMap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
@@ -11,37 +8,27 @@ import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.notification.NotificationRepository
 import com.seugi.data.notification.model.NotificationEmojiModel
-import com.seugi.data.notification.model.NotificationModel
 import com.seugi.notification.model.NotificationSideEffect
 import com.seugi.notification.model.NotificationUiState
-import com.seugi.notification.model.getEmojiList
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.persistentListOf
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.net.IDN
-import java.time.LocalDateTime
 
 sealed class NotificationDebounce(
     open val id: Long,
-    open val emoji: String
+    open val emoji: String,
 ) {
-    data class Add(override val id: Long, override val emoji: String): NotificationDebounce(id, emoji)
-    data class Remove(override val id: Long, override val emoji: String): NotificationDebounce(id, emoji)
+    data class Add(override val id: Long, override val emoji: String) : NotificationDebounce(id, emoji)
+    data class Remove(override val id: Long, override val emoji: String) : NotificationDebounce(id, emoji)
 }
 
 @OptIn(FlowPreview::class)
@@ -69,11 +56,10 @@ class NotificationViewModel @Inject constructor(
         notificationRepository.getNotices(
             workspaceId = workspaceId,
             page = _state.value.nowPage,
-            size = PAGE_SIZE
+            size = PAGE_SIZE,
         ).collect {
             when (it) {
                 is Result.Success -> {
-
                     _state.update { state ->
                         state.copy(
                             notices = (it.data + state.notices)
@@ -84,7 +70,7 @@ class NotificationViewModel @Inject constructor(
                                     it.creationDate
                                 }
                                 .toImmutableList(),
-                            nowPage = state.nowPage + 1
+                            nowPage = state.nowPage + 1,
                         )
                     }
                 }
@@ -100,11 +86,10 @@ class NotificationViewModel @Inject constructor(
         notificationRepository.getNotices(
             workspaceId = workspaceId,
             page = 0,
-            size = PAGE_SIZE
+            size = PAGE_SIZE,
         ).collect {
             when (it) {
                 is Result.Success -> {
-
                     _state.update { state ->
                         state.copy(
                             notices = (it.data + state.notices)
@@ -116,7 +101,7 @@ class NotificationViewModel @Inject constructor(
                                 }
                                 .toImmutableList(),
                             nowPage = state.nowPage + 1,
-                            isRefresh = false
+                            isRefresh = false,
                         )
                     }
                 }
@@ -143,34 +128,32 @@ class NotificationViewModel @Inject constructor(
 
                     if (!emojiRemoved) {
                         newEmojiList.add(
-                            NotificationEmojiModel(emoji, userId)
+                            NotificationEmojiModel(emoji, userId),
                         )
                     }
                     model.copy(
-                        emoji = newEmojiList.toImmutableList()
+                        emoji = newEmojiList.toImmutableList(),
                     )
-                }.toImmutableList()
+                }.toImmutableList(),
             )
         }
         notificationRepository.pathEmoji(
             emoji = emoji,
-            notificationId = id
+            notificationId = id,
         ).collectLatest {
-
         }
     }
 
-    fun deleteNotification(
-        workspaceId: String,
-        notificationId: Long
-    ) = viewModelScope.launch(dispatcher) {
+    fun deleteNotification(workspaceId: String, notificationId: Long) = viewModelScope.launch(dispatcher) {
         notificationRepository.deleteNotice(
             workspaceId = workspaceId,
-            notificationId = notificationId
+            notificationId = notificationId,
         ).collect {
-            when(it) {
+            when (it) {
                 is Result.Success -> {
-                    if (!it.data) { return@collect }
+                    if (!it.data) {
+                        return@collect
+                    }
                     _state.update { state ->
                         state.copy(
                             notices = state.notices
@@ -180,7 +163,7 @@ class NotificationViewModel @Inject constructor(
                                         it.id == notificationId && it.workspaceId == workspaceId
                                     }
                                 }
-                                .toImmutableList()
+                                .toImmutableList(),
                         )
                     }
                 }
@@ -192,6 +175,5 @@ class NotificationViewModel @Inject constructor(
         }
     }
 }
-
 
 const val PAGE_SIZE = 20

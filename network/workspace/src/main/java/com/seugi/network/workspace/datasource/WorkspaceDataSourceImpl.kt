@@ -38,8 +38,7 @@ class WorkspaceDataSourceImpl @Inject constructor(
         parameter("workspaceId", workspaceId)
     }.body()
 
-    override suspend fun getPermission(workspaceId: String): BaseResponse<WorkspacePermissionResponse> =
-        httpClient.get(SeugiUrl.Workspace.PERMISSION) {
-            parameter("workspaceId", workspaceId)
-        }.body()
+    override suspend fun getPermission(workspaceId: String): BaseResponse<WorkspacePermissionResponse> = httpClient.get(SeugiUrl.Workspace.PERMISSION) {
+        parameter("workspaceId", workspaceId)
+    }.body()
 }

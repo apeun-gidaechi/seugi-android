@@ -45,7 +45,7 @@ class MainViewModel @Inject constructor(
                     is Result.Success -> {
                         _state.update { state ->
                             state.copy(
-                                permission = it.data
+                                permission = it.data,
                             )
                         }
                         Log.d("TAG", "load: ${_state.value}")

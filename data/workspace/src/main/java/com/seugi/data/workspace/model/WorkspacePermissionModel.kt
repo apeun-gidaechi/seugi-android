@@ -7,12 +7,10 @@ enum class WorkspacePermissionModel {
     STUDENT,
 }
 
-fun WorkspacePermissionModel.isAdmin() =
-    when (this) {
-        WorkspacePermissionModel.ADMIN -> true
-        WorkspacePermissionModel.MIDDLE_ADMIN -> true
-        else -> false
-    }
+fun WorkspacePermissionModel.isAdmin() = when (this) {
+    WorkspacePermissionModel.ADMIN -> true
+    WorkspacePermissionModel.MIDDLE_ADMIN -> true
+    else -> false
+}
 
-fun WorkspacePermissionModel.isTeacher() =
-    this != WorkspacePermissionModel.STUDENT
+fun WorkspacePermissionModel.isTeacher() = this != WorkspacePermissionModel.STUDENT
