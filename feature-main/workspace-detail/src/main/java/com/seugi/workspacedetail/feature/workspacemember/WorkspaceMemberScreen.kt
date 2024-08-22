@@ -74,7 +74,6 @@ fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(),
                     onNavigationIconClick = {
                         popBackStack()
                     },
-                    backIconCheck = true,
                     actions = {
                         Icon(
                             painter = painterResource(
