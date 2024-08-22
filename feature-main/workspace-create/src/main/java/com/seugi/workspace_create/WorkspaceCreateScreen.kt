@@ -1,7 +1,6 @@
 package com.seugi.workspace_create
 
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,10 +26,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.designsystem.component.SeugiIconButton
 import com.seugi.designsystem.component.SeugiRoundedCircleImage
 import com.seugi.designsystem.component.SeugiTopBar
@@ -44,7 +41,6 @@ import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.Red500
 import com.seugi.ui.CollectAsSideEffect
 import com.seugi.workspace_create.model.WorkspaceCreateSideEffect
-import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,6 +51,9 @@ fun WorkspaceCreateScreen(
     var schoolNameText by remember { mutableStateOf("") }
 
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+
+    var schoolNameError by remember { mutableStateOf(false) }
+
 
     val context = LocalContext.current
 
@@ -146,15 +145,27 @@ fun WorkspaceCreateScreen(
                             onClickDelete = { schoolNameText = "" },
                             placeholder = "학교 이름을 입력해 주세요",
                         )
+                        if (schoolNameError) {
+                            Text(
+                                text = "이메일을 입력해 주세요",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Red500,
+                                modifier = Modifier.padding(top = 4.dp),
+                            )
+                        }
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 SeugiFullWidthButton(
                     onClick = {
-                              viewModel.fileUpload(
-                                  workspaceName = schoolNameText,
-                                  context = context,
-                                  workspaceUri = selectedImageUri)
+                        schoolNameError = schoolNameText.isEmpty()
+                        if (!schoolNameError) {
+                            viewModel.fileUpload(
+                                workspaceName = schoolNameText,
+                                context = context,
+                                workspaceUri = selectedImageUri
+                            )
+                        }
                     },
                     type = ButtonType.Primary,
                     text = "등록하기",
