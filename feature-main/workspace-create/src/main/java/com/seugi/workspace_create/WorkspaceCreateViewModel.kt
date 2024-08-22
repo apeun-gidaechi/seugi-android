@@ -62,24 +62,29 @@ class WorkspaceCreateViewModel @Inject constructor(
             var file = ""
             if (workspaceUri != null){
                 file = uriToFile(context = context, uri = workspaceUri).toString()
-            }
-            fileRepository.fileUpload(file = file, type = FileType.IMG).collect{
-                when(it){
-                    is Result.Success ->{
-                        createWorkspace(
-                            workspaceName = workspaceName,
-                            workspaceImage = it.data
-                        )
-                    }
-                    is Result.Error ->{
-                        it.throwable.printStackTrace()
-                        _sideEffect.send(WorkspaceCreateSideEffect.Error(it.throwable))
+                fileRepository.fileUpload(file = file, type = FileType.IMG).collect{
+                    when(it){
+                        is Result.Success ->{
+                            createWorkspace(
+                                workspaceName = workspaceName,
+                                workspaceImage = it.data
+                            )
+                        }
+                        is Result.Error ->{
+                            it.throwable.printStackTrace()
+                            _sideEffect.send(WorkspaceCreateSideEffect.Error(it.throwable))
 
-                    }
-                    else ->{
+                        }
+                        else ->{
 
+                        }
                     }
                 }
+            }else{
+                createWorkspace(
+                    workspaceName = workspaceName,
+                    workspaceImage = ""
+                )
             }
         }
     }
