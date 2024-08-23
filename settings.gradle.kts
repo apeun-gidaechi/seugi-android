@@ -106,7 +106,7 @@ include(
     ":data:profile",
     ":feature-onboarding:join",
     ":feature-onboarding:start",
-    ":feature-onboarding:onabording",
+    ":feature-onboarding:onboarding",
     ":feature-main:notification-create",
     ":feature-main:notification-edit",
     ":ui"

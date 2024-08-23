@@ -9,17 +9,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.seugi.join.navigation.emailSignUpScreen
 import com.seugi.join.navigation.emailVerificationScreen
-import com.seugi.join.navigation.joinSuccess
 import com.seugi.join.navigation.navigateToEmailSignUp
 import com.seugi.join.navigation.navigateToEmailVerification
-import com.seugi.join.navigation.navigateToJoinSuccess
 import com.seugi.join.navigation.navigateToOAuthSignUp
-import com.seugi.join.navigation.navigateToSelectingJob
-import com.seugi.join.navigation.navigateToWaitingJoin
 import com.seugi.join.navigation.oauthSignUp
-import com.seugi.join.navigation.schoolCode
-import com.seugi.join.navigation.selectingJob
-import com.seugi.join.navigation.waitingJoin
 import com.seugi.login.navigation.emailSignInScreen
 import com.seugi.login.navigation.navigateToEmailSignIn
 import com.seugi.start.navigation.START_ROUTE
@@ -60,35 +53,6 @@ internal fun OnboardingScreen(navHostController: NavHostController = rememberNav
         emailVerificationScreen(
             navigateToStart = { navHostController.navigateToStart() },
             popBackStack = { navHostController.navigateToStart() },
-        )
-        schoolCode(
-            navigateToJoinSuccess = { schoolCode, workspaceId, workspaceName, workspaceImageUrl, studentCount, teacherCount ->
-                navHostController.navigateToJoinSuccess(
-                    schoolCode = schoolCode,
-                    workspaceId = workspaceId,
-                    workspaceName = workspaceName,
-                    workspaceImageUrl = workspaceImageUrl,
-                    studentCount = studentCount,
-                    teacherCount = teacherCount,
-                )
-            },
-            popBackStack = { navHostController.popBackStack() },
-        )
-        joinSuccess(
-            navigateToSelectingJob = { workspaceId, schoolCode ->
-                navHostController.navigateToSelectingJob(
-                    workspaceId = workspaceId,
-                    schoolCode = schoolCode,
-                )
-            },
-            popBackStack = { navHostController.popBackStack() },
-        )
-        selectingJob(
-            navigateToWaitingJoin = { navHostController.navigateToWaitingJoin() },
-            popBackStack = { navHostController.popBackStack() },
-        )
-        waitingJoin(
-            popBackStack = { navHostController.popBackStack() },
         )
 
         oauthSignUp(
