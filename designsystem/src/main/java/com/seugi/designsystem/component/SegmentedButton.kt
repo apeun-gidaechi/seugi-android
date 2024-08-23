@@ -45,11 +45,7 @@ import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastForEachIndexed
 import androidx.compose.ui.util.fastMap
 import com.seugi.designsystem.animation.bounceClick
-import com.seugi.designsystem.theme.Gray100
-import com.seugi.designsystem.theme.Gray600
-import com.seugi.designsystem.theme.Gray800
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
@@ -58,9 +54,9 @@ import kotlinx.coroutines.launch
 fun SeugiSegmentedButtonLayout(
     selectedIndex: Int,
     modifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    containerColor: Color = SeugiTheme.colors.gray100,
     shape: Shape = MaterialTheme.shapes.large,
-    indicatorColor: Color = White,
+    indicatorColor: Color = SeugiTheme.colors.white,
     indicatorShape: Shape = MaterialTheme.shapes.medium,
     tonalElevation: Dp = 0.dp,
     shadowElevation: Dp = 0.dp,
@@ -74,9 +70,7 @@ fun SeugiSegmentedButtonLayout(
 
             val segmentedButtonPositions = mutableStateOf<(List<SegmentedButtonPosition>)>(listOf())
 
-            override fun Modifier.segmentedIndicatorLayout(
-                measure: MeasureScope.(Measurable, Constraints, List<SegmentedButtonPosition>) -> MeasureResult,
-            ): Modifier {
+            override fun Modifier.segmentedIndicatorLayout(measure: MeasureScope.(Measurable, Constraints, List<SegmentedButtonPosition>) -> MeasureResult): Modifier {
                 return this.layout { measurable: Measurable, constraints: Constraints ->
                     this.measure(
                         measurable,
@@ -299,7 +293,7 @@ fun SeugiSegmentedButton(modifier: Modifier = Modifier, text: String, selected: 
     ) {
         Text(
             text = text,
-            color = if (selected) Gray800 else Gray600,
+            color = if (selected) SeugiTheme.colors.gray800 else SeugiTheme.colors.gray600,
             style = if (selected) MaterialTheme.typography.bodyLarge else MaterialTheme.typography.bodyMedium,
         )
     }
@@ -312,8 +306,8 @@ private fun SeugiSegmentedButtonPreview() {
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .background(White),
-            color = White,
+                .background(SeugiTheme.colors.white),
+            color = SeugiTheme.colors.white,
         ) {
             BoxWithConstraints(modifier = Modifier.height(48.dp)) {
                 val dummyItems: ImmutableList<String> = persistentListOf("선생님", "학생")
@@ -323,7 +317,7 @@ private fun SeugiSegmentedButtonPreview() {
                     modifier = Modifier
                         .height(48.dp)
                         .fillMaxWidth(),
-                    containerColor = Gray100,
+                    containerColor = SeugiTheme.colors.gray100,
                     shape = RoundedCornerShape(12.dp),
                     indicatorShape = RoundedCornerShape(8.dp),
                     selectedIndex = selectedTabIndex,

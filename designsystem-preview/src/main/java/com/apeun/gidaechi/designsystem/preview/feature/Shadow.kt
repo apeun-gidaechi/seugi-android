@@ -12,21 +12,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
-import com.seugi.designsystem.theme.White
+import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
 fun Shadow() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(White),
+            .background(SeugiTheme.colors.white),
     ) {
         Box(
             modifier = Modifier
                 .height(50.dp)
                 .fillMaxWidth()
                 .dropShadow(DropShadowType.EvBlack1)
-                .background(White),
+                .background(SeugiTheme.colors.white),
         )
         Spacer(modifier = Modifier.height(10.dp))
         Box(
@@ -34,7 +34,7 @@ fun Shadow() {
                 .height(50.dp)
                 .fillMaxWidth()
                 .dropShadow(DropShadowType.EvBlack2)
-                .background(White),
+                .background(SeugiTheme.colors.white),
         )
         Spacer(modifier = Modifier.height(10.dp))
         Box(
@@ -42,7 +42,7 @@ fun Shadow() {
                 .height(50.dp)
                 .fillMaxWidth()
                 .dropShadow(DropShadowType.EvBlack3)
-                .background(White),
+                .background(SeugiTheme.colors.white),
         )
         Spacer(modifier = Modifier.height(10.dp))
         Box(
@@ -50,7 +50,7 @@ fun Shadow() {
                 .height(50.dp)
                 .fillMaxWidth()
                 .dropShadow(DropShadowType.Nav)
-                .background(White),
+                .background(SeugiTheme.colors.white),
         )
     }
 }

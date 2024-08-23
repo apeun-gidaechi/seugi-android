@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.seugi.designsystem.preview.NavRoot
-import com.seugi.designsystem.theme.Black
+import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -165,14 +165,14 @@ private fun HomeButton(text: String, onClick: () -> Unit) {
                 )
                 .border(
                     width = 1.dp,
-                    color = Black,
+                    color = SeugiTheme.colors.black,
                     shape = RoundedCornerShape(8.dp),
                 ),
         ) {
             Text(
                 text = text,
                 style = MaterialTheme.typography.titleMedium,
-                color = Black,
+                color = SeugiTheme.colors.black,
             )
         }
         Spacer(modifier = Modifier.height(20.dp))

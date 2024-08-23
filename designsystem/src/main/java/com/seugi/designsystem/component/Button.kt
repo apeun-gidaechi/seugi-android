@@ -31,6 +31,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,38 +58,17 @@ import com.seugi.designsystem.animation.ButtonState
 import com.seugi.designsystem.animation.NoInteractionSource
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
-import com.seugi.designsystem.theme.Gray100
-import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.Gray600
-import com.seugi.designsystem.theme.Primary200
-import com.seugi.designsystem.theme.Primary500
-import com.seugi.designsystem.theme.Red200
-import com.seugi.designsystem.theme.Red300
-import com.seugi.designsystem.theme.Red500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-sealed class ButtonType(
-    val textColor: Color,
-    val backgroundColor: Color,
-    val disableTextColor: Color,
-    val disableBackgroundColor: Color,
-    val animName: String,
-) {
-    data object Primary : ButtonType(White, Primary500, White, Primary200, "Loading_White")
-    data object Black : ButtonType(White, com.seugi.designsystem.theme.Black, White, Gray600, "Loading_White")
-    data object Red : ButtonType(Red500, Red200, Red300, Red200, "Loading_White")
-    data object Transparent : ButtonType(
-        com.seugi.designsystem.theme.Black,
-        com.seugi.designsystem.theme.Transparent,
-        Gray500,
-        com.seugi.designsystem.theme.Transparent,
-        "Loading_Gray",
-    )
-    data object Shadow : ButtonType(com.seugi.designsystem.theme.Black, White, Gray500, White, "Loading_Gray")
-    data object Gray : ButtonType(Gray600, Gray100, Gray500, Gray100, "Loading_Gray")
+sealed interface ButtonType {
+    data object Primary : ButtonType
+    data object Black : ButtonType
+    data object Red : ButtonType
+    data object Transparent : ButtonType
+    data object Shadow : ButtonType
+    data object Gray : ButtonType
 }
 
 /**
@@ -122,18 +102,19 @@ fun SeugiFullWidthButton(
         if (type is ButtonType.Shadow) {
             Modifier
                 .dropShadow(DropShadowType.EvBlack1)
-                .background(White)
+                .background(SeugiTheme.colors.white)
         } else {
             Modifier
         }
     val isEnabled = enabled && !isLoading
 
+    val buttonColor = type.colors()
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val scale by animateFloatAsState(
         targetValue = if (buttonState == ButtonState.Idle) 1f else 0.96f,
         label = "",
     )
-    val color = if (isEnabled) type.backgroundColor else type.disableBackgroundColor
+    val color = if (isEnabled) buttonColor.backgroundColor else buttonColor.disableBackgroundColor
     val animColor by animateColorAsState(
         targetValue = if (buttonState == ButtonState.Idle) {
             color.copy(alpha = 1f)
@@ -167,9 +148,9 @@ fun SeugiFullWidthButton(
                 },
             colors = ButtonDefaults.buttonColors(
                 containerColor = animColor,
-                contentColor = type.textColor,
+                contentColor = buttonColor.textColor,
                 disabledContainerColor = animColor,
-                disabledContentColor = type.disableTextColor,
+                disabledContentColor = buttonColor.disableTextColor,
             ),
             enabled = isEnabled,
             shape = shape,
@@ -181,7 +162,7 @@ fun SeugiFullWidthButton(
                     resId = R.raw.loading_dots,
                     contentDescription = "loading gif",
                     autoplay = true,
-                    animationName = type.animName,
+                    animationName = buttonColor.animName,
                 )
             } else {
                 Text(
@@ -224,18 +205,19 @@ fun SeugiButton(
         if (type is ButtonType.Shadow) {
             Modifier
                 .dropShadow(DropShadowType.EvBlack1)
-                .background(White)
+                .background(SeugiTheme.colors.white)
         } else {
             Modifier
         }
     val isEnabled = enabled && !isLoading
 
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
+    val buttonColor = type.colors()
     val scale by animateFloatAsState(
         targetValue = if (buttonState == ButtonState.Idle) 1f else 0.96f,
         label = "",
     )
-    val color = if (isEnabled) type.backgroundColor else type.disableBackgroundColor
+    val color = if (isEnabled) buttonColor.backgroundColor else buttonColor.disableBackgroundColor
     val animColor by animateColorAsState(
         targetValue = if (buttonState == ButtonState.Idle) {
             color.copy(alpha = 1f)
@@ -268,9 +250,9 @@ fun SeugiButton(
                 },
             colors = ButtonDefaults.buttonColors(
                 containerColor = animColor,
-                contentColor = type.textColor,
+                contentColor = buttonColor.textColor,
                 disabledContainerColor = animColor,
-                disabledContentColor = type.disableTextColor,
+                disabledContentColor = buttonColor.disableTextColor,
             ),
             enabled = isEnabled,
             shape = shape,
@@ -284,7 +266,7 @@ fun SeugiButton(
                         resId = R.raw.loading_dots,
                         contentDescription = "loading gif",
                         autoplay = true,
-                        animationName = type.animName,
+                        animationName = buttonColor.animName,
                     )
                 }
                 Text(
@@ -338,6 +320,31 @@ fun SeugiIconButton(
     }
 }
 
+@Immutable
+data class ButtonColor(
+    val textColor: Color,
+    val backgroundColor: Color,
+    val disableTextColor: Color,
+    val disableBackgroundColor: Color,
+    val animName: String,
+)
+
+@Composable
+private fun ButtonType.colors() = when (this) {
+    is ButtonType.Primary -> ButtonColor(SeugiTheme.colors.white, SeugiTheme.colors.primary500, SeugiTheme.colors.white, SeugiTheme.colors.primary200, "Loading_White")
+    is ButtonType.Black -> ButtonColor(SeugiTheme.colors.white, SeugiTheme.colors.black, SeugiTheme.colors.white, SeugiTheme.colors.gray600, "Loading_White")
+    is ButtonType.Gray -> ButtonColor(SeugiTheme.colors.gray600, SeugiTheme.colors.gray100, SeugiTheme.colors.gray500, SeugiTheme.colors.gray100, "Loading_Gray")
+    is ButtonType.Red -> ButtonColor(SeugiTheme.colors.red500, SeugiTheme.colors.red200, SeugiTheme.colors.red300, SeugiTheme.colors.red200, "Loading_White")
+    is ButtonType.Shadow -> ButtonColor(SeugiTheme.colors.black, SeugiTheme.colors.white, SeugiTheme.colors.gray500, SeugiTheme.colors.white, "Loading_Gray")
+    is ButtonType.Transparent -> ButtonColor(
+        SeugiTheme.colors.black,
+        SeugiTheme.colors.transparent,
+        SeugiTheme.colors.gray500,
+        SeugiTheme.colors.transparent,
+        "Loading_Gray",
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun SeugiButtonPreview() {
@@ -360,7 +367,7 @@ private fun SeugiButtonPreview() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 20.dp)
-                .background(White)
+                .background(SeugiTheme.colors.white)
                 .verticalScroll(rememberScrollState()),
         ) {
             SeugiFullWidthButton(

@@ -38,13 +38,7 @@ import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.NoInteractionSource
 import com.seugi.designsystem.component.SeugiIconButton
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray400
-import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.Transparent
-import com.seugi.designsystem.theme.White
 
 /**
  * Seugi TextField
@@ -73,20 +67,20 @@ fun SeugiTextField(
     textStyle: TextStyle = MaterialTheme.typography.titleMedium,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: TextFieldColors = TextFieldDefaults.colors(
-        focusedTextColor = Black,
-        focusedContainerColor = White,
-        focusedIndicatorColor = Transparent,
-        unfocusedContainerColor = White,
-        unfocusedTextColor = Black,
-        unfocusedIndicatorColor = Transparent,
-        disabledIndicatorColor = Transparent,
-        disabledTextColor = Gray400,
-        disabledContainerColor = White,
+        focusedTextColor = SeugiTheme.colors.black,
+        focusedContainerColor = SeugiTheme.colors.white,
+        focusedIndicatorColor = SeugiTheme.colors.transparent,
+        unfocusedContainerColor = SeugiTheme.colors.white,
+        unfocusedTextColor = SeugiTheme.colors.black,
+        unfocusedIndicatorColor = SeugiTheme.colors.transparent,
+        disabledIndicatorColor = SeugiTheme.colors.transparent,
+        disabledTextColor = SeugiTheme.colors.gray400,
+        disabledContainerColor = SeugiTheme.colors.white,
     ),
 ) {
     var isFocused by remember { mutableStateOf(false) }
     val animBorderColor by animateColorAsState(
-        targetValue = if (isFocused) Primary500 else Gray400,
+        targetValue = if (isFocused) SeugiTheme.colors.primary500 else SeugiTheme.colors.gray400,
         label = "",
     )
 
@@ -112,7 +106,7 @@ fun SeugiTextField(
             enabled = enabled,
             textStyle = textStyle,
             singleLine = singleLine,
-            cursorBrush = SolidColor(Primary500),
+            cursorBrush = SolidColor(SeugiTheme.colors.primary500),
             decorationBox = @Composable { innerTextField ->
                 TextFieldDefaults.DecorationBox(
                     value = value,
@@ -121,7 +115,7 @@ fun SeugiTextField(
                         Text(
                             text = placeholder,
                             style = textStyle,
-                            color = if (enabled) Gray500 else Gray400,
+                            color = if (enabled) SeugiTheme.colors.gray500 else SeugiTheme.colors.gray400,
                         )
                     },
                     label = null,
@@ -134,7 +128,7 @@ fun SeugiTextField(
                                 colors = IconButtonColors(
                                     containerColor = colors.focusedContainerColor,
                                     disabledContainerColor = colors.disabledContainerColor,
-                                    contentColor = Gray500,
+                                    contentColor = SeugiTheme.colors.gray500,
                                     disabledContentColor = colors.disabledTextColor,
                                 ),
                             )

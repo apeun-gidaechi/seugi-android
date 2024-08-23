@@ -33,7 +33,7 @@ fun SeugiTopBar(
     title: @Composable () -> Unit,
     onNavigationIconClick: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
-    containerColors: Color = MaterialTheme.colorScheme.background,
+    containerColors: Color = SeugiTheme.colors.white,
     shadow: Boolean = false,
 ) {
     val modifierWithShadow = if (shadow) {

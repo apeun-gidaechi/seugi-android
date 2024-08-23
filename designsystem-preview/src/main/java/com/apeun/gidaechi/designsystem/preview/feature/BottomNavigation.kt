@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import com.seugi.designsystem.component.BottomNavigationItemType
 import com.seugi.designsystem.component.SeugiBottomNavigation
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 
 @Composable
 fun BottomNavigation() {
@@ -22,7 +21,7 @@ fun BottomNavigation() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(White),
+                .background(SeugiTheme.colors.white),
         ) {
             Spacer(modifier = Modifier.weight(1f))
             SeugiBottomNavigation(

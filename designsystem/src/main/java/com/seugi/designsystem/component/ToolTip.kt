@@ -14,8 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.R
-import com.seugi.designsystem.theme.Gray700
-import com.seugi.designsystem.theme.White
+import com.seugi.designsystem.theme.SeugiTheme
 
 sealed class ToolTipType {
     data object Side : ToolTipType()
@@ -63,7 +62,7 @@ fun SeugiToolTip(text: String, type: ToolTipType) {
         Box(
             modifier = Modifier
                 .background(
-                    color = Gray700,
+                    color = SeugiTheme.colors.gray700,
                     shape = RoundedCornerShape(8.dp),
                 ),
             contentAlignment = Alignment.Center,
@@ -74,7 +73,7 @@ fun SeugiToolTip(text: String, type: ToolTipType) {
                     vertical = 8.dp,
                 ),
                 text = text,
-                color = White,
+                color = SeugiTheme.colors.white,
                 style = MaterialTheme.typography.bodyLarge,
             )
         }

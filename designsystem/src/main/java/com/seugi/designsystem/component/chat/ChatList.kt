@@ -22,8 +22,6 @@ import com.seugi.designsystem.animation.NoInteractionSource
 import com.seugi.designsystem.component.AvatarType
 import com.seugi.designsystem.component.SeugiAvatar
 import com.seugi.designsystem.component.SeugiBadge
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray500
 import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
@@ -68,14 +66,14 @@ fun SeugiChatList(
                         Text(
                             text = userName,
                             style = MaterialTheme.typography.titleMedium,
-                            color = Black,
+                            color = SeugiTheme.colors.black,
                         )
                         if (memberCount != null) {
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
                                 text = memberCount.toString(),
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Gray500,
+                                color = SeugiTheme.colors.gray500,
                             )
                         }
                     }
@@ -85,7 +83,7 @@ fun SeugiChatList(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Black,
+                        color = SeugiTheme.colors.black,
                     )
                 }
             }
@@ -96,7 +94,7 @@ fun SeugiChatList(
                 Text(
                     text = createdAt,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Gray500,
+                    color = SeugiTheme.colors.gray500,
                 )
                 if (count != null && count != 0) {
                     Spacer(modifier = Modifier.height(4.dp))

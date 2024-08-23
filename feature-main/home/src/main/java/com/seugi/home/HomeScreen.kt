@@ -67,18 +67,7 @@ import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.brushDraw
 import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.component.modifier.`if`
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray100
-import com.seugi.designsystem.theme.Gray300
-import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.Gray600
-import com.seugi.designsystem.theme.Gray700
-import com.seugi.designsystem.theme.Primary050
-import com.seugi.designsystem.theme.Primary100
-import com.seugi.designsystem.theme.Primary200
-import com.seugi.designsystem.theme.Primary300
-import com.seugi.designsystem.theme.Primary500
-import com.seugi.designsystem.theme.White
+import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.home.model.CommonUiState
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -100,20 +89,22 @@ internal fun HomeScreen(
         derivedStateOf { (pagerState.currentPage * 10).dp }
     }
 
+    val changeNavColorWhite = SeugiTheme.colors.white
     LifecycleResumeEffect(Unit) {
         onPauseOrDispose {
             if (!view.isInEditMode) {
                 val window = (view.context as Activity).window
-                changeNavigationColor(window, White, false)
+                changeNavigationColor(window, changeNavColorWhite, false)
             }
         }
     }
 
+    val changeNavColor = SeugiTheme.colors.primary050
     LaunchedEffect(key1 = true) {
         onNavigationVisibleChange(true)
         if (!view.isInEditMode) {
             val window = (view.context as Activity).window
-            changeNavigationColor(window, Primary050, false)
+            changeNavigationColor(window, changeNavColor, false)
         }
     }
 
@@ -137,7 +128,7 @@ internal fun HomeScreen(
 
     LazyColumn(
         modifier = Modifier
-            .background(Primary050)
+            .background(SeugiTheme.colors.primary050)
             .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -147,7 +138,7 @@ internal fun HomeScreen(
                     Text(
                         text = "홈",
                         style = MaterialTheme.typography.titleLarge,
-                        color = Black,
+                        color = SeugiTheme.colors.black,
                     )
                 },
                 containerColors = Color.Transparent,
@@ -158,7 +149,7 @@ internal fun HomeScreen(
             HomeCard(
                 text = "내 학교",
                 image = painterResource(id = R.drawable.ic_school),
-                colorFilter = ColorFilter.tint(Gray600),
+                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray600),
             ) {
                 when (val schoolState = state.schoolState) {
                     is CommonUiState.Success -> {
@@ -169,7 +160,7 @@ internal fun HomeScreen(
                                 modifier = Modifier.padding(vertical = (6.5).dp),
                                 text = schoolState.data,
                                 style = MaterialTheme.typography.titleMedium,
-                                color = Gray600,
+                                color = SeugiTheme.colors.gray600,
                             )
                             Spacer(modifier = Modifier.weight(1f))
                             SeugiButton(
@@ -191,7 +182,7 @@ internal fun HomeScreen(
                                 modifier = Modifier.align(Alignment.CenterHorizontally),
                                 text = "내 학교를 등록해주세요",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Gray600,
+                                color = SeugiTheme.colors.gray600,
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                         }
@@ -214,7 +205,7 @@ internal fun HomeScreen(
                 text = "오늘의 시간표",
                 onClickDetail = { /*TODO*/ },
                 image = painterResource(id = R.drawable.ic_book_fill),
-                colorFilter = ColorFilter.tint(Gray600),
+                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray600),
             ) {
                 when (val timeScheduleState = state.timeScheduleState) {
                     is CommonUiState.Success -> {
@@ -227,7 +218,7 @@ internal fun HomeScreen(
                                     .fillMaxWidth()
                                     .height(34.dp)
                                     .background(
-                                        color = Primary100,
+                                        color = SeugiTheme.colors.primary100,
                                         shape = RoundedCornerShape(23.dp),
                                     ),
                             )
@@ -243,7 +234,7 @@ internal fun HomeScreen(
                                         .weight(selectIndex.toFloat() + 0.9f)
                                         .fillMaxHeight()
                                         .background(
-                                            color = Primary500,
+                                            color = SeugiTheme.colors.primary500,
                                             shape = RoundedCornerShape(23.dp),
                                         ),
                                 )
@@ -291,7 +282,7 @@ internal fun HomeScreen(
             HomeCard(
                 text = "오늘의 급식",
                 image = painterResource(id = R.drawable.ic_utensils_line),
-                colorFilter = ColorFilter.tint(Gray600),
+                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray600),
                 onClickDetail = {},
                 onChangeButtonState = {
                     nowButtonState = it
@@ -323,14 +314,14 @@ internal fun HomeScreen(
                                                 else -> mealState.data.third.first
                                             },
                                             style = MaterialTheme.typography.bodyMedium,
-                                            color = Gray700,
+                                            color = SeugiTheme.colors.gray700,
                                         )
                                         Spacer(modifier = Modifier.height(8.dp))
 
                                         Box(
                                             modifier = Modifier
                                                 .background(
-                                                    color = Primary500,
+                                                    color = SeugiTheme.colors.primary500,
                                                     shape = RoundedCornerShape(34.dp),
                                                 ),
                                         ) {
@@ -345,7 +336,7 @@ internal fun HomeScreen(
                                                     else -> mealState.data.third.second
                                                 },
                                                 style = MaterialTheme.typography.labelLarge,
-                                                color = White,
+                                                color = SeugiTheme.colors.white,
                                             )
                                         }
                                     }
@@ -376,7 +367,7 @@ internal fun HomeScreen(
                                                     else -> "저녁"
                                                 },
                                                 style = MaterialTheme.typography.labelLarge,
-                                                color = Gray500,
+                                                color = SeugiTheme.colors.gray500,
                                             )
                                         }
                                     }
@@ -393,7 +384,7 @@ internal fun HomeScreen(
                                     modifier = Modifier
                                         .fillMaxSize()
                                         .background(
-                                            color = Gray300,
+                                            color = SeugiTheme.colors.gray300,
                                             shape = RoundedCornerShape(4.dp),
                                         ),
                                 )
@@ -404,7 +395,7 @@ internal fun HomeScreen(
                                         .width(16.dp)
                                         .fillMaxHeight()
                                         .background(
-                                            color = Primary500,
+                                            color = SeugiTheme.colors.primary500,
                                             shape = RoundedCornerShape(4.dp),
                                         ),
                                 )
@@ -457,7 +448,7 @@ internal fun HomeScreen(
                                     modifier = Modifier.padding(vertical = (15.5).dp),
                                     text = "2학년 4반에 아무나 한명 뽑아줘...",
                                     style = MaterialTheme.typography.titleMedium,
-                                    color = Gray500,
+                                    color = SeugiTheme.colors.gray500,
                                 )
                                 Spacer(modifier = Modifier.weight(1f))
                                 Image(
@@ -472,7 +463,7 @@ internal fun HomeScreen(
                             Text(
                                 text = "지난주",
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Gray600,
+                                color = SeugiTheme.colors.gray600,
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Column(
@@ -483,7 +474,7 @@ internal fun HomeScreen(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .background(
-                                            color = Gray100,
+                                            color = SeugiTheme.colors.gray100,
                                             shape = RoundedCornerShape(4.dp),
                                         ),
                                     verticalAlignment = Alignment.CenterVertically,
@@ -493,13 +484,13 @@ internal fun HomeScreen(
                                         modifier = Modifier.padding(vertical = (12).dp),
                                         text = "급식에 복어가 나오는 날이 언제..",
                                         style = MaterialTheme.typography.bodyLarge,
-                                        color = Black,
+                                        color = SeugiTheme.colors.black,
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
                                     Text(
                                         text = "6월 21일",
                                         style = MaterialTheme.typography.bodyMedium,
-                                        color = Gray600,
+                                        color = SeugiTheme.colors.gray600,
                                     )
                                     Spacer(modifier = Modifier.width(12.dp))
                                 }
@@ -508,7 +499,7 @@ internal fun HomeScreen(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .background(
-                                            color = Gray100,
+                                            color = SeugiTheme.colors.gray100,
                                             shape = RoundedCornerShape(4.dp),
                                         ),
                                     verticalAlignment = Alignment.CenterVertically,
@@ -518,13 +509,13 @@ internal fun HomeScreen(
                                         modifier = Modifier.padding(vertical = (12).dp),
                                         text = "우리 학교 대회 담당하는 분이 누구...",
                                         style = MaterialTheme.typography.bodyLarge,
-                                        color = Black,
+                                        color = SeugiTheme.colors.black,
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
                                     Text(
                                         text = "6월 21일",
                                         style = MaterialTheme.typography.bodyMedium,
-                                        color = Gray600,
+                                        color = SeugiTheme.colors.gray600,
                                     )
                                     Spacer(modifier = Modifier.width(12.dp))
                                 }
@@ -553,7 +544,7 @@ internal fun HomeScreen(
                 text = "다가오는 일정",
                 onClickDetail = { /*TODO*/ },
                 image = painterResource(id = R.drawable.ic_calendar_line),
-                colorFilter = ColorFilter.tint(Gray600),
+                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray600),
             ) {
                 when (val scheduleState = state.schoolScheduleState) {
                     is CommonUiState.Success -> {
@@ -613,7 +604,7 @@ internal fun HomeCard(modifier: Modifier = Modifier, text: String, image: Painte
             .animateContentSize()
             .dropShadow(DropShadowType.EvBlack1)
             .background(
-                color = White,
+                color = SeugiTheme.colors.white,
                 shape = RoundedCornerShape(12.dp),
             ),
     ) {
@@ -627,7 +618,7 @@ internal fun HomeCard(modifier: Modifier = Modifier, text: String, image: Painte
                     .padding(vertical = 4.dp)
                     .size(32.dp)
                     .background(
-                        color = Gray100,
+                        color = SeugiTheme.colors.gray100,
                         shape = RoundedCornerShape(8.dp),
                     ),
             ) {
@@ -636,7 +627,7 @@ internal fun HomeCard(modifier: Modifier = Modifier, text: String, image: Painte
                         .size(24.dp)
                         .align(Alignment.Center)
                         .`if`(text == "캣스기") {
-                            Modifier.background(White)
+                            Modifier.background(SeugiTheme.colors.white)
                         },
                     painter = image,
                     contentDescription = "",
@@ -648,7 +639,7 @@ internal fun HomeCard(modifier: Modifier = Modifier, text: String, image: Painte
                 modifier = Modifier.align(Alignment.CenterVertically),
                 text = text,
                 style = MaterialTheme.typography.titleMedium,
-                color = Black,
+                color = SeugiTheme.colors.black,
             )
         }
         Spacer(modifier = Modifier.height(12.dp))
@@ -678,7 +669,7 @@ internal fun HomeCard(
             .animateContentSize()
             .dropShadow(DropShadowType.EvBlack1)
             .background(
-                color = White,
+                color = SeugiTheme.colors.white,
                 shape = RoundedCornerShape(12.dp),
             ),
     ) {
@@ -697,7 +688,7 @@ internal fun HomeCard(
                     .padding(vertical = 4.dp)
                     .size(32.dp)
                     .background(
-                        color = Gray100,
+                        color = SeugiTheme.colors.gray100,
                         shape = RoundedCornerShape(8.dp),
                     ),
             ) {
@@ -715,7 +706,7 @@ internal fun HomeCard(
                 modifier = Modifier.align(Alignment.CenterVertically),
                 text = text,
                 style = MaterialTheme.typography.titleMedium,
-                color = Black,
+                color = SeugiTheme.colors.black,
             )
             Spacer(modifier = Modifier.weight(1f))
             Image(
@@ -724,7 +715,7 @@ internal fun HomeCard(
                     .align(Alignment.CenterVertically),
                 painter = painterResource(id = R.drawable.ic_expand_right_line),
                 contentDescription = "상세보기",
-                colorFilter = ColorFilter.tint(Gray500),
+                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
             )
             Spacer(modifier = Modifier.width(12.dp))
         }
@@ -754,7 +745,7 @@ internal fun HomeSubjectCard(modifier: Modifier, index: Int, selectIndex: Int, s
                     .align(Alignment.Center),
                 text = (index + 1).toString(),
                 style = MaterialTheme.typography.bodyLarge,
-                color = if (isNowSelected) Primary500 else Primary300,
+                color = if (isNowSelected) SeugiTheme.colors.primary500 else SeugiTheme.colors.primary300,
             )
         }
         Box(
@@ -771,7 +762,7 @@ internal fun HomeSubjectCard(modifier: Modifier, index: Int, selectIndex: Int, s
                     .align(Alignment.Center),
                 text = subject,
                 style = MaterialTheme.typography.bodyLarge,
-                color = if (isNowSelected) White else if (index > selectIndex) Primary300 else Primary200,
+                color = if (isNowSelected) SeugiTheme.colors.white else if (index > selectIndex) SeugiTheme.colors.primary300 else SeugiTheme.colors.primary200,
             )
         }
     }
@@ -785,19 +776,19 @@ internal fun HomeCalendarCard(modifier: Modifier = Modifier, date: String, conte
         Text(
             text = date,
             style = MaterialTheme.typography.bodyLarge,
-            color = Primary500,
+            color = SeugiTheme.colors.primary500,
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(
             text = content,
             style = MaterialTheme.typography.bodyMedium,
-            color = Black,
+            color = SeugiTheme.colors.black,
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = dDay,
             style = MaterialTheme.typography.bodyMedium,
-            color = Gray600,
+            color = SeugiTheme.colors.gray600,
         )
     }
 }
@@ -813,7 +804,7 @@ internal fun HomeNotFoundText(text: String) {
                 .padding(vertical = 12.dp),
             text = text,
             style = MaterialTheme.typography.bodyMedium,
-            color = Gray600,
+            color = SeugiTheme.colors.gray600,
         )
     }
 }
@@ -829,7 +820,7 @@ internal fun HomeSchoolSelectCard(text: String, isSelect: Boolean, onClick: () -
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = Primary050,
+                    color = SeugiTheme.colors.primary050,
                     shape = RoundedCornerShape(8.dp),
                 ),
         ) {
@@ -838,7 +829,7 @@ internal fun HomeSchoolSelectCard(text: String, isSelect: Boolean, onClick: () -
             ) {
                 Text(
                     text = text,
-                    color = Black,
+                    color = SeugiTheme.colors.black,
                     style = MaterialTheme.typography.titleMedium,
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -847,7 +838,7 @@ internal fun HomeSchoolSelectCard(text: String, isSelect: Boolean, onClick: () -
                         modifier = Modifier.size(24.dp),
                         painter = painterResource(id = R.drawable.ic_setting_fill),
                         contentDescription = null,
-                        colorFilter = ColorFilter.tint(Gray500),
+                        colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                 }
@@ -855,7 +846,7 @@ internal fun HomeSchoolSelectCard(text: String, isSelect: Boolean, onClick: () -
                     modifier = Modifier.size(24.dp),
                     painter = painterResource(id = R.drawable.ic_expand_right_line),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(Gray500),
+                    colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
                 )
             }
         }

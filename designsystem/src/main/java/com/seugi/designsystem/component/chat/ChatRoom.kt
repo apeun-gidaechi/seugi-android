@@ -11,9 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.seugi.designsystem.theme.Primary200
-import com.seugi.designsystem.theme.Primary700
 import com.seugi.designsystem.theme.SeugiTextTheme
+import com.seugi.designsystem.theme.SeugiTheme
 
 sealed class ChatRoomType(
     val size: Dp,
@@ -53,14 +52,14 @@ fun SeugiChatRoom(modifier: Modifier = Modifier, text: String = "", type: ChatRo
             .size(type.size)
             .clip(CircleShape)
             .background(
-                color = Primary200,
+                color = SeugiTheme.colors.primary200,
                 shape = CircleShape,
             ),
     ) {
         Text(
             modifier = Modifier.align(Alignment.Center),
             text = if (text.isEmpty()) "" else text.substring(startIndex = 0, endIndex = 1),
-            color = Primary700,
+            color = SeugiTheme.colors.primary700,
             style = type.textStyle.toTextStyle(),
         )
     }

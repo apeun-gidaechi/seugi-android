@@ -36,10 +36,6 @@ import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.ButtonType
 import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiTopBar
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray100
-import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -86,11 +82,11 @@ internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit,
                                 .bounceClick({ studentOnOff = true })
                                 .fillMaxHeight()
                                 .weight(1f)
-                                .background(shape = RoundedCornerShape(12.dp), color = Gray100)
+                                .background(shape = RoundedCornerShape(12.dp), color = SeugiTheme.colors.gray100)
                                 .border(
                                     border = BorderStroke(
                                         1.dp,
-                                        color = if (studentOnOff) Primary500 else Gray100,
+                                        color = if (studentOnOff) SeugiTheme.colors.primary500 else SeugiTheme.colors.gray100,
                                     ),
                                     shape = RoundedCornerShape(12.dp),
                                 ),
@@ -112,7 +108,7 @@ internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit,
                                     Text(
                                         text = "학생",
                                         style = MaterialTheme.typography.titleMedium,
-                                        color = if (studentOnOff) Black else Gray500,
+                                        color = if (studentOnOff) SeugiTheme.colors.black else SeugiTheme.colors.gray500,
                                     )
                                     if (studentOnOff) {
                                         Spacer(modifier = Modifier.width(4.dp))
@@ -139,11 +135,11 @@ internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit,
                                 .bounceClick(onClick = { studentOnOff = false })
                                 .fillMaxHeight()
                                 .weight(1f)
-                                .background(shape = RoundedCornerShape(12.dp), color = Gray100)
+                                .background(shape = RoundedCornerShape(12.dp), color = SeugiTheme.colors.gray100)
                                 .border(
                                     border = BorderStroke(
                                         width = 1.dp,
-                                        color = if (!studentOnOff) Primary500 else Gray100,
+                                        color = if (!studentOnOff) SeugiTheme.colors.primary500 else SeugiTheme.colors.gray100,
                                     ),
                                     shape = RoundedCornerShape(12.dp),
                                 ),
@@ -163,7 +159,7 @@ internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit,
                                     Text(
                                         text = "선생님",
                                         style = MaterialTheme.typography.titleMedium,
-                                        color = if (!studentOnOff) Black else Gray500,
+                                        color = if (!studentOnOff) SeugiTheme.colors.black else SeugiTheme.colors.gray500,
                                     )
                                     if (!studentOnOff) {
                                         Spacer(modifier = Modifier.width(4.dp))

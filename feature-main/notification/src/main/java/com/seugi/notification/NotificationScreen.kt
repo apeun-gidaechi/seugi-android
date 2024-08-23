@@ -63,16 +63,7 @@ import com.seugi.designsystem.component.SeugiImage
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray100
-import com.seugi.designsystem.theme.Gray200
-import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.Gray600
-import com.seugi.designsystem.theme.Primary050
-import com.seugi.designsystem.theme.Primary100
-import com.seugi.designsystem.theme.Primary300
-import com.seugi.designsystem.theme.Red500
-import com.seugi.designsystem.theme.White
+import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.notification.model.NotificationEmojiState
 import com.seugi.notification.model.NotificationSideEffect
 import com.seugi.notification.model.getEmojiList
@@ -114,19 +105,21 @@ internal fun NotificationScreen(
     var isShowPopupDialog by remember { mutableStateOf(false) }
     var selectNotificationItem: NotificationModel? by remember { mutableStateOf(null) }
 
+    val changeNavColorWhite = SeugiTheme.colors.white
     LifecycleResumeEffect(Unit) {
         onPauseOrDispose {
             if (!view.isInEditMode) {
                 val window = (view.context as Activity).window
-                changeNavigationColor(window, White, false)
+                changeNavigationColor(window, changeNavColorWhite, false)
             }
         }
     }
 
+    val changeNavColorPrimary050 = SeugiTheme.colors.primary050
     LaunchedEffect(key1 = true) {
         if (!view.isInEditMode) {
             val window = (view.context as Activity).window
-            changeNavigationColor(window, Primary050, false)
+            changeNavigationColor(window, changeNavColorPrimary050, false)
         }
     }
 
@@ -168,7 +161,7 @@ internal fun NotificationScreen(
     }
 
     Scaffold(
-        modifier = Modifier.background(Primary050),
+        modifier = Modifier.background(SeugiTheme.colors.primary050),
         topBar = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -179,7 +172,7 @@ internal fun NotificationScreen(
                             modifier = Modifier.align(Alignment.CenterHorizontally),
                             text = "알림",
                             style = MaterialTheme.typography.titleLarge,
-                            color = Black,
+                            color = SeugiTheme.colors.black,
                         )
                     },
                     actions = {
@@ -191,11 +184,11 @@ internal fun NotificationScreen(
                                         onClick = navigateToNotificationCreate,
                                     ),
                                 resId = R.drawable.ic_write_line,
-                                colorFilter = ColorFilter.tint(Black),
+                                colorFilter = ColorFilter.tint(SeugiTheme.colors.black),
                             )
                         }
                     },
-                    containerColors = Primary050,
+                    containerColors = SeugiTheme.colors.primary050,
                 )
             }
         },
@@ -209,7 +202,7 @@ internal fun NotificationScreen(
             Column(
                 modifier = Modifier
                     .animateContentSize()
-                    .background(Primary050)
+                    .background(SeugiTheme.colors.primary050)
                     .fillMaxSize(),
             ) {
                 Spacer(modifier = Modifier.height(4.dp))
@@ -282,7 +275,7 @@ fun NotificationNotFound() {
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "알림이 없어요",
-                color = Black,
+                color = SeugiTheme.colors.black,
                 style = MaterialTheme.typography.titleMedium,
             )
         }
@@ -290,19 +283,12 @@ fun NotificationNotFound() {
 }
 
 @Composable
-fun NotificationPopupDialog(
-    isEditPermission: Boolean,
-    isDeletePermission: Boolean,
-    onDismissRequest: () -> Unit,
-    onClickEdit: () -> Unit,
-    onClickDeclaration: () -> Unit,
-    onClickDelete: () -> Unit,
-) {
+fun NotificationPopupDialog(isEditPermission: Boolean, isDeletePermission: Boolean, onDismissRequest: () -> Unit, onClickEdit: () -> Unit, onClickDeclaration: () -> Unit, onClickDelete: () -> Unit) {
     Dialog(
         onDismissRequest = onDismissRequest,
     ) {
         Surface(
-            color = White,
+            color = SeugiTheme.colors.white,
             shape = RoundedCornerShape(16.dp),
         ) {
             Column(
@@ -319,7 +305,7 @@ fun NotificationPopupDialog(
                             modifier = Modifier
                                 .padding(vertical = 8.dp),
                             text = "알림 수정",
-                            color = Black,
+                            color = SeugiTheme.colors.black,
                             style = MaterialTheme.typography.titleMedium,
                         )
                     }
@@ -335,7 +321,7 @@ fun NotificationPopupDialog(
                         modifier = Modifier
                             .padding(vertical = 8.dp),
                         text = "알림 신고",
-                        color = Black,
+                        color = SeugiTheme.colors.black,
                         style = MaterialTheme.typography.titleMedium,
                     )
                 }
@@ -351,7 +337,7 @@ fun NotificationPopupDialog(
                             modifier = Modifier
                                 .padding(vertical = 8.dp),
                             text = "알림 삭제",
-                            color = Red500,
+                            color = SeugiTheme.colors.red500,
                             style = MaterialTheme.typography.titleMedium,
                         )
                     }
@@ -387,7 +373,7 @@ internal fun NotificationCard(
                 .fillMaxWidth()
                 .dropShadow(DropShadowType.EvBlack1)
                 .background(
-                    color = White,
+                    color = SeugiTheme.colors.white,
                     shape = RoundedCornerShape(8.dp),
                 ),
         ) {
@@ -402,7 +388,7 @@ internal fun NotificationCard(
                 ) {
                     Text(
                         text = "$author · $createdAt",
-                        color = Gray600,
+                        color = SeugiTheme.colors.gray600,
                         style = MaterialTheme.typography.bodyMedium,
                         maxLines = 1,
                     )
@@ -415,18 +401,18 @@ internal fun NotificationCard(
                             ),
                         painter = painterResource(id = R.drawable.ic_detail_vertical_line),
                         contentDescription = "자세히",
-                        colorFilter = ColorFilter.tint(Gray500),
+                        colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = title,
-                    color = Black,
+                    color = SeugiTheme.colors.black,
                     style = MaterialTheme.typography.titleMedium,
                 )
                 Text(
                     text = description,
-                    color = Black,
+                    color = SeugiTheme.colors.black,
                     style = MaterialTheme.typography.bodyMedium,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -458,12 +444,12 @@ private fun NotificationEmoji(modifier: Modifier = Modifier, emoji: String, coun
         Row(
             modifier = modifier
                 .background(
-                    color = if (isChecked) Primary100 else Gray100,
+                    color = if (isChecked) SeugiTheme.colors.primary100 else SeugiTheme.colors.gray100,
                     shape = RoundedCornerShape(8.dp),
                 )
                 .border(
                     width = 1.dp,
-                    color = if (isChecked) Primary300 else Gray200,
+                    color = if (isChecked) SeugiTheme.colors.primary300 else SeugiTheme.colors.gray200,
                     shape = RoundedCornerShape(8.dp),
                 ),
             verticalAlignment = Alignment.CenterVertically,
@@ -474,13 +460,13 @@ private fun NotificationEmoji(modifier: Modifier = Modifier, emoji: String, coun
                     vertical = 4.dp,
                 ),
                 text = emoji,
-                color = Black,
+                color = SeugiTheme.colors.black,
                 style = MaterialTheme.typography.titleMedium,
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = count.toString(),
-                color = Gray600,
+                color = SeugiTheme.colors.gray600,
                 style = MaterialTheme.typography.bodyLarge,
             )
             Spacer(modifier = Modifier.width(8.dp))

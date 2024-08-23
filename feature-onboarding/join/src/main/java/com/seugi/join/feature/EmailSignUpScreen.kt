@@ -22,7 +22,6 @@ import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiPasswordTextField
 import com.seugi.designsystem.component.textfield.SeugiTextField
-import com.seugi.designsystem.theme.Red500
 import com.seugi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,7 +60,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                         Text(
                             text = " *",
                             style = MaterialTheme.typography.titleMedium,
-                            color = Red500,
+                            color = SeugiTheme.colors.red500,
                         )
                     }
                     SeugiTextField(
@@ -75,7 +74,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                         Text(
                             text = "이름을 입력해 주세요",
                             style = MaterialTheme.typography.bodyLarge,
-                            color = Red500,
+                            color = SeugiTheme.colors.red500,
                             modifier = Modifier.padding(start = 4.dp),
                         )
                     }
@@ -90,7 +89,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                         Text(
                             text = " *",
                             style = MaterialTheme.typography.titleMedium,
-                            color = Red500,
+                            color = SeugiTheme.colors.red500,
                         )
                     }
                     SeugiTextField(
@@ -104,7 +103,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                         Text(
                             text = if (error == "blank_email") "이메일을 입력해주세요" else if (error == "email_fomat_is_not")"이메일 형식을 맞춰주세요" else "",
                             style = MaterialTheme.typography.bodyLarge,
-                            color = Red500,
+                            color = SeugiTheme.colors.red500,
                             modifier = Modifier.padding(start = 4.dp),
                         )
                     }
@@ -119,7 +118,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                         Text(
                             text = " *",
                             style = MaterialTheme.typography.titleMedium,
-                            color = Red500,
+                            color = SeugiTheme.colors.red500,
                         )
                     }
                     SeugiPasswordTextField(
@@ -132,7 +131,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                         Text(
                             text = "비밀번호를 입력해 주세요",
                             style = MaterialTheme.typography.bodyLarge,
-                            color = Red500,
+                            color = SeugiTheme.colors.red500,
                             modifier = Modifier.padding(start = 4.dp),
                         )
                     }
@@ -147,7 +146,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                         Text(
                             text = " *",
                             style = MaterialTheme.typography.titleMedium,
-                            color = Red500,
+                            color = SeugiTheme.colors.red500,
                         )
                     }
                     SeugiPasswordTextField(
@@ -160,7 +159,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                         Text(
                             text = "비밀번호가 다릅니다",
                             style = MaterialTheme.typography.bodyLarge,
-                            color = Red500,
+                            color = SeugiTheme.colors.red500,
                             modifier = Modifier.padding(start = 4.dp),
                         )
                     }

@@ -16,7 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.seugi.designsystem.R
-import com.seugi.designsystem.theme.Black
 import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
@@ -35,7 +34,7 @@ fun SeugiError(modifier: Modifier = Modifier, @DrawableRes resId: Int, text: Str
         Text(
             text = text,
             style = MaterialTheme.typography.titleMedium,
-            color = Black,
+            color = SeugiTheme.colors.black,
         )
     }
 }
@@ -56,7 +55,7 @@ fun SeugiError(modifier: Modifier, model: String, text: String) {
         Text(
             text = text,
             style = MaterialTheme.typography.titleMedium,
-            color = Black,
+            color = SeugiTheme.colors.black,
         )
     }
 }

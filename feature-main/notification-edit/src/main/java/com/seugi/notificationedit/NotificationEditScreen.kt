@@ -37,9 +37,7 @@ import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiImage
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiTextField
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.White
+import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.notificationedit.model.NotificationSideEffect
 import com.seugi.ui.CollectAsSideEffect
 import com.seugi.ui.shortToast
@@ -89,14 +87,14 @@ internal fun NotificationEditScreen(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = White,
+        containerColor = SeugiTheme.colors.white,
         topBar = {
             SeugiTopBar(
                 title = {
                     Text(
                         text = "알림 수정",
                         style = MaterialTheme.typography.titleLarge,
-                        color = Black,
+                        color = SeugiTheme.colors.black,
                     )
                 },
                 actions = {
@@ -128,7 +126,7 @@ internal fun NotificationEditScreen(
                                 ),
                             text = "완료",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = Black,
+                            color = SeugiTheme.colors.black,
                         )
                     }
                 },
@@ -194,7 +192,7 @@ internal fun NotificationEditScreen(
                                 ),
                         ),
                     resId = R.drawable.ic_trash_fill,
-                    colorFilter = ColorFilter.tint(Gray500),
+                    colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
                 )
             }
         }

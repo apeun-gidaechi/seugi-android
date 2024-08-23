@@ -18,11 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.animation.ButtonState
 import com.seugi.designsystem.animation.bounceClick
-import com.seugi.designsystem.theme.Gray100
-import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 
 /**
  * Seugi Category
@@ -38,15 +34,15 @@ fun SeugiCategory(modifier: Modifier = Modifier, category: String, isChoose: Boo
 
     val animBackgroundColor by animateColorAsState(
         targetValue = when {
-            isChoose && buttonState == ButtonState.Idle -> Primary500
-            isChoose && buttonState == ButtonState.Hold -> Primary500.copy(alpha = 0.7f)
-            !isChoose && buttonState == ButtonState.Hold -> Gray100.copy(alpha = 0.7f)
-            else -> Gray100
+            isChoose && buttonState == ButtonState.Idle -> SeugiTheme.colors.primary500
+            isChoose && buttonState == ButtonState.Hold -> SeugiTheme.colors.primary500.copy(alpha = 0.7f)
+            !isChoose && buttonState == ButtonState.Hold -> SeugiTheme.colors.gray100.copy(alpha = 0.7f)
+            else -> SeugiTheme.colors.gray100
         },
         label = "",
     )
     val animTextColor by animateColorAsState(
-        targetValue = if (isChoose) White else Gray500,
+        targetValue = if (isChoose) SeugiTheme.colors.white else SeugiTheme.colors.gray500,
         label = "",
     )
 

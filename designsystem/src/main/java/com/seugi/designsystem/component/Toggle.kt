@@ -18,16 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
-import com.seugi.designsystem.theme.Gray200
-import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.Transparent
-import com.seugi.designsystem.theme.White
 
 @Composable
 fun SeugiToggle(modifier: Modifier = Modifier, checked: Boolean, onCheckedChangeListener: (Boolean) -> Unit) {
@@ -35,11 +30,11 @@ fun SeugiToggle(modifier: Modifier = Modifier, checked: Boolean, onCheckedChange
         checked = checked,
         onCheckedChange = onCheckedChangeListener,
         colors = SwitchDefaults.colors(
-            checkedThumbColor = White,
-            checkedTrackColor = Primary500,
-            uncheckedThumbColor = White,
-            uncheckedTrackColor = Gray200,
-            uncheckedBorderColor = Transparent,
+            checkedThumbColor = SeugiTheme.colors.white,
+            checkedTrackColor = SeugiTheme.colors.primary500,
+            uncheckedThumbColor = SeugiTheme.colors.white,
+            uncheckedTrackColor = SeugiTheme.colors.gray200,
+            uncheckedBorderColor = SeugiTheme.colors.transparent,
 
         ),
         modifier = modifier
@@ -50,7 +45,7 @@ fun SeugiToggle(modifier: Modifier = Modifier, checked: Boolean, onCheckedChange
                 modifier = Modifier
                     .size(27.dp)
                     .background(
-                        color = White,
+                        color = SeugiTheme.colors.white,
                         shape = CircleShape,
                     )
                     .dropShadow(DropShadowType.EvBlack2),
@@ -66,7 +61,7 @@ private fun SeugiTogglePreview() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black),
+                .background(SeugiTheme.colors.black),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {

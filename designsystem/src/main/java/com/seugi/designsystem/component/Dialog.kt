@@ -30,12 +30,7 @@ import com.seugi.designsystem.animation.ButtonState
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray100
-import com.seugi.designsystem.theme.Gray600
-import com.seugi.designsystem.theme.Gray700
-import com.seugi.designsystem.theme.Primary500
-import com.seugi.designsystem.theme.White
+import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
 fun SeugiDialog(title: String, content: String, onDismissRequest: () -> Unit) {
@@ -46,7 +41,7 @@ fun SeugiDialog(title: String, content: String, onDismissRequest: () -> Unit) {
             modifier = Modifier
                 .dropShadow(DropShadowType.EvBlack2)
                 .background(
-                    color = White,
+                    color = SeugiTheme.colors.white,
                     shape = RoundedCornerShape(16.dp),
                 ),
         ) {
@@ -59,13 +54,13 @@ fun SeugiDialog(title: String, content: String, onDismissRequest: () -> Unit) {
                 ) {
                     Text(
                         text = title,
-                        color = Black,
+                        color = SeugiTheme.colors.black,
                         style = MaterialTheme.typography.titleLarge,
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = content,
-                        color = Gray700,
+                        color = SeugiTheme.colors.gray700,
                         style = MaterialTheme.typography.titleMedium,
                     )
                 }
@@ -88,7 +83,7 @@ fun SeugiDialog(title: String, content: String, onDismissRequest: () -> Unit) {
                                 vertical = (7.5).dp,
                             ),
                             text = "닫기",
-                            color = Primary500,
+                            color = SeugiTheme.colors.primary500,
                             style = MaterialTheme.typography.titleMedium,
                         )
                     }
@@ -99,15 +94,7 @@ fun SeugiDialog(title: String, content: String, onDismissRequest: () -> Unit) {
 }
 
 @Composable
-fun SeugiDialog(
-    title: String,
-    content: String,
-    leftText: String = "취소",
-    rightText: String = "확인",
-    onRightRequest: () -> Unit,
-    onLeftRequest: () -> Unit,
-    onDismissRequest: () -> Unit,
-) {
+fun SeugiDialog(title: String, content: String, leftText: String = "취소", rightText: String = "확인", onRightRequest: () -> Unit, onLeftRequest: () -> Unit, onDismissRequest: () -> Unit) {
     Dialog(
         onDismissRequest = onDismissRequest,
     ) {
@@ -115,7 +102,7 @@ fun SeugiDialog(
             modifier = Modifier
                 .dropShadow(DropShadowType.EvBlack2)
                 .background(
-                    color = White,
+                    color = SeugiTheme.colors.white,
                     shape = RoundedCornerShape(16.dp),
                 ),
         ) {
@@ -128,13 +115,13 @@ fun SeugiDialog(
                 ) {
                     Text(
                         text = title,
-                        color = Black,
+                        color = SeugiTheme.colors.black,
                         style = MaterialTheme.typography.titleLarge,
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = content,
-                        color = Gray700,
+                        color = SeugiTheme.colors.gray700,
                         style = MaterialTheme.typography.titleMedium,
                     )
                 }
@@ -145,16 +132,16 @@ fun SeugiDialog(
                     DialogButton(
                         modifier = Modifier.weight(1f),
                         text = leftText,
-                        textColor = Gray600,
-                        backgroundColor = Gray100,
+                        textColor = SeugiTheme.colors.gray600,
+                        backgroundColor = SeugiTheme.colors.gray100,
                         onClick = onLeftRequest,
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     DialogButton(
                         modifier = Modifier.weight(1f),
                         text = rightText,
-                        textColor = White,
-                        backgroundColor = Primary500,
+                        textColor = SeugiTheme.colors.white,
+                        backgroundColor = SeugiTheme.colors.primary500,
                         onClick = onRightRequest,
                     )
                 }

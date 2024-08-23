@@ -31,24 +31,14 @@ import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiPasswordTextField
 import com.seugi.designsystem.component.textfield.SeugiTextField
-import com.seugi.designsystem.theme.Gray600
-import com.seugi.designsystem.theme.Primary500
-import com.seugi.designsystem.theme.Red500
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.login.model.EmailSignInSideEffect
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun EmailSignInScreen(
-    navigateToEmailSignUp: () -> Unit,
-    popBackStack: () -> Unit,
-    onboardingToMain: () -> Unit,
-    viewModel: EmailSignInViewModel = hiltViewModel(),
-) {
-    val coroutineScope = rememberCoroutineScope()
+internal fun EmailSignInScreen(navigateToEmailSignUp: () -> Unit, popBackStack: () -> Unit, onboardingToMain: () -> Unit, viewModel: EmailSignInViewModel = hiltViewModel()) {
 
-    val state by viewModel.state.collectAsState()
     var emailValue by remember { mutableStateOf("") }
     var pwValue by remember { mutableStateOf("") }
 
@@ -108,7 +98,7 @@ internal fun EmailSignInScreen(
                         Text(
                             text = " *",
                             style = MaterialTheme.typography.titleMedium,
-                            color = Red500,
+                            color = SeugiTheme.colors.red500,
                         )
                     }
                     Spacer(modifier = Modifier.height(4.dp))
@@ -122,7 +112,7 @@ internal fun EmailSignInScreen(
                         Text(
                             text = "이메일을 입력해 주세요",
                             style = MaterialTheme.typography.bodyLarge,
-                            color = Red500,
+                            color = SeugiTheme.colors.red500,
                             modifier = Modifier.padding(start = 4.dp),
                         )
                     }
@@ -142,7 +132,7 @@ internal fun EmailSignInScreen(
                         Text(
                             text = " *",
                             style = MaterialTheme.typography.titleMedium,
-                            color = Red500,
+                            color = SeugiTheme.colors.red500,
                         )
                     }
                     Spacer(modifier = Modifier.height(4.dp))
@@ -155,7 +145,7 @@ internal fun EmailSignInScreen(
                         Text(
                             text = "비밀번호을 입력해 주세요",
                             style = MaterialTheme.typography.bodyLarge,
-                            color = Red500,
+                            color = SeugiTheme.colors.red500,
                             modifier = Modifier.padding(start = 4.dp),
                         )
                     }
@@ -173,12 +163,12 @@ internal fun EmailSignInScreen(
                     Text(
                         text = "계정이 없으시다면?",
                         style = MaterialTheme.typography.bodyLarge,
-                        color = Gray600,
+                        color = SeugiTheme.colors.gray600,
                     )
                     Text(
                         text = " 가입하기",
                         style = MaterialTheme.typography.bodyLarge,
-                        color = Primary500,
+                        color = SeugiTheme.colors.primary500,
                         modifier = Modifier
                             .bounceClick({ navigateToEmailSignUp() }),
                     )

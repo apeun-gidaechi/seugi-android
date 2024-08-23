@@ -33,10 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.ButtonState
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray300
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -58,13 +55,13 @@ fun SeugiOAuthButton(@DrawableRes image: Int, text: String, onClick: () -> Unit,
             },
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            containerColor = White,
-            contentColor = Black,
-            disabledContainerColor = White.copy(alpha = 0.5f),
-            disabledContentColor = White.copy(alpha = 0.5f),
+            containerColor = SeugiTheme.colors.white,
+            contentColor = SeugiTheme.colors.black,
+            disabledContainerColor = SeugiTheme.colors.white.copy(alpha = 0.5f),
+            disabledContentColor = SeugiTheme.colors.white.copy(alpha = 0.5f),
         ),
         shape = RoundedCornerShape(12.dp),
-        border = BorderStroke((1.5).dp, Gray300),
+        border = BorderStroke((1.5).dp, SeugiTheme.colors.gray300),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

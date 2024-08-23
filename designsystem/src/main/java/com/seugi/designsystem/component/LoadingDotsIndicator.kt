@@ -17,13 +17,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.seugi.designsystem.theme.Gray400
-import com.seugi.designsystem.theme.White
+import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoadingDotsIndicator(count: Int = 3, pointColor: Color = White, color: Color = Gray400, delay: Long = 150) {
+fun LoadingDotsIndicator(count: Int = 3, pointColor: Color = SeugiTheme.colors.white, color: Color = SeugiTheme.colors.gray400, delay: Long = 150) {
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         repeat(count) {
             val animColor = remember { Animatable(pointColor) }

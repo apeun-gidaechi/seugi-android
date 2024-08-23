@@ -42,10 +42,7 @@ import com.seugi.designsystem.component.SeugiIconButton
 import com.seugi.designsystem.component.SeugiMemberList
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.modifier.verticalScrollbar
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray100
-import com.seugi.designsystem.theme.Gray300
-import com.seugi.designsystem.theme.Gray600
+import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.roomcreate.model.RoomCreateUiState
 import kotlin.math.max
 import kotlinx.coroutines.delay
@@ -53,7 +50,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) -> Unit, popBackStack: () -> Unit, nextScreen: () -> Unit) {
+internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) -> Unit, popBackStack: () -> Unit, nextScreen: () -> Unit) {
     val selectScrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     var beforeItemSize by remember { mutableStateOf(0) }
@@ -74,7 +71,7 @@ fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) -> Unit, 
                     Text(
                         text = "멤버 선택",
                         style = MaterialTheme.typography.titleLarge,
-                        color = Black,
+                        color = SeugiTheme.colors.black,
                     )
                 },
                 actions = {
@@ -94,7 +91,7 @@ fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) -> Unit, 
                                 ),
                             text = "완료",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = Black,
+                            color = SeugiTheme.colors.black,
                         )
                     }
                 },
@@ -116,7 +113,7 @@ fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) -> Unit, 
                     .padding(horizontal = 20.dp)
                     .border(
                         width = 1.dp,
-                        color = Gray300,
+                        color = SeugiTheme.colors.gray300,
                         shape = RoundedCornerShape(12.dp),
                     ),
             ) {
@@ -128,7 +125,7 @@ fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) -> Unit, 
                         .verticalScrollbar(
                             scrollState = selectScrollState,
                             scrollBarWidth = 4.dp,
-                            scrollBarColor = Gray300,
+                            scrollBarColor = SeugiTheme.colors.gray300,
                             cornerRadius = 0.dp,
                         ),
                     horizontalArrangement = Arrangement.Start,
@@ -168,7 +165,7 @@ fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) -> Unit, 
 internal fun SelectMemberCard(name: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier.background(
-            color = Gray100,
+            color = SeugiTheme.colors.gray100,
             shape = RoundedCornerShape(12.dp),
         ),
     ) {
@@ -179,7 +176,7 @@ internal fun SelectMemberCard(name: String, onClick: () -> Unit) {
             Text(
                 text = name,
                 style = MaterialTheme.typography.bodyMedium,
-                color = Gray600,
+                color = SeugiTheme.colors.gray600,
             )
             Spacer(modifier = Modifier.width(4.dp))
             SeugiIconButton(

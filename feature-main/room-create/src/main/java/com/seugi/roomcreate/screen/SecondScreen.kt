@@ -31,12 +31,11 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.chat.ChatRoomType
 import com.seugi.designsystem.component.chat.SeugiChatRoom
 import com.seugi.designsystem.component.textfield.SeugiTextField
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray600
+import com.seugi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SecondScreen(placeholder: String, onNameSuccess: (String) -> Unit, popBackStack: () -> Unit) {
+internal fun SecondScreen(placeholder: String, onNameSuccess: (String) -> Unit, popBackStack: () -> Unit) {
     var title by remember { mutableStateOf("") }
 
     BackHandler(
@@ -65,7 +64,7 @@ fun SecondScreen(placeholder: String, onNameSuccess: (String) -> Unit, popBackSt
                                 ),
                             text = "완료",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = Black,
+                            color = SeugiTheme.colors.black,
                         )
                     }
                 },
@@ -91,14 +90,14 @@ fun SecondScreen(placeholder: String, onNameSuccess: (String) -> Unit, popBackSt
                         .align(Alignment.BottomEnd),
                     painter = painterResource(id = R.drawable.ic_add_fill),
                     contentDescription = "add_button",
-                    colorFilter = ColorFilter.tint(Gray600),
+                    colorFilter = ColorFilter.tint(SeugiTheme.colors.gray600),
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "채팅방 이름",
                 style = MaterialTheme.typography.titleMedium,
-                color = Black,
+                color = SeugiTheme.colors.black,
             )
             Spacer(modifier = Modifier.height(4.dp))
             SeugiTextField(

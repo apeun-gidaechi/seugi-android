@@ -26,10 +26,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
-import com.seugi.designsystem.theme.Gray100
-import com.seugi.designsystem.theme.Gray400
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 
 sealed class Size(val size: Dp, val radius: Dp) {
     data object Large : Size(180.dp, 64.dp)
@@ -44,7 +41,7 @@ fun SeugiRoundedCircleImage(modifier: Modifier = Modifier, size: Size, onClick: 
         modifier = modifier
             .size(size = size.size)
             .clip(shape = RoundedCornerShape(size.radius))
-            .background(Gray100)
+            .background(SeugiTheme.colors.gray100)
             .bounceClick(onClick),
         contentAlignment = Alignment.Center,
     ) {
@@ -52,7 +49,7 @@ fun SeugiRoundedCircleImage(modifier: Modifier = Modifier, size: Size, onClick: 
             modifier = Modifier.size(size.size / 2),
             painter = painterResource(id = R.drawable.ic_image),
             contentDescription = "",
-            colorFilter = ColorFilter.tint(Gray400),
+            colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
         )
     }
 }
@@ -63,7 +60,7 @@ fun SeugiRoundedCircleImage(modifier: Modifier = Modifier, size: Size, image: St
         modifier = modifier
             .bounceClick(onClick)
             .size(size.size)
-            .border(width = 1.dp, shape = RoundedCornerShape(size.radius), color = Gray400)
+            .border(width = 1.dp, shape = RoundedCornerShape(size.radius), color = SeugiTheme.colors.gray400)
             .clip(shape = RoundedCornerShape(size.radius)),
         model = image,
         contentDescription = "",
@@ -78,7 +75,7 @@ private fun PreviewSeugiRoundedCircleImage() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(White)
+                .background(SeugiTheme.colors.white)
                 .padding(vertical = 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {

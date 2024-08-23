@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.component.chat.ChatItemType
 import com.seugi.designsystem.component.chat.SeugiChatItem
-import com.seugi.designsystem.theme.Primary050
 import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
@@ -20,7 +19,7 @@ fun ChatItem() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Primary050),
+                .background(SeugiTheme.colors.primary050),
         ) {
             SeugiChatItem(
                 type = ChatItemType.Others(

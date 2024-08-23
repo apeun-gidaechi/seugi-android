@@ -88,13 +88,7 @@ import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.component.modifier.`if`
 import com.seugi.designsystem.component.textfield.SeugiChatTextField
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray400
-import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.Gray600
-import com.seugi.designsystem.theme.Primary050
-import com.seugi.designsystem.theme.Primary500
-import com.seugi.designsystem.theme.White
+import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.ui.addFocusCleaner
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -217,13 +211,13 @@ internal fun ChatDetailScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Primary050)
+            .background(SeugiTheme.colors.primary050)
             .focusable(),
     ) {
         SeugiRightSideScaffold(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Primary050)
+                .background(SeugiTheme.colors.primary050)
                 .addFocusCleaner(
                     focusManager = focusManager,
                 ),
@@ -248,7 +242,7 @@ internal fun ChatDetailScreen(
                             Text(
                                 text = state.roomInfo?.roomName ?: "",
                                 style = MaterialTheme.typography.titleLarge,
-                                color = Black,
+                                color = SeugiTheme.colors.black,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                             )
@@ -345,7 +339,7 @@ internal fun ChatDetailScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(it)
-                    .background(Primary050),
+                    .background(SeugiTheme.colors.primary050),
                 contentPadding = PaddingValues(
                     horizontal = 8.dp,
                 ),
@@ -415,12 +409,7 @@ internal fun ChatDetailScreen(
 }
 
 @Composable
-private fun BoxScope.ChatUploadDialog(
-    focusRequester: FocusRequester,
-    onDismissRequest: () -> Unit,
-    onFileUploadClick: () -> Unit,
-    onImageUploadClick: () -> Unit,
-) {
+private fun BoxScope.ChatUploadDialog(focusRequester: FocusRequester, onDismissRequest: () -> Unit, onFileUploadClick: () -> Unit, onImageUploadClick: () -> Unit) {
     var isFirst by remember { mutableStateOf(true) }
 
     LaunchedEffect(key1 = true) {
@@ -449,7 +438,7 @@ private fun BoxScope.ChatUploadDialog(
             )
             .dropShadow(DropShadowType.EvBlack3)
             .background(
-                color = White,
+                color = SeugiTheme.colors.white,
                 shape = RoundedCornerShape(16.dp),
             ),
     ) {
@@ -486,13 +475,13 @@ private fun ChatUploadDialogItem(@DrawableRes resId: Int, title: String, onClick
                 .padding(vertical = 8.dp)
                 .size(24.dp),
             resId = resId,
-            colorFilter = ColorFilter.tint(Black),
+            colorFilter = ColorFilter.tint(SeugiTheme.colors.black),
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium,
-            color = Black,
+            color = SeugiTheme.colors.black,
         )
     }
 }
@@ -521,7 +510,7 @@ private fun ChatSideBarScreen(
                         ),
                     text = "멤버",
                     style = MaterialTheme.typography.titleMedium,
-                    color = Black,
+                    color = SeugiTheme.colors.black,
                 )
             }
         },
@@ -537,7 +526,7 @@ private fun ChatSideBarScreen(
                     resId = R.drawable.ic_logout_line,
                     onClick = onClickLeft,
                     size = 28.dp,
-                    colors = IconButtonDefaults.iconButtonColors(contentColor = Gray600),
+                    colors = IconButtonDefaults.iconButtonColors(contentColor = SeugiTheme.colors.gray600),
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 SeugiIconButton(
@@ -546,14 +535,14 @@ private fun ChatSideBarScreen(
                         onClickNotification()
                     },
                     size = 28.dp,
-                    colors = IconButtonDefaults.iconButtonColors(contentColor = Gray600),
+                    colors = IconButtonDefaults.iconButtonColors(contentColor = SeugiTheme.colors.gray600),
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 SeugiIconButton(
                     resId = R.drawable.ic_setting_fill,
                     onClick = onClickSetting,
                     size = 28.dp,
-                    colors = IconButtonDefaults.iconButtonColors(contentColor = Gray600),
+                    colors = IconButtonDefaults.iconButtonColors(contentColor = SeugiTheme.colors.gray600),
                 )
             }
         },
@@ -594,7 +583,7 @@ private fun ChatDetailTextField(searchText: String, onValueChange: (String) -> U
         onValueChange = onValueChange,
         textStyle = MaterialTheme.typography.titleLarge,
         enabled = enabled,
-        cursorBrush = SolidColor(Primary500),
+        cursorBrush = SolidColor(SeugiTheme.colors.primary500),
         keyboardActions = KeyboardActions(
             onDone = {
                 onDone()
@@ -608,7 +597,7 @@ private fun ChatDetailTextField(searchText: String, onValueChange: (String) -> U
                 if (searchText.isEmpty()) {
                     Text(
                         text = placeholder,
-                        color = if (enabled) Gray500 else Gray400,
+                        color = if (enabled) SeugiTheme.colors.gray500 else SeugiTheme.colors.gray400,
                         style = MaterialTheme.typography.titleLarge,
                     )
                 }

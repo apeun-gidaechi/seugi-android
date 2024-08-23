@@ -32,9 +32,7 @@ import com.seugi.designsystem.R
 import com.seugi.designsystem.component.SeugiIconButton
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.chat.SeugiChatList
-import com.seugi.designsystem.theme.Gray400
-import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.Primary500
+import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
@@ -148,7 +146,7 @@ private fun RoomTextField(searchText: String, onValueChange: (String) -> Unit, p
         onValueChange = onValueChange,
         textStyle = MaterialTheme.typography.titleLarge,
         enabled = enabled,
-        cursorBrush = SolidColor(Primary500),
+        cursorBrush = SolidColor(SeugiTheme.colors.primary500),
         keyboardActions = KeyboardActions(
             onDone = {
                 onDone()
@@ -162,7 +160,7 @@ private fun RoomTextField(searchText: String, onValueChange: (String) -> Unit, p
                 if (searchText.isEmpty()) {
                     Text(
                         text = placeholder,
-                        color = if (enabled) Gray500 else Gray400,
+                        color = if (enabled) SeugiTheme.colors.gray500 else SeugiTheme.colors.gray400,
                         style = MaterialTheme.typography.titleLarge,
                     )
                 }

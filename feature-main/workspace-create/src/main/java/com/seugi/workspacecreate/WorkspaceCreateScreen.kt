@@ -36,8 +36,6 @@ import com.seugi.designsystem.component.SeugiRoundedCircleImage
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.Size
 import com.seugi.designsystem.component.textfield.SeugiTextField
-import com.seugi.designsystem.theme.Gray600
-import com.seugi.designsystem.theme.Red500
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.ui.CollectAsSideEffect
 import com.seugi.workspacecreate.model.WorkspaceCreateSideEffect
@@ -113,7 +111,7 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
                         SeugiIconButton(
                             resId = R.drawable.ic_add_fill,
                             onClick = { galleryLauncher.launch("image/*") },
-                            colors = IconButtonDefaults.iconButtonColors(contentColor = Gray600),
+                            colors = IconButtonDefaults.iconButtonColors(contentColor = SeugiTheme.colors.gray600),
                         )
                     }
                 }
@@ -130,7 +128,7 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
                             Text(
                                 text = " *",
                                 style = MaterialTheme.typography.titleMedium,
-                                color = Red500,
+                                color = SeugiTheme.colors.red500,
                             )
                         }
                         Spacer(modifier = Modifier.height(4.dp))
@@ -146,7 +144,7 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
                             Text(
                                 text = "이메일을 입력해 주세요",
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = Red500,
+                                color = SeugiTheme.colors.red500,
                                 modifier = Modifier.padding(top = 4.dp),
                             )
                         }

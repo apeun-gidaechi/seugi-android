@@ -23,8 +23,6 @@ import com.seugi.designsystem.component.ButtonType
 import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiTextField
-import com.seugi.designsystem.theme.Primary500
-import com.seugi.designsystem.theme.Red500
 import com.seugi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,7 +54,7 @@ internal fun OAuthSignUpScreen(popBackStack: () -> Unit, navigateToEmailSignUp: 
                         Text(
                             text = " *",
                             style = MaterialTheme.typography.titleMedium,
-                            color = Red500,
+                            color = SeugiTheme.colors.red500,
                         )
                     }
                     SeugiTextField(
@@ -70,7 +68,7 @@ internal fun OAuthSignUpScreen(popBackStack: () -> Unit, navigateToEmailSignUp: 
                         Text(
                             text = "이름을 입력해 주세요",
                             style = MaterialTheme.typography.bodyLarge,
-                            color = Red500,
+                            color = SeugiTheme.colors.red500,
                             modifier = Modifier.padding(start = 4.dp),
                         )
                     }
@@ -83,7 +81,7 @@ internal fun OAuthSignUpScreen(popBackStack: () -> Unit, navigateToEmailSignUp: 
                     Text(
                         text = "이미 계정이 있으신가요?",
                         style = MaterialTheme.typography.bodySmall,
-                        color = Primary500,
+                        color = SeugiTheme.colors.primary500,
                         modifier = Modifier.bounceClick({
                             navigateToEmailSignUp()
                         }),

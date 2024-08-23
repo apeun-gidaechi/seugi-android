@@ -26,18 +26,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiTextField
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.White
+import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.notificationcreate.model.NotificationSideEffect
 import com.seugi.ui.CollectAsSideEffect
 
 @Composable
-internal fun NotificationCreateScreen(
-    viewModel: NotificationCreateViewModel = hiltViewModel(),
-    workspaceId: String,
-    onNavigationVisibleChange: (visible: Boolean) -> Unit,
-    popBackStack: () -> Unit,
-) {
+internal fun NotificationCreateScreen(viewModel: NotificationCreateViewModel = hiltViewModel(), workspaceId: String, onNavigationVisibleChange: (visible: Boolean) -> Unit, popBackStack: () -> Unit) {
     val context = LocalContext.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -70,14 +64,14 @@ internal fun NotificationCreateScreen(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = White,
+        containerColor = SeugiTheme.colors.white,
         topBar = {
             SeugiTopBar(
                 title = {
                     Text(
                         text = "새 알림 작성",
                         style = MaterialTheme.typography.titleLarge,
-                        color = Black,
+                        color = SeugiTheme.colors.black,
                     )
                 },
                 actions = {
@@ -108,7 +102,7 @@ internal fun NotificationCreateScreen(
                                 ),
                             text = "완료",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = Black,
+                            color = SeugiTheme.colors.black,
                         )
                     }
                 },

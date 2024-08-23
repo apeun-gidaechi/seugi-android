@@ -22,19 +22,17 @@ import javax.inject.Inject
 class WorkspaceDataSourceImpl @Inject constructor(
     private val httpClient: HttpClient,
 ) : WorkspaceDataSource {
-    override suspend fun checkSchoolCode(schoolCode: String): BaseResponse<CheckWorkspaceResponse> =
-        httpClient.get("${SeugiUrl.Workspace.CHECK_WORKSPACE}/$schoolCode") {}.body()
+    override suspend fun checkSchoolCode(schoolCode: String): BaseResponse<CheckWorkspaceResponse> = httpClient.get("${SeugiUrl.Workspace.CHECK_WORKSPACE}/$schoolCode") {}.body()
 
-    override suspend fun workspaceApplication(workspaceId: String, workspaceCode: String, role: String): Response =
-        httpClient.post(SeugiUrl.Workspace.APPLICATION) {
-            setBody(
-                body = WorkspaceApplicationRequest(
-                    workspaceId = workspaceId,
-                    workspaceCode = workspaceCode,
-                    role = role,
-                ),
-            )
-        }.body()
+    override suspend fun workspaceApplication(workspaceId: String, workspaceCode: String, role: String): Response = httpClient.post(SeugiUrl.Workspace.APPLICATION) {
+        setBody(
+            body = WorkspaceApplicationRequest(
+                workspaceId = workspaceId,
+                workspaceCode = workspaceCode,
+                role = role,
+            ),
+        )
+    }.body()
 
     override suspend fun getMembers(workspaceId: String): BaseResponse<List<ProfileResponse>> = httpClient.get(SeugiUrl.Workspace.MEMBERS) {
         parameter("workspaceId", workspaceId)

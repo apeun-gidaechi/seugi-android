@@ -23,7 +23,6 @@ import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiRoundedCircleImage
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.Size
-import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.workspace.feature.joinsuccess.model.JoinSuccessSideEffect
 import kotlinx.coroutines.flow.collectLatest
@@ -90,7 +89,7 @@ fun JoinSuccessScreen(
                     Text(
                         text = "학생 ${studentCount}명 선생님 ${teacherCount}명",
                         style = MaterialTheme.typography.titleMedium,
-                        color = Gray600,
+                        color = SeugiTheme.colors.gray600,
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))

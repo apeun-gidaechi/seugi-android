@@ -23,8 +23,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.seugi.designsystem.R
-import com.seugi.designsystem.theme.Primary200
-import com.seugi.designsystem.theme.Primary300
 import com.seugi.designsystem.theme.SeugiTheme
 
 sealed class AvatarType(val size: Dp) {
@@ -51,7 +49,7 @@ fun SeugiAvatar(modifier: Modifier = Modifier, image: String? = null, type: Avat
             modifier = modifier
                 .size(type.size)
                 .background(
-                    color = Primary200,
+                    color = SeugiTheme.colors.primary200,
                     shape = CircleShape,
                 ),
             contentAlignment = Alignment.Center,
@@ -60,7 +58,7 @@ fun SeugiAvatar(modifier: Modifier = Modifier, image: String? = null, type: Avat
                 modifier = Modifier.size(type.size / 2),
                 painter = painterResource(id = R.drawable.ic_person_fill),
                 contentDescription = "",
-                colorFilter = ColorFilter.tint(Primary300),
+                colorFilter = ColorFilter.tint(SeugiTheme.colors.primary300),
             )
         }
     } else {

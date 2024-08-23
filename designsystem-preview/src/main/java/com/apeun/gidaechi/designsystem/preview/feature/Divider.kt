@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.component.DividerType
 import com.seugi.designsystem.component.SeugiDivider
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 
 @Composable
 fun Divider() {
@@ -21,7 +20,7 @@ fun Divider() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(White),
+                .background(SeugiTheme.colors.white),
         ) {
             Spacer(modifier = Modifier.height(10.dp))
             SeugiDivider(type = DividerType.WIDTH)

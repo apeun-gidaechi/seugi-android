@@ -16,13 +16,7 @@ fun NavController.navigateToNotificationEdit(id: Long, title: String, content: S
     navOptions = navOptions,
 )
 
-fun NavGraphBuilder.notificationEdit(
-    userId: Int,
-    workspaceId: String,
-    onNavigationVisibleChange: (visible: Boolean) -> Unit,
-    permission: WorkspacePermissionModel,
-    popBackStack: () -> Unit,
-) {
+fun NavGraphBuilder.notificationEdit(userId: Int, workspaceId: String, onNavigationVisibleChange: (visible: Boolean) -> Unit, permission: WorkspacePermissionModel, popBackStack: () -> Unit) {
     composable(
         route = "${NOTIFICATION_EDIT_ROUTE}/{id}/{title}/{content}/{userId}",
         arguments = listOf(

@@ -32,8 +32,6 @@ import com.seugi.designsystem.component.SeugiDialog
 import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiCodeTextField
-import com.seugi.designsystem.theme.Gray600
-import com.seugi.designsystem.theme.Red500
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.join.feature.emailverification.model.EmailVerificationSideEffect
 import com.seugi.ui.CollectAsSideEffect
@@ -41,14 +39,7 @@ import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailVerificationScreen(
-    navigateToStart: () -> Unit,
-    popBackStack: () -> Unit,
-    viewModel: EmailVerificationViewModel = hiltViewModel(),
-    name: String,
-    email: String,
-    password: String,
-) {
+fun EmailVerificationScreen(navigateToStart: () -> Unit, popBackStack: () -> Unit, viewModel: EmailVerificationViewModel = hiltViewModel(), name: String, email: String, password: String) {
     var timeLeft by remember { mutableStateOf(0) }
 
     val minutes = timeLeft / 60
@@ -141,7 +132,7 @@ fun EmailVerificationScreen(
                             Text(
                                 text = " *",
                                 style = MaterialTheme.typography.titleMedium,
-                                color = Red500,
+                                color = SeugiTheme.colors.red500,
                             )
                         }
                         SeugiCodeTextField(
@@ -182,9 +173,9 @@ fun EmailVerificationScreen(
                                 )
                             } else {
                                 Text(
-                                    text = "$formattedTime",
+                                    text = formattedTime,
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = Gray600,
+                                    color = SeugiTheme.colors.gray600,
                                 )
                             }
                         }

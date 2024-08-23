@@ -49,13 +49,7 @@ import com.seugi.designsystem.component.SeugiDivider
 import com.seugi.designsystem.component.SeugiRoundedCircleImage
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.Size
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray100
-import com.seugi.designsystem.theme.Gray400
-import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 import com.seugi.ui.CollectAsSideEffect
 import com.seugi.workspacedetail.feature.workspacedetail.model.WorkspaceDetailSideEffect
 
@@ -104,7 +98,7 @@ fun WorkspaceDetailScreen(
                                 modifier = Modifier.padding(bottom = 4.dp),
                                 text = "가입된 학교",
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = Gray600,
+                                color = SeugiTheme.colors.gray600,
                             )
                             LazyColumn {
                                 itemsIndexed(state.myWorkspace) { index, item ->
@@ -120,7 +114,7 @@ fun WorkspaceDetailScreen(
                                                 .fillMaxWidth()
                                                 .height(56.dp)
                                                 .background(
-                                                    color = Gray100,
+                                                    color = SeugiTheme.colors.gray100,
                                                     shape = RoundedCornerShape(8.dp),
                                                 ),
                                             verticalAlignment = Alignment.CenterVertically,
@@ -138,7 +132,7 @@ fun WorkspaceDetailScreen(
                                                     .size(24.dp),
                                                 painter = painterResource(id = R.drawable.ic_expand_right_line),
                                                 contentDescription = "설정 톱니바퀴",
-                                                colorFilter = ColorFilter.tint(Gray500),
+                                                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
                                                 contentScale = ContentScale.Crop,
                                             )
                                         }
@@ -157,7 +151,7 @@ fun WorkspaceDetailScreen(
                                     modifier = Modifier.padding(bottom = 4.dp),
                                     text = "가입 대기 중",
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = Gray600,
+                                    color = SeugiTheme.colors.gray600,
                                 )
 
                                 LazyColumn {
@@ -169,7 +163,7 @@ fun WorkspaceDetailScreen(
                                                     .fillMaxWidth()
                                                     .height(56.dp)
                                                     .background(
-                                                        color = Gray100,
+                                                        color = SeugiTheme.colors.gray100,
                                                         shape = RoundedCornerShape(8.dp),
                                                     ),
                                                 verticalAlignment = Alignment.CenterVertically,
@@ -186,7 +180,7 @@ fun WorkspaceDetailScreen(
                                                         .size(24.dp),
                                                     painter = painterResource(id = R.drawable.ic_expand_right_line),
                                                     contentDescription = "설정 톱니바퀴",
-                                                    colorFilter = ColorFilter.tint(Gray500),
+                                                    colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
                                                     contentScale = ContentScale.Crop,
                                                 )
                                             }
@@ -214,7 +208,7 @@ fun WorkspaceDetailScreen(
                                         },
                                     text = "새 학교 만들기",
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = Gray600,
+                                    color = SeugiTheme.colors.gray600,
                                 )
                                 Text(
                                     modifier = Modifier
@@ -227,7 +221,7 @@ fun WorkspaceDetailScreen(
                                         },
                                     text = "기존 학교 가입",
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = Black,
+                                    color = SeugiTheme.colors.black,
                                 )
                             }
                         }
@@ -244,7 +238,7 @@ fun WorkspaceDetailScreen(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .size(100.dp)
-                        .background(White, shape = RoundedCornerShape(8.dp)),
+                        .background(SeugiTheme.colors.white, shape = RoundedCornerShape(8.dp)),
                 ) {
                     CircularProgressIndicator()
                 }
@@ -342,7 +336,7 @@ fun WorkspaceDetailScreen(
                             .size(24.dp),
                         painter = painterResource(id = R.drawable.ic_expand_right_line),
                         contentDescription = "설정 톱니바퀴",
-                        colorFilter = ColorFilter.tint(Gray400),
+                        colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
                         contentScale = ContentScale.Crop,
                     )
                 }
@@ -364,7 +358,7 @@ fun WorkspaceDetailScreen(
                             .size(24.dp),
                         painter = painterResource(id = R.drawable.ic_expand_right_line),
                         contentDescription = "설정 톱니바퀴",
-                        colorFilter = ColorFilter.tint(Gray400),
+                        colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
                         contentScale = ContentScale.Crop,
                     )
                 }
@@ -406,7 +400,7 @@ fun WorkspaceDetailScreen(
                             .size(24.dp),
                         painter = painterResource(id = R.drawable.ic_expand_right_line),
                         contentDescription = "설정 톱니바퀴",
-                        colorFilter = ColorFilter.tint(Gray400),
+                        colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
                         contentScale = ContentScale.Crop,
                     )
                 }
@@ -428,7 +422,7 @@ fun WorkspaceDetailScreen(
                             .size(24.dp),
                         painter = painterResource(id = R.drawable.ic_expand_right_line),
                         contentDescription = "설정 톱니바퀴",
-                        colorFilter = ColorFilter.tint(Gray400),
+                        colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
                         contentScale = ContentScale.Crop,
                     )
                 }
