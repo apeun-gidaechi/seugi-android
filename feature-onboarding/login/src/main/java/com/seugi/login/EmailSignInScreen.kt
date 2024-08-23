@@ -109,7 +109,7 @@ internal fun EmailSignInScreen(navigateToEmailSignUp: () -> Unit, popBackStack: 
                             text = "이메일을 입력해 주세요",
                             style = SeugiTheme.typography.body1,
                             color = SeugiTheme.colors.red500,
-                            modifier = Modifier.padding(start = 4.dp),
+                            modifier = Modifier.padding(top = 4.dp),
                         )
                     }
                 }
@@ -142,7 +142,7 @@ internal fun EmailSignInScreen(navigateToEmailSignUp: () -> Unit, popBackStack: 
                             text = "비밀번호을 입력해 주세요",
                             style = SeugiTheme.typography.body1,
                             color = SeugiTheme.colors.red500,
-                            modifier = Modifier.padding(start = 4.dp),
+                            modifier = Modifier.padding(top = 4.dp),
                         )
                     }
                 }

@@ -53,7 +53,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                     Spacer(modifier = Modifier.height(6.dp))
 
                     Row(
-                        modifier = Modifier.padding(start = 4.dp),
+                        modifier = Modifier.padding(top = 4.dp),
                     ) {
                         Text(text = "이름", style = SeugiTheme.typography.subtitle2)
                         Text(
@@ -74,7 +74,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                             text = "이름을 입력해 주세요",
                             style = SeugiTheme.typography.body1,
                             color = SeugiTheme.colors.red500,
-                            modifier = Modifier.padding(start = 4.dp),
+                            modifier = Modifier.padding(top = 4.dp),
                         )
                     }
                 }
@@ -103,7 +103,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                             text = if (error == "blank_email") "이메일을 입력해주세요" else if (error == "email_fomat_is_not")"이메일 형식을 맞춰주세요" else "",
                             style = SeugiTheme.typography.body1,
                             color = SeugiTheme.colors.red500,
-                            modifier = Modifier.padding(start = 4.dp),
+                            modifier = Modifier.padding(top = 4.dp),
                         )
                     }
                 }
@@ -131,7 +131,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                             text = "비밀번호를 입력해 주세요",
                             style = SeugiTheme.typography.body1,
                             color = SeugiTheme.colors.red500,
-                            modifier = Modifier.padding(start = 4.dp),
+                            modifier = Modifier.padding(top = 4.dp),
                         )
                     }
                 }
@@ -159,7 +159,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                             text = "비밀번호가 다릅니다",
                             style = SeugiTheme.typography.body1,
                             color = SeugiTheme.colors.red500,
-                            modifier = Modifier.padding(start = 4.dp),
+                            modifier = Modifier.padding(top = 4.dp),
                         )
                     }
                 }
