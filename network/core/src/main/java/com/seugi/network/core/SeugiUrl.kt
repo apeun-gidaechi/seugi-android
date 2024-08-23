@@ -64,4 +64,8 @@ object SeugiUrl {
     object File {
         const val FILE_UPLOAD = "$FILE/upload"
     }
+
+    object Meal {
+        const val ROOT = "${BASE_URL}/meal"
+    }
 }

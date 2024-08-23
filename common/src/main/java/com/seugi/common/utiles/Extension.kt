@@ -1,5 +1,6 @@
 package com.seugi.common.utiles
 
+import kotlinx.datetime.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -33,4 +34,13 @@ fun LocalDateTime.toTimeString(): String {
 
     val result = "$formattedDate $dayOfWeek"
     return result
+}
+
+fun LocalDate.toNotSpaceString(): String =
+    "${this.year}" +
+            monthNumber.toString().padStart(2, '0') +
+            dayOfMonth.toString().padStart(2, '0')
+
+fun String.toKotlinLocalDate(): LocalDate {
+    return LocalDate(substring(0, 4).toInt(), substring(4, 6).toInt(), substring(6).toInt() )
 }
