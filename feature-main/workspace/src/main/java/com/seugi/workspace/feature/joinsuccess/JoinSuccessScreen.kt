@@ -62,7 +62,7 @@ fun JoinSuccessScreen(
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 SeugiTopBar(
-                    title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
+                    title = { Text(text = "학교 가입", style = SeugiTheme.typography.subtitle1) },
                     onNavigationIconClick = popBackStack,
                 )
             },
@@ -85,10 +85,10 @@ fun JoinSuccessScreen(
                         onClick = {},
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = workspaceName, style = MaterialTheme.typography.titleLarge)
+                    Text(text = workspaceName, style = SeugiTheme.typography.subtitle1)
                     Text(
                         text = "학생 ${studentCount}명 선생님 ${teacherCount}명",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = SeugiTheme.typography.subtitle2,
                         color = SeugiTheme.colors.gray600,
                     )
                 }

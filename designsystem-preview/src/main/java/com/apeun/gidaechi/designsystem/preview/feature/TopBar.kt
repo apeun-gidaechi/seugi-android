@@ -24,7 +24,7 @@ fun TopBar() {
         Box(modifier = Modifier.fillMaxSize()) {
             SeugiTopBar(
                 title = {
-                    Text(text = "로그인", style = MaterialTheme.typography.titleLarge)
+                    Text(text = "로그인", style = SeugiTheme.typography.subtitle1)
                 },
                 onNavigationIconClick = {
                 },

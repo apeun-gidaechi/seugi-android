@@ -86,7 +86,7 @@ fun SeugiChatTextField(modifier: Modifier = Modifier, value: String, placeholder
                 BasicTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = value,
-                    textStyle = MaterialTheme.typography.titleMedium,
+                    textStyle = SeugiTheme.typography.subtitle2,
                     onValueChange = onValueChange,
                     decorationBox = { innerTextField ->
                         Box {
@@ -94,7 +94,7 @@ fun SeugiChatTextField(modifier: Modifier = Modifier, value: String, placeholder
                                 Text(
                                     text = placeholder,
                                     color = SeugiTheme.colors.gray500,
-                                    style = MaterialTheme.typography.titleMedium,
+                                    style = SeugiTheme.typography.subtitle2,
                                 )
                             }
                             innerTextField()

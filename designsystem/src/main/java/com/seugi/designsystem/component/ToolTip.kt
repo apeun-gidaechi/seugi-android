@@ -74,7 +74,7 @@ fun SeugiToolTip(text: String, type: ToolTipType) {
                 ),
                 text = text,
                 color = SeugiTheme.colors.white,
-                style = MaterialTheme.typography.bodyLarge,
+                style = SeugiTheme.typography.body1,
             )
         }
     }

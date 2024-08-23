@@ -65,14 +65,14 @@ fun SeugiChatList(
                     ) {
                         Text(
                             text = userName,
-                            style = MaterialTheme.typography.titleMedium,
+                            style = SeugiTheme.typography.subtitle2,
                             color = SeugiTheme.colors.black,
                         )
                         if (memberCount != null) {
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
                                 text = memberCount.toString(),
-                                style = MaterialTheme.typography.bodyMedium,
+                                style = SeugiTheme.typography.body2,
                                 color = SeugiTheme.colors.gray500,
                             )
                         }
@@ -82,7 +82,7 @@ fun SeugiChatList(
                         text = message,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = SeugiTheme.typography.body2,
                         color = SeugiTheme.colors.black,
                     )
                 }
@@ -93,7 +93,7 @@ fun SeugiChatList(
             ) {
                 Text(
                     text = createdAt,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = SeugiTheme.typography.body2,
                     color = SeugiTheme.colors.gray500,
                 )
                 if (count != null && count != 0) {

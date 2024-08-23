@@ -70,7 +70,7 @@ internal fun NotificationCreateScreen(viewModel: NotificationCreateViewModel = h
                 title = {
                     Text(
                         text = "새 알림 작성",
-                        style = MaterialTheme.typography.titleLarge,
+                        style = SeugiTheme.typography.subtitle1,
                         color = SeugiTheme.colors.black,
                     )
                 },
@@ -101,7 +101,7 @@ internal fun NotificationCreateScreen(viewModel: NotificationCreateViewModel = h
                                     horizontal = 12.dp,
                                 ),
                             text = "완료",
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = SeugiTheme.typography.body2,
                             color = SeugiTheme.colors.black,
                         )
                     }

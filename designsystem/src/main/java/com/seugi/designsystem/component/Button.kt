@@ -167,7 +167,7 @@ fun SeugiFullWidthButton(
             } else {
                 Text(
                     text = text,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = SeugiTheme.typography.subtitle2,
                 )
             }
         }
@@ -275,7 +275,7 @@ fun SeugiButton(
                         .align(Alignment.Center)
                         .alpha(if (isLoading) 0f else 1f),
                     text = text,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = SeugiTheme.typography.body2,
                 )
             }
         }

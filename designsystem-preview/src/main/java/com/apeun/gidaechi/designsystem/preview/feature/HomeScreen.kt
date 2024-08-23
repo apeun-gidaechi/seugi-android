@@ -171,7 +171,7 @@ private fun HomeButton(text: String, onClick: () -> Unit) {
         ) {
             Text(
                 text = text,
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
                 color = SeugiTheme.colors.black,
             )
         }

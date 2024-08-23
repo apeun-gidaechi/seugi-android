@@ -59,10 +59,10 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
             Column(
                 modifier = Modifier.padding(start = 24.dp),
             ) {
-                Text(text = "스기", style = MaterialTheme.typography.displayLarge, color = SeugiTheme.colors.white)
+                Text(text = "스기", style = SeugiTheme.typography.display1, color = SeugiTheme.colors.white)
                 Text(
                     text = "학생, 선생님 모두 함께하는\n스마트 스쿨 플랫폼",
-                    style = MaterialTheme.typography.titleMedium,
+                    style = SeugiTheme.typography.subtitle2,
                     color = SeugiTheme.colors.white,
                 )
             }

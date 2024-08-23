@@ -97,7 +97,7 @@ fun WorkspaceDetailScreen(
                             Text(
                                 modifier = Modifier.padding(bottom = 4.dp),
                                 text = "가입된 학교",
-                                style = MaterialTheme.typography.bodyLarge,
+                                style = SeugiTheme.typography.body1,
                                 color = SeugiTheme.colors.gray600,
                             )
                             LazyColumn {
@@ -123,7 +123,7 @@ fun WorkspaceDetailScreen(
                                                 modifier = Modifier.padding(start = 16.dp),
                                                 // null일 수가 없어서 넣었습니다.
                                                 text = item.workspaceName,
-                                                style = MaterialTheme.typography.titleMedium,
+                                                style = SeugiTheme.typography.subtitle2,
                                             )
                                             Spacer(modifier = Modifier.weight(1f))
                                             Image(
@@ -150,7 +150,7 @@ fun WorkspaceDetailScreen(
                                 Text(
                                     modifier = Modifier.padding(bottom = 4.dp),
                                     text = "가입 대기 중",
-                                    style = MaterialTheme.typography.bodyLarge,
+                                    style = SeugiTheme.typography.body1,
                                     color = SeugiTheme.colors.gray600,
                                 )
 
@@ -171,7 +171,7 @@ fun WorkspaceDetailScreen(
                                                 Text(
                                                     modifier = Modifier.padding(start = 16.dp),
                                                     text = item.workspaceName,
-                                                    style = MaterialTheme.typography.titleMedium,
+                                                    style = SeugiTheme.typography.subtitle2,
                                                 )
                                                 Spacer(modifier = Modifier.weight(1f))
                                                 Image(
@@ -207,7 +207,7 @@ fun WorkspaceDetailScreen(
                                             navigateToCreateWorkspace()
                                         },
                                     text = "새 학교 만들기",
-                                    style = MaterialTheme.typography.bodyMedium,
+                                    style = SeugiTheme.typography.body2,
                                     color = SeugiTheme.colors.gray600,
                                 )
                                 Text(
@@ -220,7 +220,7 @@ fun WorkspaceDetailScreen(
                                             navigateToJoinWorkspace()
                                         },
                                     text = "기존 학교 가입",
-                                    style = MaterialTheme.typography.bodyMedium,
+                                    style = SeugiTheme.typography.body2,
                                     color = SeugiTheme.colors.black,
                                 )
                             }
@@ -251,7 +251,7 @@ fun WorkspaceDetailScreen(
                     title = {
                         Text(
                             text = "내 학교",
-                            style = MaterialTheme.typography.titleLarge,
+                            style = SeugiTheme.typography.subtitle1,
                         )
                     },
                     onNavigationIconClick = {
@@ -288,7 +288,7 @@ fun WorkspaceDetailScreen(
                             modifier = Modifier
                                 .padding(start = 4.dp),
                             text = state.nowWorkspace.workspaceName,
-                            style = MaterialTheme.typography.bodyLarge,
+                            style = SeugiTheme.typography.body1,
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         SeugiButton(
@@ -326,7 +326,7 @@ fun WorkspaceDetailScreen(
                 ) {
                     Text(
                         text = "일반",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = SeugiTheme.typography.subtitle2,
                         modifier = Modifier.padding(start = 20.dp),
                     )
                     Spacer(modifier = Modifier.weight(1f))
@@ -348,7 +348,7 @@ fun WorkspaceDetailScreen(
                 ) {
                     Text(
                         text = "알림 설정",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = SeugiTheme.typography.subtitle2,
                         modifier = Modifier.padding(start = 20.dp),
                     )
                     Spacer(modifier = Modifier.weight(1f))
@@ -390,7 +390,7 @@ fun WorkspaceDetailScreen(
                 ) {
                     Text(
                         text = "멤버",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = SeugiTheme.typography.subtitle2,
                         modifier = Modifier.padding(start = 20.dp),
                     )
                     Spacer(modifier = Modifier.weight(1f))
@@ -412,7 +412,7 @@ fun WorkspaceDetailScreen(
                 ) {
                     Text(
                         text = "멤버 초대",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = SeugiTheme.typography.subtitle2,
                         modifier = Modifier.padding(start = 20.dp),
                     )
                     Spacer(modifier = Modifier.weight(1f))

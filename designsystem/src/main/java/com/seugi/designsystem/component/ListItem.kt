@@ -73,7 +73,7 @@ fun SeugiListItem(modifier: Modifier = Modifier, type: ListItemType = ListItemTy
             Text(
                 text = text,
                 color = SeugiTheme.colors.black,
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
             )
             Spacer(modifier = Modifier.weight(1f))
             when (type) {
@@ -87,7 +87,7 @@ fun SeugiListItem(modifier: Modifier = Modifier, type: ListItemType = ListItemTy
                     Text(
                         text = type.description,
                         color = SeugiTheme.colors.gray500,
-                        style = MaterialTheme.typography.titleMedium,
+                        style = SeugiTheme.typography.subtitle2,
                     )
                 }
                 is ListItemType.Icon -> {

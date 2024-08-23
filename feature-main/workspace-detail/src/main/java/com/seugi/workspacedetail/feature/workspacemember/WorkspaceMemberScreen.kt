@@ -68,7 +68,7 @@ fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(),
                 SeugiTopBar(
 
                     title = {
-                        Text(text = "멤버", style = MaterialTheme.typography.titleLarge)
+                        Text(text = "멤버", style = SeugiTheme.typography.subtitle1)
                     },
                     onNavigationIconClick = {
                         popBackStack()

@@ -50,7 +50,7 @@ fun SeugiBadge(modifier: Modifier = Modifier, count: Int? = null) {
                 ),
                 text = if (count > 300) "300+" else count.toString(),
                 color = SeugiTheme.colors.white,
-                style = MaterialTheme.typography.labelLarge,
+                style = SeugiTheme.typography.caption1,
             )
         }
     }

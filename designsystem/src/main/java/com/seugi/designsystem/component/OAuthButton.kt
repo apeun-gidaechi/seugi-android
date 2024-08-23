@@ -76,7 +76,7 @@ fun SeugiOAuthButton(@DrawableRes image: Int, text: String, onClick: () -> Unit,
             Spacer(modifier = Modifier.padding(start = 10.dp))
             Text(
                 text = text,
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
             )
         }
     }

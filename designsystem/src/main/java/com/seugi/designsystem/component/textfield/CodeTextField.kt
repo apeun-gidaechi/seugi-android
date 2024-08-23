@@ -68,7 +68,7 @@ fun SeugiCodeTextField(
     onValueChange: (String) -> Unit,
     isError: Boolean = false,
     enabled: Boolean = true,
-    textStyle: TextStyle = MaterialTheme.typography.titleMedium,
+    textStyle: TextStyle = SeugiTheme.typography.subtitle2,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: TextFieldColors = TextFieldDefaults.colors(
         focusedTextColor = SeugiTheme.colors.black,
@@ -161,7 +161,7 @@ fun SeugiCodeTextField(
     onValueChange: (TextFieldValue) -> Unit,
     isError: Boolean = false,
     enabled: Boolean = true,
-    textStyle: TextStyle = MaterialTheme.typography.titleMedium,
+    textStyle: TextStyle = SeugiTheme.typography.subtitle2,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: TextFieldColors = TextFieldDefaults.colors(
         focusedTextColor = SeugiTheme.colors.black,

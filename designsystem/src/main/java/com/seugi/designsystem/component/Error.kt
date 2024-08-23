@@ -33,7 +33,7 @@ fun SeugiError(modifier: Modifier = Modifier, @DrawableRes resId: Int, text: Str
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = text,
-            style = MaterialTheme.typography.titleMedium,
+            style = SeugiTheme.typography.subtitle2,
             color = SeugiTheme.colors.black,
         )
     }
@@ -54,7 +54,7 @@ fun SeugiError(modifier: Modifier, model: String, text: String) {
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = text,
-            style = MaterialTheme.typography.titleMedium,
+            style = SeugiTheme.typography.subtitle2,
             color = SeugiTheme.colors.black,
         )
     }

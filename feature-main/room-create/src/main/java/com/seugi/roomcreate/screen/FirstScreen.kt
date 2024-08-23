@@ -70,7 +70,7 @@ internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) 
                 title = {
                     Text(
                         text = "멤버 선택",
-                        style = MaterialTheme.typography.titleLarge,
+                        style = SeugiTheme.typography.subtitle1,
                         color = SeugiTheme.colors.black,
                     )
                 },
@@ -90,7 +90,7 @@ internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) 
                                     vertical = 9.dp,
                                 ),
                             text = "완료",
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = SeugiTheme.typography.body2,
                             color = SeugiTheme.colors.black,
                         )
                     }
@@ -175,7 +175,7 @@ internal fun SelectMemberCard(name: String, onClick: () -> Unit) {
         ) {
             Text(
                 text = name,
-                style = MaterialTheme.typography.bodyMedium,
+                style = SeugiTheme.typography.body2,
                 color = SeugiTheme.colors.gray600,
             )
             Spacer(modifier = Modifier.width(4.dp))

@@ -59,7 +59,7 @@ fun SeugiMemberList(userName: String, userProfile: String?, isCrown: Boolean = f
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = userName,
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
                 color = SeugiTheme.colors.black,
             )
             if (isCrown) {
@@ -112,7 +112,7 @@ fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = userName,
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
                 color = SeugiTheme.colors.black,
             )
             if (isCrown) {
@@ -164,7 +164,7 @@ fun SeugiMemberList(text: String, onClick: () -> Unit) {
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = text,
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
                 color = SeugiTheme.colors.primary400,
             )
         }
@@ -193,7 +193,7 @@ fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = userName,
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
                 color = SeugiTheme.colors.black,
             )
             if (isCrown) {

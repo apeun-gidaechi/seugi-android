@@ -241,7 +241,7 @@ internal fun ChatDetailScreen(
                         } else {
                             Text(
                                 text = state.roomInfo?.roomName ?: "",
-                                style = MaterialTheme.typography.titleLarge,
+                                style = SeugiTheme.typography.subtitle1,
                                 color = SeugiTheme.colors.black,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -480,7 +480,7 @@ private fun ChatUploadDialogItem(@DrawableRes resId: Int, title: String, onClick
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = title,
-            style = MaterialTheme.typography.titleMedium,
+            style = SeugiTheme.typography.subtitle2,
             color = SeugiTheme.colors.black,
         )
     }
@@ -509,7 +509,7 @@ private fun ChatSideBarScreen(
                             bottom = (9.5).dp,
                         ),
                     text = "멤버",
-                    style = MaterialTheme.typography.titleMedium,
+                    style = SeugiTheme.typography.subtitle2,
                     color = SeugiTheme.colors.black,
                 )
             }
@@ -581,7 +581,7 @@ private fun ChatDetailTextField(searchText: String, onValueChange: (String) -> U
             .padding(end = 16.dp),
         value = searchText,
         onValueChange = onValueChange,
-        textStyle = MaterialTheme.typography.titleLarge,
+        textStyle = SeugiTheme.typography.subtitle1,
         enabled = enabled,
         cursorBrush = SolidColor(SeugiTheme.colors.primary500),
         keyboardActions = KeyboardActions(
@@ -598,7 +598,7 @@ private fun ChatDetailTextField(searchText: String, onValueChange: (String) -> U
                     Text(
                         text = placeholder,
                         color = if (enabled) SeugiTheme.colors.gray500 else SeugiTheme.colors.gray400,
-                        style = MaterialTheme.typography.titleLarge,
+                        style = SeugiTheme.typography.subtitle1,
                     )
                 }
                 innerTextField()

@@ -99,7 +99,7 @@ internal fun ChatSeugiScreen(
                 title = {
                     Text(
                         text = "캣스기",
-                        style = MaterialTheme.typography.titleLarge,
+                        style = SeugiTheme.typography.subtitle1,
                         color = SeugiTheme.colors.black,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -281,7 +281,7 @@ internal fun ChatSeugiExampleText(text: String, onClick: () -> Unit) {
                 ),
                 text = text,
                 color = SeugiTheme.colors.gray700,
-                style = MaterialTheme.typography.bodyLarge,
+                style = SeugiTheme.typography.body1,
             )
         }
     }

@@ -171,7 +171,7 @@ internal fun NotificationScreen(
                         Text(
                             modifier = Modifier.align(Alignment.CenterHorizontally),
                             text = "알림",
-                            style = MaterialTheme.typography.titleLarge,
+                            style = SeugiTheme.typography.subtitle1,
                             color = SeugiTheme.colors.black,
                         )
                     },
@@ -276,7 +276,7 @@ fun NotificationNotFound() {
             Text(
                 text = "알림이 없어요",
                 color = SeugiTheme.colors.black,
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
             )
         }
     }
@@ -306,7 +306,7 @@ fun NotificationPopupDialog(isEditPermission: Boolean, isDeletePermission: Boole
                                 .padding(vertical = 8.dp),
                             text = "알림 수정",
                             color = SeugiTheme.colors.black,
-                            style = MaterialTheme.typography.titleMedium,
+                            style = SeugiTheme.typography.subtitle2,
                         )
                     }
                     Spacer(modifier = Modifier.height(8.dp))
@@ -322,7 +322,7 @@ fun NotificationPopupDialog(isEditPermission: Boolean, isDeletePermission: Boole
                             .padding(vertical = 8.dp),
                         text = "알림 신고",
                         color = SeugiTheme.colors.black,
-                        style = MaterialTheme.typography.titleMedium,
+                        style = SeugiTheme.typography.subtitle2,
                     )
                 }
                 if (isDeletePermission) {
@@ -338,7 +338,7 @@ fun NotificationPopupDialog(isEditPermission: Boolean, isDeletePermission: Boole
                                 .padding(vertical = 8.dp),
                             text = "알림 삭제",
                             color = SeugiTheme.colors.red500,
-                            style = MaterialTheme.typography.titleMedium,
+                            style = SeugiTheme.typography.subtitle2,
                         )
                     }
                 }
@@ -389,7 +389,7 @@ internal fun NotificationCard(
                     Text(
                         text = "$author · $createdAt",
                         color = SeugiTheme.colors.gray600,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = SeugiTheme.typography.body2,
                         maxLines = 1,
                     )
                     Spacer(modifier = Modifier.weight(1f))
@@ -408,12 +408,12 @@ internal fun NotificationCard(
                 Text(
                     text = title,
                     color = SeugiTheme.colors.black,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = SeugiTheme.typography.subtitle2,
                 )
                 Text(
                     text = description,
                     color = SeugiTheme.colors.black,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = SeugiTheme.typography.body2,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 FlowRow(
@@ -461,13 +461,13 @@ private fun NotificationEmoji(modifier: Modifier = Modifier, emoji: String, coun
                 ),
                 text = emoji,
                 color = SeugiTheme.colors.black,
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = count.toString(),
                 color = SeugiTheme.colors.gray600,
-                style = MaterialTheme.typography.bodyLarge,
+                style = SeugiTheme.typography.body1,
             )
             Spacer(modifier = Modifier.width(8.dp))
         }

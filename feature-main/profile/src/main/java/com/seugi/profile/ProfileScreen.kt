@@ -95,7 +95,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
                 ) {
                     Text(
                         text = "${editTextString.first} 수정",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = SeugiTheme.typography.subtitle2,
                         color = SeugiTheme.colors.black,
                     )
                     Spacer(modifier = Modifier.height(4.dp))
@@ -140,7 +140,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
             title = {
                 Text(
                     text = "내 프로필",
-                    style = MaterialTheme.typography.titleLarge,
+                    style = SeugiTheme.typography.subtitle1,
                     color = SeugiTheme.colors.black,
                 )
             },
@@ -154,7 +154,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
             Spacer(modifier = Modifier.width(10.dp))
             Text(
                 text = state.profileInfo.member.name,
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
                 color = SeugiTheme.colors.black,
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -260,7 +260,7 @@ internal fun ProfileCard(title: String, content: String, onClickEdit: () -> Unit
             Spacer(modifier = Modifier.width(20.dp))
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyLarge,
+                style = SeugiTheme.typography.body1,
                 color = SeugiTheme.colors.gray500,
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -285,7 +285,7 @@ internal fun ProfileCard(title: String, content: String, onClickEdit: () -> Unit
                     .align(Alignment.CenterStart)
                     .padding(start = 20.dp),
                 text = content,
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
                 color = SeugiTheme.colors.black,
             )
         }

@@ -85,7 +85,7 @@ fun SeugiDropDown(
             Text(
                 text = selectedItem,
                 modifier = Modifier.align(Alignment.CenterStart),
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
                 color = when {
                     type == DropDownType.Disabled -> SeugiTheme.colors.gray200
                     selectedItem == title -> SeugiTheme.colors.gray500
@@ -123,7 +123,7 @@ fun SeugiDropDown(
                         text = {
                             Text(
                                 text = label,
-                                style = MaterialTheme.typography.titleMedium,
+                                style = SeugiTheme.typography.subtitle2,
                                 color = dropDownColor.textColor,
                             )
                         },
@@ -164,7 +164,7 @@ fun SeugiSmallDropDown(
                 text = selectedItem,
                 modifier = Modifier
                     .wrapContentWidth(),
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
                 color = SeugiTheme.colors.black,
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -194,7 +194,7 @@ fun SeugiSmallDropDown(
                     text = {
                         Text(
                             text = label,
-                            style = MaterialTheme.typography.titleMedium,
+                            style = SeugiTheme.typography.subtitle2,
                         )
                     },
                     modifier = Modifier

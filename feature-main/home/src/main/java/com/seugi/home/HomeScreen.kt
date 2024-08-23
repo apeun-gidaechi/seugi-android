@@ -137,7 +137,7 @@ internal fun HomeScreen(
                 title = {
                     Text(
                         text = "홈",
-                        style = MaterialTheme.typography.titleLarge,
+                        style = SeugiTheme.typography.subtitle1,
                         color = SeugiTheme.colors.black,
                     )
                 },
@@ -159,7 +159,7 @@ internal fun HomeScreen(
                             Text(
                                 modifier = Modifier.padding(vertical = (6.5).dp),
                                 text = schoolState.data,
-                                style = MaterialTheme.typography.titleMedium,
+                                style = SeugiTheme.typography.subtitle2,
                                 color = SeugiTheme.colors.gray600,
                             )
                             Spacer(modifier = Modifier.weight(1f))
@@ -181,7 +181,7 @@ internal fun HomeScreen(
                             Text(
                                 modifier = Modifier.align(Alignment.CenterHorizontally),
                                 text = "내 학교를 등록해주세요",
-                                style = MaterialTheme.typography.bodyMedium,
+                                style = SeugiTheme.typography.body2,
                                 color = SeugiTheme.colors.gray600,
                             )
                             Spacer(modifier = Modifier.height(12.dp))
@@ -313,7 +313,7 @@ internal fun HomeScreen(
                                                 1 -> mealState.data.second.first
                                                 else -> mealState.data.third.first
                                             },
-                                            style = MaterialTheme.typography.bodyMedium,
+                                            style = SeugiTheme.typography.body2,
                                             color = SeugiTheme.colors.gray700,
                                         )
                                         Spacer(modifier = Modifier.height(8.dp))
@@ -335,7 +335,7 @@ internal fun HomeScreen(
                                                     1 -> mealState.data.second.second
                                                     else -> mealState.data.third.second
                                                 },
-                                                style = MaterialTheme.typography.labelLarge,
+                                                style = SeugiTheme.typography.caption1,
                                                 color = SeugiTheme.colors.white,
                                             )
                                         }
@@ -366,7 +366,7 @@ internal fun HomeScreen(
                                                     1 -> "점심"
                                                     else -> "저녁"
                                                 },
-                                                style = MaterialTheme.typography.labelLarge,
+                                                style = SeugiTheme.typography.caption1,
                                                 color = SeugiTheme.colors.gray500,
                                             )
                                         }
@@ -447,7 +447,7 @@ internal fun HomeScreen(
                                 Text(
                                     modifier = Modifier.padding(vertical = (15.5).dp),
                                     text = "2학년 4반에 아무나 한명 뽑아줘...",
-                                    style = MaterialTheme.typography.titleMedium,
+                                    style = SeugiTheme.typography.subtitle2,
                                     color = SeugiTheme.colors.gray500,
                                 )
                                 Spacer(modifier = Modifier.weight(1f))
@@ -462,7 +462,7 @@ internal fun HomeScreen(
                             Spacer(modifier = Modifier.height(16.dp))
                             Text(
                                 text = "지난주",
-                                style = MaterialTheme.typography.bodyMedium,
+                                style = SeugiTheme.typography.body2,
                                 color = SeugiTheme.colors.gray600,
                             )
                             Spacer(modifier = Modifier.height(4.dp))
@@ -483,13 +483,13 @@ internal fun HomeScreen(
                                     Text(
                                         modifier = Modifier.padding(vertical = (12).dp),
                                         text = "급식에 복어가 나오는 날이 언제..",
-                                        style = MaterialTheme.typography.bodyLarge,
+                                        style = SeugiTheme.typography.body1,
                                         color = SeugiTheme.colors.black,
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
                                     Text(
                                         text = "6월 21일",
-                                        style = MaterialTheme.typography.bodyMedium,
+                                        style = SeugiTheme.typography.body2,
                                         color = SeugiTheme.colors.gray600,
                                     )
                                     Spacer(modifier = Modifier.width(12.dp))
@@ -508,13 +508,13 @@ internal fun HomeScreen(
                                     Text(
                                         modifier = Modifier.padding(vertical = (12).dp),
                                         text = "우리 학교 대회 담당하는 분이 누구...",
-                                        style = MaterialTheme.typography.bodyLarge,
+                                        style = SeugiTheme.typography.body1,
                                         color = SeugiTheme.colors.black,
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
                                     Text(
                                         text = "6월 21일",
-                                        style = MaterialTheme.typography.bodyMedium,
+                                        style = SeugiTheme.typography.body2,
                                         color = SeugiTheme.colors.gray600,
                                     )
                                     Spacer(modifier = Modifier.width(12.dp))
@@ -638,7 +638,7 @@ internal fun HomeCard(modifier: Modifier = Modifier, text: String, image: Painte
             Text(
                 modifier = Modifier.align(Alignment.CenterVertically),
                 text = text,
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
                 color = SeugiTheme.colors.black,
             )
         }
@@ -705,7 +705,7 @@ internal fun HomeCard(
             Text(
                 modifier = Modifier.align(Alignment.CenterVertically),
                 text = text,
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
                 color = SeugiTheme.colors.black,
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -744,7 +744,7 @@ internal fun HomeSubjectCard(modifier: Modifier, index: Int, selectIndex: Int, s
                     .padding(vertical = 8.dp)
                     .align(Alignment.Center),
                 text = (index + 1).toString(),
-                style = MaterialTheme.typography.bodyLarge,
+                style = SeugiTheme.typography.body1,
                 color = if (isNowSelected) SeugiTheme.colors.primary500 else SeugiTheme.colors.primary300,
             )
         }
@@ -761,7 +761,7 @@ internal fun HomeSubjectCard(modifier: Modifier, index: Int, selectIndex: Int, s
                     )
                     .align(Alignment.Center),
                 text = subject,
-                style = MaterialTheme.typography.bodyLarge,
+                style = SeugiTheme.typography.body1,
                 color = if (isNowSelected) SeugiTheme.colors.white else if (index > selectIndex) SeugiTheme.colors.primary300 else SeugiTheme.colors.primary200,
             )
         }
@@ -775,19 +775,19 @@ internal fun HomeCalendarCard(modifier: Modifier = Modifier, date: String, conte
     ) {
         Text(
             text = date,
-            style = MaterialTheme.typography.bodyLarge,
+            style = SeugiTheme.typography.body1,
             color = SeugiTheme.colors.primary500,
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(
             text = content,
-            style = MaterialTheme.typography.bodyMedium,
+            style = SeugiTheme.typography.body2,
             color = SeugiTheme.colors.black,
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = dDay,
-            style = MaterialTheme.typography.bodyMedium,
+            style = SeugiTheme.typography.body2,
             color = SeugiTheme.colors.gray600,
         )
     }
@@ -803,7 +803,7 @@ internal fun HomeNotFoundText(text: String) {
                 .align(Alignment.CenterHorizontally)
                 .padding(vertical = 12.dp),
             text = text,
-            style = MaterialTheme.typography.bodyMedium,
+            style = SeugiTheme.typography.body2,
             color = SeugiTheme.colors.gray600,
         )
     }
@@ -830,7 +830,7 @@ internal fun HomeSchoolSelectCard(text: String, isSelect: Boolean, onClick: () -
                 Text(
                     text = text,
                     color = SeugiTheme.colors.black,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = SeugiTheme.typography.subtitle2,
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 if (isSelect) {

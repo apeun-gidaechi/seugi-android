@@ -66,7 +66,7 @@ internal fun EmailSignInScreen(navigateToEmailSignUp: () -> Unit, popBackStack: 
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 SeugiTopBar(
-                    title = { Text(text = "로그인", style = MaterialTheme.typography.titleLarge) },
+                    title = { Text(text = "로그인", style = SeugiTheme.typography.subtitle1) },
                     onNavigationIconClick = popBackStack,
                 )
             },
@@ -94,10 +94,10 @@ internal fun EmailSignInScreen(navigateToEmailSignUp: () -> Unit, popBackStack: 
                     Row(
                         modifier = Modifier.padding(start = 4.dp),
                     ) {
-                        Text(text = "이메일", style = MaterialTheme.typography.titleMedium)
+                        Text(text = "이메일", style = SeugiTheme.typography.subtitle2)
                         Text(
                             text = " *",
-                            style = MaterialTheme.typography.titleMedium,
+                            style = SeugiTheme.typography.subtitle2,
                             color = SeugiTheme.colors.red500,
                         )
                     }
@@ -111,7 +111,7 @@ internal fun EmailSignInScreen(navigateToEmailSignUp: () -> Unit, popBackStack: 
                     if (emailError) {
                         Text(
                             text = "이메일을 입력해 주세요",
-                            style = MaterialTheme.typography.bodyLarge,
+                            style = SeugiTheme.typography.body1,
                             color = SeugiTheme.colors.red500,
                             modifier = Modifier.padding(start = 4.dp),
                         )
@@ -128,10 +128,10 @@ internal fun EmailSignInScreen(navigateToEmailSignUp: () -> Unit, popBackStack: 
                     Row(
                         modifier = Modifier.padding(start = 4.dp),
                     ) {
-                        Text(text = "비밀번호", style = MaterialTheme.typography.titleMedium)
+                        Text(text = "비밀번호", style = SeugiTheme.typography.subtitle2)
                         Text(
                             text = " *",
-                            style = MaterialTheme.typography.titleMedium,
+                            style = SeugiTheme.typography.subtitle2,
                             color = SeugiTheme.colors.red500,
                         )
                     }
@@ -144,7 +144,7 @@ internal fun EmailSignInScreen(navigateToEmailSignUp: () -> Unit, popBackStack: 
                     if (pwError) {
                         Text(
                             text = "비밀번호을 입력해 주세요",
-                            style = MaterialTheme.typography.bodyLarge,
+                            style = SeugiTheme.typography.body1,
                             color = SeugiTheme.colors.red500,
                             modifier = Modifier.padding(start = 4.dp),
                         )
@@ -162,12 +162,12 @@ internal fun EmailSignInScreen(navigateToEmailSignUp: () -> Unit, popBackStack: 
                 ) {
                     Text(
                         text = "계정이 없으시다면?",
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = SeugiTheme.typography.body1,
                         color = SeugiTheme.colors.gray600,
                     )
                     Text(
                         text = " 가입하기",
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = SeugiTheme.typography.body1,
                         color = SeugiTheme.colors.primary500,
                         modifier = Modifier
                             .bounceClick({ navigateToEmailSignUp() }),

@@ -53,7 +53,7 @@ internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit,
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 SeugiTopBar(
-                    title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
+                    title = { Text(text = "학교 가입", style = SeugiTheme.typography.subtitle1) },
                     onNavigationIconClick = popBackStack,
                 )
             },
@@ -72,7 +72,7 @@ internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit,
                     ) {
                         Text(
                             text = "학생이신가요?\n" + "아니면 선생님이신가요?",
-                            style = MaterialTheme.typography.titleLarge,
+                            style = SeugiTheme.typography.subtitle1,
                             modifier = Modifier.bounceClick({}),
                         )
                     }
@@ -107,7 +107,7 @@ internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit,
                                 ) {
                                     Text(
                                         text = "학생",
-                                        style = MaterialTheme.typography.titleMedium,
+                                        style = SeugiTheme.typography.subtitle2,
                                         color = if (studentOnOff) SeugiTheme.colors.black else SeugiTheme.colors.gray500,
                                     )
                                     if (studentOnOff) {
@@ -158,7 +158,7 @@ internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit,
                                 ) {
                                     Text(
                                         text = "선생님",
-                                        style = MaterialTheme.typography.titleMedium,
+                                        style = SeugiTheme.typography.subtitle2,
                                         color = if (!studentOnOff) SeugiTheme.colors.black else SeugiTheme.colors.gray500,
                                     )
                                     if (!studentOnOff) {

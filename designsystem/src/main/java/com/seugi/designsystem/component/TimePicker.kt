@@ -43,7 +43,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.seugi.designsystem.theme.Pretendard
 import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.collections.immutable.toImmutableList
 
@@ -69,7 +68,7 @@ fun SeugiTimePicker(modifier: Modifier = Modifier, startTime: Int = 1, startMinu
                 Text(
                     text = "외출 일시",
                     color = SeugiTheme.colors.black,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = SeugiTheme.typography.subtitle1,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Box(modifier = Modifier) {
@@ -89,7 +88,7 @@ fun SeugiTimePicker(modifier: Modifier = Modifier, startTime: Int = 1, startMinu
                         Text(
                             text = ":",
                             color = SeugiTheme.colors.gray800,
-                            style = MaterialTheme.typography.headlineMedium,
+                            style = SeugiTheme.typography.title2,
                         )
                     }
                     Row(
@@ -288,9 +287,10 @@ class SeugiTimePickerTextStyles(
 
     companion object {
         @Stable
+        @Composable
         internal fun defaultTextStyles(): SeugiTimePickerTextStyles = SeugiTimePickerTextStyles(
-            activeTextStyle = Pretendard.headlineMedium,
-            unActiveTextStyle = Pretendard.titleLarge,
+            activeTextStyle = SeugiTheme.typography.title2,
+            unActiveTextStyle = SeugiTheme.typography.subtitle1,
         )
     }
 }

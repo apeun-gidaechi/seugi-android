@@ -63,7 +63,7 @@ internal fun SecondScreen(placeholder: String, onNameSuccess: (String) -> Unit, 
                                     vertical = 9.dp,
                                 ),
                             text = "완료",
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = SeugiTheme.typography.body2,
                             color = SeugiTheme.colors.black,
                         )
                     }
@@ -96,7 +96,7 @@ internal fun SecondScreen(placeholder: String, onNameSuccess: (String) -> Unit, 
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "채팅방 이름",
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
                 color = SeugiTheme.colors.black,
             )
             Spacer(modifier = Modifier.height(4.dp))

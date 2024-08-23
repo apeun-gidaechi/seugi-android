@@ -73,7 +73,7 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
             topBar = {
                 SeugiTopBar(
                     title = {
-                        Text(text = "새 학교 등록", style = MaterialTheme.typography.titleLarge)
+                        Text(text = "새 학교 등록", style = SeugiTheme.typography.subtitle1)
                     },
                     onNavigationIconClick = {
                         popBackStack()
@@ -124,10 +124,10 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
                         Row(
                             modifier = Modifier.padding(start = 4.dp),
                         ) {
-                            Text(text = "학교 이름", style = MaterialTheme.typography.titleMedium)
+                            Text(text = "학교 이름", style = SeugiTheme.typography.subtitle2)
                             Text(
                                 text = " *",
-                                style = MaterialTheme.typography.titleMedium,
+                                style = SeugiTheme.typography.subtitle2,
                                 color = SeugiTheme.colors.red500,
                             )
                         }
@@ -143,7 +143,7 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
                         if (schoolNameError) {
                             Text(
                                 text = "이메일을 입력해 주세요",
-                                style = MaterialTheme.typography.bodyLarge,
+                                style = SeugiTheme.typography.body1,
                                 color = SeugiTheme.colors.red500,
                                 modifier = Modifier.padding(top = 4.dp),
                             )

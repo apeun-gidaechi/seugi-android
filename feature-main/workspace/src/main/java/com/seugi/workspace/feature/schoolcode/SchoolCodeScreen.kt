@@ -85,7 +85,7 @@ fun SchoolScreen(
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 SeugiTopBar(
-                    title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
+                    title = { Text(text = "학교 가입", style = SeugiTheme.typography.subtitle1) },
                     onNavigationIconClick = popBackStack,
                 )
             },
@@ -105,7 +105,7 @@ fun SchoolScreen(
                 Text(
                     text = "학교 코드",
                     modifier = Modifier.padding(start = 4.dp, bottom = 4.dp),
-                    style = MaterialTheme.typography.titleMedium,
+                    style = SeugiTheme.typography.subtitle2,
                 )
                 SeugiCodeTextField(
                     value = schoolCode,

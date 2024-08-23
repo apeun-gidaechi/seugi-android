@@ -86,7 +86,7 @@ internal fun RoomScreen(
                     } else {
                         Text(
                             text = "단체",
-                            style = MaterialTheme.typography.titleLarge,
+                            style = SeugiTheme.typography.subtitle1,
                         )
                     }
                 },
@@ -144,7 +144,7 @@ private fun RoomTextField(searchText: String, onValueChange: (String) -> Unit, p
             .padding(end = 16.dp),
         value = searchText,
         onValueChange = onValueChange,
-        textStyle = MaterialTheme.typography.titleLarge,
+        textStyle = SeugiTheme.typography.subtitle1,
         enabled = enabled,
         cursorBrush = SolidColor(SeugiTheme.colors.primary500),
         keyboardActions = KeyboardActions(
@@ -161,7 +161,7 @@ private fun RoomTextField(searchText: String, onValueChange: (String) -> Unit, p
                     Text(
                         text = placeholder,
                         color = if (enabled) SeugiTheme.colors.gray500 else SeugiTheme.colors.gray400,
-                        style = MaterialTheme.typography.titleLarge,
+                        style = SeugiTheme.typography.subtitle1,
                     )
                 }
                 innerTextField()

@@ -93,7 +93,7 @@ internal fun NotificationEditScreen(
                 title = {
                     Text(
                         text = "알림 수정",
-                        style = MaterialTheme.typography.titleLarge,
+                        style = SeugiTheme.typography.subtitle1,
                         color = SeugiTheme.colors.black,
                     )
                 },
@@ -125,7 +125,7 @@ internal fun NotificationEditScreen(
                                     horizontal = 12.dp,
                                 ),
                             text = "완료",
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = SeugiTheme.typography.body2,
                             color = SeugiTheme.colors.black,
                         )
                     }

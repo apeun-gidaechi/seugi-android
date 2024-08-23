@@ -156,7 +156,7 @@ private fun SeugiBottomNavigationItem(type: BottomNavigationItemType, selected: 
         }
         Text(
             text = type.text,
-            style = MaterialTheme.typography.labelMedium,
+            style = SeugiTheme.typography.caption2,
             color = animTextColor,
         )
     }

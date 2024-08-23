@@ -142,7 +142,7 @@ private fun SeugiTimePickerHeader(month: CalendarMonth, colors: SeugiDatePickerC
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = "${month.year}년 ${month.month}월",
-            style = MaterialTheme.typography.titleMedium,
+            style = SeugiTheme.typography.subtitle2,
             color = colors.titleContentColor,
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -204,7 +204,7 @@ private fun SeugiTimePickerMonth(
                     Text(
                         modifier = Modifier.weight(1f),
                         text = weekdayName,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = SeugiTheme.typography.body2,
                         color = colors.weeklyContentColor,
                         textAlign = TextAlign.Center,
                     )
@@ -273,7 +273,7 @@ private fun SeugiTimePickerMonth(
                                 Text(
                                     modifier = Modifier,
                                     text = dayNumber.toString(),
-                                    style = MaterialTheme.typography.titleMedium,
+                                    style = SeugiTheme.typography.subtitle2,
                                     color = colors.dayContentColor(
                                         selected = isSelect,
                                         active = isValid,

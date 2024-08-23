@@ -162,7 +162,7 @@ private fun SeugiChatItemOthers(
             if (isFirst) {
                 Text(
                     text = userName,
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = SeugiTheme.typography.body1,
                     color = SeugiTheme.colors.gray600,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
@@ -196,7 +196,7 @@ private fun SeugiChatItemOthers(
                         modifier = Modifier.padding(12.dp),
                         text = message,
                         color = SeugiTheme.colors.black,
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = SeugiTheme.typography.body1,
                     )
                 }
                 if (isLast) {
@@ -211,12 +211,12 @@ private fun SeugiChatItemOthers(
                         Text(
                             text = count?.toString() ?: "",
                             color = SeugiTheme.colors.gray600,
-                            style = MaterialTheme.typography.labelLarge,
+                            style = SeugiTheme.typography.caption1,
                         )
                         Text(
                             text = createdAt,
                             color = SeugiTheme.colors.gray600,
-                            style = MaterialTheme.typography.labelMedium,
+                            style = SeugiTheme.typography.caption2,
                         )
                     }
                 }
@@ -250,12 +250,12 @@ private fun SeugiChatItemMe(modifier: Modifier = Modifier, isLast: Boolean, mess
                 Text(
                     text = count?.toString() ?: "",
                     color = SeugiTheme.colors.gray600,
-                    style = MaterialTheme.typography.labelLarge,
+                    style = SeugiTheme.typography.caption1,
                 )
                 Text(
                     text = createdAt,
                     color = SeugiTheme.colors.gray600,
-                    style = MaterialTheme.typography.labelMedium,
+                    style = SeugiTheme.typography.caption2,
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
@@ -282,7 +282,7 @@ private fun SeugiChatItemMe(modifier: Modifier = Modifier, isLast: Boolean, mess
                 modifier = Modifier.padding(12.dp),
                 text = message,
                 color = SeugiTheme.colors.white,
-                style = MaterialTheme.typography.bodyLarge,
+                style = SeugiTheme.typography.body1,
             )
         }
     }
@@ -306,7 +306,7 @@ private fun SeugiChatItemDate(modifier: Modifier, createdAt: String) {
                 ),
             text = createdAt,
             color = SeugiTheme.colors.gray600,
-            style = MaterialTheme.typography.labelMedium,
+            style = SeugiTheme.typography.caption2,
         )
     }
 }
@@ -337,7 +337,7 @@ private fun SeugiChatItemAi(modifier: Modifier = Modifier, isFirst: Boolean, isL
             if (isFirst) {
                 Text(
                     text = "캣스기",
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = SeugiTheme.typography.body1,
                     color = SeugiTheme.colors.gray600,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
@@ -376,7 +376,7 @@ private fun SeugiChatItemAi(modifier: Modifier = Modifier, isFirst: Boolean, isL
                         modifier = Modifier.padding(12.dp),
                         text = message,
                         color = SeugiTheme.colors.black,
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = SeugiTheme.typography.body1,
                     )
                 }
                 if (isLast) {
@@ -391,12 +391,12 @@ private fun SeugiChatItemAi(modifier: Modifier = Modifier, isFirst: Boolean, isL
                         Text(
                             text = count?.toString() ?: "",
                             color = SeugiTheme.colors.gray600,
-                            style = MaterialTheme.typography.labelLarge,
+                            style = SeugiTheme.typography.caption1,
                         )
                         Text(
                             text = createdAt,
                             color = SeugiTheme.colors.gray600,
-                            style = MaterialTheme.typography.labelMedium,
+                            style = SeugiTheme.typography.caption2,
                         )
                     }
                 }
@@ -423,7 +423,7 @@ private fun SeugiChatItemElse(modifier: Modifier, message: String) {
                 ),
             text = message,
             color = SeugiTheme.colors.gray600,
-            style = MaterialTheme.typography.labelMedium,
+            style = SeugiTheme.typography.caption2,
         )
     }
 }

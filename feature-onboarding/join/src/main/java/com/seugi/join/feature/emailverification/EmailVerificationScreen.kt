@@ -99,7 +99,7 @@ fun EmailVerificationScreen(navigateToStart: () -> Unit, popBackStack: () -> Uni
                         title = {
                             Text(
                                 text = "이메일 인증",
-                                style = MaterialTheme.typography.titleLarge,
+                                style = SeugiTheme.typography.subtitle1,
                             )
                         },
                         onNavigationIconClick = { popBackStack() },
@@ -128,10 +128,10 @@ fun EmailVerificationScreen(navigateToStart: () -> Unit, popBackStack: () -> Uni
                         Row(
                             modifier = Modifier.padding(start = 4.dp),
                         ) {
-                            Text(text = "인증코드", style = MaterialTheme.typography.titleMedium)
+                            Text(text = "인증코드", style = SeugiTheme.typography.subtitle2)
                             Text(
                                 text = " *",
-                                style = MaterialTheme.typography.titleMedium,
+                                style = SeugiTheme.typography.subtitle2,
                                 color = SeugiTheme.colors.red500,
                             )
                         }
@@ -174,7 +174,7 @@ fun EmailVerificationScreen(navigateToStart: () -> Unit, popBackStack: () -> Uni
                             } else {
                                 Text(
                                     text = formattedTime,
-                                    style = MaterialTheme.typography.bodyMedium,
+                                    style = SeugiTheme.typography.body2,
                                     color = SeugiTheme.colors.gray600,
                                 )
                             }

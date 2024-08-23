@@ -55,13 +55,13 @@ fun SeugiDialog(title: String, content: String, onDismissRequest: () -> Unit) {
                     Text(
                         text = title,
                         color = SeugiTheme.colors.black,
-                        style = MaterialTheme.typography.titleLarge,
+                        style = SeugiTheme.typography.subtitle1,
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = content,
                         color = SeugiTheme.colors.gray700,
-                        style = MaterialTheme.typography.titleMedium,
+                        style = SeugiTheme.typography.subtitle2,
                     )
                 }
                 Spacer(modifier = Modifier.height(18.dp))
@@ -84,7 +84,7 @@ fun SeugiDialog(title: String, content: String, onDismissRequest: () -> Unit) {
                             ),
                             text = "닫기",
                             color = SeugiTheme.colors.primary500,
-                            style = MaterialTheme.typography.titleMedium,
+                            style = SeugiTheme.typography.subtitle2,
                         )
                     }
                 }
@@ -116,13 +116,13 @@ fun SeugiDialog(title: String, content: String, leftText: String = "취소", rig
                     Text(
                         text = title,
                         color = SeugiTheme.colors.black,
-                        style = MaterialTheme.typography.titleLarge,
+                        style = SeugiTheme.typography.subtitle1,
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = content,
                         color = SeugiTheme.colors.gray700,
-                        style = MaterialTheme.typography.titleMedium,
+                        style = SeugiTheme.typography.subtitle2,
                     )
                 }
                 Spacer(modifier = Modifier.height(18.dp))
@@ -180,7 +180,7 @@ private fun DialogButton(modifier: Modifier, text: String, textColor: Color, bac
                 modifier = Modifier.align(Alignment.Center),
                 text = text,
                 color = textColor,
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
             )
         }
     }

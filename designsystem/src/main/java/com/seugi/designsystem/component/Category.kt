@@ -64,7 +64,7 @@ fun SeugiCategory(modifier: Modifier = Modifier, category: String, isChoose: Boo
             ),
             text = category,
             color = animTextColor,
-            style = MaterialTheme.typography.titleMedium,
+            style = SeugiTheme.typography.subtitle2,
         )
     }
 }

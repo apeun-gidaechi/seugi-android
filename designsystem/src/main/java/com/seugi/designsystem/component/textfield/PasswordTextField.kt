@@ -68,7 +68,7 @@ fun SeugiPasswordTextField(
     placeholder: String = "",
     enabled: Boolean = true,
     singleLine: Boolean = true,
-    textStyle: TextStyle = MaterialTheme.typography.titleMedium,
+    textStyle: TextStyle = SeugiTheme.typography.subtitle2,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: TextFieldColors = TextFieldDefaults.colors(
         focusedTextColor = SeugiTheme.colors.black,

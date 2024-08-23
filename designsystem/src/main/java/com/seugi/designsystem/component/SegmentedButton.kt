@@ -294,7 +294,7 @@ fun SeugiSegmentedButton(modifier: Modifier = Modifier, text: String, selected: 
         Text(
             text = text,
             color = if (selected) SeugiTheme.colors.gray800 else SeugiTheme.colors.gray600,
-            style = if (selected) MaterialTheme.typography.bodyLarge else MaterialTheme.typography.bodyMedium,
+            style = if (selected) SeugiTheme.typography.body1 else SeugiTheme.typography.body2,
         )
     }
 }
