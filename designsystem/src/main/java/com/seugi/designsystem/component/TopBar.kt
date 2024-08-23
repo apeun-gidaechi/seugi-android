@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,7 +32,7 @@ fun SeugiTopBar(
     title: @Composable () -> Unit,
     onNavigationIconClick: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
-    containerColors: Color = MaterialTheme.colorScheme.background,
+    containerColors: Color = SeugiTheme.colors.white,
     shadow: Boolean = false,
 ) {
     val modifierWithShadow = if (shadow) {
@@ -76,7 +75,7 @@ private fun PreviewSeugiTopBar() {
         Box(modifier = Modifier.fillMaxSize()) {
             SeugiTopBar(
                 title = {
-                    Text(text = "로그인", style = MaterialTheme.typography.titleLarge)
+                    Text(text = "로그인", style = SeugiTheme.typography.subtitle1)
                 },
                 onNavigationIconClick = {
                 },

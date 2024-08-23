@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,8 +31,6 @@ import com.seugi.designsystem.component.SeugiDialog
 import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiCodeTextField
-import com.seugi.designsystem.theme.Gray600
-import com.seugi.designsystem.theme.Red500
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.join.feature.emailverification.model.EmailVerificationSideEffect
 import com.seugi.ui.CollectAsSideEffect
@@ -41,14 +38,7 @@ import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailVerificationScreen(
-    navigateToStart: () -> Unit,
-    popBackStack: () -> Unit,
-    viewModel: EmailVerificationViewModel = hiltViewModel(),
-    name: String,
-    email: String,
-    password: String,
-) {
+fun EmailVerificationScreen(navigateToStart: () -> Unit, popBackStack: () -> Unit, viewModel: EmailVerificationViewModel = hiltViewModel(), name: String, email: String, password: String) {
     var timeLeft by remember { mutableStateOf(0) }
 
     val minutes = timeLeft / 60
@@ -108,7 +98,7 @@ fun EmailVerificationScreen(
                         title = {
                             Text(
                                 text = "이메일 인증",
-                                style = MaterialTheme.typography.titleLarge,
+                                style = SeugiTheme.typography.subtitle1,
                             )
                         },
                         onNavigationIconClick = { popBackStack() },
@@ -137,11 +127,11 @@ fun EmailVerificationScreen(
                         Row(
                             modifier = Modifier.padding(start = 4.dp),
                         ) {
-                            Text(text = "인증코드", style = MaterialTheme.typography.titleMedium)
+                            Text(text = "인증코드", style = SeugiTheme.typography.subtitle2)
                             Text(
                                 text = " *",
-                                style = MaterialTheme.typography.titleMedium,
-                                color = Red500,
+                                style = SeugiTheme.typography.subtitle2,
+                                color = SeugiTheme.colors.red500,
                             )
                         }
                         SeugiCodeTextField(
@@ -182,9 +172,9 @@ fun EmailVerificationScreen(
                                 )
                             } else {
                                 Text(
-                                    text = "$formattedTime",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = Gray600,
+                                    text = formattedTime,
+                                    style = SeugiTheme.typography.body2,
+                                    color = SeugiTheme.colors.gray600,
                                 )
                             }
                         }

@@ -53,7 +53,7 @@ class WorkspaceCreateViewModel @Inject constructor(
 
     fun fileUpload(context: Context, workspaceUri: Uri?, workspaceName: String) {
         viewModelScope.launch {
-            var file = ""
+            val file: String
             if (workspaceUri != null) {
                 file = uriToFile(context = context, uri = workspaceUri).toString()
                 fileRepository.fileUpload(file = file, type = FileType.IMG).collect {

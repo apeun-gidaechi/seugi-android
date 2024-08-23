@@ -25,7 +25,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +34,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,10 +54,7 @@ import com.seugi.designsystem.component.chat.SeugiChatItem
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.component.textfield.SeugiChatTextField
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray700
-import com.seugi.designsystem.theme.Primary050
-import com.seugi.designsystem.theme.Primary100
+import com.seugi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -74,14 +69,10 @@ internal fun ChatSeugiScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scrollState = rememberLazyListState()
 
-    val coroutineScope = rememberCoroutineScope()
     var text by remember { mutableStateOf("") }
-    var isSearch by remember { mutableStateOf(false) }
-    var searchText by remember { mutableStateOf("") }
     val keyboardState by rememberKeyboardOpen()
 
     val density = LocalDensity.current
-    var isOpenSidebar by remember { mutableStateOf(false) }
 
     LifecycleResumeEffect(key1 = Unit) {
         onNavigationVisibleChange(false)
@@ -99,15 +90,15 @@ internal fun ChatSeugiScreen(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .background(Primary050),
+            .background(SeugiTheme.colors.primary050),
         topBar = {
             SeugiTopBar(
                 modifier = Modifier.fillMaxWidth(),
                 title = {
                     Text(
                         text = "캣스기",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = Black,
+                        style = SeugiTheme.typography.subtitle1,
+                        color = SeugiTheme.colors.black,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
@@ -146,17 +137,17 @@ internal fun ChatSeugiScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                .background(Primary050),
+                .background(SeugiTheme.colors.primary050),
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Primary050),
+                    .background(SeugiTheme.colors.primary050),
             ) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Primary050),
+                        .background(SeugiTheme.colors.primary050),
                     contentPadding = PaddingValues(
                         horizontal = 8.dp,
                     ),
@@ -277,7 +268,7 @@ internal fun ChatSeugiExampleText(text: String, onClick: () -> Unit) {
         Box(
             modifier = Modifier
                 .background(
-                    color = Primary100,
+                    color = SeugiTheme.colors.primary100,
                     shape = RoundedCornerShape(12.dp),
                 ),
         ) {
@@ -287,8 +278,8 @@ internal fun ChatSeugiExampleText(text: String, onClick: () -> Unit) {
                     horizontal = 12.dp,
                 ),
                 text = text,
-                color = Gray700,
-                style = MaterialTheme.typography.bodyLarge,
+                color = SeugiTheme.colors.gray700,
+                style = SeugiTheme.typography.body1,
             )
         }
     }

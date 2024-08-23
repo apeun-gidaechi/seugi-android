@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,11 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.R
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
-import com.seugi.designsystem.theme.Gray300
-import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 
 sealed class BottomNavigationItemType(@DrawableRes val resId: Int, val text: String) {
     data object Home : BottomNavigationItemType(R.drawable.ic_home_fill, "홈")
@@ -56,7 +51,7 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
             .height(62.dp)
             .dropShadow(DropShadowType.Nav)
             .background(
-                color = White,
+                color = SeugiTheme.colors.white,
                 shape = RoundedCornerShape(
                     topStart = 16.dp,
                     topEnd = 16.dp,
@@ -122,11 +117,11 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
 @Composable
 private fun SeugiBottomNavigationItem(type: BottomNavigationItemType, selected: Boolean, isNew: Boolean, onClick: () -> Unit) {
     val animIconColor by animateColorAsState(
-        targetValue = if (selected) Primary500 else Gray300,
+        targetValue = if (selected) SeugiTheme.colors.primary500 else SeugiTheme.colors.gray300,
         label = "",
     )
     val animTextColor by animateColorAsState(
-        targetValue = if (selected) Primary500 else Gray500,
+        targetValue = if (selected) SeugiTheme.colors.primary500 else SeugiTheme.colors.gray500,
         label = "",
     )
 
@@ -160,7 +155,7 @@ private fun SeugiBottomNavigationItem(type: BottomNavigationItemType, selected: 
         }
         Text(
             text = type.text,
-            style = MaterialTheme.typography.labelMedium,
+            style = SeugiTheme.typography.caption2,
             color = animTextColor,
         )
     }
@@ -174,7 +169,7 @@ private fun PreviewSeugiBottomNavigation() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(White),
+                .background(SeugiTheme.colors.white),
         ) {
             Spacer(modifier = Modifier.weight(1f))
             SeugiBottomNavigation(

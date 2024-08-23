@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,24 +42,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray300
-import com.seugi.designsystem.theme.Gray600
-import com.seugi.designsystem.theme.Gray800
-import com.seugi.designsystem.theme.Pretendard
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.Transparent
-import com.seugi.designsystem.theme.White
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-fun SeugiTimePicker(
-    modifier: Modifier = Modifier,
-    startTime: Int = 1,
-    startMinute: Int = 0,
-    onSelectTime: (hour: Int, minute: Int) -> Unit,
-    onDismissRequest: () -> Unit,
-) {
+fun SeugiTimePicker(modifier: Modifier = Modifier, startTime: Int = 1, startMinute: Int = 0, onSelectTime: (hour: Int, minute: Int) -> Unit, onDismissRequest: () -> Unit) {
     val hours = (1..23).toImmutableList()
     val minutes = (0..59).toImmutableList()
 
@@ -72,7 +58,7 @@ fun SeugiTimePicker(
     ) {
         Surface(
             modifier = modifier,
-            color = White,
+            color = SeugiTheme.colors.white,
             shape = RoundedCornerShape(28.dp),
         ) {
             Column(
@@ -80,8 +66,8 @@ fun SeugiTimePicker(
             ) {
                 Text(
                     text = "외출 일시",
-                    color = Black,
-                    style = MaterialTheme.typography.titleLarge,
+                    color = SeugiTheme.colors.black,
+                    style = SeugiTheme.typography.subtitle1,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Box(modifier = Modifier) {
@@ -93,15 +79,15 @@ fun SeugiTimePicker(
                             .height(44.dp)
                             .absoluteOffset(y = (-7).dp)
                             .background(
-                                color = Gray300,
+                                color = SeugiTheme.colors.gray300,
                                 shape = RoundedCornerShape(10.dp),
                             ),
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
                             text = ":",
-                            color = Gray800,
-                            style = MaterialTheme.typography.headlineMedium,
+                            color = SeugiTheme.colors.gray800,
+                            style = SeugiTheme.typography.title2,
                         )
                     }
                     Row(
@@ -239,11 +225,10 @@ object SeugiTimePickerDefaults {
     @Composable fun textStyles() = SeugiTimePickerTextStyles.defaultTextStyles()
 
     @Composable
-    fun textStyles(activeTextStyle: TextStyle = TextStyle.Default, unActiveTextStyle: TextStyle = TextStyle.Default) =
-        SeugiTimePickerTextStyles.defaultTextStyles().copy(
-            activeTextStyle = activeTextStyle,
-            unActiveTextStyle = unActiveTextStyle,
-        )
+    fun textStyles(activeTextStyle: TextStyle = TextStyle.Default, unActiveTextStyle: TextStyle = TextStyle.Default) = SeugiTimePickerTextStyles.defaultTextStyles().copy(
+        activeTextStyle = activeTextStyle,
+        unActiveTextStyle = unActiveTextStyle,
+    )
 }
 
 @Immutable
@@ -273,12 +258,14 @@ class SeugiTimePickerColors(
     internal fun containerColor(active: Boolean) = if (active) activeContainerColor else unActiveContainerColor
 
     companion object {
+
+        @Composable
         @Stable
         internal fun defaultColor(): SeugiTimePickerColors = SeugiTimePickerColors(
-            activeTextColor = Gray800,
-            activeContainerColor = Transparent,
-            unActiveTextColor = Gray600,
-            unActiveContainerColor = Transparent,
+            activeTextColor = SeugiTheme.colors.gray800,
+            activeContainerColor = SeugiTheme.colors.transparent,
+            unActiveTextColor = SeugiTheme.colors.gray600,
+            unActiveContainerColor = SeugiTheme.colors.transparent,
         )
     }
 }
@@ -299,9 +286,10 @@ class SeugiTimePickerTextStyles(
 
     companion object {
         @Stable
+        @Composable
         internal fun defaultTextStyles(): SeugiTimePickerTextStyles = SeugiTimePickerTextStyles(
-            activeTextStyle = Pretendard.headlineMedium,
-            unActiveTextStyle = Pretendard.titleLarge,
+            activeTextStyle = SeugiTheme.typography.title2,
+            unActiveTextStyle = SeugiTheme.typography.subtitle1,
         )
     }
 }
@@ -314,7 +302,7 @@ private fun SeugiTimePickerPreview() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(White),
+                .background(SeugiTheme.colors.white),
         ) {
             if (isShowDialog) {
                 SeugiTimePicker(

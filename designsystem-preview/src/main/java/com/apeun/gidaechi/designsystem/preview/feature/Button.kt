@@ -23,7 +23,6 @@ import com.seugi.designsystem.component.ButtonType
 import com.seugi.designsystem.component.SeugiButton
 import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -48,7 +47,7 @@ fun Button() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 20.dp)
-                .background(White)
+                .background(SeugiTheme.colors.white)
                 .verticalScroll(rememberScrollState()),
         ) {
             SeugiFullWidthButton(

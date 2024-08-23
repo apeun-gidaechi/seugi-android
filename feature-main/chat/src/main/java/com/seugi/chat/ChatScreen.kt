@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,9 +29,7 @@ import com.seugi.designsystem.R
 import com.seugi.designsystem.component.SeugiIconButton
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.chat.SeugiChatList
-import com.seugi.designsystem.theme.Gray400
-import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.Primary500
+import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
@@ -80,7 +77,7 @@ internal fun ChatScreen(viewModel: ChatViewModel = hiltViewModel(), workspaceId:
                     } else {
                         Text(
                             text = "채팅",
-                            style = MaterialTheme.typography.titleLarge,
+                            style = SeugiTheme.typography.subtitle1,
                         )
                     }
                 },
@@ -129,9 +126,9 @@ private fun ChatTextField(searchText: String, onValueChange: (String) -> Unit, p
             .padding(end = 16.dp),
         value = searchText,
         onValueChange = onValueChange,
-        textStyle = MaterialTheme.typography.titleLarge,
+        textStyle = SeugiTheme.typography.subtitle1,
         enabled = enabled,
-        cursorBrush = SolidColor(Primary500),
+        cursorBrush = SolidColor(SeugiTheme.colors.primary500),
         keyboardActions = KeyboardActions(
             onDone = {
                 onDone()
@@ -145,8 +142,8 @@ private fun ChatTextField(searchText: String, onValueChange: (String) -> Unit, p
                 if (searchText.isEmpty()) {
                     Text(
                         text = placeholder,
-                        color = if (enabled) Gray500 else Gray400,
-                        style = MaterialTheme.typography.titleLarge,
+                        color = if (enabled) SeugiTheme.colors.gray500 else SeugiTheme.colors.gray400,
+                        style = SeugiTheme.typography.subtitle1,
                     )
                 }
                 innerTextField()

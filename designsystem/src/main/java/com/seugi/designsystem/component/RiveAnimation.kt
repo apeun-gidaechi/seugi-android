@@ -30,7 +30,7 @@ import app.rive.runtime.kotlin.core.Loop
 import app.rive.runtime.kotlin.core.PlayableInstance
 import app.rive.runtime.kotlin.core.Rive
 import com.seugi.designsystem.R
-import com.seugi.designsystem.theme.Black
+import com.seugi.designsystem.theme.SeugiTheme
 
 @ExperimentalAssetLoader
 @Suppress("LongMethod")
@@ -144,7 +144,7 @@ fun RiveComposablePreview() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Black),
+            .background(SeugiTheme.colors.black),
     ) {
         RiveAnimation(
             modifier = Modifier.size(24.dp),

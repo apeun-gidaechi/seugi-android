@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -22,14 +21,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.component.ButtonType
+import com.seugi.designsystem.component.GradientPrimary
 import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiOAuthButton
-import com.seugi.designsystem.theme.Gradient
 import com.seugi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,12 +35,13 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
-
     SeugiTheme {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Brush.verticalGradient(Gradient)),
+                .background(
+                    brush = GradientPrimary,
+                ),
         ) {
             Spacer(modifier = Modifier.weight(1f))
             Row(
@@ -60,11 +58,11 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
             Column(
                 modifier = Modifier.padding(start = 24.dp),
             ) {
-                Text(text = "스기", style = MaterialTheme.typography.displayLarge, color = White)
+                Text(text = "스기", style = SeugiTheme.typography.display1, color = SeugiTheme.colors.white)
                 Text(
                     text = "학생, 선생님 모두 함께하는\n스마트 스쿨 플랫폼",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = White,
+                    style = SeugiTheme.typography.subtitle2,
+                    color = SeugiTheme.colors.white,
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -101,7 +99,7 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
                         showBottomSheet = false
                     },
                     sheetState = sheetState,
-                    containerColor = White,
+                    containerColor = SeugiTheme.colors.white,
                     dragHandle = null,
                 ) {
                     Column(

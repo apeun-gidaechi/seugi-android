@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +22,6 @@ import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiRoundedCircleImage
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.Size
-import com.seugi.designsystem.theme.Gray600
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.workspace.feature.joinsuccess.model.JoinSuccessSideEffect
 import kotlinx.coroutines.flow.collectLatest
@@ -63,7 +61,7 @@ fun JoinSuccessScreen(
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 SeugiTopBar(
-                    title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
+                    title = { Text(text = "학교 가입", style = SeugiTheme.typography.subtitle1) },
                     onNavigationIconClick = popBackStack,
                 )
             },
@@ -86,11 +84,11 @@ fun JoinSuccessScreen(
                         onClick = {},
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = workspaceName, style = MaterialTheme.typography.titleLarge)
+                    Text(text = workspaceName, style = SeugiTheme.typography.subtitle1)
                     Text(
                         text = "학생 ${studentCount}명 선생님 ${teacherCount}명",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Gray600,
+                        style = SeugiTheme.typography.subtitle2,
+                        color = SeugiTheme.colors.gray600,
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))

@@ -15,13 +15,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlin.math.max
 
-fun Modifier.verticalScrollbar(
-    scrollState: ScrollState,
-    scrollBarWidth: Dp = 4.dp,
-    minScrollBarHeight: Dp = 5.dp,
-    scrollBarColor: Color = Color.Blue,
-    cornerRadius: Dp = 2.dp,
-): Modifier = composed {
+fun Modifier.verticalScrollbar(scrollState: ScrollState, scrollBarWidth: Dp = 4.dp, minScrollBarHeight: Dp = 5.dp, scrollBarColor: Color = Color.Blue, cornerRadius: Dp = 2.dp): Modifier = composed {
     val targetAlpha = if (scrollState.isScrollInProgress) 1f else 0f
     val duration = if (scrollState.isScrollInProgress) 150 else 500
 

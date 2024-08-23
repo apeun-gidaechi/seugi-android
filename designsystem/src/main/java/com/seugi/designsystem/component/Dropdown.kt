@@ -22,9 +22,9 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,23 +37,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.animation.NoInteractionSource
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray200
-import com.seugi.designsystem.theme.Gray300
-import com.seugi.designsystem.theme.Gray400
-import com.seugi.designsystem.theme.Gray500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
-sealed class DropDownType(
-    val textColor: Color,
-    val backgroundColor: Color,
-    val iconColor: Color,
-) {
-    data object Disabled : DropDownType(Gray400, Gray200, Gray400)
-    data object Typing : DropDownType(Black, Gray300, Gray500)
+sealed interface DropDownType {
+    data object Disabled : DropDownType
+    data object Typing : DropDownType
 }
 
 @Composable
@@ -68,6 +58,7 @@ fun SeugiDropDown(
     onExpandedChanged: (Boolean) -> Unit,
 ) {
     val scrollState = rememberScrollState()
+    val dropDownColor = type.colors()
 
     Column(
         modifier = Modifier
@@ -84,8 +75,8 @@ fun SeugiDropDown(
             modifier = Modifier
                 .width(320.dp)
                 .height(52.dp)
-                .border(1.dp, type.backgroundColor, RoundedCornerShape(12.dp))
-                .background(White, RoundedCornerShape(12.dp))
+                .border(1.dp, dropDownColor.backgroundColor, RoundedCornerShape(12.dp))
+                .background(SeugiTheme.colors.white, RoundedCornerShape(12.dp))
                 .clip(RoundedCornerShape(12.dp))
                 .padding(horizontal = 16.dp, vertical = 12.dp),
 
@@ -93,11 +84,11 @@ fun SeugiDropDown(
             Text(
                 text = selectedItem,
                 modifier = Modifier.align(Alignment.CenterStart),
-                style = MaterialTheme.typography.titleMedium,
+                style = SeugiTheme.typography.subtitle2,
                 color = when {
-                    type == DropDownType.Disabled -> Gray200
-                    selectedItem == title -> Gray500
-                    else -> Black
+                    type == DropDownType.Disabled -> SeugiTheme.colors.gray200
+                    selectedItem == title -> SeugiTheme.colors.gray500
+                    else -> SeugiTheme.colors.black
                 },
             )
 
@@ -105,7 +96,7 @@ fun SeugiDropDown(
                 imageVector = icon,
                 contentDescription = null,
                 modifier = Modifier.align(Alignment.CenterEnd),
-                tint = type.iconColor,
+                tint = dropDownColor.iconColor,
             )
         }
 
@@ -118,7 +109,7 @@ fun SeugiDropDown(
                 modifier = Modifier
                     .width(300.dp)
                     .align(Alignment.CenterHorizontally)
-                    .background(White)
+                    .background(SeugiTheme.colors.white)
                     .heightIn(max = 240.dp),
                 scrollState = scrollState,
             ) {
@@ -131,11 +122,11 @@ fun SeugiDropDown(
                         text = {
                             Text(
                                 text = label,
-                                style = MaterialTheme.typography.titleMedium,
-                                color = type.textColor,
+                                style = SeugiTheme.typography.subtitle2,
+                                color = dropDownColor.textColor,
                             )
                         },
-                        modifier = Modifier.background(White),
+                        modifier = Modifier.background(SeugiTheme.colors.white),
                     )
                 }
             }
@@ -172,8 +163,8 @@ fun SeugiSmallDropDown(
                 text = selectedItem,
                 modifier = Modifier
                     .wrapContentWidth(),
-                style = MaterialTheme.typography.titleMedium,
-                color = Black,
+                style = SeugiTheme.typography.subtitle2,
+                color = SeugiTheme.colors.black,
             )
             Spacer(modifier = Modifier.width(8.dp))
             Icon(
@@ -189,7 +180,7 @@ fun SeugiSmallDropDown(
             modifier = Modifier
                 .width(300.dp)
                 .align(Alignment.CenterHorizontally)
-                .background(White)
+                .background(SeugiTheme.colors.white)
                 .heightIn(max = 240.dp),
             scrollState = scrollState,
         ) {
@@ -202,16 +193,37 @@ fun SeugiSmallDropDown(
                     text = {
                         Text(
                             text = label,
-                            style = MaterialTheme.typography.titleMedium,
+                            style = SeugiTheme.typography.subtitle2,
                         )
                     },
                     modifier = Modifier
-                        .background(White)
+                        .background(SeugiTheme.colors.white)
                         .wrapContentWidth(),
                 )
             }
         }
     }
+}
+
+@Immutable
+data class DropDownColor(
+    val textColor: Color,
+    val backgroundColor: Color,
+    val iconColor: Color,
+)
+
+@Composable
+private fun DropDownType.colors() = when (this) {
+    is DropDownType.Disabled -> DropDownColor(
+        textColor = SeugiTheme.colors.gray400,
+        backgroundColor = SeugiTheme.colors.gray200,
+        iconColor = SeugiTheme.colors.gray400,
+    )
+    is DropDownType.Typing -> DropDownColor(
+        textColor = SeugiTheme.colors.black,
+        backgroundColor = SeugiTheme.colors.gray300,
+        iconColor = SeugiTheme.colors.gray500,
+    )
 }
 
 @Composable

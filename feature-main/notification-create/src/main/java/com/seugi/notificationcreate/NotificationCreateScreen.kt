@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,18 +25,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiTextField
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.White
+import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.notificationcreate.model.NotificationSideEffect
 import com.seugi.ui.CollectAsSideEffect
 
 @Composable
-internal fun NotificationCreateScreen(
-    viewModel: NotificationCreateViewModel = hiltViewModel(),
-    workspaceId: String,
-    onNavigationVisibleChange: (visible: Boolean) -> Unit,
-    popBackStack: () -> Unit,
-) {
+internal fun NotificationCreateScreen(viewModel: NotificationCreateViewModel = hiltViewModel(), workspaceId: String, onNavigationVisibleChange: (visible: Boolean) -> Unit, popBackStack: () -> Unit) {
     val context = LocalContext.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -70,14 +63,14 @@ internal fun NotificationCreateScreen(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = White,
+        containerColor = SeugiTheme.colors.white,
         topBar = {
             SeugiTopBar(
                 title = {
                     Text(
                         text = "새 알림 작성",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = Black,
+                        style = SeugiTheme.typography.subtitle1,
+                        color = SeugiTheme.colors.black,
                     )
                 },
                 actions = {
@@ -107,8 +100,8 @@ internal fun NotificationCreateScreen(
                                     horizontal = 12.dp,
                                 ),
                             text = "완료",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Black,
+                            style = SeugiTheme.typography.body2,
+                            color = SeugiTheme.colors.black,
                         )
                     }
                 },

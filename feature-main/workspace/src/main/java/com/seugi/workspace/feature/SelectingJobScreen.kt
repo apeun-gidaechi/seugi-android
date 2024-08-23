@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,10 +35,6 @@ import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.ButtonType
 import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiTopBar
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray100
-import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,7 +52,7 @@ internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit,
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 SeugiTopBar(
-                    title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
+                    title = { Text(text = "학교 가입", style = SeugiTheme.typography.subtitle1) },
                     onNavigationIconClick = popBackStack,
                 )
             },
@@ -76,7 +71,7 @@ internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit,
                     ) {
                         Text(
                             text = "학생이신가요?\n" + "아니면 선생님이신가요?",
-                            style = MaterialTheme.typography.titleLarge,
+                            style = SeugiTheme.typography.subtitle1,
                             modifier = Modifier.bounceClick({}),
                         )
                     }
@@ -86,11 +81,11 @@ internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit,
                                 .bounceClick({ studentOnOff = true })
                                 .fillMaxHeight()
                                 .weight(1f)
-                                .background(shape = RoundedCornerShape(12.dp), color = Gray100)
+                                .background(shape = RoundedCornerShape(12.dp), color = SeugiTheme.colors.gray100)
                                 .border(
                                     border = BorderStroke(
                                         1.dp,
-                                        color = if (studentOnOff) Primary500 else Gray100,
+                                        color = if (studentOnOff) SeugiTheme.colors.primary500 else SeugiTheme.colors.gray100,
                                     ),
                                     shape = RoundedCornerShape(12.dp),
                                 ),
@@ -111,8 +106,8 @@ internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit,
                                 ) {
                                     Text(
                                         text = "학생",
-                                        style = MaterialTheme.typography.titleMedium,
-                                        color = if (studentOnOff) Black else Gray500,
+                                        style = SeugiTheme.typography.subtitle2,
+                                        color = if (studentOnOff) SeugiTheme.colors.black else SeugiTheme.colors.gray500,
                                     )
                                     if (studentOnOff) {
                                         Spacer(modifier = Modifier.width(4.dp))
@@ -139,11 +134,11 @@ internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit,
                                 .bounceClick(onClick = { studentOnOff = false })
                                 .fillMaxHeight()
                                 .weight(1f)
-                                .background(shape = RoundedCornerShape(12.dp), color = Gray100)
+                                .background(shape = RoundedCornerShape(12.dp), color = SeugiTheme.colors.gray100)
                                 .border(
                                     border = BorderStroke(
                                         width = 1.dp,
-                                        color = if (!studentOnOff) Primary500 else Gray100,
+                                        color = if (!studentOnOff) SeugiTheme.colors.primary500 else SeugiTheme.colors.gray100,
                                     ),
                                     shape = RoundedCornerShape(12.dp),
                                 ),
@@ -162,8 +157,8 @@ internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit,
                                 ) {
                                     Text(
                                         text = "선생님",
-                                        style = MaterialTheme.typography.titleMedium,
-                                        color = if (!studentOnOff) Black else Gray500,
+                                        style = SeugiTheme.typography.subtitle2,
+                                        color = if (!studentOnOff) SeugiTheme.colors.black else SeugiTheme.colors.gray500,
                                     )
                                     if (!studentOnOff) {
                                         Spacer(modifier = Modifier.width(4.dp))

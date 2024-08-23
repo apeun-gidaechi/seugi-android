@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -45,9 +44,7 @@ import com.seugi.designsystem.component.SeugiDivider
 import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiTextField
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.White
+import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,12 +76,12 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
             onDismissRequest = { dialogDismissRequest() },
             sheetState = modalBottomSheetState,
             dragHandle = { BottomSheetDefaults.DragHandle() },
-            containerColor = White,
+            containerColor = SeugiTheme.colors.white,
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(White)
+                    .background(SeugiTheme.colors.white)
                     .safeGesturesPadding(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -97,8 +94,8 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
                 ) {
                     Text(
                         text = "${editTextString.first} 수정",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Black,
+                        style = SeugiTheme.typography.subtitle2,
+                        color = SeugiTheme.colors.black,
                     )
                     Spacer(modifier = Modifier.height(4.dp))
 
@@ -136,14 +133,14 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(White),
+            .background(SeugiTheme.colors.white),
     ) {
         SeugiTopBar(
             title = {
                 Text(
                     text = "내 프로필",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = Black,
+                    style = SeugiTheme.typography.subtitle1,
+                    color = SeugiTheme.colors.black,
                 )
             },
         )
@@ -156,8 +153,8 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
             Spacer(modifier = Modifier.width(10.dp))
             Text(
                 text = state.profileInfo.member.name,
-                style = MaterialTheme.typography.titleMedium,
-                color = Black,
+                style = SeugiTheme.typography.subtitle2,
+                color = SeugiTheme.colors.black,
             )
             Spacer(modifier = Modifier.weight(1f))
             Image(
@@ -166,7 +163,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
                     .size(32.dp),
                 painter = painterResource(id = drawable.ic_setting_fill),
                 contentDescription = "설정 톱니바퀴",
-                colorFilter = ColorFilter.tint(Gray500),
+                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
             )
             Spacer(modifier = Modifier.width(16.dp))
         }
@@ -262,15 +259,15 @@ internal fun ProfileCard(title: String, content: String, onClickEdit: () -> Unit
             Spacer(modifier = Modifier.width(20.dp))
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyLarge,
-                color = Gray500,
+                style = SeugiTheme.typography.body1,
+                color = SeugiTheme.colors.gray500,
             )
             Spacer(modifier = Modifier.weight(1f))
             Image(
                 modifier = Modifier.size(20.dp),
                 painter = painterResource(id = drawable.ic_write_line),
                 contentDescription = "수정하기 아이콘",
-                colorFilter = ColorFilter.tint(Gray500),
+                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
             )
             Spacer(modifier = Modifier.width(20.dp))
         }
@@ -287,8 +284,8 @@ internal fun ProfileCard(title: String, content: String, onClickEdit: () -> Unit
                     .align(Alignment.CenterStart)
                     .padding(start = 20.dp),
                 text = content,
-                style = MaterialTheme.typography.titleMedium,
-                color = Black,
+                style = SeugiTheme.typography.subtitle2,
+                color = SeugiTheme.colors.black,
             )
         }
     }

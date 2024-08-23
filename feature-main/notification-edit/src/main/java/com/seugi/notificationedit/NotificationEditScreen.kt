@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,9 +36,7 @@ import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiImage
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiTextField
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.White
+import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.notificationedit.model.NotificationSideEffect
 import com.seugi.ui.CollectAsSideEffect
 import com.seugi.ui.shortToast
@@ -89,14 +86,14 @@ internal fun NotificationEditScreen(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = White,
+        containerColor = SeugiTheme.colors.white,
         topBar = {
             SeugiTopBar(
                 title = {
                     Text(
                         text = "알림 수정",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = Black,
+                        style = SeugiTheme.typography.subtitle1,
+                        color = SeugiTheme.colors.black,
                     )
                 },
                 actions = {
@@ -127,8 +124,8 @@ internal fun NotificationEditScreen(
                                     horizontal = 12.dp,
                                 ),
                             text = "완료",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Black,
+                            style = SeugiTheme.typography.body2,
+                            color = SeugiTheme.colors.black,
                         )
                     }
                 },
@@ -194,7 +191,7 @@ internal fun NotificationEditScreen(
                                 ),
                         ),
                     resId = R.drawable.ic_trash_fill,
-                    colorFilter = ColorFilter.tint(Gray500),
+                    colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
                 )
             }
         }

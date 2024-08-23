@@ -31,7 +31,6 @@ import com.seugi.designsystem.preview.feature.Toggle
 import com.seugi.designsystem.preview.feature.ToolTip
 import com.seugi.designsystem.preview.feature.TopBar
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +41,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = White,
+                    color = SeugiTheme.colors.white,
                 ) {
                     NavHost(
                         navController = navHostController,

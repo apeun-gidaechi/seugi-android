@@ -10,8 +10,7 @@ import com.seugi.join.feature.emailverification.EmailVerificationScreen
 
 const val EMAIL_VERIFICATION_ROUTE = "emailVerification"
 
-fun NavController.navigateToEmailVerification(navOptions: NavOptions? = null, name: String, email: String, password: String) =
-    navigate("$EMAIL_VERIFICATION_ROUTE/$name/$email/$password", navOptions)
+fun NavController.navigateToEmailVerification(navOptions: NavOptions? = null, name: String, email: String, password: String) = navigate("$EMAIL_VERIFICATION_ROUTE/$name/$email/$password", navOptions)
 
 fun NavGraphBuilder.emailVerificationScreen(navigateToStart: () -> Unit, popBackStack: () -> Unit) {
     composable(

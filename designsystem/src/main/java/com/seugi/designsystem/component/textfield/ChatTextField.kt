@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,11 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.R
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
-import com.seugi.designsystem.theme.Gray400
-import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 
 /**
  * Seugi Chat TextField
@@ -51,14 +46,7 @@ import com.seugi.designsystem.theme.White
  * @param onSendClick the event is click send icon.
  */
 @Composable
-fun SeugiChatTextField(
-    modifier: Modifier = Modifier,
-    value: String,
-    placeholder: String = "",
-    onValueChange: (String) -> Unit,
-    onAddClick: () -> Unit = {},
-    onSendClick: () -> Unit = {},
-) {
+fun SeugiChatTextField(modifier: Modifier = Modifier, value: String, placeholder: String = "", onValueChange: (String) -> Unit, onAddClick: () -> Unit = {}, onSendClick: () -> Unit = {}) {
     val valueIsEmpty = value.isEmpty()
 
     Surface(
@@ -66,7 +54,7 @@ fun SeugiChatTextField(
             .fillMaxWidth()
             .dropShadow(DropShadowType.EvBlack1),
         shape = RoundedCornerShape(12.dp),
-        color = White,
+        color = SeugiTheme.colors.white,
     ) {
         Row(
             modifier = Modifier
@@ -88,7 +76,7 @@ fun SeugiChatTextField(
                     ),
                 painter = painterResource(id = R.drawable.ic_add_fill),
                 contentDescription = "add button",
-                colorFilter = ColorFilter.tint(Gray400),
+                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
             )
             Spacer(modifier = Modifier.width(8.dp))
             Column(
@@ -97,15 +85,15 @@ fun SeugiChatTextField(
                 BasicTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = value,
-                    textStyle = MaterialTheme.typography.titleMedium,
+                    textStyle = SeugiTheme.typography.subtitle2,
                     onValueChange = onValueChange,
                     decorationBox = { innerTextField ->
                         Box {
                             if (valueIsEmpty) {
                                 Text(
                                     text = placeholder,
-                                    color = Gray500,
-                                    style = MaterialTheme.typography.titleMedium,
+                                    color = SeugiTheme.colors.gray500,
+                                    style = SeugiTheme.typography.subtitle2,
                                 )
                             }
                             innerTextField()
@@ -126,7 +114,7 @@ fun SeugiChatTextField(
                     ),
                 painter = painterResource(id = R.drawable.ic_send_fill),
                 contentDescription = "send button",
-                colorFilter = ColorFilter.tint(if (valueIsEmpty) Gray400 else Primary500),
+                colorFilter = ColorFilter.tint(if (valueIsEmpty) SeugiTheme.colors.gray400 else SeugiTheme.colors.primary500),
             )
         }
     }

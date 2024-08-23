@@ -97,8 +97,7 @@ object NetworkModule {
         .build()
 
     @Provides
-    fun providesStompClient(okHttpClient: OkHttpClient): StompClient =
-        Stomp.over(Stomp.ConnectionProvider.OKHTTP, SeugiUrl.Message.HANDSHAKE, null, okHttpClient)
+    fun providesStompClient(okHttpClient: OkHttpClient): StompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, SeugiUrl.Message.HANDSHAKE, null, okHttpClient)
 }
 
 private const val TIME_OUT = 60_000L

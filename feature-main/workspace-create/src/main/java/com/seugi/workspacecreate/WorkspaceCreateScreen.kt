@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,8 +35,6 @@ import com.seugi.designsystem.component.SeugiRoundedCircleImage
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.Size
 import com.seugi.designsystem.component.textfield.SeugiTextField
-import com.seugi.designsystem.theme.Gray600
-import com.seugi.designsystem.theme.Red500
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.ui.CollectAsSideEffect
 import com.seugi.workspacecreate.model.WorkspaceCreateSideEffect
@@ -75,7 +72,7 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
             topBar = {
                 SeugiTopBar(
                     title = {
-                        Text(text = "새 학교 등록", style = MaterialTheme.typography.titleLarge)
+                        Text(text = "새 학교 등록", style = SeugiTheme.typography.subtitle1)
                     },
                     onNavigationIconClick = {
                         popBackStack()
@@ -113,7 +110,7 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
                         SeugiIconButton(
                             resId = R.drawable.ic_add_fill,
                             onClick = { galleryLauncher.launch("image/*") },
-                            colors = IconButtonDefaults.iconButtonColors(contentColor = Gray600),
+                            colors = IconButtonDefaults.iconButtonColors(contentColor = SeugiTheme.colors.gray600),
                         )
                     }
                 }
@@ -126,11 +123,11 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
                         Row(
                             modifier = Modifier.padding(start = 4.dp),
                         ) {
-                            Text(text = "학교 이름", style = MaterialTheme.typography.titleMedium)
+                            Text(text = "학교 이름", style = SeugiTheme.typography.subtitle2)
                             Text(
                                 text = " *",
-                                style = MaterialTheme.typography.titleMedium,
-                                color = Red500,
+                                style = SeugiTheme.typography.subtitle2,
+                                color = SeugiTheme.colors.red500,
                             )
                         }
                         Spacer(modifier = Modifier.height(4.dp))
@@ -145,8 +142,8 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
                         if (schoolNameError) {
                             Text(
                                 text = "이메일을 입력해 주세요",
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = Red500,
+                                style = SeugiTheme.typography.body1,
+                                color = SeugiTheme.colors.red500,
                                 modifier = Modifier.padding(top = 4.dp),
                             )
                         }

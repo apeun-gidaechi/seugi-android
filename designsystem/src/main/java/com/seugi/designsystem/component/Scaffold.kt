@@ -17,10 +17,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.FabPosition
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,8 +26,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.animation.NoInteractionSource
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.White
+import com.seugi.designsystem.theme.SeugiTheme
 import kotlin.math.roundToInt
 
 enum class DragState {
@@ -50,8 +47,8 @@ fun SeugiRightSideScaffold(
     onSideBarClose: () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     floatingActionButtonPosition: FabPosition = FabPosition.End,
-    containerColor: Color = MaterialTheme.colorScheme.background,
-    contentColor: Color = contentColorFor(containerColor),
+    containerColor: Color = SeugiTheme.colors.white,
+    contentColor: Color = SeugiTheme.colors.black,
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     content: @Composable (PaddingValues) -> Unit,
 ) {
@@ -75,7 +72,7 @@ fun SeugiRightSideScaffold(
             modifier = Modifier
                 .then(sizeModifier)
                 .anchoredDraggable(state, orientation = Orientation.Horizontal)
-                .background(Black.copy(alpha = 0.3f)),
+                .background(SeugiTheme.colors.black.copy(alpha = 0.3f)),
         ) {
             Box(
                 modifier = Modifier
@@ -101,7 +98,7 @@ fun SeugiRightSideScaffold(
                     .padding(
                         start = startPadding,
                     )
-                    .background(White),
+                    .background(SeugiTheme.colors.white),
             ) {
                 sideBar()
             }

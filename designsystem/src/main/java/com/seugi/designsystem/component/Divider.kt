@@ -16,9 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.seugi.designsystem.theme.Gray200
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 
 enum class DividerType {
     WIDTH,
@@ -26,7 +24,7 @@ enum class DividerType {
 }
 
 @Composable
-fun SeugiDivider(modifier: Modifier = Modifier, size: Dp = 1.dp, type: DividerType, color: Color = Gray200) {
+fun SeugiDivider(modifier: Modifier = Modifier, size: Dp = 1.dp, type: DividerType, color: Color = SeugiTheme.colors.gray200) {
     val typeModifier =
         if (type == DividerType.WIDTH) {
             Modifier
@@ -51,7 +49,7 @@ private fun PreviewSeugiDivider() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(White),
+                .background(SeugiTheme.colors.white),
         ) {
             Spacer(modifier = Modifier.height(10.dp))
             SeugiDivider(type = DividerType.WIDTH)

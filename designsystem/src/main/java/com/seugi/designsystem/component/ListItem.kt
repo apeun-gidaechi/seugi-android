@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,12 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.ButtonState
 import com.seugi.designsystem.animation.bounceClick
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray100
-import com.seugi.designsystem.theme.Gray400
-import com.seugi.designsystem.theme.Gray500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 
 sealed class ListItemType {
     data object Normal : ListItemType()
@@ -46,7 +40,7 @@ sealed class ListItemType {
 fun SeugiListItem(modifier: Modifier = Modifier, type: ListItemType = ListItemType.Normal, text: String, onClick: () -> Unit) {
     var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     val animColor by animateColorAsState(
-        targetValue = if (buttonState == ButtonState.Idle) White else Gray100,
+        targetValue = if (buttonState == ButtonState.Idle) SeugiTheme.colors.white else SeugiTheme.colors.gray100,
         label = "",
     )
 
@@ -77,8 +71,8 @@ fun SeugiListItem(modifier: Modifier = Modifier, type: ListItemType = ListItemTy
         ) {
             Text(
                 text = text,
-                color = Black,
-                style = MaterialTheme.typography.titleMedium,
+                color = SeugiTheme.colors.black,
+                style = SeugiTheme.typography.subtitle2,
             )
             Spacer(modifier = Modifier.weight(1f))
             when (type) {
@@ -91,8 +85,8 @@ fun SeugiListItem(modifier: Modifier = Modifier, type: ListItemType = ListItemTy
                 is ListItemType.Description -> {
                     Text(
                         text = type.description,
-                        color = Gray500,
-                        style = MaterialTheme.typography.titleMedium,
+                        color = SeugiTheme.colors.gray500,
+                        style = SeugiTheme.typography.subtitle2,
                     )
                 }
                 is ListItemType.Icon -> {
@@ -100,7 +94,7 @@ fun SeugiListItem(modifier: Modifier = Modifier, type: ListItemType = ListItemTy
                         modifier = Modifier.size(24.dp),
                         painter = painterResource(id = R.drawable.ic_expand_right_line),
                         contentDescription = "오른쪽 방향표",
-                        colorFilter = ColorFilter.tint(Gray400),
+                        colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
                     )
                 }
                 else -> {}

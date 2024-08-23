@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,7 +37,7 @@ fun WaitingJoinScreen(joinToHome: () -> Unit, popBackStack: () -> Unit) {
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 SeugiTopBar(
-                    title = { Text(text = "학교 가입", style = MaterialTheme.typography.titleLarge) },
+                    title = { Text(text = "학교 가입", style = SeugiTheme.typography.subtitle1) },
                     onNavigationIconClick = popBackStack,
                 )
             },
@@ -65,7 +64,7 @@ fun WaitingJoinScreen(joinToHome: () -> Unit, popBackStack: () -> Unit) {
                         contentScale = ContentScale.Fit,
                     )
                     Spacer(modifier = Modifier.height(10.dp))
-                    Text(text = "대구소프트웨어마이스터고등학교", style = MaterialTheme.typography.titleLarge)
+                    Text(text = "대구소프트웨어마이스터고등학교", style = SeugiTheme.typography.subtitle1)
                     Spacer(modifier = Modifier.height(15.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),

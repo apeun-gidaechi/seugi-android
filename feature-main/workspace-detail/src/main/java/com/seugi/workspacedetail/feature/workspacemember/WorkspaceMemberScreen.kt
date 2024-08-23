@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,7 +40,6 @@ import com.seugi.designsystem.component.SeugiSegmentedButton
 import com.seugi.designsystem.component.SeugiSegmentedButtonLayout
 import com.seugi.designsystem.component.SeugiSmallDropDown
 import com.seugi.designsystem.component.SeugiTopBar
-import com.seugi.designsystem.theme.Gray100
 import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -69,7 +67,7 @@ fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(),
                 SeugiTopBar(
 
                     title = {
-                        Text(text = "멤버", style = MaterialTheme.typography.titleLarge)
+                        Text(text = "멤버", style = SeugiTheme.typography.subtitle1)
                     },
                     onNavigationIconClick = {
                         popBackStack()
@@ -106,7 +104,7 @@ fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(),
                         modifier = Modifier
                             .height(48.dp)
                             .fillMaxWidth(),
-                        containerColor = Gray100,
+                        containerColor = SeugiTheme.colors.gray100,
                         shape = RoundedCornerShape(12.dp),
                         indicatorShape = RoundedCornerShape(8.dp),
                         selectedIndex = selectedTabIndex,

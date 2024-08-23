@@ -22,8 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.R
-import com.seugi.designsystem.theme.Gray500
-import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
 
 sealed class CheckBoxType(val size: Dp) {
@@ -57,7 +55,7 @@ fun SeugiCheckbox(modifier: Modifier = Modifier, type: CheckBoxType, checked: Bo
             ),
         painter = painterResource(id = if (checked) R.drawable.ic_check_fill else R.drawable.ic_check_line),
         contentDescription = "checkBox",
-        colorFilter = ColorFilter.tint(if (checked && enabled) Primary500 else Gray500),
+        colorFilter = ColorFilter.tint(if (checked && enabled) SeugiTheme.colors.primary500 else SeugiTheme.colors.gray500),
     )
 }
 

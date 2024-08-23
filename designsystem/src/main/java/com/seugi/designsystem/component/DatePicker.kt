@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,7 +37,6 @@ import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.window.Dialog
@@ -47,12 +45,7 @@ import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiDatePickerDefaults.createCalendarModel
 import com.seugi.designsystem.component.SeugiDatePickerDefaults.defaultLocale
 import com.seugi.designsystem.component.modifier.`if`
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray600
-import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.Transparent
-import com.seugi.designsystem.theme.White
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -78,7 +71,7 @@ fun SeugiDatePickerDialog(
         onDismissRequest = onDismissRequest,
     ) {
         Surface(
-            color = White,
+            color = SeugiTheme.colors.white,
             shape = RoundedCornerShape(28.dp),
         ) {
             SeugiDatePicker(
@@ -148,7 +141,7 @@ private fun SeugiTimePickerHeader(month: CalendarMonth, colors: SeugiDatePickerC
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = "${month.year}년 ${month.month}월",
-            style = MaterialTheme.typography.titleMedium,
+            style = SeugiTheme.typography.subtitle2,
             color = colors.titleContentColor,
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -210,7 +203,7 @@ private fun SeugiTimePickerMonth(
                     Text(
                         modifier = Modifier.weight(1f),
                         text = weekdayName,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = SeugiTheme.typography.body2,
                         color = colors.weeklyContentColor,
                         textAlign = TextAlign.Center,
                     )
@@ -279,7 +272,7 @@ private fun SeugiTimePickerMonth(
                                 Text(
                                     modifier = Modifier,
                                     text = dayNumber.toString(),
-                                    style = MaterialTheme.typography.titleMedium,
+                                    style = SeugiTheme.typography.subtitle2,
                                     color = colors.dayContentColor(
                                         selected = isSelect,
                                         active = isValid,
@@ -294,12 +287,6 @@ private fun SeugiTimePickerMonth(
     }
 }
 
-private fun Dp.getIndicatorOffset(): Int = when {
-    this < 280.dp -> 24
-    this > 310.dp -> 12
-    else -> 10
-}
-
 object SeugiDatePickerDefaults {
 
     @Stable
@@ -311,17 +298,18 @@ object SeugiDatePickerDefaults {
         return LocalConfiguration.current.locales[0]
     }
 
+    @Composable
     @Stable
     fun defaultColor() = SeugiDatePickerColors(
-        containerColor = White,
-        titleContentColor = Black,
-        titleImageColor = Primary500,
-        weeklyContainerColor = Transparent,
-        weeklyContentColor = Gray600,
-        activeDayContentColor = Gray600,
-        unActiveDayContentColor = Gray600.copy(alpha = 0.5f),
-        selectDayContainerColor = Primary500,
-        selectDayContentColor = White,
+        containerColor = SeugiTheme.colors.white,
+        titleContentColor = SeugiTheme.colors.black,
+        titleImageColor = SeugiTheme.colors.primary500,
+        weeklyContainerColor = SeugiTheme.colors.transparent,
+        weeklyContentColor = SeugiTheme.colors.gray600,
+        activeDayContentColor = SeugiTheme.colors.gray600,
+        unActiveDayContentColor = SeugiTheme.colors.gray600.copy(alpha = 0.5f),
+        selectDayContainerColor = SeugiTheme.colors.primary500,
+        selectDayContentColor = SeugiTheme.colors.white,
     )
 }
 

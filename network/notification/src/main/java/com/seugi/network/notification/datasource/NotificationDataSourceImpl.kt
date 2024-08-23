@@ -31,11 +31,10 @@ class NotificationDataSourceImpl @Inject constructor(
         )
     }.body()
 
-    override suspend fun getNotices(workspaceId: String, page: Int, size: Int): BaseResponse<List<NotificationResponse>> =
-        httpClient.get("${SeugiUrl.Notification.ROOT}/$workspaceId") {
-            parameter("page", page)
-            parameter("size", size)
-        }.body()
+    override suspend fun getNotices(workspaceId: String, page: Int, size: Int): BaseResponse<List<NotificationResponse>> = httpClient.get("${SeugiUrl.Notification.ROOT}/$workspaceId") {
+        parameter("page", page)
+        parameter("size", size)
+    }.body()
 
     override suspend fun pathEmoji(emoji: String, notificationId: Long): Response = httpClient.patch(SeugiUrl.Notification.EMOJI) {
         setBody(
@@ -56,6 +55,5 @@ class NotificationDataSourceImpl @Inject constructor(
         )
     }.body()
 
-    override suspend fun deleteNotice(workspaceId: String, notificationId: Long): Response =
-        httpClient.delete("${SeugiUrl.Notification.ROOT}/$workspaceId/$notificationId").body()
+    override suspend fun deleteNotice(workspaceId: String, notificationId: Long): Response = httpClient.delete("${SeugiUrl.Notification.ROOT}/$workspaceId/$notificationId").body()
 }

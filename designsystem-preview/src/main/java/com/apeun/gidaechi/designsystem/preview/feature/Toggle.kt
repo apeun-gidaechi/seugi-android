@@ -12,7 +12,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.seugi.designsystem.component.SeugiToggle
-import com.seugi.designsystem.theme.Black
 import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
@@ -21,7 +20,7 @@ fun Toggle() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Black),
+                .background(SeugiTheme.colors.black),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {

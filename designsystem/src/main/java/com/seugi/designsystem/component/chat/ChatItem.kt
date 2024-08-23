@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -36,13 +35,7 @@ import com.seugi.designsystem.component.GradientPrimary
 import com.seugi.designsystem.component.SeugiAvatar
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray100
-import com.seugi.designsystem.theme.Gray600
-import com.seugi.designsystem.theme.Primary050
-import com.seugi.designsystem.theme.Primary500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 
 val CHAT_SHAPE = 8.dp
 
@@ -168,8 +161,8 @@ private fun SeugiChatItemOthers(
             if (isFirst) {
                 Text(
                     text = userName,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Gray600,
+                    style = SeugiTheme.typography.body1,
+                    color = SeugiTheme.colors.gray600,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
             }
@@ -186,7 +179,7 @@ private fun SeugiChatItemOthers(
                             type = DropShadowType.EvBlack1,
                         )
                         .background(
-                            color = White,
+                            color = SeugiTheme.colors.white,
                             shape = chatShape,
                         )
                         .clip(chatShape)
@@ -201,8 +194,8 @@ private fun SeugiChatItemOthers(
                     Text(
                         modifier = Modifier.padding(12.dp),
                         text = message,
-                        color = Black,
-                        style = MaterialTheme.typography.bodyLarge,
+                        color = SeugiTheme.colors.black,
+                        style = SeugiTheme.typography.body1,
                     )
                 }
                 if (isLast) {
@@ -216,13 +209,13 @@ private fun SeugiChatItemOthers(
                     ) {
                         Text(
                             text = count?.toString() ?: "",
-                            color = Gray600,
-                            style = MaterialTheme.typography.labelLarge,
+                            color = SeugiTheme.colors.gray600,
+                            style = SeugiTheme.typography.caption1,
                         )
                         Text(
                             text = createdAt,
-                            color = Gray600,
-                            style = MaterialTheme.typography.labelMedium,
+                            color = SeugiTheme.colors.gray600,
+                            style = SeugiTheme.typography.caption2,
                         )
                     }
                 }
@@ -233,15 +226,7 @@ private fun SeugiChatItemOthers(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun SeugiChatItemMe(
-    modifier: Modifier = Modifier,
-    isLast: Boolean,
-    message: String,
-    createdAt: String,
-    count: Int?,
-    onChatLongClick: () -> Unit,
-    onDateClick: () -> Unit,
-) {
+private fun SeugiChatItemMe(modifier: Modifier = Modifier, isLast: Boolean, message: String, createdAt: String, count: Int?, onChatLongClick: () -> Unit, onDateClick: () -> Unit) {
     val chatShape = RoundedCornerShape(
         topStart = CHAT_SHAPE,
         topEnd = 0.dp,
@@ -263,13 +248,13 @@ private fun SeugiChatItemMe(
             ) {
                 Text(
                     text = count?.toString() ?: "",
-                    color = Gray600,
-                    style = MaterialTheme.typography.labelLarge,
+                    color = SeugiTheme.colors.gray600,
+                    style = SeugiTheme.typography.caption1,
                 )
                 Text(
                     text = createdAt,
-                    color = Gray600,
-                    style = MaterialTheme.typography.labelMedium,
+                    color = SeugiTheme.colors.gray600,
+                    style = SeugiTheme.typography.caption2,
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
@@ -280,7 +265,7 @@ private fun SeugiChatItemMe(
                     type = DropShadowType.EvBlack1,
                 )
                 .background(
-                    color = Primary500,
+                    color = SeugiTheme.colors.primary500,
                     shape = chatShape,
                 )
                 .clip(chatShape)
@@ -295,8 +280,8 @@ private fun SeugiChatItemMe(
             Text(
                 modifier = Modifier.padding(12.dp),
                 text = message,
-                color = White,
-                style = MaterialTheme.typography.bodyLarge,
+                color = SeugiTheme.colors.white,
+                style = SeugiTheme.typography.body1,
             )
         }
     }
@@ -311,7 +296,7 @@ private fun SeugiChatItemDate(modifier: Modifier, createdAt: String) {
         Text(
             modifier = Modifier
                 .background(
-                    color = Gray100,
+                    color = SeugiTheme.colors.gray100,
                     shape = RoundedCornerShape(24.dp),
                 )
                 .padding(
@@ -319,24 +304,15 @@ private fun SeugiChatItemDate(modifier: Modifier, createdAt: String) {
                     vertical = 8.dp,
                 ),
             text = createdAt,
-            color = Gray600,
-            style = MaterialTheme.typography.labelMedium,
+            color = SeugiTheme.colors.gray600,
+            style = SeugiTheme.typography.caption2,
         )
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun SeugiChatItemAi(
-    modifier: Modifier = Modifier,
-    isFirst: Boolean,
-    isLast: Boolean,
-    message: String,
-    createdAt: String,
-    count: Int?,
-    onChatLongClick: () -> Unit,
-    onDateClick: () -> Unit,
-) {
+private fun SeugiChatItemAi(modifier: Modifier = Modifier, isFirst: Boolean, isLast: Boolean, message: String, createdAt: String, count: Int?, onChatLongClick: () -> Unit, onDateClick: () -> Unit) {
     val chatShape = RoundedCornerShape(
         topStart = 0.dp,
         topEnd = CHAT_SHAPE,
@@ -360,8 +336,8 @@ private fun SeugiChatItemAi(
             if (isFirst) {
                 Text(
                     text = "캣스기",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Gray600,
+                    style = SeugiTheme.typography.body1,
+                    color = SeugiTheme.colors.gray600,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
             }
@@ -378,7 +354,7 @@ private fun SeugiChatItemAi(
                             type = DropShadowType.EvBlack1,
                         )
                         .background(
-                            color = White,
+                            color = SeugiTheme.colors.white,
                             shape = chatShape,
                         )
                         .border(
@@ -398,8 +374,8 @@ private fun SeugiChatItemAi(
                     Text(
                         modifier = Modifier.padding(12.dp),
                         text = message,
-                        color = Black,
-                        style = MaterialTheme.typography.bodyLarge,
+                        color = SeugiTheme.colors.black,
+                        style = SeugiTheme.typography.body1,
                     )
                 }
                 if (isLast) {
@@ -413,13 +389,13 @@ private fun SeugiChatItemAi(
                     ) {
                         Text(
                             text = count?.toString() ?: "",
-                            color = Gray600,
-                            style = MaterialTheme.typography.labelLarge,
+                            color = SeugiTheme.colors.gray600,
+                            style = SeugiTheme.typography.caption1,
                         )
                         Text(
                             text = createdAt,
-                            color = Gray600,
-                            style = MaterialTheme.typography.labelMedium,
+                            color = SeugiTheme.colors.gray600,
+                            style = SeugiTheme.typography.caption2,
                         )
                     }
                 }
@@ -437,7 +413,7 @@ private fun SeugiChatItemElse(modifier: Modifier, message: String) {
         Text(
             modifier = Modifier
                 .background(
-                    color = Gray100,
+                    color = SeugiTheme.colors.gray100,
                     shape = RoundedCornerShape(24.dp),
                 )
                 .padding(
@@ -445,8 +421,8 @@ private fun SeugiChatItemElse(modifier: Modifier, message: String) {
                     vertical = 8.dp,
                 ),
             text = message,
-            color = Gray600,
-            style = MaterialTheme.typography.labelMedium,
+            color = SeugiTheme.colors.gray600,
+            style = SeugiTheme.typography.caption2,
         )
     }
 }
@@ -458,7 +434,7 @@ private fun PreviewSeugiChatItem() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Primary050),
+                .background(SeugiTheme.colors.primary050),
         ) {
             SeugiChatItem(
                 type = ChatItemType.Others(

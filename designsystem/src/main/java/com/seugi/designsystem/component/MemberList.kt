@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,10 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.AlphaIndication
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Primary400
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.Yellow500
 
 @Composable
 fun SeugiMemberList(userName: String, userProfile: String?, isCrown: Boolean = false, onClick: () -> Unit) {
@@ -62,15 +58,15 @@ fun SeugiMemberList(userName: String, userProfile: String?, isCrown: Boolean = f
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = userName,
-                style = MaterialTheme.typography.titleMedium,
-                color = Black,
+                style = SeugiTheme.typography.subtitle2,
+                color = SeugiTheme.colors.black,
             )
             if (isCrown) {
                 Spacer(modifier = Modifier.width(4.dp))
                 SeugiImage(
                     modifier = Modifier.size(24.dp),
                     resId = R.drawable.ic_crown_fill,
-                    colorFilter = ColorFilter.tint(Yellow500),
+                    colorFilter = ColorFilter.tint(SeugiTheme.colors.yellow100),
                 )
             }
         }
@@ -86,14 +82,7 @@ fun SeugiMemberList(userName: String, userProfile: String?, isCrown: Boolean = f
 }
 
 @Composable
-fun SeugiMemberList(
-    modifier: Modifier = Modifier,
-    userName: String,
-    userProfile: String?,
-    isCrown: Boolean = false,
-    checked: Boolean = false,
-    onCheckedChangeListener: (Boolean) -> Unit = {},
-) {
+fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile: String?, isCrown: Boolean = false, checked: Boolean = false, onCheckedChangeListener: (Boolean) -> Unit = {}) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -122,15 +111,15 @@ fun SeugiMemberList(
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = userName,
-                style = MaterialTheme.typography.titleMedium,
-                color = Black,
+                style = SeugiTheme.typography.subtitle2,
+                color = SeugiTheme.colors.black,
             )
             if (isCrown) {
                 Spacer(modifier = Modifier.width(4.dp))
                 SeugiImage(
                     modifier = Modifier.size(24.dp),
                     resId = R.drawable.ic_crown_fill,
-                    colorFilter = ColorFilter.tint(Yellow500),
+                    colorFilter = ColorFilter.tint(SeugiTheme.colors.orange500),
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -169,13 +158,13 @@ fun SeugiMemberList(text: String, onClick: () -> Unit) {
                 modifier = Modifier.size(28.dp),
                 painter = painterResource(id = R.drawable.ic_add_ring_line),
                 contentDescription = "icon add ring line",
-                colorFilter = ColorFilter.tint(Primary400),
+                colorFilter = ColorFilter.tint(SeugiTheme.colors.primary400),
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = text,
-                style = MaterialTheme.typography.titleMedium,
-                color = Primary400,
+                style = SeugiTheme.typography.subtitle2,
+                color = SeugiTheme.colors.primary400,
             )
         }
     }
@@ -203,15 +192,15 @@ fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = userName,
-                style = MaterialTheme.typography.titleMedium,
-                color = Black,
+                style = SeugiTheme.typography.subtitle2,
+                color = SeugiTheme.colors.black,
             )
             if (isCrown) {
                 Spacer(modifier = Modifier.width(4.dp))
                 SeugiImage(
                     modifier = Modifier.size(24.dp),
                     resId = R.drawable.ic_crown_fill,
-                    colorFilter = ColorFilter.tint(Yellow500),
+                    colorFilter = ColorFilter.tint(SeugiTheme.colors.orange500),
                 )
             }
             Spacer(modifier = Modifier.weight(1f))

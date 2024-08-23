@@ -19,7 +19,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
@@ -45,15 +44,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.animation.NoInteractionSource
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray200
-import com.seugi.designsystem.theme.Gray300
-import com.seugi.designsystem.theme.Gray400
-import com.seugi.designsystem.theme.Primary500
-import com.seugi.designsystem.theme.Red500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.Transparent
-import com.seugi.designsystem.theme.White
 
 /**
  * Seugi TextField
@@ -76,18 +67,18 @@ fun SeugiCodeTextField(
     onValueChange: (String) -> Unit,
     isError: Boolean = false,
     enabled: Boolean = true,
-    textStyle: TextStyle = MaterialTheme.typography.titleMedium,
+    textStyle: TextStyle = SeugiTheme.typography.subtitle2,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: TextFieldColors = TextFieldDefaults.colors(
-        focusedTextColor = Black,
-        focusedContainerColor = White,
-        focusedIndicatorColor = Transparent,
-        unfocusedContainerColor = White,
-        unfocusedTextColor = Black,
-        unfocusedIndicatorColor = Transparent,
-        disabledIndicatorColor = Transparent,
-        disabledTextColor = Gray400,
-        disabledContainerColor = White,
+        focusedTextColor = SeugiTheme.colors.black,
+        focusedContainerColor = SeugiTheme.colors.white,
+        focusedIndicatorColor = SeugiTheme.colors.transparent,
+        unfocusedContainerColor = SeugiTheme.colors.white,
+        unfocusedTextColor = SeugiTheme.colors.black,
+        unfocusedIndicatorColor = SeugiTheme.colors.transparent,
+        disabledIndicatorColor = SeugiTheme.colors.transparent,
+        disabledTextColor = SeugiTheme.colors.gray400,
+        disabledContainerColor = SeugiTheme.colors.white,
     ),
 ) {
     var isFocused by remember { mutableStateOf(false) }
@@ -114,7 +105,7 @@ fun SeugiCodeTextField(
             enabled = enabled,
             textStyle = textStyle,
             singleLine = true,
-            cursorBrush = SolidColor(Primary500),
+            cursorBrush = SolidColor(SeugiTheme.colors.primary500),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             keyboardActions = KeyboardActions(
                 onDone = {
@@ -131,10 +122,11 @@ fun SeugiCodeTextField(
                                 .border(
                                     width = 1.dp,
                                     color = when {
-                                        isError -> Red500
-                                        isFocused && value.length == index || isFocused && limit - index == 1 && value.length == limit -> Primary500
-                                        enabled -> Gray300
-                                        else -> Gray200
+                                        isError -> SeugiTheme.colors.red500
+                                        isFocused && value.length == index || isFocused && limit - index == 1 &&
+                                            value.length == limit -> SeugiTheme.colors.primary500
+                                        enabled -> SeugiTheme.colors.gray300
+                                        else -> SeugiTheme.colors.gray200
                                     },
                                     shape = shape,
                                 ),
@@ -168,18 +160,18 @@ fun SeugiCodeTextField(
     onValueChange: (TextFieldValue) -> Unit,
     isError: Boolean = false,
     enabled: Boolean = true,
-    textStyle: TextStyle = MaterialTheme.typography.titleMedium,
+    textStyle: TextStyle = SeugiTheme.typography.subtitle2,
     shape: Shape = RoundedCornerShape(12.dp),
     colors: TextFieldColors = TextFieldDefaults.colors(
-        focusedTextColor = Black,
-        focusedContainerColor = White,
-        focusedIndicatorColor = Transparent,
-        unfocusedContainerColor = White,
-        unfocusedTextColor = Black,
-        unfocusedIndicatorColor = Transparent,
-        disabledIndicatorColor = Transparent,
-        disabledTextColor = Gray400,
-        disabledContainerColor = White,
+        focusedTextColor = SeugiTheme.colors.black,
+        focusedContainerColor = SeugiTheme.colors.white,
+        focusedIndicatorColor = SeugiTheme.colors.transparent,
+        unfocusedContainerColor = SeugiTheme.colors.white,
+        unfocusedTextColor = SeugiTheme.colors.black,
+        unfocusedIndicatorColor = SeugiTheme.colors.transparent,
+        disabledIndicatorColor = SeugiTheme.colors.transparent,
+        disabledTextColor = SeugiTheme.colors.gray400,
+        disabledContainerColor = SeugiTheme.colors.white,
     ),
 ) {
     var isFocused by remember { mutableStateOf(false) }
@@ -206,7 +198,7 @@ fun SeugiCodeTextField(
             enabled = enabled,
             textStyle = textStyle,
             singleLine = true,
-            cursorBrush = SolidColor(Primary500),
+            cursorBrush = SolidColor(SeugiTheme.colors.primary500),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             keyboardActions = KeyboardActions(
                 onDone = {
@@ -224,10 +216,10 @@ fun SeugiCodeTextField(
                                 .border(
                                     width = 1.dp,
                                     color = when {
-                                        isError -> Red500
-                                        isFocused && value.text.length == index || isFocused && limit - index == 1 && value.text.length == limit -> Primary500
-                                        enabled -> Gray300
-                                        else -> Gray200
+                                        isError -> SeugiTheme.colors.red500
+                                        isFocused && value.text.length == index || isFocused && limit - index == 1 && value.text.length == limit -> SeugiTheme.colors.primary500
+                                        enabled -> SeugiTheme.colors.gray300
+                                        else -> SeugiTheme.colors.gray200
                                     },
                                     shape = shape,
                                 )

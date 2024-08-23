@@ -15,19 +15,17 @@ import javax.inject.Inject
 class GroupChatDataSourceImpl @Inject constructor(
     private val httpClient: HttpClient,
 ) : GroupChatDataSource {
-    override suspend fun getGroupRoomList(workspaceId: String): BaseResponse<List<ChatRoomResponse>> =
-        httpClient.get("${SeugiUrl.GroupChat.LOAD_ALL}/$workspaceId") {
-        }.body()
+    override suspend fun getGroupRoomList(workspaceId: String): BaseResponse<List<ChatRoomResponse>> = httpClient.get("${SeugiUrl.GroupChat.LOAD_ALL}/$workspaceId") {
+    }.body()
 
-    override suspend fun createChat(workspaceId: String, roomName: String, joinUsers: List<Int>, chatRoomImg: String): BaseResponse<String> =
-        httpClient.post(SeugiUrl.GroupChat.CREATE) {
-            setBody(
-                GroupChatCreateRequest(
-                    workspaceId = workspaceId,
-                    roomName = roomName,
-                    joinUsers = joinUsers,
-                    chatRoomImg = chatRoomImg,
-                ),
-            )
-        }.body()
+    override suspend fun createChat(workspaceId: String, roomName: String, joinUsers: List<Int>, chatRoomImg: String): BaseResponse<String> = httpClient.post(SeugiUrl.GroupChat.CREATE) {
+        setBody(
+            GroupChatCreateRequest(
+                workspaceId = workspaceId,
+                roomName = roomName,
+                joinUsers = joinUsers,
+                chatRoomImg = chatRoomImg,
+            ),
+        )
+    }.body()
 }

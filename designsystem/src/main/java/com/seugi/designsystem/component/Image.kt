@@ -21,13 +21,7 @@ fun SeugiImage(modifier: Modifier = Modifier, url: String, contentDescription: S
 }
 
 @Composable
-fun SeugiImage(
-    modifier: Modifier = Modifier,
-    @DrawableRes resId: Int,
-    contentDescription: String? = null,
-    colorFilter: ColorFilter? = null,
-    alpha: Float = DefaultAlpha,
-) {
+fun SeugiImage(modifier: Modifier = Modifier, @DrawableRes resId: Int, contentDescription: String? = null, colorFilter: ColorFilter? = null, alpha: Float = DefaultAlpha) {
     Image(
         modifier = modifier,
         painter = painterResource(id = resId),

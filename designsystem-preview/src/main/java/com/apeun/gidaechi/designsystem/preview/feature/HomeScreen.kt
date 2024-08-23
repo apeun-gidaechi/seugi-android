@@ -12,14 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.seugi.designsystem.preview.NavRoot
-import com.seugi.designsystem.theme.Black
+import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -165,14 +164,14 @@ private fun HomeButton(text: String, onClick: () -> Unit) {
                 )
                 .border(
                     width = 1.dp,
-                    color = Black,
+                    color = SeugiTheme.colors.black,
                     shape = RoundedCornerShape(8.dp),
                 ),
         ) {
             Text(
                 text = text,
-                style = MaterialTheme.typography.titleMedium,
-                color = Black,
+                style = SeugiTheme.typography.subtitle2,
+                color = SeugiTheme.colors.black,
             )
         }
         Spacer(modifier = Modifier.height(20.dp))

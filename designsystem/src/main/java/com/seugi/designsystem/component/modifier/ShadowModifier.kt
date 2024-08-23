@@ -19,7 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 
 sealed class DropShadowType(
     val blur: Dp,
@@ -87,21 +86,21 @@ private fun ShadowModifierPreview() {
                 modifier = Modifier
                     .size(50.dp)
                     .dropShadow(DropShadowType.EvBlack1)
-                    .background(White),
+                    .background(SeugiTheme.colors.white),
             )
             Spacer(modifier = Modifier.height(30.dp))
             Box(
                 modifier = Modifier
                     .size(50.dp)
                     .dropShadow(DropShadowType.EvBlack2)
-                    .background(White),
+                    .background(SeugiTheme.colors.white),
             )
             Spacer(modifier = Modifier.height(30.dp))
             Box(
                 modifier = Modifier
                     .size(50.dp)
                     .dropShadow(DropShadowType.EvBlack3)
-                    .background(White),
+                    .background(SeugiTheme.colors.white),
             )
         }
     }

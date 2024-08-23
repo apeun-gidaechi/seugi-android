@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,8 +21,6 @@ import com.seugi.designsystem.animation.NoInteractionSource
 import com.seugi.designsystem.component.AvatarType
 import com.seugi.designsystem.component.SeugiAvatar
 import com.seugi.designsystem.component.SeugiBadge
-import com.seugi.designsystem.theme.Black
-import com.seugi.designsystem.theme.Gray500
 import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
@@ -67,15 +64,15 @@ fun SeugiChatList(
                     ) {
                         Text(
                             text = userName,
-                            style = MaterialTheme.typography.titleMedium,
-                            color = Black,
+                            style = SeugiTheme.typography.subtitle2,
+                            color = SeugiTheme.colors.black,
                         )
                         if (memberCount != null) {
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
                                 text = memberCount.toString(),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = Gray500,
+                                style = SeugiTheme.typography.body2,
+                                color = SeugiTheme.colors.gray500,
                             )
                         }
                     }
@@ -84,8 +81,8 @@ fun SeugiChatList(
                         text = message,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Black,
+                        style = SeugiTheme.typography.body2,
+                        color = SeugiTheme.colors.black,
                     )
                 }
             }
@@ -95,8 +92,8 @@ fun SeugiChatList(
             ) {
                 Text(
                     text = createdAt,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Gray500,
+                    style = SeugiTheme.typography.body2,
+                    color = SeugiTheme.colors.gray500,
                 )
                 if (count != null && count != 0) {
                     Spacer(modifier = Modifier.height(4.dp))

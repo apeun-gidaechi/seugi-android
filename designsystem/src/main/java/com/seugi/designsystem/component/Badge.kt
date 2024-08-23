@@ -10,15 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.seugi.designsystem.theme.Orange500
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.designsystem.theme.White
 
 /**
  * Seugi Badge
@@ -33,7 +30,7 @@ fun SeugiBadge(modifier: Modifier = Modifier, count: Int? = null) {
             modifier = modifier
                 .size(12.dp)
                 .background(
-                    color = Orange500,
+                    color = SeugiTheme.colors.yellow100,
                     shape = CircleShape,
                 ),
         )
@@ -41,7 +38,7 @@ fun SeugiBadge(modifier: Modifier = Modifier, count: Int? = null) {
         Box(
             modifier = modifier
                 .background(
-                    color = Orange500,
+                    color = SeugiTheme.colors.yellow100,
                     shape = RoundedCornerShape(10.dp),
                 ),
         ) {
@@ -51,8 +48,8 @@ fun SeugiBadge(modifier: Modifier = Modifier, count: Int? = null) {
                     vertical = 2.dp,
                 ),
                 text = if (count > 300) "300+" else count.toString(),
-                color = White,
-                style = MaterialTheme.typography.labelLarge,
+                color = SeugiTheme.colors.white,
+                style = SeugiTheme.typography.caption1,
             )
         }
     }

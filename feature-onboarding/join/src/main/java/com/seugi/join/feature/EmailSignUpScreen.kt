@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +21,6 @@ import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiPasswordTextField
 import com.seugi.designsystem.component.textfield.SeugiTextField
-import com.seugi.designsystem.theme.Red500
 import com.seugi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,7 +36,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 SeugiTopBar(
-                    title = { Text(text = "회원가입", style = MaterialTheme.typography.titleLarge) },
+                    title = { Text(text = "회원가입", style = SeugiTheme.typography.subtitle1) },
                     onNavigationIconClick = popBackStack,
                 )
             },
@@ -57,11 +55,11 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                     Row(
                         modifier = Modifier.padding(start = 4.dp),
                     ) {
-                        Text(text = "이름", style = MaterialTheme.typography.titleMedium)
+                        Text(text = "이름", style = SeugiTheme.typography.subtitle2)
                         Text(
                             text = " *",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = Red500,
+                            style = SeugiTheme.typography.subtitle2,
+                            color = SeugiTheme.colors.red500,
                         )
                     }
                     SeugiTextField(
@@ -74,8 +72,8 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                     if (error == "blank_name") {
                         Text(
                             text = "이름을 입력해 주세요",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Red500,
+                            style = SeugiTheme.typography.body1,
+                            color = SeugiTheme.colors.red500,
                             modifier = Modifier.padding(start = 4.dp),
                         )
                     }
@@ -86,11 +84,11 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                     Row(
                         modifier = Modifier.padding(start = 4.dp),
                     ) {
-                        Text(text = "이메일", style = MaterialTheme.typography.titleMedium)
+                        Text(text = "이메일", style = SeugiTheme.typography.subtitle2)
                         Text(
                             text = " *",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = Red500,
+                            style = SeugiTheme.typography.subtitle2,
+                            color = SeugiTheme.colors.red500,
                         )
                     }
                     SeugiTextField(
@@ -103,8 +101,8 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                     if (error == "blank_email" || error == "email_fomat_is_not") {
                         Text(
                             text = if (error == "blank_email") "이메일을 입력해주세요" else if (error == "email_fomat_is_not")"이메일 형식을 맞춰주세요" else "",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Red500,
+                            style = SeugiTheme.typography.body1,
+                            color = SeugiTheme.colors.red500,
                             modifier = Modifier.padding(start = 4.dp),
                         )
                     }
@@ -115,11 +113,11 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                     Row(
                         modifier = Modifier.padding(start = 4.dp),
                     ) {
-                        Text(text = "비밀번호", style = MaterialTheme.typography.titleMedium)
+                        Text(text = "비밀번호", style = SeugiTheme.typography.subtitle2)
                         Text(
                             text = " *",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = Red500,
+                            style = SeugiTheme.typography.subtitle2,
+                            color = SeugiTheme.colors.red500,
                         )
                     }
                     SeugiPasswordTextField(
@@ -131,8 +129,8 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                     if (error == "blank_password") {
                         Text(
                             text = "비밀번호를 입력해 주세요",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Red500,
+                            style = SeugiTheme.typography.body1,
+                            color = SeugiTheme.colors.red500,
                             modifier = Modifier.padding(start = 4.dp),
                         )
                     }
@@ -143,11 +141,11 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                     Row(
                         modifier = Modifier.padding(start = 4.dp),
                     ) {
-                        Text(text = "비밀번호 확인", style = MaterialTheme.typography.titleMedium)
+                        Text(text = "비밀번호 확인", style = SeugiTheme.typography.subtitle2)
                         Text(
                             text = " *",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = Red500,
+                            style = SeugiTheme.typography.subtitle2,
+                            color = SeugiTheme.colors.red500,
                         )
                     }
                     SeugiPasswordTextField(
@@ -159,8 +157,8 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                     if (error == "different_password") {
                         Text(
                             text = "비밀번호가 다릅니다",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Red500,
+                            style = SeugiTheme.typography.body1,
+                            color = SeugiTheme.colors.red500,
                             modifier = Modifier.padding(start = 4.dp),
                         )
                     }
