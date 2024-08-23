@@ -69,7 +69,7 @@ internal fun OAuthSignUpScreen(popBackStack: () -> Unit, navigateToEmailSignUp: 
                             text = "이름을 입력해 주세요",
                             style = SeugiTheme.typography.body1,
                             color = SeugiTheme.colors.red500,
-                            modifier = Modifier.padding(start = 4.dp),
+                            modifier = Modifier.padding(top = 4.dp),
                         )
                     }
                 }
