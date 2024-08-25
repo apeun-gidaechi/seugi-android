@@ -1,13 +1,17 @@
 package com.seugi.data.meal.repository
 
+import android.util.Log
 import com.seugi.common.model.Result
 import com.seugi.common.model.asResult
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
+import com.seugi.common.utiles.isEmptyGetNull
 import com.seugi.common.utiles.toNotSpaceString
 import com.seugi.data.meal.MealRepository
+import com.seugi.data.meal.mapper.toEntity
 import com.seugi.data.meal.mapper.toModels
 import com.seugi.data.meal.response.MealModel
+import com.seugi.local.room.dao.MealDao
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.meal.MealDataSource
 import kotlinx.collections.immutable.ImmutableList
@@ -21,17 +25,41 @@ import javax.inject.Inject
 
 class MealRepositoryImpl @Inject constructor(
     private val dataSource: MealDataSource,
+    private val mealDao: MealDao,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher
 ): MealRepository {
     override suspend fun getDateMeal(
         workspaceId: String,
         date: LocalDate,
     ): Flow<Result<ImmutableList<MealModel>>> = flow {
-        val response = dataSource.getDateMeal(
-            workspaceId = workspaceId,
-            date = date.toNotSpaceString()
-        ).safeResponse()
-        emit(response.toModels().toImmutableList())
+        val response: ImmutableList<MealModel> =
+            mealDao.getDateMeals(
+                workspaceId = workspaceId,
+                date = date.toNotSpaceString()
+            )
+                .apply {
+                    Log.d("TAG", "getDateMeal: ${this.toString()}")
+                }
+                ?.isEmptyGetNull()
+                ?.toModels()
+                .apply {
+                    Log.d("TAG", "getDateMeal: ${this.toString()}")
+                }
+                ?.toImmutableList()
+                .apply {
+                    Log.d("TAG", "getDateMeal: ${this.toString()}")
+                }
+                ?:
+            dataSource.getDateMeal(
+                workspaceId = workspaceId,
+                date = date.toNotSpaceString()
+            ).safeResponse()
+                .toModels()
+                .toImmutableList().also {
+                    mealDao.insert(it.toEntity())
+                }
+        Log.d("TAG", "getDateMeal: $response")
+        emit(response)
     }
         .flowOn(dispatcher)
         .asResult()

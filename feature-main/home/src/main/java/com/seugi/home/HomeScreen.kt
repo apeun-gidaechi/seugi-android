@@ -309,7 +309,8 @@ internal fun HomeScreen(
                                 }
                                 if (item == null) {
                                     Column(
-                                        modifier = Modifier.fillMaxWidth()
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
                                         SeugiImage(
                                             modifier = Modifier.size(64.dp),

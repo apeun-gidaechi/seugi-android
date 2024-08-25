@@ -44,3 +44,6 @@ fun LocalDate.toNotSpaceString(): String =
 fun String.toKotlinLocalDate(): LocalDate {
     return LocalDate(substring(0, 4).toInt(), substring(4, 6).toInt(), substring(6).toInt() )
 }
+
+fun <T> List<T>.isEmptyGetNull(): List<T>? =
+    this.ifEmpty { null }
