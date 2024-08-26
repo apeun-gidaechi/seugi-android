@@ -10,5 +10,5 @@ data class MealModel(
     val menu: ImmutableList<String>,
     val calorie: String,
     val mealInfo: ImmutableList<String>,
-    val mealDate: LocalDate
+    val mealDate: LocalDate,
 )

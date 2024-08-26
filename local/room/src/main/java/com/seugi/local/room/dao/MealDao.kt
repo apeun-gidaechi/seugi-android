@@ -4,9 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import com.seugi.local.room.base.BaseDao
 import com.seugi.local.room.model.MealEntity
-import com.seugi.local.room.model.TokenEntity
 import com.seugi.local.room.util.SeugiTable
-import java.time.LocalDate
 
 @Dao
 interface MealDao : BaseDao<MealEntity> {

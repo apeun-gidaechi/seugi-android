@@ -11,14 +11,10 @@ import io.ktor.client.request.parameter
 import javax.inject.Inject
 
 class MealDataSourceImpl @Inject constructor(
-    private val httpClient: HttpClient
-): MealDataSource {
-    override suspend fun getDateMeal(
-        workspaceId: String,
-        date: String,
-    ): BaseResponse<List<MealResponse>> =
-        httpClient.get(SeugiUrl.Meal.ROOT) {
-            parameter("workspaceId", workspaceId)
-            parameter("date", date)
-        }.body()
+    private val httpClient: HttpClient,
+) : MealDataSource {
+    override suspend fun getDateMeal(workspaceId: String, date: String): BaseResponse<List<MealResponse>> = httpClient.get(SeugiUrl.Meal.ROOT) {
+        parameter("workspaceId", workspaceId)
+        parameter("date", date)
+    }.body()
 }

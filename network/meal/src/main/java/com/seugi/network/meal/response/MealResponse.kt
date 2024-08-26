@@ -7,5 +7,5 @@ data class MealResponse(
     val menu: List<String>,
     val calorie: String,
     val mealInfo: List<String>,
-    val mealDate: String
+    val mealDate: String,
 )

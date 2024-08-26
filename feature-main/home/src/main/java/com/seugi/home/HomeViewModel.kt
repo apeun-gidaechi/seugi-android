@@ -13,6 +13,7 @@ import com.seugi.home.model.CommonUiState
 import com.seugi.home.model.HomeUiMealState
 import com.seugi.home.model.HomeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDate
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
@@ -23,13 +24,12 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.toKotlinLocalDate
-import java.time.LocalDate
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val workspaceRepository: WorkspaceRepository,
     private val mealRepository: MealRepository,
-    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher
+    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeUiState())
@@ -39,10 +39,12 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
 //            val workspaces = workspaceRepository.getAllWorkspaces()
 
-            val workspaces = listOf(WorkspaceModel(
-                workspaceId = "669e339593e10f4f59f8c583",
-                workspaceName = "대구 소프트웨어 마이스터 고등학교"
-            ))
+            val workspaces = listOf(
+                WorkspaceModel(
+                    workspaceId = "669e339593e10f4f59f8c583",
+                    workspaceName = "대구 소프트웨어 마이스터 고등학교",
+                ),
+            )
             delay(2000)
 
             if (workspaces.isEmpty()) {
@@ -127,13 +129,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun loadMeal(
-        workspaceId: String
-    ) = viewModelScope.launch(dispatcher) {
+    private fun loadMeal(workspaceId: String) = viewModelScope.launch(dispatcher) {
         launch {
             mealRepository.getDateMeal(
                 workspaceId = workspaceId,
-                date = LocalDate.now().toKotlinLocalDate()
+                date = LocalDate.now().toKotlinLocalDate(),
             ).collect {
                 when (it) {
                     is Result.Success -> {
@@ -149,14 +149,14 @@ class HomeViewModel @Inject constructor(
 
                         _state.update { state ->
                             state.copy(
-                                mealState = CommonUiState.Success(homeUiMealState)
+                                mealState = CommonUiState.Success(homeUiMealState),
                             )
                         }
                     }
                     is Result.Error -> {
                         _state.update { state ->
                             state.copy(
-                                mealState = CommonUiState.Error
+                                mealState = CommonUiState.Error,
                             )
                         }
                         it.throwable.printStackTrace()

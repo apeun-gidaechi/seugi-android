@@ -13,7 +13,7 @@ import com.seugi.local.room.model.WorkspaceEntity
     entities = [
         TokenEntity::class,
         WorkspaceEntity::class,
-        MealEntity::class
+        MealEntity::class,
     ],
     version = 1,
     exportSchema = false,

@@ -23,5 +23,5 @@ sealed interface CommonUiState<out T> {
 data class HomeUiMealState(
     val breakfast: MealModel? = null,
     val lunch: MealModel? = null,
-    val dinner: MealModel? = null
+    val dinner: MealModel? = null,
 )

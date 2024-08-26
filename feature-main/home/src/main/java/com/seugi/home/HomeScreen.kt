@@ -302,7 +302,7 @@ internal fun HomeScreen(
                                     .pointerInput(Unit) { },
                                 state = pagerState,
                             ) { index ->
-                                val item = when(index) {
+                                val item = when (index) {
                                     0 -> mealState.data.breakfast
                                     1 -> mealState.data.lunch
                                     else -> mealState.data.dinner
@@ -310,7 +310,7 @@ internal fun HomeScreen(
                                 if (item == null) {
                                     Column(
                                         modifier = Modifier.fillMaxWidth(),
-                                        horizontalAlignment = Alignment.CenterHorizontally
+                                        horizontalAlignment = Alignment.CenterHorizontally,
                                     ) {
                                         SeugiImage(
                                             modifier = Modifier.size(64.dp),
@@ -327,19 +327,19 @@ internal fun HomeScreen(
                                     Column {
                                         Row(
                                             modifier = Modifier.fillMaxWidth(),
-                                            verticalAlignment = Alignment.CenterVertically
+                                            verticalAlignment = Alignment.CenterVertically,
                                         ) {
                                             Box(
                                                 modifier = Modifier.background(
                                                     color = SeugiTheme.colors.primary500,
-                                                    shape = RoundedCornerShape(34.dp)
+                                                    shape = RoundedCornerShape(34.dp),
                                                 ),
-                                                contentAlignment = Alignment.Center
+                                                contentAlignment = Alignment.Center,
                                             ) {
                                                 Text(
                                                     modifier = Modifier.padding(
                                                         vertical = 4.dp,
-                                                        horizontal = 10.dp
+                                                        horizontal = 10.dp,
                                                     ),
                                                     text = when (index) {
                                                         0 -> "아침"
@@ -361,7 +361,7 @@ internal fun HomeScreen(
 
                                         for (i in item.menu.indices step 2) {
                                             Row(
-                                                modifier = Modifier.fillMaxWidth()
+                                                modifier = Modifier.fillMaxWidth(),
                                             ) {
                                                 Text(
                                                     modifier = Modifier.weight(1f),
@@ -371,7 +371,7 @@ internal fun HomeScreen(
                                                 )
                                                 Text(
                                                     modifier = Modifier.weight(1f),
-                                                    text = item.menu.getOrNull(i+1) ?: "",
+                                                    text = item.menu.getOrNull(i + 1) ?: "",
                                                     style = SeugiTheme.typography.body2,
                                                     color = SeugiTheme.colors.gray700,
                                                 )

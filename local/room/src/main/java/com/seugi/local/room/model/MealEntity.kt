@@ -13,5 +13,5 @@ data class MealEntity(
     val menu: String,
     val calorie: String,
     val mealInfo: String,
-    val mealDate: String
+    val mealDate: String,
 )
