@@ -78,11 +78,18 @@ fun JoinSuccessScreen(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    SeugiRoundedCircleImage(
-                        size = Size.Medium,
-                        image = workspaceImageUrl,
-                        onClick = {},
-                    )
+                    if (workspaceImageUrl == "basics"){
+                        SeugiRoundedCircleImage(
+                            size = Size.Medium,
+                            onClick = {}
+                        )
+                    }else {
+                        SeugiRoundedCircleImage(
+                            size = Size.Medium,
+                            image = workspaceImageUrl,
+                            onClick = {},
+                        )
+                    }
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(text = workspaceName, style = SeugiTheme.typography.subtitle1)
                     Text(
