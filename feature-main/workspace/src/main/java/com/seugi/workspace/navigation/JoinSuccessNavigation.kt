@@ -21,7 +21,7 @@ fun NavController.navigateToJoinSuccess(
     teacherCount: Int,
     role: String,
 ) {
-    val encodedWorkspaceImageUrl = Uri.encode(workspaceImageUrl)
+    val encodedWorkspaceImageUrl = if (workspaceImageUrl.isEmpty()) "basics" else Uri.encode(workspaceImageUrl)
     navigate(
         "$JOIN_SUCCESS/$schoolCode/$workspaceId/$workspaceName/$encodedWorkspaceImageUrl/$studentCount/$teacherCount/$role",
         navOptions,
