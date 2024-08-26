@@ -2,30 +2,49 @@ package com.seugi.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.seugi.common.model.Result
+import com.seugi.common.utiles.DispatcherType
+import com.seugi.common.utiles.SeugiDispatcher
+import com.seugi.data.meal.MealRepository
+import com.seugi.data.meal.response.MealType
 import com.seugi.data.workspace.WorkspaceRepository
+import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.home.model.CommonUiState
+import com.seugi.home.model.HomeUiMealState
 import com.seugi.home.model.HomeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDate
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.toKotlinLocalDate
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val workspaceRepository: WorkspaceRepository,
+    private val mealRepository: MealRepository,
+    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeUiState())
     val state = _state.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            val workspaces = workspaceRepository.getAllWorkspaces()
+        viewModelScope.launch(dispatcher) {
+//            val workspaces = workspaceRepository.getAllWorkspaces()
 
+            val workspaces = listOf(
+                WorkspaceModel(
+                    workspaceId = "669e339593e10f4f59f8c583",
+                    workspaceName = "대구 소프트웨어 마이스터 고등학교",
+                ),
+            )
             delay(2000)
 
             if (workspaces.isEmpty()) {
@@ -47,13 +66,6 @@ class HomeViewModel @Inject constructor(
                         showDialog = false,
                         schoolState = CommonUiState.Success("대구 소프트웨어 마이스터 고등학교"),
                         timeScheduleState = CommonUiState.Success(listOf("진로", "소공", "소공", "인공지능 수학", "한국사", "실용영어", "웹프").toImmutableList()),
-                        mealState = CommonUiState.Success(
-                            Triple(
-                                first = Pair("쇠고기 야채죽\n연유프렌치토스트\n배추김치\n포도\n허니초코크런치시리얼+우유", "602Kcal"),
-                                second = Pair("추가밥\n매콤로제해물파스타\n#브리오슈수제버거\n모듬야채피클\n맥케인\n망고사고", "1,443Kcal"),
-                                third = Pair("현미밥\n돼지국밥\n삼색나물무침\n-오징어야채볶음\n석박지", "774Kcal"),
-                            ),
-                        ),
                         catSeugiState = CommonUiState.Success(listOf("급식에 복어가 나오는 날이 언제...", "우리 학교 대회 담당하는 분이 누구...").toImmutableList()),
                         schoolScheduleState = CommonUiState.Success(
                             listOf(
@@ -64,6 +76,7 @@ class HomeViewModel @Inject constructor(
                         ),
                     )
                 }
+                loadMeal(workspaces.first().workspaceId)
             }
         }
     }
@@ -86,13 +99,6 @@ class HomeViewModel @Inject constructor(
                     showDialog = false,
                     schoolState = CommonUiState.Success("대구 소프트웨어 마이스터 고등학교"),
                     timeScheduleState = CommonUiState.Success(listOf("진로", "소공", "소공", "인공지능 수학", "한국사", "실용영어", "웹프").toImmutableList()),
-                    mealState = CommonUiState.Success(
-                        Triple(
-                            first = Pair("쇠고기 야채죽\n연유프렌치토스트\n배추김치\n포도\n허니초코크런치시리얼+우유", "602Kcal"),
-                            second = Pair("추가밥\n매콤로제해물파스타\n#브리오슈수제버거\n모듬야채피클\n맥케인\n망고사고", "1,443Kcal"),
-                            third = Pair("현미밥\n돼지국밥\n삼색나물무침\n-오징어야채볶음\n석박지", "774Kcal"),
-                        ),
-                    ),
                     catSeugiState = CommonUiState.Success(listOf("급식에 복어가 나오는 날이 언제...", "우리 학교 대회 담당하는 분이 누구...").toImmutableList()),
                     schoolScheduleState = CommonUiState.Success(
                         listOf(
@@ -109,13 +115,6 @@ class HomeViewModel @Inject constructor(
                     showDialog = false,
                     schoolState = CommonUiState.Success("한국 디지털미디어 고등학교"),
                     timeScheduleState = CommonUiState.Success(listOf("국어", "체육", "회계 원리", "컴퓨터시스템", "중국어", "수학Ⅰ", "영어").toImmutableList()),
-                    mealState = CommonUiState.Success(
-                        Triple(
-                            first = Pair("급식이 없습니다.", "0Kcal"),
-                            second = Pair("낙지잠발라야볶음밥 \n고르곤졸라피자*개별꿀 \n계란파국 \n양상추샐러드*오리엔탈드레싱 \n배추김치 \n망고파인애플플리또", "531.6Kcal"),
-                            third = Pair("급식이 없습니다.", "0Kcal"),
-                        ),
-                    ),
                     catSeugiState = CommonUiState.Success(listOf("급식에 복어가 나오는 날이 언제...", "우리 학교 대회 담당하는 분이 누구...").toImmutableList()),
                     schoolScheduleState = CommonUiState.Success(
                         listOf(
@@ -126,6 +125,44 @@ class HomeViewModel @Inject constructor(
                     ),
 
                 )
+            }
+        }
+    }
+
+    private fun loadMeal(workspaceId: String) = viewModelScope.launch(dispatcher) {
+        launch {
+            mealRepository.getDateMeal(
+                workspaceId = workspaceId,
+                date = LocalDate.now().toKotlinLocalDate(),
+            ).collect {
+                when (it) {
+                    is Result.Success -> {
+                        var homeUiMealState = HomeUiMealState()
+                        it.data.forEach {
+                            when (it.mealType) {
+                                MealType.BREAKFAST -> homeUiMealState = homeUiMealState.copy(breakfast = it)
+
+                                MealType.LUNCH -> homeUiMealState = homeUiMealState.copy(lunch = it)
+                                MealType.DINNER -> homeUiMealState = homeUiMealState.copy(dinner = it)
+                            }
+                        }
+
+                        _state.update { state ->
+                            state.copy(
+                                mealState = CommonUiState.Success(homeUiMealState),
+                            )
+                        }
+                    }
+                    is Result.Error -> {
+                        _state.update { state ->
+                            state.copy(
+                                mealState = CommonUiState.Error,
+                            )
+                        }
+                        it.throwable.printStackTrace()
+                    }
+                    is Result.Loading -> {}
+                }
             }
         }
     }

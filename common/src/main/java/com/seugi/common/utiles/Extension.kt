@@ -5,6 +5,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
+import kotlinx.datetime.LocalDate
 
 fun LocalDateTime.toDeviceLocalDateTime(): LocalDateTime = this.atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
 
@@ -34,3 +35,13 @@ fun LocalDateTime.toTimeString(): String {
     val result = "$formattedDate $dayOfWeek"
     return result
 }
+
+fun LocalDate.toNotSpaceString(): String = "${this.year}" +
+    monthNumber.toString().padStart(2, '0') +
+    dayOfMonth.toString().padStart(2, '0')
+
+fun String.toKotlinLocalDate(): LocalDate {
+    return LocalDate(substring(0, 4).toInt(), substring(4, 6).toInt(), substring(6).toInt())
+}
+
+fun <T> List<T>.isEmptyGetNull(): List<T>? = this.ifEmpty { null }

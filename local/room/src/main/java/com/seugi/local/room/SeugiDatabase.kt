@@ -2,8 +2,10 @@ package com.seugi.local.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.seugi.local.room.dao.MealDao
 import com.seugi.local.room.dao.TokenDao
 import com.seugi.local.room.dao.WorkspaceDao
+import com.seugi.local.room.model.MealEntity
 import com.seugi.local.room.model.TokenEntity
 import com.seugi.local.room.model.WorkspaceEntity
 
@@ -11,6 +13,7 @@ import com.seugi.local.room.model.WorkspaceEntity
     entities = [
         TokenEntity::class,
         WorkspaceEntity::class,
+        MealEntity::class,
     ],
     version = 1,
     exportSchema = false,
@@ -18,4 +21,5 @@ import com.seugi.local.room.model.WorkspaceEntity
 internal abstract class SeugiDatabase : RoomDatabase() {
     abstract fun tokenDao(): TokenDao
     abstract fun workspaceDao(): WorkspaceDao
+    abstract fun mealDao(): MealDao
 }

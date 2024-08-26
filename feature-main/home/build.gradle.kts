@@ -8,6 +8,10 @@ android {
 
 dependencies {
     implementation(libs.coil.compose)
+    implementation(libs.kotlinx.datetime)
+
     implementation(projects.designsystem)
     implementation(projects.data.workspace)
+    implementation(projects.data.meal)
+    implementation(projects.common)
 }

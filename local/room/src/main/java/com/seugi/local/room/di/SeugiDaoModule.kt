@@ -1,6 +1,7 @@
 package com.seugi.local.room.di
 
 import com.seugi.local.room.SeugiDatabase
+import com.seugi.local.room.dao.MealDao
 import com.seugi.local.room.dao.TokenDao
 import com.seugi.local.room.dao.WorkspaceDao
 import dagger.Module
@@ -16,4 +17,7 @@ internal object SeugiDaoModule {
 
     @Provides
     fun providesWorkspaceDao(database: SeugiDatabase): WorkspaceDao = database.workspaceDao()
+
+    @Provides
+    fun providesMealDao(database: SeugiDatabase): MealDao = database.mealDao()
 }

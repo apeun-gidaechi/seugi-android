@@ -61,6 +61,7 @@ import com.seugi.designsystem.component.GradientPrimary
 import com.seugi.designsystem.component.LoadingDotsIndicator
 import com.seugi.designsystem.component.SeugiButton
 import com.seugi.designsystem.component.SeugiDialog
+import com.seugi.designsystem.component.SeugiImage
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.brushDraw
@@ -301,73 +302,80 @@ internal fun HomeScreen(
                                     .pointerInput(Unit) { },
                                 state = pagerState,
                             ) { index ->
-                                Row {
+                                val item = when (index) {
+                                    0 -> mealState.data.breakfast
+                                    1 -> mealState.data.lunch
+                                    else -> mealState.data.dinner
+                                }
+                                if (item == null) {
                                     Column(
-                                        modifier = Modifier.weight(1f),
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalAlignment = Alignment.CenterHorizontally,
                                     ) {
-                                        Text(
-                                            modifier = Modifier.padding(vertical = (6.5).dp),
-                                            text = when (index) {
-                                                0 -> mealState.data.first.first
-                                                1 -> mealState.data.second.first
-                                                else -> mealState.data.third.first
-                                            },
-                                            style = SeugiTheme.typography.body2,
-                                            color = SeugiTheme.colors.gray700,
+                                        SeugiImage(
+                                            modifier = Modifier.size(64.dp),
+                                            resId = R.drawable.ic_emoji_sad,
                                         )
                                         Spacer(modifier = Modifier.height(8.dp))
-
-                                        Box(
-                                            modifier = Modifier
-                                                .background(
+                                        Text(
+                                            text = "급식이 없어요",
+                                            style = SeugiTheme.typography.subtitle2,
+                                            color = SeugiTheme.colors.black,
+                                        )
+                                    }
+                                } else {
+                                    Column {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                        ) {
+                                            Box(
+                                                modifier = Modifier.background(
                                                     color = SeugiTheme.colors.primary500,
                                                     shape = RoundedCornerShape(34.dp),
                                                 ),
-                                        ) {
-                                            Text(
-                                                modifier = Modifier.padding(
-                                                    vertical = 4.dp,
-                                                    horizontal = 8.dp,
-                                                ),
-                                                text = when (index) {
-                                                    0 -> mealState.data.first.second
-                                                    1 -> mealState.data.second.second
-                                                    else -> mealState.data.third.second
-                                                },
-                                                style = SeugiTheme.typography.caption1,
-                                                color = SeugiTheme.colors.white,
-                                            )
-                                        }
-                                    }
-                                    Box(
-                                        modifier = Modifier.weight(1f),
-                                    ) {
-                                        Column(
-                                            modifier = Modifier.align(Alignment.Center),
-                                        ) {
-                                            Image(
-                                                modifier = Modifier
-                                                    .size(94.dp),
-                                                painter = painterResource(
-                                                    id = when (index) {
-                                                        0 -> R.drawable.ic_morning
-                                                        1 -> R.drawable.ic_taco
-                                                        else -> R.drawable.ic_chicken
+                                                contentAlignment = Alignment.Center,
+                                            ) {
+                                                Text(
+                                                    modifier = Modifier.padding(
+                                                        vertical = 4.dp,
+                                                        horizontal = 10.dp,
+                                                    ),
+                                                    text = when (index) {
+                                                        0 -> "아침"
+                                                        1 -> "점심"
+                                                        else -> "저녁"
                                                     },
-                                                ),
-                                                contentDescription = "",
-                                            )
-                                            Spacer(modifier = Modifier.height(4.dp))
+                                                    style = SeugiTheme.typography.caption1,
+                                                    color = SeugiTheme.colors.white,
+                                                )
+                                            }
+                                            Spacer(modifier = Modifier.weight(1f))
                                             Text(
-                                                modifier = Modifier.align(Alignment.CenterHorizontally),
-                                                text = when (index) {
-                                                    0 -> "아침"
-                                                    1 -> "점심"
-                                                    else -> "저녁"
-                                                },
+                                                text = item.calorie,
                                                 style = SeugiTheme.typography.caption1,
                                                 color = SeugiTheme.colors.gray500,
                                             )
+                                        }
+                                        Spacer(modifier = Modifier.height(8.dp))
+
+                                        for (i in item.menu.indices step 2) {
+                                            Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                            ) {
+                                                Text(
+                                                    modifier = Modifier.weight(1f),
+                                                    text = item.menu[i],
+                                                    style = SeugiTheme.typography.body2,
+                                                    color = SeugiTheme.colors.gray700,
+                                                )
+                                                Text(
+                                                    modifier = Modifier.weight(1f),
+                                                    text = item.menu.getOrNull(i + 1) ?: "",
+                                                    style = SeugiTheme.typography.body2,
+                                                    color = SeugiTheme.colors.gray700,
+                                                )
+                                            }
                                         }
                                     }
                                 }
