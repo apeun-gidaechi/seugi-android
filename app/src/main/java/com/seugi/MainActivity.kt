@@ -26,7 +26,6 @@ import com.seugi.main.navigation.navigateToMain
 import com.seugi.onboarding.navigation.ONBOARDING_ROUTE
 import com.seugi.onboarding.navigation.onboardingScreen
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -52,7 +51,7 @@ class MainActivity : ComponentActivity() {
                                     .align(Alignment.Center)
                                     .size(108.dp),
                                 painter = painterResource(id = R.drawable.ic_seugi),
-                                contentDescription = "앱 아이콘"
+                                contentDescription = "앱 아이콘",
                             )
                         }
                     } else {
