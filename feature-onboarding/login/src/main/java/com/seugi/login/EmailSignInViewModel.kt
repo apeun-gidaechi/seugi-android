@@ -13,6 +13,7 @@ import com.seugi.network.request.EmailSignInRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,14 +43,16 @@ class EmailSignInViewModel @Inject constructor(
             ).collect {
                 when (it) {
                     is Result.Success -> {
+                        async {
+                            val accessToken = it.data.accessToken
+                            val refreshToken = it.data.refreshToken
+                            tokenRepository.insertToken(
+                                accessToken = accessToken,
+                                refreshToken = refreshToken,
+                            )
+                        }.await()
                         _emailSignInSideEffect.send(
                             EmailSignInSideEffect.SuccessLogin,
-                        )
-                        val accessToken = it.data.accessToken
-                        val refreshToken = it.data.refreshToken
-                        tokenRepository.insertToken(
-                            accessToken = accessToken,
-                            refreshToken = refreshToken,
                         )
                     }
 
