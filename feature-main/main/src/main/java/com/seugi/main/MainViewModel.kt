@@ -26,7 +26,6 @@ class MainViewModel @Inject constructor(
     fun load() = viewModelScope.launch {
         launch {
             val workspaceId = workspaceRepository.getWorkspaceId()
-            Log.d("TAG", "$workspaceId: ")
             _state.update {
                 it.copy(
                     workspaceId = workspaceId
