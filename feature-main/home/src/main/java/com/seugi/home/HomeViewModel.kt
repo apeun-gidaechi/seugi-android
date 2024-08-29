@@ -46,8 +46,6 @@ class HomeViewModel @Inject constructor(
             }
             val workspace = workspaceRepository.getWorkspaceId()
 
-            delay(2000)
-
             if (workspace.isEmpty()) {
                 _state.update {
                     it.copy(
