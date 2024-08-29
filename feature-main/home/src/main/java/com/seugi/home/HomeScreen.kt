@@ -79,7 +79,7 @@ internal fun HomeScreen(
     onNavigationVisibleChange: (Boolean) -> Unit,
     navigateToWorkspaceDetail: (String) -> Unit,
     navigateToWorkspaceCreate: () -> Unit,
-    changeWorkspaceId: (String) -> Unit
+    changeWorkspaceId: (String) -> Unit,
 ) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()

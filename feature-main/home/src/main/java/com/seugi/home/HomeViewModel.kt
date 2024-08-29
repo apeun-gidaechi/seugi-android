@@ -13,7 +13,6 @@ import com.seugi.home.model.CommonUiState
 import com.seugi.home.model.HomeUiMealState
 import com.seugi.home.model.HomeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.ImmutableList
 import java.time.LocalDate
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
@@ -43,7 +42,6 @@ class HomeViewModel @Inject constructor(
             delay(2000)
 
             if (workspace.isEmpty()) {
-
                 _state.update {
                     it.copy(
                         showDialog = true,
@@ -67,14 +65,14 @@ class HomeViewModel @Inject constructor(
                                 "인공지능 수학",
                                 "한국사",
                                 "실용영어",
-                                "웹프"
-                            ).toImmutableList()
+                                "웹프",
+                            ).toImmutableList(),
                         ),
                         catSeugiState = CommonUiState.Success(
                             listOf(
                                 "급식에 복어가 나오는 날이 언제...",
-                                "우리 학교 대회 담당하는 분이 누구..."
-                            ).toImmutableList()
+                                "우리 학교 대회 담당하는 분이 누구...",
+                            ).toImmutableList(),
                         ),
                         schoolScheduleState = CommonUiState.Success(
                             listOf(
@@ -116,14 +114,14 @@ class HomeViewModel @Inject constructor(
                             "인공지능 수학",
                             "한국사",
                             "실용영어",
-                            "웹프"
-                        ).toImmutableList()
+                            "웹프",
+                        ).toImmutableList(),
                     ),
                     catSeugiState = CommonUiState.Success(
                         listOf(
                             "급식에 복어가 나오는 날이 언제...",
-                            "우리 학교 대회 담당하는 분이 누구..."
-                        ).toImmutableList()
+                            "우리 학교 대회 담당하는 분이 누구...",
+                        ).toImmutableList(),
                     ),
                     schoolScheduleState = CommonUiState.Success(
                         listOf(
@@ -147,14 +145,14 @@ class HomeViewModel @Inject constructor(
                             "컴퓨터시스템",
                             "중국어",
                             "수학Ⅰ",
-                            "영어"
-                        ).toImmutableList()
+                            "영어",
+                        ).toImmutableList(),
                     ),
                     catSeugiState = CommonUiState.Success(
                         listOf(
                             "급식에 복어가 나오는 날이 언제...",
-                            "우리 학교 대회 담당하는 분이 누구..."
-                        ).toImmutableList()
+                            "우리 학교 대회 담당하는 분이 누구...",
+                        ).toImmutableList(),
                     ),
                     schoolScheduleState = CommonUiState.Success(
                         listOf(
@@ -164,7 +162,7 @@ class HomeViewModel @Inject constructor(
                         ).toImmutableList(),
                     ),
 
-                    )
+                )
             }
         }
     }
@@ -180,12 +178,14 @@ class HomeViewModel @Inject constructor(
                         var homeUiMealState = HomeUiMealState()
                         it.data.forEach {
                             when (it.mealType) {
-                                MealType.BREAKFAST -> homeUiMealState =
-                                    homeUiMealState.copy(breakfast = it)
+                                MealType.BREAKFAST ->
+                                    homeUiMealState =
+                                        homeUiMealState.copy(breakfast = it)
 
                                 MealType.LUNCH -> homeUiMealState = homeUiMealState.copy(lunch = it)
-                                MealType.DINNER -> homeUiMealState =
-                                    homeUiMealState.copy(dinner = it)
+                                MealType.DINNER ->
+                                    homeUiMealState =
+                                        homeUiMealState.copy(dinner = it)
                             }
                         }
 
@@ -215,14 +215,14 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
             launch {
                 workspaceRepository.getWorkspaceData(
-                    workspaceId = workspaceId
+                    workspaceId = workspaceId,
                 ).collect { workspace ->
                     when (workspace) {
                         is Result.Success -> {
                             Log.d("TAG", "${workspace.data.workspaceName}: ")
                             _state.update {
                                 it.copy(
-                                    schoolState = CommonUiState.Success(workspace.data.workspaceName)
+                                    schoolState = CommonUiState.Success(workspace.data.workspaceName),
                                 )
                             }
                         }
@@ -234,13 +234,12 @@ class HomeViewModel @Inject constructor(
                                     timeScheduleState = CommonUiState.Loading,
                                     mealState = CommonUiState.Loading,
                                     catSeugiState = CommonUiState.Loading,
-                                    schoolScheduleState = CommonUiState.Loading
+                                    schoolScheduleState = CommonUiState.Loading,
                                 )
                             }
                         }
 
                         else -> {
-
                         }
                     }
                 }

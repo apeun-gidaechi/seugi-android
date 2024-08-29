@@ -148,7 +148,7 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
                 },
                 changeWorkspaceId = { workspaceId ->
                     viewModel.setWorkspaceId(workspaceId)
-                }
+                },
             )
 
             chatScreen(

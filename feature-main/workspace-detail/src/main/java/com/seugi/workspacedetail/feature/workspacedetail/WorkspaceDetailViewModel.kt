@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.data.workspace.WorkspaceRepository
-import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.workspacedetail.feature.workspacedetail.model.WorkspaceDetailSideEffect
 import com.seugi.workspacedetail.feature.workspacedetail.model.WorkspaceDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -73,7 +72,7 @@ class WorkspaceDetailViewModel @Inject constructor(
                     is Result.Success -> {
                         _state.update { uiState ->
                             uiState.copy(
-                                nowWorkspace = it.data
+                                nowWorkspace = it.data,
                             )
                         }
                     }

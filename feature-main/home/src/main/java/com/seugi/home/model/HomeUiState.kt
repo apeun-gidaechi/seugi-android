@@ -5,7 +5,7 @@ import kotlinx.collections.immutable.ImmutableList
 
 data class HomeUiState(
     val showDialog: Boolean = false,
-    val nowWorkspaceId:String = "",
+    val nowWorkspaceId: String = "",
     val schoolState: CommonUiState<String> = CommonUiState.Loading,
     val timeScheduleState: CommonUiState<ImmutableList<String>> = CommonUiState.Loading,
     val mealState: CommonUiState<HomeUiMealState> = CommonUiState.Loading,
