@@ -56,7 +56,16 @@ class MainViewModel @Inject constructor(
             when (it) {
                 is Result.Success -> {
                     val workspaces = it.data
-                    workspaceRepository.addWorkspaces(workspaces)
+                    var add = false
+                    workspaces.forEach {workspace ->
+                        if (state.value.workspaceId == workspace.workspaceId){
+                            workspaceRepository.addWorkspaceId(workspace.workspaceId)
+                            add = true
+                        }
+                    }
+                    if (!add){
+                        workspaceRepository.addWorkspaceId(workspaces[0].workspaceId)
+                    }
                 }
                 else -> {
                 }
