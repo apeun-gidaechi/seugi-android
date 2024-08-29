@@ -43,4 +43,6 @@ dependencies {
     implementation(projects.designsystem)
     implementation(projects.featureMain.main)
     implementation(projects.featureOnboarding.onboarding)
+    implementation(projects.common)
+    implementation(projects.data.token)
 }
