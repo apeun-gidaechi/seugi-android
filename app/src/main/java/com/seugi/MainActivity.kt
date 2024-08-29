@@ -10,8 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -26,6 +30,7 @@ import com.seugi.main.navigation.navigateToMain
 import com.seugi.onboarding.navigation.ONBOARDING_ROUTE
 import com.seugi.onboarding.navigation.onboardingScreen
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -38,13 +43,22 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navHostController: NavHostController = rememberNavController()
             val state by mainViewModel.state.collectAsState()
+            var showSplash by remember { mutableStateOf(true) }
+
+            LaunchedEffect(state) {
+                if (state == null) {
+                    delay(2000)
+                    showSplash = false
+                }
+            }
+
             SeugiTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    if (state == null) {
+                    if (state == null && showSplash) {
                         Box(modifier = Modifier.fillMaxSize()) {
                             Image(
                                 modifier = Modifier
