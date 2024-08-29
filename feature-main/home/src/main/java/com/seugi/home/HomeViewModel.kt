@@ -36,6 +36,15 @@ class HomeViewModel @Inject constructor(
 
     fun load() {
         viewModelScope.launch(dispatcher) {
+            _state.update {
+                it.copy(
+                    schoolState = CommonUiState.Loading,
+                    timeScheduleState = CommonUiState.Loading,
+                    mealState = CommonUiState.Loading,
+                    catSeugiState = CommonUiState.Loading,
+                    schoolScheduleState = CommonUiState.Loading,
+                )
+            }
             val workspace = workspaceRepository.getWorkspaceId()
 
             delay(2000)
