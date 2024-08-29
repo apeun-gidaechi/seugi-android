@@ -6,9 +6,7 @@ import com.seugi.local.room.util.SeugiTable
 
 @Entity(tableName = SeugiTable.WORKSPACE_TABLE)
 data class WorkspaceEntity(
+    @PrimaryKey
+    var idx: Long = 0,
     val workspaceId: String,
-    val workspaceName: String,
-) {
-    @PrimaryKey(autoGenerate = true)
-    var idx: Long = 0
-}
+)

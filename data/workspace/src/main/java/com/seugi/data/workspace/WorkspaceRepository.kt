@@ -17,8 +17,9 @@ interface WorkspaceRepository {
 
     suspend fun getPermission(workspaceId: String): Flow<Result<WorkspacePermissionModel>>
     suspend fun getMyWorkspaces(): Flow<Result<List<WorkspaceModel>>>
-    suspend fun addWorkspaces(workspaces: List<WorkspaceModel>)
-    suspend fun getAllWorkspaces(): List<WorkspaceModel>
+    suspend fun updateWorkspaceId(workspaceId: String)
+    suspend fun insertWorkspaceId(workspaceId: String)
+    suspend fun getWorkspaceId(): String
     suspend fun getWaitWorkspaces(): Flow<Result<List<WaitWorkspaceModel>>>
     suspend fun getWorkspaceData(workspaceId: String): Flow<Result<WorkspaceModel>>
     suspend fun createWorkspace(workspaceName: String, workspaceImage: String): Flow<Result<String>>

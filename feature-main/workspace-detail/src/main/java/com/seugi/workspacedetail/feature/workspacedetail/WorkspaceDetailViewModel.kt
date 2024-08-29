@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.data.workspace.WorkspaceRepository
-import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.workspacedetail.feature.workspacedetail.model.WorkspaceDetailSideEffect
 import com.seugi.workspacedetail.feature.workspacedetail.model.WorkspaceDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,10 +28,22 @@ class WorkspaceDetailViewModel @Inject constructor(
 
     fun loadWorkspace() {
         viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    myWorkspace = workspaceRepository.getAllWorkspaces().toImmutableList(),
-                )
+            workspaceRepository.getMyWorkspaces().collect {
+                when (it) {
+                    is Result.Success -> {
+                        _state.update { uiState ->
+                            uiState.copy(
+                                myWorkspace = it.data.toImmutableList(),
+                            )
+                        }
+                    }
+                    is Result.Error -> {
+                        it.throwable.printStackTrace()
+                        _sideEffect.send(WorkspaceDetailSideEffect.Error(it.throwable))
+                    }
+                    else -> {
+                    }
+                }
             }
             workspaceRepository.getWaitWorkspaces().collect {
                 when (it) {
@@ -61,11 +72,7 @@ class WorkspaceDetailViewModel @Inject constructor(
                     is Result.Success -> {
                         _state.update { uiState ->
                             uiState.copy(
-                                nowWorkspace = WorkspaceModel(
-                                    workspaceId = it.data.workspaceId,
-                                    workspaceName = it.data.workspaceName,
-                                    workspaceImageUrl = it.data.workspaceImageUrl,
-                                ),
+                                nowWorkspace = it.data,
                             )
                         }
                     }
@@ -77,6 +84,7 @@ class WorkspaceDetailViewModel @Inject constructor(
                     }
                 }
             }
+            workspaceRepository.updateWorkspaceId(workspaceId)
             setLoading(false)
         }
     }

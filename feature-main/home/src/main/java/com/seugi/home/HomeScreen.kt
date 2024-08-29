@@ -79,6 +79,7 @@ internal fun HomeScreen(
     onNavigationVisibleChange: (Boolean) -> Unit,
     navigateToWorkspaceDetail: (String) -> Unit,
     navigateToWorkspaceCreate: () -> Unit,
+    changeWorkspaceId: (String) -> Unit,
 ) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -101,6 +102,7 @@ internal fun HomeScreen(
 
     val changeNavColor = SeugiTheme.colors.primary050
     LaunchedEffect(key1 = true) {
+        viewModel.load()
         onNavigationVisibleChange(true)
         if (!view.isInEditMode) {
             val window = (view.context as Activity).window
@@ -166,7 +168,8 @@ internal fun HomeScreen(
                             SeugiButton(
                                 onClick = {
                                     onNavigationVisibleChange(false)
-                                    navigateToWorkspaceDetail(state.nowWorkspace.first)
+                                    navigateToWorkspaceDetail(state.nowWorkspaceId)
+                                    changeWorkspaceId(state.nowWorkspaceId)
                                 },
                                 type = ButtonType.Gray,
                                 text = "전환",
