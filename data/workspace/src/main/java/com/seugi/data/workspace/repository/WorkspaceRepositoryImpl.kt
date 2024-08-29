@@ -75,7 +75,6 @@ class WorkspaceRepositoryImpl @Inject constructor(
         .asResult()
 
     override suspend fun addWorkspaceId(workspacesId: String) {
-        Log.d("TAG", "id: $workspacesId ")
         workspaceDao.updateWorkspaceIdById(0, workspacesId)
     }
 

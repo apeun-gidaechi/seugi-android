@@ -37,7 +37,6 @@ class HomeViewModel @Inject constructor(
     fun load() {
         viewModelScope.launch(dispatcher) {
             val workspace = workspaceRepository.getWorkspaceId()
-            Log.d("TAG", ":$workspace ")
 
             delay(2000)
 
@@ -219,7 +218,6 @@ class HomeViewModel @Inject constructor(
                 ).collect { workspace ->
                     when (workspace) {
                         is Result.Success -> {
-                            Log.d("TAG", "${workspace.data.workspaceName}: ")
                             _state.update {
                                 it.copy(
                                     schoolState = CommonUiState.Success(workspace.data.workspaceName),
