@@ -22,7 +22,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -38,7 +37,6 @@ import kotlinx.coroutines.delay
 @Composable
 internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignIn: () -> Unit) {
     val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(false) }
     var visibleCloud1 by remember { mutableStateOf(false) }
     var visibleText by remember { mutableStateOf(false) }
@@ -165,7 +163,6 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
                                 text = "이메일로 계속하기",
                             )
                             Spacer(modifier = Modifier.height(8.dp))
-                            // TODO: google icon
                             SeugiOAuthButton(
                                 image = R.drawable.ic_google,
                                 text = "Google로 계속하기",
