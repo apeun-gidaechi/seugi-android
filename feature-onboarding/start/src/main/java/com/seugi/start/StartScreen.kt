@@ -65,7 +65,7 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
             // 구름1 애니메이션
             AnimatedVisibility(
                 visible = visibleCloud1,
-                enter = slideInVertically(initialOffsetY = { it }) + fadeIn()
+                enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
             ) {
                 Row(
                     modifier = Modifier
@@ -79,11 +79,10 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
                 }
             }
 
-
             // 텍스트 애니메이션
             AnimatedVisibility(
                 visible = visibleText,
-                enter = slideInVertically(initialOffsetY = { it }) + fadeIn()
+                enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
             ) {
                 Column(
                     modifier = Modifier.padding(start = 24.dp),
@@ -102,7 +101,7 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
             // 구름2 애니메이션
             AnimatedVisibility(
                 visible = visibleCloud2,
-                enter = slideInVertically(initialOffsetY = { it }) + fadeIn()
+                enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
             ) {
                 Row(
                     modifier = Modifier
@@ -121,7 +120,7 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
             // 버튼 애니메이션
             AnimatedVisibility(
                 visible = visibleButton,
-                enter = slideInVertically(initialOffsetY = { it }) + fadeIn()
+                enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
             ) {
                 Column(
                     modifier = Modifier
