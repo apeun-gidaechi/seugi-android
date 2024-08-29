@@ -69,10 +69,10 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
                 visible = visibleCloud1,
                 enter = slideInVertically(
                     initialOffsetY = { 120 },
-                    animationSpec = tween(durationMillis = 1000)
+                    animationSpec = tween(durationMillis = 1000),
                 ) + fadeIn(
                     initialAlpha = 0f,
-                    animationSpec = tween(durationMillis = 1000)
+                    animationSpec = tween(durationMillis = 1000),
                 ),
             ) {
                 Box(modifier = Modifier.padding(bottom = 20.dp)) {
@@ -93,10 +93,10 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
                 visible = visibleText,
                 enter = slideInVertically(
                     initialOffsetY = { 120 },
-                    animationSpec = tween(durationMillis = 1000)
+                    animationSpec = tween(durationMillis = 1000),
                 ) + fadeIn(
                     initialAlpha = 0f,
-                    animationSpec = tween(durationMillis = 1000)
+                    animationSpec = tween(durationMillis = 1000),
                 ),
             ) {
                 Box(modifier = Modifier.padding(bottom = 20.dp)) {
@@ -106,7 +106,7 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
                         Text(
                             text = "스기",
                             style = SeugiTheme.typography.display1,
-                            color = SeugiTheme.colors.white
+                            color = SeugiTheme.colors.white,
                         )
                         Text(
                             text = "학생, 선생님 모두 함께하는\n스마트 스쿨 플랫폼",
@@ -123,10 +123,10 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
                 visible = visibleCloud2,
                 enter = slideInVertically(
                     initialOffsetY = { 120 },
-                    animationSpec = tween(durationMillis = 1000)
+                    animationSpec = tween(durationMillis = 1000),
                 ) + fadeIn(
                     initialAlpha = 0f,
-                    animationSpec = tween(durationMillis = 1000)
+                    animationSpec = tween(durationMillis = 1000),
                 ),
             ) {
                 Box(modifier = Modifier.padding(bottom = 20.dp)) {
@@ -149,14 +149,12 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
                 visible = visibleButton,
                 enter = slideInVertically(
                     initialOffsetY = { it },
-                    animationSpec = tween(durationMillis = 1000)
+                    animationSpec = tween(durationMillis = 1000),
                 ) + fadeIn(
                     initialAlpha = 0f,
-                    animationSpec = tween(durationMillis = 1000)
+                    animationSpec = tween(durationMillis = 1000),
                 ),
             ) {
-
-                
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
