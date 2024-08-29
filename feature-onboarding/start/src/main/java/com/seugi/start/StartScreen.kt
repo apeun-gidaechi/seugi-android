@@ -1,11 +1,13 @@
 package com.seugi.start
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -44,6 +46,7 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
     var visibleButton by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
+        delay(300)
         visibleCloud1 = true
         delay(500)
         visibleText = true
@@ -62,66 +65,98 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
         ) {
             Spacer(modifier = Modifier.height(70.dp))
 
-            // 구름1 애니메이션
             AnimatedVisibility(
                 visible = visibleCloud1,
-                enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
+                enter = slideInVertically(
+                    initialOffsetY = { 120 },
+                    animationSpec = tween(durationMillis = 1000)
+                ) + fadeIn(
+                    initialAlpha = 0f,
+                    animationSpec = tween(durationMillis = 1000)
+                ),
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.img_cloud1),
-                        contentDescription = "",
-                    )
+                Box(modifier = Modifier.padding(bottom = 20.dp)) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End,
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.img_cloud1),
+                            contentDescription = "",
+                        )
+                    }
                 }
             }
 
-            // 텍스트 애니메이션
             AnimatedVisibility(
                 visible = visibleText,
-                enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
+                enter = slideInVertically(
+                    initialOffsetY = { 120 },
+                    animationSpec = tween(durationMillis = 1000)
+                ) + fadeIn(
+                    initialAlpha = 0f,
+                    animationSpec = tween(durationMillis = 1000)
+                ),
             ) {
-                Column(
-                    modifier = Modifier.padding(start = 24.dp),
-                ) {
-                    Text(text = "스기", style = SeugiTheme.typography.display1, color = SeugiTheme.colors.white)
-                    Text(
-                        text = "학생, 선생님 모두 함께하는\n스마트 스쿨 플랫폼",
-                        style = SeugiTheme.typography.subtitle2,
-                        color = SeugiTheme.colors.white,
-                    )
+                Box(modifier = Modifier.padding(bottom = 20.dp)) {
+                    Column(
+                        modifier = Modifier.padding(start = 24.dp),
+                    ) {
+                        Text(
+                            text = "스기",
+                            style = SeugiTheme.typography.display1,
+                            color = SeugiTheme.colors.white
+                        )
+                        Text(
+                            text = "학생, 선생님 모두 함께하는\n스마트 스쿨 플랫폼",
+                            style = SeugiTheme.typography.subtitle2,
+                            color = SeugiTheme.colors.white,
+                        )
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // 구름2 애니메이션
             AnimatedVisibility(
                 visible = visibleCloud2,
-                enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
+                enter = slideInVertically(
+                    initialOffsetY = { 120 },
+                    animationSpec = tween(durationMillis = 1000)
+                ) + fadeIn(
+                    initialAlpha = 0f,
+                    animationSpec = tween(durationMillis = 1000)
+                ),
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start,
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.img_cloud2),
-                        contentDescription = "",
-                    )
+                Box(modifier = Modifier.padding(bottom = 20.dp)) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Start,
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.img_cloud2),
+                            contentDescription = "",
+                        )
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // 버튼 애니메이션
             AnimatedVisibility(
                 visible = visibleButton,
-                enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
+                enter = slideInVertically(
+                    initialOffsetY = { it },
+                    animationSpec = tween(durationMillis = 1000)
+                ) + fadeIn(
+                    initialAlpha = 0f,
+                    animationSpec = tween(durationMillis = 1000)
+                ),
             ) {
+
+                
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -155,7 +190,6 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
                             SeugiFullWidthButton(
                                 onClick = {
                                     navigateToEmailSignIn()
-
                                     showBottomSheet = false
                                 },
                                 type = ButtonType.Black,
@@ -173,7 +207,7 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
                             Spacer(modifier = Modifier.height(8.dp))
                             SeugiOAuthButton(
                                 image = R.drawable.ic_apple,
-                                text = "Apple로로 계속하기",
+                                text = "Apple로 계속하기",
                                 onClick = {
                                     navigateToOAuthSignIn()
                                     showBottomSheet = false
