@@ -85,7 +85,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getWorkspaceId(): String {
-        return workspaceDao.getWorkspaceId()?.localToModel()?.workspaceId ?:""
+        return workspaceDao.getWorkspaceId()?.localToModel()?.workspaceId ?: ""
     }
 
     override suspend fun getWaitWorkspaces(): Flow<Result<List<WaitWorkspaceModel>>> = flow {

@@ -1,6 +1,5 @@
 package com.seugi.main
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
@@ -28,7 +27,7 @@ class MainViewModel @Inject constructor(
             val workspaceId = workspaceRepository.getWorkspaceId()
             _state.update {
                 it.copy(
-                    workspaceId = workspaceId
+                    workspaceId = workspaceId,
                 )
             }
         }
@@ -66,9 +65,9 @@ class MainViewModel @Inject constructor(
                 when (it) {
                     is Result.Success -> {
                         val workspaces = it.data
-                        if(_state.value.workspaceId.isEmpty()){
+                        if (_state.value.workspaceId.isEmpty()) {
                             workspaceRepository.insertWorkspaceId(workspaceId = workspaces[0].workspaceId)
-                        }else {
+                        } else {
                             workspaces.forEach { workspace ->
                                 if (_state.value.workspaceId == workspace.workspaceId) {
                                     workspaceRepository.updateWorkspaceId(workspaceId = workspace.workspaceId)
