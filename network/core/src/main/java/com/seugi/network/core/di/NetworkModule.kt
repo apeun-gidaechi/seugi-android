@@ -3,7 +3,6 @@ package com.seugi.network.core.di
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import android.content.Intent
 import android.util.Log
 import com.seugi.common.exception.UnauthorizedException
 import com.seugi.common.utiles.SeugiActivityStarter
@@ -11,7 +10,6 @@ import com.seugi.local.room.dao.TokenDao
 import com.seugi.local.room.model.TokenEntity
 import com.seugi.network.core.SeugiUrl
 import com.seugi.network.core.response.BaseResponse
-import com.seugi.network.core.response.Response
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.core.utiles.LocalDateTimeTypeAdapter
 import com.seugi.network.core.utiles.removeBearer
@@ -20,8 +18,6 @@ import com.seugi.stompclient.StompClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ActivityContext
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -39,18 +35,14 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.accept
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
-import io.ktor.client.request.post
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.gson.gson
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
@@ -60,10 +52,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHttpClient(
-        activityStarter: SeugiActivityStarter,
-        tokenDao: TokenDao
-    ): HttpClient = HttpClient(CIO) {
+    fun provideHttpClient(activityStarter: SeugiActivityStarter, tokenDao: TokenDao): HttpClient = HttpClient(CIO) {
         install(ContentNegotiation) {
             gson {
                 registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeTypeAdapter())
@@ -90,7 +79,7 @@ object NetworkModule {
                 loadTokens {
                     try {
                         val token = tokenDao.getToken()
-                        BearerTokens(removeBearer(token?.token?: ""), removeBearer(token?.refreshToken?: ""))
+                        BearerTokens(removeBearer(token?.token ?: ""), removeBearer(token?.refreshToken ?: ""))
                     } catch (e: IndexOutOfBoundsException) {
                         throw UnauthorizedException("${e.message}")
                     }
@@ -105,8 +94,8 @@ object NetworkModule {
                         tokenDao.insert(
                             TokenEntity(
                                 token = accessToken,
-                                refreshToken = refreshToken
-                            )
+                                refreshToken = refreshToken,
+                            ),
                         )
 
                         BearerTokens(removeBearer(accessToken), "")
@@ -130,7 +119,7 @@ object NetworkModule {
                         SeugiUrl.Auth.EMAIL_SIGN_IN -> false
                         SeugiUrl.Auth.GET_CODE -> false
                         else -> {
-                            when (it.url.toString().split("?")[0]){
+                            when (it.url.toString().split("?")[0]) {
                                 SeugiUrl.Member.REFRESH -> false
                                 else -> true
                             }

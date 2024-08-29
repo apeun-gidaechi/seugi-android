@@ -17,6 +17,4 @@ object ActivityStarterModule {
     @Provides
     @Singleton
     fun providesSeugiActivityStarter(@ApplicationContext context: Context): SeugiActivityStarter = SeugiActivityStarterImpl(context)
-
-
 }
