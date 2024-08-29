@@ -9,7 +9,7 @@ import com.seugi.local.room.util.SeugiTable
 @Dao
 interface WorkspaceDao : BaseDao<WorkspaceEntity> {
     @Query("SELECT * FROM ${SeugiTable.WORKSPACE_TABLE}")
-    suspend fun getWorkspaceId(): WorkspaceEntity
+    suspend fun getWorkspaceId(): WorkspaceEntity?
 
     @Query("UPDATE ${SeugiTable.WORKSPACE_TABLE} SET workspaceId = :newWorkspaceId WHERE idx = :idx")
     suspend fun updateWorkspaceIdById(idx: Long, newWorkspaceId: String)

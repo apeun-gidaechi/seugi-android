@@ -16,6 +16,7 @@ import com.seugi.data.workspace.model.WaitWorkspaceModel
 import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.data.workspace.model.WorkspacePermissionModel
 import com.seugi.local.room.dao.WorkspaceDao
+import com.seugi.local.room.model.WorkspaceEntity
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.workspace.WorkspaceDataSource
 import javax.inject.Inject
@@ -74,12 +75,17 @@ class WorkspaceRepositoryImpl @Inject constructor(
         .flowOn(dispatcher)
         .asResult()
 
-    override suspend fun addWorkspaceId(workspacesId: String) {
-        workspaceDao.updateWorkspaceIdById(0, workspacesId)
+    override suspend fun updateWorkspaceId(workspaceId: String) {
+        Log.d("TAG", "$workspaceId: ")
+        workspaceDao.updateWorkspaceIdById(0, workspaceId)
+    }
+
+    override suspend fun insertWorkspaceId(workspaceId: String) {
+        workspaceDao.insert(WorkspaceEntity(idx = 0, workspaceId = workspaceId))
     }
 
     override suspend fun getWorkspaceId(): String {
-        return workspaceDao.getWorkspaceId().localToModel().workspaceId
+        return workspaceDao.getWorkspaceId()?.localToModel()?.workspaceId ?:""
     }
 
     override suspend fun getWaitWorkspaces(): Flow<Result<List<WaitWorkspaceModel>>> = flow {

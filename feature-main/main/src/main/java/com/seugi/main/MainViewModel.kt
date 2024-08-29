@@ -1,5 +1,6 @@
 package com.seugi.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
@@ -23,6 +24,15 @@ class MainViewModel @Inject constructor(
     val state = _state.asStateFlow()
 
     fun load() = viewModelScope.launch {
+        launch {
+            val workspaceId = workspaceRepository.getWorkspaceId()
+            Log.d("TAG", "$workspaceId: ")
+            _state.update {
+                it.copy(
+                    workspaceId = workspaceId
+                )
+            }
+        }
         launch {
             profileRepository.getProfile(_state.value.workspaceId).collect {
                 when (it) {
@@ -52,22 +62,24 @@ class MainViewModel @Inject constructor(
                 }
             }
         }
-        workspaceRepository.getMyWorkspaces().collect {
-            when (it) {
-                is Result.Success -> {
-                    val workspaces = it.data
-                    var add = false
-                    workspaces.forEach { workspace ->
-                        if (state.value.workspaceId == workspace.workspaceId) {
-                            workspaceRepository.addWorkspaceId(workspace.workspaceId)
-                            add = true
+        launch {
+            workspaceRepository.getMyWorkspaces().collect {
+                when (it) {
+                    is Result.Success -> {
+                        val workspaces = it.data
+                        if(_state.value.workspaceId.isEmpty()){
+                            workspaceRepository.insertWorkspaceId(workspaceId = workspaces[0].workspaceId)
+                        }else {
+                            workspaces.forEach { workspace ->
+                                if (_state.value.workspaceId == workspace.workspaceId) {
+                                    workspaceRepository.updateWorkspaceId(workspaceId = workspace.workspaceId)
+                                }
+                            }
                         }
                     }
-                    if (!add) {
-                        workspaceRepository.addWorkspaceId(workspaces[0].workspaceId)
+
+                    else -> {
                     }
-                }
-                else -> {
                 }
             }
         }
