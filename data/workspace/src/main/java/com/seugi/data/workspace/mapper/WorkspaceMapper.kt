@@ -25,7 +25,6 @@ fun List<WorkspaceEntity>.localToModels() = this.map {
 
 fun WorkspaceEntity.localToModel() = WorkspaceModel(
     workspaceId = workspaceId,
-    workspaceName = workspaceName,
     workspaceImageUrl = "",
     workspaceAdmin = 0,
     middleAdmin = listOf<Long>(0).toImmutableList(),
@@ -39,5 +38,4 @@ fun List<WorkspaceModel>.toEntities() = this.map {
 
 fun WorkspaceModel.toEntity() = WorkspaceEntity(
     workspaceId = workspaceId,
-    workspaceName = workspaceName,
 )
