@@ -1,5 +1,6 @@
 package com.seugi.data.workspace.repository
 
+import android.util.Log
 import com.seugi.common.model.Result
 import com.seugi.common.model.asResult
 import com.seugi.common.utiles.DispatcherType
@@ -77,7 +78,8 @@ class WorkspaceRepositoryImpl @Inject constructor(
         .asResult()
 
     override suspend fun addWorkspaceId(workspacesId: String) {
-        workspaceDao.insert(WorkspaceEntity(0, workspacesId))
+        Log.d("TAG", "id: $workspacesId ")
+        workspaceDao.updateWorkspaceIdById(0, workspacesId)
     }
 
     override suspend fun getWorkspaceId(): String {

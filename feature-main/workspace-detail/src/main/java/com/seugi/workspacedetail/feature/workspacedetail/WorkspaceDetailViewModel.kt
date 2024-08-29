@@ -85,6 +85,7 @@ class WorkspaceDetailViewModel @Inject constructor(
                     }
                 }
             }
+            workspaceRepository.addWorkspaceId(workspaceId)
             setLoading(false)
         }
     }
