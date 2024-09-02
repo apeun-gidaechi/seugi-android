@@ -36,12 +36,12 @@ class MainViewModel @Inject constructor(
                             // 서버에 워크페이스가 없을때 워크페이스 가입
                         } else {
                             // 워크페이스가 있다면 로컬에 아이디와 비교
-                            if (localWorkspaceId.isEmpty()) {
+                            workspaceId = if (localWorkspaceId.isEmpty()) {
                                 // 로컬에 없으면 서버의 처음 워크페이스를 화면에
-                                workspaceId = workspaces[0].workspaceId
+                                workspaces[0].workspaceId
                             } else {
-                                workspaceId = localWorkspaceId
-                                // 로컬에 있다면 로컬이랑 같은 아이디의 워크페이스를 화면에
+                                // 로컬에 있다면 유지
+                                localWorkspaceId
                             }
                         }
                         _state.update {
@@ -52,12 +52,9 @@ class MainViewModel @Inject constructor(
                         loadData(workspaceId = workspaceId)
                     }
 
-                    is Result.Error -> {
-//                        TODO()
-                    }
+                    is Result.Error -> {}
 
-                    Result.Loading -> {
-                    }
+                    Result.Loading -> {}
                 }
             }
         }

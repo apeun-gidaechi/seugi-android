@@ -82,9 +82,7 @@ class HomeViewModel @Inject constructor(
                         getWorkspaceName(workspaceId)
                     }
 
-                    is Result.Error -> {
-//                        TODO()
-                    }
+                    is Result.Error -> {}
 
                     Result.Loading -> {
                         _state.update {
