@@ -51,7 +51,9 @@ class MainViewModel @Inject constructor(
                         loadData(workspaceId = workspaceId)
                     }
 
-                    is Result.Error -> {}
+                    is Result.Error -> {
+                        response.throwable.printStackTrace()
+                    }
 
                     Result.Loading -> {}
                 }

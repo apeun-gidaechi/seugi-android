@@ -82,7 +82,9 @@ class HomeViewModel @Inject constructor(
                         getWorkspaceName(workspaceId)
                     }
 
-                    is Result.Error -> {}
+                    is Result.Error -> {
+                        response.throwable.printStackTrace()
+                    }
 
                     Result.Loading -> {
                         _state.update {
