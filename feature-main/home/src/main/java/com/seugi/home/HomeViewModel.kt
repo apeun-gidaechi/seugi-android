@@ -35,61 +35,69 @@ class HomeViewModel @Inject constructor(
 
     fun load() {
         viewModelScope.launch(dispatcher) {
-            _state.update {
-                it.copy(
-                    schoolState = CommonUiState.Loading,
-                    timeScheduleState = CommonUiState.Loading,
-                    mealState = CommonUiState.Loading,
-                    catSeugiState = CommonUiState.Loading,
-                    schoolScheduleState = CommonUiState.Loading,
-                )
-            }
-            val workspace = workspaceRepository.getWorkspaceId()
+            val localWorkspaceId = workspaceRepository.getWorkspaceId()
+            workspaceRepository.getMyWorkspaces().collect { response ->
+                when (response) {
+                    is Result.Success -> {
+                        val workspaces = response.data
+                        var workspaceId = ""
+                        if (workspaces.isEmpty()) {
+                            // 서버에 워크페이스가 없을때 워크페이스 가입
+                            _state.update { mainUi ->
+                                mainUi.copy(
+                                    showDialog = true,
+                                    schoolState = CommonUiState.NotFound,
+                                    timeScheduleState = CommonUiState.NotFound,
+                                    mealState = CommonUiState.NotFound,
+                                    catSeugiState = CommonUiState.NotFound,
+                                    schoolScheduleState = CommonUiState.NotFound,
+                                )
+                            }
+                        } else {
+                            // 워크페이스가 있다면 로컬에 아이디와 비교
+                            if (localWorkspaceId.isEmpty()) {
+                                // 로컬에 없으면 서버의 처음 워크페이스를 화면에
+                                workspaceId = workspaces[0].workspaceId
+                                _state.update { mainUi ->
+                                    mainUi.copy(
+                                        nowWorkspaceId = workspaces[0].workspaceId
+                                    )
+                                }
+                            } else {
+                                workspaceId = localWorkspaceId
+                                // 로컬에 있다면 로컬이랑 같은 아이디의 워크페이스를 화면에
+                                workspaces.forEach {
+                                    if (localWorkspaceId == it.workspaceId) {
+                                        _state.update { mainUi ->
+                                            mainUi.copy(
+                                                nowWorkspaceId = it.workspaceId
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        insertLocal(workspaceId)
+                        loadMeal(workspaceId)
+                        getWorkspaceName(workspaceId)
+                    }
 
-            if (workspace.isEmpty()) {
-                _state.update {
-                    it.copy(
-                        showDialog = true,
-                        schoolState = CommonUiState.NotFound,
-                        timeScheduleState = CommonUiState.NotFound,
-                        mealState = CommonUiState.NotFound,
-                        catSeugiState = CommonUiState.NotFound,
-                        schoolScheduleState = CommonUiState.NotFound,
-                    )
+                    is Result.Error -> {
+//                        TODO()
+                    }
+
+                    Result.Loading -> {
+                        _state.update {
+                            it.copy(
+                                schoolState = CommonUiState.Loading,
+                                timeScheduleState = CommonUiState.Loading,
+                                mealState = CommonUiState.Loading,
+                                catSeugiState = CommonUiState.Loading,
+                                schoolScheduleState = CommonUiState.Loading,
+                            )
+                        }
+                    }
                 }
-            } else {
-                _state.update {
-                    it.copy(
-                        nowWorkspaceId = workspace,
-                        showDialog = false,
-                        timeScheduleState = CommonUiState.Success(
-                            listOf(
-                                "진로",
-                                "소공",
-                                "소공",
-                                "인공지능 수학",
-                                "한국사",
-                                "실용영어",
-                                "웹프",
-                            ).toImmutableList(),
-                        ),
-                        catSeugiState = CommonUiState.Success(
-                            listOf(
-                                "급식에 복어가 나오는 날이 언제...",
-                                "우리 학교 대회 담당하는 분이 누구...",
-                            ).toImmutableList(),
-                        ),
-                        schoolScheduleState = CommonUiState.Success(
-                            listOf(
-                                Triple("7/21", "체육대회", "D-9"),
-                                Triple("7/23", "여름 교내 해커톤", "D-11"),
-                                Triple("7/25", "KBS 촬영", "D-13"),
-                            ).toImmutableList(),
-                        ),
-                    )
-                }
-                loadMeal(workspace)
-                getWorkspaceName(workspace)
             }
         }
     }
@@ -167,7 +175,7 @@ class HomeViewModel @Inject constructor(
                         ).toImmutableList(),
                     ),
 
-                )
+                    )
             }
         }
     }
@@ -249,5 +257,14 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun insertLocal(workspaceId: String){
+        viewModelScope.launch {
+            workspaceRepository.insertWorkspaceId(
+                workspaceId = workspaceId
+            )
+        }
+
     }
 }
