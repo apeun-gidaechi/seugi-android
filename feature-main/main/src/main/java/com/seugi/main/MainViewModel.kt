@@ -24,14 +24,6 @@ class MainViewModel @Inject constructor(
 
     fun load() = viewModelScope.launch {
         launch {
-            val workspaceId = workspaceRepository.getWorkspaceId()
-            _state.update {
-                it.copy(
-                    workspaceId = workspaceId,
-                )
-            }
-        }
-        launch {
             profileRepository.getProfile(_state.value.workspaceId).collect {
                 when (it) {
                     is Result.Success -> {
@@ -57,27 +49,6 @@ class MainViewModel @Inject constructor(
                         }
                     }
                     else -> {}
-                }
-            }
-        }
-        launch {
-            workspaceRepository.getMyWorkspaces().collect {
-                when (it) {
-                    is Result.Success -> {
-                        val workspaces = it.data
-                        if (_state.value.workspaceId.isEmpty()) {
-                            workspaceRepository.insertWorkspaceId(workspaceId = workspaces[0].workspaceId)
-                        } else {
-                            workspaces.forEach { workspace ->
-                                if (_state.value.workspaceId == workspace.workspaceId) {
-                                    workspaceRepository.updateWorkspaceId(workspaceId = workspace.workspaceId)
-                                }
-                            }
-                        }
-                    }
-
-                    else -> {
-                    }
                 }
             }
         }

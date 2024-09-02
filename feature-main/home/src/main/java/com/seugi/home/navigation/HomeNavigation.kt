@@ -8,7 +8,7 @@ import com.seugi.home.HomeScreen
 
 const val HOME_ROUTE = "home"
 
-fun NavController.navigateToHome(navOptions: NavOptions?) = navigate(HOME_ROUTE, navOptions)
+fun NavController.navigateToHome(navOptions: NavOptions? = null, workspaceId: String) = navigate(HOME_ROUTE, navOptions)
 
 fun NavController.navigateToHome(toRoute: String, fromRoute: String) {
     this.navigate(toRoute) {
@@ -24,7 +24,6 @@ fun NavGraphBuilder.homeScreen(
     onNavigationVisibleChange: (Boolean) -> Unit,
     navigateToWorkspaceDetail: (String) -> Unit,
     navigateToWorkspaceCreate: () -> Unit,
-    changeWorkspaceId: (String) -> Unit,
 ) {
     composable(HOME_ROUTE) {
         HomeScreen(
@@ -33,7 +32,6 @@ fun NavGraphBuilder.homeScreen(
             onNavigationVisibleChange = onNavigationVisibleChange,
             navigateToWorkspaceDetail = navigateToWorkspaceDetail,
             navigateToWorkspaceCreate = navigateToWorkspaceCreate,
-            changeWorkspaceId = changeWorkspaceId,
         )
     }
 }
