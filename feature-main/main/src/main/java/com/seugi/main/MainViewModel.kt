@@ -5,8 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.data.profile.ProfileRepository
 import com.seugi.data.workspace.WorkspaceRepository
+import com.seugi.home.model.CommonUiState
 import com.seugi.main.model.MainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,9 +24,50 @@ class MainViewModel @Inject constructor(
     private val _state = MutableStateFlow(MainUiState())
     val state = _state.asStateFlow()
 
-    fun load() = viewModelScope.launch {
+    fun loadWorkspaceId() = viewModelScope.launch {
         launch {
-            profileRepository.getProfile(_state.value.workspaceId).collect {
+            val localWorkspaceId = workspaceRepository.getWorkspaceId()
+            workspaceRepository.getMyWorkspaces().collect { response ->
+                when (response) {
+                    is Result.Success -> {
+                        val workspaces = response.data
+                        var workspaceId = ""
+                        if (workspaces.isEmpty()) {
+                            // 서버에 워크페이스가 없을때 워크페이스 가입
+                        } else {
+                            // 워크페이스가 있다면 로컬에 아이디와 비교
+                            if (localWorkspaceId.isEmpty()) {
+                                // 로컬에 없으면 서버의 처음 워크페이스를 화면에
+                                workspaceId = workspaces[0].workspaceId
+                            } else {
+                                workspaceId = localWorkspaceId
+                                // 로컬에 있다면 로컬이랑 같은 아이디의 워크페이스를 화면에
+                            }
+                        }
+                        _state.update {
+                            it.copy(
+                                workspaceId = workspaceId
+                            )
+                        }
+                        loadData(workspaceId = workspaceId)
+                    }
+
+                    is Result.Error -> {
+//                        TODO()
+                    }
+
+                    Result.Loading -> {
+                    }
+                }
+            }
+        }
+    }
+
+    private fun loadData(
+        workspaceId: String
+    ){
+        viewModelScope.launch{
+            profileRepository.getProfile(workspaceId).collect {
                 when (it) {
                     is Result.Success -> {
                         _state.update { state ->
@@ -37,9 +80,8 @@ class MainViewModel @Inject constructor(
                     else -> {}
                 }
             }
-        }
-        launch {
-            workspaceRepository.getPermission(_state.value.workspaceId).collect {
+
+            workspaceRepository.getPermission(workspaceId).collect {
                 when (it) {
                     is Result.Success -> {
                         _state.update { state ->
