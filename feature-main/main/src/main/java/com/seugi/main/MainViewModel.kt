@@ -34,10 +34,7 @@ class MainViewModel @Inject constructor(
                     is Result.Success -> {
                         val workspaces = response.data
                         val workspaceId = when {
-                            workspaces.isEmpty() -> {
-                                // 서버에 워크스페이스가 없을 때 처리
-                                return@collect // 이후 로직을 실행하지 않음
-                            }
+                            workspaces.isEmpty() -> ""
                             localWorkspaceId.isEmpty() -> {
                                 // 로컬에 아이디가 없으면 서버의 첫 번째 워크스페이스 ID 사용
                                 workspaces.first().workspaceId
