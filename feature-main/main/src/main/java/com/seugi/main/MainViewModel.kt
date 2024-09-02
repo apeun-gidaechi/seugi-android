@@ -28,26 +28,36 @@ class MainViewModel @Inject constructor(
 
     fun loadWorkspaceId() = viewModelScope.launch(dispatcher) {
         launch {
-            val workspaceId = when {
-                workspaces.isEmpty() -> {
-                    // 서버에 워크스페이스가 없을 때 처리
-                    return@collect // 이후 로직을 실행하지 않음
-                }
-                localWorkspaceId.isEmpty() -> {
-                    // 로컬에 아이디가 없으면 서버의 첫 번째 워크스페이스 ID 사용
-                    workspaces.first().workspaceId
-                }
-                else -> {
-                    // 로컬에 아이디가 있으면 그대로 사용
-                    localWorkspaceId
-                }
-            }
+            val localWorkspaceId = workspaceRepository.getWorkspaceId()
+            workspaceRepository.getMyWorkspaces().collect { response ->
+                when (response) {
+                    is Result.Success -> {
+                        val workspaces = response.data
+                        val workspaceId = when {
+                            workspaces.isEmpty() -> {
+                                // 서버에 워크스페이스가 없을 때 처리
+                                return@collect // 이후 로직을 실행하지 않음
+                            }
+                            localWorkspaceId.isEmpty() -> {
+                                // 로컬에 아이디가 없으면 서버의 첫 번째 워크스페이스 ID 사용
+                                workspaces.first().workspaceId
+                            }
+                            else -> {
+                                // 로컬에 아이디가 있으면 그대로 사용
+                                localWorkspaceId
+                            }
+                        }
+                        // 상태 업데이트 및 데이터 로드
+                        _state.update {
+                            it.copy(workspaceId = workspaceId)
+                        }
+                        loadData(workspaceId = workspaceId)
+                    }
 
-            // 상태 업데이트 및 데이터 로드
-            _state.update {
-                it.copy(workspaceId = workspaceId)
-            }
-            loadData(workspaceId = workspaceId)
+                    is Result.Error -> {}
+
+                    Result.Loading -> {}
+                }
             }
         }
     }
