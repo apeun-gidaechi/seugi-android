@@ -3,10 +3,13 @@ package com.seugi.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
+import com.seugi.common.utiles.DispatcherType
+import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.profile.ProfileRepository
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.main.model.MainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,12 +20,13 @@ import kotlinx.coroutines.launch
 class MainViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
     private val workspaceRepository: WorkspaceRepository,
+    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainUiState())
     val state = _state.asStateFlow()
 
-    fun loadWorkspaceId() = viewModelScope.launch {
+    fun loadWorkspaceId() = viewModelScope.launch(dispatcher) {
         launch {
             val localWorkspaceId = workspaceRepository.getWorkspaceId()
             workspaceRepository.getMyWorkspaces().collect { response ->
@@ -59,7 +63,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun loadData(workspaceId: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             profileRepository.getProfile(workspaceId).collect {
                 when (it) {
                     is Result.Success -> {

@@ -258,7 +258,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun insertLocal(workspaceId: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             workspaceRepository.insertWorkspaceId(
                 workspaceId = workspaceId,
             )
