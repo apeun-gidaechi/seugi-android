@@ -3,11 +3,14 @@ package com.seugi.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
+import com.seugi.common.utiles.DispatcherType
+import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.profile.ProfileRepository
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.main.model.MainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -17,22 +20,50 @@ import kotlinx.coroutines.launch
 class MainViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
     private val workspaceRepository: WorkspaceRepository,
+    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainUiState())
     val state = _state.asStateFlow()
 
-    fun load() = viewModelScope.launch {
+    fun loadWorkspaceId() = viewModelScope.launch(dispatcher) {
         launch {
-            val workspaceId = workspaceRepository.getWorkspaceId()
-            _state.update {
-                it.copy(
-                    workspaceId = workspaceId,
-                )
+            val localWorkspaceId = workspaceRepository.getWorkspaceId()
+            workspaceRepository.getMyWorkspaces().collect { response ->
+                when (response) {
+                    is Result.Success -> {
+                        val workspaces = response.data
+                        val workspaceId = when {
+                            workspaces.isEmpty() -> ""
+                            localWorkspaceId.isEmpty() -> {
+                                // 로컬에 아이디가 없으면 서버의 첫 번째 워크스페이스 ID 사용
+                                workspaces.first().workspaceId
+                            }
+                            else -> {
+                                // 로컬에 아이디가 있으면 그대로 사용
+                                localWorkspaceId
+                            }
+                        }
+                        // 상태 업데이트 및 데이터 로드
+                        _state.update {
+                            it.copy(workspaceId = workspaceId)
+                        }
+                        loadData(workspaceId = workspaceId)
+                    }
+
+                    is Result.Error -> {
+                        response.throwable.printStackTrace()
+                    }
+
+                    Result.Loading -> {}
+                }
             }
         }
-        launch {
-            profileRepository.getProfile(_state.value.workspaceId).collect {
+    }
+
+    private fun loadData(workspaceId: String) {
+        viewModelScope.launch(dispatcher) {
+            profileRepository.getProfile(workspaceId).collect {
                 when (it) {
                     is Result.Success -> {
                         _state.update { state ->
@@ -45,9 +76,8 @@ class MainViewModel @Inject constructor(
                     else -> {}
                 }
             }
-        }
-        launch {
-            workspaceRepository.getPermission(_state.value.workspaceId).collect {
+
+            workspaceRepository.getPermission(workspaceId).collect {
                 when (it) {
                     is Result.Success -> {
                         _state.update { state ->
@@ -57,27 +87,6 @@ class MainViewModel @Inject constructor(
                         }
                     }
                     else -> {}
-                }
-            }
-        }
-        launch {
-            workspaceRepository.getMyWorkspaces().collect {
-                when (it) {
-                    is Result.Success -> {
-                        val workspaces = it.data
-                        if (_state.value.workspaceId.isEmpty()) {
-                            workspaceRepository.insertWorkspaceId(workspaceId = workspaces[0].workspaceId)
-                        } else {
-                            workspaces.forEach { workspace ->
-                                if (_state.value.workspaceId == workspace.workspaceId) {
-                                    workspaceRepository.updateWorkspaceId(workspaceId = workspace.workspaceId)
-                                }
-                            }
-                        }
-                    }
-
-                    else -> {
-                    }
                 }
             }
         }

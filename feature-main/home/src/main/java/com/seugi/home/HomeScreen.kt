@@ -79,7 +79,6 @@ internal fun HomeScreen(
     onNavigationVisibleChange: (Boolean) -> Unit,
     navigateToWorkspaceDetail: (String) -> Unit,
     navigateToWorkspaceCreate: () -> Unit,
-    changeWorkspaceId: (String) -> Unit,
 ) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -169,7 +168,6 @@ internal fun HomeScreen(
                                 onClick = {
                                     onNavigationVisibleChange(false)
                                     navigateToWorkspaceDetail(state.nowWorkspaceId)
-                                    changeWorkspaceId(state.nowWorkspaceId)
                                 },
                                 type = ButtonType.Gray,
                                 text = "전환",
