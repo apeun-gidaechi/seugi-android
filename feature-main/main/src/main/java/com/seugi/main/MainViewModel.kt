@@ -5,10 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.data.profile.ProfileRepository
 import com.seugi.data.workspace.WorkspaceRepository
-import com.seugi.home.model.CommonUiState
 import com.seugi.main.model.MainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -46,7 +44,7 @@ class MainViewModel @Inject constructor(
                         }
                         _state.update {
                             it.copy(
-                                workspaceId = workspaceId
+                                workspaceId = workspaceId,
                             )
                         }
                         loadData(workspaceId = workspaceId)
@@ -60,10 +58,8 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun loadData(
-        workspaceId: String
-    ){
-        viewModelScope.launch{
+    private fun loadData(workspaceId: String) {
+        viewModelScope.launch {
             profileRepository.getProfile(workspaceId).collect {
                 when (it) {
                     is Result.Success -> {

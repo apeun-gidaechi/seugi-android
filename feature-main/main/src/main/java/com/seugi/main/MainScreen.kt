@@ -85,7 +85,7 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
     }
 
     LaunchedEffect(key1 = true) {
-        viewModel.load()
+        viewModel.loadWorkspaceId()
     }
 
     LaunchedEffect(state) {}

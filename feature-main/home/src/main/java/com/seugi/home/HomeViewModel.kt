@@ -60,7 +60,7 @@ class HomeViewModel @Inject constructor(
                                 workspaceId = workspaces[0].workspaceId
                                 _state.update { mainUi ->
                                     mainUi.copy(
-                                        nowWorkspaceId = workspaces[0].workspaceId
+                                        nowWorkspaceId = workspaces[0].workspaceId,
                                     )
                                 }
                             } else {
@@ -70,7 +70,7 @@ class HomeViewModel @Inject constructor(
                                     if (localWorkspaceId == it.workspaceId) {
                                         _state.update { mainUi ->
                                             mainUi.copy(
-                                                nowWorkspaceId = it.workspaceId
+                                                nowWorkspaceId = it.workspaceId,
                                             )
                                         }
                                     }
@@ -173,7 +173,7 @@ class HomeViewModel @Inject constructor(
                         ).toImmutableList(),
                     ),
 
-                    )
+                )
             }
         }
     }
@@ -257,12 +257,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun insertLocal(workspaceId: String){
+    private fun insertLocal(workspaceId: String) {
         viewModelScope.launch {
             workspaceRepository.insertWorkspaceId(
-                workspaceId = workspaceId
+                workspaceId = workspaceId,
             )
         }
-
     }
 }
