@@ -1,5 +1,6 @@
 package com.seugi.network.message.datasource
 
+import android.util.Log
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.network.core.SeugiUrl
@@ -29,6 +30,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.reactive.asFlow
@@ -86,6 +88,9 @@ class MessageDataSourceImpl @Inject constructor(
         stompClient.topic(SeugiUrl.Message.SUBSCRIPTION + chatRoomId)
             .asFlow()
             .flowOn(dispatcher)
+            .catch {
+                it.printStackTrace()
+            }
             .collect { message ->
                 val type = message.payload.toResponse(MessageMessageResponse::class.java).type
                 when (type) {
@@ -117,7 +122,12 @@ class MessageDataSourceImpl @Inject constructor(
             message = message,
         ).toJsonString()
 
-        val sendContent = StompMessage("SEND", listOf(StompHeader(StompHeader.DESTINATION, "/pub/chat.message")), body)
+        val sendContent = StompMessage(
+            "SEND",
+            listOf(StompHeader(StompHeader.DESTINATION, SeugiUrl.Message.SEND)),
+            body
+        )
+        stompClient.send(sendContent).subscribe()
         return true
     }
 }
