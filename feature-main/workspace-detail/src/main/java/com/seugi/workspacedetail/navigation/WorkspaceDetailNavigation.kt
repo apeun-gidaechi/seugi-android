@@ -17,7 +17,7 @@ fun NavController.navigateToWorkspaceDetail(workspaceId: String, navOptions: Nav
     )
 }
 
-fun NavGraphBuilder.workspaceDetailScreen(navigateToJoinWorkspace: () -> Unit, popBackStack: () -> Unit, navigateToWorkspaceMember: (String) -> Unit, navigateToCreateWorkspace: () -> Unit) {
+fun NavGraphBuilder.workspaceDetailScreen(navigateToJoinWorkspace: () -> Unit, popBackStack: () -> Unit, navigateToWorkspaceMember: (String) -> Unit, navigateToCreateWorkspace: () -> Unit, changeWorkspace: () -> Unit) {
     composable(
         route = "$WORKSPACE_DETAIL_ROUTE/{workspaceId}",
         arguments = listOf(
@@ -30,6 +30,7 @@ fun NavGraphBuilder.workspaceDetailScreen(navigateToJoinWorkspace: () -> Unit, p
             popBackStack = popBackStack,
             navigateToWorkspaceMember = navigateToWorkspaceMember,
             navigateToCreateWorkspace = navigateToCreateWorkspace,
+            changeWorkspaceId = changeWorkspace
         )
     }
 }

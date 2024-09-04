@@ -64,7 +64,7 @@ class WorkspaceDetailViewModel @Inject constructor(
             }
         }
     }
-    fun changeNowWorkspace(workspaceId: String) {
+    fun changeNowWorkspace(workspaceId: String, changeWorkspaceId: () -> Unit) {
         viewModelScope.launch {
             setLoading(true)
             workspaceRepository.getWorkspaceData(workspaceId).collect {
@@ -85,6 +85,7 @@ class WorkspaceDetailViewModel @Inject constructor(
                 }
             }
             workspaceRepository.updateWorkspaceId(workspaceId)
+            changeWorkspaceId
             setLoading(false)
         }
     }

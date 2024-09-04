@@ -61,6 +61,16 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun loadLocalWorkspaceId(){
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    workspaceId = workspaceRepository.getWorkspaceId()
+                )
+            }
+        }
+    }
+
     private fun loadData(workspaceId: String) {
         viewModelScope.launch(dispatcher) {
             profileRepository.getProfile(workspaceId).collect {
