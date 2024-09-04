@@ -25,6 +25,7 @@ public class LifecycleEvent {
     public LifecycleEvent(Type type, Exception exception) {
         mType = type;
         mException = exception;
+        mMessage = exception.getMessage();
     }
 
     public LifecycleEvent(Type type, String message) {

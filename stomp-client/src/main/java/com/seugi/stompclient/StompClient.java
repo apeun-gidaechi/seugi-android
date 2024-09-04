@@ -12,7 +12,9 @@ import com.seugi.stompclient.dto.StompMessage;
 import com.seugi.stompclient.pathmatcher.PathMatcher;
 import com.seugi.stompclient.pathmatcher.SimplePathMatcher;
 import com.seugi.stompclient.provider.ConnectionProvider;
+import com.seugi.stompclient.provider.OkHttpConnectionProvider;
 
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -129,6 +131,7 @@ public class StompClient {
 
                         case ERROR:
                             Log.d(TAG, "Socket closed with error");
+                            Log.d(TAG, lifecycleEvent.getMessage());
                             lifecyclePublishSubject.onNext(lifecycleEvent);
                             break;
                     }
@@ -142,8 +145,12 @@ public class StompClient {
                 .subscribe(stompMessage -> {
                     getConnectionStream().onNext(true);
                 }, onError -> {
+                    Log.e(TAG, "Error Client", onError);
                     if (onError instanceof StompException) {
-                        lifecyclePublishSubject.onNext(new LifecycleEvent(LifecycleEvent.Type.ERROR, (Exception) onError));
+                        lifecyclePublishSubject.onNext(new LifecycleEvent(LifecycleEvent.Type.ERROR, (StompException) onError));
+                    } else if (onError instanceof SocketException) {
+                        Log.e(TAG, "Error Socket Connect", onError);
+                        lifecyclePublishSubject.onNext(new LifecycleEvent(LifecycleEvent.Type.ERROR, (SocketException) onError));
                     } else {
                         Log.e(TAG, "Error parsing message", onError);
                     }
@@ -289,9 +296,16 @@ public class StompClient {
         topics.remove(dest);
 
         Log.d(TAG, "Unsubscribe path: " + dest + " id: " + topicId);
-
+        if (connectionProvider instanceof OkHttpConnectionProvider
+                && ((OkHttpConnectionProvider) connectionProvider).getSocket() == null
+        ) {
+            return Completable.complete();
+        }
         return send(new StompMessage(StompCommand.UNSUBSCRIBE,
-                Collections.singletonList(new StompHeader(StompHeader.ID, topicId)), null)).onErrorComplete();
+                Collections
+                        .singletonList(new StompHeader(StompHeader.ID, topicId)), null))
+                        .onErrorComplete(throwable -> true);
+
     }
 
     /**

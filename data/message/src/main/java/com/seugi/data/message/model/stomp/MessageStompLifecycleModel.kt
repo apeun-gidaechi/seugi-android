@@ -4,5 +4,5 @@ sealed interface MessageStompLifecycleModel {
     data object Open : MessageStompLifecycleModel
     data object Closed : MessageStompLifecycleModel
     data object FailedServerHeartbeat : MessageStompLifecycleModel
-    data class Error(val message: String) : MessageStompLifecycleModel
+    data class Error(val throwable: Throwable) : MessageStompLifecycleModel
 }

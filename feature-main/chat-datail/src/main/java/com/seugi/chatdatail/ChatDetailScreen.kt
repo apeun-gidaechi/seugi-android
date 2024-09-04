@@ -170,11 +170,13 @@ internal fun ChatDetailScreen(
     }
 
     LifecycleResumeEffect(key1 = Unit) {
+        Log.d("TAG", "ChatDetailScreen: resume")
         onNavigationVisibleChange(false)
 
         viewModel.collectStompLifecycle()
         viewModel.channelReconnect()
         onPauseOrDispose {
+            Log.d("TAG", "ChatDetailScreen: pause")
             viewModel.subscribeCancel()
             onNavigationVisibleChange(true)
         }
