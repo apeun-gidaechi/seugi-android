@@ -61,6 +61,7 @@ fun WorkspaceDetailScreen(
     workspaceId: String,
     navigateToWorkspaceMember: (String) -> Unit,
     navigateToCreateWorkspace: () -> Unit,
+    changeWorkspaceId: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showDialog by remember { mutableStateOf(false) }
@@ -68,7 +69,7 @@ fun WorkspaceDetailScreen(
 
     LaunchedEffect(key1 = true) {
         viewModel.loadWorkspace()
-        viewModel.changeNowWorkspace(workspaceId)
+        viewModel.changeNowWorkspace(workspaceId, changeWorkspaceId)
     }
     viewModel.sideEffect.CollectAsSideEffect {
         when (it) {
@@ -107,6 +108,7 @@ fun WorkspaceDetailScreen(
                                                 .bounceClick(onClick = {
                                                     viewModel.changeNowWorkspace(
                                                         workspaceId = item.workspaceId,
+                                                        changeWorkspaceId = changeWorkspaceId,
                                                     )
                                                     showDialog = false
                                                 })
