@@ -61,11 +61,11 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun loadLocalWorkspaceId(){
+    fun loadLocalWorkspaceId() {
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    workspaceId = workspaceRepository.getWorkspaceId()
+                    workspaceId = workspaceRepository.getWorkspaceId(),
                 )
             }
         }

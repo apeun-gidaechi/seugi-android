@@ -292,9 +292,9 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
                 navigateToCreateWorkspace = {
                     navHostController.navigateToWorkspaceCreate()
                 },
-                changeWorkspace ={
+                changeWorkspace = {
                     viewModel.loadLocalWorkspaceId()
-                }
+                },
             )
             workspaceMemberScreen(
                 popBackStack = { navHostController.popBackStack() },
