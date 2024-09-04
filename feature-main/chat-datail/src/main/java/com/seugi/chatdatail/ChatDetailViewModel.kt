@@ -145,7 +145,7 @@ class ChatDetailViewModel @Inject constructor(
                             Log.d("TAG", "collectStompLifecycle: ${data}")
                             when (data) {
                                 is MessageStompLifecycleModel.Error -> {
-                                    val exception = data.throwable as Exception
+                                    val exception = data.throwable as? Exception
                                     when (exception) {
                                         is StompException -> {
                                             tokenRepository.newToken().collect {

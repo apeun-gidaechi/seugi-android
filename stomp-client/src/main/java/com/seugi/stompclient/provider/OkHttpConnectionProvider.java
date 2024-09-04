@@ -88,7 +88,7 @@ public class OkHttpConnectionProvider extends AbstractConnectionProvider {
                         if (t instanceof SocketException) {
                             emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.ERROR, new SocketException(t.getMessage())));
                         } else {
-                            emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.ERROR, new StompException(t.getMessage())));
+                            emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.ERROR, new StompException(t.getMessage() == null? "": t.getMessage())));
                         }
                         openSocket = null;
                         emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.CLOSED));
