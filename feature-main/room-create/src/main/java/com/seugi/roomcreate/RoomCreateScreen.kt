@@ -66,7 +66,6 @@ internal fun RoomCreateScreen(
                 }
                 nowScreen = 2
             },
-            userId = userId,
         )
     }
 
