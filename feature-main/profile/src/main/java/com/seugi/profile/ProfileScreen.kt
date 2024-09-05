@@ -68,7 +68,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
 
     LaunchedEffect(key1 = true) {
         viewModel.load(
-            workspaceId = workspaceId,
+            profile = myProfile
         )
     }
 
@@ -153,7 +153,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
             SeugiAvatar(type = AvatarType.Medium)
             Spacer(modifier = Modifier.width(10.dp))
             Text(
-                text = myProfile.member.name,
+                text = state.profileInfo.member.name,
                 style = SeugiTheme.typography.subtitle2,
                 color = SeugiTheme.colors.black,
             )
@@ -177,7 +177,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
         Spacer(modifier = Modifier.height(8.dp))
         ProfileCard(
             title = "상태메세지",
-            content = myProfile.status,
+            content = state.profileInfo.status,
             onClickEdit = {
                 editTextTarget = "status"
                 isShowDialog = true
@@ -192,7 +192,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
         Spacer(modifier = Modifier.height(8.dp))
         ProfileCard(
             title = "직위",
-            content = myProfile.spot,
+            content = state.profileInfo.spot,
             onClickEdit = {
                 editTextTarget = "spot"
                 isShowDialog = true
@@ -207,7 +207,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
         Spacer(modifier = Modifier.height(8.dp))
         ProfileCard(
             title = "소속",
-            content = myProfile.belong,
+            content = state.profileInfo.belong,
             onClickEdit = {
                 editTextTarget = "belong"
                 isShowDialog = true
@@ -222,7 +222,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
         Spacer(modifier = Modifier.height(8.dp))
         ProfileCard(
             title = "휴대전화번호",
-            content = myProfile.phone,
+            content = state.profileInfo.phone,
             onClickEdit = {
                 editTextTarget = "phone"
                 isShowDialog = true
@@ -237,7 +237,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
         Spacer(modifier = Modifier.height(8.dp))
         ProfileCard(
             title = "유선전화번호",
-            content = myProfile.wire,
+            content = state.profileInfo.wire,
             onClickEdit = {
                 editTextTarget = "wire"
                 isShowDialog = true
