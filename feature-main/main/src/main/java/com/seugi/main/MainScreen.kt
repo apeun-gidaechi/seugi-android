@@ -157,7 +157,7 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
                         chatRoomId = chatId,
                         isPersonal = true,
                     )
-                }
+                },
             )
             chatDetailScreen(
                 userId = state.userId,
