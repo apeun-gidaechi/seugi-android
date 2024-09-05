@@ -160,7 +160,7 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
                 },
                 loadWorkspaceId = {
                     viewModel.loadWorkspaceId()
-                }
+                },
             )
             chatDetailScreen(
                 userId = state.userId,
