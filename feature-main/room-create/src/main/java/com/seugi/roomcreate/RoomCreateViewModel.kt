@@ -1,6 +1,5 @@
 package com.seugi.roomcreate
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
@@ -36,7 +35,7 @@ class RoomCreateViewModel @Inject constructor(
     private val _sideEffect = Channel<RoomCreateSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
 
-    fun loadUser(workspaceId: String) = viewModelScope.launch(dispatcher) {
+    fun loadUser(workspaceId: String, userId: Int) = viewModelScope.launch(dispatcher) {
         workspaceRepository.getMembers(workspaceId).collect {
             when (it) {
                 is Result.Success -> {
@@ -52,7 +51,7 @@ class RoomCreateViewModel @Inject constructor(
                         )
                     }
                     _state.value = _state.value.copy(
-                        userItem = users.toImmutableList(),
+                        userItem = users.filter { it.id != userId }.toImmutableList(),
                     )
                 }
                 is Result.Loading -> {}
@@ -89,7 +88,6 @@ class RoomCreateViewModel @Inject constructor(
         ).collect {
             when (it) {
                 is Result.Success -> {
-                    Log.d("TAG", "createRoom: ${it.data}")
                     _sideEffect.send(RoomCreateSideEffect.SuccessCreateRoom(it.data, false))
                 }
                 is Result.Loading -> {}
@@ -112,7 +110,6 @@ class RoomCreateViewModel @Inject constructor(
         ).collect {
             when (it) {
                 is Result.Success -> {
-                    Log.d("TAG", "createRoom: ${it.data}")
                     _sideEffect.send(RoomCreateSideEffect.SuccessCreateRoom(it.data, true))
                 }
 

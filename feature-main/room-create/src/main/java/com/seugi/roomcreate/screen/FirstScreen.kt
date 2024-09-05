@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -43,7 +42,6 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.modifier.verticalScrollbar
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.roomcreate.model.RoomCreateUiState
-import kotlin.math.max
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -142,7 +140,7 @@ internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) 
                 }
             }
             LazyColumn {
-                items(state.userItem) { item ->
+                items(state.userItem) { item -> // 필터링 추가
                     Box(modifier = Modifier.height(72.dp)) {
                         SeugiMemberList(
                             modifier = Modifier.align(Alignment.Center),

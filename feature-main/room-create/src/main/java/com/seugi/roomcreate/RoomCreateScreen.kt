@@ -22,6 +22,7 @@ internal fun RoomCreateScreen(
     popBackStack: () -> Unit,
     onNavigationVisibleChange: (Boolean) -> Unit,
     navigateToChatDetail: (chatId: String, workspaceId: String, isPersonal: Boolean) -> Unit,
+    userId: Int,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var nowScreen by remember { mutableStateOf(1) }
@@ -36,7 +37,7 @@ internal fun RoomCreateScreen(
 
     LaunchedEffect(key1 = true) {
         onNavigationVisibleChange(false)
-        viewModel.loadUser(workspaceId)
+        viewModel.loadUser(workspaceId, userId)
     }
 
     LifecycleResumeEffect(key1 = Unit) {
