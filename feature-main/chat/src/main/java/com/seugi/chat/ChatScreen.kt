@@ -1,5 +1,6 @@
 package com.seugi.chat
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,7 +35,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
-internal fun ChatScreen(viewModel: ChatViewModel = hiltViewModel(), workspaceId: String, navigateToChatDetail: (chatID: String) -> Unit, loadWorkspaceId: () -> Unit) {
+internal fun ChatScreen(viewModel: ChatViewModel = hiltViewModel(), workspaceId: String, navigateToChatDetail: (chatID: String) -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
     var searchText by remember { mutableStateOf("") }
@@ -53,9 +54,6 @@ internal fun ChatScreen(viewModel: ChatViewModel = hiltViewModel(), workspaceId:
         onBack = onDone,
     )
 
-    LaunchedEffect(key1 = true) {
-        loadWorkspaceId()
-    }
     LaunchedEffect(key1 = workspaceId) {
         viewModel.loadChats(
             workspaceId = workspaceId,
