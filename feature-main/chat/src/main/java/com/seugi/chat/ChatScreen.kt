@@ -53,7 +53,7 @@ internal fun ChatScreen(viewModel: ChatViewModel = hiltViewModel(), workspaceId:
         onBack = onDone,
     )
 
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = workspaceId) {
         viewModel.loadChats(
             workspaceId = workspaceId,
         )
