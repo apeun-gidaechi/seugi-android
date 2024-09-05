@@ -1,6 +1,5 @@
 package com.seugi.roomcreate
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,7 +22,7 @@ internal fun RoomCreateScreen(
     popBackStack: () -> Unit,
     onNavigationVisibleChange: (Boolean) -> Unit,
     navigateToChatDetail: (chatId: String, workspaceId: String, isPersonal: Boolean) -> Unit,
-    userId: Int
+    userId: Int,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var nowScreen by remember { mutableStateOf(1) }
@@ -67,7 +66,7 @@ internal fun RoomCreateScreen(
                 }
                 nowScreen = 2
             },
-            userId = userId
+            userId = userId,
         )
     }
 

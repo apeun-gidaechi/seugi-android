@@ -10,7 +10,12 @@ const val ROOM_ROUTE = "room"
 
 fun NavController.navigateToRoom(navOptions: NavOptions?) = navigate(ROOM_ROUTE, navOptions)
 
-fun NavGraphBuilder.roomScreen(workspaceId: String, userId: Int, navigateToChatDetail: (roomId: String, workspaceId: String) -> Unit, navigateToCreateRoom: (workspaceId: String, userId: Int) -> Unit) {
+fun NavGraphBuilder.roomScreen(
+    workspaceId: String,
+    userId: Int,
+    navigateToChatDetail: (roomId: String, workspaceId: String) -> Unit,
+    navigateToCreateRoom: (workspaceId: String, userId: Int) -> Unit,
+) {
     composable(ROOM_ROUTE) {
         RoomScreen(
             workspaceId = workspaceId,

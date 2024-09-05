@@ -180,7 +180,7 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
                 navigateToCreateRoom = { workspaceId, userId ->
                     navHostController.navigateToRoomCreate(
                         workspaceId = workspaceId,
-                        userId = userId
+                        userId = userId,
                     )
                 },
             )

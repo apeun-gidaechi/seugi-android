@@ -1,6 +1,5 @@
 package com.seugi.roomcreate.screen
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -48,13 +47,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-internal fun FirstScreen(
-    state: RoomCreateUiState,
-    updateChecked: (userId: Int) -> Unit,
-    popBackStack: () -> Unit,
-    nextScreen: () -> Unit,
-    userId: Int
-) {
+internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) -> Unit, popBackStack: () -> Unit, nextScreen: () -> Unit, userId: Int) {
     val selectScrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     var beforeItemSize by remember { mutableStateOf(0) }
@@ -147,7 +140,7 @@ internal fun FirstScreen(
                 }
             }
             LazyColumn {
-                items(state.userItem.filter { it.id != userId }) { item ->  // 필터링 추가
+                items(state.userItem.filter { it.id != userId }) { item -> // 필터링 추가
                     Box(modifier = Modifier.height(72.dp)) {
                         SeugiMemberList(
                             modifier = Modifier.align(Alignment.Center),
