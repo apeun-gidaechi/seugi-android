@@ -126,7 +126,7 @@ class MessageDataSourceImpl @Inject constructor(
         val sendContent = StompMessage(
             "SEND",
             listOf(StompHeader(StompHeader.DESTINATION, SeugiUrl.Message.SEND)),
-            body
+            body,
         )
         stompClient.send(sendContent).subscribe()
         return true

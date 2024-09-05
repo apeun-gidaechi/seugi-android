@@ -24,6 +24,7 @@ import com.seugi.data.profile.ProfileRepository
 import com.seugi.data.token.TokenRepository
 import com.seugi.stompclient.StompException
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.net.SocketException
 import java.time.Duration
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -40,7 +41,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.net.SocketException
 
 @HiltViewModel
 class ChatDetailViewModel @Inject constructor(
@@ -142,7 +142,7 @@ class ChatDetailViewModel @Inject constructor(
                     when (it) {
                         is Result.Success -> {
                             val data = it.data
-                            Log.d("TAG", "collectStompLifecycle: ${data}")
+                            Log.d("TAG", "collectStompLifecycle: $data")
                             when (data) {
                                 is MessageStompLifecycleModel.Error -> {
                                     val exception = data.throwable as? Exception
@@ -299,86 +299,85 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun Result<MessageTypeModel>.collectMessage() =
-        when (this) {
-            is Result.Success -> {
-                val dataType = data.type
-                when {
-                    dataType.isMessage() -> {
-                        val data = data as MessageMessageModel
-                        val message = _state.value.message.toMutableList()
-                        val formerItem = _state.value.message.firstOrNull()
+    private fun Result<MessageTypeModel>.collectMessage() = when (this) {
+        is Result.Success -> {
+            val dataType = data.type
+            when {
+                dataType.isMessage() -> {
+                    val data = data as MessageMessageModel
+                    val message = _state.value.message.toMutableList()
+                    val formerItem = _state.value.message.firstOrNull()
 
-                        var isFirst = data.author != formerItem?.author?.id
-                        val isMe = data.author == _state.value.userInfo?.id
+                    var isFirst = data.author != formerItem?.author?.id
+                    val isMe = data.author == _state.value.userInfo?.id
 
-                        if (
-                            formerItem?.isLast == true && formerItem.author.id == data.author &&
-                            !formerItem.timestamp.isDifferentMin(data.timestamp)
-                        ) {
-                            message.add(
-                                index = 0,
-                                element = message.removeFirst().copy(
-                                    isLast = false,
-                                ),
-                            )
-                        }
-
-                        if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)
-                        ) {
-                            isFirst = true
-                            message.add(
-                                index = 0,
-                                element = ChatDetailMessageState(
-                                    chatRoomId = data.chatRoomId,
-                                    type = ChatDetailChatTypeState.DATE,
-                                    timestamp = LocalDateTime.of(data.timestamp.year, data.timestamp.monthValue, data.timestamp.dayOfMonth, 0, 0),
-                                ),
-                            )
-                        }
-
+                    if (
+                        formerItem?.isLast == true && formerItem.author.id == data.author &&
+                        !formerItem.timestamp.isDifferentMin(data.timestamp)
+                    ) {
                         message.add(
                             index = 0,
-                            element = data.toState(
-                                isFirst = isFirst,
-                                isLast = true,
-                                isMe = isMe,
-                                author = _state.value.users.getOrDefault(data.author, MessageUserModel(data.author)),
+                            element = message.removeFirst().copy(
+                                isLast = false,
                             ),
                         )
-                        _state.update {
-                            it.copy(
-                                message = message.toImmutableList(),
-                            )
-                        }
-                    }
-                    dataType.isSub() -> {
-                        val messageSubModel = data as MessageSubModel
-                        _state.update {
-                            it.copy(
-                                message = it.message.map { nowMessage ->
-                                    nowMessage.copy(
-                                        read = nowMessage.read
-                                            .toMutableList()
-                                            .apply {
-                                                add(messageSubModel.userId)
-                                            }
-                                            .distinct()
-                                            .toImmutableList(),
-                                    )
-                                }.toImmutableList(),
-                            )
-                        }
                     }
 
-                    else -> {}
+                    if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)
+                    ) {
+                        isFirst = true
+                        message.add(
+                            index = 0,
+                            element = ChatDetailMessageState(
+                                chatRoomId = data.chatRoomId,
+                                type = ChatDetailChatTypeState.DATE,
+                                timestamp = LocalDateTime.of(data.timestamp.year, data.timestamp.monthValue, data.timestamp.dayOfMonth, 0, 0),
+                            ),
+                        )
+                    }
+
+                    message.add(
+                        index = 0,
+                        element = data.toState(
+                            isFirst = isFirst,
+                            isLast = true,
+                            isMe = isMe,
+                            author = _state.value.users.getOrDefault(data.author, MessageUserModel(data.author)),
+                        ),
+                    )
+                    _state.update {
+                        it.copy(
+                            message = message.toImmutableList(),
+                        )
+                    }
                 }
-            }
-            is Result.Loading -> {}
-            is Result.Error -> {
-                throwable.printStackTrace()
+                dataType.isSub() -> {
+                    val messageSubModel = data as MessageSubModel
+                    _state.update {
+                        it.copy(
+                            message = it.message.map { nowMessage ->
+                                nowMessage.copy(
+                                    read = nowMessage.read
+                                        .toMutableList()
+                                        .apply {
+                                            add(messageSubModel.userId)
+                                        }
+                                        .distinct()
+                                        .toImmutableList(),
+                                )
+                            }.toImmutableList(),
+                        )
+                    }
+                }
+
+                else -> {}
             }
         }
+        is Result.Loading -> {}
+        is Result.Error -> {
+            throwable.printStackTrace()
+        }
+    }
 
     private fun Result<MessageLoadModel>.collectMessage() = viewModelScope.launch(Dispatchers.IO) {
         when (this@collectMessage) {

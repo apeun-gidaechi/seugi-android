@@ -6,7 +6,7 @@ data class MessageRequest(
     val message: String,
     val mention: List<Long>,
     val mentionAll: Boolean,
-    val emotion: String?
+    val emotion: String?,
 ) {
     constructor(roomId: String, message: String) : this(roomId, "MESSAGE", message, emptyList(), false, null)
 }

@@ -18,7 +18,6 @@ class PersonalChatDataSourceImpl @Inject constructor(
 ) : PersonalChatDataSource {
     override suspend fun getAllChat(workspaceId: String): BaseResponse<List<ChatRoomResponse>> = httpClient.get(SeugiUrl.PersonalChat.LOAD_ALL) {
         parameter("workspace", workspaceId)
-
     }.body()
 
     override suspend fun createChat(workspaceId: String, roomName: String, joinUsers: List<Int>, chatRoomImg: String): BaseResponse<String> = httpClient.post(SeugiUrl.PersonalChat.CREATE) {
