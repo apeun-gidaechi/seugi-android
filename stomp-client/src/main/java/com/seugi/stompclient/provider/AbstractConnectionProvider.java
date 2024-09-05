@@ -94,10 +94,14 @@ public abstract class AbstractConnectionProvider implements ConnectionProvider {
      * </pre>
      */
     @Nullable
-    protected abstract Object getSocket();
+    public abstract Object getSocket();
 
     protected void emitLifecycleEvent(@NonNull LifecycleEvent lifecycleEvent) {
         Log.d(TAG, "Emit lifecycle event: " + lifecycleEvent.getType().name());
+        if (lifecycleEvent.getType() == LifecycleEvent.Type.ERROR) {
+//            lifecycleEvent.getException().printStackTrace();
+            Log.d(TAG, "emitLifecycleEvent: error");
+        }
         lifecycleStream.onNext(lifecycleEvent);
     }
 

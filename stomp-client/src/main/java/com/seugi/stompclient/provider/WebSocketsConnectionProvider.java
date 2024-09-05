@@ -124,7 +124,7 @@ public class WebSocketsConnectionProvider extends AbstractConnectionProvider {
     }
 
     @Override
-    protected Object getSocket() {
+    public Object getSocket() {
         return mWebSocketClient;
     }
 }

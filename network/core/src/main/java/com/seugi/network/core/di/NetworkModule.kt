@@ -144,6 +144,7 @@ object NetworkModule {
         .build()
 
     @Provides
+    @Singleton
     fun providesStompClient(okHttpClient: OkHttpClient): StompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, SeugiUrl.Message.HANDSHAKE, null, okHttpClient)
 }
 

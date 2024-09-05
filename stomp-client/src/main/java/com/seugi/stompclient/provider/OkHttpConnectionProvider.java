@@ -2,9 +2,12 @@ package com.seugi.stompclient.provider;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
+import com.seugi.stompclient.StompException;
 import com.seugi.stompclient.dto.LifecycleEvent;
 
+import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -81,7 +84,12 @@ public class OkHttpConnectionProvider extends AbstractConnectionProvider {
                     @Override
                     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
                         // in OkHttp, a Failure is equivalent to a JWS-Error *and* a JWS-Close
-                        emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.ERROR, new Exception(t)));
+                        Log.e(TAG, "onFailure: " + (t instanceof SocketException));
+                        if (t instanceof SocketException) {
+                            emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.ERROR, new SocketException(t.getMessage())));
+                        } else {
+                            emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.ERROR, new StompException(t.getMessage() == null? "": t.getMessage())));
+                        }
                         openSocket = null;
                         emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.CLOSED));
                     }
@@ -102,7 +110,7 @@ public class OkHttpConnectionProvider extends AbstractConnectionProvider {
 
     @Nullable
     @Override
-    protected Object getSocket() {
+    public Object getSocket() {
         return openSocket;
     }
 

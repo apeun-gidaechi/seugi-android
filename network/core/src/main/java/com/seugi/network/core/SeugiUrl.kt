@@ -11,6 +11,7 @@ object SeugiUrl {
         const val HANDSHAKE = "${WS_URL}/stomp/chat"
         const val SUBSCRIPTION = "/exchange/chat.exchange/room."
         const val VIRTUALHOST = "/"
+        const val SEND = "/pub/chat.message"
         const val GET_MESSAGE = "${BASE_URL}/message/search"
     }
 
