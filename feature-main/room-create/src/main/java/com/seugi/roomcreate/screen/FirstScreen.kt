@@ -140,7 +140,7 @@ internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) 
                 }
             }
             LazyColumn {
-                items(state.userItem.filter { it.id != userId }) { item -> // 필터링 추가
+                items(state.userItem) { item -> // 필터링 추가
                     Box(modifier = Modifier.height(72.dp)) {
                         SeugiMemberList(
                             modifier = Modifier.align(Alignment.Center),
