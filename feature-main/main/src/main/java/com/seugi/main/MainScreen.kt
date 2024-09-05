@@ -201,7 +201,7 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
 
             profileScreen(
                 workspaceId = state.workspaceId,
-                myProfile = state.myProfile
+                myProfile = state.myProfile,
             )
 
             notificationScreen(

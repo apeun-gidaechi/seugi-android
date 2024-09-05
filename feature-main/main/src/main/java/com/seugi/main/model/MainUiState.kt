@@ -1,6 +1,5 @@
 package com.seugi.main.model
 
-import android.provider.ContactsContract.Profile
 import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.core.model.UserModel
 import com.seugi.data.workspace.model.WorkspacePermissionModel
@@ -16,7 +15,7 @@ data class MainUiState(
             email = "",
             birth = "",
             name = "",
-            picture = ""
+            picture = "",
         ),
         workspaceId = "",
         nick = "",
@@ -24,6 +23,6 @@ data class MainUiState(
         belong = "",
         phone = "",
         wire = "",
-        location = ""
-    )
+        location = "",
+    ),
 )

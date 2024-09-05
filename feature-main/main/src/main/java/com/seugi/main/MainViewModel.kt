@@ -79,7 +79,7 @@ class MainViewModel @Inject constructor(
                         _state.update { state ->
                             state.copy(
                                 userId = it.data.member.id,
-                                myProfile = it.data
+                                myProfile = it.data,
                             )
                         }
                     }
