@@ -17,7 +17,7 @@ fun NavGraphBuilder.chatScreen(workspaceId: String, navigateToChatDetail: (chatI
         ChatScreen(
             workspaceId = workspaceId,
             navigateToChatDetail = navigateToChatDetail,
-            loadWorkspaceId = loadWorkspaceId
+            loadWorkspaceId = loadWorkspaceId,
         )
     }
 }
