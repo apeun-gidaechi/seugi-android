@@ -40,8 +40,9 @@ import kotlinx.coroutines.launch
 internal fun RoomScreen(
     viewModel: RoomViewModel = hiltViewModel(),
     workspaceId: String,
+    userId: Int,
     navigateToChatDetail: (roomId: String, workspaceId: String) -> Unit,
-    navigateToCreateRoom: (workspaceId: String) -> Unit,
+    navigateToCreateRoom: (workspaceId: String, userId: Int) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
@@ -95,7 +96,7 @@ internal fun RoomScreen(
                             resId = R.drawable.ic_add_fill,
                             size = 28.dp,
                             onClick = {
-                                navigateToCreateRoom(workspaceId)
+                                navigateToCreateRoom(workspaceId, userId)
                             },
                         )
                         Spacer(modifier = Modifier.width(16.dp))

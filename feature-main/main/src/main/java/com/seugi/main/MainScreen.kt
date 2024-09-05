@@ -169,6 +169,7 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
 
             roomScreen(
                 workspaceId = state.workspaceId,
+                userId = state.userId,
                 navigateToChatDetail = { chatId, workspaceId ->
                     navHostController.navigateToChatDetail(
                         chatRoomId = chatId,
@@ -176,9 +177,10 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
                         isPersonal = false,
                     )
                 },
-                navigateToCreateRoom = { workspaceId ->
+                navigateToCreateRoom = { workspaceId, userId ->
                     navHostController.navigateToRoomCreate(
                         workspaceId = workspaceId,
+                        userId = userId
                     )
                 },
             )

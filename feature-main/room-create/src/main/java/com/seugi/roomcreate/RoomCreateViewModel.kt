@@ -45,7 +45,7 @@ class RoomCreateViewModel @Inject constructor(
                         users.add(
                             RoomMemberItem(
                                 id = datum.member.id,
-                                name = datum.nick,
+                                name = datum.member.name,
                                 memberProfile = datum.member.picture,
                                 checked = false,
                             ),
@@ -89,7 +89,6 @@ class RoomCreateViewModel @Inject constructor(
         ).collect {
             when (it) {
                 is Result.Success -> {
-                    Log.d("TAG", "createRoom: ${it.data}")
                     _sideEffect.send(RoomCreateSideEffect.SuccessCreateRoom(it.data, false))
                 }
                 is Result.Loading -> {}
@@ -112,7 +111,6 @@ class RoomCreateViewModel @Inject constructor(
         ).collect {
             when (it) {
                 is Result.Success -> {
-                    Log.d("TAG", "createRoom: ${it.data}")
                     _sideEffect.send(RoomCreateSideEffect.SuccessCreateRoom(it.data, true))
                 }
 

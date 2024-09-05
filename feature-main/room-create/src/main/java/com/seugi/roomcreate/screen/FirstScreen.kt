@@ -1,5 +1,6 @@
 package com.seugi.roomcreate.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -14,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -43,13 +43,18 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.modifier.verticalScrollbar
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.roomcreate.model.RoomCreateUiState
-import kotlin.math.max
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) -> Unit, popBackStack: () -> Unit, nextScreen: () -> Unit) {
+internal fun FirstScreen(
+    state: RoomCreateUiState,
+    updateChecked: (userId: Int) -> Unit,
+    popBackStack: () -> Unit,
+    nextScreen: () -> Unit,
+    userId: Int
+) {
     val selectScrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     var beforeItemSize by remember { mutableStateOf(0) }
@@ -142,7 +147,7 @@ internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) 
                 }
             }
             LazyColumn {
-                items(state.userItem) { item ->
+                items(state.userItem.filter { it.id != userId }) { item ->  // 필터링 추가
                     Box(modifier = Modifier.height(72.dp)) {
                         SeugiMemberList(
                             modifier = Modifier.align(Alignment.Center),
