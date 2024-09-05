@@ -37,7 +37,7 @@ internal fun RoomCreateScreen(
 
     LaunchedEffect(key1 = true) {
         onNavigationVisibleChange(false)
-        viewModel.loadUser(workspaceId)
+        viewModel.loadUser(workspaceId, userId)
     }
 
     LifecycleResumeEffect(key1 = Unit) {
