@@ -25,11 +25,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.AlphaIndication
+import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.AvatarType
 import com.seugi.designsystem.component.GradientPrimary
 import com.seugi.designsystem.component.SeugiAvatar
@@ -39,7 +42,7 @@ import com.seugi.designsystem.theme.SeugiTheme
 
 val CHAT_SHAPE = 8.dp
 
-sealed class ChatItemType {
+sealed interface ChatItemType {
     data class Others(
         val isFirst: Boolean,
         val isLast: Boolean,
@@ -48,26 +51,34 @@ sealed class ChatItemType {
         val message: String,
         val createdAt: String,
         val count: Int?,
-    ) : ChatItemType()
+    ) : ChatItemType
     data class Me(
         val isLast: Boolean,
         val message: String,
         val createdAt: String,
         val count: Int?,
-    ) : ChatItemType()
+    ) : ChatItemType
     data class Date(
         val createdAt: String,
-    ) : ChatItemType()
+    ) : ChatItemType
     data class Ai(
         val isFirst: Boolean,
         val isLast: Boolean,
         val message: String,
         val createdAt: String,
         val count: Int?,
-    ) : ChatItemType()
+    ) : ChatItemType
     data class Else(
         val message: String,
-    ) : ChatItemType()
+    ) : ChatItemType
+
+    data class Failed(
+        val message: String
+    ): ChatItemType
+
+    data class Sending(
+        val message: String
+    ): ChatItemType
 }
 
 @Composable
@@ -120,6 +131,19 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType, onChatLongC
             SeugiChatItemElse(
                 modifier = modifier,
                 message = type.message,
+            )
+        }
+        is ChatItemType.Failed -> {
+            SeugiChatItemFailed(
+                modifier = modifier,
+                message = type.message,
+                onDateClick = onDateClick
+            )
+        }
+        is ChatItemType.Sending -> {
+            SeugiChatItemSending(
+                modifier = modifier,
+                message = type.message
             )
         }
     }
@@ -427,6 +451,128 @@ private fun SeugiChatItemElse(modifier: Modifier, message: String) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun SeugiChatItemFailed(modifier: Modifier = Modifier, message: String, onDateClick: () -> Unit) {
+    val chatShape = RoundedCornerShape(
+        topStart = CHAT_SHAPE,
+        topEnd = 0.dp,
+        bottomStart = CHAT_SHAPE,
+        bottomEnd = CHAT_SHAPE,
+    )
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.Bottom,
+    ) {
+        Row(
+            modifier = Modifier
+                .border(
+                    width = 1.dp,
+                    color = SeugiTheme.colors.gray200,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .bounceClick(onDateClick)
+        ) {
+            Image(
+                modifier = Modifier
+                    .padding(6.dp)
+                    .size(16.dp),
+                painter = painterResource(id = R.drawable.ic_refresh_fill),
+                contentDescription = "다시하기",
+                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray800)
+            )
+            Box(
+                modifier = Modifier
+                    .width(1.dp)
+                    .height(28.dp)
+                    .background(SeugiTheme.colors.gray200)
+            )
+            Image(
+                modifier = Modifier
+                    .padding(6.dp)
+                    .size(16.dp),
+                painter = painterResource(id = R.drawable.ic_close_line),
+                contentDescription = "다시하기",
+                colorFilter = ColorFilter.tint(SeugiTheme.colors.red500)
+            )
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+        Box(
+            modifier = Modifier
+                .dropShadow(
+                    type = DropShadowType.EvBlack1,
+                )
+                .background(
+                    color = SeugiTheme.colors.primary500,
+                    shape = chatShape,
+                )
+                .clip(chatShape)
+                .combinedClickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = AlphaIndication,
+                    onClick = {},
+                ),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                modifier = Modifier.padding(12.dp),
+                text = message,
+                color = SeugiTheme.colors.white,
+                style = SeugiTheme.typography.body1,
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun SeugiChatItemSending(modifier: Modifier = Modifier, message: String) {
+    val chatShape = RoundedCornerShape(
+        topStart = CHAT_SHAPE,
+        topEnd = 0.dp,
+        bottomStart = CHAT_SHAPE,
+        bottomEnd = CHAT_SHAPE,
+    )
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.Bottom,
+    ) {
+        Image(
+            modifier = Modifier
+                .size(20.dp)
+                .rotate(-90f),
+            painter = painterResource(id = R.drawable.ic_send_fill),
+            contentDescription = "보내는 중",
+            colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Box(
+            modifier = Modifier
+                .dropShadow(
+                    type = DropShadowType.EvBlack1,
+                )
+                .background(
+                    color = SeugiTheme.colors.primary500,
+                    shape = chatShape,
+                )
+                .clip(chatShape)
+                .combinedClickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = AlphaIndication,
+                    onClick = {},
+                ),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                modifier = Modifier.padding(12.dp),
+                text = message,
+                color = SeugiTheme.colors.white,
+                style = SeugiTheme.typography.body1,
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
 private fun PreviewSeugiChatItem() {
@@ -495,12 +641,27 @@ private fun PreviewSeugiChatItem() {
                 onDateClick = {
                 },
             )
+            Spacer(modifier = Modifier.height(8.dp))
+            SeugiChatItem(
+                modifier = Modifier.align(Alignment.End),
+                type = ChatItemType.Failed(
+                    message = "iOS 정말 재미없어요"
+                )
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            SeugiChatItem(
+                modifier = Modifier.align(Alignment.End),
+                type = ChatItemType.Sending(
+                    message = "iOS 정말 재미없어요"
+                )
+            )
             Spacer(modifier = Modifier.height(32.dp))
             SeugiChatItem(
                 type = ChatItemType.Date(
                     createdAt = "2024년 3월 21일 목요일",
                 ),
             )
+            Spacer(modifier = Modifier.height(16.dp))
             SeugiChatItem(
                 type = ChatItemType.Else(
                     message = "챗스기님이 입장하셨습니다.",
