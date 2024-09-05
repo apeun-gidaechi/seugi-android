@@ -44,7 +44,7 @@ class RoomCreateViewModel @Inject constructor(
                         users.add(
                             RoomMemberItem(
                                 id = datum.member.id,
-                                name = datum.member.name,
+                                name = datum.nick,
                                 memberProfile = datum.member.picture,
                                 checked = false,
                             ),
