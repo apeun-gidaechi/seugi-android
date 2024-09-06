@@ -90,7 +90,7 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
     }
 
     LaunchedEffect(state) {
-        Log.d("TAG", "profile: ${state.myProfile.workspaceId}")
+        Log.d("TAG", "profile: ${state.profile.workspaceId}")
     }
 
     BackHandler {
@@ -153,10 +153,10 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
             )
 
             chatScreen(
-                workspaceId = state.myProfile.workspaceId,
+                workspaceId = state.profile.workspaceId,
                 navigateToChatDetail = { chatId ->
                     navHostController.navigateToChatDetail(
-                        workspaceId = state.myProfile.workspaceId,
+                        workspaceId = state.profile.workspaceId,
                         chatRoomId = chatId,
                         isPersonal = true,
                     )
@@ -171,7 +171,7 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
             )
 
             roomScreen(
-                workspaceId = state.myProfile.workspaceId,
+                workspaceId = state.profile.workspaceId,
                 userId = state.userId,
                 navigateToChatDetail = { chatId, workspaceId ->
                     navHostController.navigateToChatDetail(
@@ -203,12 +203,12 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
             )
 
             profileScreen(
-                workspaceId = state.myProfile.workspaceId,
-                myProfile = state.myProfile,
+                workspaceId = state.profile.workspaceId,
+                myProfile = state.profile,
             )
 
             notificationScreen(
-                workspaceId = state.myProfile.workspaceId,
+                workspaceId = state.profile.workspaceId,
                 userId = state.userId,
                 permission = state.permission,
                 navigateToNotificationCreate = {
@@ -271,14 +271,14 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
             )
 
             notificationCreate(
-                workspaceId = state.myProfile.workspaceId,
+                workspaceId = state.profile.workspaceId,
                 popBackStack = navHostController::popBackStack,
                 onNavigationVisibleChange = onNavigationVisibleChange,
             )
 
             notificationEdit(
                 userId = state.userId,
-                workspaceId = state.myProfile.workspaceId,
+                workspaceId = state.profile.workspaceId,
                 permission = state.permission,
                 popBackStack = navHostController::popBackStack,
                 onNavigationVisibleChange = onNavigationVisibleChange,

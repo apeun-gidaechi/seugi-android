@@ -7,7 +7,7 @@ import com.seugi.data.workspace.model.WorkspacePermissionModel
 data class MainUiState(
     val userId: Int = -1,
     val permission: WorkspacePermissionModel = WorkspacePermissionModel.STUDENT,
-    val myProfile: ProfileModel = ProfileModel(
+    val profile: ProfileModel = ProfileModel(
         status = "",
         member = UserModel(
             id = 0,
