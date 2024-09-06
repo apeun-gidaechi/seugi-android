@@ -89,9 +89,7 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
         viewModel.loadWorkspaceId()
     }
 
-    LaunchedEffect(state) {
-        Log.d("TAG", "profile: ${state.profile.workspaceId}")
-    }
+    LaunchedEffect(state) {}
 
     BackHandler {
         mainToOnboarding()
