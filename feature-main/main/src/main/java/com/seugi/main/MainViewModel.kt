@@ -48,8 +48,8 @@ class MainViewModel @Inject constructor(
                         _state.update {
                             it.copy(
                                 profile = it.profile.copy(
-                                    workspaceId = workspaceId
-                                )
+                                    workspaceId = workspaceId,
+                                ),
                             )
                         }
                         loadData(workspaceId = workspaceId)
@@ -70,8 +70,8 @@ class MainViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     profile = it.profile.copy(
-                        workspaceId = workspaceRepository.getWorkspaceId()
-                    )
+                        workspaceId = workspaceRepository.getWorkspaceId(),
+                    ),
                 )
             }
         }

@@ -1,6 +1,5 @@
 package com.seugi.main
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
