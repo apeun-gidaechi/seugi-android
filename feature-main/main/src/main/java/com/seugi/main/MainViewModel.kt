@@ -46,7 +46,11 @@ class MainViewModel @Inject constructor(
                         }
                         // 상태 업데이트 및 데이터 로드
                         _state.update {
-                            it.copy(workspaceId = workspaceId)
+                            it.copy(
+                                myProfile = it.myProfile.copy(
+                                    workspaceId = workspaceId
+                                )
+                            )
                         }
                         loadData(workspaceId = workspaceId)
                     }
@@ -65,7 +69,9 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    workspaceId = workspaceRepository.getWorkspaceId(),
+                    myProfile = it.myProfile.copy(
+                        workspaceId = workspaceRepository.getWorkspaceId()
+                    )
                 )
             }
         }

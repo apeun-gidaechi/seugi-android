@@ -1,5 +1,6 @@
 package com.seugi.main
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -88,7 +89,9 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
         viewModel.loadWorkspaceId()
     }
 
-    LaunchedEffect(state) {}
+    LaunchedEffect(state) {
+        Log.d("TAG", "profile: ${state.myProfile.workspaceId}")
+    }
 
     BackHandler {
         mainToOnboarding()
@@ -150,10 +153,10 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
             )
 
             chatScreen(
-                workspaceId = state.workspaceId,
+                workspaceId = state.myProfile.workspaceId,
                 navigateToChatDetail = { chatId ->
                     navHostController.navigateToChatDetail(
-                        workspaceId = state.workspaceId,
+                        workspaceId = state.myProfile.workspaceId,
                         chatRoomId = chatId,
                         isPersonal = true,
                     )
@@ -168,7 +171,7 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
             )
 
             roomScreen(
-                workspaceId = state.workspaceId,
+                workspaceId = state.myProfile.workspaceId,
                 userId = state.userId,
                 navigateToChatDetail = { chatId, workspaceId ->
                     navHostController.navigateToChatDetail(
@@ -200,12 +203,12 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
             )
 
             profileScreen(
-                workspaceId = state.workspaceId,
+                workspaceId = state.myProfile.workspaceId,
                 myProfile = state.myProfile,
             )
 
             notificationScreen(
-                workspaceId = state.workspaceId,
+                workspaceId = state.myProfile.workspaceId,
                 userId = state.userId,
                 permission = state.permission,
                 navigateToNotificationCreate = {
@@ -268,14 +271,14 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
             )
 
             notificationCreate(
-                workspaceId = state.workspaceId,
+                workspaceId = state.myProfile.workspaceId,
                 popBackStack = navHostController::popBackStack,
                 onNavigationVisibleChange = onNavigationVisibleChange,
             )
 
             notificationEdit(
                 userId = state.userId,
-                workspaceId = state.workspaceId,
+                workspaceId = state.myProfile.workspaceId,
                 permission = state.permission,
                 popBackStack = navHostController::popBackStack,
                 onNavigationVisibleChange = onNavigationVisibleChange,
