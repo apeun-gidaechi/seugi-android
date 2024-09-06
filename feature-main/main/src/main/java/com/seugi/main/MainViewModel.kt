@@ -108,12 +108,4 @@ class MainViewModel @Inject constructor(
             }
         }
     }
-
-    fun setWorkspaceId(workspaceId: String) = viewModelScope.launch {
-        _state.update {
-            it.copy(
-                workspaceId = workspaceId,
-            )
-        }
-    }
 }
