@@ -68,13 +68,16 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.chatdatail.model.ChatDetailChatTypeState
 import com.seugi.chatdatail.model.ChatDetailSideEffect
+import com.seugi.chatdatail.model.ChatLocalType
 import com.seugi.common.utiles.toAmShortString
 import com.seugi.common.utiles.toFullFormatString
 import com.seugi.data.message.model.message.MessageUserModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
+import com.seugi.designsystem.component.ButtonType
 import com.seugi.designsystem.component.DividerType
 import com.seugi.designsystem.component.DragState
+import com.seugi.designsystem.component.SeugiButton
 import com.seugi.designsystem.component.SeugiDivider
 import com.seugi.designsystem.component.SeugiIconButton
 import com.seugi.designsystem.component.SeugiImage
@@ -105,6 +108,7 @@ internal fun ChatDetailScreen(
     popBackStack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val messageQueueState by viewModel.messageSaveQueueState.collectAsStateWithLifecycle()
     val sideEffect: ChatDetailSideEffect? by viewModel.sideEffect.collectAsStateWithLifecycle(initialValue = null)
     val scrollState = rememberLazyListState()
     val focusRequester by remember { mutableStateOf(FocusRequester()) }
@@ -345,6 +349,32 @@ internal fun ChatDetailScreen(
                 state = scrollState,
                 reverseLayout = true,
             ) {
+                items(messageQueueState) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                bottom = 8.dp,
+                            ),
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        when (it) {
+                            is ChatLocalType.Send -> {
+                                SeugiChatItem(
+                                    type = ChatItemType.Sending(message = it.text),
+                                )
+                            }
+                            is ChatLocalType.Failed -> {
+                                SeugiChatItem(
+                                    type = ChatItemType.Failed(message = it.text),
+                                    onDateClick = {
+
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
                 items(state.message) { item ->
                     Column(
                         modifier = Modifier

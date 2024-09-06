@@ -81,6 +81,9 @@ class MessageDataSourceImpl @Inject constructor(
                 LifecycleEvent.Type.CLOSED -> {
                     emit(MessageStompLifecycleResponse.Closed)
                 }
+                LifecycleEvent.Type.CONNECTED -> {
+                    emit(MessageStompLifecycleResponse.Connected)
+                }
             }
         }
     }

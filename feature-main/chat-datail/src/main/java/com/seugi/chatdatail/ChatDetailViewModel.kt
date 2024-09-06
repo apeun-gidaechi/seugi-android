@@ -1,6 +1,5 @@
 package com.seugi.chatdatail
 
-import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +8,11 @@ import com.seugi.chatdatail.model.ChatDetailChatTypeState
 import com.seugi.chatdatail.model.ChatDetailMessageState
 import com.seugi.chatdatail.model.ChatDetailSideEffect
 import com.seugi.chatdatail.model.ChatDetailUiState
+import com.seugi.chatdatail.model.ChatLocalType
 import com.seugi.chatdatail.model.ChatRoomState
+import com.seugi.chatdatail.model.findBySendingMessage
+import com.seugi.chatdatail.model.minus
+import com.seugi.chatdatail.model.plus
 import com.seugi.common.model.Result
 import com.seugi.data.message.MessageRepository
 import com.seugi.data.message.model.MessageTypeModel
@@ -24,6 +27,7 @@ import com.seugi.data.profile.ProfileRepository
 import com.seugi.data.token.TokenRepository
 import com.seugi.stompclient.StompException
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.ImmutableList
 import java.net.SocketException
 import java.time.Duration
 import java.time.LocalDateTime
@@ -48,6 +52,10 @@ class ChatDetailViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
     private val tokenRepository: TokenRepository,
 ) : ViewModel() {
+
+    // 소켓 재연결로 인해 밀린 채팅을 저장
+    private val _messageSaveQueueState: MutableStateFlow<ImmutableList<ChatLocalType>> = MutableStateFlow(persistentListOf())
+    val messageSaveQueueState = _messageSaveQueueState.asStateFlow()
 
     private val _state = MutableStateFlow(ChatDetailUiState())
     val state = _state.asStateFlow()
@@ -165,9 +173,6 @@ class ChatDetailViewModel @Inject constructor(
                                         }
                                     }
                                 }
-                                is MessageStompLifecycleModel.Closed -> {
-//                                    channelReconnect()
-                                }
                                 else -> {}
                             }
                         }
@@ -185,13 +190,15 @@ class ChatDetailViewModel @Inject constructor(
 
     fun channelSend(content: String) {
         viewModelScope.launch {
+            _messageSaveQueueState.value += ChatLocalType.Send(content)
             val result = messageRepository.sendMessage(state.value.roomInfo?.id ?: "", content)
             Log.d("TAG", "testSend: $result")
             when (result) {
                 is Result.Success -> {
                     if (!result.data) {
+                        _messageSaveQueueState.value -= ChatLocalType.Send(content)
+                        _messageSaveQueueState.value += ChatLocalType.Failed(content)
                         channelReconnect()
-                        channelSend(content)
                     }
                 }
                 is Result.Error -> {
@@ -345,6 +352,16 @@ class ChatDetailViewModel @Inject constructor(
                             author = _state.value.users.getOrDefault(data.author, MessageUserModel(data.author)),
                         ),
                     )
+
+                    // messageQueue 삭제 로직
+                    if (data.author == _state.value.userInfo?.id) {
+                        val value = _messageSaveQueueState.value.findBySendingMessage(data.message)
+                        Log.d("TAG", "collectMessage: $value")
+                        if (value != null) {
+                            _messageSaveQueueState.value -= value
+                            Log.d("TAG", "collectMessage: ${_messageSaveQueueState.value}")
+                        }
+                    }
                     _state.update {
                         it.copy(
                             message = message.toImmutableList(),
