@@ -46,7 +46,11 @@ class MainViewModel @Inject constructor(
                         }
                         // 상태 업데이트 및 데이터 로드
                         _state.update {
-                            it.copy(workspaceId = workspaceId)
+                            it.copy(
+                                profile = it.profile.copy(
+                                    workspaceId = workspaceId,
+                                ),
+                            )
                         }
                         loadData(workspaceId = workspaceId)
                     }
@@ -65,7 +69,9 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    workspaceId = workspaceRepository.getWorkspaceId(),
+                    profile = it.profile.copy(
+                        workspaceId = workspaceRepository.getWorkspaceId(),
+                    ),
                 )
             }
         }
@@ -79,6 +85,7 @@ class MainViewModel @Inject constructor(
                         _state.update { state ->
                             state.copy(
                                 userId = it.data.member.id,
+                                profile = it.data,
                             )
                         }
                     }
@@ -99,14 +106,6 @@ class MainViewModel @Inject constructor(
                     else -> {}
                 }
             }
-        }
-    }
-
-    fun setWorkspaceId(workspaceId: String) = viewModelScope.launch {
-        _state.update {
-            it.copy(
-                workspaceId = workspaceId,
-            )
         }
     }
 }

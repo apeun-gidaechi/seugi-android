@@ -34,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.seugi.data.core.model.ProfileModel
 import com.seugi.designsystem.R.drawable
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.AvatarType
@@ -49,7 +50,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), workspaceId: String) {
+internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), workspaceId: String, myProfile: ProfileModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var isShowDialog by remember { mutableStateOf(false) }
@@ -67,7 +68,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
 
     LaunchedEffect(key1 = true) {
         viewModel.load(
-            workspaceId = workspaceId,
+            profile = myProfile,
         )
     }
 

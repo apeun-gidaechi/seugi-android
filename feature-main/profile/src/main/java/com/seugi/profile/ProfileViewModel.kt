@@ -2,7 +2,7 @@ package com.seugi.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.seugi.common.model.Result
+import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.profile.ProfileRepository
 import com.seugi.profile.model.ProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,22 +20,11 @@ class ProfileViewModel @Inject constructor(
     private val _state = MutableStateFlow(ProfileUiState())
     val state = _state.asStateFlow()
 
-    fun load(workspaceId: String) = viewModelScope.launch {
-        profileRepository.getProfile(workspaceId).collect { result ->
-            when (result) {
-                is Result.Success -> {
-                    _state.update {
-                        it.copy(
-                            profileInfo = result.data,
-                        )
-                    }
-                }
-                is Result.Loading -> {
-                }
-                is Result.Error -> {
-                    result.throwable.printStackTrace()
-                }
-            }
+    fun load(profile: ProfileModel) = viewModelScope.launch {
+        _state.update {
+            it.copy(
+                profileInfo = profile,
+            )
         }
     }
 
