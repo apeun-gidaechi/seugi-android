@@ -255,7 +255,7 @@ internal fun HomeScreen(
                                         modifier = Modifier.weight(1f),
                                         index = index,
                                         selectIndex = selectIndex,
-                                        subject = subject,
+                                        subject = subject.subject,
                                     )
                                 }
                             }

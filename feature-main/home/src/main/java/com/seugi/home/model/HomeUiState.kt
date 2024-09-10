@@ -1,13 +1,14 @@
 package com.seugi.home.model
 
 import com.seugi.data.meal.response.MealModel
+import com.seugi.data.timetable.model.TimetableModel
 import kotlinx.collections.immutable.ImmutableList
 
 data class HomeUiState(
     val showDialog: Boolean = false,
     val nowWorkspaceId: String = "",
     val schoolState: CommonUiState<String> = CommonUiState.Loading,
-    val timeScheduleState: CommonUiState<ImmutableList<String>> = CommonUiState.Loading,
+    val timeScheduleState: CommonUiState<ImmutableList<TimetableModel>> = CommonUiState.Loading,
     val mealState: CommonUiState<HomeUiMealState> = CommonUiState.Loading,
     val catSeugiState: CommonUiState<ImmutableList<String>> = CommonUiState.Loading,
     val schoolScheduleState: CommonUiState<ImmutableList<Triple<String, String, String>>> = CommonUiState.Loading,

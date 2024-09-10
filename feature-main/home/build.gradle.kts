@@ -13,5 +13,6 @@ dependencies {
     implementation(projects.designsystem)
     implementation(projects.data.workspace)
     implementation(projects.data.meal)
+    implementation(projects.data.timetable)
     implementation(projects.common)
 }
