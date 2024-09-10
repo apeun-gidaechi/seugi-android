@@ -13,6 +13,7 @@ import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.home.model.CommonUiState
 import com.seugi.home.model.HomeUiMealState
 import com.seugi.home.model.HomeUiState
+import com.seugi.home.model.TimeScheduleUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import javax.inject.Inject
@@ -24,6 +25,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.toKotlinLocalDate
+import java.time.LocalTime
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -156,11 +158,16 @@ class HomeViewModel @Inject constructor(
                 is Result.Success -> {
                     _state.update { state ->
                         state.copy(
-                            timeScheduleState = CommonUiState.Success(
-                                it.data.sortedBy {
-                                    it.time
-                                }.toImmutableList()
-                            )
+                            timeScheduleState =
+                                if (it.data.isEmpty()) CommonUiState.NotFound
+                                else CommonUiState.Success(
+                                    TimeScheduleUiState(
+                                        data = it.data.sortedBy { it.time }.toImmutableList(),
+                                        startTime = LocalTime.of(8, 50),
+                                        freeTimeSize = 10,
+                                        timeSize = 50,
+                                    )
+                                ),
                         )
                     }
                 }
