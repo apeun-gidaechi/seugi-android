@@ -2,7 +2,6 @@ package com.seugi.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.seugi.common.model.Result
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
@@ -16,16 +15,15 @@ import com.seugi.home.model.HomeUiState
 import com.seugi.home.model.TimeScheduleUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
+import java.time.LocalTime
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.toKotlinLocalDate
-import java.time.LocalTime
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -159,15 +157,18 @@ class HomeViewModel @Inject constructor(
                     _state.update { state ->
                         state.copy(
                             timeScheduleState =
-                                if (it.data.isEmpty()) CommonUiState.NotFound
-                                else CommonUiState.Success(
+                            if (it.data.isEmpty()) {
+                                CommonUiState.NotFound
+                            } else {
+                                CommonUiState.Success(
                                     TimeScheduleUiState(
                                         data = it.data.sortedBy { it.time }.toImmutableList(),
                                         startTime = LocalTime.of(8, 50),
                                         freeTimeSize = 10,
                                         timeSize = 50,
-                                    )
-                                ),
+                                    ),
+                                )
+                            },
                         )
                     }
                 }
@@ -176,7 +177,7 @@ class HomeViewModel @Inject constructor(
                     it.throwable.printStackTrace()
                     _state.update { state ->
                         state.copy(
-                            timeScheduleState = CommonUiState.Error
+                            timeScheduleState = CommonUiState.Error,
                         )
                     }
                 }

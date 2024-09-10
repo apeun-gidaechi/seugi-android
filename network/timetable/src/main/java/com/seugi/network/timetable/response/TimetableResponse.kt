@@ -7,5 +7,5 @@ data class TimetableResponse(
     val classNum: String,
     val time: String,
     val subject: String,
-    val date: String
+    val date: String,
 )

@@ -2,9 +2,8 @@ package com.seugi.home.model
 
 import com.seugi.data.meal.response.MealModel
 import com.seugi.data.timetable.model.TimetableModel
-import kotlinx.collections.immutable.ImmutableList
-import java.time.LocalDateTime
 import java.time.LocalTime
+import kotlinx.collections.immutable.ImmutableList
 
 data class HomeUiState(
     val showDialog: Boolean = false,

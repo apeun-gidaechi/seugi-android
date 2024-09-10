@@ -210,7 +210,7 @@ internal fun HomeScreen(
             ) {
                 when (val timeScheduleState = state.timeScheduleState) {
                     is CommonUiState.Success -> {
-                        var nowTime by remember { mutableStateOf(LocalTime.now())}
+                        var nowTime by remember { mutableStateOf(LocalTime.now()) }
                         val timeScheduleUiState = timeScheduleState.data
                         val selectIndex: Int by remember {
                             derivedStateOf {
@@ -219,7 +219,7 @@ internal fun HomeScreen(
                                         timeScheduleUiState.timeSize + timeScheduleUiState.freeTimeSize
                                     val duration = java.time.Duration.between(
                                         timeScheduleUiState.startTime,
-                                        nowTime
+                                        nowTime,
                                     ).toMinutes()
                                     (duration / totalInterval).toInt()
                                 }
