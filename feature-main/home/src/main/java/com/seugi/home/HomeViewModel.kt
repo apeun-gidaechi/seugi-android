@@ -10,7 +10,7 @@ import com.seugi.data.meal.response.MealType
 import com.seugi.data.timetable.TimetableRepository
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.home.model.CommonUiState
-import com.seugi.home.model.HomeUiMealState
+import com.seugi.home.model.MealUiState
 import com.seugi.home.model.HomeUiState
 import com.seugi.home.model.TimeScheduleUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -114,23 +114,23 @@ class HomeViewModel @Inject constructor(
             ).collect {
                 when (it) {
                     is Result.Success -> {
-                        var homeUiMealState = HomeUiMealState()
+                        var mealUiState = MealUiState()
                         it.data.forEach {
                             when (it.mealType) {
                                 MealType.BREAKFAST ->
-                                    homeUiMealState =
-                                        homeUiMealState.copy(breakfast = it)
+                                    mealUiState =
+                                        mealUiState.copy(breakfast = it)
 
-                                MealType.LUNCH -> homeUiMealState = homeUiMealState.copy(lunch = it)
+                                MealType.LUNCH -> mealUiState = mealUiState.copy(lunch = it)
                                 MealType.DINNER ->
-                                    homeUiMealState =
-                                        homeUiMealState.copy(dinner = it)
+                                    mealUiState =
+                                        mealUiState.copy(dinner = it)
                             }
                         }
 
                         _state.update { state ->
                             state.copy(
-                                mealState = CommonUiState.Success(homeUiMealState),
+                                mealState = CommonUiState.Success(mealUiState),
                             )
                         }
                     }
