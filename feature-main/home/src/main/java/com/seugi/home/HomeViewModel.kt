@@ -10,8 +10,8 @@ import com.seugi.data.meal.response.MealType
 import com.seugi.data.timetable.TimetableRepository
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.home.model.CommonUiState
-import com.seugi.home.model.HomeUiMealState
 import com.seugi.home.model.HomeUiState
+import com.seugi.home.model.MealUiState
 import com.seugi.home.model.TimeScheduleUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
@@ -19,6 +19,7 @@ import java.time.LocalTime
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -84,6 +85,8 @@ class HomeViewModel @Inject constructor(
                         loadMeal(workspaceId)
                         getWorkspaceName(workspaceId)
                         loadTimetable(workspaceId)
+                        loadCatSeugi()
+                        loadSchedule()
                     }
 
                     is Result.Error -> {
@@ -114,23 +117,23 @@ class HomeViewModel @Inject constructor(
             ).collect {
                 when (it) {
                     is Result.Success -> {
-                        var homeUiMealState = HomeUiMealState()
+                        var mealUiState = MealUiState()
                         it.data.forEach {
                             when (it.mealType) {
                                 MealType.BREAKFAST ->
-                                    homeUiMealState =
-                                        homeUiMealState.copy(breakfast = it)
+                                    mealUiState =
+                                        mealUiState.copy(breakfast = it)
 
-                                MealType.LUNCH -> homeUiMealState = homeUiMealState.copy(lunch = it)
+                                MealType.LUNCH -> mealUiState = mealUiState.copy(lunch = it)
                                 MealType.DINNER ->
-                                    homeUiMealState =
-                                        homeUiMealState.copy(dinner = it)
+                                    mealUiState =
+                                        mealUiState.copy(dinner = it)
                             }
                         }
 
                         _state.update { state ->
                             state.copy(
-                                mealState = CommonUiState.Success(homeUiMealState),
+                                mealState = CommonUiState.Success(mealUiState),
                             )
                         }
                     }
@@ -217,6 +220,24 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    private fun loadCatSeugi() = viewModelScope.launch(dispatcher) {
+        delay(1000)
+        _state.update {
+            it.copy(
+                catSeugiState = CommonUiState.NotFound,
+            )
+        }
+    }
+
+    private fun loadSchedule() = viewModelScope.launch(dispatcher) {
+        delay(1000)
+        _state.update {
+            it.copy(
+                schoolScheduleState = CommonUiState.NotFound,
+            )
         }
     }
 

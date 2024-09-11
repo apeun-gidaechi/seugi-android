@@ -10,7 +10,7 @@ data class HomeUiState(
     val nowWorkspaceId: String = "",
     val schoolState: CommonUiState<String> = CommonUiState.Loading,
     val timeScheduleState: CommonUiState<TimeScheduleUiState> = CommonUiState.Loading,
-    val mealState: CommonUiState<HomeUiMealState> = CommonUiState.Loading,
+    val mealState: CommonUiState<MealUiState> = CommonUiState.Loading,
     val catSeugiState: CommonUiState<ImmutableList<String>> = CommonUiState.Loading,
     val schoolScheduleState: CommonUiState<ImmutableList<Triple<String, String, String>>> = CommonUiState.Loading,
 )
@@ -22,7 +22,7 @@ sealed interface CommonUiState<out T> {
     data object NotFound : CommonUiState<Nothing>
 }
 
-data class HomeUiMealState(
+data class MealUiState(
     val breakfast: MealModel? = null,
     val lunch: MealModel? = null,
     val dinner: MealModel? = null,
