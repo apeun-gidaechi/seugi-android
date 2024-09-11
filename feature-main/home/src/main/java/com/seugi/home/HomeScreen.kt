@@ -69,6 +69,7 @@ import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.component.modifier.`if`
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.home.card.SchoolCard
+import com.seugi.home.card.TimeScheduleCard
 import com.seugi.home.model.CommonUiState
 import java.time.LocalTime
 
@@ -85,7 +86,7 @@ internal fun HomeScreen(
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState { 3 }
-    val items = (1..7).toList()
+
     val indicatorOffset by remember {
         derivedStateOf { (pagerState.currentPage * 10).dp }
     }
@@ -157,97 +158,10 @@ internal fun HomeScreen(
         }
 
         item {
-            HomeCard(
-                text = "오늘의 시간표",
-                onClickDetail = { /*TODO*/ },
-                image = painterResource(id = R.drawable.ic_book_fill),
-                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray600),
-            ) {
-                when (val timeScheduleState = state.timeScheduleState) {
-                    is CommonUiState.Success -> {
-                        var nowTime by remember { mutableStateOf(LocalTime.now()) }
-                        val timeScheduleUiState = timeScheduleState.data
-                        val selectIndex: Int by remember {
-                            derivedStateOf {
-                                run {
-                                    val totalInterval =
-                                        timeScheduleUiState.timeSize + timeScheduleUiState.freeTimeSize
-                                    val duration = java.time.Duration.between(
-                                        timeScheduleUiState.startTime,
-                                        nowTime,
-                                    ).toMinutes()
-                                    (duration / totalInterval).toInt()
-                                }
-                            }
-                        }
-                        LaunchedEffect(true) {
-                            nowTime = LocalTime.now()
-                        }
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .align(Alignment.BottomStart)
-                                    .fillMaxWidth()
-                                    .height(34.dp)
-                                    .background(
-                                        color = SeugiTheme.colors.primary100,
-                                        shape = RoundedCornerShape(23.dp),
-                                    ),
-                            )
-
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(34.dp)
-                                    .align(Alignment.BottomStart),
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .weight(selectIndex.toFloat() + 0.9f)
-                                        .fillMaxHeight()
-                                        .background(
-                                            color = SeugiTheme.colors.primary500,
-                                            shape = RoundedCornerShape(23.dp),
-                                        ),
-                                )
-
-                                val weight = (items.size - selectIndex.toFloat()) - 1f
-                                // index 계산후 weight가 음수를 넘어가지 않은 경우
-                                if (weight > 0) {
-                                    Spacer(modifier = Modifier.weight(weight))
-                                }
-                            }
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                            ) {
-                                timeScheduleUiState.data.fastForEachIndexed { index, subject ->
-                                    HomeSubjectCard(
-                                        modifier = Modifier.weight(1f),
-                                        index = index,
-                                        selectIndex = selectIndex,
-                                        subject = subject.subject,
-                                    )
-                                }
-                            }
-                        }
-                    }
-
-                    is CommonUiState.NotFound -> {
-                        HomeNotFoundText(text = "학교를 등록하고 시간표를 확인하세요")
-                    }
-
-                    else -> {
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            LoadingDotsIndicator()
-                        }
-                    }
-                }
-            }
+            TimeScheduleCard(
+                uiState = state.timeScheduleState,
+                onClickDetail = {}
+            )
         }
 
         item {
