@@ -70,6 +70,7 @@ import com.seugi.designsystem.component.modifier.`if`
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.home.card.CatSeugiCard
 import com.seugi.home.card.MealCard
+import com.seugi.home.card.ScheduleCard
 import com.seugi.home.card.SchoolCard
 import com.seugi.home.card.TimeScheduleCard
 import com.seugi.home.model.CommonUiState
@@ -176,40 +177,7 @@ internal fun HomeScreen(
         }
 
         item {
-            HomeCard(
-                text = "다가오는 일정",
-                onClickDetail = { /*TODO*/ },
-                image = painterResource(id = R.drawable.ic_calendar_line),
-                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray600),
-            ) {
-                when (val scheduleState = state.schoolScheduleState) {
-                    is CommonUiState.Success -> {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            scheduleState.data.fastForEachIndexed { i, data ->
-                                HomeCalendarCard(date = data.first, content = data.second, dDay = data.third)
-                                if (i != 2) {
-                                    Spacer(modifier = Modifier.height(16.dp))
-                                }
-                            }
-                        }
-                    }
-
-                    is CommonUiState.NotFound -> {
-                        HomeNotFoundText(text = "학교를 등록하고 일정을 확인하세요")
-                    }
-
-                    else -> {
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            LoadingDotsIndicator()
-                        }
-                    }
-                }
-            }
+            ScheduleCard(uiState = state.schoolScheduleState)
         }
         item {
             Spacer(modifier = Modifier.height(32.dp))
