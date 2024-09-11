@@ -31,10 +31,7 @@ import com.seugi.home.model.CommonUiState
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
-internal fun CatSeugiCard(
-    uiState: CommonUiState<ImmutableList<String>>,
-    navigateToChatSeugi: () -> Unit
-) {
+internal fun CatSeugiCard(uiState: CommonUiState<ImmutableList<String>>, navigateToChatSeugi: () -> Unit) {
     HomeCard(
         text = "캣스기",
         image = painterResource(id = R.drawable.ic_appicon_round),

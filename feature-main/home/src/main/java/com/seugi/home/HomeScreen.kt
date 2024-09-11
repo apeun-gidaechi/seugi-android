@@ -9,34 +9,24 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,27 +34,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastForEachIndexed
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.ButtonState
-import com.seugi.designsystem.animation.NoInteractionSource
 import com.seugi.designsystem.animation.bounceClick
-import com.seugi.designsystem.component.ButtonType
-import com.seugi.designsystem.component.GradientPrimary
-import com.seugi.designsystem.component.LoadingDotsIndicator
-import com.seugi.designsystem.component.SeugiButton
 import com.seugi.designsystem.component.SeugiDialog
-import com.seugi.designsystem.component.SeugiImage
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.modifier.DropShadowType
-import com.seugi.designsystem.component.modifier.brushDraw
 import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.component.modifier.`if`
 import com.seugi.designsystem.theme.SeugiTheme
@@ -73,8 +54,6 @@ import com.seugi.home.card.MealCard
 import com.seugi.home.card.ScheduleCard
 import com.seugi.home.card.SchoolCard
 import com.seugi.home.card.TimeScheduleCard
-import com.seugi.home.model.CommonUiState
-import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -151,28 +130,28 @@ internal fun HomeScreen(
                 workspaceId = state.nowWorkspaceId,
                 uiState = state.schoolState,
                 onNavigationVisibleChange = onNavigationVisibleChange,
-                navigateToWorkspaceDetail = navigateToWorkspaceDetail
+                navigateToWorkspaceDetail = navigateToWorkspaceDetail,
             )
         }
 
         item {
             TimeScheduleCard(
                 uiState = state.timeScheduleState,
-                onClickDetail = {}
+                onClickDetail = {},
             )
         }
 
         item {
             MealCard(
                 uiState = state.mealState,
-                onClickDetail = {}
+                onClickDetail = {},
             )
         }
 
         item {
             CatSeugiCard(
                 uiState = state.catSeugiState,
-                navigateToChatSeugi = navigateToChatSeugi
+                navigateToChatSeugi = navigateToChatSeugi,
             )
         }
 

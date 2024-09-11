@@ -32,10 +32,7 @@ import com.seugi.home.model.TimeScheduleUiState
 import java.time.LocalTime
 
 @Composable
-internal fun TimeScheduleCard(
-    uiState: CommonUiState<TimeScheduleUiState>,
-    onClickDetail: () -> Unit
-) {
+internal fun TimeScheduleCard(uiState: CommonUiState<TimeScheduleUiState>, onClickDetail: () -> Unit) {
     HomeCard(
         text = "오늘의 시간표",
         onClickDetail = onClickDetail,

@@ -32,7 +32,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.seugi.data.meal.response.MealModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.ButtonState
 import com.seugi.designsystem.animation.NoInteractionSource
@@ -47,22 +46,18 @@ import java.time.LocalTime
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun MealCard(
-    uiState: CommonUiState<MealUiState>,
-    onClickDetail: () -> Unit,
-) {
+internal fun MealCard(uiState: CommonUiState<MealUiState>, onClickDetail: () -> Unit) {
     val pagerState = rememberPagerState { 3 }
 
     LaunchedEffect(true) {
         val nowTime = LocalTime.now()
-        val page = when  {
+        val page = when {
             nowTime <= LocalTime.of(8, 20) -> 0
             nowTime <= LocalTime.of(13, 30) -> 1
             else -> 2
         }
         pagerState.animateScrollToPage(page)
     }
-
 
     val indicatorOffset by remember {
         derivedStateOf { (pagerState.currentPage * 10).dp }

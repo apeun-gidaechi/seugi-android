@@ -10,8 +10,8 @@ import com.seugi.data.meal.response.MealType
 import com.seugi.data.timetable.TimetableRepository
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.home.model.CommonUiState
-import com.seugi.home.model.MealUiState
 import com.seugi.home.model.HomeUiState
+import com.seugi.home.model.MealUiState
 import com.seugi.home.model.TimeScheduleUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
@@ -227,7 +227,7 @@ class HomeViewModel @Inject constructor(
         delay(1000)
         _state.update {
             it.copy(
-                catSeugiState = CommonUiState.NotFound
+                catSeugiState = CommonUiState.NotFound,
             )
         }
     }
@@ -236,7 +236,7 @@ class HomeViewModel @Inject constructor(
         delay(1000)
         _state.update {
             it.copy(
-                schoolScheduleState = CommonUiState.NotFound
+                schoolScheduleState = CommonUiState.NotFound,
             )
         }
     }

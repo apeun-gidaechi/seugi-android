@@ -22,9 +22,7 @@ import com.seugi.home.model.CommonUiState
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
-internal fun ScheduleCard(
-    uiState: CommonUiState<ImmutableList<Triple<String, String, String>>>
-) {
+internal fun ScheduleCard(uiState: CommonUiState<ImmutableList<Triple<String, String, String>>>) {
     HomeCard(
         text = "다가오는 일정",
         onClickDetail = { /*TODO*/ },
