@@ -20,6 +20,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,6 +43,7 @@ import com.seugi.home.HomeCard
 import com.seugi.home.HomeNotFoundText
 import com.seugi.home.model.CommonUiState
 import com.seugi.home.model.MealUiState
+import java.time.LocalTime
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -50,6 +52,17 @@ internal fun MealCard(
     onClickDetail: () -> Unit,
 ) {
     val pagerState = rememberPagerState { 3 }
+
+    LaunchedEffect(true) {
+        val nowTime = LocalTime.now()
+        val page = when  {
+            nowTime <= LocalTime.of(8, 20) -> 0
+            nowTime <= LocalTime.of(13, 30) -> 1
+            else -> 2
+        }
+        pagerState.animateScrollToPage(page)
+    }
+
 
     val indicatorOffset by remember {
         derivedStateOf { (pagerState.currentPage * 10).dp }
