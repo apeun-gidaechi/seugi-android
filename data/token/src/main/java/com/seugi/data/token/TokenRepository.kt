@@ -10,4 +10,6 @@ interface TokenRepository {
     suspend fun getToken(): Flow<Result<TokenModel>>
 
     suspend fun newToken(): Flow<Result<TokenModel>>
+
+    suspend fun deleteToken(): Flow<Result<Boolean>>
 }

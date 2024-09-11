@@ -13,4 +13,6 @@ dependencies {
     implementation(projects.designsystem)
     implementation(projects.common)
     implementation(projects.ui)
+    implementation(projects.data.token)
+    implementation(projects.data.workspace)
 }

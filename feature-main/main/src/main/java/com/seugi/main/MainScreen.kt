@@ -92,10 +92,6 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
 
     LaunchedEffect(state) {}
 
-    BackHandler {
-        mainToOnboarding()
-    }
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
@@ -313,6 +309,7 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
 
             settingScreen(
                 onNavigationVisibleChange = onNavigationVisibleChange,
+                navigationToOnboarding = mainToOnboarding,
                 popBackStack = navHostController::popBackStack
             )
         }

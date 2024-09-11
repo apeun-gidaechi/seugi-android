@@ -16,11 +16,13 @@ fun NavController.navigateToSetting(navOptions: NavOptions? = null) =
 
 fun NavGraphBuilder.settingScreen(
     onNavigationVisibleChange: (Boolean) -> Unit,
+    navigationToOnboarding: () -> Unit,
     popBackStack: () -> Unit,
 ) {
     composable(SETTING_ROUTE) {
         SettingScreen(
             onNavigationVisibleChange = onNavigationVisibleChange,
+            navigationToOnboarding = navigationToOnboarding,
             popBackStack = popBackStack,
         )
     }

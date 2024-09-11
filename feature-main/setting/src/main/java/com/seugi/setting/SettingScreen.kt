@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
@@ -34,12 +35,24 @@ import com.seugi.designsystem.component.SeugiDivider
 import com.seugi.designsystem.component.SeugiIconButton
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.setting.model.SettingSideEffect
+import com.seugi.ui.CollectAsSideEffect
 
 @Composable
 internal fun SettingScreen(
+    viewModel: SettingViewModel = hiltViewModel(),
     onNavigationVisibleChange: (Boolean) -> Unit,
-    popBackStack: () -> Unit
+    navigationToOnboarding: () -> Unit,
+    popBackStack: () -> Unit,
 ) {
+
+    viewModel.sideEffect.CollectAsSideEffect {
+        when (it) {
+            is SettingSideEffect.SuccessLogout -> {
+                navigationToOnboarding()
+            }
+        }
+    }
 
     LaunchedEffect(true) {
         onNavigationVisibleChange(false)
@@ -142,7 +155,7 @@ internal fun SettingScreen(
             item {
                 SettingCard(
                     title = "로그아웃",
-                    onClickDetail = {}
+                    onClickDetail = viewModel::logout
                 )
             }
             item {

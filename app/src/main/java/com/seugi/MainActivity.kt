@@ -23,11 +23,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.main.navigation.MAIN_ROUTE
 import com.seugi.main.navigation.mainScreen
 import com.seugi.main.navigation.navigateToMain
 import com.seugi.onboarding.navigation.ONBOARDING_ROUTE
+import com.seugi.onboarding.navigation.navigateToOnboarding
 import com.seugi.onboarding.navigation.onboardingScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -75,7 +77,9 @@ class MainActivity : ComponentActivity() {
                         ) {
                             mainScreen(
                                 mainToOnboarding = {
-                                    navHostController.popBackStack()
+//                                    navHostController.popBackStack()
+                                    while (navHostController.popBackStack()) { }
+                                    navHostController.navigateToOnboarding()
                                 },
                             )
                             onboardingScreen(
