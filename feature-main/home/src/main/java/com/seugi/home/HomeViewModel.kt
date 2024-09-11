@@ -19,6 +19,7 @@ import java.time.LocalTime
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -84,6 +85,8 @@ class HomeViewModel @Inject constructor(
                         loadMeal(workspaceId)
                         getWorkspaceName(workspaceId)
                         loadTimetable(workspaceId)
+                        loadCatSeugi()
+                        loadSchedule()
                     }
 
                     is Result.Error -> {
@@ -217,6 +220,24 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    private fun loadCatSeugi() = viewModelScope.launch(dispatcher) {
+        delay(1000)
+        _state.update {
+            it.copy(
+                catSeugiState = CommonUiState.NotFound
+            )
+        }
+    }
+
+    private fun loadSchedule() = viewModelScope.launch(dispatcher) {
+        delay(1000)
+        _state.update {
+            it.copy(
+                schoolScheduleState = CommonUiState.NotFound
+            )
         }
     }
 
