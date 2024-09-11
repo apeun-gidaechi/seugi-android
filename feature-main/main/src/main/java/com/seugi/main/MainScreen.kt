@@ -45,6 +45,8 @@ import com.seugi.room.navigation.ROOM_ROUTE
 import com.seugi.room.navigation.roomScreen
 import com.seugi.roomcreate.navigation.navigateToRoomCreate
 import com.seugi.roomcreate.navigation.roomCreateScreen
+import com.seugi.setting.navigate.navigateToSetting
+import com.seugi.setting.navigate.settingScreen
 import com.seugi.workspace.navigation.WAITING_JOIN
 import com.seugi.workspace.navigation.joinSuccess
 import com.seugi.workspace.navigation.navigateToJoinSuccess
@@ -202,6 +204,7 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
             profileScreen(
                 workspaceId = state.profile.workspaceId,
                 myProfile = state.profile,
+                navigateToSetting = navHostController::navigateToSetting
             )
 
             notificationScreen(
@@ -306,6 +309,11 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
                 popBackStack = {
                     navHostController.popBackStack()
                 },
+            )
+
+            settingScreen(
+                onNavigationVisibleChange = onNavigationVisibleChange,
+                popBackStack = navHostController::popBackStack
             )
         }
     }

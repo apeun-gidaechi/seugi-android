@@ -26,5 +26,6 @@ dependencies {
     implementation(projects.featureMain.notificationEdit)
     implementation(projects.featureMain.workspaceDetail)
     implementation(projects.featureMain.workspaceCreate)
+    implementation(projects.featureMain.setting)
 
 }
