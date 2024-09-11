@@ -69,6 +69,7 @@ import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.component.modifier.`if`
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.home.model.CommonUiState
+import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -84,7 +85,6 @@ internal fun HomeScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState { 3 }
     val items = (1..7).toList()
-    val selectIndex = 4
     val indicatorOffset by remember {
         derivedStateOf { (pagerState.currentPage * 10).dp }
     }
@@ -210,6 +210,24 @@ internal fun HomeScreen(
             ) {
                 when (val timeScheduleState = state.timeScheduleState) {
                     is CommonUiState.Success -> {
+                        var nowTime by remember { mutableStateOf(LocalTime.now()) }
+                        val timeScheduleUiState = timeScheduleState.data
+                        val selectIndex: Int by remember {
+                            derivedStateOf {
+                                run {
+                                    val totalInterval =
+                                        timeScheduleUiState.timeSize + timeScheduleUiState.freeTimeSize
+                                    val duration = java.time.Duration.between(
+                                        timeScheduleUiState.startTime,
+                                        nowTime,
+                                    ).toMinutes()
+                                    (duration / totalInterval).toInt()
+                                }
+                            }
+                        }
+                        LaunchedEffect(true) {
+                            nowTime = LocalTime.now()
+                        }
                         Box(
                             modifier = Modifier.fillMaxWidth(),
                         ) {
@@ -246,16 +264,15 @@ internal fun HomeScreen(
                                     Spacer(modifier = Modifier.weight(weight))
                                 }
                             }
-
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                             ) {
-                                timeScheduleState.data.fastForEachIndexed { index, subject ->
+                                timeScheduleUiState.data.fastForEachIndexed { index, subject ->
                                     HomeSubjectCard(
                                         modifier = Modifier.weight(1f),
                                         index = index,
                                         selectIndex = selectIndex,
-                                        subject = subject,
+                                        subject = subject.subject,
                                     )
                                 }
                             }

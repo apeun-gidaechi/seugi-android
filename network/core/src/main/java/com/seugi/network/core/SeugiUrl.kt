@@ -69,4 +69,9 @@ object SeugiUrl {
     object Meal {
         const val ROOT = "${BASE_URL}/meal"
     }
+
+    object Timetable {
+        const val ROOT = "${BASE_URL}/timetable"
+        const val DAY = "$ROOT/day"
+    }
 }
