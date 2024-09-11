@@ -68,6 +68,7 @@ import com.seugi.designsystem.component.modifier.brushDraw
 import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.component.modifier.`if`
 import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.home.card.SchoolCard
 import com.seugi.home.model.CommonUiState
 import java.time.LocalTime
 
@@ -147,58 +148,12 @@ internal fun HomeScreen(
         }
 
         item {
-            HomeCard(
-                text = "내 학교",
-                image = painterResource(id = R.drawable.ic_school),
-                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray600),
-            ) {
-                when (val schoolState = state.schoolState) {
-                    is CommonUiState.Success -> {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(
-                                modifier = Modifier.padding(vertical = (6.5).dp),
-                                text = schoolState.data,
-                                style = SeugiTheme.typography.subtitle2,
-                                color = SeugiTheme.colors.gray600,
-                            )
-                            Spacer(modifier = Modifier.weight(1f))
-                            SeugiButton(
-                                onClick = {
-                                    onNavigationVisibleChange(false)
-                                    navigateToWorkspaceDetail(state.nowWorkspaceId)
-                                },
-                                type = ButtonType.Gray,
-                                text = "전환",
-                            )
-                        }
-                    }
-
-                    is CommonUiState.NotFound -> {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(
-                                modifier = Modifier.align(Alignment.CenterHorizontally),
-                                text = "내 학교를 등록해주세요",
-                                style = SeugiTheme.typography.body2,
-                                color = SeugiTheme.colors.gray600,
-                            )
-                            Spacer(modifier = Modifier.height(12.dp))
-                        }
-                    }
-
-                    else -> {
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            LoadingDotsIndicator()
-                        }
-                    }
-                }
-            }
+            SchoolCard(
+                workspaceId = state.nowWorkspaceId,
+                uiState = state.schoolState,
+                onNavigationVisibleChange = onNavigationVisibleChange,
+                navigateToWorkspaceDetail = navigateToWorkspaceDetail
+            )
         }
 
         item {
