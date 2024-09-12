@@ -34,7 +34,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+<<<<<<< HEAD
 import com.seugi.data.core.model.ProfileModel
+=======
+>>>>>>> origin/feature/204-create-member-filter
 import com.seugi.data.core.model.WorkspacePermissionModel
 import com.seugi.data.core.model.isAdmin
 import com.seugi.designsystem.R
@@ -75,6 +78,7 @@ fun WorkspaceMemberScreen(
     LaunchedEffect(key1 = true) {
         viewModel.getAllMember(workspaceId = workspaceId)
     }
+<<<<<<< HEAD
 
     viewModel.sideEffect.CollectAsSideEffect {
         when (it) {
@@ -109,6 +113,8 @@ fun WorkspaceMemberScreen(
         )
     }
 
+=======
+>>>>>>> origin/feature/204-create-member-filter
     val tabItems: ImmutableList<String> = persistentListOf("선생님", "학생")
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
@@ -203,10 +209,14 @@ fun WorkspaceMemberScreen(
                     SeugiMemberList(
                         userName = user.member.name,
                         userProfile = user.member.picture.ifEmpty { null },
+<<<<<<< HEAD
                         onClick = {
                             selectedMember = user
                             isShowBottomSheet = true
                         },
+=======
+                        onClick = {},
+>>>>>>> origin/feature/204-create-member-filter
                         isCrown = user.permission.isAdmin(),
                         crownColor = when (user.permission) {
                             WorkspacePermissionModel.ADMIN -> SeugiTheme.colors.orange500
