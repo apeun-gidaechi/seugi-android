@@ -90,7 +90,7 @@ internal fun NotificationEditScreen(
             SeugiTopBar(
                 title = {
                     Text(
-                        text = "알림 수정",
+                        text = "공지 수정",
                         style = SeugiTheme.typography.subtitle1,
                         color = SeugiTheme.colors.black,
                     )

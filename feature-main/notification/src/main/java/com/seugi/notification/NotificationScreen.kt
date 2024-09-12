@@ -203,7 +203,7 @@ internal fun NotificationScreen(
                     title = {
                         Text(
                             modifier = Modifier.align(Alignment.CenterHorizontally),
-                            text = "알림",
+                            text = "공지",
                             style = SeugiTheme.typography.subtitle1,
                             color = SeugiTheme.colors.black,
                         )
@@ -252,7 +252,10 @@ internal fun NotificationScreen(
                     modifier = Modifier.padding(horizontal = 20.dp),
                     state = lazyListState,
                 ) {
-                    items(state.notices) {
+                    items(
+                        items = state.notices,
+                        key = { it.id }
+                    ) {
                         Spacer(modifier = Modifier.height(8.dp))
                         NotificationCard(
                             title = it.title,
