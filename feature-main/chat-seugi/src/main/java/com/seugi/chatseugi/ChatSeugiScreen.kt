@@ -241,10 +241,10 @@ internal fun ChatSeugiScreen(
                         text = "날씨 어떄?",
                         onClick = {
                             if (state.isLoading) {
-                                text = "날씨 어떄?"
+                                text = "오늘 날씨 어떄?"
                             } else {
                                 text = ""
-                                viewModel.sendMessage("날씨 어떄?")
+                                viewModel.sendMessage("오늘 날씨 어떄?")
                             }
                         },
                     )
