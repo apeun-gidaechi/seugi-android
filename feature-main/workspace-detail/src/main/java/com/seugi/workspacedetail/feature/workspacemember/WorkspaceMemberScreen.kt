@@ -152,7 +152,7 @@ fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(),
                     }
                 }
 
-                items(student) { user ->
+                items(items = student, key = { it.member.id }) { user ->
                     SeugiMemberList(
                         userName = user.member.name,
                         userProfile = user.member.picture.ifEmpty { null },
