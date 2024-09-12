@@ -45,25 +45,3 @@ data class NotificationEmojiState(
         return result
     }
 }
-
-internal fun NotificationModel.getEmojiList(userId: Int): ImmutableList<NotificationEmojiState> {
-    val emojisState = HashMap<String, NotificationEmojiState>()
-
-    this.emoji.fastForEach {
-        if (it.emoji in emojisState.keys) {
-            val item = emojisState[it.emoji]!!
-            emojisState[it.emoji] = item.copy(
-                emoji = it.emoji,
-                count = item.count + 1,
-                isMe = item.isMe || it.userId == userId,
-            )
-            return@fastForEach
-        }
-        emojisState[it.emoji] = NotificationEmojiState(
-            emoji = it.emoji,
-            count = 1,
-            isMe = it.userId == userId,
-        )
-    }
-    return emojisState.values.toImmutableList()
-}
