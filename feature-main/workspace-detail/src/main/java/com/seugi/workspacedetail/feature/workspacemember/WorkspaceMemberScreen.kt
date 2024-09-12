@@ -44,12 +44,10 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(), popBackStack: () -> Unit, workspaceId: String) {
-    val dummyList = listOf("1", "2", "1", "2", "1", "2", "1", "2", "1", "2", "1", "2")
     var selectedItem by remember { mutableStateOf("전체") }
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -101,8 +99,8 @@ fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(),
                     .height(48.dp)
                     .padding(horizontal = 20.dp),
             ) {
-                val dummyItems: ImmutableList<String> = persistentListOf("선생님", "학생")
-                val itemWidth = maxWidth / dummyItems.size
+                val tabItems: ImmutableList<String> = persistentListOf("선생님", "학생")
+                val itemWidth = maxWidth / tabItems.size
                 var selectedTabIndex by remember { mutableIntStateOf(0) }
                 SeugiSegmentedButtonLayout(
                     modifier = Modifier
@@ -113,7 +111,7 @@ fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(),
                     indicatorShape = RoundedCornerShape(8.dp),
                     selectedIndex = selectedTabIndex,
                 ) {
-                    dummyItems.fastForEachIndexed { index, text ->
+                    tabItems.fastForEachIndexed { index, text ->
                         SeugiSegmentedButton(
                             modifier = Modifier
                                 .width(itemWidth),
@@ -127,7 +125,7 @@ fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(),
             }
             Spacer(modifier = Modifier.height(16.dp))
             SeugiSmallDropDown(
-                item = dummyList.toImmutableList(),
+                item = persistentListOf(),
                 onItemSelected = { selectedItem = it },
                 isExpanded = isExpanded,
                 selectedItem = selectedItem,
