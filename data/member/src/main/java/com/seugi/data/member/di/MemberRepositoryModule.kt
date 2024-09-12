@@ -1,7 +1,7 @@
-package com.seugi.data.di
+package com.seugi.data.member.di
 
-import com.seugi.data.MemberRepository
-import com.seugi.data.repository.MemberRepositoryImpl
+import com.seugi.data.member.MemberRepository
+import com.seugi.data.member.repository.MemberRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
