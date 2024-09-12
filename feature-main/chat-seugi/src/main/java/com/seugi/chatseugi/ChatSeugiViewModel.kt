@@ -10,7 +10,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDateTime
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -18,7 +17,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ChatSeugiViewModel @Inject constructor(
-    private val catSeugiRepository: CatSeugiRepository
+    private val catSeugiRepository: CatSeugiRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ChatSeugiUiState())
@@ -30,12 +29,12 @@ class ChatSeugiViewModel @Inject constructor(
                 chatMessage = it.chatMessage.toMutableList().apply {
                     add(0, ChatData.User(message, LocalDateTime.now().minusHours(9), true))
                 }.toImmutableList(),
-                isLoading = true
+                isLoading = true,
             )
         }
 
         catSeugiRepository.sendText(
-            text = message
+            text = message,
         ).collect {
             when (it) {
                 is Result.Success -> {
@@ -50,7 +49,7 @@ class ChatSeugiViewModel @Inject constructor(
                             chatMessage = it.chatMessage.toMutableList().apply {
                                 this.add(0, data)
                             }.toImmutableList(),
-                            isLoading = false
+                            isLoading = false,
                         )
                     }
                 }
@@ -59,7 +58,7 @@ class ChatSeugiViewModel @Inject constructor(
                     it.throwable.printStackTrace()
                     _state.update {
                         it.copy(
-                            isLoading = false
+                            isLoading = false,
                         )
                     }
                 }

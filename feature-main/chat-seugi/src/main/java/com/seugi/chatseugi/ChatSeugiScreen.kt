@@ -11,7 +11,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -174,7 +173,7 @@ internal fun ChatSeugiScreen(
                             SeugiChatItemAiLoading(
                                 isFirst = true,
                                 isLast = true,
-                                createdAt = ""
+                                createdAt = "",
                             )
                         }
                     }
@@ -379,7 +378,7 @@ private fun SeugiChatItemAiLoading(modifier: Modifier = Modifier, isFirst: Boole
                 ) {
                     Box(
                         modifier = Modifier.padding(12.dp),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         LoadingDotsIndicator()
                     }
@@ -400,4 +399,3 @@ private fun SeugiChatItemAiLoading(modifier: Modifier = Modifier, isFirst: Boole
         }
     }
 }
-

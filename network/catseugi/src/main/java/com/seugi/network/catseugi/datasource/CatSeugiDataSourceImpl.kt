@@ -13,11 +13,10 @@ import io.ktor.http.contentType
 import javax.inject.Inject
 
 class CatSeugiDataSourceImpl @Inject constructor(
-    private val httpClient: HttpClient
-): CatSeugiDataSource {
-    override suspend fun sendText(text: String): BaseResponse<String> =
-        httpClient.post(SeugiUrl.AI) {
-            setBody(CatSeugiRequest(text))
-            contentType(ContentType.Application.Json)
-        }.body()
+    private val httpClient: HttpClient,
+) : CatSeugiDataSource {
+    override suspend fun sendText(text: String): BaseResponse<String> = httpClient.post(SeugiUrl.AI) {
+        setBody(CatSeugiRequest(text))
+        contentType(ContentType.Application.Json)
+    }.body()
 }
