@@ -191,12 +191,15 @@ fun WorkspaceMemberScreen(
                     .padding(horizontal = 4.dp),
             ) {
                 val student = state.member.filter { it ->
-                    if (selectedTabIndex == 1) it.permission == WorkspacePermissionModel.STUDENT
-                    else it.permission != WorkspacePermissionModel.STUDENT
+                    if (selectedTabIndex == 1) {
+                        it.permission == WorkspacePermissionModel.STUDENT
+                    } else {
+                        it.permission != WorkspacePermissionModel.STUDENT
+                    }
                 }
 
                 items(student) { user ->
-                    if (user.permission == WorkspacePermissionModel.ADMIN){
+                    if (user.permission == WorkspacePermissionModel.ADMIN) {
                         Log.d("TAG", "${user.permission == WorkspacePermissionModel.ADMIN}: ")
                     }
                     SeugiMemberList(
@@ -211,7 +214,7 @@ fun WorkspaceMemberScreen(
                             WorkspacePermissionModel.ADMIN -> SeugiTheme.colors.orange500
                             WorkspacePermissionModel.MIDDLE_ADMIN -> SeugiTheme.colors.yellow500
                             else -> SeugiTheme.colors.black
-                        }
+                        },
                     )
                 }
             }
