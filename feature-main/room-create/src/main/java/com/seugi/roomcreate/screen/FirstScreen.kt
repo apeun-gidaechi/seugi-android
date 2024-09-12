@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -35,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastForEach
 import com.seugi.designsystem.R
 import com.seugi.designsystem.component.SeugiIconButton
 import com.seugi.designsystem.component.SeugiMemberList
@@ -62,6 +64,9 @@ internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) 
     }
 
     Scaffold(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(SeugiTheme.colors.white),
         topBar = {
             SeugiTopBar(
                 title = {
@@ -98,6 +103,8 @@ internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) 
     ) { paddingValue ->
         Column(
             modifier = Modifier
+                .fillMaxSize()
+                .background(SeugiTheme.colors.white)
                 .padding(paddingValue),
         ) {
             Box(
@@ -128,7 +135,7 @@ internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) 
                     horizontalArrangement = Arrangement.Start,
                     verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
                 ) {
-                    state.checkedMemberState.forEach {
+                    state.checkedMemberState.fastForEach {
                         SelectMemberCard(
                             name = it.name,
                             onClick = {
@@ -139,8 +146,13 @@ internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) 
                     }
                 }
             }
-            LazyColumn {
-                items(state.userItem) { item -> // 필터링 추가
+            LazyColumn(
+                modifier = Modifier.background(SeugiTheme.colors.white),
+            ) {
+                items(
+                    items = state.userItem,
+                    key = { it.id },
+                ) { item -> // 필터링 추가
                     Box(modifier = Modifier.height(72.dp)) {
                         SeugiMemberList(
                             modifier = Modifier.align(Alignment.Center),
