@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.seugi.data.core.model.ProfileModel
 import com.seugi.setting.SettingScreen
 
 const val SETTING_ROUTE = "setting"
@@ -15,6 +16,7 @@ fun NavController.navigateToSetting(navOptions: NavOptions? = null) =
     )
 
 fun NavGraphBuilder.settingScreen(
+    profileModel: ProfileModel,
     onNavigationVisibleChange: (Boolean) -> Unit,
     navigationToOnboarding: () -> Unit,
     popBackStack: () -> Unit,
@@ -22,6 +24,7 @@ fun NavGraphBuilder.settingScreen(
 ) {
     composable(SETTING_ROUTE) {
         SettingScreen(
+            profileModel = profileModel,
             onNavigationVisibleChange = onNavigationVisibleChange,
             navigationToOnboarding = navigationToOnboarding,
             popBackStack = popBackStack,

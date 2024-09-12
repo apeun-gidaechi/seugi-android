@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.seugi.data.core.model.ProfileModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.AvatarType
@@ -46,6 +47,7 @@ import com.seugi.ui.CollectAsSideEffect
 @Composable
 internal fun SettingScreen(
     viewModel: SettingViewModel = hiltViewModel(),
+    profileModel: ProfileModel,
     onNavigationVisibleChange: (Boolean) -> Unit,
     navigationToOnboarding: () -> Unit,
     popBackStack: () -> Unit,
@@ -119,7 +121,7 @@ internal fun SettingScreen(
                             SeugiAvatar(
                                 modifier = Modifier.align(Alignment.Center),
                                 type = AvatarType.ExtraLarge,
-                                image = null
+                                image = profileModel.member.picture.ifEmpty { null }
                             )
                             Image(
                                 modifier = Modifier
@@ -149,7 +151,7 @@ internal fun SettingScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "노영재",
+                                text = profileModel.nick,
                                 style = SeugiTheme.typography.subtitle2,
                                 color = SeugiTheme.colors.black
                             )

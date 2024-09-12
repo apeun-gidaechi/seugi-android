@@ -308,6 +308,7 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
             )
 
             settingScreen(
+                profileModel = state.profile,
                 onNavigationVisibleChange = onNavigationVisibleChange,
                 navigationToOnboarding = mainToOnboarding,
                 popBackStack = navHostController::popBackStack,
