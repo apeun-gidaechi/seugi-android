@@ -31,6 +31,7 @@ jobs:
       env:
         SERVER_URL: ${{ secrets.SERVER_URL }}
         WS_URL: ${{ secrets.WS_URL }}
+        AI_URL: ${{ secrets.AI_URL }}
 
     - name: Build with Gradle
       run: ./gradlew build --parallel
