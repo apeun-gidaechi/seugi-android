@@ -354,7 +354,7 @@ fun NotificationNotFound() {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "알림이 없어요",
+                text = "공지가 없어요",
                 color = SeugiTheme.colors.black,
                 style = SeugiTheme.typography.subtitle2,
             )
@@ -384,7 +384,7 @@ fun NotificationPopupDialog(isEditPermission: Boolean, isDeletePermission: Boole
                         Text(
                             modifier = Modifier
                                 .padding(vertical = 8.dp),
-                            text = "알림 수정",
+                            text = "공지 수정",
                             color = SeugiTheme.colors.black,
                             style = SeugiTheme.typography.subtitle2,
                         )
@@ -400,7 +400,7 @@ fun NotificationPopupDialog(isEditPermission: Boolean, isDeletePermission: Boole
                     Text(
                         modifier = Modifier
                             .padding(vertical = 8.dp),
-                        text = "알림 신고",
+                        text = "공지 신고",
                         color = SeugiTheme.colors.black,
                         style = SeugiTheme.typography.subtitle2,
                     )
@@ -416,7 +416,7 @@ fun NotificationPopupDialog(isEditPermission: Boolean, isDeletePermission: Boole
                         Text(
                             modifier = Modifier
                                 .padding(vertical = 8.dp),
-                            text = "알림 삭제",
+                            text = "공지 삭제",
                             color = SeugiTheme.colors.red500,
                             style = SeugiTheme.typography.subtitle2,
                         )
