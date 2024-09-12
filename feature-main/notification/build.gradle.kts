@@ -14,4 +14,5 @@ dependencies {
     implementation(projects.data.core)
     implementation(projects.data.notification)
     implementation(projects.data.workspace)
+    implementation("com.github.Abhimanyu14:compose-emoji-picker:1.0.0-alpha16")
 }
