@@ -19,7 +19,7 @@ fun NavGraphBuilder.mainScreen(mainToOnboarding: () -> Unit, showSnackbar: (text
     composable(route = MAIN_ROUTE) {
         MainScreen(
             mainToOnboarding = mainToOnboarding,
-            showSnackbar = showSnackbar
+            showSnackbar = showSnackbar,
         )
     }
 }

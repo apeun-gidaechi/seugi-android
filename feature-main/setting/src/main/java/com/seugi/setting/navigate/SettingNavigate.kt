@@ -9,11 +9,10 @@ import com.seugi.setting.SettingScreen
 
 const val SETTING_ROUTE = "setting"
 
-fun NavController.navigateToSetting(navOptions: NavOptions? = null) =
-    this.navigate(
-        route = SETTING_ROUTE,
-        navOptions = navOptions
-    )
+fun NavController.navigateToSetting(navOptions: NavOptions? = null) = this.navigate(
+    route = SETTING_ROUTE,
+    navOptions = navOptions,
+)
 
 fun NavGraphBuilder.settingScreen(
     profileModel: ProfileModel,
@@ -28,7 +27,7 @@ fun NavGraphBuilder.settingScreen(
             onNavigationVisibleChange = onNavigationVisibleChange,
             navigationToOnboarding = navigationToOnboarding,
             popBackStack = popBackStack,
-            showSnackbar = showSnackbar
+            showSnackbar = showSnackbar,
         )
     }
 }

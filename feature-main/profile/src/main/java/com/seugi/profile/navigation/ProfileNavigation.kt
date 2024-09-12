@@ -16,7 +16,7 @@ fun NavGraphBuilder.profileScreen(workspaceId: String, myProfile: ProfileModel, 
         ProfileScreen(
             workspaceId = workspaceId,
             myProfile = myProfile,
-            navigateToSetting = navigateToSetting
+            navigateToSetting = navigateToSetting,
         )
     }
 }

@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
                         SnackbarHost(hostState = snackbarHostState) {
                             Snackbar(snackbarData = it)
                         }
-                    }
+                    },
                 ) {
                     Surface(
                         modifier = Modifier
@@ -102,10 +102,10 @@ class MainActivity : ComponentActivity() {
                                         coroutineScope.launch {
                                             snackbarHostState.showSnackbar(
                                                 message = it,
-                                                withDismissAction = true
+                                                withDismissAction = true,
                                             )
                                         }
-                                    }
+                                    },
                                 )
                                 onboardingScreen(
                                     onboardingToMain = {

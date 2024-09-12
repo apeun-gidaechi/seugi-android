@@ -3,7 +3,6 @@ package com.seugi.setting
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,9 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,9 +34,7 @@ import com.seugi.designsystem.component.AvatarType
 import com.seugi.designsystem.component.DividerType
 import com.seugi.designsystem.component.LoadingDotsIndicator
 import com.seugi.designsystem.component.SeugiAvatar
-import com.seugi.designsystem.component.SeugiButton
 import com.seugi.designsystem.component.SeugiDivider
-import com.seugi.designsystem.component.SeugiIconButton
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.setting.model.SettingSideEffect
@@ -52,9 +47,8 @@ internal fun SettingScreen(
     onNavigationVisibleChange: (Boolean) -> Unit,
     navigationToOnboarding: () -> Unit,
     popBackStack: () -> Unit,
-    showSnackbar: (text: String) -> Unit
+    showSnackbar: (text: String) -> Unit,
 ) {
-
     val uriHandler = LocalUriHandler.current
 
     val uiState by viewModel.state.collectAsStateWithLifecycle()
@@ -93,12 +87,12 @@ internal fun SettingScreen(
                         Text(
                             text = "설정",
                             style = SeugiTheme.typography.subtitle1,
-                            color = SeugiTheme.colors.black
+                            color = SeugiTheme.colors.black,
                         )
                     },
-                    onNavigationIconClick = popBackStack
+                    onNavigationIconClick = popBackStack,
                 )
-            }
+            },
         ) { paddingValues ->
             LazyColumn(
                 modifier = Modifier
@@ -109,7 +103,7 @@ internal fun SettingScreen(
                 item {
                     Box(
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
                     ) {
                         Box(
                             modifier = Modifier
@@ -118,21 +112,20 @@ internal fun SettingScreen(
                                 .size(64.dp)
                                 .bounceClick(
                                     onClick = {
-
-                                    }
-                                )
+                                    },
+                                ),
                         ) {
                             SeugiAvatar(
                                 modifier = Modifier.align(Alignment.Center),
                                 type = AvatarType.ExtraLarge,
-                                image = profileModel.member.picture.ifEmpty { null }
+                                image = profileModel.member.picture.ifEmpty { null },
                             )
                             Image(
                                 modifier = Modifier
                                     .size(24.dp)
                                     .align(Alignment.BottomEnd),
                                 painter = painterResource(id = R.drawable.ic_add_fill),
-                                contentDescription = null
+                                contentDescription = null,
                             )
                         }
                     }
@@ -142,29 +135,28 @@ internal fun SettingScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Row(
                             modifier = Modifier
                                 .padding(vertical = 8.dp)
                                 .bounceClick(
                                     onClick = {
-
-                                    }
+                                    },
                                 ),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Text(
                                 text = profileModel.nick,
                                 style = SeugiTheme.typography.subtitle2,
-                                color = SeugiTheme.colors.black
+                                color = SeugiTheme.colors.black,
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Image(
                                 modifier = Modifier.size(20.dp),
                                 painter = painterResource(id = R.drawable.ic_write_line),
                                 contentDescription = "닉네임 수정하기",
-                                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500)
+                                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
                             )
                         }
                     }
@@ -173,21 +165,21 @@ internal fun SettingScreen(
                 item {
                     SettingCard(
                         title = "로그아웃",
-                        onClickDetail = viewModel::logout
+                        onClickDetail = viewModel::logout,
                     )
                 }
                 item {
                     SettingCard(
                         title = "회원 탈퇴",
                         titleColor = SeugiTheme.colors.red500,
-                        onClickDetail = viewModel::withdraw
+                        onClickDetail = viewModel::withdraw,
                     )
                 }
                 item {
                     SeugiDivider(
                         type = DividerType.WIDTH,
                         size = 8.dp,
-                        color = SeugiTheme.colors.gray100
+                        color = SeugiTheme.colors.gray100,
                     )
                 }
 
@@ -196,7 +188,7 @@ internal fun SettingScreen(
                         title = "개인정보 처리 방침",
                         onClickDetail = {
                             uriHandler.openUri("https://byungjjun.notion.site/58f95c1209fb48b4b74434701290f838")
-                        }
+                        },
                     )
                 }
 
@@ -205,7 +197,7 @@ internal fun SettingScreen(
                         title = "서비스 운영 정책",
                         onClickDetail = {
                             uriHandler.openUri("https://byungjjun.notion.site/5ba79e224f53439bbfa3607e581fe6bf")
-                        }
+                        },
                     )
                 }
 
@@ -220,7 +212,7 @@ internal fun SettingScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(SeugiTheme.colors.black.copy(alpha = 0.3f)),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 LoadingDotsIndicator()
             }
@@ -229,23 +221,18 @@ internal fun SettingScreen(
 }
 
 @Composable
-private fun SettingCard(
-    modifier: Modifier = Modifier,
-    title: String,
-    titleColor: Color = SeugiTheme.colors.black,
-    onClickDetail: () -> Unit
-) {
+private fun SettingCard(modifier: Modifier = Modifier, title: String, titleColor: Color = SeugiTheme.colors.black, onClickDetail: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .bounceClick(onClickDetail),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Spacer(modifier = Modifier.width(20.dp))
         Text(
             text = title,
             style = SeugiTheme.typography.subtitle2,
-            color = titleColor
+            color = titleColor,
         )
         Spacer(modifier = Modifier.weight(1f))
         Image(
@@ -254,7 +241,7 @@ private fun SettingCard(
                 .size(24.dp),
             painter = painterResource(id = R.drawable.ic_expand_right_line),
             contentDescription = null,
-            colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400)
+            colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
         )
         Spacer(modifier = Modifier.width(20.dp))
     }

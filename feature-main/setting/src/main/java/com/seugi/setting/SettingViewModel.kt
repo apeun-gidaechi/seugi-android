@@ -12,24 +12,22 @@ import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.setting.model.SettingSideEffect
 import com.seugi.setting.model.SettingUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val workspaceRepository: WorkspaceRepository,
     private val tokenRepository: TokenRepository,
     private val memberRepository: MemberRepository,
-    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher
-): ViewModel() {
+    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
+) : ViewModel() {
 
     private val _sideEffect = Channel<SettingSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
@@ -40,9 +38,9 @@ class SettingViewModel @Inject constructor(
     fun logout() = viewModelScope.launch(dispatcher) {
         combineWhenAllComplete(
             workspaceRepository.deleteWorkspace(),
-            tokenRepository.deleteToken()
+            tokenRepository.deleteToken(),
         ) { _, _ ->
-           return@combineWhenAllComplete true
+            return@combineWhenAllComplete true
         }.collect {
             _sideEffect.send(SettingSideEffect.SuccessLogout)
         }
@@ -51,7 +49,7 @@ class SettingViewModel @Inject constructor(
     fun withdraw() = viewModelScope.launch(dispatcher) {
         _state.update {
             it.copy(
-                isLoading = true
+                isLoading = true,
             )
         }
         memberRepository.remove().collect {
@@ -59,25 +57,24 @@ class SettingViewModel @Inject constructor(
                 is Result.Success -> {
                     combineWhenAllComplete(
                         workspaceRepository.deleteWorkspace(),
-                        tokenRepository.deleteToken()
+                        tokenRepository.deleteToken(),
                     ) { _, _ ->
                         return@combineWhenAllComplete true
                     }.collect {
                         _state.update { state ->
                             state.copy(
-                                isLoading = false
+                                isLoading = false,
                             )
                         }
                         _sideEffect.send(SettingSideEffect.SuccessWithdraw)
                     }
-
                 }
                 is Result.Loading -> {}
                 is Result.Error -> {
                     it.throwable.printStackTrace()
                     _state.update {
                         it.copy(
-                            isLoading = false
+                            isLoading = false,
                         )
                     }
                     _sideEffect.send(SettingSideEffect.FailedWithdraw(it.throwable))
