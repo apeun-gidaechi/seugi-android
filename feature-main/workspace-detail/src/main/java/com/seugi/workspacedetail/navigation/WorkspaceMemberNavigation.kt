@@ -17,7 +17,7 @@ fun NavController.navigateToWorkspaceMember(workspaceId: String, navOptions: Nav
     )
 }
 
-fun NavGraphBuilder.workspaceMemberScreen(popBackStack: () -> Unit) {
+fun NavGraphBuilder.workspaceMemberScreen(navigateToPersonalChat: (chatRoomUid: String, workspaceId: String) -> Unit, showSnackbar: (text: String) -> Unit, popBackStack: () -> Unit) {
     composable(
         route = "$WORKSPACE_MEMBER_ROUTE/{workspaceId}",
         arguments = listOf(
@@ -26,6 +26,8 @@ fun NavGraphBuilder.workspaceMemberScreen(popBackStack: () -> Unit) {
     ) {
         WorkspaceMemberScreen(
             workspaceId = it.arguments?.getString("workspaceId") ?: "",
+            navigateToPersonalChat = navigateToPersonalChat,
+            showSnackbar = showSnackbar,
             popBackStack = popBackStack,
         )
     }
