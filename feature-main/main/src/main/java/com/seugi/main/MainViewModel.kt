@@ -100,7 +100,7 @@ class MainViewModel @Inject constructor(
     fun setProfileModel(profileModel: ProfileModel) = viewModelScope.launch(dispatcher) {
         _state.update {
             it.copy(
-                profile = profileModel
+                profile = profileModel,
             )
         }
     }

@@ -206,7 +206,7 @@ internal fun MainScreen(
                 myProfile = state.profile,
                 showSnackbar = showSnackbar,
                 navigateToSetting = navHostController::navigateToSetting,
-                changeProfileData = viewModel::setProfileModel
+                changeProfileData = viewModel::setProfileModel,
             )
 
             notificationScreen(

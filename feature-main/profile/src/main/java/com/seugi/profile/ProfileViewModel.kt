@@ -8,28 +8,23 @@ import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.profile.ProfileRepository
 import com.seugi.profile.model.ProfileSideEffect
-import com.seugi.profile.model.ProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
-import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
-    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher
+    @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _sideEffect = Channel<ProfileSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
 
     fun updateState(profile: ProfileModel) = viewModelScope.launch(dispatcher) {
-
         with(profile) {
             profileRepository.patchProfile(
                 workspaceId = workspaceId,
@@ -39,14 +34,12 @@ class ProfileViewModel @Inject constructor(
                 belong = belong,
                 phone = phone,
                 wire = wire,
-                location = location
+                location = location,
             ).collect {
                 when (it) {
                     is Result.Success -> {
-
                     }
                     is Result.Loading -> {
-
                     }
                     is Result.Error -> {
                         it.throwable.printStackTrace()

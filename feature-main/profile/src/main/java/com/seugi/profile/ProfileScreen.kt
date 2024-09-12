@@ -20,7 +20,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,7 +32,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.data.core.model.ProfileModel
 import com.seugi.designsystem.R.drawable
 import com.seugi.designsystem.animation.bounceClick
@@ -52,8 +50,14 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), workspaceId: String, myProfile: ProfileModel, showSnackbar: (text: String) -> Unit, changeProfileData: (ProfileModel) -> Unit, navigateToSetting: () -> Unit) {
-
+internal fun ProfileScreen(
+    viewModel: ProfileViewModel = hiltViewModel(),
+    workspaceId: String,
+    myProfile: ProfileModel,
+    showSnackbar: (text: String) -> Unit,
+    changeProfileData: (ProfileModel) -> Unit,
+    navigateToSetting: () -> Unit,
+) {
     var isShowDialog by remember { mutableStateOf(false) }
     var editTextTarget by remember { mutableStateOf("") }
     var editText by remember { mutableStateOf("") }
@@ -70,11 +74,11 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
     viewModel.sideEffect.CollectAsSideEffect {
         when (it) {
             is ProfileSideEffect.FailedChange -> {
-                showSnackbar(it.throwable.message?: "")
+                showSnackbar(it.throwable.message ?: "")
             }
         }
     }
-    
+
     if (isShowDialog) {
         ModalBottomSheet(
             onDismissRequest = { dialogDismissRequest() },

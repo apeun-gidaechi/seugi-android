@@ -37,7 +37,7 @@ object SeugiUrl {
     }
 
     object Profile {
-        const val ME = "${PROFILE}/me"
+        const val ME = "$PROFILE/me"
     }
 
     object Auth {

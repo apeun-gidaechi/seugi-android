@@ -23,27 +23,19 @@ class ProfileDataSourceImpl @Inject constructor(
         parameter("workspaceId", workspaceId)
     }.body()
 
-    override suspend fun patchProfile(
-        workspaceId: String,
-        nick: String,
-        status: String,
-        spot: String,
-        belong: String,
-        phone: String,
-        wire: String,
-        location: String,
-    ): Response = httpClient.patch("${SeugiUrl.PROFILE}/${workspaceId}") {
-        setBody(
-            ProfileRequest(
-                nick = nick,
-                status = status,
-                spot = spot,
-                belong = belong,
-                phone = phone,
-                wire = wire,
-                location = location
+    override suspend fun patchProfile(workspaceId: String, nick: String, status: String, spot: String, belong: String, phone: String, wire: String, location: String): Response =
+        httpClient.patch("${SeugiUrl.PROFILE}/$workspaceId") {
+            setBody(
+                ProfileRequest(
+                    nick = nick,
+                    status = status,
+                    spot = spot,
+                    belong = belong,
+                    phone = phone,
+                    wire = wire,
+                    location = location,
+                ),
             )
-        )
-        contentType(ContentType.Application.Json)
-    }.body()
+            contentType(ContentType.Application.Json)
+        }.body()
 }
