@@ -15,8 +15,11 @@ fun NavController.navigateToMain(toRoute: String, fromRoute: String) {
     }
 }
 
-fun NavGraphBuilder.mainScreen(mainToOnboarding: () -> Unit) {
+fun NavGraphBuilder.mainScreen(mainToOnboarding: () -> Unit, showSnackbar: (text: String) -> Unit) {
     composable(route = MAIN_ROUTE) {
-        MainScreen(mainToOnboarding = mainToOnboarding)
+        MainScreen(
+            mainToOnboarding = mainToOnboarding,
+            showSnackbar = showSnackbar
+        )
     }
 }

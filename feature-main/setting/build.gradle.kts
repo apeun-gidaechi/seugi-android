@@ -14,5 +14,6 @@ dependencies {
     implementation(projects.common)
     implementation(projects.ui)
     implementation(projects.data.token)
+    implementation(projects.data.member)
     implementation(projects.data.workspace)
 }

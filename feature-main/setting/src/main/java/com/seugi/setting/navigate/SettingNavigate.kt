@@ -18,12 +18,14 @@ fun NavGraphBuilder.settingScreen(
     onNavigationVisibleChange: (Boolean) -> Unit,
     navigationToOnboarding: () -> Unit,
     popBackStack: () -> Unit,
+    showSnackbar: (text: String) -> Unit,
 ) {
     composable(SETTING_ROUTE) {
         SettingScreen(
             onNavigationVisibleChange = onNavigationVisibleChange,
             navigationToOnboarding = navigationToOnboarding,
             popBackStack = popBackStack,
+            showSnackbar = showSnackbar
         )
     }
 }

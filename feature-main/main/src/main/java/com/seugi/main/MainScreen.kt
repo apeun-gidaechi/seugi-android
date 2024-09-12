@@ -66,7 +66,7 @@ import com.seugi.workspacedetail.navigation.workspaceMemberScreen
 private const val NAVIGATION_ANIM = 400
 
 @Composable
-internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostController: NavHostController = rememberNavController(), mainToOnboarding: () -> Unit) {
+internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostController: NavHostController = rememberNavController(), mainToOnboarding: () -> Unit, showSnackbar: (text: String) -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val backstackEntry by navHostController.currentBackStackEntryAsState()
     val selectItemState: BottomNavigationItemType by remember {
@@ -310,7 +310,8 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
             settingScreen(
                 onNavigationVisibleChange = onNavigationVisibleChange,
                 navigationToOnboarding = mainToOnboarding,
-                popBackStack = navHostController::popBackStack
+                popBackStack = navHostController::popBackStack,
+                showSnackbar = showSnackbar
             )
         }
     }

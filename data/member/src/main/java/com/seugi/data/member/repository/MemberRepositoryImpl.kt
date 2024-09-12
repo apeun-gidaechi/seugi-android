@@ -52,4 +52,12 @@ class MemberRepositoryImpl @Inject constructor(
             .flowOn(dispatcher)
             .asResult()
     }
+
+    // 서버에서 아직 아무런 반환도 없고, 실제로 회원탈퇴가 이루어지는 API가 아니므로, 임시로 이렇게 처리합니다.
+    override suspend fun remove(): Flow<Result<Boolean>> = flow {
+        kotlinx.coroutines.delay(300)
+        emit(true)
+    }
+        .flowOn(dispatcher)
+        .asResult()
 }
