@@ -1,6 +1,8 @@
 package com.seugi.notification
 
 import android.app.Activity
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,8 +33,11 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,6 +47,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
@@ -50,6 +57,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.makeappssimple.abhimanyu.composeemojipicker.ComposeEmojiPickerBottomSheetUI
 import com.seugi.common.utiles.toTimeString
 import com.seugi.data.notification.model.NotificationEmojiModel
 import com.seugi.data.core.model.WorkspacePermissionModel
@@ -103,6 +111,14 @@ internal fun NotificationScreen(
     val lazyListState = rememberLazyListState()
     var isShowPopupDialog by remember { mutableStateOf(false) }
     var selectNotificationItem: NotificationModel? by remember { mutableStateOf(null) }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+    )
+
+    var selectAddEmojiNotificationItem: NotificationModel? by remember { mutableStateOf(null) }
+    var isModalBottomSheetVisible by remember {
+        mutableStateOf(false)
+    }
 
     val changeNavColorWhite = SeugiTheme.colors.white
     LifecycleResumeEffect(Unit) {
@@ -156,6 +172,24 @@ internal fun NotificationScreen(
                     notificationId = selectNotificationItem?.id ?: 0,
                 )
             },
+        )
+    }
+
+    if (isModalBottomSheetVisible) {
+        SelectBottomSheet(
+            isVisible = isModalBottomSheetVisible,
+            sheetState = sheetState,
+            onSelectEmoji = {
+                viewModel.pressEmoji(
+                    id = selectAddEmojiNotificationItem?.id?: 0,
+                    userId = userId.toLong(),
+                    emoji = it
+                )
+            },
+            onDismissRequest = {
+                isModalBottomSheetVisible = false
+                selectNotificationItem = null
+            }
         )
     }
 
@@ -234,6 +268,10 @@ internal fun NotificationScreen(
                                     userId = userId.toLong(),
                                 )
                             },
+                            onClickAddEmoji = {
+                                selectAddEmojiNotificationItem = it
+                                isModalBottomSheetVisible = true
+                            },
                             onClickDetailInfo = {
                                 selectNotificationItem = it
                                 isShowPopupDialog = true
@@ -251,6 +289,45 @@ internal fun NotificationScreen(
                 modifier = Modifier.align(Alignment.TopCenter),
                 refreshing = state.isRefresh,
                 state = pullRefreshState,
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SelectBottomSheet(
+    isVisible: Boolean,
+    sheetState: SheetState,
+    onSelectEmoji: (emoji: String) -> Unit,
+    onDismissRequest: () -> Unit,
+) {
+    var searchText by remember { mutableStateOf("") }
+    ModalBottomSheet(
+        sheetState = sheetState,
+        shape = RectangleShape,
+        tonalElevation = 0.dp,
+        onDismissRequest = {
+            onDismissRequest()
+            searchText = ""
+        },
+        dragHandle = null,
+        windowInsets = WindowInsets(0),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+        ) {
+            ComposeEmojiPickerBottomSheetUI(
+                onEmojiClick = { emoji ->
+                    onSelectEmoji(emoji.character)
+                    onDismissRequest()
+                },
+                onEmojiLongClick = {},
+                searchText = searchText,
+                updateSearchText = { updatedSearchText ->
+                    searchText = updatedSearchText
+                },
             )
         }
     }
@@ -360,6 +437,7 @@ internal fun NotificationCard(
     onClickEmoji: (emoji: String) -> Unit,
     onClickDetailInfo: () -> Unit,
     onClickNotification: () -> Unit,
+    onClickAddEmoji: () -> Unit,
     onLongClick: () -> Unit,
 ) {
     Box(
@@ -420,6 +498,20 @@ internal fun NotificationCard(
                 FlowRow(
                     modifier = Modifier,
                 ) {
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .bounceClick(onClickAddEmoji),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            modifier = Modifier.size(28.dp),
+                            painter = painterResource(id = R.drawable.ic_add_emoji),
+                            contentDescription = "이모지 추가하기",
+                            colorFilter = ColorFilter.tint(SeugiTheme.colors.gray600)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(10.dp))
                     emojiList.fastForEach {
                         NotificationEmoji(
                             emoji = it.emoji,
