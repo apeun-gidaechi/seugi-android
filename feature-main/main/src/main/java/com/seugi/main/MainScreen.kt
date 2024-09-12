@@ -303,6 +303,14 @@ internal fun MainScreen(
                 },
             )
             workspaceMemberScreen(
+                showSnackbar = showSnackbar,
+                navigateToPersonalChat = { chatRoomId, workspaceId ->
+                    navHostController.navigateToChatDetail(
+                        chatRoomId = chatRoomId,
+                        workspaceId = workspaceId,
+                        isPersonal = true
+                    )
+                },
                 popBackStack = { navHostController.popBackStack() },
             )
             workspaceCreateScreen(

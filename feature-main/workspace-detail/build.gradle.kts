@@ -11,6 +11,7 @@ dependencies {
     implementation(projects.data.member)
     implementation(projects.data.profile)
     implementation(projects.data.workspace)
+    implementation(projects.data.perosnalChat)
     implementation(projects.common)
     implementation(projects.ui)
 }

@@ -43,13 +43,21 @@ import com.seugi.designsystem.component.SeugiSegmentedButtonLayout
 import com.seugi.designsystem.component.SeugiSmallDropDown
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.ui.CollectAsSideEffect
 import com.seugi.ui.component.OtherProfileBottomSheet
+import com.seugi.workspacedetail.feature.workspacemember.model.WorkspaceMemberSideEffect
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(), popBackStack: () -> Unit, workspaceId: String) {
+fun WorkspaceMemberScreen(
+    viewModel: WorkspaceMemberViewModel = hiltViewModel(),
+    workspaceId: String,
+    navigateToPersonalChat: (chatRoomUid: String, workspaceId: String) -> Unit,
+    showSnackbar: (text: String) -> Unit,
+    popBackStack: () -> Unit,
+) {
     var selectedItem by remember { mutableStateOf("전체") }
     var isExpanded by remember { mutableStateOf(false) }
     var selectedMember by remember { mutableStateOf<ProfileModel?>(null) }
@@ -66,6 +74,17 @@ fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(),
         viewModel.getAllMember(workspaceId = workspaceId)
     }
 
+    viewModel.sideEffect.CollectAsSideEffect {
+        when (it) {
+            is WorkspaceMemberSideEffect.SuccessCreateRoom -> {
+                navigateToPersonalChat(it.roomUid, workspaceId)
+            }
+            is WorkspaceMemberSideEffect.FailedCreateRoom -> {
+                showSnackbar("채팅방 이동에 실패했습니다.")
+            }
+        }
+    }
+
 
     if (isShowBottomSheet) {
         OtherProfileBottomSheet(
@@ -78,7 +97,10 @@ fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(),
             wire = selectedMember?.wire?: "",
             location = selectedMember?.location?: "",
             onClickChat = {
-
+                viewModel.createChatRoom(
+                    workspaceId = workspaceId,
+                    targetUserId = selectedMember?.member?.id?.toLong()?: 0L
+                )
             },
             onDismissRequest = {
                 isShowBottomSheet = false
