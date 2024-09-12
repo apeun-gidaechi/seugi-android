@@ -6,7 +6,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.seugi.data.workspace.model.WorkspacePermissionModel
+import com.seugi.data.core.model.WorkspacePermissionModel
 import com.seugi.notificationedit.NotificationEditScreen
 
 const val NOTIFICATION_EDIT_ROUTE = "notification_create"

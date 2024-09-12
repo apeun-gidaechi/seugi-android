@@ -93,19 +93,6 @@ class MainViewModel @Inject constructor(
                     else -> {}
                 }
             }
-
-            workspaceRepository.getPermission(workspaceId).collect {
-                when (it) {
-                    is Result.Success -> {
-                        _state.update { state ->
-                            state.copy(
-                                permission = it.data,
-                            )
-                        }
-                    }
-                    else -> {}
-                }
-            }
         }
     }
 }

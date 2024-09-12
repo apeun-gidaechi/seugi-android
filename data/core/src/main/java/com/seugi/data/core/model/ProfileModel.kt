@@ -10,4 +10,8 @@ data class ProfileModel(
     val phone: String,
     val wire: String,
     val location: String,
+    val permission: WorkspacePermissionModel,
+    val schGrade: Int,
+    val schClass: Int,
+    val schNumber: Int,
 )

@@ -10,4 +10,8 @@ data class ProfileResponse(
     val phone: String,
     val wire: String,
     val location: String,
+    val permission: WorkspacePermissionResponse,
+    val schGrade: Int,
+    val schClass: Int,
+    val schNumber: Int,
 )

@@ -28,9 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.seugi.data.workspace.model.WorkspacePermissionModel
-import com.seugi.data.workspace.model.isAdmin
+import com.seugi.data.core.model.WorkspacePermissionModel
+import com.seugi.data.core.model.isAdmin
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiImage

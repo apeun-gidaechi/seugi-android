@@ -4,6 +4,7 @@ import com.seugi.common.model.Result
 import com.seugi.common.model.asResult
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
+import com.seugi.data.core.mapper.toModel
 import com.seugi.data.core.mapper.toModels
 import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.workspace.WorkspaceRepository
@@ -13,7 +14,6 @@ import com.seugi.data.workspace.mapper.toModels
 import com.seugi.data.workspace.model.CheckWorkspaceModel
 import com.seugi.data.workspace.model.WaitWorkspaceModel
 import com.seugi.data.workspace.model.WorkspaceModel
-import com.seugi.data.workspace.model.WorkspacePermissionModel
 import com.seugi.local.room.dao.WorkspaceDao
 import com.seugi.local.room.model.WorkspaceEntity
 import com.seugi.network.core.response.safeResponse
@@ -53,16 +53,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
 
     override suspend fun getMembers(workspaceId: String): Flow<Result<List<ProfileModel>>> = flow {
         val response = workspaceDatasource.getMembers(workspaceId).safeResponse()
-
         emit(response.toModels())
-    }
-        .flowOn(dispatcher)
-        .asResult()
-
-    override suspend fun getPermission(workspaceId: String): Flow<Result<WorkspacePermissionModel>> = flow {
-        val response = workspaceDatasource.getPermission(workspaceId).safeResponse()
-
-        emit(response.toModel())
     }
         .flowOn(dispatcher)
         .asResult()

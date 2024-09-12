@@ -17,4 +17,8 @@ fun ProfileResponse.toModel() = ProfileModel(
     phone = phone,
     wire = wire,
     location = location,
+    permission = permission.toModel(),
+    schGrade = schGrade,
+    schClass = schClass,
+    schNumber = schNumber,
 )

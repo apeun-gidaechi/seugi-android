@@ -2,11 +2,10 @@ package com.seugi.main.model
 
 import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.core.model.UserModel
-import com.seugi.data.workspace.model.WorkspacePermissionModel
+import com.seugi.data.core.model.WorkspacePermissionModel
 
 data class MainUiState(
     val userId: Int = -1,
-    val permission: WorkspacePermissionModel = WorkspacePermissionModel.STUDENT,
     val profile: ProfileModel = ProfileModel(
         status = "",
         member = UserModel(
@@ -23,5 +22,9 @@ data class MainUiState(
         phone = "",
         wire = "",
         location = "",
+        permission = WorkspacePermissionModel.STUDENT,
+        schGrade = 0,
+        schClass = 0,
+        schNumber = 0,
     ),
 )
