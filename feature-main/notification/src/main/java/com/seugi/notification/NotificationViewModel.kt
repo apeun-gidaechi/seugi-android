@@ -11,6 +11,7 @@ import com.seugi.notification.model.NotificationSideEffect
 import com.seugi.notification.model.NotificationUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.FlowPreview
@@ -112,22 +113,59 @@ class NotificationViewModel @Inject constructor(
         }
     }
 
-    fun pressEmoji(id: Long, emoji: String, userId: Int) = viewModelScope.launch(dispatcher) {
+    fun pressEmoji(id: Long, emoji: String, userId: Long) = viewModelScope.launch(dispatcher) {
         _state.update {
             it.copy(
                 notices = it.notices.map { model ->
                     if (model.id != id) {
                         return@map model
                     }
-                    val newEmojiList = model.emoji.toMutableList()
-                    val emojiRemoved = newEmojiList.removeIf { item ->
-                        item.emoji == emoji && item.userId == userId
+                    var isChanged = false
+
+                    val newEmojiList: MutableList<NotificationEmojiModel> = model.emoji.toMutableList()
+
+                    var changeIndex = 0
+                    var changeItem: NotificationEmojiModel? = null
+
+                    newEmojiList.forEachIndexed { index, notificationEmojiModel ->
+
+                        // 해당 하는 이모지가 아니라면 리턴
+                        if (notificationEmojiModel.emoji != emoji) return@forEachIndexed
+
+                        isChanged = true
+
+                        val newUserList = notificationEmojiModel.userList.toMutableList()
+                        val emojiRemoved = newUserList.removeIf { item ->
+                            item == userId
+                        }
+                        if (!emojiRemoved) {
+                            newUserList.add(userId)
+                        }
+
+                        changeIndex = index
+                        if (newUserList.isNotEmpty()) {
+                            changeItem = NotificationEmojiModel(
+                                emoji = emoji,
+                                userList = newUserList.toImmutableList(),
+                            )
+                        }
                     }
 
-                    if (!emojiRemoved) {
+                    // 기존에 없던 새로운 이모지라면
+                    if (!isChanged) {
                         newEmojiList.add(
-                            NotificationEmojiModel(emoji, userId),
+                            NotificationEmojiModel(
+                                emoji = emoji,
+                                userList = persistentListOf(userId),
+                            ),
                         )
+                    } else {
+                        // forEach 안에서 할 경우 Exeption 발생
+                        if (changeItem == null) {
+                            newEmojiList.removeAt(changeIndex)
+                        } else {
+                            newEmojiList[changeIndex] = changeItem!!
+                        }
                     }
                     model.copy(
                         emoji = newEmojiList.toImmutableList(),

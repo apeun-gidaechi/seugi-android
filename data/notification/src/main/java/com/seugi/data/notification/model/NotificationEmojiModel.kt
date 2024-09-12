@@ -1,6 +1,8 @@
 package com.seugi.data.notification.model
 
+import kotlinx.collections.immutable.ImmutableList
+
 data class NotificationEmojiModel(
     val emoji: String,
-    val userId: Int,
+    val userList: ImmutableList<Long>,
 )

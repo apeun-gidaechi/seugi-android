@@ -14,4 +14,5 @@ dependencies {
     implementation(projects.data.core)
     implementation(projects.data.notification)
     implementation(projects.data.workspace)
+    implementation(libs.compose.emoji.picker)
 }

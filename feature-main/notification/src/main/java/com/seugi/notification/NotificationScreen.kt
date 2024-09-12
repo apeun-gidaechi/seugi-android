@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,13 +26,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Surface
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,6 +45,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
@@ -50,10 +55,12 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.makeappssimple.abhimanyu.composeemojipicker.ComposeEmojiPickerBottomSheetUI
 import com.seugi.common.utiles.toTimeString
 import com.seugi.data.core.model.WorkspacePermissionModel
 import com.seugi.data.core.model.isAdmin
 import com.seugi.data.core.model.isTeacher
+import com.seugi.data.notification.model.NotificationEmojiModel
 import com.seugi.data.notification.model.NotificationModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
@@ -63,9 +70,7 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.notification.model.NotificationEmojiState
 import com.seugi.notification.model.NotificationSideEffect
-import com.seugi.notification.model.getEmojiList
 import com.seugi.ui.CollectAsSideEffect
 import com.seugi.ui.changeNavigationColor
 import com.seugi.ui.shortToast
@@ -103,6 +108,14 @@ internal fun NotificationScreen(
     val lazyListState = rememberLazyListState()
     var isShowPopupDialog by remember { mutableStateOf(false) }
     var selectNotificationItem: NotificationModel? by remember { mutableStateOf(null) }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+    )
+
+    var selectAddEmojiNotificationItem: NotificationModel? by remember { mutableStateOf(null) }
+    var isModalBottomSheetVisible by remember {
+        mutableStateOf(false)
+    }
 
     val changeNavColorWhite = SeugiTheme.colors.white
     LifecycleResumeEffect(Unit) {
@@ -159,6 +172,24 @@ internal fun NotificationScreen(
         )
     }
 
+    if (isModalBottomSheetVisible) {
+        SelectBottomSheet(
+            isVisible = isModalBottomSheetVisible,
+            sheetState = sheetState,
+            onSelectEmoji = {
+                viewModel.pressEmoji(
+                    id = selectAddEmojiNotificationItem?.id ?: 0,
+                    userId = userId.toLong(),
+                    emoji = it,
+                )
+            },
+            onDismissRequest = {
+                isModalBottomSheetVisible = false
+                selectNotificationItem = null
+            },
+        )
+    }
+
     Scaffold(
         modifier = Modifier.background(SeugiTheme.colors.primary050),
         topBar = {
@@ -169,7 +200,7 @@ internal fun NotificationScreen(
                     title = {
                         Text(
                             modifier = Modifier.align(Alignment.CenterHorizontally),
-                            text = "알림",
+                            text = "공지",
                             style = SeugiTheme.typography.subtitle1,
                             color = SeugiTheme.colors.black,
                         )
@@ -218,20 +249,28 @@ internal fun NotificationScreen(
                     modifier = Modifier.padding(horizontal = 20.dp),
                     state = lazyListState,
                 ) {
-                    items(state.notices) {
+                    items(
+                        items = state.notices,
+                        key = { it.id },
+                    ) {
                         Spacer(modifier = Modifier.height(8.dp))
                         NotificationCard(
                             title = it.title,
                             description = it.content,
                             author = it.userName,
-                            emojiList = it.getEmojiList(userId),
+                            emojiList = it.emoji,
                             createdAt = it.creationDate.toTimeString(),
+                            userId = userId.toLong(),
                             onClickEmoji = { emoji ->
                                 viewModel.pressEmoji(
                                     id = it.id,
                                     emoji = emoji,
-                                    userId = userId,
+                                    userId = userId.toLong(),
                                 )
+                            },
+                            onClickAddEmoji = {
+                                selectAddEmojiNotificationItem = it
+                                isModalBottomSheetVisible = true
                             },
                             onClickDetailInfo = {
                                 selectNotificationItem = it
@@ -255,6 +294,40 @@ internal fun NotificationScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SelectBottomSheet(isVisible: Boolean, sheetState: SheetState, onSelectEmoji: (emoji: String) -> Unit, onDismissRequest: () -> Unit) {
+    var searchText by remember { mutableStateOf("") }
+    ModalBottomSheet(
+        sheetState = sheetState,
+        shape = RectangleShape,
+        tonalElevation = 0.dp,
+        onDismissRequest = {
+            onDismissRequest()
+            searchText = ""
+        },
+        dragHandle = null,
+        windowInsets = WindowInsets(0),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+        ) {
+            ComposeEmojiPickerBottomSheetUI(
+                onEmojiClick = { emoji ->
+                    onSelectEmoji(emoji.character)
+                    onDismissRequest()
+                },
+                onEmojiLongClick = {},
+                searchText = searchText,
+                updateSearchText = { updatedSearchText ->
+                    searchText = updatedSearchText
+                },
+            )
+        }
+    }
+}
+
 @Composable
 fun NotificationNotFound() {
     Box(
@@ -273,7 +346,7 @@ fun NotificationNotFound() {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "알림이 없어요",
+                text = "공지가 없어요",
                 color = SeugiTheme.colors.black,
                 style = SeugiTheme.typography.subtitle2,
             )
@@ -303,7 +376,7 @@ fun NotificationPopupDialog(isEditPermission: Boolean, isDeletePermission: Boole
                         Text(
                             modifier = Modifier
                                 .padding(vertical = 8.dp),
-                            text = "알림 수정",
+                            text = "공지 수정",
                             color = SeugiTheme.colors.black,
                             style = SeugiTheme.typography.subtitle2,
                         )
@@ -319,7 +392,7 @@ fun NotificationPopupDialog(isEditPermission: Boolean, isDeletePermission: Boole
                     Text(
                         modifier = Modifier
                             .padding(vertical = 8.dp),
-                        text = "알림 신고",
+                        text = "공지 신고",
                         color = SeugiTheme.colors.black,
                         style = SeugiTheme.typography.subtitle2,
                     )
@@ -335,7 +408,7 @@ fun NotificationPopupDialog(isEditPermission: Boolean, isDeletePermission: Boole
                         Text(
                             modifier = Modifier
                                 .padding(vertical = 8.dp),
-                            text = "알림 삭제",
+                            text = "공지 삭제",
                             color = SeugiTheme.colors.red500,
                             style = SeugiTheme.typography.subtitle2,
                         )
@@ -353,11 +426,13 @@ internal fun NotificationCard(
     title: String,
     description: String,
     author: String,
-    emojiList: ImmutableList<NotificationEmojiState>,
+    emojiList: ImmutableList<NotificationEmojiModel>,
     createdAt: String,
+    userId: Long,
     onClickEmoji: (emoji: String) -> Unit,
     onClickDetailInfo: () -> Unit,
     onClickNotification: () -> Unit,
+    onClickAddEmoji: () -> Unit,
     onLongClick: () -> Unit,
 ) {
     Box(
@@ -418,11 +493,25 @@ internal fun NotificationCard(
                 FlowRow(
                     modifier = Modifier,
                 ) {
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .bounceClick(onClickAddEmoji),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Image(
+                            modifier = Modifier.size(28.dp),
+                            painter = painterResource(id = R.drawable.ic_add_emoji),
+                            contentDescription = "이모지 추가하기",
+                            colorFilter = ColorFilter.tint(SeugiTheme.colors.gray600),
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(10.dp))
                     emojiList.fastForEach {
                         NotificationEmoji(
                             emoji = it.emoji,
-                            count = it.count,
-                            isChecked = it.isMe,
+                            count = it.userList.size,
+                            isChecked = it.userList.contains(userId),
                             onClick = {
                                 onClickEmoji(it.emoji)
                             },

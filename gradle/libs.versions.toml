@@ -1,5 +1,6 @@
 [versions]
 complieSdk = "34"
+composeEmojiPicker = "1.0.0-alpha16"
 minSdk = "28"
 targetSdk = "34"
 appVersion = "1.0.0"
@@ -69,6 +70,7 @@ room = "2.6.1"
 [libraries]
 
 # kotlin
+compose-emoji-picker = { module = "com.github.Abhimanyu14:compose-emoji-picker", version.ref = "composeEmojiPicker" }
 kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }

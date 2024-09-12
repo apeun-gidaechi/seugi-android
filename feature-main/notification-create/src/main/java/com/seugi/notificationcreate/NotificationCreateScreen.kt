@@ -68,7 +68,7 @@ internal fun NotificationCreateScreen(viewModel: NotificationCreateViewModel = h
             SeugiTopBar(
                 title = {
                     Text(
-                        text = "새 알림 작성",
+                        text = "새 공지 작성",
                         style = SeugiTheme.typography.subtitle1,
                         color = SeugiTheme.colors.black,
                     )
