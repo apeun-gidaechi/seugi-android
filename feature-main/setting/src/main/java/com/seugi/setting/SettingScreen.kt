@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -53,6 +54,9 @@ internal fun SettingScreen(
     popBackStack: () -> Unit,
     showSnackbar: (text: String) -> Unit
 ) {
+
+    val uriHandler = LocalUriHandler.current
+
     val uiState by viewModel.state.collectAsStateWithLifecycle()
     viewModel.sideEffect.CollectAsSideEffect {
         when (it) {
@@ -190,14 +194,18 @@ internal fun SettingScreen(
                 item {
                     SettingCard(
                         title = "개인정보 처리 방침",
-                        onClickDetail = {}
+                        onClickDetail = {
+                            uriHandler.openUri("https://byungjjun.notion.site/58f95c1209fb48b4b74434701290f838")
+                        }
                     )
                 }
 
                 item {
                     SettingCard(
                         title = "서비스 운영 정책",
-                        onClickDetail = {}
+                        onClickDetail = {
+                            uriHandler.openUri("https://byungjjun.notion.site/5ba79e224f53439bbfa3607e581fe6bf")
+                        }
                     )
                 }
 
