@@ -25,7 +25,7 @@ internal fun List<NotificationResponse>.toModels() = this.map {
 
 internal fun NotificationEmojiResponse.toModel() = NotificationEmojiModel(
     emoji = emoji,
-    userId = userId,
+    userList = userList.toImmutableList(),
 )
 
 @JvmName("ListNotificationEmojiResponseToModels")

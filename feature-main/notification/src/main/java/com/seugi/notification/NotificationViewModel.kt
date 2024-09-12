@@ -112,22 +112,28 @@ class NotificationViewModel @Inject constructor(
         }
     }
 
-    fun pressEmoji(id: Long, emoji: String, userId: Int) = viewModelScope.launch(dispatcher) {
+    fun pressEmoji(id: Long, emoji: String, userId: Long) = viewModelScope.launch(dispatcher) {
         _state.update {
             it.copy(
                 notices = it.notices.map { model ->
                     if (model.id != id) {
                         return@map model
                     }
-                    val newEmojiList = model.emoji.toMutableList()
-                    val emojiRemoved = newEmojiList.removeIf { item ->
-                        item.emoji == emoji && item.userId == userId
-                    }
-
-                    if (!emojiRemoved) {
-                        newEmojiList.add(
-                            NotificationEmojiModel(emoji, userId),
-                        )
+                    val newEmojiList: List<NotificationEmojiModel> = model.emoji.map {
+                        if (it.emoji == emoji) {
+                            val newUserList = it.userList.toMutableList()
+                            val emojiRemoved = newUserList.removeIf { item ->
+                                item == userId
+                            }
+                            if (!emojiRemoved) {
+                                newUserList.add(userId)
+                            }
+                            return@map NotificationEmojiModel(
+                                    emoji = emoji,
+                                    userList = newUserList.toImmutableList()
+                                )
+                        }
+                        return@map it
                     }
                     model.copy(
                         emoji = newEmojiList.toImmutableList(),
