@@ -204,6 +204,7 @@ internal fun MainScreen(
             profileScreen(
                 workspaceId = state.profile.workspaceId,
                 myProfile = state.profile,
+                showSnackbar = showSnackbar,
                 navigateToSetting = navHostController::navigateToSetting,
             )
 

@@ -46,11 +46,13 @@ import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiTextField
 import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.profile.model.ProfileSideEffect
+import com.seugi.ui.CollectAsSideEffect
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), workspaceId: String, myProfile: ProfileModel, navigateToSetting: () -> Unit) {
+internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), workspaceId: String, myProfile: ProfileModel, showSnackbar: (text: String) -> Unit, navigateToSetting: () -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var isShowDialog by remember { mutableStateOf(false) }
@@ -63,6 +65,14 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
     val dialogDismissRequest: () -> Unit = {
         coroutineScope.launch {
             isShowDialog = false
+        }
+    }
+
+    viewModel.sideEffect.CollectAsSideEffect {
+        when (it) {
+            is ProfileSideEffect.FailedChange -> {
+                showSnackbar(it.throwable.message?: "")
+            }
         }
     }
 

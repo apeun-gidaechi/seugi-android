@@ -7,6 +7,7 @@ object SeugiUrl {
     const val WORKSPACE = "$BASE_URL/workspace"
     const val FILE = "$BASE_URL/file"
     const val AI = "$AI_URL/ai"
+    const val PROFILE = "$BASE_URL/profile"
 
     object Message {
         private const val WS_URL = BuildConfig.WS_URL
@@ -36,7 +37,7 @@ object SeugiUrl {
     }
 
     object Profile {
-        const val ME = "${BASE_URL}/profile/me"
+        const val ME = "${PROFILE}/me"
     }
 
     object Auth {
