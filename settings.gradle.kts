@@ -113,5 +113,6 @@ include(
     ":feature-onboarding:onboarding",
     ":feature-main:notification-create",
     ":feature-main:notification-edit",
+    ":feature-main:setting",
     ":ui"
 )

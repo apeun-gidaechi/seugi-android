@@ -101,4 +101,12 @@ class WorkspaceRepositoryImpl @Inject constructor(
     }
         .flowOn(dispatcher)
         .asResult()
+
+    override suspend fun deleteWorkspace(): Flow<Result<Boolean>> = flow {
+        workspaceDao.deleteWorkspace()
+
+        emit(true)
+    }
+        .flowOn(dispatcher)
+        .asResult()
 }

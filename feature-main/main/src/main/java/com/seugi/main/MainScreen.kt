@@ -1,6 +1,5 @@
 package com.seugi.main
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -45,6 +44,8 @@ import com.seugi.room.navigation.ROOM_ROUTE
 import com.seugi.room.navigation.roomScreen
 import com.seugi.roomcreate.navigation.navigateToRoomCreate
 import com.seugi.roomcreate.navigation.roomCreateScreen
+import com.seugi.setting.navigate.navigateToSetting
+import com.seugi.setting.navigate.settingScreen
 import com.seugi.workspace.navigation.WAITING_JOIN
 import com.seugi.workspace.navigation.joinSuccess
 import com.seugi.workspace.navigation.navigateToJoinSuccess
@@ -64,7 +65,12 @@ import com.seugi.workspacedetail.navigation.workspaceMemberScreen
 private const val NAVIGATION_ANIM = 400
 
 @Composable
-internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostController: NavHostController = rememberNavController(), mainToOnboarding: () -> Unit) {
+internal fun MainScreen(
+    viewModel: MainViewModel = hiltViewModel(),
+    navHostController: NavHostController = rememberNavController(),
+    mainToOnboarding: () -> Unit,
+    showSnackbar: (text: String) -> Unit,
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val backstackEntry by navHostController.currentBackStackEntryAsState()
     val selectItemState: BottomNavigationItemType by remember {
@@ -89,10 +95,6 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
     }
 
     LaunchedEffect(state) {}
-
-    BackHandler {
-        mainToOnboarding()
-    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -202,6 +204,7 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
             profileScreen(
                 workspaceId = state.profile.workspaceId,
                 myProfile = state.profile,
+                navigateToSetting = navHostController::navigateToSetting,
             )
 
             notificationScreen(
@@ -306,6 +309,14 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
                 popBackStack = {
                     navHostController.popBackStack()
                 },
+            )
+
+            settingScreen(
+                profileModel = state.profile,
+                onNavigationVisibleChange = onNavigationVisibleChange,
+                navigationToOnboarding = mainToOnboarding,
+                popBackStack = navHostController::popBackStack,
+                showSnackbar = showSnackbar,
             )
         }
     }

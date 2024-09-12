@@ -10,4 +10,5 @@ interface MemberRepository {
     suspend fun getCode(email: String): Flow<Result<Int>>
 
     suspend fun emailSignUp(name: String, email: String, password: String, code: String): Flow<Result<Int>>
+    suspend fun remove(): Flow<Result<Boolean>>
 }

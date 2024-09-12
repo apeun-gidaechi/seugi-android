@@ -50,7 +50,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), workspaceId: String, myProfile: ProfileModel) {
+internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), workspaceId: String, myProfile: ProfileModel, navigateToSetting: () -> Unit) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     var isShowDialog by remember { mutableStateOf(false) }
@@ -161,7 +161,8 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
             Image(
                 modifier = Modifier
                     .padding(vertical = 8.dp)
-                    .size(32.dp),
+                    .size(32.dp)
+                    .bounceClick(navigateToSetting),
                 painter = painterResource(id = drawable.ic_setting_fill),
                 contentDescription = "설정 톱니바퀴",
                 colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),

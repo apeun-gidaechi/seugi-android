@@ -53,4 +53,11 @@ class TokenRepositoryImpl @Inject constructor(
             .flowOn(dispatcher)
             .asResult()
     }
+
+    override suspend fun deleteToken(): Flow<Result<Boolean>> = flow {
+        tokenDao.deleteToken()
+        emit(true)
+    }
+        .flowOn(dispatcher)
+        .asResult()
 }
