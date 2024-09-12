@@ -10,8 +10,8 @@ import com.seugi.data.notification.model.NotificationEmojiModel
 import com.seugi.notification.model.NotificationSideEffect
 import com.seugi.notification.model.NotificationUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.persistentListOf
 import javax.inject.Inject
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.FlowPreview
@@ -146,7 +146,7 @@ class NotificationViewModel @Inject constructor(
                         if (newUserList.isNotEmpty()) {
                             changeItem = NotificationEmojiModel(
                                 emoji = emoji,
-                                userList = newUserList.toImmutableList()
+                                userList = newUserList.toImmutableList(),
                             )
                         }
                     }
@@ -156,8 +156,8 @@ class NotificationViewModel @Inject constructor(
                         newEmojiList.add(
                             NotificationEmojiModel(
                                 emoji = emoji,
-                                userList = persistentListOf(userId)
-                            )
+                                userList = persistentListOf(userId),
+                            ),
                         )
                     } else {
                         // forEach 안에서 할 경우 Exeption 발생

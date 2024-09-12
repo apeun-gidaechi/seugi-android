@@ -1,10 +1,8 @@
 package com.seugi.notification.model
 
-import androidx.compose.ui.util.fastForEach
 import com.seugi.data.notification.model.NotificationModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 
 data class NotificationUiState(
     val isRefresh: Boolean = false,
