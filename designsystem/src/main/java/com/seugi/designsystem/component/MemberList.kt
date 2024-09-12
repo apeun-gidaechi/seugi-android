@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
@@ -31,7 +32,7 @@ import com.seugi.designsystem.animation.AlphaIndication
 import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
-fun SeugiMemberList(userName: String, userProfile: String?, isCrown: Boolean = false, onClick: () -> Unit) {
+fun SeugiMemberList(userName: String, userProfile: String?, isCrown: Boolean = false, onClick: () -> Unit, crownColor: Color = SeugiTheme.colors.black) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -66,23 +67,22 @@ fun SeugiMemberList(userName: String, userProfile: String?, isCrown: Boolean = f
                 SeugiImage(
                     modifier = Modifier.size(24.dp),
                     resId = R.drawable.ic_crown_fill,
-                    colorFilter = ColorFilter.tint(SeugiTheme.colors.yellow100),
+                    colorFilter = ColorFilter.tint(color = crownColor),
                 )
             }
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(
+                modifier = Modifier
+                    .size(24.dp),
+                painter = painterResource(R.drawable.ic_detail_vertical_line),
+                contentDescription = "",
+            )
         }
-        Spacer(modifier = Modifier.weight(1f))
-        Icon(
-            modifier = Modifier
-                .padding(end = 16.dp)
-                .size(24.dp),
-            painter = painterResource(R.drawable.ic_detail_vertical_line),
-            contentDescription = "",
-        )
     }
 }
 
 @Composable
-fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile: String?, isCrown: Boolean = false, checked: Boolean = false, onCheckedChangeListener: (Boolean) -> Unit = {}) {
+fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile: String?, isCrown: Boolean = false, checked: Boolean = false, onCheckedChangeListener: (Boolean) -> Unit = {}, crownColor: Color = SeugiTheme.colors.black) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -119,7 +119,7 @@ fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile
                 SeugiImage(
                     modifier = Modifier.size(24.dp),
                     resId = R.drawable.ic_crown_fill,
-                    colorFilter = ColorFilter.tint(SeugiTheme.colors.orange500),
+                    colorFilter = ColorFilter.tint(color = crownColor),
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -171,7 +171,7 @@ fun SeugiMemberList(text: String, onClick: () -> Unit) {
 }
 
 @Composable
-fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile: String?, isCrown: Boolean = false, content: @Composable () -> Unit = {}) {
+fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile: String?, isCrown: Boolean = false, content: @Composable () -> Unit = {}, crownColor: Color = SeugiTheme.colors.black) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -200,7 +200,7 @@ fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile
                 SeugiImage(
                     modifier = Modifier.size(24.dp),
                     resId = R.drawable.ic_crown_fill,
-                    colorFilter = ColorFilter.tint(SeugiTheme.colors.orange500),
+                    colorFilter = ColorFilter.tint(color = crownColor),
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -223,6 +223,7 @@ private fun PreviewSeugiMemberList() {
                 isCrown = true,
                 onClick = {
                 },
+                crownColor = SeugiTheme.colors.yellow500
             )
             SeugiMemberList(
                 userName = "노영재",
@@ -232,6 +233,7 @@ private fun PreviewSeugiMemberList() {
                 onCheckedChangeListener = {
                     checked = it
                 },
+                crownColor = SeugiTheme.colors.orange500
             )
             SeugiMemberList(
                 text = "멤버 초대하기",
