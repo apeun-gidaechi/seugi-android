@@ -35,6 +35,7 @@ import androidx.compose.ui.util.fastForEachIndexed
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.data.core.model.ProfileModel
+import com.seugi.data.core.model.WorkspacePermissionModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiMemberList
@@ -107,6 +108,9 @@ fun WorkspaceMemberScreen(
         )
     }
 
+    val tabItems: ImmutableList<String> = persistentListOf("선생님", "학생")
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -146,9 +150,7 @@ fun WorkspaceMemberScreen(
                     .height(48.dp)
                     .padding(horizontal = 20.dp),
             ) {
-                val tabItems: ImmutableList<String> = persistentListOf("선생님", "학생")
                 val itemWidth = maxWidth / tabItems.size
-                var selectedTabIndex by remember { mutableIntStateOf(0) }
                 SeugiSegmentedButtonLayout(
                     modifier = Modifier
                         .height(48.dp)
@@ -188,7 +190,15 @@ fun WorkspaceMemberScreen(
                     .background(SeugiTheme.colors.white)
                     .padding(horizontal = 4.dp),
             ) {
-                items(state.member) { user ->
+                val student = state.member.filter { it ->
+                    if (selectedTabIndex == 1) it.permission == WorkspacePermissionModel.STUDENT
+                    else it.permission != WorkspacePermissionModel.STUDENT
+                }
+
+                items(student) { user ->
+                    if (user.permission == WorkspacePermissionModel.ADMIN){
+                        Log.d("TAG", "${user.permission == WorkspacePermissionModel.ADMIN}: ")
+                    }
                     SeugiMemberList(
                         userName = user.member.name,
                         userProfile = user.member.picture.ifEmpty { null },
@@ -196,6 +206,12 @@ fun WorkspaceMemberScreen(
                             selectedMember = user
                             isShowBottomSheet = true
                         },
+                        isCrown = user.permission == WorkspacePermissionModel.ADMIN,
+                        crownColor = when (user.permission) {
+                            WorkspacePermissionModel.ADMIN -> SeugiTheme.colors.orange500
+                            WorkspacePermissionModel.MIDDLE_ADMIN -> SeugiTheme.colors.yellow500
+                            else -> SeugiTheme.colors.black
+                        }
                     )
                 }
             }
