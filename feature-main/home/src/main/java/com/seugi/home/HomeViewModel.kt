@@ -17,6 +17,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import java.time.LocalTime
 import javax.inject.Inject
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
@@ -229,7 +230,7 @@ class HomeViewModel @Inject constructor(
         delay(1000)
         _state.update {
             it.copy(
-                catSeugiState = CommonUiState.NotFound,
+                catSeugiState = CommonUiState.Success(persistentListOf()),
             )
         }
     }

@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 data class ChatSeugiUiState(
+    val isLoading: Boolean = false,
     val chatMessage: ImmutableList<ChatData> = persistentListOf(),
 )
 

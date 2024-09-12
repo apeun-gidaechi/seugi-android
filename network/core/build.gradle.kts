@@ -16,6 +16,7 @@ android {
     defaultConfig {
         buildConfigField("String", "BASE_URL", "${properties["BASE_URL"]}")
         buildConfigField("String", "WS_URL", "${properties["WS_URL"]}")
+        buildConfigField("String", "AI_URL", "${properties["AI_URL"]}")
 
         consumerProguardFiles("consumer-rules.pro")
     }
