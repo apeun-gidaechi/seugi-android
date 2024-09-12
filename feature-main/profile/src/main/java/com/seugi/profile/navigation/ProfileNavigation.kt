@@ -15,12 +15,14 @@ fun NavGraphBuilder.profileScreen(
     workspaceId: String,
     myProfile: ProfileModel,
     showSnackbar: (text: String) -> Unit,
+    changeProfileData: (ProfileModel) -> Unit,
     navigateToSetting: () -> Unit) {
     composable(PROFILE_ROUTE) {
         ProfileScreen(
             workspaceId = workspaceId,
             myProfile = myProfile,
             showSnackbar = showSnackbar,
+            changeProfileData = changeProfileData,
             navigateToSetting = navigateToSetting,
         )
     }

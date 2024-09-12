@@ -28,37 +28,9 @@ class ProfileViewModel @Inject constructor(
     private val _sideEffect = Channel<ProfileSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
 
-    private val _state = MutableStateFlow(ProfileUiState())
-    val state = _state.asStateFlow()
+    fun updateState(profile: ProfileModel) = viewModelScope.launch(dispatcher) {
 
-    fun load(profile: ProfileModel) = viewModelScope.launch {
-        _state.update {
-            it.copy(
-                profileInfo = profile,
-            )
-        }
-    }
-
-    fun updateState(target: String, text: String) = viewModelScope.launch(dispatcher) {
-        val info = _state.value.profileInfo
-        with(info) {
-            _state.update {
-                it.copy(
-                    profileInfo = info.copy(
-                        status = if (target == "status") text else status,
-                        member = member,
-                        workspaceId = workspaceId,
-                        nick = if (target == "nick") text else nick,
-                        spot = if (target == "spot") text else spot,
-                        belong = if (target == "belong") text else belong,
-                        phone = if (target == "phone") text else phone,
-                        wire = if (target == "wire") text else wire,
-                        location = location,
-                    ),
-                )
-            }
-        }
-        with(_state.value.profileInfo) {
+        with(profile) {
             profileRepository.patchProfile(
                 workspaceId = workspaceId,
                 nick = nick,
