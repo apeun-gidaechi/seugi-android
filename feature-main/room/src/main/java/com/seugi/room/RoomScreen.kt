@@ -1,8 +1,10 @@
 package com.seugi.room
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -69,6 +71,9 @@ internal fun RoomScreen(
     }
 
     Scaffold(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(SeugiTheme.colors.white),
         topBar = {
             SeugiTopBar(
                 title = {
@@ -116,6 +121,8 @@ internal fun RoomScreen(
     ) {
         LazyColumn(
             modifier = Modifier
+                .fillMaxSize()
+                .background(SeugiTheme.colors.white)
                 .padding(it),
         ) {
             items(state.chatItems) { item ->

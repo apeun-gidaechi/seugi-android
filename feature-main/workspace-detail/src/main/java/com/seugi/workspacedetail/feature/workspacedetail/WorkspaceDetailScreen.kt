@@ -79,39 +79,88 @@ fun WorkspaceDetailScreen(
         }
     }
 
-    SeugiTheme {
-        if (showDialog) {
-            Dialog(onDismissRequest = { showDialog = false }) {
-                Box(
-                    modifier = Modifier
-                        .background(
-                            color = Color.White,
-                            shape = RoundedCornerShape(12.dp),
-                        ),
-                ) {
-                    Column {
-                        Column(
-                            modifier = Modifier
-                                .padding(16.dp),
-                        ) {
+
+    if (showDialog) {
+        Dialog(onDismissRequest = { showDialog = false }) {
+            Box(
+                modifier = Modifier
+                    .background(
+                        color = Color.White,
+                        shape = RoundedCornerShape(12.dp),
+                    ),
+            ) {
+                Column {
+                    Column(
+                        modifier = Modifier
+                            .padding(16.dp),
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(bottom = 4.dp),
+                            text = "가입된 학교",
+                            style = SeugiTheme.typography.body1,
+                            color = SeugiTheme.colors.gray600,
+                        )
+                        LazyColumn {
+                            itemsIndexed(state.myWorkspace) { index, item ->
+                                Row {
+                                    Row(
+                                        modifier = Modifier
+                                            .bounceClick(onClick = {
+                                                viewModel.changeNowWorkspace(
+                                                    workspaceId = item.workspaceId,
+                                                    changeWorkspaceId = changeWorkspaceId,
+                                                )
+                                                showDialog = false
+                                            })
+                                            .fillMaxWidth()
+                                            .height(56.dp)
+                                            .background(
+                                                color = SeugiTheme.colors.gray100,
+                                                shape = RoundedCornerShape(8.dp),
+                                            ),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                    ) {
+                                        Text(
+                                            modifier = Modifier.padding(start = 16.dp),
+                                            // null일 수가 없어서 넣었습니다.
+                                            text = item.workspaceName,
+                                            style = SeugiTheme.typography.subtitle2,
+                                        )
+                                        Spacer(modifier = Modifier.weight(1f))
+                                        Image(
+                                            modifier = Modifier
+                                                .padding(end = 20.dp)
+                                                .size(24.dp),
+                                            painter = painterResource(id = R.drawable.ic_expand_right_line),
+                                            contentDescription = "설정 톱니바퀴",
+                                            colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
+                                            contentScale = ContentScale.Crop,
+                                        )
+                                    }
+                                }
+                                // 마지막 아이템이 아닌 경우에만 Spacer를 추가
+                                if (index < state.myWorkspace.size) {
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                }
+                            }
+                        }
+
+                        if (state.waitWorkspace.size != 0) {
+                            Spacer(modifier = Modifier.height(16.dp))
+
                             Text(
                                 modifier = Modifier.padding(bottom = 4.dp),
-                                text = "가입된 학교",
+                                text = "가입 대기 중",
                                 style = SeugiTheme.typography.body1,
                                 color = SeugiTheme.colors.gray600,
                             )
+
                             LazyColumn {
-                                itemsIndexed(state.myWorkspace) { index, item ->
+                                itemsIndexed(state.waitWorkspace) { index, item ->
                                     Row {
                                         Row(
                                             modifier = Modifier
-                                                .bounceClick(onClick = {
-                                                    viewModel.changeNowWorkspace(
-                                                        workspaceId = item.workspaceId,
-                                                        changeWorkspaceId = changeWorkspaceId,
-                                                    )
-                                                    showDialog = false
-                                                })
+                                                .bounceClick(onClick = {})
                                                 .fillMaxWidth()
                                                 .height(56.dp)
                                                 .background(
@@ -122,7 +171,6 @@ fun WorkspaceDetailScreen(
                                         ) {
                                             Text(
                                                 modifier = Modifier.padding(start = 16.dp),
-                                                // null일 수가 없어서 넣었습니다.
                                                 text = item.workspaceName,
                                                 style = SeugiTheme.typography.subtitle2,
                                             )
@@ -139,294 +187,246 @@ fun WorkspaceDetailScreen(
                                         }
                                     }
                                     // 마지막 아이템이 아닌 경우에만 Spacer를 추가
-                                    if (index < state.myWorkspace.size) {
+                                    if (index < state.waitWorkspace.size) {
                                         Spacer(modifier = Modifier.height(4.dp))
                                     }
                                 }
                             }
-
-                            if (state.waitWorkspace.size != 0) {
-                                Spacer(modifier = Modifier.height(16.dp))
-
-                                Text(
-                                    modifier = Modifier.padding(bottom = 4.dp),
-                                    text = "가입 대기 중",
-                                    style = SeugiTheme.typography.body1,
-                                    color = SeugiTheme.colors.gray600,
-                                )
-
-                                LazyColumn {
-                                    itemsIndexed(state.waitWorkspace) { index, item ->
-                                        Row {
-                                            Row(
-                                                modifier = Modifier
-                                                    .bounceClick(onClick = {})
-                                                    .fillMaxWidth()
-                                                    .height(56.dp)
-                                                    .background(
-                                                        color = SeugiTheme.colors.gray100,
-                                                        shape = RoundedCornerShape(8.dp),
-                                                    ),
-                                                verticalAlignment = Alignment.CenterVertically,
-                                            ) {
-                                                Text(
-                                                    modifier = Modifier.padding(start = 16.dp),
-                                                    text = item.workspaceName,
-                                                    style = SeugiTheme.typography.subtitle2,
-                                                )
-                                                Spacer(modifier = Modifier.weight(1f))
-                                                Image(
-                                                    modifier = Modifier
-                                                        .padding(end = 20.dp)
-                                                        .size(24.dp),
-                                                    painter = painterResource(id = R.drawable.ic_expand_right_line),
-                                                    contentDescription = "설정 톱니바퀴",
-                                                    colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
-                                                    contentScale = ContentScale.Crop,
-                                                )
-                                            }
-                                        }
-                                        // 마지막 아이템이 아닌 경우에만 Spacer를 추가
-                                        if (index < state.waitWorkspace.size) {
-                                            Spacer(modifier = Modifier.height(4.dp))
-                                        }
-                                    }
-                                }
-                            }
-                            Row(
-                                modifier = Modifier.padding(16.dp),
-                                horizontalArrangement = Arrangement.End,
-                            ) {
-                                Spacer(modifier = Modifier.weight(1f))
-                                Text(
-                                    modifier = Modifier
-                                        .padding(vertical = 9.dp, horizontal = 12.dp)
-                                        .clickable(
-                                            interactionSource = NoInteractionSource(),
-                                            indication = null,
-                                        ) {
-                                            navigateToCreateWorkspace()
-                                        },
-                                    text = "새 학교 만들기",
-                                    style = SeugiTheme.typography.body2,
-                                    color = SeugiTheme.colors.gray600,
-                                )
-                                Text(
-                                    modifier = Modifier
-                                        .padding(vertical = 9.dp, horizontal = 12.dp)
-                                        .clickable(
-                                            interactionSource = NoInteractionSource(),
-                                            indication = null,
-                                        ) {
-                                            navigateToJoinWorkspace()
-                                        },
-                                    text = "기존 학교 가입",
-                                    style = SeugiTheme.typography.body2,
-                                    color = SeugiTheme.colors.black,
-                                )
-                            }
+                        }
+                        Row(
+                            modifier = Modifier.padding(16.dp),
+                            horizontalArrangement = Arrangement.End,
+                        ) {
+                            Spacer(modifier = Modifier.weight(1f))
+                            Text(
+                                modifier = Modifier
+                                    .padding(vertical = 9.dp, horizontal = 12.dp)
+                                    .clickable(
+                                        interactionSource = NoInteractionSource(),
+                                        indication = null,
+                                    ) {
+                                        navigateToCreateWorkspace()
+                                    },
+                                text = "새 학교 만들기",
+                                style = SeugiTheme.typography.body2,
+                                color = SeugiTheme.colors.gray600,
+                            )
+                            Text(
+                                modifier = Modifier
+                                    .padding(vertical = 9.dp, horizontal = 12.dp)
+                                    .clickable(
+                                        interactionSource = NoInteractionSource(),
+                                        indication = null,
+                                    ) {
+                                        navigateToJoinWorkspace()
+                                    },
+                                text = "기존 학교 가입",
+                                style = SeugiTheme.typography.body2,
+                                color = SeugiTheme.colors.black,
+                            )
                         }
                     }
                 }
             }
         }
+    }
 
-        if (state.loading) {
-            Dialog(
-                onDismissRequest = { viewModel.setLoading(false) },
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .size(100.dp)
-                        .background(SeugiTheme.colors.white, shape = RoundedCornerShape(8.dp)),
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-        }
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            topBar = {
-                SeugiTopBar(
-                    title = {
-                        Text(
-                            text = "내 학교",
-                            style = SeugiTheme.typography.subtitle1,
-                        )
-                    },
-                    onNavigationIconClick = {
-                        popBackStack()
-                    },
-                )
-            },
+    if (state.loading) {
+        Dialog(
+            onDismissRequest = { viewModel.setLoading(false) },
         ) {
-            Column(
+            Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .padding(it)
-                    .fillMaxSize(),
+                    .size(100.dp)
+                    .background(SeugiTheme.colors.white, shape = RoundedCornerShape(8.dp)),
             ) {
-                Row(
-                    modifier = Modifier
-                        .padding(top = 12.dp, bottom = 24.dp)
-                        .fillMaxWidth()
-                        .height(60.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    SeugiRoundedCircleImage(
-                        size = Size.ExtraSmall,
-                        image = state.nowWorkspace.workspaceImageUrl,
-                        onClick = {},
-                        modifier = Modifier.padding(start = 20.dp),
+                CircularProgressIndicator()
+            }
+        }
+    }
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            SeugiTopBar(
+                title = {
+                    Text(
+                        text = "내 학교",
+                        style = SeugiTheme.typography.subtitle1,
                     )
-                    Column(
-                        modifier = Modifier
-                            .padding(start = 16.dp, end = 20.dp)
-                            .background(Color.White)
-                            .fillMaxSize(),
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .padding(start = 4.dp),
-                            text = state.nowWorkspace.workspaceName,
-                            style = SeugiTheme.typography.body1,
-                        )
-                        Spacer(modifier = Modifier.weight(1f))
-                        SeugiButton(
-                            onClick = { showDialog = true },
-                            type = ButtonType.Gray,
-                            text = "학교 전환",
-                        )
-                    }
-                }
-                SeugiDivider(
-                    type = DividerType.WIDTH,
-                    size = 8.dp,
+                },
+                onNavigationIconClick = {
+                    popBackStack()
+                },
+            )
+        },
+        containerColor = SeugiTheme.colors.white
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(it)
+                .fillMaxSize(),
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(top = 12.dp, bottom = 24.dp)
+                    .fillMaxWidth()
+                    .height(60.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                SeugiRoundedCircleImage(
+                    size = Size.ExtraSmall,
+                    image = state.nowWorkspace.workspaceImageUrl,
+                    onClick = {},
+                    modifier = Modifier.padding(start = 20.dp),
                 )
-                Row(
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(40.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .padding(start = 16.dp)
-                            .size(28.dp),
-                        painter = painterResource(id = R.drawable.ic_setting_fill),
-                        contentDescription = "설정 톱니바퀴",
-                        colorFilter = ColorFilter.tint(Color.Black),
-                        contentScale = ContentScale.Crop,
-                    )
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    verticalAlignment = Alignment.CenterVertically,
+                        .padding(start = 16.dp, end = 20.dp)
+                        .background(Color.White)
+                        .fillMaxSize(),
                 ) {
                     Text(
-                        text = "일반",
-                        style = SeugiTheme.typography.subtitle2,
-                        modifier = Modifier.padding(start = 20.dp),
+                        modifier = Modifier
+                            .padding(start = 4.dp),
+                        text = state.nowWorkspace.workspaceName,
+                        style = SeugiTheme.typography.body1,
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    Image(
-                        modifier = Modifier
-                            .padding(end = 20.dp)
-                            .size(24.dp),
-                        painter = painterResource(id = R.drawable.ic_expand_right_line),
-                        contentDescription = "설정 톱니바퀴",
-                        colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
-                        contentScale = ContentScale.Crop,
+                    SeugiButton(
+                        onClick = { showDialog = true },
+                        type = ButtonType.Gray,
+                        text = "학교 전환",
                     )
                 }
-                Row(
+            }
+            SeugiDivider(
+                type = DividerType.WIDTH,
+                size = 8.dp,
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Image(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = "알림 설정",
-                        style = SeugiTheme.typography.subtitle2,
-                        modifier = Modifier.padding(start = 20.dp),
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Image(
-                        modifier = Modifier
-                            .padding(end = 20.dp)
-                            .size(24.dp),
-                        painter = painterResource(id = R.drawable.ic_expand_right_line),
-                        contentDescription = "설정 톱니바퀴",
-                        colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
-                        contentScale = ContentScale.Crop,
-                    )
-                }
-                Spacer(modifier = Modifier.height(24.dp))
-                Row(
+                        .padding(start = 16.dp)
+                        .size(28.dp),
+                    painter = painterResource(id = R.drawable.ic_setting_fill),
+                    contentDescription = "설정 톱니바퀴",
+                    colorFilter = ColorFilter.tint(Color.Black),
+                    contentScale = ContentScale.Crop,
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "일반",
+                    style = SeugiTheme.typography.subtitle2,
+                    modifier = Modifier.padding(start = 20.dp),
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Image(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(40.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .padding(start = 16.dp)
-                            .size(28.dp),
-                        painter = painterResource(id = R.drawable.ic_person_fill),
-                        contentDescription = "설정 톱니바퀴",
-                        colorFilter = ColorFilter.tint(Color.Black),
-                        contentScale = ContentScale.Crop,
-                    )
-                }
-                Row(
+                        .padding(end = 20.dp)
+                        .size(24.dp),
+                    painter = painterResource(id = R.drawable.ic_expand_right_line),
+                    contentDescription = "설정 톱니바퀴",
+                    colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
+                    contentScale = ContentScale.Crop,
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "알림 설정",
+                    style = SeugiTheme.typography.subtitle2,
+                    modifier = Modifier.padding(start = 20.dp),
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Image(
                     modifier = Modifier
-                        .clickable {
-                            navigateToWorkspaceMember(state.nowWorkspace.workspaceId)
-                        }
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = "멤버",
-                        style = SeugiTheme.typography.subtitle2,
-                        modifier = Modifier.padding(start = 20.dp),
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Image(
-                        modifier = Modifier
-                            .padding(end = 20.dp)
-                            .size(24.dp),
-                        painter = painterResource(id = R.drawable.ic_expand_right_line),
-                        contentDescription = "설정 톱니바퀴",
-                        colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
-                        contentScale = ContentScale.Crop,
-                    )
-                }
-                Row(
+                        .padding(end = 20.dp)
+                        .size(24.dp),
+                    painter = painterResource(id = R.drawable.ic_expand_right_line),
+                    contentDescription = "설정 톱니바퀴",
+                    colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
+                    contentScale = ContentScale.Crop,
+                )
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Image(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = "멤버 초대",
-                        style = SeugiTheme.typography.subtitle2,
-                        modifier = Modifier.padding(start = 20.dp),
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Image(
-                        modifier = Modifier
-                            .padding(end = 20.dp)
-                            .size(24.dp),
-                        painter = painterResource(id = R.drawable.ic_expand_right_line),
-                        contentDescription = "설정 톱니바퀴",
-                        colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
-                        contentScale = ContentScale.Crop,
-                    )
-                }
+                        .padding(start = 16.dp)
+                        .size(28.dp),
+                    painter = painterResource(id = R.drawable.ic_person_fill),
+                    contentDescription = "설정 톱니바퀴",
+                    colorFilter = ColorFilter.tint(Color.Black),
+                    contentScale = ContentScale.Crop,
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .clickable {
+                        navigateToWorkspaceMember(state.nowWorkspace.workspaceId)
+                    }
+                    .fillMaxWidth()
+                    .height(56.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "멤버",
+                    style = SeugiTheme.typography.subtitle2,
+                    modifier = Modifier.padding(start = 20.dp),
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Image(
+                    modifier = Modifier
+                        .padding(end = 20.dp)
+                        .size(24.dp),
+                    painter = painterResource(id = R.drawable.ic_expand_right_line),
+                    contentDescription = "설정 톱니바퀴",
+                    colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
+                    contentScale = ContentScale.Crop,
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "멤버 초대",
+                    style = SeugiTheme.typography.subtitle2,
+                    modifier = Modifier.padding(start = 20.dp),
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Image(
+                    modifier = Modifier
+                        .padding(end = 20.dp)
+                        .size(24.dp),
+                    painter = painterResource(id = R.drawable.ic_expand_right_line),
+                    contentDescription = "설정 톱니바퀴",
+                    colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
+                    contentScale = ContentScale.Crop,
+                )
             }
         }
     }

@@ -2,10 +2,12 @@ package com.seugi.roomcreate.screen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -41,6 +43,9 @@ internal fun SecondScreen(placeholder: String, onNameSuccess: (String) -> Unit, 
         onBack = popBackStack,
     )
     Scaffold(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(SeugiTheme.colors.white),
         topBar = {
             SeugiTopBar(
                 title = {},
@@ -73,10 +78,13 @@ internal fun SecondScreen(placeholder: String, onNameSuccess: (String) -> Unit, 
     ) { paddingValue ->
         Column(
             modifier = Modifier
+
                 .padding(paddingValue)
                 .padding(
                     horizontal = 20.dp,
-                ),
+                )
+                .fillMaxSize()
+                .background(SeugiTheme.colors.white),
         ) {
             Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
                 SeugiChatRoom(
