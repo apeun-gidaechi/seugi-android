@@ -1,8 +1,6 @@
 package com.seugi.notification
 
 import android.app.Activity
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
@@ -31,11 +29,11 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -72,7 +70,6 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.notification.model.NotificationEmojiState
 import com.seugi.notification.model.NotificationSideEffect
 import com.seugi.ui.CollectAsSideEffect
 import com.seugi.ui.changeNavigationColor
@@ -181,15 +178,15 @@ internal fun NotificationScreen(
             sheetState = sheetState,
             onSelectEmoji = {
                 viewModel.pressEmoji(
-                    id = selectAddEmojiNotificationItem?.id?: 0,
+                    id = selectAddEmojiNotificationItem?.id ?: 0,
                     userId = userId.toLong(),
-                    emoji = it
+                    emoji = it,
                 )
             },
             onDismissRequest = {
                 isModalBottomSheetVisible = false
                 selectNotificationItem = null
-            }
+            },
         )
     }
 
@@ -254,7 +251,7 @@ internal fun NotificationScreen(
                 ) {
                     items(
                         items = state.notices,
-                        key = { it.id }
+                        key = { it.id },
                     ) {
                         Spacer(modifier = Modifier.height(8.dp))
                         NotificationCard(
@@ -299,12 +296,7 @@ internal fun NotificationScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SelectBottomSheet(
-    isVisible: Boolean,
-    sheetState: SheetState,
-    onSelectEmoji: (emoji: String) -> Unit,
-    onDismissRequest: () -> Unit,
-) {
+fun SelectBottomSheet(isVisible: Boolean, sheetState: SheetState, onSelectEmoji: (emoji: String) -> Unit, onDismissRequest: () -> Unit) {
     var searchText by remember { mutableStateOf("") }
     ModalBottomSheet(
         sheetState = sheetState,
@@ -505,13 +497,13 @@ internal fun NotificationCard(
                         modifier = Modifier
                             .size(36.dp)
                             .bounceClick(onClickAddEmoji),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Image(
                             modifier = Modifier.size(28.dp),
                             painter = painterResource(id = R.drawable.ic_add_emoji),
                             contentDescription = "이모지 추가하기",
-                            colorFilter = ColorFilter.tint(SeugiTheme.colors.gray600)
+                            colorFilter = ColorFilter.tint(SeugiTheme.colors.gray600),
                         )
                     }
                     Spacer(modifier = Modifier.width(10.dp))
