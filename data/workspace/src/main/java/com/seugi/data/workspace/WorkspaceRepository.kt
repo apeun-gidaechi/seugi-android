@@ -5,7 +5,6 @@ import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.workspace.model.CheckWorkspaceModel
 import com.seugi.data.workspace.model.WaitWorkspaceModel
 import com.seugi.data.workspace.model.WorkspaceModel
-import com.seugi.data.core.model.WorkspacePermissionModel
 import kotlinx.coroutines.flow.Flow
 
 interface WorkspaceRepository {

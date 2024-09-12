@@ -13,5 +13,5 @@ data class ProfileModel(
     val permission: WorkspacePermissionModel,
     val schGrade: Int,
     val schClass: Int,
-    val schNumber: Int
+    val schNumber: Int,
 )

@@ -20,5 +20,5 @@ fun ProfileResponse.toModel() = ProfileModel(
     permission = permission.toModel(),
     schGrade = schGrade,
     schClass = schClass,
-    schNumber = schNumber
+    schNumber = schNumber,
 )

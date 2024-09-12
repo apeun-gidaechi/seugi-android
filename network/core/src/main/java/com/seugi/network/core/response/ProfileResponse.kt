@@ -13,5 +13,5 @@ data class ProfileResponse(
     val permission: WorkspacePermissionResponse,
     val schGrade: Int,
     val schClass: Int,
-    val schNumber: Int
+    val schNumber: Int,
 )
