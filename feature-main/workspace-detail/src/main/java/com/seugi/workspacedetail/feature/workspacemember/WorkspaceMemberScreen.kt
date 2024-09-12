@@ -36,7 +36,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.data.core.model.WorkspacePermissionModel
 import com.seugi.data.core.model.isAdmin
-import com.seugi.data.core.model.isTeacher
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiMemberList
