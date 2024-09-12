@@ -40,6 +40,8 @@ class HomeViewModel @Inject constructor(
     fun load() {
         viewModelScope.launch(dispatcher) {
             val localWorkspaceId = workspaceRepository.getWorkspaceId()
+            // 중복 로드 방지
+            if (localWorkspaceId.isNotEmpty() && localWorkspaceId == state.value.nowWorkspaceId) return@launch
             workspaceRepository.getMyWorkspaces().collect { response ->
                 when (response) {
                     is Result.Success -> {
