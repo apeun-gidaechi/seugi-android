@@ -20,7 +20,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,7 +32,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.data.core.model.ProfileModel
 import com.seugi.designsystem.R.drawable
 import com.seugi.designsystem.animation.bounceClick
@@ -46,13 +44,20 @@ import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiTextField
 import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.profile.model.ProfileSideEffect
+import com.seugi.ui.CollectAsSideEffect
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), workspaceId: String, myProfile: ProfileModel, navigateToSetting: () -> Unit) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
+internal fun ProfileScreen(
+    viewModel: ProfileViewModel = hiltViewModel(),
+    workspaceId: String,
+    myProfile: ProfileModel,
+    showSnackbar: (text: String) -> Unit,
+    changeProfileData: (ProfileModel) -> Unit,
+    navigateToSetting: () -> Unit,
+) {
     var isShowDialog by remember { mutableStateOf(false) }
     var editTextTarget by remember { mutableStateOf("") }
     var editText by remember { mutableStateOf("") }
@@ -66,10 +71,12 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
         }
     }
 
-    LaunchedEffect(key1 = true) {
-        viewModel.load(
-            profile = myProfile,
-        )
+    viewModel.sideEffect.CollectAsSideEffect {
+        when (it) {
+            is ProfileSideEffect.FailedChange -> {
+                showSnackbar(it.throwable.message ?: "")
+            }
+        }
     }
 
     if (isShowDialog) {
@@ -115,10 +122,23 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
                 SeugiFullWidthButton(
                     modifier = Modifier.padding(horizontal = 20.dp),
                     onClick = {
-                        viewModel.updateState(
-                            target = editTextTarget,
-                            text = editText,
-                        )
+                        val changeData = with(myProfile) {
+                            myProfile.copy(
+                                status = if (editTextTarget == "status") editText else status,
+                                member = member,
+                                workspaceId = workspaceId,
+                                nick = if (editTextTarget == "nick") editText else nick,
+                                spot = if (editTextTarget == "spot") editText else spot,
+                                belong = if (editTextTarget == "belong") editText else belong,
+                                phone = if (editTextTarget == "phone") editText else phone,
+                                wire = if (editTextTarget == "wire") editText else wire,
+                                location = location,
+                            )
+                        }
+                        viewModel.updateState(changeData)
+
+                        changeProfileData(changeData)
+
                         editText = ""
                         editTextTarget = ""
                         dialogDismissRequest()
@@ -153,7 +173,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
             SeugiAvatar(type = AvatarType.Medium)
             Spacer(modifier = Modifier.width(10.dp))
             Text(
-                text = state.profileInfo.member.name,
+                text = myProfile.member.name,
                 style = SeugiTheme.typography.subtitle2,
                 color = SeugiTheme.colors.black,
             )
@@ -178,7 +198,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
         Spacer(modifier = Modifier.height(8.dp))
         ProfileCard(
             title = "상태메세지",
-            content = state.profileInfo.status,
+            content = myProfile.status,
             onClickEdit = {
                 editTextTarget = "status"
                 isShowDialog = true
@@ -193,7 +213,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
         Spacer(modifier = Modifier.height(8.dp))
         ProfileCard(
             title = "직위",
-            content = state.profileInfo.spot,
+            content = myProfile.spot,
             onClickEdit = {
                 editTextTarget = "spot"
                 isShowDialog = true
@@ -208,7 +228,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
         Spacer(modifier = Modifier.height(8.dp))
         ProfileCard(
             title = "소속",
-            content = state.profileInfo.belong,
+            content = myProfile.belong,
             onClickEdit = {
                 editTextTarget = "belong"
                 isShowDialog = true
@@ -223,7 +243,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
         Spacer(modifier = Modifier.height(8.dp))
         ProfileCard(
             title = "휴대전화번호",
-            content = state.profileInfo.phone,
+            content = myProfile.phone,
             onClickEdit = {
                 editTextTarget = "phone"
                 isShowDialog = true
@@ -238,7 +258,7 @@ internal fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel(), worksp
         Spacer(modifier = Modifier.height(8.dp))
         ProfileCard(
             title = "유선전화번호",
-            content = state.profileInfo.wire,
+            content = myProfile.wire,
             onClickEdit = {
                 editTextTarget = "wire"
                 isShowDialog = true

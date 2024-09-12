@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
+import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.profile.ProfileRepository
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.main.model.MainUiState
@@ -93,6 +94,14 @@ class MainViewModel @Inject constructor(
                     else -> {}
                 }
             }
+        }
+    }
+
+    fun setProfileModel(profileModel: ProfileModel) = viewModelScope.launch(dispatcher) {
+        _state.update {
+            it.copy(
+                profile = profileModel,
+            )
         }
     }
 }

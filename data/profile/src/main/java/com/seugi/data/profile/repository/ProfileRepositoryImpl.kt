@@ -27,4 +27,20 @@ class ProfileRepositoryImpl @Inject constructor(
             .flowOn(dispatcher)
             .asResult()
     }
+
+    override suspend fun patchProfile(workspaceId: String, nick: String, status: String, spot: String, belong: String, phone: String, wire: String, location: String): Flow<Result<Boolean>> = flow {
+        val response = dataSource.patchProfile(
+            workspaceId = workspaceId,
+            nick = nick,
+            status = status,
+            spot = spot,
+            belong = belong,
+            phone = phone,
+            wire = wire,
+            location = location,
+        ).safeResponse()
+        emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
 }
