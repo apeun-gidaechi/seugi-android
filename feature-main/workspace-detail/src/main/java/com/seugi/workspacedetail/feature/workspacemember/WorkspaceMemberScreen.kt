@@ -199,9 +199,6 @@ fun WorkspaceMemberScreen(
                 }
 
                 items(student) { user ->
-                    if (user.permission == WorkspacePermissionModel.ADMIN) {
-                        Log.d("TAG", "${user.permission == WorkspacePermissionModel.ADMIN}: ")
-                    }
                     SeugiMemberList(
                         userName = user.member.name,
                         userProfile = user.member.picture.ifEmpty { null },
