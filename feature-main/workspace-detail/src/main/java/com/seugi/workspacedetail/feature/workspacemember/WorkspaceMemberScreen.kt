@@ -203,16 +203,11 @@ fun WorkspaceMemberScreen(
                     SeugiMemberList(
                         userName = user.member.name,
                         userProfile = user.member.picture.ifEmpty { null },
-<<<<<<< HEAD
                         onClick = {
                             selectedMember = user
                             isShowBottomSheet = true
                         },
-                        isCrown = user.permission == WorkspacePermissionModel.ADMIN,
-=======
-                        onClick = {},
                         isCrown = user.permission.isAdmin(),
->>>>>>> c03b3535 (feat: Use isAdmin())
                         crownColor = when (user.permission) {
                             WorkspacePermissionModel.ADMIN -> SeugiTheme.colors.orange500
                             WorkspacePermissionModel.MIDDLE_ADMIN -> SeugiTheme.colors.yellow500
