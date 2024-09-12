@@ -33,13 +33,13 @@ jobs:
         WS_URL: ${{ secrets.WS_URL }}
 
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew build --parallel
 
     - name: Run spotless
       run: ./gradlew spotlessCheck
 
     - name: Assemble
-      run: ./gradlew assemble
+      run: ./gradlew assemble --parallel
 
     - name: Upload Debug APK
       uses: actions/upload-artifact@v3
