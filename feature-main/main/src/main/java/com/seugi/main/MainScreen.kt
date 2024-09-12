@@ -207,7 +207,7 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
             notificationScreen(
                 workspaceId = state.profile.workspaceId,
                 userId = state.userId,
-                permission = state.permission,
+                permission = state.profile.permission,
                 navigateToNotificationCreate = {
                     navHostController.navigateToNotificationCreate()
                 },
@@ -276,7 +276,7 @@ internal fun MainScreen(viewModel: MainViewModel = hiltViewModel(), navHostContr
             notificationEdit(
                 userId = state.userId,
                 workspaceId = state.profile.workspaceId,
-                permission = state.permission,
+                permission = state.profile.permission,
                 popBackStack = navHostController::popBackStack,
                 onNavigationVisibleChange = onNavigationVisibleChange,
             )

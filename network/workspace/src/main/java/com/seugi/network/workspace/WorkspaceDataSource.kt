@@ -5,7 +5,7 @@ import com.seugi.network.core.response.ProfileResponse
 import com.seugi.network.core.response.Response
 import com.seugi.network.workspace.response.CheckWorkspaceResponse
 import com.seugi.network.workspace.response.WaitWorkspaceResponse
-import com.seugi.network.workspace.response.WorkspacePermissionResponse
+import com.seugi.network.core.response.WorkspacePermissionResponse
 import com.seugi.network.workspace.response.WorkspaceResponse
 
 interface WorkspaceDataSource {

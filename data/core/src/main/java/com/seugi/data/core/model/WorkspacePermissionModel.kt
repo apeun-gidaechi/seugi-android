@@ -1,4 +1,4 @@
-package com.seugi.data.workspace.model
+package com.seugi.data.core.model
 
 enum class WorkspacePermissionModel {
     ADMIN,
