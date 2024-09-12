@@ -29,7 +29,6 @@ fun <T1, T2, R> combineWhenAllComplete(flow1: Flow<T1>, flow2: Flow<T2>, transfo
     emit(transform(lastValue1!!, lastValue2!!))
 }
 
-
 inline fun <reified T, R> combineWhenAllComplete(vararg flows: Flow<T>, crossinline transform: suspend (Array<T>) -> R): Flow<R> = flow {
     val lastValues = MutableList<T?>(flows.size) { null }
     val jobList = arrayListOf<Job>()
