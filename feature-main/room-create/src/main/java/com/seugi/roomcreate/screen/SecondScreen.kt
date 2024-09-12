@@ -78,7 +78,6 @@ internal fun SecondScreen(placeholder: String, onNameSuccess: (String) -> Unit, 
     ) { paddingValue ->
         Column(
             modifier = Modifier
-
                 .padding(paddingValue)
                 .padding(
                     horizontal = 20.dp,

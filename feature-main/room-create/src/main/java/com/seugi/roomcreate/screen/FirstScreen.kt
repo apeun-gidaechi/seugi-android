@@ -36,7 +36,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastFirst
 import androidx.compose.ui.util.fastForEach
 import com.seugi.designsystem.R
 import com.seugi.designsystem.component.SeugiIconButton
@@ -152,7 +151,7 @@ internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) 
             ) {
                 items(
                     items = state.userItem,
-                    key = { it.id }
+                    key = { it.id },
                 ) { item -> // 필터링 추가
                     Box(modifier = Modifier.height(72.dp)) {
                         SeugiMemberList(

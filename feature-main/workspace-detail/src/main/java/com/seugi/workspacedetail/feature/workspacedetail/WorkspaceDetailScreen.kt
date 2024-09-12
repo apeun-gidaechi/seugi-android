@@ -79,7 +79,6 @@ fun WorkspaceDetailScreen(
         }
     }
 
-
     if (showDialog) {
         Dialog(onDismissRequest = { showDialog = false }) {
             Box(
@@ -260,7 +259,7 @@ fun WorkspaceDetailScreen(
                 },
             )
         },
-        containerColor = SeugiTheme.colors.white
+        containerColor = SeugiTheme.colors.white,
     ) {
         Column(
             modifier = Modifier
