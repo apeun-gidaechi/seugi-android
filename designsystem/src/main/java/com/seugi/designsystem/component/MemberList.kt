@@ -82,7 +82,15 @@ fun SeugiMemberList(userName: String, userProfile: String?, isCrown: Boolean = f
 }
 
 @Composable
-fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile: String?, isCrown: Boolean = false, checked: Boolean = false, onCheckedChangeListener: (Boolean) -> Unit = {}, crownColor: Color = SeugiTheme.colors.black) {
+fun SeugiMemberList(
+    modifier: Modifier = Modifier,
+    userName: String,
+    userProfile: String?,
+    isCrown: Boolean = false,
+    checked: Boolean = false,
+    onCheckedChangeListener: (Boolean) -> Unit = {},
+    crownColor: Color = SeugiTheme.colors.black,
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -171,7 +179,14 @@ fun SeugiMemberList(text: String, onClick: () -> Unit) {
 }
 
 @Composable
-fun SeugiMemberList(modifier: Modifier = Modifier, userName: String, userProfile: String?, isCrown: Boolean = false, content: @Composable () -> Unit = {}, crownColor: Color = SeugiTheme.colors.black) {
+fun SeugiMemberList(
+    modifier: Modifier = Modifier,
+    userName: String,
+    userProfile: String?,
+    isCrown: Boolean = false,
+    content: @Composable () -> Unit = {},
+    crownColor: Color = SeugiTheme.colors.black,
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -223,7 +238,7 @@ private fun PreviewSeugiMemberList() {
                 isCrown = true,
                 onClick = {
                 },
-                crownColor = SeugiTheme.colors.yellow500
+                crownColor = SeugiTheme.colors.yellow500,
             )
             SeugiMemberList(
                 userName = "노영재",
@@ -233,7 +248,7 @@ private fun PreviewSeugiMemberList() {
                 onCheckedChangeListener = {
                     checked = it
                 },
-                crownColor = SeugiTheme.colors.orange500
+                crownColor = SeugiTheme.colors.orange500,
             )
             SeugiMemberList(
                 text = "멤버 초대하기",
