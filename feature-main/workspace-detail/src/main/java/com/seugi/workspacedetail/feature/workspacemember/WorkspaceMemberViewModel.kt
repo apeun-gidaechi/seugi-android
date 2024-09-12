@@ -1,6 +1,5 @@
 package com.seugi.workspacedetail.feature.workspacemember
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
@@ -21,7 +20,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class WorkspaceMemberViewModel @Inject constructor(
     private val workspaceRepository: WorkspaceRepository,
-    private val personalChatRepository: PersonalChatRepository
+    private val personalChatRepository: PersonalChatRepository,
 ) : ViewModel() {
 
     private val _sideEffect = Channel<WorkspaceMemberSideEffect>()
@@ -54,7 +53,7 @@ class WorkspaceMemberViewModel @Inject constructor(
             workspaceId = workspaceId,
             roomName = "",
             joinUsers = listOf(targetUserId.toInt()),
-            chatRoomImg = ""
+            chatRoomImg = "",
         ).collect {
             when (it) {
                 is Result.Success -> {

@@ -85,26 +85,25 @@ fun WorkspaceMemberScreen(
         }
     }
 
-
     if (isShowBottomSheet) {
         OtherProfileBottomSheet(
             profile = selectedMember?.member?.picture,
-            name = selectedMember?.member?.name?: "",
-            status = selectedMember?.status?: "",
-            spot = selectedMember?.spot?: "",
-            belong = selectedMember?.belong?: "",
-            phone = selectedMember?.phone?: "",
-            wire = selectedMember?.wire?: "",
-            location = selectedMember?.location?: "",
+            name = selectedMember?.member?.name ?: "",
+            status = selectedMember?.status ?: "",
+            spot = selectedMember?.spot ?: "",
+            belong = selectedMember?.belong ?: "",
+            phone = selectedMember?.phone ?: "",
+            wire = selectedMember?.wire ?: "",
+            location = selectedMember?.location ?: "",
             onClickChat = {
                 viewModel.createChatRoom(
                     workspaceId = workspaceId,
-                    targetUserId = selectedMember?.member?.id?.toLong()?: 0L
+                    targetUserId = selectedMember?.member?.id?.toLong() ?: 0L,
                 )
             },
             onDismissRequest = {
                 isShowBottomSheet = false
-            }
+            },
         )
     }
 

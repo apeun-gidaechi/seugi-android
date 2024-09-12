@@ -45,12 +45,12 @@ fun OtherProfileBottomSheet(
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
-        dragHandle = {}
+        dragHandle = {},
     ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(SeugiTheme.colors.white)
+                .background(SeugiTheme.colors.white),
         ) {
             item {
                 Spacer(modifier = Modifier.height(16.dp))
@@ -58,23 +58,23 @@ fun OtherProfileBottomSheet(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     SeugiAvatar(
                         type = AvatarType.Medium,
-                        image = profile
+                        image = profile,
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
                         text = name,
                         style = SeugiTheme.typography.subtitle2,
-                        color = SeugiTheme.colors.black
+                        color = SeugiTheme.colors.black,
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     SeugiButton(
                         onClick = onClickChat,
                         type = ButtonType.Black,
-                        text = "채팅"
+                        text = "채팅",
                     )
                 }
             }
@@ -84,7 +84,7 @@ fun OtherProfileBottomSheet(
                 SeugiDivider(
                     type = DividerType.WIDTH,
                     size = 8.dp,
-                    color = SeugiTheme.colors.gray100
+                    color = SeugiTheme.colors.gray100,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
@@ -92,42 +92,42 @@ fun OtherProfileBottomSheet(
             item {
                 ProfileCard(
                     title = "상태메세지",
-                    content = status
+                    content = status,
                 )
             }
 
             item {
                 ProfileCard(
                     title = "직위",
-                    content = spot
+                    content = spot,
                 )
             }
 
             item {
                 ProfileCard(
                     title = "소속",
-                    content = belong
+                    content = belong,
                 )
             }
 
             item {
                 ProfileCard(
                     title = "휴대전화번호",
-                    content = phone
+                    content = phone,
                 )
             }
 
             item {
                 ProfileCard(
                     title = "유선전화번호",
-                    content = wire
+                    content = wire,
                 )
             }
 
             item {
                 ProfileCard(
                     title = "근무위치",
-                    content = location
+                    content = location,
                 )
             }
         }
@@ -135,32 +135,28 @@ fun OtherProfileBottomSheet(
 }
 
 @Composable
-private fun ProfileCard(
-    modifier: Modifier = Modifier,
-    title: String,
-    content: String,
-) {
+private fun ProfileCard(modifier: Modifier = Modifier, title: String, content: String) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Text(
             modifier = Modifier.padding(horizontal = 20.dp),
             text = title,
             style = SeugiTheme.typography.body1,
-            color = SeugiTheme.colors.gray500
+            color = SeugiTheme.colors.gray500,
         )
         Spacer(modifier = Modifier.height(17.5.dp))
         Text(
             modifier = Modifier.padding(horizontal = 20.dp),
             text = content,
             style = SeugiTheme.typography.subtitle2,
-            color = SeugiTheme.colors.black
+            color = SeugiTheme.colors.black,
         )
         Spacer(modifier = Modifier.height(17.5.dp))
         SeugiDivider(
             modifier = Modifier.padding(horizontal = 20.dp),
-            type = DividerType.WIDTH
+            type = DividerType.WIDTH,
         )
         Spacer(modifier = Modifier.height(8.dp))
     }
