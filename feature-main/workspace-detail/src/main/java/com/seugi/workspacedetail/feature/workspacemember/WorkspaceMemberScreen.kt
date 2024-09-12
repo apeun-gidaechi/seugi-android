@@ -36,6 +36,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.core.model.WorkspacePermissionModel
+import com.seugi.data.core.model.isAdmin
+import com.seugi.data.core.model.isTeacher
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiMemberList
@@ -202,11 +204,16 @@ fun WorkspaceMemberScreen(
                     SeugiMemberList(
                         userName = user.member.name,
                         userProfile = user.member.picture.ifEmpty { null },
+<<<<<<< HEAD
                         onClick = {
                             selectedMember = user
                             isShowBottomSheet = true
                         },
                         isCrown = user.permission == WorkspacePermissionModel.ADMIN,
+=======
+                        onClick = {},
+                        isCrown = user.permission.isAdmin(),
+>>>>>>> c03b3535 (feat: Use isAdmin())
                         crownColor = when (user.permission) {
                             WorkspacePermissionModel.ADMIN -> SeugiTheme.colors.orange500
                             WorkspacePermissionModel.MIDDLE_ADMIN -> SeugiTheme.colors.yellow500
