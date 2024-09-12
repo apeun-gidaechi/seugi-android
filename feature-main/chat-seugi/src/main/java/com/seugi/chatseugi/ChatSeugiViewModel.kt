@@ -30,6 +30,7 @@ class ChatSeugiViewModel @Inject constructor(
                 chatMessage = it.chatMessage.toMutableList().apply {
                     add(0, ChatData.User(message, LocalDateTime.now().minusHours(9), true))
                 }.toImmutableList(),
+                isLoading = true
             )
         }
 
@@ -49,12 +50,18 @@ class ChatSeugiViewModel @Inject constructor(
                             chatMessage = it.chatMessage.toMutableList().apply {
                                 this.add(0, data)
                             }.toImmutableList(),
+                            isLoading = false
                         )
                     }
                 }
                 Result.Loading -> {}
                 is Result.Error -> {
                     it.throwable.printStackTrace()
+                    _state.update {
+                        it.copy(
+                            isLoading = false
+                        )
+                    }
                 }
             }
         }

@@ -8,8 +8,14 @@ import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.animateScrollBy
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,6 +25,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -37,8 +44,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -47,8 +56,13 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.chatseugi.model.ChatData
 import com.seugi.common.utiles.toAmShortString
+import com.seugi.designsystem.R
+import com.seugi.designsystem.animation.AlphaIndication
 import com.seugi.designsystem.animation.bounceClick
+import com.seugi.designsystem.component.GradientPrimary
+import com.seugi.designsystem.component.LoadingDotsIndicator
 import com.seugi.designsystem.component.SeugiTopBar
+import com.seugi.designsystem.component.chat.CHAT_SHAPE
 import com.seugi.designsystem.component.chat.ChatItemType
 import com.seugi.designsystem.component.chat.SeugiChatItem
 import com.seugi.designsystem.component.modifier.DropShadowType
@@ -125,6 +139,7 @@ internal fun ChatSeugiScreen(
                         text = it
                     },
                     onSendClick = {
+                        if (state.isLoading) return@SeugiChatTextField
                         viewModel.sendMessage(text)
                         text = ""
                     },
@@ -154,6 +169,15 @@ internal fun ChatSeugiScreen(
                     state = scrollState,
                     reverseLayout = true,
                 ) {
+                    item {
+                        if (state.isLoading) {
+                            SeugiChatItemAiLoading(
+                                isFirst = true,
+                                isLast = true,
+                                createdAt = ""
+                            )
+                        }
+                    }
                     items(state.chatMessage) { data ->
                         Column(
                             modifier = Modifier
@@ -211,10 +235,10 @@ internal fun ChatSeugiScreen(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     ChatSeugiExampleText(
-                        text = "8월 행사 알려줘",
+                        text = "날씨 어떄?",
                         onClick = {
                             text = ""
-                            viewModel.sendMessage("8월 행사 알려줘")
+                            viewModel.sendMessage("날씨 어떄?")
                         },
                     )
                 }
@@ -284,3 +308,88 @@ internal fun ChatSeugiExampleText(text: String, onClick: () -> Unit) {
         }
     }
 }
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun SeugiChatItemAiLoading(modifier: Modifier = Modifier, isFirst: Boolean, isLast: Boolean, createdAt: String) {
+    val chatShape = RoundedCornerShape(
+        topStart = 0.dp,
+        topEnd = CHAT_SHAPE,
+        bottomStart = CHAT_SHAPE,
+        bottomEnd = CHAT_SHAPE,
+    )
+    Row(
+        modifier = modifier,
+    ) {
+        if (isFirst) {
+            Image(
+                modifier = Modifier.size(32.dp),
+                painter = painterResource(id = R.drawable.ic_appicon_round),
+                contentDescription = "앱 둥근 로고",
+            )
+        } else {
+            Spacer(modifier = Modifier.width(32.dp))
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+        Column {
+            if (isFirst) {
+                Text(
+                    text = "캣스기",
+                    style = SeugiTheme.typography.body1,
+                    color = SeugiTheme.colors.gray600,
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+            }
+            Row(
+                verticalAlignment = Alignment.Bottom,
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(
+                            weight = 1f,
+                            fill = false,
+                        )
+                        .dropShadow(
+                            type = DropShadowType.EvBlack1,
+                        )
+                        .background(
+                            color = SeugiTheme.colors.white,
+                            shape = chatShape,
+                        )
+                        .border(
+                            width = (1.5).dp,
+                            brush = GradientPrimary,
+                            shape = chatShape,
+                        )
+                        .clip(chatShape)
+                        .combinedClickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = AlphaIndication,
+                            onClick = {},
+                        ),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Box(
+                        modifier = Modifier.padding(12.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        LoadingDotsIndicator()
+                    }
+                }
+                if (isLast) {
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Column(
+                        verticalArrangement = Arrangement.Bottom,
+                    ) {
+                        Text(
+                            text = createdAt,
+                            color = SeugiTheme.colors.gray600,
+                            style = SeugiTheme.typography.caption2,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
