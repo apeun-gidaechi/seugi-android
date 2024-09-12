@@ -229,16 +229,24 @@ internal fun ChatSeugiScreen(
                     ChatSeugiExampleText(
                         text = "오늘 급식 뭐야?",
                         onClick = {
-                            text = ""
-                            viewModel.sendMessage("오늘 급식 뭐야?")
+                            if (state.isLoading) {
+                                text = "오늘 급식 뭐야?"
+                            } else {
+                                text = ""
+                                viewModel.sendMessage("오늘 급식 뭐야?")
+                            }
                         },
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     ChatSeugiExampleText(
                         text = "날씨 어떄?",
                         onClick = {
-                            text = ""
-                            viewModel.sendMessage("날씨 어떄?")
+                            if (state.isLoading) {
+                                text = "날씨 어떄?"
+                            } else {
+                                text = ""
+                                viewModel.sendMessage("날씨 어떄?")
+                            }
                         },
                     )
                 }
