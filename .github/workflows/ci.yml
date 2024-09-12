@@ -27,6 +27,7 @@ jobs:
       run: |
         echo "BASE_URL=${SERVER_URL}" > $GITHUB_WORKSPACE/local.properties
         echo "WS_URL=${WS_URL}" >> $GITHUB_WORKSPACE/local.properties
+        echo "AI_URL=${AI_URL}" >> $GITHUB_WORKSPACE/local.properties
       env:
         SERVER_URL: ${{ secrets.SERVER_URL }}
         WS_URL: ${{ secrets.WS_URL }}
