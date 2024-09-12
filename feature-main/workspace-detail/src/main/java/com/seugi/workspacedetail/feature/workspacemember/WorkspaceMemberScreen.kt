@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.seugi.data.core.model.ProfileModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiMemberList
@@ -42,6 +43,7 @@ import com.seugi.designsystem.component.SeugiSegmentedButtonLayout
 import com.seugi.designsystem.component.SeugiSmallDropDown
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.ui.component.OtherProfileBottomSheet
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -50,6 +52,8 @@ import kotlinx.collections.immutable.persistentListOf
 fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(), popBackStack: () -> Unit, workspaceId: String) {
     var selectedItem by remember { mutableStateOf("전체") }
     var isExpanded by remember { mutableStateOf(false) }
+    var selectedMember by remember { mutableStateOf<ProfileModel?>(null) }
+    var isShowBottomSheet by remember { mutableStateOf(false) }
 
     val icon = if (isExpanded) {
         Icons.Filled.KeyboardArrowUp
@@ -57,9 +61,31 @@ fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(),
         Icons.Filled.KeyboardArrowDown
     }
     val state by viewModel.state.collectAsStateWithLifecycle()
+
     LaunchedEffect(key1 = true) {
         viewModel.getAllMember(workspaceId = workspaceId)
     }
+
+
+    if (isShowBottomSheet) {
+        OtherProfileBottomSheet(
+            profile = selectedMember?.member?.picture,
+            name = selectedMember?.member?.name?: "",
+            status = selectedMember?.status?: "",
+            spot = selectedMember?.spot?: "",
+            belong = selectedMember?.belong?: "",
+            phone = selectedMember?.phone?: "",
+            wire = selectedMember?.wire?: "",
+            location = selectedMember?.location?: "",
+            onClickChat = {
+
+            },
+            onDismissRequest = {
+                isShowBottomSheet = false
+            }
+        )
+    }
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -146,6 +172,8 @@ fun WorkspaceMemberScreen(viewModel: WorkspaceMemberViewModel = hiltViewModel(),
                         userName = user.member.name,
                         userProfile = user.member.picture.ifEmpty { null },
                         onClick = {
+                            selectedMember = user
+                            isShowBottomSheet = true
                         },
                     )
                 }
