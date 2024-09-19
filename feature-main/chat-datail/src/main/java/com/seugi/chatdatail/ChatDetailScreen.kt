@@ -575,11 +575,13 @@ private fun ChatSideBarScreen(
                 )
             }
         },
+        containerColor = SeugiTheme.colors.white
     ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it),
+                .padding(it)
+                .background(SeugiTheme.colors.white),
         ) {
             item {
                 SeugiMemberList(
