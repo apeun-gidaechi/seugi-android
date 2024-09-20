@@ -18,4 +18,5 @@ data class MessageMessageModel(
     val timestamp: LocalDateTime,
     val read: ImmutableList<Int>,
     val messageStatus: MessageLifeType,
+    val messageUUID: String?,
 ) : MessageTypeModel()

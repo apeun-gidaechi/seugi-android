@@ -6,8 +6,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 sealed interface ChatLocalType {
-    data class Failed(val text: String): ChatLocalType
-    data class Send(val text: String): ChatLocalType
+    data class Failed(val text: String, val uuid: String): ChatLocalType
+    data class Send(val text: String, val uuid: String): ChatLocalType
 }
 
 internal fun Collection<ChatLocalType>.findBySendingMessage(message: String): ChatLocalType? {

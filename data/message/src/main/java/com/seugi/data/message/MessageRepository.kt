@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface MessageRepository {
 
-    suspend fun sendMessage(chatRoomId: String, message: String): Result<Boolean>
+    suspend fun sendMessage(chatRoomId: String, message: String, messageUUID: String): Result<Boolean>
 
     suspend fun subscribeRoom(chatRoomId: String): Flow<Result<MessageTypeModel>>
 

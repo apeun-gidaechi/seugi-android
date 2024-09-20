@@ -24,6 +24,7 @@ internal fun MessageMessageResponse.toModel() = MessageMessageModel(
     timestamp = timestamp,
     read = read.toImmutableList(),
     messageStatus = messageStatus.toMessageLifeType(),
+    messageUUID = uuid
 )
 
 @JvmName("ListChatDetailMessageResponseToModels")

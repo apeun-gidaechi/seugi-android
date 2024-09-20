@@ -40,12 +40,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 @HiltViewModel
 class ChatDetailViewModel @Inject constructor(
@@ -191,14 +191,15 @@ class ChatDetailViewModel @Inject constructor(
 
     fun channelSend(content: String) {
         viewModelScope.launch {
-            _messageSaveQueueState.value += ChatLocalType.Send(content)
-            val result = messageRepository.sendMessage(state.value.roomInfo?.id ?: "", content)
+            val uuid = UUID.randomUUID().toString()
+            _messageSaveQueueState.value += ChatLocalType.Send(content, uuid)
+            val result = messageRepository.sendMessage(state.value.roomInfo?.id ?: "", content, uuid)
             Log.d("TAG", "testSend: $result")
             when (result) {
                 is Result.Success -> {
                     if (!result.data) {
-                        _messageSaveQueueState.value -= ChatLocalType.Send(content)
-                        _messageSaveQueueState.value += ChatLocalType.Failed(content)
+                        _messageSaveQueueState.value -= ChatLocalType.Send(content, uuid)
+                        _messageSaveQueueState.value += ChatLocalType.Failed(content, uuid)
                         channelReconnect()
                     }
                 }
@@ -208,6 +209,15 @@ class ChatDetailViewModel @Inject constructor(
                 is Result.Loading -> {}
             }
         }
+    }
+
+    fun channelResend(content: String, uuid: String) {
+        _messageSaveQueueState.value -= ChatLocalType.Failed(content, uuid)
+        channelSend(content)
+    }
+
+    fun deleteFailedSend(content: String, uuid: String) {
+        _messageSaveQueueState.value -= ChatLocalType.Failed(content, uuid)
     }
 
     fun channelReconnect() {

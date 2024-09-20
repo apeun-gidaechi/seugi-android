@@ -15,6 +15,7 @@ import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.gestures.animateTo
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -63,6 +64,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -74,10 +76,8 @@ import com.seugi.common.utiles.toFullFormatString
 import com.seugi.data.message.model.message.MessageUserModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
-import com.seugi.designsystem.component.ButtonType
 import com.seugi.designsystem.component.DividerType
 import com.seugi.designsystem.component.DragState
-import com.seugi.designsystem.component.SeugiButton
 import com.seugi.designsystem.component.SeugiDivider
 import com.seugi.designsystem.component.SeugiIconButton
 import com.seugi.designsystem.component.SeugiImage
@@ -134,6 +134,10 @@ internal fun ChatDetailScreen(
             DragState.END at screenSizePx
         }
     }
+
+    var resendChatItem: ChatLocalType.Failed? by remember { mutableStateOf(null) }
+    var isShowReSendDialog by remember { mutableStateOf(false) }
+
     val anchoredState = remember {
         AnchoredDraggableState(
             initialValue = DragState.START,
@@ -211,6 +215,34 @@ internal fun ChatDetailScreen(
     SideEffect {
         anchoredState.updateAnchors(anchors, DragState.END)
     }
+
+
+    if (isShowReSendDialog) {
+        Dialog(
+            onDismissRequest = {
+                isShowReSendDialog = false
+            }
+        ) {
+            ResendDialog(
+                onClickDelete = {
+                    viewModel.deleteFailedSend(
+                        content = resendChatItem?.text?: "",
+                        uuid = resendChatItem?.uuid?: ""
+                    )
+                    isShowReSendDialog = false
+                },
+                onClickResend = {
+                    viewModel.channelResend(
+                        content = resendChatItem?.text?: "",
+                        uuid = resendChatItem?.uuid?: ""
+                    )
+                    isShowReSendDialog = false
+                }
+            )
+        }
+    }
+
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -368,7 +400,8 @@ internal fun ChatDetailScreen(
                                 SeugiChatItem(
                                     type = ChatItemType.Failed(message = it.text),
                                     onDateClick = {
-
+                                        resendChatItem = it
+                                        isShowReSendDialog = true
                                     }
                                 )
                             }
@@ -636,6 +669,59 @@ private fun ChatDetailTextField(searchText: String, onValueChange: (String) -> U
             }
         },
     )
+}
+
+@Composable
+private fun ResendDialog(
+    modifier: Modifier = Modifier,
+    text: String = "재전송하시겠습니까?",
+    onClickDelete: () -> Unit,
+    onClickResend: () -> Unit,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp)
+            .background(
+                color = SeugiTheme.colors.white,
+                shape = RoundedCornerShape(16.dp)
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = text,
+                style = SeugiTheme.typography.body1,
+                color = SeugiTheme.colors.black
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .bounceClick(onClickDelete),
+                    text = "삭제",
+                    style = SeugiTheme.typography.subtitle2,
+                    color = SeugiTheme.colors.primary600
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .bounceClick(onClickResend),
+                    text = "재전송",
+                    style = SeugiTheme.typography.subtitle2,
+                    color = SeugiTheme.colors.primary600
+                )
+            }
+        }
+    }
 }
 
 data class ExKeyboardState(
