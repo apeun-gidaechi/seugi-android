@@ -723,39 +723,3 @@ private fun ResendDialog(
         }
     }
 }
-
-data class ExKeyboardState(
-    val isOpen: Boolean = false,
-    val height: Dp = 0.dp,
-)
-
-internal fun View.isKeyboardOpen(): Pair<Boolean, Int> {
-    val rect = Rect()
-    getWindowVisibleDisplayFrame(rect)
-    val screenHeight = rootView.height
-    val keypadHeight = screenHeight - rect.bottom
-    return Pair(keypadHeight > screenHeight * 0.15, screenHeight - rect.bottom)
-}
-
-@Composable
-internal fun rememberKeyboardOpen(): State<ExKeyboardState> {
-    val view = LocalView.current
-    val density = LocalDensity.current
-
-    fun Pair<Boolean, Int>.toState() = ExKeyboardState(
-        isOpen = first,
-        height = with(density) { second.toDp() - 48.dp },
-    )
-
-    return produceState(initialValue = view.isKeyboardOpen().toState()) {
-        val viewTreeObserver = view.viewTreeObserver
-        val listener = ViewTreeObserver.OnGlobalLayoutListener {
-            value = view.isKeyboardOpen().toState()
-        }
-        viewTreeObserver.addOnGlobalLayoutListener(listener)
-
-        awaitDispose {
-            viewTreeObserver.removeOnGlobalLayoutListener(listener)
-        }
-    }
-}
