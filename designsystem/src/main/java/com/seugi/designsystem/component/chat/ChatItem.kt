@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,6 +39,7 @@ import com.seugi.designsystem.component.GradientPrimary
 import com.seugi.designsystem.component.SeugiAvatar
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
+import com.seugi.designsystem.component.modifier.`if`
 import com.seugi.designsystem.theme.SeugiTheme
 
 val CHAT_SHAPE = 8.dp
@@ -78,6 +80,13 @@ sealed interface ChatItemType {
 
     data class Sending(
         val message: String
+    ): ChatItemType
+    
+    data class File(
+        val onClick: () -> Unit,
+        val isMe: Boolean,
+        val fileName: String,
+        val fileSize: String,
     ): ChatItemType
 }
 
@@ -144,6 +153,15 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType, onChatLongC
             SeugiChatItemSending(
                 modifier = modifier,
                 message = type.message
+            )
+        }
+        is ChatItemType.File -> {
+            SeugiChatItemFile(
+                modifier = modifier,
+                onClick = type.onClick,
+                isMe = type.isMe,
+                fileName = type.fileName,
+                fileSize = type.fileSize
             )
         }
     }
@@ -573,6 +591,77 @@ private fun SeugiChatItemSending(modifier: Modifier = Modifier, message: String)
     }
 }
 
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun SeugiChatItemFile(modifier: Modifier = Modifier, onClick: () -> Unit, isMe: Boolean, fileName: String, fileSize: String) {
+    val chatShape = RoundedCornerShape(CHAT_SHAPE)
+    Row(
+        modifier = modifier
+            .padding(
+                start = if (isMe) 34.dp else 8.dp,
+                end = if (isMe) 8.dp else 34.dp
+            )
+            .fillMaxWidth()
+            .dropShadow(type = DropShadowType.EvBlack1)
+            .background(
+                color = SeugiTheme.colors.white,
+                shape = chatShape
+            )
+            .bounceClick(onClick),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(
+                    start = 12.dp,
+                    top = 14.dp,
+                    bottom = 14.dp
+                )
+                .background(
+                    color = SeugiTheme.colors.primary500,
+                    shape = CircleShape
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .size(24.dp),
+                painter = painterResource(id = R.drawable.ic_file_line),
+                contentDescription = "파일 아이콘",
+                colorFilter = ColorFilter.tint(SeugiTheme.colors.white)
+            )
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+        Column(
+            modifier = Modifier
+                .weight(1f),
+        ) {
+            Text(
+                text = fileName,
+                color = SeugiTheme.colors.black,
+                style = SeugiTheme.typography.body1,
+            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = fileSize,
+                color = SeugiTheme.colors.gray500,
+                style = SeugiTheme.typography.caption2,
+            )
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+        Image(
+            modifier = Modifier
+                .padding(end = 12.dp)
+                .size(24.dp),
+            painter = painterResource(id = R.drawable.ic_expand_stop_down_line),
+            contentDescription = "다운로드 아이콘",
+            colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500)
+        )
+    }
+}
+
 @Preview
 @Composable
 private fun PreviewSeugiChatItem() {
@@ -665,6 +754,15 @@ private fun PreviewSeugiChatItem() {
             SeugiChatItem(
                 type = ChatItemType.Else(
                     message = "챗스기님이 입장하셨습니다.",
+                ),
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            SeugiChatItem(
+                type = ChatItemType.File(
+                    onClick = {},
+                    isMe = true,
+                    fileName = "B1nd인턴+여행계획서.pptx",
+                    fileSize = "191.3KB",
                 ),
             )
         }
