@@ -39,7 +39,6 @@ import com.seugi.designsystem.component.GradientPrimary
 import com.seugi.designsystem.component.SeugiAvatar
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
-import com.seugi.designsystem.component.modifier.`if`
 import com.seugi.designsystem.theme.SeugiTheme
 
 val CHAT_SHAPE = 8.dp
@@ -53,12 +52,16 @@ sealed interface ChatItemType {
         val message: String,
         val createdAt: String,
         val count: Int?,
+        val onChatLongClick: () -> Unit = {},
+        val onDateClick: () -> Unit = {}
     ) : ChatItemType
     data class Me(
         val isLast: Boolean,
         val message: String,
         val createdAt: String,
         val count: Int?,
+        val onChatLongClick: () -> Unit = {},
+        val onDateClick: () -> Unit = {}
     ) : ChatItemType
     data class Date(
         val createdAt: String,
@@ -69,13 +72,16 @@ sealed interface ChatItemType {
         val message: String,
         val createdAt: String,
         val count: Int?,
+        val onChatLongClick: () -> Unit = {},
+        val onDateClick: () -> Unit = {}
     ) : ChatItemType
     data class Else(
         val message: String,
     ) : ChatItemType
 
     data class Failed(
-        val message: String
+        val message: String,
+        val onClickRetry: () -> Unit
     ): ChatItemType
 
     data class Sending(
@@ -91,7 +97,10 @@ sealed interface ChatItemType {
 }
 
 @Composable
-fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType, onChatLongClick: () -> Unit = {}, onDateClick: () -> Unit = {}) {
+fun SeugiChatItem(
+    modifier: Modifier = Modifier,
+    type: ChatItemType
+) {
     when (type) {
         is ChatItemType.Others -> {
             SeugiChatItemOthers(
@@ -103,8 +112,8 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType, onChatLongC
                 message = type.message,
                 createdAt = type.createdAt,
                 count = type.count,
-                onChatLongClick = onChatLongClick,
-                onDateClick = onDateClick,
+                onChatLongClick = type.onChatLongClick,
+                onDateClick = type.onDateClick,
             )
         }
         is ChatItemType.Me -> {
@@ -114,8 +123,8 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType, onChatLongC
                 message = type.message,
                 createdAt = type.createdAt,
                 count = type.count,
-                onChatLongClick = onChatLongClick,
-                onDateClick = onDateClick,
+                onChatLongClick = type.onChatLongClick,
+                onDateClick = type.onDateClick,
             )
         }
         is ChatItemType.Date -> {
@@ -132,8 +141,8 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType, onChatLongC
                 message = type.message,
                 createdAt = type.createdAt,
                 count = type.count,
-                onChatLongClick = onChatLongClick,
-                onDateClick = onDateClick,
+                onChatLongClick = type.onChatLongClick,
+                onDateClick = type.onDateClick,
             )
         }
         is ChatItemType.Else -> {
@@ -146,7 +155,7 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType, onChatLongC
             SeugiChatItemFailed(
                 modifier = modifier,
                 message = type.message,
-                onDateClick = onDateClick
+                onClickRetry = type.onClickRetry
             )
         }
         is ChatItemType.Sending -> {
@@ -471,7 +480,7 @@ private fun SeugiChatItemElse(modifier: Modifier, message: String) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun SeugiChatItemFailed(modifier: Modifier = Modifier, message: String, onDateClick: () -> Unit) {
+private fun SeugiChatItemFailed(modifier: Modifier = Modifier, message: String, onClickRetry: () -> Unit) {
     val chatShape = RoundedCornerShape(
         topStart = CHAT_SHAPE,
         topEnd = 0.dp,
@@ -489,7 +498,7 @@ private fun SeugiChatItemFailed(modifier: Modifier = Modifier, message: String, 
                     color = SeugiTheme.colors.gray200,
                     shape = RoundedCornerShape(8.dp)
                 )
-                .bounceClick(onDateClick)
+                .bounceClick(onClickRetry)
         ) {
             Image(
                 modifier = Modifier
@@ -680,11 +689,9 @@ private fun PreviewSeugiChatItem() {
                     message = "iOS정말 재미없어요!",
                     createdAt = "오후 7:44",
                     count = 1,
+                    onDateClick = {},
+                    onChatLongClick = {}
                 ),
-                onChatLongClick = {
-                },
-                onDateClick = {
-                },
             )
             Spacer(modifier = Modifier.height(8.dp))
             SeugiChatItem(
@@ -696,11 +703,9 @@ private fun PreviewSeugiChatItem() {
                     message = "iOS정말 재미없어요!",
                     createdAt = "오후 7:44",
                     count = 1,
+                    onDateClick = {},
+                    onChatLongClick = {}
                 ),
-                onChatLongClick = {
-                },
-                onDateClick = {
-                },
             )
             Spacer(modifier = Modifier.height(32.dp))
             SeugiChatItem(
@@ -710,11 +715,9 @@ private fun PreviewSeugiChatItem() {
                     message = "iOS정말 재미없어요!",
                     createdAt = "오후 7:44",
                     count = 1,
+                    onDateClick = {},
+                    onChatLongClick = {}
                 ),
-                onChatLongClick = {
-                },
-                onDateClick = {
-                },
             )
             Spacer(modifier = Modifier.height(8.dp))
             SeugiChatItem(
@@ -724,17 +727,16 @@ private fun PreviewSeugiChatItem() {
                     message = "iOS정말 재미없어요!",
                     createdAt = "오후 7:44",
                     count = 1,
+                    onDateClick = {},
+                    onChatLongClick = {}
                 ),
-                onChatLongClick = {
-                },
-                onDateClick = {
-                },
             )
             Spacer(modifier = Modifier.height(8.dp))
             SeugiChatItem(
                 modifier = Modifier.align(Alignment.End),
                 type = ChatItemType.Failed(
-                    message = "iOS 정말 재미없어요"
+                    message = "iOS 정말 재미없어요",
+                    onClickRetry = {}
                 )
             )
             Spacer(modifier = Modifier.height(8.dp))

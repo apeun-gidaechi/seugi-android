@@ -398,11 +398,13 @@ internal fun ChatDetailScreen(
                             }
                             is ChatLocalType.Failed -> {
                                 SeugiChatItem(
-                                    type = ChatItemType.Failed(message = it.text),
-                                    onDateClick = {
-                                        resendChatItem = it
-                                        isShowReSendDialog = true
-                                    }
+                                    type = ChatItemType.Failed(
+                                        message = it.text,
+                                        onClickRetry = {
+                                            resendChatItem = it
+                                            isShowReSendDialog = true
+                                        }
+                                    ),
                                 )
                             }
                         }
