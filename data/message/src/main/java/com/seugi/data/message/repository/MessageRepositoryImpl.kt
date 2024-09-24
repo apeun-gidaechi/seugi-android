@@ -6,6 +6,7 @@ import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.message.MessageRepository
 import com.seugi.data.message.mapper.toModel
+import com.seugi.data.message.model.MessageType
 import com.seugi.data.message.model.MessageTypeModel
 import com.seugi.data.message.model.message.MessageLoadModel
 import com.seugi.data.message.model.room.MessageRoomModel
@@ -26,12 +27,13 @@ class MessageRepositoryImpl @Inject constructor(
     private val tokenDao: TokenDao,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : MessageRepository {
-    override suspend fun sendMessage(chatRoomId: String, message: String, messageUUID: String): Result<Boolean> {
+    override suspend fun sendMessage(chatRoomId: String, message: String, messageUUID: String, type: MessageType): Result<Boolean> {
         return Result.Success(
             datasource.sendMessage(
                 chatRoomId = chatRoomId,
                 message = message,
                 messageUUID = messageUUID,
+                type = type.name
             ),
         )
     }

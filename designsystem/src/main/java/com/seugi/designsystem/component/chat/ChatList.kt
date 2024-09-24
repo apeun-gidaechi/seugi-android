@@ -7,16 +7,19 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import com.seugi.designsystem.animation.NoInteractionSource
 import com.seugi.designsystem.component.AvatarType
 import com.seugi.designsystem.component.SeugiAvatar
@@ -46,8 +49,8 @@ fun SeugiChatList(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+                .padding(16.dp)
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
@@ -78,8 +81,13 @@ fun SeugiChatList(
                     }
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
+                        modifier = Modifier.heightIn(
+//                            max = with(LocalDensity.current) {
+//                                (SeugiTheme.typography.body2.fontSize * 4 / 3).toDp()
+//                            }
+                        ),
                         text = message,
-                        maxLines = 1,
+                        maxLines = 3,
                         overflow = TextOverflow.Ellipsis,
                         style = SeugiTheme.typography.body2,
                         color = SeugiTheme.colors.black,
@@ -129,7 +137,7 @@ private fun PreviewSeugiChatList() {
             )
             SeugiChatList(
                 userName = "노영재너럴캡숑짱ㅋ",
-                message = "정말 좋습니다",
+                message = "https://seugi.s3.ap-northeast-2.amazonaws.com/IMG/c10f85d3-5ce0-4bfd-887e-6aed0a8100b9-file",
                 createdAt = "12:39",
                 memberCount = 4,
                 onClick = {},

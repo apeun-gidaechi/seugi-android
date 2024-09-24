@@ -7,6 +7,7 @@ import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.file.FileRepository
 import com.seugi.data.file.model.FileType
 import com.seugi.file.FileDataSource
+import com.seugi.network.core.response.safeResponse
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -19,6 +20,22 @@ class FileRepositoryImpl @Inject constructor(
 ) : FileRepository {
     override suspend fun fileUpload(file: String, type: FileType): Flow<Result<String>> = flow {
         val response = fileDataSource.fileUpload(file = file, type = type.name).data
+
+        emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun fileUpload(
+        type: FileType,
+        fileName: String,
+        byteArray: ByteArray,
+    ): Flow<Result<String>> = flow {
+        val response = fileDataSource.fileUpload(
+            type = type.name,
+            fileName = fileName,
+            byteArray = byteArray
+        ).safeResponse()
 
         emit(response)
     }

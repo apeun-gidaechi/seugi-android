@@ -115,7 +115,7 @@ class MessageDataSourceImpl @Inject constructor(
             }
     }
 
-    override suspend fun sendMessage(chatRoomId: String, message: String, messageUUID: String): Boolean {
+    override suspend fun sendMessage(chatRoomId: String, message: String, messageUUID: String, type: String): Boolean {
         // 연결이 되지 않는 경우 연결 강제성 부여
         if (!stompClient.isConnected) {
             return false
@@ -124,7 +124,8 @@ class MessageDataSourceImpl @Inject constructor(
         val body = MessageRequest(
             roomId = chatRoomId,
             message = message,
-            uuid = messageUUID
+            uuid = messageUUID,
+            type = type
         ).toJsonString()
 
         val sendContent = StompMessage(

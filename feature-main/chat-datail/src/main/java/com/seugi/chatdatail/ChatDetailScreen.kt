@@ -1,11 +1,15 @@
 package com.seugi.chatdatail
 
+import android.graphics.Bitmap
 import android.graphics.Rect
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -68,11 +72,13 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.seugi.chatdatail.model.ChatDetailChatTypeState
 import com.seugi.chatdatail.model.ChatDetailSideEffect
 import com.seugi.chatdatail.model.ChatLocalType
 import com.seugi.common.utiles.toAmShortString
 import com.seugi.common.utiles.toFullFormatString
+import com.seugi.data.message.model.MessageType
 import com.seugi.data.message.model.message.MessageUserModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
@@ -92,6 +98,9 @@ import com.seugi.designsystem.component.modifier.`if`
 import com.seugi.designsystem.component.textfield.SeugiChatTextField
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.ui.addFocusCleaner
+import com.seugi.ui.getFileName
+import com.seugi.ui.rememberKeyboardOpen
+import com.seugi.ui.uriToBitmap
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
@@ -116,6 +125,7 @@ internal fun ChatDetailScreen(
 
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
+    val contentResolver = context.contentResolver
     var text by remember { mutableStateOf("") }
     var notificationState by remember { mutableStateOf(false) }
     var isSearch by remember { mutableStateOf(false) }
@@ -149,6 +159,22 @@ internal fun ChatDetailScreen(
                 0f
             },
         )
+    }
+
+    var selectedFileName by remember { mutableStateOf("") }
+    var selectedImageBitmap by remember { mutableStateOf<Bitmap?>(null) }
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+    ) { uri: Uri? ->
+        if (uri != null) {
+            coroutineScope.launch {
+                Log.d("TAG", "ChatDetailScreen: $uri")
+                isShowUploadDialog = false
+                selectedImageBitmap = contentResolver.uriToBitmap(uri)
+                selectedFileName = contentResolver.getFileName(uri).toString()
+                Log.d("TAG", "ChatDetailScreen: $selectedFileName $selectedImageBitmap")
+            }
+        }
     }
 
     LaunchedEffect(key1 = sideEffect) {
@@ -330,8 +356,18 @@ internal fun ChatDetailScreen(
                         onValueChange = {
                             text = it
                         },
+                        sendEnabled = text.isNotEmpty() || selectedImageBitmap != null,
                         onSendClick = {
-                            viewModel.channelSend(text)
+                            if (selectedImageBitmap != null) {
+                                viewModel.channelSend(
+                                    content = selectedImageBitmap!!,
+                                    title = selectedFileName
+                                )
+                                selectedFileName = ""
+                                selectedImageBitmap = null
+                                return@SeugiChatTextField
+                            }
+                            viewModel.channelSend(text, MessageType.MESSAGE)
                             text = ""
                         },
                         onAddClick = {
@@ -466,7 +502,9 @@ internal fun ChatDetailScreen(
                     Log.d("TAG", "ChatDetailScreen: dismiss")
                 },
                 onFileUploadClick = {},
-                onImageUploadClick = {},
+                onImageUploadClick = {
+                    galleryLauncher.launch("image/*")
+                },
             )
         }
     }

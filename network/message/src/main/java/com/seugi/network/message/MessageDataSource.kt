@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface MessageDataSource {
     suspend fun subscribeRoom(chatRoomId: String): Flow<MessageTypeResponse>
 
-    suspend fun sendMessage(chatRoomId: String, message: String, messageUUID: String): Boolean
+    suspend fun sendMessage(chatRoomId: String, message: String, messageUUID: String, type: String): Boolean
 
     suspend fun connectStomp(accessToken: String)
 

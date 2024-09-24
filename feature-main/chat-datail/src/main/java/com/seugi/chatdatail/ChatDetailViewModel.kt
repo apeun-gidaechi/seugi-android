@@ -1,5 +1,6 @@
 package com.seugi.chatdatail
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +15,10 @@ import com.seugi.chatdatail.model.findBySendingMessage
 import com.seugi.chatdatail.model.minus
 import com.seugi.chatdatail.model.plus
 import com.seugi.common.model.Result
+import com.seugi.data.file.FileRepository
+import com.seugi.data.file.model.FileType
 import com.seugi.data.message.MessageRepository
+import com.seugi.data.message.model.MessageType
 import com.seugi.data.message.model.MessageTypeModel
 import com.seugi.data.message.model.isMessage
 import com.seugi.data.message.model.isSub
@@ -26,6 +30,7 @@ import com.seugi.data.message.model.sub.MessageSubModel
 import com.seugi.data.profile.ProfileRepository
 import com.seugi.data.token.TokenRepository
 import com.seugi.stompclient.StompException
+import com.seugi.ui.toByteArray
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import java.net.SocketException
@@ -52,6 +57,7 @@ class ChatDetailViewModel @Inject constructor(
     private val messageRepository: MessageRepository,
     private val profileRepository: ProfileRepository,
     private val tokenRepository: TokenRepository,
+    private val fileRepository: FileRepository
 ) : ViewModel() {
 
     // 소켓 재연결로 인해 밀린 채팅을 저장
@@ -189,11 +195,19 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelSend(content: String) {
+    fun channelSend(
+        content: String,
+        type: MessageType
+    ) {
         viewModelScope.launch {
             val uuid = UUID.randomUUID().toString()
             _messageSaveQueueState.value += ChatLocalType.Send(content, uuid)
-            val result = messageRepository.sendMessage(state.value.roomInfo?.id ?: "", content, uuid)
+            val result = messageRepository.sendMessage(
+                chatRoomId = state.value.roomInfo?.id ?: "",
+                message = content,
+                messageUUID = uuid,
+                type = type
+            )
             Log.d("TAG", "testSend: $result")
             when (result) {
                 is Result.Success -> {
@@ -211,9 +225,33 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
+    fun channelSend(
+        content: Bitmap,
+        title: String,
+    ) {
+        viewModelScope.launch {
+            fileRepository.fileUpload(
+                type = FileType.IMG,
+                fileName = title,
+                byteArray = content.toByteArray()
+            ).collect {
+                when (it) {
+                    is Result.Success -> {
+                        channelSend(
+                            content = it.data,
+                            type = MessageType.IMG
+                        )
+                    }
+                    Result.Loading -> {}
+                    is Result.Error -> {}
+                }
+            }
+        }
+    }
+
     fun channelResend(content: String, uuid: String) {
         _messageSaveQueueState.value -= ChatLocalType.Failed(content, uuid)
-        channelSend(content)
+        channelSend(content, MessageType.MESSAGE)
     }
 
     fun deleteFailedSend(content: String, uuid: String) {
