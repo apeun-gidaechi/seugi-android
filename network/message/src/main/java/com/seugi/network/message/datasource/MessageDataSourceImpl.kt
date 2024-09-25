@@ -9,11 +9,10 @@ import com.seugi.network.core.utiles.toJsonString
 import com.seugi.network.core.utiles.toResponse
 import com.seugi.network.message.MessageDataSource
 import com.seugi.network.message.request.MessageRequest
-import com.seugi.network.message.response.MessageTypeResponse
+import com.seugi.network.message.response.MessageRoomEventResponse
 import com.seugi.network.message.response.message.MessageDeleteResponse
 import com.seugi.network.message.response.message.MessageEmojiResponse
 import com.seugi.network.message.response.message.MessageLoadResponse
-import com.seugi.network.message.response.message.MessageMessageResponse
 import com.seugi.network.message.response.room.MessageRoomMemberResponse
 import com.seugi.network.message.response.room.MessageRoomResponse
 import com.seugi.network.message.response.stomp.MessageStompLifecycleResponse
@@ -88,7 +87,7 @@ class MessageDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun subscribeRoom(chatRoomId: String): Flow<MessageTypeResponse> = flow {
+    override suspend fun subscribeRoom(chatRoomId: String): Flow<MessageRoomEventResponse> = flow {
         stompClient.topic(SeugiUrl.Message.SUBSCRIPTION + chatRoomId)
             .asFlow()
             .flowOn(dispatcher)
@@ -96,21 +95,27 @@ class MessageDataSourceImpl @Inject constructor(
                 it.printStackTrace()
             }
             .collect { message ->
-                val type = message.payload.toResponse(MessageMessageResponse::class.java).type
+                val type = message.payload.toResponse(MessageRoomEventResponse.Raw::class.java).type
+
                 when (type) {
                     "MESSAGE", "FILE", "IMG", "ENTER", "LEFT" -> {
-                        emit(message.payload.toResponse(MessageMessageResponse::class.java))
+                        emit(message.payload.toResponse(MessageRoomEventResponse.MessageParent.Message::class.java))
                     }
                     "SUB" -> {
-                        emit(message.payload.toResponse(MessageSubResponse::class.java))
+                        emit(message.payload.toResponse(MessageRoomEventResponse.Sub::class.java))
                     }
                     "DELETE_MESSAGE" -> {
-                        emit(message.payload.toResponse(MessageDeleteResponse::class.java))
+                        emit(message.payload.toResponse(MessageRoomEventResponse.DeleteMessage::class.java))
                     }
-                    "ADD_EMOJI", "REMOVE_EMOJI" -> {
-                        emit(message.payload.toResponse(MessageEmojiResponse::class.java))
+                    "ADD_EMOJI" -> {
+                        emit(message.payload.toResponse(MessageRoomEventResponse.AddEmoji::class.java))
                     }
-                    else -> {}
+                    "REMOVE_EMOJI" -> {
+                        emit(message.payload.toResponse(MessageRoomEventResponse.RemoveEmoji::class.java))
+                    }
+                    "TRANSFER_ADMIN" -> {
+                        emit(message.payload.toResponse(MessageRoomEventResponse.TransperAdmin::class.java))
+                    }
                 }
             }
     }

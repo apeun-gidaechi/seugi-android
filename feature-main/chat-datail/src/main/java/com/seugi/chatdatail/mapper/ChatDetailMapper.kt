@@ -3,8 +3,7 @@ package com.seugi.chatdatail.mapper
 import com.seugi.chatdatail.model.ChatDetailChatTypeState
 import com.seugi.chatdatail.model.ChatDetailMessageState
 import com.seugi.data.message.model.MessageType
-import com.seugi.data.message.model.message.MessageMessageModel
-import com.seugi.data.message.model.message.MessageUserModel
+import com.seugi.data.message.model.MessageUserModel
 
 internal fun MessageMessageModel.toState(isFirst: Boolean, isLast: Boolean, isMe: Boolean, author: MessageUserModel) = ChatDetailMessageState(
     id = id,

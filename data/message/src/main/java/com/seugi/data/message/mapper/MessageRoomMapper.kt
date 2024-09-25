@@ -1,6 +1,6 @@
 package com.seugi.data.message.mapper
 
-import com.seugi.data.message.model.message.MessageUserModel
+import com.seugi.data.message.model.MessageUserModel
 import com.seugi.data.message.model.room.MessageRoomModel
 import com.seugi.data.message.model.room.MessageRoomStatusType
 import com.seugi.data.message.model.room.MessageRoomType

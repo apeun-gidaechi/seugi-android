@@ -1,6 +1,6 @@
 package com.seugi.data.message.model.room
 
-import com.seugi.data.message.model.message.MessageUserModel
+import com.seugi.data.message.model.MessageUserModel
 import java.time.LocalDateTime
 import kotlinx.collections.immutable.ImmutableList
 

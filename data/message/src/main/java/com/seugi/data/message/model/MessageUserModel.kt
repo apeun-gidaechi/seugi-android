@@ -1,4 +1,4 @@
-package com.seugi.data.message.model.message
+package com.seugi.data.message.model
 
 data class MessageUserModel(
     val id: Int,

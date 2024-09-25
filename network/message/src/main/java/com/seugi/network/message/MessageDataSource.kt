@@ -1,6 +1,7 @@
 package com.seugi.network.message
 
 import com.seugi.network.core.response.BaseResponse
+import com.seugi.network.message.response.MessageRoomEventResponse
 import com.seugi.network.message.response.MessageTypeResponse
 import com.seugi.network.message.response.message.MessageLoadResponse
 import com.seugi.network.message.response.room.MessageRoomMemberResponse
@@ -9,7 +10,7 @@ import com.seugi.network.message.response.stomp.MessageStompLifecycleResponse
 import kotlinx.coroutines.flow.Flow
 
 interface MessageDataSource {
-    suspend fun subscribeRoom(chatRoomId: String): Flow<MessageTypeResponse>
+    suspend fun subscribeRoom(chatRoomId: String): Flow<MessageRoomEventResponse>
 
     suspend fun sendMessage(chatRoomId: String, message: String, messageUUID: String, type: String): Boolean
 

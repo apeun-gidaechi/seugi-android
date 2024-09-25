@@ -1,11 +1,10 @@
 package com.seugi.data.message.mapper
 
-import com.seugi.data.message.model.emoji.MessageEmojiModel
-import com.seugi.network.message.response.emoji.MessageEmojiResponse
+import com.seugi.data.message.model.MessageEmojiModel
+import com.seugi.network.message.response.message.MessageEmojiResponse
+import kotlinx.collections.immutable.toImmutableList
 
 internal fun MessageEmojiResponse.toModel() = MessageEmojiModel(
-    type = type.toMessageType(),
-    eventList = eventList,
-    messageId = messageId,
+    userId = userId.toImmutableList(),
     emojiId = emojiId,
 )

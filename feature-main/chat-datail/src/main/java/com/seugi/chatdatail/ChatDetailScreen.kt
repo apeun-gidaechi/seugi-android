@@ -1,11 +1,8 @@
 package com.seugi.chatdatail
 
 import android.graphics.Bitmap
-import android.graphics.Rect
 import android.net.Uri
 import android.util.Log
-import android.view.View
-import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -45,10 +42,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -64,22 +59,19 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImage
-import com.seugi.chatdatail.model.ChatDetailChatTypeState
 import com.seugi.chatdatail.model.ChatDetailSideEffect
 import com.seugi.chatdatail.model.ChatLocalType
 import com.seugi.common.utiles.toAmShortString
 import com.seugi.common.utiles.toFullFormatString
+import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.data.message.model.MessageType
-import com.seugi.data.message.model.message.MessageUserModel
+import com.seugi.data.message.model.MessageUserModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.DividerType
@@ -206,8 +198,8 @@ internal fun ChatDetailScreen(
     LifecycleResumeEffect(key1 = Unit) {
         onNavigationVisibleChange(false)
 
-        viewModel.collectStompLifecycle()
-        viewModel.channelReconnect()
+        viewModel.collectStompLifecycle(userId)
+        viewModel.channelReconnect(userId)
         onPauseOrDispose {
             viewModel.subscribeCancel()
             onNavigationVisibleChange(true)
@@ -222,7 +214,8 @@ internal fun ChatDetailScreen(
 
     LaunchedEffect(key1 = scrollState.canScrollForward) {
         if (!scrollState.canScrollForward) {
-            viewModel.nextPage()
+            // TODO 페이징 재구현
+//            viewModel.nextPage()
         }
     }
 
@@ -259,6 +252,7 @@ internal fun ChatDetailScreen(
                 },
                 onClickResend = {
                     viewModel.channelResend(
+                        userId = userId,
                         content = resendChatItem?.text?: "",
                         uuid = resendChatItem?.uuid?: ""
                     )
@@ -360,6 +354,7 @@ internal fun ChatDetailScreen(
                         onSendClick = {
                             if (selectedImageBitmap != null) {
                                 viewModel.channelSend(
+                                    userId = userId,
                                     content = selectedImageBitmap!!,
                                     title = selectedFileName
                                 )
@@ -367,7 +362,11 @@ internal fun ChatDetailScreen(
                                 selectedImageBitmap = null
                                 return@SeugiChatTextField
                             }
-                            viewModel.channelSend(text, MessageType.MESSAGE)
+                            viewModel.channelSend(
+                                userId = userId,
+                                content = text,
+                                type = MessageType.MESSAGE
+                            )
                             text = ""
                         },
                         onAddClick = {
@@ -456,38 +455,57 @@ internal fun ChatDetailScreen(
                     ) {
                         SeugiChatItem(
                             modifier = Modifier
-                                .`if`(item.isMe) {
+                                .`if`(
+                                    item is MessageRoomEvent.MessageParent.Me ||
+                                            (item is MessageRoomEvent.MessageParent.Img && item.userId == userId) ||
+                                            (item is MessageRoomEvent.MessageParent.File && item.userId == userId)
+                                ) {
                                     align(Alignment.End)
                                 },
-                            type = when (item.type) {
-                                ChatDetailChatTypeState.DATE -> ChatItemType.Date(item.timestamp.toFullFormatString())
-
-                                ChatDetailChatTypeState.MESSAGE -> {
-                                    val count =
-                                        (state.roomInfo?.members?.size ?: 0) - item.read.size
-                                    if (item.isMe) {
-                                        ChatItemType.Me(
-                                            isLast = item.isLast,
-                                            message = item.message,
-                                            createdAt = item.timestamp.toAmShortString(),
-                                            count = if (count <= 0) null else count,
-                                        )
-                                    } else {
-                                        ChatItemType.Others(
-                                            isFirst = item.isFirst,
-                                            isLast = item.isLast,
-                                            userName = state.users.get(item.author.id)?.name ?: "",
-                                            userProfile = null,
-                                            message = item.message,
-                                            createdAt = item.timestamp.toAmShortString(),
-                                            count = if (count <= 0) null else count,
-                                        )
-                                    }
+                            type = when (item) {
+                                is MessageRoomEvent.MessageParent.Me -> {
+                                    val count = (state.roomInfo?.members?.size ?: 0) - item.read.size
+                                    Log.d("TAG",  "${item.timestamp.toAmShortString()} ChatDetailScreen: $item")
+                                    ChatItemType.Me(
+                                        isLast = item.isLast,
+                                        message = item.message,
+                                        createdAt = item.timestamp.toAmShortString(),
+                                        count = if (count <= 0) null else count
+                                    )
+                                }
+                                is MessageRoomEvent.MessageParent.Other -> {
+                                    val count = (state.roomInfo?.members?.size ?: 0) - item.read.size
+                                    val userInfo = state.users.get(item.userId)
+                                    ChatItemType.Others(
+                                        isFirst = item.isFirst,
+                                        isLast = item.isLast,
+                                        userName = userInfo?.name ?: "",
+                                        userProfile = userInfo?.profile,
+                                        message = item.message,
+                                        createdAt = item.timestamp.toAmShortString(),
+                                        count = if (count <= 0) null else count,
+                                    )
                                 }
 
-                                ChatDetailChatTypeState.AI -> ChatItemType.Else(item.toString())
-                                ChatDetailChatTypeState.LEFT -> ChatItemType.Else("${state.users[item.author.id]?.name ?: ""}님이 방에서 퇴장하셨습니다.")
-                                ChatDetailChatTypeState.ENTER -> ChatItemType.Else("${state.users[item.author.id]?.name ?: ""}님이 방에서 입장하셨습니다.")
+                                is MessageRoomEvent.MessageParent.Date ->
+                                    ChatItemType.Date(item.timestamp.toFullFormatString())
+
+                                is MessageRoomEvent.MessageParent.Img ->
+                                    ChatItemType.Else("is Image ${item.url}")
+
+                                is MessageRoomEvent.MessageParent.File ->
+                                    ChatItemType.File(
+                                        onClick = {},
+                                        isMe = item.userId == userId,
+                                        fileName = item.fileName,
+                                        fileSize = item.fileSize.toString(),
+                                    )
+
+                                is MessageRoomEvent.MessageParent.Left -> ChatItemType.Else("${state.users[item.userId]?.name ?: ""}님이 방에서 퇴장하셨습니다.")
+
+                                is MessageRoomEvent.MessageParent.Enter -> ChatItemType.Else("${state.users[item.userId]?.name ?: ""}님이 방에서 입장하셨습니다.")
+
+                                is MessageRoomEvent.MessageParent.Etc -> ChatItemType.Else(item.toString())
                             },
                         )
                     }

@@ -1,4 +1,4 @@
-package com.seugi.data.message.model.message
+package com.seugi.data.message.model
 
 import kotlinx.collections.immutable.ImmutableList
 

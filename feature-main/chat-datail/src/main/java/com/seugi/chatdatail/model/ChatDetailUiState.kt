@@ -1,8 +1,9 @@
 package com.seugi.chatdatail.model
 
 import com.seugi.data.message.model.MessageLifeType
-import com.seugi.data.message.model.message.MessageEmojiModel
-import com.seugi.data.message.model.message.MessageUserModel
+import com.seugi.data.message.model.MessageEmojiModel
+import com.seugi.data.message.model.MessageRoomEvent
+import com.seugi.data.message.model.MessageUserModel
 import java.time.LocalDateTime
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
@@ -15,7 +16,7 @@ data class ChatDetailUiState(
     val nowPage: Int = 0,
     val isInit: Boolean = false,
     val isLastPage: Boolean = false,
-    val message: ImmutableList<ChatDetailMessageState> = persistentListOf(),
+    val message: ImmutableList<MessageRoomEvent.MessageParent> = persistentListOf(),
     val users: ImmutableMap<Int, MessageUserModel> = persistentMapOf(),
 )
 

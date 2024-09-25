@@ -19,13 +19,3 @@ internal fun String.toMessageType(): MessageType = when (this) {
     "REMOVE_EMOJI" -> MessageType.REMOVE_EMOJI
     else -> MessageType.MESSAGE
 }
-
-internal fun MessageTypeResponse.toModel() = when (this.type) {
-    "MESSAGE", "FILE", "IMG", "ENTER", "LEFT" -> (this as MessageMessageResponse).toModel()
-    "SUB" -> (this as MessageSubResponse).toModel()
-    "DELETE_MESSAGE" -> (this as MessageDeleteResponse).toModel()
-    "ADD_EMOJI", "REMOVE_EMOJI" -> (this as MessageEmojiResponse).toModel()
-    else -> {
-        throw RuntimeException()
-    }
-}
