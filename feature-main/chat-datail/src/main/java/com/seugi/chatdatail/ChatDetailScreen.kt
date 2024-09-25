@@ -90,6 +90,7 @@ import com.seugi.designsystem.component.modifier.`if`
 import com.seugi.designsystem.component.textfield.SeugiChatTextField
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.ui.addFocusCleaner
+import com.seugi.ui.component.OtherProfileBottomSheet
 import com.seugi.ui.getFileName
 import com.seugi.ui.rememberKeyboardOpen
 import com.seugi.ui.uriToBitmap
@@ -102,10 +103,11 @@ import kotlinx.coroutines.launch
 internal fun ChatDetailScreen(
     viewModel: ChatDetailViewModel = hiltViewModel(),
     userId: Int,
-    workspace: String = "664bdd0b9dfce726abd30462",
+    workspaceId: String = "664bdd0b9dfce726abd30462",
     isPersonal: Boolean = false,
     chatRoomId: String = "665d9ec15e65717b19a62701",
     onNavigationVisibleChange: (Boolean) -> Unit,
+    navigateToChatDetail: (workspaceId: String, chatRoomId: String) -> Unit,
     popBackStack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -130,6 +132,7 @@ internal fun ChatDetailScreen(
 
     var isOpenSidebar by remember { mutableStateOf(false) }
     var isShowUploadDialog by remember { mutableStateOf(false) }
+
     val anchors = remember {
         DraggableAnchors {
             DragState.START at 0f
@@ -139,6 +142,9 @@ internal fun ChatDetailScreen(
 
     var resendChatItem: ChatLocalType.Failed? by remember { mutableStateOf(null) }
     var isShowReSendDialog by remember { mutableStateOf(false) }
+
+    var otherProfileState: UserModel? by remember { mutableStateOf(null) }
+    var showOtherProfileBottomSheet by remember { mutableStateOf(false) }
 
     val anchoredState = remember {
         AnchoredDraggableState(
@@ -182,6 +188,14 @@ internal fun ChatDetailScreen(
                     Toast.makeText(context, nowSideEffect.throwable.message, Toast.LENGTH_SHORT).show()
                 }
             }
+            is ChatDetailSideEffect.SuccessMoveRoom -> {
+                navigateToChatDetail(workspaceId, nowSideEffect.chatRoomId)
+            }
+            is ChatDetailSideEffect.FailedMoveRoom -> {
+                coroutineScope.launch {
+                    Toast.makeText(context, nowSideEffect.throwable.message, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
@@ -191,7 +205,7 @@ internal fun ChatDetailScreen(
             userId = userId,
             isPersonal = isPersonal,
             chatRoomId = chatRoomId,
-            workspaceId = workspace,
+            workspaceId = workspaceId,
         )
     }
 
@@ -260,6 +274,28 @@ internal fun ChatDetailScreen(
                 }
             )
         }
+    }
+
+    if (showOtherProfileBottomSheet) {
+        OtherProfileBottomSheet(
+            profile = otherProfileState?.picture,
+            name = otherProfileState?.name?: "",
+            status = "",
+            spot = "",
+            belong = "",
+            phone = "",
+            wire = "",
+            location = "",
+            onClickChat = {
+                viewModel.getPersonalChat(
+                    workspaceId = workspaceId,
+                    userId = otherProfileState?.id!!
+                )
+            },
+            onDismissRequest = {
+                showOtherProfileBottomSheet = false
+            }
+        )
     }
 
 
@@ -380,12 +416,15 @@ internal fun ChatDetailScreen(
                 Row {
                     SeugiDivider(type = DividerType.HEIGHT)
                     ChatSideBarScreen(
-                        adminId = null,
+                        adminId = state.roomInfo?.adminId,
                         members = state.roomInfo?.members ?: persistentListOf(),
                         notificationState = notificationState,
                         showLeft = !isPersonal,
                         onClickInviteMember = {},
-                        onClickMember = {},
+                        onClickMember = {
+                            otherProfileState = it
+                            showOtherProfileBottomSheet = true
+                        },
                         onClickLeft = {
                             if (!isPersonal) {
                                 viewModel.leftRoom(chatRoomId)

@@ -21,9 +21,13 @@ data class ChatRoomState(
     val id: String,
     val roomName: String,
     val members: ImmutableList<UserModel> = persistentListOf(),
+    val adminId: Int,
 )
 
 sealed interface ChatDetailSideEffect {
     data object SuccessLeft : ChatDetailSideEffect
     data class FailedLeft(val throwable: Throwable) : ChatDetailSideEffect
+
+    data class SuccessMoveRoom(val chatRoomId: String): ChatDetailSideEffect
+    data class FailedMoveRoom(val throwable: Throwable): ChatDetailSideEffect
 }

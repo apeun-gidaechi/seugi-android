@@ -54,7 +54,7 @@ class ChatDetailViewModel @Inject constructor(
     private val groupChatRepository: GroupChatRepository,
     private val profileRepository: ProfileRepository,
     private val tokenRepository: TokenRepository,
-    private val fileRepository: FileRepository
+    private val fileRepository: FileRepository,
 ) : ViewModel() {
 
     // 소켓 재연결로 인해 밀린 채팅을 저장
@@ -83,6 +83,7 @@ class ChatDetailViewModel @Inject constructor(
                 chatRoomId,
                 "",
                 members = persistentListOf(),
+                0
             ),
         )
         initProfile(workspaceId)
@@ -129,6 +130,7 @@ class ChatDetailViewModel @Inject constructor(
                             id = chatRoomId,
                             roomName = it.data.chatName,
                             members = it.data.memberList.toImmutableList(),
+                            adminId = it.data.roomAdmin
                         ),
                         users = users.toImmutableMap(),
                     )
@@ -543,6 +545,27 @@ class ChatDetailViewModel @Inject constructor(
 
     companion object {
         const val PAGE_SIZE = 20
+    }
+
+    fun getPersonalChat(workspaceId: String, userId: Int) = viewModelScope.launch {
+        // 개인 채팅방이 있을 경우 존재하는 방을 리턴하므로 중복 X
+        personalChatRepository.createChat(
+            workspaceId = workspaceId,
+            roomName = "",
+            joinUsers = listOf(userId),
+            chatRoomImg = ""
+        ).collect {
+            when (it) {
+                is Result.Success -> {
+                    _sideEffect.send(ChatDetailSideEffect.SuccessMoveRoom(it.data))
+                }
+                Result.Loading -> {}
+                is Result.Error -> {
+                    it.throwable.printStackTrace()
+                    _sideEffect.send(ChatDetailSideEffect.FailedMoveRoom(it.throwable))
+                }
+            }
+        }
     }
 }
 
