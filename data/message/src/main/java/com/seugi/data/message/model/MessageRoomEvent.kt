@@ -15,7 +15,6 @@ sealed class MessageRoomEvent(
         data class Me(
             val id: String,
             val chatRoomId: String,
-            val isFirst: Boolean,
             val isLast: Boolean,
             override val type: MessageType,
             override val userId: Int,

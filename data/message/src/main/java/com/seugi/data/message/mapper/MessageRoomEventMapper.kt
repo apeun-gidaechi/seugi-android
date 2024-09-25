@@ -29,7 +29,6 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(
                     chatRoomId = chatRoomId,
                     type = type.toMessageType(),
                     userId = userId,
-                    isFirst = false,
                     isLast = false,
                     message = message,
                     messageStatus = messageStatus,

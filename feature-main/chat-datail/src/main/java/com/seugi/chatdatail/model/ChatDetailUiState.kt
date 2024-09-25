@@ -1,14 +1,14 @@
 package com.seugi.chatdatail.model
 
-import com.seugi.data.message.model.MessageLifeType
 import com.seugi.data.message.model.MessageEmojiModel
+import com.seugi.data.message.model.MessageLifeType
 import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.data.message.model.MessageUserModel
-import java.time.LocalDateTime
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
+import java.time.LocalDateTime
 
 data class ChatDetailUiState(
     val roomInfo: ChatRoomState? = null,
@@ -25,40 +25,6 @@ data class ChatRoomState(
     val roomName: String,
     val members: ImmutableList<MessageUserModel> = persistentListOf(),
 )
-
-data class ChatDetailMessageState(
-    val id: String,
-    val chatRoomId: String,
-    val type: ChatDetailChatTypeState,
-    val author: MessageUserModel,
-    val message: String,
-    val emojiList: ImmutableList<MessageEmojiModel>,
-    val mention: ImmutableList<Int>,
-    val mentionAll: Boolean,
-    val timestamp: LocalDateTime,
-    val read: ImmutableList<Int>,
-    val messageStatus: MessageLifeType,
-    val isFirst: Boolean,
-    val isLast: Boolean,
-    val isMe: Boolean,
-) {
-    constructor(chatRoomId: String, type: ChatDetailChatTypeState, timestamp: LocalDateTime) : this(
-        id = "id",
-        chatRoomId = chatRoomId,
-        type = type,
-        author = MessageUserModel(0, "qwe", null),
-        message = "",
-        emojiList = persistentListOf(),
-        mention = persistentListOf(),
-        mentionAll = false,
-        timestamp = timestamp,
-        read = persistentListOf(),
-        messageStatus = MessageLifeType.ALIVE,
-        isFirst = false,
-        isLast = false,
-        isMe = false,
-    )
-}
 
 sealed interface ChatDetailSideEffect {
     data object SuccessLeft : ChatDetailSideEffect
