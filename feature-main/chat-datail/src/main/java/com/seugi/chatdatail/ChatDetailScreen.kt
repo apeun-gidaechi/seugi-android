@@ -382,6 +382,7 @@ internal fun ChatDetailScreen(
                     ChatSideBarScreen(
                         members = state.roomInfo?.members ?: persistentListOf(),
                         notificationState = notificationState,
+                        showLeft = !isPersonal,
                         onClickInviteMember = {},
                         onClickMember = {},
                         onClickLeft = {
@@ -610,6 +611,7 @@ private fun ChatUploadDialogItem(@DrawableRes resId: Int, title: String, onClick
 private fun ChatSideBarScreen(
     members: ImmutableList<MessageUserModel>,
     notificationState: Boolean,
+    showLeft: Boolean,
     onClickMember: (MessageUserModel) -> Unit,
     onClickInviteMember: () -> Unit,
     onClickLeft: () -> Unit,
@@ -642,12 +644,14 @@ private fun ChatSideBarScreen(
                     .padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                SeugiIconButton(
-                    resId = R.drawable.ic_logout_line,
-                    onClick = onClickLeft,
-                    size = 28.dp,
-                    colors = IconButtonDefaults.iconButtonColors(contentColor = SeugiTheme.colors.gray600),
-                )
+                if (showLeft) {
+                    SeugiIconButton(
+                        resId = R.drawable.ic_logout_line,
+                        onClick = onClickLeft,
+                        size = 28.dp,
+                        colors = IconButtonDefaults.iconButtonColors(contentColor = SeugiTheme.colors.gray600),
+                    )
+                }
                 Spacer(modifier = Modifier.weight(1f))
                 SeugiIconButton(
                     resId = if (notificationState) R.drawable.ic_notification_fill else R.drawable.ic_notification_disabled_fill,
