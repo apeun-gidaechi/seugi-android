@@ -480,10 +480,6 @@ internal fun ChatDetailScreen(
                 state = scrollState,
                 reverseLayout = true,
             ) {
-                item {
-                    SeugiChatItem(type = ChatItemType.Image({}, true, "https://i.ytimg.com/vi/3mk-DIcvVGU/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDS56nmEvkW6pS0FMpvltd9sgjB1Q"))
-                    SeugiChatItem(type = ChatItemType.Image({}, false, "https://seugi.s3.ap-northeast-2.amazonaws.com/IMG/89c6d5cb-0faa-44e0-a6c3-f01b5bced6bf-Screenshot_20240923-092931.png.png"))
-                }
                 items(messageQueueState) {
                     Column(
                         modifier = Modifier

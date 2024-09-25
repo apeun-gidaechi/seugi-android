@@ -38,6 +38,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.min
 import coil.compose.AsyncImage
 import com.seugi.designsystem.R
@@ -626,13 +627,15 @@ private fun SeugiChatItemSending(modifier: Modifier = Modifier, message: String)
 @Composable
 private fun SeugiChatItemFile(modifier: Modifier = Modifier, onClick: () -> Unit, isMe: Boolean, fileName: String, fileSize: String) {
     val chatShape = RoundedCornerShape(CHAT_SHAPE)
+
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp * 0.8f
     Row(
         modifier = modifier
-            .padding(
-                start = if (isMe) 34.dp else 8.dp,
-                end = if (isMe) 8.dp else 34.dp
+            .padding(horizontal = 8.dp)
+            .widthIn(
+                min = min(screenWidth, 128.dp),
+                max = min(screenWidth, 320.dp)
             )
-            .fillMaxWidth()
             .dropShadow(type = DropShadowType.EvBlack1)
             .background(
                 color = SeugiTheme.colors.white,
@@ -699,7 +702,6 @@ private fun SeugiChatItemImage(
     onClick: () -> Unit,
     image: String,
 ) {
-    val density = LocalDensity.current
     val configuration = LocalConfiguration.current
 
 
@@ -707,9 +709,7 @@ private fun SeugiChatItemImage(
     val bottomTextFieldHeight = 64.dp
 
     val screenWidth = configuration.screenWidthDp.dp * 0.8f
-    val screenHeight = with(density) {
-        (configuration.screenHeightDp.dp - topBarHeight - bottomTextFieldHeight) * 0.8f
-    }
+    val screenHeight = (configuration.screenHeightDp.dp - topBarHeight - bottomTextFieldHeight) * 0.8f
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = if (isMe) Arrangement.End else Arrangement.Start
