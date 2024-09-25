@@ -8,6 +8,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.joinAll
+import java.text.DecimalFormat
+import kotlin.math.floor
+import kotlin.math.ln
 
 fun <T1, T2, R> combineWhenAllComplete(flow1: Flow<T1>, flow2: Flow<T2>, transform: suspend (T1, T2) -> R): Flow<R> = flow {
     var lastValue1: T1? = null
@@ -41,4 +44,21 @@ inline fun <reified T, R> combineWhenAllComplete(vararg flows: Flow<T>, crossinl
     joinAll(*jobList.toTypedArray())
 
     emit(transform(lastValues.map { it!! }.toTypedArray()))
+}
+
+
+@Suppress("DefaultLocale")
+fun byteToFormatString(byte: Long): String {
+    if (byte < 1024) return "${byte}B" // 1KB 미만은 그대로 반환
+
+    val units = arrayOf("KB", "MB", "GB", "TB")
+    var value = byte.toDouble()
+    var unitIndex = -1
+
+    while (value >= 1024 && unitIndex < units.lastIndex) {
+        value /= 1024
+        unitIndex++
+    }
+
+    return String.format("%.1f%s", value, units[unitIndex])
 }

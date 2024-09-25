@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.provider.OpenableColumns
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.runtime.Composable
@@ -78,4 +79,30 @@ fun ContentResolver.getFileName(uri: Uri): String? {
         result = uri.lastPathSegment
     }
     return result
+}
+
+fun ContentResolver.getMimeType(uri: Uri): String? {
+    val mimeType = this.getType(uri) ?: run {
+        val extension = MimeTypeMap.getFileExtensionFromUrl(uri.toString())
+        MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+    }
+
+
+    return mimeType
+}
+
+fun ContentResolver.getUriByteArray(uri: Uri): ByteArray =
+    this.openInputStream(uri)?.readBytes()?: ByteArray(0)
+
+fun ContentResolver.getFileSize(uri: Uri): Long {
+    var fileSize: Long = -1
+    val cursor: Cursor? = query(uri, null, null, null, null)
+    cursor?.use {
+        val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+        if (sizeIndex != -1) {
+            cursor.moveToFirst()
+            fileSize = cursor.getLong(sizeIndex)
+        }
+    }
+    return fileSize
 }

@@ -15,6 +15,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import java.io.InputStream
 
 class FileRepositoryImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
@@ -31,12 +32,32 @@ class FileRepositoryImpl @Inject constructor(
     override suspend fun fileUpload(
         type: FileType,
         fileName: String,
-        byteArray: ByteArray,
+        fileMimeType: String,
+        fileByteArray: ByteArray,
     ): Flow<Result<FileModel>> = flow {
         val response = fileDataSource.fileUpload(
             type = type.name,
             fileName = fileName,
-            byteArray = byteArray
+            fileMimeType = fileMimeType,
+            byteArray = fileByteArray
+        ).safeResponse()
+
+        emit(response.toModel())
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun fileUpload(
+        type: FileType,
+        fileName: String,
+        fileMimeType: String,
+        fileInputStream: InputStream,
+    ): Flow<Result<FileModel>> = flow {
+        val response = fileDataSource.fileUpload(
+            type = type.name,
+            fileName = fileName,
+            fileMimeType = fileMimeType,
+            fileInputStream = fileInputStream
         ).safeResponse()
 
         emit(response.toModel())

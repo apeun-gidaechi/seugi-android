@@ -67,6 +67,7 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.chatdatail.model.ChatDetailSideEffect
 import com.seugi.chatdatail.model.ChatLocalType
+import com.seugi.common.utiles.byteToFormatString
 import com.seugi.common.utiles.toAmShortString
 import com.seugi.common.utiles.toFullFormatString
 import com.seugi.data.core.model.UserModel
@@ -92,11 +93,16 @@ import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.ui.addFocusCleaner
 import com.seugi.ui.component.OtherProfileBottomSheet
 import com.seugi.ui.getFileName
+import com.seugi.ui.getFileSize
+import com.seugi.ui.getMimeType
+import com.seugi.ui.getUriByteArray
 import com.seugi.ui.rememberKeyboardOpen
 import com.seugi.ui.uriToBitmap
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
+import kotlin.math.floor
+import kotlin.math.ln
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -171,6 +177,23 @@ internal fun ChatDetailScreen(
                 selectedImageBitmap = contentResolver.uriToBitmap(uri)
                 selectedFileName = contentResolver.getFileName(uri).toString()
                 Log.d("TAG", "ChatDetailScreen: $selectedFileName $selectedImageBitmap")
+            }
+        }
+    }
+
+    val fileLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+    ) { uri: Uri? ->
+        if (uri != null) {
+            coroutineScope.launch {
+                isShowUploadDialog = false
+                viewModel.channelSend(
+                    userId = userId,
+                    fileName = contentResolver.getFileName(uri).toString(),
+                    fileMimeType = contentResolver.getMimeType(uri).toString(),
+                    fileByteArray = contentResolver.getUriByteArray(uri),
+                    fileByte = contentResolver.getFileSize(uri)
+                )
             }
         }
     }
@@ -510,7 +533,6 @@ internal fun ChatDetailScreen(
                             type = when (item) {
                                 is MessageRoomEvent.MessageParent.Me -> {
                                     val count = (state.roomInfo?.members?.size ?: 0) - item.read.size
-                                    Log.d("TAG",  "${item.timestamp.toAmShortString()} ChatDetailScreen: $item")
                                     ChatItemType.Me(
                                         isLast = item.isLast,
                                         message = item.message,
@@ -549,7 +571,7 @@ internal fun ChatDetailScreen(
                                         onClick = {},
                                         isMe = item.userId == userId,
                                         fileName = item.fileName,
-                                        fileSize = item.fileSize.toString(),
+                                        fileSize = byteToFormatString(item.fileSize),
                                     )
 
                                 is MessageRoomEvent.MessageParent.Left -> ChatItemType.Else("${state.users[item.userId]?.name ?: ""}님이 방에서 퇴장하셨습니다.")
@@ -570,7 +592,9 @@ internal fun ChatDetailScreen(
                     isShowUploadDialog = false
                     Log.d("TAG", "ChatDetailScreen: dismiss")
                 },
-                onFileUploadClick = {},
+                onFileUploadClick = {
+                    fileLauncher.launch("*/*")
+                },
                 onImageUploadClick = {
                     galleryLauncher.launch("image/*")
                 },

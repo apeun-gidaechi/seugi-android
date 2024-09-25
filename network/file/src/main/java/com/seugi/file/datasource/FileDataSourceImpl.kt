@@ -10,15 +10,19 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.onUpload
 import io.ktor.client.request.forms.FormPart
+import io.ktor.client.request.forms.InputProvider
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
+import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.utils.io.core.buildPacket
 import io.ktor.utils.io.core.writeFully
+import io.ktor.utils.io.streams.asInput
 import java.io.File
+import java.io.InputStream
 import javax.inject.Inject
 
 class FileDataSourceImpl @Inject constructor(
@@ -44,13 +48,13 @@ class FileDataSourceImpl @Inject constructor(
         }
     }.body()
 
-    override suspend fun fileUpload(type: String, fileName: String, byteArray: ByteArray,): BaseResponse<FileResponse> =
+    override suspend fun fileUpload(type: String, fileName: String, fileMimeType: String, byteArray: ByteArray,): BaseResponse<FileResponse> =
         httpClient.post("${SeugiUrl.File.FILE_UPLOAD}/$type") {
             setBody(
                 MultiPartFormDataContent(
                     formData {
                         append("file", byteArray, Headers.build {
-                            append(HttpHeaders.ContentType, "image/*")
+                            append(HttpHeaders.ContentType, fileMimeType)
                             append(HttpHeaders.ContentDisposition, "filename=\"${fileName}\"")
                         })
                     }
@@ -60,4 +64,24 @@ class FileDataSourceImpl @Inject constructor(
                 Log.d("FILE UPLOAD", "Sent $bytesSentTotal bytes from $contentLength")
             }
         }.body()
+
+    override suspend fun fileUpload(
+        type: String,
+        fileName: String,
+        fileMimeType: String,
+        fileStream: InputStream,
+    ): BaseResponse<FileResponse> =
+        httpClient.submitFormWithBinaryData(
+            url = "${SeugiUrl.File.FILE_UPLOAD}/$type",
+            formData = formData {
+                append(
+                    key = "file",
+                    value = InputProvider { fileStream.asInput() },
+                    headers = Headers.build {
+                        append(HttpHeaders.ContentType, fileMimeType)  // MIME 타입 설정
+                        append(HttpHeaders.ContentDisposition, "filename=\"$fileName\"")
+                    }
+                )
+            }
+        ).body()
 }

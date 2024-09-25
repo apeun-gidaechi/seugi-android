@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.InputStream
 import java.net.SocketException
 import java.time.Duration
 import java.time.LocalDateTime
@@ -231,7 +232,8 @@ class ChatDetailViewModel @Inject constructor(
             fileRepository.fileUpload(
                 type = FileType.IMG,
                 fileName = title,
-                byteArray = content.toByteArray()
+                fileMimeType = "image/*",
+                fileByteArray = content.toByteArray()
             ).collect {
                 when (it) {
                     is Result.Success -> {
@@ -239,6 +241,35 @@ class ChatDetailViewModel @Inject constructor(
                             userId = userId,
                             content = "${it.data.url}::${title}",
                             type = MessageType.IMG
+                        )
+                    }
+                    Result.Loading -> {}
+                    is Result.Error -> {}
+                }
+            }
+        }
+    }
+
+    fun channelSend(
+        userId: Int,
+        fileByteArray: ByteArray,
+        fileMimeType: String,
+        fileName: String,
+        fileByte: Long
+    ) {
+        viewModelScope.launch {
+            fileRepository.fileUpload(
+                type = FileType.FILE,
+                fileName = fileName,
+                fileMimeType = fileMimeType,
+                fileByteArray = fileByteArray
+            ).collect {
+                when (it) {
+                    is Result.Success -> {
+                        channelSend(
+                            userId = userId,
+                            content = "${it.data.url}::${fileName}::${fileByte}",
+                            type = MessageType.FILE
                         )
                     }
                     Result.Loading -> {}
