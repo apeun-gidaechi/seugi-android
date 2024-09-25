@@ -12,12 +12,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -28,9 +32,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
+import coil.compose.AsyncImage
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.AlphaIndication
 import com.seugi.designsystem.animation.bounceClick
@@ -93,6 +102,12 @@ sealed interface ChatItemType {
         val isMe: Boolean,
         val fileName: String,
         val fileSize: String,
+    ): ChatItemType
+
+    data class Image(
+        val onClick: () -> Unit,
+        val isMe: Boolean,
+        val image: String
     ): ChatItemType
 }
 
@@ -171,6 +186,13 @@ fun SeugiChatItem(
                 isMe = type.isMe,
                 fileName = type.fileName,
                 fileSize = type.fileSize
+            )
+        }
+        is ChatItemType.Image -> {
+            SeugiChatItemImage(
+                onClick = type.onClick,
+                isMe = type.isMe,
+                image = type.image
             )
         }
     }
@@ -601,7 +623,6 @@ private fun SeugiChatItemSending(modifier: Modifier = Modifier, message: String)
 }
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SeugiChatItemFile(modifier: Modifier = Modifier, onClick: () -> Unit, isMe: Boolean, fileName: String, fileSize: String) {
     val chatShape = RoundedCornerShape(CHAT_SHAPE)
@@ -668,6 +689,57 @@ private fun SeugiChatItemFile(modifier: Modifier = Modifier, onClick: () -> Unit
             contentDescription = "다운로드 아이콘",
             colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500)
         )
+    }
+}
+
+@Composable
+private fun SeugiChatItemImage(
+    modifier: Modifier = Modifier,
+    isMe: Boolean,
+    onClick: () -> Unit,
+    image: String,
+) {
+    val density = LocalDensity.current
+    val configuration = LocalConfiguration.current
+
+
+    val topBarHeight = 54.dp
+    val bottomTextFieldHeight = 64.dp
+
+    val screenWidth = configuration.screenWidthDp.dp * 0.8f
+    val screenHeight = with(density) {
+        (configuration.screenHeightDp.dp - topBarHeight - bottomTextFieldHeight) * 0.8f
+    }
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = if (isMe) Arrangement.End else Arrangement.Start
+    ) {
+        Row(
+            modifier = modifier
+                .padding(
+                    horizontal = 8.dp
+                )
+                .clip(RoundedCornerShape(12.dp))
+                .bounceClick(onClick),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            AsyncImage(
+                modifier = Modifier
+                    .widthIn(
+                        min = min(screenWidth, 128.dp),
+                        max = min(screenWidth, 320.dp)
+                    )
+                    .heightIn(
+                        min = min(40.dp, screenHeight),
+                        max = min(300.dp, screenHeight)
+                    )
+                    .wrapContentSize(),
+                model = image,
+                contentDescription = null,
+                contentScale = ContentScale.FillHeight
+            )
+        }
     }
 }
 
