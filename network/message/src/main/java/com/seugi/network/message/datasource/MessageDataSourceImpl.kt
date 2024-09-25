@@ -55,15 +55,6 @@ class MessageDataSourceImpl @Inject constructor(
     override suspend fun getMessage(chatRoomId: String, page: Int, size: Int): BaseResponse<MessageLoadResponse> =
         httpClient.get("${SeugiUrl.Message.GET_MESSAGE}/$chatRoomId?page=$page&size=$size").body<BaseResponse<MessageLoadResponse>>()
 
-    override suspend fun loadRoomInfo(isPersonal: Boolean, roomId: String): BaseResponse<MessageRoomResponse> {
-        val url = "${SeugiUrl.Chat.ROOT}/${if (isPersonal) "personal" else "group"}/search/room/$roomId"
-        return httpClient.get(url).body()
-    }
-
-    override suspend fun loadRoomMember(roomId: String): BaseResponse<MessageRoomMemberResponse> = httpClient.get("${SeugiUrl.Chat.LOAD_MEMBER}/$roomId").body()
-
-    override suspend fun leftRoom(chatRoomId: String): BaseResponse<Unit?> = httpClient.patch("${SeugiUrl.Chat.LEFT}/$chatRoomId").body()
-
     override suspend fun collectStompLifecycle(): Flow<MessageStompLifecycleResponse> = flow {
         stompClient.lifecycle().asFlow().collect {
             when (it.type) {

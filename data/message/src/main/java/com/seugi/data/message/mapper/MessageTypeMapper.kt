@@ -17,5 +17,6 @@ internal fun String.toMessageType(): MessageType = when (this) {
     "DELETE_MESSAGE" -> MessageType.DELETE_MESSAGE
     "ADD_EMOJI" -> MessageType.ADD_EMOJI
     "REMOVE_EMOJI" -> MessageType.REMOVE_EMOJI
+    "TRANSFER_ADMIN" -> MessageType.TRANSFER_ADMIN
     else -> MessageType.MESSAGE
 }

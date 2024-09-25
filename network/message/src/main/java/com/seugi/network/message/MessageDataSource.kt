@@ -22,11 +22,5 @@ interface MessageDataSource {
 
     suspend fun getMessage(chatRoomId: String, page: Int, size: Int): BaseResponse<MessageLoadResponse>
 
-    suspend fun loadRoomInfo(isPersonal: Boolean, roomId: String): BaseResponse<MessageRoomResponse>
-
-    suspend fun loadRoomMember(roomId: String): BaseResponse<MessageRoomMemberResponse>
-
-    suspend fun leftRoom(chatRoomId: String): BaseResponse<Unit?>
-
     suspend fun collectStompLifecycle(): Flow<MessageStompLifecycleResponse>
 }

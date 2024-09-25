@@ -69,9 +69,9 @@ import com.seugi.chatdatail.model.ChatDetailSideEffect
 import com.seugi.chatdatail.model.ChatLocalType
 import com.seugi.common.utiles.toAmShortString
 import com.seugi.common.utiles.toFullFormatString
+import com.seugi.data.core.model.UserModel
 import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.data.message.model.MessageType
-import com.seugi.data.message.model.MessageUserModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.DividerType
@@ -380,6 +380,7 @@ internal fun ChatDetailScreen(
                 Row {
                     SeugiDivider(type = DividerType.HEIGHT)
                     ChatSideBarScreen(
+                        adminId = null,
                         members = state.roomInfo?.members ?: persistentListOf(),
                         notificationState = notificationState,
                         showLeft = !isPersonal,
@@ -481,7 +482,7 @@ internal fun ChatDetailScreen(
                                         isFirst = item.isFirst,
                                         isLast = item.isLast,
                                         userName = userInfo?.name ?: "",
-                                        userProfile = userInfo?.profile,
+                                        userProfile = userInfo?.picture,
                                         message = item.message,
                                         createdAt = item.timestamp.toAmShortString(),
                                         count = if (count <= 0) null else count,
@@ -609,10 +610,11 @@ private fun ChatUploadDialogItem(@DrawableRes resId: Int, title: String, onClick
 
 @Composable
 private fun ChatSideBarScreen(
-    members: ImmutableList<MessageUserModel>,
+    adminId: Int?,
+    members: ImmutableList<UserModel>,
     notificationState: Boolean,
     showLeft: Boolean,
-    onClickMember: (MessageUserModel) -> Unit,
+    onClickMember: (UserModel) -> Unit,
     onClickInviteMember: () -> Unit,
     onClickLeft: () -> Unit,
     onClickNotification: () -> Unit,
@@ -687,7 +689,8 @@ private fun ChatSideBarScreen(
             items(members) {
                 SeugiMemberList(
                     userName = it.name,
-                    userProfile = it.profile,
+                    userProfile = it.picture,
+                    isCrown = it.id == adminId,
                     onClick = {
                         onClickMember(it)
                     },

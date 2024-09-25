@@ -4,11 +4,12 @@ import com.seugi.common.model.Result
 import com.seugi.common.model.asResult
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
+import com.seugi.data.core.mapper.toModel
 import com.seugi.data.core.mapper.toModels
 import com.seugi.data.core.model.ChatRoomModel
-import com.seugi.data.personalchat.PersonalChatDataSource
 import com.seugi.data.personalchat.PersonalChatRepository
 import com.seugi.network.core.response.safeResponse
+import com.seugi.network.personalchat.PersonalChatDataSource
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -35,6 +36,16 @@ class PersonalChatRepositoryImpl @Inject constructor(
         ).safeResponse()
 
         emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun getChat(roomId: String): Flow<Result<ChatRoomModel>> = flow{
+        val response = dataSource.getChat(
+            roomId = roomId
+        ).safeResponse()
+
+        emit(response.toModel())
     }
         .flowOn(dispatcher)
         .asResult()
