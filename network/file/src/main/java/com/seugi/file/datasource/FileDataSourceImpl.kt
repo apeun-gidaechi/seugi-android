@@ -3,6 +3,7 @@ package com.seugi.file.datasource
 import android.graphics.Bitmap
 import android.util.Log
 import com.seugi.file.FileDataSource
+import com.seugi.file.response.FileResponse
 import com.seugi.network.core.SeugiUrl
 import com.seugi.network.core.response.BaseResponse
 import io.ktor.client.HttpClient
@@ -23,7 +24,7 @@ import javax.inject.Inject
 class FileDataSourceImpl @Inject constructor(
     private val httpClient: HttpClient,
 ) : FileDataSource {
-    override suspend fun fileUpload(type: String, file: String): BaseResponse<String> = httpClient.post(urlString = "${SeugiUrl.File.FILE_UPLOAD}/$type") {
+    override suspend fun fileUpload(type: String, file: String): BaseResponse<FileResponse> = httpClient.post(urlString = "${SeugiUrl.File.FILE_UPLOAD}/$type") {
         setBody(
             MultiPartFormDataContent(
                 formData {
@@ -43,7 +44,7 @@ class FileDataSourceImpl @Inject constructor(
         }
     }.body()
 
-    override suspend fun fileUpload(type: String, fileName: String, byteArray: ByteArray,): BaseResponse<String> =
+    override suspend fun fileUpload(type: String, fileName: String, byteArray: ByteArray,): BaseResponse<FileResponse> =
         httpClient.post("${SeugiUrl.File.FILE_UPLOAD}/$type") {
             setBody(
                 MultiPartFormDataContent(
