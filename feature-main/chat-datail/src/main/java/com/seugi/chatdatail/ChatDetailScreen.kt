@@ -55,6 +55,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -101,8 +102,6 @@ import com.seugi.ui.uriToBitmap
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
-import kotlin.math.floor
-import kotlin.math.ln
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -146,7 +145,7 @@ internal fun ChatDetailScreen(
         }
     }
 
-    var resendChatItem: ChatLocalType.Failed? by remember { mutableStateOf(null) }
+    var resendChatItem: ChatLocalType? by remember { mutableStateOf(null) }
     var isShowReSendDialog by remember { mutableStateOf(false) }
 
     var otherProfileState: UserModel? by remember { mutableStateOf(null) }
@@ -282,17 +281,61 @@ internal fun ChatDetailScreen(
             ResendDialog(
                 onClickDelete = {
                     viewModel.deleteFailedSend(
-                        content = resendChatItem?.text?: "",
                         uuid = resendChatItem?.uuid?: ""
                     )
                     isShowReSendDialog = false
                 },
                 onClickResend = {
-                    viewModel.channelResend(
-                        userId = userId,
-                        content = resendChatItem?.text?: "",
-                        uuid = resendChatItem?.uuid?: ""
-                    )
+                    when (resendChatItem) {
+                        is ChatLocalType.FailedText -> {
+                            val it = resendChatItem as ChatLocalType.FailedText
+                            viewModel.channelResend(
+                                userId = userId,
+                                content = it.text,
+                                uuid = it.uuid
+                            )
+                        }
+                        is ChatLocalType.FailedImgSend -> {
+                            val it = resendChatItem as ChatLocalType.FailedImgSend
+                            viewModel.channelResend(
+                                userId = userId,
+                                content = "${it.image}::${it.fileName}",
+                                uuid = it.uuid,
+                                type = MessageType.IMG
+                            )
+                        }
+                        is ChatLocalType.FailedImgUpload -> {
+                            val it = resendChatItem as ChatLocalType.FailedImgUpload
+                            viewModel.channelReSend(
+                                userId = userId,
+                                image = it.image,
+                                fileName = it.fileName,
+                                uuid = it.uuid
+                            )
+                        }
+                        is ChatLocalType.FailedFileSend -> {
+                            val it = resendChatItem as ChatLocalType.FailedFileSend
+                            viewModel.channelResend(
+                                userId = userId,
+                                content = "${it.fileUrl}::${it.fileName}::${it.fileByte}",
+                                uuid = it.uuid,
+                                type = MessageType.FILE
+                            )
+                        }
+                        is ChatLocalType.FailedFileUpload -> {
+                            val it = resendChatItem as ChatLocalType.FailedFileUpload
+                            viewModel.channelResend(
+                                userId = userId,
+                                fileName = it.fileName,
+                                fileMimeType = it.fileMimeType,
+                                fileByteArray = it.fileByteArray,
+                                fileByte = it.fileByte,
+                                uuid = it.uuid
+                            )
+
+                        }
+                        else -> {}
+                    }
                     isShowReSendDialog = false
                 }
             )
@@ -414,8 +457,8 @@ internal fun ChatDetailScreen(
                             if (selectedImageBitmap != null) {
                                 viewModel.channelSend(
                                     userId = userId,
-                                    content = selectedImageBitmap!!,
-                                    title = selectedFileName
+                                    image = selectedImageBitmap!!,
+                                    fileName = selectedFileName
                                 )
                                 selectedFileName = ""
                                 selectedImageBitmap = null
@@ -489,21 +532,87 @@ internal fun ChatDetailScreen(
                             ),
                         horizontalAlignment = Alignment.End
                     ) {
+                        val onClickRetry: (ChatLocalType) -> Unit = {
+                            resendChatItem = it
+                            isShowReSendDialog = true
+                        }
                         when (it) {
-                            is ChatLocalType.Send -> {
+                            is ChatLocalType.SendText -> {
                                 SeugiChatItem(
                                     type = ChatItemType.Sending(message = it.text),
                                 )
                             }
-                            is ChatLocalType.Failed -> {
+                            is ChatLocalType.FailedText -> {
                                 SeugiChatItem(
                                     type = ChatItemType.Failed(
                                         message = it.text,
-                                        onClickRetry = {
-                                            resendChatItem = it
-                                            isShowReSendDialog = true
-                                        }
+                                        onClickRetry = { onClickRetry(it) }
                                     ),
+                                )
+                            }
+                            is ChatLocalType.SendFile -> {
+                                SeugiChatItem(
+                                    type = ChatItemType.FileSending(
+                                        fileName = it.fileName,
+                                        fileSize = byteToFormatString(it.fileByte)
+                                    )
+                                )
+                            }
+                            is ChatLocalType.FailedFileUpload -> {
+                                SeugiChatItem(
+                                    type = ChatItemType.FileFailed(
+                                        onClickRetry = { onClickRetry(it) },
+                                        fileName = it.fileName,
+                                        fileSize = byteToFormatString(it.fileByte)
+                                    ),
+                                )
+                            }
+                            is ChatLocalType.FailedFileSend -> {
+                                SeugiChatItem(
+                                    type = ChatItemType.FileFailed(
+                                        onClickRetry = { onClickRetry(it) },
+                                        fileName = it.fileName,
+                                        fileSize = byteToFormatString(it.fileByte)
+                                    ),
+                                )
+                            }
+                            is ChatLocalType.SendImg -> {
+                                SeugiChatItem(
+                                    type = ChatItemType.ImageSending(
+                                        image = it.image.asImageBitmap()
+                                    )
+                                )
+                            }
+                            is ChatLocalType.FailedImgUpload -> {
+                                SeugiChatItem(
+                                    type = ChatItemType.ImageFailedBitmap(
+                                        onClickRetry = { onClickRetry(it) },
+                                        image = it.image.asImageBitmap()
+                                    )
+                                )
+                            }
+                            is ChatLocalType.FailedImgSend -> {
+                                SeugiChatItem(
+                                    type = ChatItemType.ImageFailedUrl(
+                                        onClickRetry = { onClickRetry(it) },
+                                        image = it.image
+                                    )
+                                )
+                            }
+
+                            is ChatLocalType.SendFileUrl -> {
+                                SeugiChatItem(
+                                    type = ChatItemType.FileSending(
+                                        fileName = it.fileName,
+                                        fileSize = byteToFormatString(it.fileByte)
+                                    )
+                                )
+                            }
+                            is ChatLocalType.SendImgUrl -> {
+                                SeugiChatItem(
+                                    type = ChatItemType.ImageSendingUrl(
+                                        image = it.image,
+                                    )
                                 )
                             }
                         }

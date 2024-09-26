@@ -1,5 +1,6 @@
 package com.seugi.designsystem.component.chat
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,13 +32,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.min
 import coil.compose.AsyncImage
 import com.seugi.designsystem.R
@@ -105,11 +104,41 @@ sealed interface ChatItemType {
         val fileSize: String,
     ): ChatItemType
 
+    data class FileFailed(
+        val onClickRetry: () -> Unit,
+        val fileName: String,
+        val fileSize: String,
+    ): ChatItemType
+
+    data class FileSending(
+        val fileName: String,
+        val fileSize: String,
+    ): ChatItemType
+
     data class Image(
         val onClick: () -> Unit,
         val isMe: Boolean,
         val image: String
     ): ChatItemType
+
+    data class ImageFailedUrl(
+        val onClickRetry: () -> Unit,
+        val image: String
+    ): ChatItemType
+
+    data class ImageFailedBitmap(
+        val onClickRetry: () -> Unit,
+        val image: ImageBitmap
+    ): ChatItemType
+
+    data class ImageSending(
+        val image: ImageBitmap
+    ): ChatItemType
+
+    data class ImageSendingUrl(
+        val image: String
+    ): ChatItemType
+
 }
 
 @Composable
@@ -189,10 +218,53 @@ fun SeugiChatItem(
                 fileSize = type.fileSize
             )
         }
+        is ChatItemType.FileFailed -> {
+            SeugiChatItemFileFailed(
+                modifier = modifier,
+                onClickRetry = type.onClickRetry,
+                fileName = type.fileName,
+                fileSize = type.fileSize
+            )
+        }
+        is ChatItemType.FileSending -> {
+            SeugiChatItemFileSending(
+                modifier = modifier,
+                fileName = type.fileName,
+                fileSize = type.fileSize
+            )
+        }
         is ChatItemType.Image -> {
             SeugiChatItemImage(
+                modifier = modifier,
                 onClick = type.onClick,
                 isMe = type.isMe,
+                image = type.image
+            )
+        }
+
+        is ChatItemType.ImageFailedBitmap -> {
+            SeugiChatItemImageFailed(
+                modifier = modifier,
+                onClickRetry = type.onClickRetry,
+                image = type.image
+            )
+        }
+        is ChatItemType.ImageFailedUrl -> {
+            SeugiChatItemImageFailed(
+                onClickRetry = type.onClickRetry,
+                image = type.image
+            )
+        }
+        is ChatItemType.ImageSending -> {
+            SeugiChatItemImageSending(
+                modifier = modifier,
+                image = type.image
+            )
+        }
+
+        is ChatItemType.ImageSendingUrl -> {
+            SeugiChatItemImageSending(
+                modifier = modifier,
                 image = type.image
             )
         }
@@ -514,38 +586,9 @@ private fun SeugiChatItemFailed(modifier: Modifier = Modifier, message: String, 
         modifier = modifier,
         verticalAlignment = Alignment.Bottom,
     ) {
-        Row(
-            modifier = Modifier
-                .border(
-                    width = 1.dp,
-                    color = SeugiTheme.colors.gray200,
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .bounceClick(onClickRetry)
-        ) {
-            Image(
-                modifier = Modifier
-                    .padding(6.dp)
-                    .size(16.dp),
-                painter = painterResource(id = R.drawable.ic_refresh_fill),
-                contentDescription = "다시하기",
-                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray800)
-            )
-            Box(
-                modifier = Modifier
-                    .width(1.dp)
-                    .height(28.dp)
-                    .background(SeugiTheme.colors.gray200)
-            )
-            Image(
-                modifier = Modifier
-                    .padding(6.dp)
-                    .size(16.dp),
-                painter = painterResource(id = R.drawable.ic_close_line),
-                contentDescription = "다시하기",
-                colorFilter = ColorFilter.tint(SeugiTheme.colors.red500)
-            )
-        }
+        ChatItemRetryIcon(
+            onClickRetry = onClickRetry
+        )
         Spacer(modifier = Modifier.width(8.dp))
         Box(
             modifier = Modifier
@@ -587,14 +630,7 @@ private fun SeugiChatItemSending(modifier: Modifier = Modifier, message: String)
         modifier = modifier,
         verticalAlignment = Alignment.Bottom,
     ) {
-        Image(
-            modifier = Modifier
-                .size(20.dp)
-                .rotate(-90f),
-            painter = painterResource(id = R.drawable.ic_send_fill),
-            contentDescription = "보내는 중",
-            colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400)
-        )
+        ChatItemSendIcon()
         Spacer(modifier = Modifier.width(8.dp))
         Box(
             modifier = Modifier
@@ -696,7 +732,168 @@ private fun SeugiChatItemFile(modifier: Modifier = Modifier, onClick: () -> Unit
 }
 
 @Composable
-private fun SeugiChatItemImage(
+private fun SeugiChatItemFileFailed(
+    modifier: Modifier = Modifier,
+    onClickRetry: () -> Unit,
+    fileName: String,
+    fileSize: String,
+) {
+    val chatShape = RoundedCornerShape(CHAT_SHAPE)
+
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp * 0.8f
+    Row(
+        verticalAlignment = Alignment.Bottom
+    ) {
+        ChatItemRetryIcon(onClickRetry = onClickRetry)
+        Spacer(modifier = Modifier.width(8.dp))
+        Row(
+            modifier = modifier
+                .padding(horizontal = 8.dp)
+                .widthIn(
+                    min = min(screenWidth, 128.dp),
+                    max = min(screenWidth, 320.dp)
+                )
+                .dropShadow(type = DropShadowType.EvBlack1)
+                .background(
+                    color = SeugiTheme.colors.white,
+                    shape = chatShape
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(
+                        start = 12.dp,
+                        top = 14.dp,
+                        bottom = 14.dp
+                    )
+                    .background(
+                        color = SeugiTheme.colors.primary500,
+                        shape = CircleShape
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .size(24.dp),
+                    painter = painterResource(id = R.drawable.ic_file_line),
+                    contentDescription = "파일 아이콘",
+                    colorFilter = ColorFilter.tint(SeugiTheme.colors.white)
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Column(
+                modifier = Modifier
+                    .weight(1f),
+            ) {
+                Text(
+                    text = fileName,
+                    color = SeugiTheme.colors.black,
+                    style = SeugiTheme.typography.body1,
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = fileSize,
+                    color = SeugiTheme.colors.gray500,
+                    style = SeugiTheme.typography.caption2,
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Image(
+                modifier = Modifier
+                    .padding(end = 12.dp)
+                    .size(24.dp),
+                painter = painterResource(id = R.drawable.ic_expand_stop_down_line),
+                contentDescription = "다운로드 아이콘",
+                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500)
+            )
+        }
+    }
+}
+
+@Composable
+private fun SeugiChatItemFileSending(
+    modifier: Modifier = Modifier,
+    fileName: String,
+    fileSize: String,
+) {
+    val chatShape = RoundedCornerShape(CHAT_SHAPE)
+
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp * 0.8f
+    Row(
+        verticalAlignment = Alignment.Bottom
+    ) {
+        ChatItemSendIcon()
+        Spacer(modifier = Modifier.width(8.dp))
+        Row(
+            modifier = modifier
+                .padding(horizontal = 8.dp)
+                .widthIn(
+                    min = min(screenWidth, 128.dp),
+                    max = min(screenWidth, 320.dp)
+                )
+                .dropShadow(type = DropShadowType.EvBlack1)
+                .background(
+                    color = SeugiTheme.colors.white,
+                    shape = chatShape
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Box(
+                modifier = Modifier
+                    .padding(
+                        start = 12.dp,
+                        top = 14.dp,
+                        bottom = 14.dp
+                    )
+                    .background(
+                        color = SeugiTheme.colors.primary500,
+                        shape = CircleShape
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .size(24.dp),
+                    painter = painterResource(id = R.drawable.ic_file_line),
+                    contentDescription = "파일 아이콘",
+                    colorFilter = ColorFilter.tint(SeugiTheme.colors.white)
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Column(
+                modifier = Modifier
+                    .weight(1f),
+            ) {
+                Text(
+                    text = fileName,
+                    color = SeugiTheme.colors.black,
+                    style = SeugiTheme.typography.body1,
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = fileSize,
+                    color = SeugiTheme.colors.gray500,
+                    style = SeugiTheme.typography.caption2,
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Image(
+                modifier = Modifier
+                    .padding(end = 12.dp)
+                    .size(24.dp),
+                painter = painterResource(id = R.drawable.ic_expand_stop_down_line),
+                contentDescription = "다운로드 아이콘",
+                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500)
+            )
+        }
+    }
+}
+
+@Composable
+fun SeugiChatItemImage(
     modifier: Modifier = Modifier,
     isMe: Boolean,
     onClick: () -> Unit,
@@ -712,7 +909,8 @@ private fun SeugiChatItemImage(
     val screenHeight = (configuration.screenHeightDp.dp - topBarHeight - bottomTextFieldHeight) * 0.8f
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = if (isMe) Arrangement.End else Arrangement.Start
+        horizontalArrangement = if (isMe) Arrangement.End else Arrangement.Start,
+        verticalAlignment = Alignment.Bottom
     ) {
         Row(
             modifier = modifier
@@ -740,6 +938,258 @@ private fun SeugiChatItemImage(
                 contentScale = ContentScale.FillHeight
             )
         }
+    }
+}
+
+@Composable
+fun SeugiChatItemImageFailed(
+    modifier: Modifier = Modifier,
+    onClickRetry: () -> Unit,
+    image: ImageBitmap,
+) {
+    val configuration = LocalConfiguration.current
+
+
+    val topBarHeight = 54.dp
+    val bottomTextFieldHeight = 64.dp
+
+    val screenWidth = configuration.screenWidthDp.dp * 0.8f
+    val screenHeight = (configuration.screenHeightDp.dp - topBarHeight - bottomTextFieldHeight) * 0.8f
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.Bottom
+    ) {
+        ChatItemRetryIcon(
+            onClickRetry = onClickRetry
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Row(
+            modifier = modifier
+                .padding(
+                    horizontal = 8.dp
+                )
+                .clip(RoundedCornerShape(12.dp)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Image(
+                modifier = Modifier
+                    .widthIn(
+                        min = min(screenWidth, 128.dp),
+                        max = min(screenWidth, 320.dp)
+                    )
+                    .heightIn(
+                        min = min(40.dp, screenHeight),
+                        max = min(300.dp, screenHeight)
+                    )
+                    .wrapContentSize(),
+                bitmap = image,
+                contentDescription = null,
+                contentScale = ContentScale.FillHeight
+            )
+        }
+    }
+}
+
+@Composable
+fun SeugiChatItemImageFailed(
+    modifier: Modifier = Modifier,
+    onClickRetry: () -> Unit,
+    image: String,
+) {
+    val configuration = LocalConfiguration.current
+
+
+    val topBarHeight = 54.dp
+    val bottomTextFieldHeight = 64.dp
+
+    val screenWidth = configuration.screenWidthDp.dp * 0.8f
+    val screenHeight = (configuration.screenHeightDp.dp - topBarHeight - bottomTextFieldHeight) * 0.8f
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.Bottom
+    ) {
+        ChatItemRetryIcon(
+            onClickRetry = onClickRetry
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Row(
+            modifier = modifier
+                .padding(
+                    horizontal = 8.dp
+                )
+                .clip(RoundedCornerShape(12.dp)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            AsyncImage(
+                modifier = Modifier
+                    .widthIn(
+                        min = min(screenWidth, 128.dp),
+                        max = min(screenWidth, 320.dp)
+                    )
+                    .heightIn(
+                        min = min(40.dp, screenHeight),
+                        max = min(300.dp, screenHeight)
+                    )
+                    .wrapContentSize(),
+                model = image,
+                contentDescription = null,
+                contentScale = ContentScale.FillHeight
+            )
+        }
+    }
+}
+
+@Composable
+fun SeugiChatItemImageSending(
+    modifier: Modifier = Modifier,
+    image: ImageBitmap,
+) {
+    val configuration = LocalConfiguration.current
+
+
+    val topBarHeight = 54.dp
+    val bottomTextFieldHeight = 64.dp
+
+    val screenWidth = configuration.screenWidthDp.dp * 0.8f
+    val screenHeight = (configuration.screenHeightDp.dp - topBarHeight - bottomTextFieldHeight) * 0.8f
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.Bottom
+    ) {
+        ChatItemSendIcon()
+        Spacer(modifier = Modifier.width(8.dp))
+        Row(
+            modifier = modifier
+                .padding(
+                    horizontal = 8.dp
+                )
+                .clip(RoundedCornerShape(12.dp)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Image(
+                modifier = Modifier
+                    .widthIn(
+                        min = min(screenWidth, 128.dp),
+                        max = min(screenWidth, 320.dp)
+                    )
+                    .heightIn(
+                        min = min(40.dp, screenHeight),
+                        max = min(300.dp, screenHeight)
+                    )
+                    .wrapContentSize(),
+                bitmap = image,
+                contentDescription = null,
+                contentScale = ContentScale.FillHeight
+            )
+        }
+    }
+}
+
+@Composable
+fun SeugiChatItemImageSending(
+    modifier: Modifier = Modifier,
+    image: String,
+) {
+    val configuration = LocalConfiguration.current
+
+
+    val topBarHeight = 54.dp
+    val bottomTextFieldHeight = 64.dp
+
+    val screenWidth = configuration.screenWidthDp.dp * 0.8f
+    val screenHeight = (configuration.screenHeightDp.dp - topBarHeight - bottomTextFieldHeight) * 0.8f
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.Bottom
+    ) {
+        ChatItemSendIcon()
+        Spacer(modifier = Modifier.width(8.dp))
+        Row(
+            modifier = modifier
+                .padding(
+                    horizontal = 8.dp
+                )
+                .clip(RoundedCornerShape(12.dp)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            AsyncImage(
+                modifier = Modifier
+                    .widthIn(
+                        min = min(screenWidth, 128.dp),
+                        max = min(screenWidth, 320.dp)
+                    )
+                    .heightIn(
+                        min = min(40.dp, screenHeight),
+                        max = min(300.dp, screenHeight)
+                    )
+                    .wrapContentSize(),
+                model = image,
+                contentDescription = null,
+                contentScale = ContentScale.FillHeight
+            )
+        }
+    }
+}
+
+
+@Composable
+private fun ChatItemSendIcon(
+    modifier: Modifier = Modifier
+) {
+    Image(
+        modifier = modifier
+            .size(20.dp)
+            .rotate(-90f),
+        painter = painterResource(id = R.drawable.ic_send_fill),
+        contentDescription = "보내는 중",
+        colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400)
+    )
+}
+
+@Composable
+private fun ChatItemRetryIcon(
+    modifier: Modifier = Modifier,
+    onClickRetry: () -> Unit
+) {
+    Row(
+        modifier = modifier
+            .border(
+                width = 1.dp,
+                color = SeugiTheme.colors.gray200,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .bounceClick(onClickRetry)
+    ) {
+        Image(
+            modifier = Modifier
+                .padding(6.dp)
+                .size(16.dp),
+            painter = painterResource(id = R.drawable.ic_refresh_fill),
+            contentDescription = "다시하기",
+            colorFilter = ColorFilter.tint(SeugiTheme.colors.gray800)
+        )
+        Box(
+            modifier = Modifier
+                .width(1.dp)
+                .height(28.dp)
+                .background(SeugiTheme.colors.gray200)
+        )
+        Image(
+            modifier = Modifier
+                .padding(6.dp)
+                .size(16.dp),
+            painter = painterResource(id = R.drawable.ic_close_line),
+            contentDescription = "다시하기",
+            colorFilter = ColorFilter.tint(SeugiTheme.colors.red500)
+        )
     }
 }
 

@@ -69,7 +69,8 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(
                 fileName = text[1],
                 timestamp = timestamp,
                 type = type.toMessageType(),
-                userId = userId
+                userId = userId,
+                uuid = uuid
             )
         }
         "FILE" -> {
@@ -80,7 +81,8 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(
                 fileSize = text[2].toLong(),
                 timestamp = timestamp,
                 type = type.toMessageType(),
-                userId = userId
+                userId = userId,
+                uuid = uuid
             )
         }
 

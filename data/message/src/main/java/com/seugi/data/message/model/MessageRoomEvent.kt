@@ -53,6 +53,7 @@ sealed class MessageRoomEvent(
             val url: String,
             val fileName: String,
             val fileSize: Long,
+            val uuid: String?,
             override val timestamp: LocalDateTime,
             override val type: MessageType,
             override val userId: Int,
@@ -61,6 +62,7 @@ sealed class MessageRoomEvent(
         data class Img(
             val url: String,
             val fileName: String,
+            val uuid: String?,
             override val timestamp: LocalDateTime,
             override val type: MessageType,
             override val userId: Int,

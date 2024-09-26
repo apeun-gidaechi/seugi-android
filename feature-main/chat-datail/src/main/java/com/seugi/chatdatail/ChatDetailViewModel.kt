@@ -35,12 +35,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.io.InputStream
 import java.net.SocketException
 import java.time.Duration
 import java.time.LocalDateTime
@@ -195,11 +195,15 @@ class ChatDetailViewModel @Inject constructor(
     fun channelSend(
         userId: Int,
         content: String,
+        uuid: String = UUID.randomUUID().toString(),
         type: MessageType
     ) {
         viewModelScope.launch {
-            val uuid = UUID.randomUUID().toString()
-            _messageSaveQueueState.value += ChatLocalType.Send(content, uuid)
+            // 파일, 이미지는 socket 서버 업로드전에 생김
+            if (type == MessageType.MESSAGE) {
+                _messageSaveQueueState.value += ChatLocalType.SendText(content, uuid)
+            }
+
             val result = messageRepository.sendMessage(
                 chatRoomId = state.value.roomInfo?.id ?: "",
                 message = content,
@@ -210,8 +214,25 @@ class ChatDetailViewModel @Inject constructor(
             when (result) {
                 is Result.Success -> {
                     if (!result.data) {
-                        _messageSaveQueueState.value -= ChatLocalType.Send(content, uuid)
-                        _messageSaveQueueState.value += ChatLocalType.Failed(content, uuid)
+                        _messageSaveQueueState.value -= uuid
+                        if (type == MessageType.MESSAGE) {
+                            _messageSaveQueueState.value += ChatLocalType.FailedText(content, uuid)
+                        } else if (type == MessageType.FILE) {
+                            val files = content.split("::")
+                            _messageSaveQueueState.value += ChatLocalType.FailedFileSend(
+                                fileUrl = files[0],
+                                fileName = files[1],
+                                fileByte = files[2].toLong(),
+                                uuid = uuid
+                            )
+                        } else if (type == MessageType.IMG) {
+                            val files = content.split("::")
+                            _messageSaveQueueState.value += ChatLocalType.FailedImgSend(
+                                image = files[0],
+                                fileName = files[1],
+                                uuid = uuid
+                            )
+                        }
                         channelReconnect(userId)
                     }
                 }
@@ -225,26 +246,43 @@ class ChatDetailViewModel @Inject constructor(
 
     fun channelSend(
         userId: Int,
-        content: Bitmap,
-        title: String,
+        image: Bitmap,
+        fileName: String,
+        uuid: String = UUID.randomUUID().toString()
     ) {
         viewModelScope.launch {
+
+            _messageSaveQueueState.value += ChatLocalType.SendImg(
+                image = image,
+                fileName = fileName,
+                uuid = uuid
+            )
             fileRepository.fileUpload(
                 type = FileType.IMG,
-                fileName = title,
+                fileName = fileName,
                 fileMimeType = "image/*",
-                fileByteArray = content.toByteArray()
+                fileByteArray = image.toByteArray()
             ).collect {
                 when (it) {
                     is Result.Success -> {
                         channelSend(
                             userId = userId,
-                            content = "${it.data.url}::${title}",
-                            type = MessageType.IMG
+                            content = "${it.data.url}::${fileName}",
+                            type = MessageType.IMG,
+                            uuid = uuid
                         )
                     }
                     Result.Loading -> {}
-                    is Result.Error -> {}
+                    is Result.Error -> {
+                        _messageSaveQueueState.value -= uuid
+                        _messageSaveQueueState.value += ChatLocalType.FailedImgUpload(
+                            image = image,
+                            fileName = fileName,
+                            uuid = uuid
+                        )
+
+                        it.throwable.printStackTrace()
+                    }
                 }
             }
         }
@@ -258,6 +296,15 @@ class ChatDetailViewModel @Inject constructor(
         fileByte: Long
     ) {
         viewModelScope.launch {
+            val uuid = UUID.randomUUID().toString()
+
+            _messageSaveQueueState.value += ChatLocalType.SendFile(
+                fileByteArray = fileByteArray,
+                fileMimeType = fileMimeType,
+                fileName = fileName,
+                fileByte = fileByte,
+                uuid = uuid,
+            )
             fileRepository.fileUpload(
                 type = FileType.FILE,
                 fileName = fileName,
@@ -269,23 +316,91 @@ class ChatDetailViewModel @Inject constructor(
                         channelSend(
                             userId = userId,
                             content = "${it.data.url}::${fileName}::${fileByte}",
-                            type = MessageType.FILE
+                            type = MessageType.FILE,
+                            uuid = uuid
                         )
                     }
                     Result.Loading -> {}
-                    is Result.Error -> {}
+                    is Result.Error -> {
+                        _messageSaveQueueState.value -= uuid
+                        _messageSaveQueueState.value += ChatLocalType.FailedFileUpload(
+                            fileByteArray = fileByteArray,
+                            fileMimeType = fileMimeType,
+                            fileName = fileName,
+                            fileByte = fileByte,
+                            uuid = uuid,
+                        )
+                        it.throwable.printStackTrace()
+                    }
                 }
             }
         }
     }
 
-    fun channelResend(userId: Int, content: String, uuid: String) {
-        _messageSaveQueueState.value -= ChatLocalType.Failed(content, uuid)
-        channelSend(userId, content, MessageType.MESSAGE)
+    fun channelResend(
+        userId: Int,
+        content: String,
+        uuid: String,
+        type: MessageType = MessageType.MESSAGE
+    ) {
+        _messageSaveQueueState.value -= uuid
+        when {
+            type == MessageType.FILE -> {
+                val files = content.split("::")
+                _messageSaveQueueState.value += ChatLocalType.SendFileUrl(
+                    fileUrl = files[0],
+                    fileName = files[1],
+                    fileByte = files[2].toLong(),
+                    uuid = uuid
+                )
+            }
+            type == MessageType.IMG -> {
+                val files = content.split("::")
+                _messageSaveQueueState.value += ChatLocalType.SendImgUrl(
+                    image = files[0],
+                    fileName = files[1],
+                    uuid = uuid
+                )
+            }
+        }
+        channelSend(userId, content, uuid, type)
     }
 
-    fun deleteFailedSend(content: String, uuid: String) {
-        _messageSaveQueueState.value -= ChatLocalType.Failed(content, uuid)
+    fun channelResend(
+        userId: Int,
+        fileName: String,
+        fileMimeType: String,
+        fileByteArray: ByteArray,
+        fileByte: Long,
+        uuid: String
+    ) {
+        _messageSaveQueueState.value -= uuid
+        channelSend(
+            userId = userId,
+            fileName = fileName,
+            fileMimeType = fileMimeType,
+            fileByteArray = fileByteArray,
+            fileByte = fileByte
+        )
+    }
+
+    fun channelReSend(
+        userId: Int,
+        image: Bitmap,
+        fileName: String,
+        uuid: String
+    ) {
+        _messageSaveQueueState.value -= uuid
+        channelSend(
+            userId = userId,
+            image = image,
+            fileName = fileName,
+            uuid = uuid
+        )
+    }
+
+    fun deleteFailedSend(uuid: String) {
+        _messageSaveQueueState.value -= uuid
     }
 
     fun channelReconnect(
@@ -401,6 +516,7 @@ class ChatDetailViewModel @Inject constructor(
                             Log.d("TAG", "collectMessage: ${_messageSaveQueueState.value}")
                         }
                     }
+                    _messageSaveQueueState.value -= data.uuid?: ""
                     _state.update {
                         it.copy(
                             message = message.toImmutableList(),
@@ -435,6 +551,7 @@ class ChatDetailViewModel @Inject constructor(
                             ),
                         )
                     }
+                    _messageSaveQueueState.value -= data.uuid?: ""
                     message.add(
                         index = 0,
                         element = data.copy(
@@ -469,6 +586,7 @@ class ChatDetailViewModel @Inject constructor(
                             Log.d("TAG", "collectMessage: ${_messageSaveQueueState.value}")
                         }
                     }
+                    _messageSaveQueueState.value -= data.uuid?: ""
                     _state.update {
                         it.copy(
                             message = it.message.toMutableList().apply {
@@ -489,6 +607,7 @@ class ChatDetailViewModel @Inject constructor(
                             Log.d("TAG", "collectMessage: ${_messageSaveQueueState.value}")
                         }
                     }
+                    _messageSaveQueueState.value -= data.uuid?: ""
                     _state.update {
                         it.copy(
                             message = it.message.toMutableList().apply {
