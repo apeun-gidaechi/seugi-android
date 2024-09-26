@@ -8,8 +8,12 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.AnchoredDraggableState
@@ -29,6 +33,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -36,6 +41,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -49,17 +55,23 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -102,6 +114,8 @@ import com.seugi.ui.uriToBitmap
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
+import net.engawapg.lib.zoomable.rememberZoomState
+import net.engawapg.lib.zoomable.zoomable
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -166,6 +180,7 @@ internal fun ChatDetailScreen(
 
     var selectedFileName by remember { mutableStateOf("") }
     var selectedImageBitmap by remember { mutableStateOf<Bitmap?>(null) }
+    var showImagePreview by remember { mutableStateOf(false) }
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
     ) { uri: Uri? ->
@@ -175,6 +190,7 @@ internal fun ChatDetailScreen(
                 isShowUploadDialog = false
                 selectedImageBitmap = contentResolver.uriToBitmap(uri)
                 selectedFileName = contentResolver.getFileName(uri).toString()
+                showImagePreview = true
                 Log.d("TAG", "ChatDetailScreen: $selectedFileName $selectedImageBitmap")
             }
         }
@@ -452,18 +468,8 @@ internal fun ChatDetailScreen(
                         onValueChange = {
                             text = it
                         },
-                        sendEnabled = text.isNotEmpty() || selectedImageBitmap != null,
+                        sendEnabled = text.isNotEmpty(),
                         onSendClick = {
-                            if (selectedImageBitmap != null) {
-                                viewModel.channelSend(
-                                    userId = userId,
-                                    image = selectedImageBitmap!!,
-                                    fileName = selectedFileName
-                                )
-                                selectedFileName = ""
-                                selectedImageBitmap = null
-                                return@SeugiChatTextField
-                            }
                             viewModel.channelSend(
                                 userId = userId,
                                 content = text,
@@ -705,6 +711,35 @@ internal fun ChatDetailScreen(
                 },
             )
         }
+        AnimatedVisibility(
+            visible = showImagePreview,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            if (selectedImageBitmap != null) {
+                ChatDetailImagePreviewScreen(
+                    imageBitmap = selectedImageBitmap!!.asImageBitmap(),
+                    onClickRetry = {
+                        galleryLauncher.launch("image/*")
+                    },
+                    onClickSend = {
+                        if (selectedImageBitmap != null) {
+                            showImagePreview = false
+                            viewModel.channelSend(
+                                userId = userId,
+                                image = selectedImageBitmap!!,
+                                fileName = selectedFileName
+                            )
+                            selectedFileName = ""
+                            selectedImageBitmap = null
+                        }
+                    },
+                    popBackStack = {
+                        showImagePreview = false
+                    }
+                )
+            }
+        }
     }
 }
 
@@ -874,6 +909,90 @@ private fun ChatSideBarScreen(
                     },
                 )
             }
+        }
+    }
+}
+@Composable
+private fun ChatDetailImagePreviewScreen(
+    imageBitmap: ImageBitmap,
+    onClickRetry: () -> Unit,
+    onClickSend: () -> Unit,
+    popBackStack: () -> Unit,
+) {
+    val painter = BitmapPainter(imageBitmap)
+    val zoomState = rememberZoomState(contentSize = painter.intrinsicSize)
+
+
+    BackHandler(
+        enabled = true,
+        onBack = popBackStack
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(SeugiTheme.colors.black)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .zoomable(zoomState),
+                painter = painter,
+                contentDescription = null,
+                contentScale = ContentScale.Fit
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(vertical = 13.dp)
+                    .bounceClick(popBackStack)
+            ) {
+                Icon(
+                    modifier = Modifier.size(28.dp),
+                    painter = painterResource(id = R.drawable.ic_back),
+                    contentDescription = "뒤로가기",
+                    tint = SeugiTheme.colors.white
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(
+                modifier = Modifier
+                    .rotate(90f)
+                    .size(28.dp)
+                    .bounceClick(onClickSend),
+                painter = painterResource(id = R.drawable.ic_send_fill),
+                contentDescription = "전송하기",
+                tint = SeugiTheme.colors.white
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .bounceClick(onClickRetry)
+        ) {
+            Icon(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(24.dp),
+                painter = painterResource(id = R.drawable.ic_refresh_fill),
+                contentDescription = "재시도",
+                tint = SeugiTheme.colors.white
+            )
         }
     }
 }

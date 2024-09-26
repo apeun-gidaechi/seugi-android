@@ -36,6 +36,7 @@ coil = "2.6.0"
 rive = "8.7.0"
 gson = "2.10.1"
 okhttp3 = "4.9.0"
+zoomable = "1.6.2"
 
 #socket
 stomp-android = "1.6.6"
@@ -122,6 +123,7 @@ rive = { group = "app.rive", name = "rive-android", version.ref = "rive" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3"}
 okhttp3 = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp3"}
+zoomable = { group = "net.engawapg.lib", name = "zoomable", version.ref = "zoomable"}
 
 # socket
 stomp-android = { group = "com.github.NaikSoftware", name = "StompProtocolAndroid", version.ref = "stomp-android" }
