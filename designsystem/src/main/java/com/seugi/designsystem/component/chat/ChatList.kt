@@ -54,6 +54,7 @@ fun SeugiChatList(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
+                modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 SeugiAvatar(
@@ -81,20 +82,14 @@ fun SeugiChatList(
                     }
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        modifier = Modifier.heightIn(
-//                            max = with(LocalDensity.current) {
-//                                (SeugiTheme.typography.body2.fontSize * 4 / 3).toDp()
-//                            }
-                        ),
                         text = message,
-                        maxLines = 3,
+                        maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = SeugiTheme.typography.body2,
                         color = SeugiTheme.colors.black,
                     )
                 }
             }
-            Spacer(modifier = Modifier.weight(1f))
             Column(
                 horizontalAlignment = Alignment.End,
             ) {
