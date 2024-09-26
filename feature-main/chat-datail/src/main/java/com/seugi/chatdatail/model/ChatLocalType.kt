@@ -75,13 +75,13 @@ sealed class ChatLocalType(
     data class SendFileUrl(val fileUrl: String, val fileName: String, val fileByte: Long, override val uuid: String): ChatLocalType(uuid)
 }
 
-internal fun Collection<ChatLocalType>.findBySendingMessage(uuid: String): ChatLocalType? {
+internal fun Collection<ChatLocalType>.containsWithUUID(uuid: String): Boolean {
     for (i in this) {
         if (i.uuid == uuid) {
-            return i
+            return true
         }
     }
-    return null
+    return false
 }
 
 internal operator fun ImmutableList<ChatLocalType>.plus(element: ChatLocalType): ImmutableList<ChatLocalType> {

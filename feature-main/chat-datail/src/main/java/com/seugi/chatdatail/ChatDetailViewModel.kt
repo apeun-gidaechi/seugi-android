@@ -8,7 +8,7 @@ import com.seugi.chatdatail.model.ChatDetailSideEffect
 import com.seugi.chatdatail.model.ChatDetailUiState
 import com.seugi.chatdatail.model.ChatLocalType
 import com.seugi.chatdatail.model.ChatRoomState
-import com.seugi.chatdatail.model.findBySendingMessage
+import com.seugi.chatdatail.model.containsWithUUID
 import com.seugi.chatdatail.model.minus
 import com.seugi.chatdatail.model.plus
 import com.seugi.common.model.Result
@@ -70,6 +70,8 @@ class ChatDetailViewModel @Inject constructor(
 
     private var subscribeChat: Job? = null
     private var subscribeLifecycle: Job? = null
+
+    private var isReconnectTry: Boolean = false
 
     fun loadInfo(userId: Int, chatRoomId: String, isPersonal: Boolean, workspaceId: String) = viewModelScope.launch(Dispatchers.IO) {
         _state.value = _state.value.copy(
@@ -214,30 +216,31 @@ class ChatDetailViewModel @Inject constructor(
             when (result) {
                 is Result.Success -> {
                     if (!result.data) {
-                        _messageSaveQueueState.value -= uuid
-                        if (type == MessageType.MESSAGE) {
-                            _messageSaveQueueState.value += ChatLocalType.FailedText(content, uuid)
-                        } else if (type == MessageType.FILE) {
-                            val files = content.split("::")
-                            _messageSaveQueueState.value += ChatLocalType.FailedFileSend(
-                                fileUrl = files[0],
-                                fileName = files[1],
-                                fileByte = files[2].toLong(),
-                                uuid = uuid
-                            )
-                        } else if (type == MessageType.IMG) {
-                            val files = content.split("::")
-                            _messageSaveQueueState.value += ChatLocalType.FailedImgSend(
-                                image = files[0],
-                                fileName = files[1],
-                                uuid = uuid
-                            )
-                        }
+                        failedSend(
+                            type = type,
+                            uuid = uuid,
+                            content = content
+                        )
                         channelReconnect(userId)
+                        return@launch
+                    }
+                    // 메세지가 보내고 MESSAGE_TIMEOUT 시간만큼 지났는데도 안보내지면 실패처리
+                    delay(MESSAGE_TIMEOUT)
+                    if (_messageSaveQueueState.value.containsWithUUID(uuid)) {
+                        failedSend(
+                            type = type,
+                            uuid = uuid,
+                            content = content
+                        )
                     }
                 }
                 is Result.Error -> {
                     result.throwable.printStackTrace()
+                    failedSend(
+                        type = type,
+                        uuid = uuid,
+                        content = content
+                    )
                 }
                 is Result.Loading -> {}
             }
@@ -407,6 +410,7 @@ class ChatDetailViewModel @Inject constructor(
         userId: Int
     ) {
         viewModelScope.launch {
+            isReconnectTry = true
             subscribeChat?.cancel()
             val job = viewModelScope.async {
                 messageRepository.reSubscribeRoom(
@@ -436,6 +440,7 @@ class ChatDetailViewModel @Inject constructor(
                 }
             }
             subscribeChat = job
+            isReconnectTry = false
             job.await()
         }
     }
@@ -509,12 +514,7 @@ class ChatDetailViewModel @Inject constructor(
 
                     // messageQueue 삭제 로직
                     if (data.userId == _state.value.userInfo?.id) {
-                        val value = _messageSaveQueueState.value.findBySendingMessage(data.message)
-                        Log.d("TAG", "collectMessage: $value")
-                        if (value != null) {
-                            _messageSaveQueueState.value -= value
-                            Log.d("TAG", "collectMessage: ${_messageSaveQueueState.value}")
-                        }
+                        _messageSaveQueueState.value -= data.uuid?: ""
                     }
                     _messageSaveQueueState.value -= data.uuid?: ""
                     _state.update {
@@ -561,12 +561,7 @@ class ChatDetailViewModel @Inject constructor(
 
                     // messageQueue 삭제 로직
                     if (data.userId == _state.value.userInfo?.id) {
-                        val value = _messageSaveQueueState.value.findBySendingMessage(data.message)
-                        Log.d("TAG", "collectMessage: $value")
-                        if (value != null) {
-                            _messageSaveQueueState.value -= value
-                            Log.d("TAG", "collectMessage: ${_messageSaveQueueState.value}")
-                        }
+                        _messageSaveQueueState.value -= data.uuid?: ""
                     }
                     _state.update {
                         it.copy(
@@ -579,12 +574,7 @@ class ChatDetailViewModel @Inject constructor(
                     val data = data as MessageParent.Img
                     // messageQueue 삭제 로직
                     if (data.userId == _state.value.userInfo?.id) {
-                        val value = _messageSaveQueueState.value.findBySendingMessage("${data.url}::${data.fileName}")
-                        Log.d("TAG", "collectMessage: $value")
-                        if (value != null) {
-                            _messageSaveQueueState.value -= value
-                            Log.d("TAG", "collectMessage: ${_messageSaveQueueState.value}")
-                        }
+                        _messageSaveQueueState.value -= data.uuid?: ""
                     }
                     _messageSaveQueueState.value -= data.uuid?: ""
                     _state.update {
@@ -600,12 +590,7 @@ class ChatDetailViewModel @Inject constructor(
                     val data = data as MessageParent.File
                     // messageQueue 삭제 로직
                     if (data.userId == _state.value.userInfo?.id) {
-                        val value = _messageSaveQueueState.value.findBySendingMessage("${data.url}::${data.fileName}::${data.fileSize}")
-                        Log.d("TAG", "collectMessage: $value")
-                        if (value != null) {
-                            _messageSaveQueueState.value -= value
-                            Log.d("TAG", "collectMessage: ${_messageSaveQueueState.value}")
-                        }
+                        _messageSaveQueueState.value -= data.uuid?: ""
                     }
                     _messageSaveQueueState.value -= data.uuid?: ""
                     _state.update {
@@ -695,6 +680,7 @@ class ChatDetailViewModel @Inject constructor(
 
     companion object {
         const val PAGE_SIZE = 20
+        const val MESSAGE_TIMEOUT = 6000L
     }
 
     fun getPersonalChat(workspaceId: String, userId: Int) = viewModelScope.launch {
@@ -715,6 +701,32 @@ class ChatDetailViewModel @Inject constructor(
                     _sideEffect.send(ChatDetailSideEffect.FailedMoveRoom(it.throwable))
                 }
             }
+        }
+    }
+
+    private fun failedSend(
+        type: MessageType,
+        uuid: String,
+        content: String
+    ) {
+        _messageSaveQueueState.value -= uuid
+        if (type == MessageType.MESSAGE) {
+            _messageSaveQueueState.value += ChatLocalType.FailedText(content, uuid)
+        } else if (type == MessageType.FILE) {
+            val files = content.split("::")
+            _messageSaveQueueState.value += ChatLocalType.FailedFileSend(
+                fileUrl = files[0],
+                fileName = files[1],
+                fileByte = files[2].toLong(),
+                uuid = uuid
+            )
+        } else if (type == MessageType.IMG) {
+            val files = content.split("::")
+            _messageSaveQueueState.value += ChatLocalType.FailedImgSend(
+                image = files[0],
+                fileName = files[1],
+                uuid = uuid
+            )
         }
     }
 }

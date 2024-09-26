@@ -523,7 +523,7 @@ internal fun ChatDetailScreen(
                 state = scrollState,
                 reverseLayout = true,
             ) {
-                items(messageQueueState) {
+                items(messageQueueState.reversed()) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
