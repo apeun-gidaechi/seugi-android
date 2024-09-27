@@ -1,7 +1,12 @@
 package com.seugi.ui
 
+import android.app.DownloadManager
+import android.content.Context
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Build
+import android.os.Environment
+import android.util.Patterns
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.Window
@@ -15,6 +20,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import java.io.File
 
 fun changeNavigationColor(window: Window, backgroundColor: Color, isDark: Boolean) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -63,5 +69,66 @@ fun rememberKeyboardOpen(): State<ExKeyboardState> {
         awaitDispose {
             viewTreeObserver.removeOnGlobalLayoutListener(listener)
         }
+    }
+}
+
+
+fun downloadFile(
+    context: Context,
+    url: String,
+    name: String,
+    extension: String? = null,
+) {
+    try {
+        // 웹 url인지 유효성 검사
+        if (!Patterns.WEB_URL.matcher(url).matches()) {
+            return
+        }
+
+        val mimeType = getFileMimeType(extension?: name.substringAfterLast(".", ""))
+
+        val downloadManager = DownloadManager.Request(Uri.parse(url))
+        val filePath = "/seugi/${name}"
+        // 알림 설정
+        downloadManager
+            .setTitle(filePath)
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            .setMimeType(mimeType)
+            .setDestinationInExternalPublicDir(
+                Environment.DIRECTORY_DOWNLOADS,
+                filePath
+            )
+
+
+        val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        manager.enqueue(downloadManager)
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+}
+
+fun checkFileExist(
+    fileName: String,
+): Boolean {
+    val file = getFile(fileName)
+    return file.isFile
+}
+
+fun getFile(
+    fileName: String
+): File =
+    File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/seugi/" + fileName)
+
+fun getFileMimeType(
+    fileName: String
+): String {
+    val extension = fileName.substringAfterLast(".", "")
+    return when (extension) {
+        "jpg", "png", "jpeg", "gif", "bmp", "webp" -> "image/*"
+        "plane", "html", "css", "javascript", "txt", "json", "csv" -> "text/*"
+        "midi", "mpeg", "wav", "mp3" -> "audio/*"
+        "webm", "mp4", "ogg", "avi", "mkv", "flv", "m4p", "m4v" -> "video/*"
+        "apk" -> "application/vnd.android.package-archive"
+        else -> "application/${extension}"
     }
 }

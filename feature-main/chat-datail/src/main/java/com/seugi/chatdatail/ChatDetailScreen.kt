@@ -1,5 +1,6 @@
 package com.seugi.chatdatail
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
@@ -77,6 +78,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.chatdatail.model.ChatDetailSideEffect
 import com.seugi.chatdatail.model.ChatLocalType
@@ -104,7 +106,11 @@ import com.seugi.designsystem.component.modifier.`if`
 import com.seugi.designsystem.component.textfield.SeugiChatTextField
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.ui.addFocusCleaner
+import com.seugi.ui.checkFileExist
 import com.seugi.ui.component.OtherProfileBottomSheet
+import com.seugi.ui.downloadFile
+import com.seugi.ui.getFile
+import com.seugi.ui.getFileMimeType
 import com.seugi.ui.getFileName
 import com.seugi.ui.getFileSize
 import com.seugi.ui.getMimeType
@@ -213,6 +219,12 @@ internal fun ChatDetailScreen(
         }
     }
 
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+
+    }
+
+
     LaunchedEffect(key1 = sideEffect) {
         if (sideEffect == null) {
             return@LaunchedEffect
@@ -247,12 +259,12 @@ internal fun ChatDetailScreen(
         )
     }
 
-    LifecycleResumeEffect(key1 = Unit) {
+    LifecycleStartEffect(key1 = Unit) {
         onNavigationVisibleChange(false)
 
         viewModel.collectStompLifecycle(userId)
         viewModel.channelReconnect(userId)
-        onPauseOrDispose {
+        onStopOrDispose {
             viewModel.subscribeCancel()
             onNavigationVisibleChange(true)
         }
@@ -679,7 +691,26 @@ internal fun ChatDetailScreen(
 
                                 is MessageRoomEvent.MessageParent.File ->
                                     ChatItemType.File(
-                                        onClick = {},
+                                        onClick = {
+                                            if (!checkFileExist(item.fileName)) {
+                                                downloadFile(
+                                                    context = context,
+                                                    url = item.url,
+                                                    name = item.fileName,
+                                                )
+                                            } else {
+                                                val intent = Intent(Intent.ACTION_VIEW)
+                                                intent.setDataAndType(
+                                                    Uri.fromFile(getFile(item.fileName)),
+                                                    getFileMimeType(item.fileName)
+                                                );
+                                                try {
+                                                    launcher.launch(intent)
+                                                } catch (e: Exception) {
+                                                    // not open app
+                                                }
+                                            }
+                                        },
                                         isMe = item.userId == userId,
                                         fileName = item.fileName,
                                         fileSize = byteToFormatString(item.fileSize),
