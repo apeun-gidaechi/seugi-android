@@ -1,6 +1,7 @@
 package com.seugi.chatdatail
 
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
@@ -21,6 +22,9 @@ import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.gestures.animateTo
+import androidx.compose.foundation.gestures.detectTransformGestures
+import androidx.compose.foundation.gestures.rememberTransformableState
+import androidx.compose.foundation.gestures.transformable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -34,7 +38,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -61,25 +64,27 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.rememberAsyncImagePainter
 import com.seugi.chatdatail.model.ChatDetailSideEffect
 import com.seugi.chatdatail.model.ChatLocalType
 import com.seugi.common.utiles.byteToFormatString
@@ -219,10 +224,9 @@ internal fun ChatDetailScreen(
         }
     }
 
-
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-
-    }
+    var showSelectUrlImagePreview by remember { mutableStateOf(false)}
+    var selectUrlImageItem: MessageRoomEvent.MessageParent.Img? by remember { mutableStateOf(null)}
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
 
 
     LaunchedEffect(key1 = sideEffect) {
@@ -683,7 +687,10 @@ internal fun ChatDetailScreen(
                                 is MessageRoomEvent.MessageParent.Img -> {
                                     Log.d("TAG", "ChatDetailScreen: ${item} ${userId}")
                                     ChatItemType.Image(
-                                        onClick = {},
+                                        onClick = {
+                                            selectUrlImageItem = item
+                                            showSelectUrlImagePreview = true
+                                        },
                                         image = item.url,
                                         isMe = item.userId == userId
                                     )
@@ -748,7 +755,7 @@ internal fun ChatDetailScreen(
             exit = fadeOut()
         ) {
             if (selectedImageBitmap != null) {
-                ChatDetailImagePreviewScreen(
+                ChatDetailImageUploadPreviewScreen(
                     imageBitmap = selectedImageBitmap!!.asImageBitmap(),
                     onClickRetry = {
                         galleryLauncher.launch("image/*")
@@ -767,6 +774,28 @@ internal fun ChatDetailScreen(
                     },
                     popBackStack = {
                         showImagePreview = false
+                    }
+                )
+            }
+        }
+        AnimatedVisibility(visible = showSelectUrlImagePreview) {
+            if (selectUrlImageItem != null) {
+                ChatDetailImagePreviewScreen(
+                    image = selectUrlImageItem!!.url,
+                    fileIsExist = checkFileExist(selectUrlImageItem?.fileName!!),
+                    onClickDownload = {
+                        val image = selectUrlImageItem!!
+                        if (!checkFileExist(image.fileName)) {
+                            downloadFile(
+                                context = context,
+                                url = image.url,
+                                name = image.fileName,
+                            )
+                        }
+                    },
+                    popBackStack = {
+                        selectUrlImageItem = null
+                        showSelectUrlImagePreview = false
                     }
                 )
             }
@@ -944,7 +973,7 @@ private fun ChatSideBarScreen(
     }
 }
 @Composable
-private fun ChatDetailImagePreviewScreen(
+private fun ChatDetailImageUploadPreviewScreen(
     imageBitmap: ImageBitmap,
     onClickRetry: () -> Unit,
     onClickSend: () -> Unit,
@@ -975,7 +1004,7 @@ private fun ChatDetailImagePreviewScreen(
                     .zoomable(zoomState),
                 painter = painter,
                 contentDescription = null,
-                contentScale = ContentScale.Fit
+                contentScale = ContentScale.FillWidth
             )
         }
 
@@ -1024,6 +1053,82 @@ private fun ChatDetailImagePreviewScreen(
                 contentDescription = "재시도",
                 tint = SeugiTheme.colors.white
             )
+        }
+    }
+}
+
+@Composable
+private fun ChatDetailImagePreviewScreen(
+    image: String,
+    fileIsExist: Boolean,
+    onClickDownload: () -> Unit,
+    popBackStack: () -> Unit,
+) {
+    val painter = rememberAsyncImagePainter(model = image)
+    val zoomState = rememberZoomState()
+    BackHandler(
+        enabled = true,
+        onBack = popBackStack
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(SeugiTheme.colors.black)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .zoomable(zoomState),
+                painter = painter,
+                contentDescription = null,
+                contentScale = ContentScale.FillWidth
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(vertical = 13.dp)
+                    .bounceClick(popBackStack)
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .size(28.dp),
+                    painter = painterResource(id = R.drawable.ic_back),
+                    contentDescription = "뒤로가기",
+                    tint = SeugiTheme.colors.white
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+            }
+        }
+        if (!fileIsExist) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .bounceClick(onClickDownload)
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(24.dp)
+                        ,
+                    painter = painterResource(id = R.drawable.ic_expand_stop_down_line),
+                    contentDescription = "재시도",
+                    tint = SeugiTheme.colors.white
+                )
+            }
         }
     }
 }
