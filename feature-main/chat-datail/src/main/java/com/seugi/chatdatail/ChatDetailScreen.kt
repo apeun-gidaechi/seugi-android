@@ -510,6 +510,9 @@ internal fun ChatDetailScreen(
                         showLeft = !isPersonal,
                         onClickInviteMember = {},
                         onClickMember = {
+                            if (it.id == userId) {
+                                return@ChatSideBarScreen
+                            }
                             otherProfileState = it
                             showOtherProfileBottomSheet = true
                         },
