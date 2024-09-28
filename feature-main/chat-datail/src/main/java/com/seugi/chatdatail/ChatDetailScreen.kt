@@ -965,10 +965,19 @@ private fun ChatSideBarScreen(
             items(members) {
                 SeugiMemberList(
                     userName = it.name,
-                    userProfile = it.picture,
+                    userProfile = it.picture.ifEmpty { null },
                     isCrown = it.id == adminId,
+                    crownColor = SeugiTheme.colors.yellow500,
                     onClick = {
                         onClickMember(it)
+                    },
+                    action = {
+                        Icon(
+                            modifier = Modifier.size(24.dp),
+                            painter = painterResource(id = R.drawable.ic_expand_right_line),
+                            contentDescription = null,
+                            tint = SeugiTheme.colors.gray500
+                        )
                     },
                 )
             }
