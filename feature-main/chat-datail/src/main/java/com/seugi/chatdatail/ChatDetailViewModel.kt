@@ -232,6 +232,9 @@ class ChatDetailViewModel @Inject constructor(
                             uuid = uuid,
                             content = content
                         )
+
+                        // 전송후 실패했다면, 소켓 재연결
+                        channelReconnect(userId)
                     }
                 }
                 is Result.Error -> {
