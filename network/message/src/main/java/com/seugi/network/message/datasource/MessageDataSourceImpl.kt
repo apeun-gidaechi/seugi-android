@@ -129,7 +129,12 @@ class MessageDataSourceImpl @Inject constructor(
             listOf(StompHeader(StompHeader.DESTINATION, SeugiUrl.Message.SEND)),
             body,
         )
-        stompClient.send(sendContent).subscribe() {}
+        stompClient.send(sendContent).subscribe(
+            {},
+            {
+                it.printStackTrace()
+            }
+        )
         return true
     }
 }
