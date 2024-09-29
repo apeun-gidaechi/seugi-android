@@ -6,5 +6,5 @@ import com.seugi.file.response.FileResponse
 fun FileResponse.toModel(): FileModel = FileModel(
     url = url,
     name = name,
-    byte = byte
+    byte = byte,
 )

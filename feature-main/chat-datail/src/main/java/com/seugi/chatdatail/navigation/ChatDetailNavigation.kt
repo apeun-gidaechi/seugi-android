@@ -20,12 +20,7 @@ fun NavController.navigateToChatDetail(
     navOptions,
 )
 
-fun NavGraphBuilder.chatDetailScreen(
-    userId: Int,
-    onNavigationVisibleChange: (Boolean) -> Unit,
-    navigateToChatDetail: (workspaceId: String, chatRoomId: String) -> Unit,
-    popBackStack: () -> Unit)
-{
+fun NavGraphBuilder.chatDetailScreen(userId: Int, onNavigationVisibleChange: (Boolean) -> Unit, navigateToChatDetail: (workspaceId: String, chatRoomId: String) -> Unit, popBackStack: () -> Unit) {
     composable(
         route = "$CHAT_DETAIL_ROUTE/{workspaceId}/{isPersonal}/{chatRoomId}",
         arguments = listOf(

@@ -53,9 +53,8 @@ fun SeugiChatTextField(
     sendEnabled: Boolean = true,
     onValueChange: (String) -> Unit,
     onAddClick: () -> Unit = {},
-    onSendClick: () -> Unit = {}
+    onSendClick: () -> Unit = {},
 ) {
-
     Surface(
         modifier = modifier
             .fillMaxWidth()

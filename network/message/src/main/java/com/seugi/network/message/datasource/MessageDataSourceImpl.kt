@@ -10,13 +10,8 @@ import com.seugi.network.core.utiles.toResponse
 import com.seugi.network.message.MessageDataSource
 import com.seugi.network.message.request.MessageRequest
 import com.seugi.network.message.response.MessageRoomEventResponse
-import com.seugi.network.message.response.message.MessageDeleteResponse
-import com.seugi.network.message.response.message.MessageEmojiResponse
 import com.seugi.network.message.response.message.MessageLoadResponse
-import com.seugi.network.message.response.room.MessageRoomMemberResponse
-import com.seugi.network.message.response.room.MessageRoomResponse
 import com.seugi.network.message.response.stomp.MessageStompLifecycleResponse
-import com.seugi.network.message.response.sub.MessageSubResponse
 import com.seugi.stompclient.StompClient
 import com.seugi.stompclient.dto.LifecycleEvent
 import com.seugi.stompclient.dto.StompHeader
@@ -24,7 +19,6 @@ import com.seugi.stompclient.dto.StompMessage
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import io.ktor.client.request.patch
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.coroutineScope
@@ -121,7 +115,7 @@ class MessageDataSourceImpl @Inject constructor(
             roomId = chatRoomId,
             message = message,
             uuid = messageUUID,
-            type = type
+            type = type,
         ).toJsonString()
 
         val sendContent = StompMessage(
@@ -133,7 +127,7 @@ class MessageDataSourceImpl @Inject constructor(
             {},
             {
                 it.printStackTrace()
-            }
+            },
         )
         return true
     }

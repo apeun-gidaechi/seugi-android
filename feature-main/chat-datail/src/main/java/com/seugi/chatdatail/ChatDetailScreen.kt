@@ -1,7 +1,6 @@
 package com.seugi.chatdatail
 
 import android.content.Intent
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
@@ -22,9 +21,6 @@ import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.gestures.animateTo
-import androidx.compose.foundation.gestures.detectTransformGestures
-import androidx.compose.foundation.gestures.rememberTransformableState
-import androidx.compose.foundation.gestures.transformable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -64,14 +60,11 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -218,16 +211,15 @@ internal fun ChatDetailScreen(
                     fileName = contentResolver.getFileName(uri).toString(),
                     fileMimeType = contentResolver.getMimeType(uri).toString(),
                     fileByteArray = contentResolver.getUriByteArray(uri),
-                    fileByte = contentResolver.getFileSize(uri)
+                    fileByte = contentResolver.getFileSize(uri),
                 )
             }
         }
     }
 
-    var showSelectUrlImagePreview by remember { mutableStateOf(false)}
-    var selectUrlImageItem: MessageRoomEvent.MessageParent.Img? by remember { mutableStateOf(null)}
+    var showSelectUrlImagePreview by remember { mutableStateOf(false) }
+    var selectUrlImageItem: MessageRoomEvent.MessageParent.Img? by remember { mutableStateOf(null) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
-
 
     LaunchedEffect(key1 = sideEffect) {
         if (sideEffect == null) {
@@ -303,17 +295,16 @@ internal fun ChatDetailScreen(
         anchoredState.updateAnchors(anchors, DragState.END)
     }
 
-
     if (isShowReSendDialog) {
         Dialog(
             onDismissRequest = {
                 isShowReSendDialog = false
-            }
+            },
         ) {
             ResendDialog(
                 onClickDelete = {
                     viewModel.deleteFailedSend(
-                        uuid = resendChatItem?.uuid?: ""
+                        uuid = resendChatItem?.uuid ?: "",
                     )
                     isShowReSendDialog = false
                 },
@@ -324,7 +315,7 @@ internal fun ChatDetailScreen(
                             viewModel.channelResend(
                                 userId = userId,
                                 content = it.text,
-                                uuid = it.uuid
+                                uuid = it.uuid,
                             )
                         }
                         is ChatLocalType.FailedImgSend -> {
@@ -333,7 +324,7 @@ internal fun ChatDetailScreen(
                                 userId = userId,
                                 content = "${it.image}::${it.fileName}",
                                 uuid = it.uuid,
-                                type = MessageType.IMG
+                                type = MessageType.IMG,
                             )
                         }
                         is ChatLocalType.FailedImgUpload -> {
@@ -342,7 +333,7 @@ internal fun ChatDetailScreen(
                                 userId = userId,
                                 image = it.image,
                                 fileName = it.fileName,
-                                uuid = it.uuid
+                                uuid = it.uuid,
                             )
                         }
                         is ChatLocalType.FailedFileSend -> {
@@ -351,7 +342,7 @@ internal fun ChatDetailScreen(
                                 userId = userId,
                                 content = "${it.fileUrl}::${it.fileName}::${it.fileByte}",
                                 uuid = it.uuid,
-                                type = MessageType.FILE
+                                type = MessageType.FILE,
                             )
                         }
                         is ChatLocalType.FailedFileUpload -> {
@@ -362,14 +353,13 @@ internal fun ChatDetailScreen(
                                 fileMimeType = it.fileMimeType,
                                 fileByteArray = it.fileByteArray,
                                 fileByte = it.fileByte,
-                                uuid = it.uuid
+                                uuid = it.uuid,
                             )
-
                         }
                         else -> {}
                     }
                     isShowReSendDialog = false
-                }
+                },
             )
         }
     }
@@ -377,7 +367,7 @@ internal fun ChatDetailScreen(
     if (showOtherProfileBottomSheet) {
         OtherProfileBottomSheet(
             profile = otherProfileState?.picture,
-            name = otherProfileState?.name?: "",
+            name = otherProfileState?.name ?: "",
             status = "",
             spot = "",
             belong = "",
@@ -387,15 +377,14 @@ internal fun ChatDetailScreen(
             onClickChat = {
                 viewModel.getPersonalChat(
                     workspaceId = workspaceId,
-                    userId = otherProfileState?.id!!
+                    userId = otherProfileState?.id!!,
                 )
             },
             onDismissRequest = {
                 showOtherProfileBottomSheet = false
-            }
+            },
         )
     }
-
 
     Box(
         modifier = Modifier
@@ -489,7 +478,7 @@ internal fun ChatDetailScreen(
                             viewModel.channelSend(
                                 userId = userId,
                                 content = text,
-                                type = MessageType.MESSAGE
+                                type = MessageType.MESSAGE,
                             )
                             text = ""
                         },
@@ -555,7 +544,7 @@ internal fun ChatDetailScreen(
                             .padding(
                                 bottom = 8.dp,
                             ),
-                        horizontalAlignment = Alignment.End
+                        horizontalAlignment = Alignment.End,
                     ) {
                         val onClickRetry: (ChatLocalType) -> Unit = {
                             resendChatItem = it
@@ -571,7 +560,7 @@ internal fun ChatDetailScreen(
                                 SeugiChatItem(
                                     type = ChatItemType.Failed(
                                         message = it.text,
-                                        onClickRetry = { onClickRetry(it) }
+                                        onClickRetry = { onClickRetry(it) },
                                     ),
                                 )
                             }
@@ -579,8 +568,8 @@ internal fun ChatDetailScreen(
                                 SeugiChatItem(
                                     type = ChatItemType.FileSending(
                                         fileName = it.fileName,
-                                        fileSize = byteToFormatString(it.fileByte)
-                                    )
+                                        fileSize = byteToFormatString(it.fileByte),
+                                    ),
                                 )
                             }
                             is ChatLocalType.FailedFileUpload -> {
@@ -588,7 +577,7 @@ internal fun ChatDetailScreen(
                                     type = ChatItemType.FileFailed(
                                         onClickRetry = { onClickRetry(it) },
                                         fileName = it.fileName,
-                                        fileSize = byteToFormatString(it.fileByte)
+                                        fileSize = byteToFormatString(it.fileByte),
                                     ),
                                 )
                             }
@@ -597,31 +586,31 @@ internal fun ChatDetailScreen(
                                     type = ChatItemType.FileFailed(
                                         onClickRetry = { onClickRetry(it) },
                                         fileName = it.fileName,
-                                        fileSize = byteToFormatString(it.fileByte)
+                                        fileSize = byteToFormatString(it.fileByte),
                                     ),
                                 )
                             }
                             is ChatLocalType.SendImg -> {
                                 SeugiChatItem(
                                     type = ChatItemType.ImageSending(
-                                        image = it.image.asImageBitmap()
-                                    )
+                                        image = it.image.asImageBitmap(),
+                                    ),
                                 )
                             }
                             is ChatLocalType.FailedImgUpload -> {
                                 SeugiChatItem(
                                     type = ChatItemType.ImageFailedBitmap(
                                         onClickRetry = { onClickRetry(it) },
-                                        image = it.image.asImageBitmap()
-                                    )
+                                        image = it.image.asImageBitmap(),
+                                    ),
                                 )
                             }
                             is ChatLocalType.FailedImgSend -> {
                                 SeugiChatItem(
                                     type = ChatItemType.ImageFailedUrl(
                                         onClickRetry = { onClickRetry(it) },
-                                        image = it.image
-                                    )
+                                        image = it.image,
+                                    ),
                                 )
                             }
 
@@ -629,15 +618,15 @@ internal fun ChatDetailScreen(
                                 SeugiChatItem(
                                     type = ChatItemType.FileSending(
                                         fileName = it.fileName,
-                                        fileSize = byteToFormatString(it.fileByte)
-                                    )
+                                        fileSize = byteToFormatString(it.fileByte),
+                                    ),
                                 )
                             }
                             is ChatLocalType.SendImgUrl -> {
                                 SeugiChatItem(
                                     type = ChatItemType.ImageSendingUrl(
                                         image = it.image,
-                                    )
+                                    ),
                                 )
                             }
                         }
@@ -655,8 +644,8 @@ internal fun ChatDetailScreen(
                             modifier = Modifier
                                 .`if`(
                                     item is MessageRoomEvent.MessageParent.Me ||
-                                            (item is MessageRoomEvent.MessageParent.Img && item.userId == userId) ||
-                                            (item is MessageRoomEvent.MessageParent.File && item.userId == userId)
+                                        (item is MessageRoomEvent.MessageParent.Img && item.userId == userId) ||
+                                        (item is MessageRoomEvent.MessageParent.File && item.userId == userId),
                                 ) {
                                     align(Alignment.End)
                                 },
@@ -667,7 +656,7 @@ internal fun ChatDetailScreen(
                                         isLast = item.isLast,
                                         message = item.message,
                                         createdAt = item.timestamp.toAmShortString(),
-                                        count = if (count <= 0) null else count
+                                        count = if (count <= 0) null else count,
                                     )
                                 }
                                 is MessageRoomEvent.MessageParent.Other -> {
@@ -688,14 +677,14 @@ internal fun ChatDetailScreen(
                                     ChatItemType.Date(item.timestamp.toFullFormatString())
 
                                 is MessageRoomEvent.MessageParent.Img -> {
-                                    Log.d("TAG", "ChatDetailScreen: ${item} ${userId}")
+                                    Log.d("TAG", "ChatDetailScreen: $item $userId")
                                     ChatItemType.Image(
                                         onClick = {
                                             selectUrlImageItem = item
                                             showSelectUrlImagePreview = true
                                         },
                                         image = item.url,
-                                        isMe = item.userId == userId
+                                        isMe = item.userId == userId,
                                     )
                                 }
 
@@ -712,8 +701,8 @@ internal fun ChatDetailScreen(
                                                 val intent = Intent(Intent.ACTION_VIEW)
                                                 intent.setDataAndType(
                                                     Uri.fromFile(getFile(item.fileName)),
-                                                    getFileMimeType(item.fileName)
-                                                );
+                                                    getFileMimeType(item.fileName),
+                                                )
                                                 try {
                                                     launcher.launch(intent)
                                                 } catch (e: Exception) {
@@ -755,7 +744,7 @@ internal fun ChatDetailScreen(
         AnimatedVisibility(
             visible = showImagePreview,
             enter = fadeIn(),
-            exit = fadeOut()
+            exit = fadeOut(),
         ) {
             if (selectedImageBitmap != null) {
                 ChatDetailImageUploadPreviewScreen(
@@ -769,7 +758,7 @@ internal fun ChatDetailScreen(
                             viewModel.channelSend(
                                 userId = userId,
                                 image = selectedImageBitmap!!,
-                                fileName = selectedFileName
+                                fileName = selectedFileName,
                             )
                             selectedFileName = ""
                             selectedImageBitmap = null
@@ -777,7 +766,7 @@ internal fun ChatDetailScreen(
                     },
                     popBackStack = {
                         showImagePreview = false
-                    }
+                    },
                 )
             }
         }
@@ -799,7 +788,7 @@ internal fun ChatDetailScreen(
                     popBackStack = {
                         selectUrlImageItem = null
                         showSelectUrlImagePreview = false
-                    }
+                    },
                 )
             }
         }
@@ -948,7 +937,7 @@ private fun ChatSideBarScreen(
                 )
             }
         },
-        containerColor = SeugiTheme.colors.white
+        containerColor = SeugiTheme.colors.white,
     ) {
         LazyColumn(
             modifier = Modifier
@@ -976,7 +965,7 @@ private fun ChatSideBarScreen(
                             modifier = Modifier.size(24.dp),
                             painter = painterResource(id = R.drawable.ic_expand_right_line),
                             contentDescription = null,
-                            tint = SeugiTheme.colors.gray500
+                            tint = SeugiTheme.colors.gray500,
                         )
                     },
                 )
@@ -984,31 +973,26 @@ private fun ChatSideBarScreen(
         }
     }
 }
+
 @Composable
-private fun ChatDetailImageUploadPreviewScreen(
-    imageBitmap: ImageBitmap,
-    onClickRetry: () -> Unit,
-    onClickSend: () -> Unit,
-    popBackStack: () -> Unit,
-) {
+private fun ChatDetailImageUploadPreviewScreen(imageBitmap: ImageBitmap, onClickRetry: () -> Unit, onClickSend: () -> Unit, popBackStack: () -> Unit) {
     val painter = BitmapPainter(imageBitmap)
     val zoomState = rememberZoomState(contentSize = painter.intrinsicSize)
 
-
     BackHandler(
         enabled = true,
-        onBack = popBackStack
+        onBack = popBackStack,
     )
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(SeugiTheme.colors.black)
+            .background(SeugiTheme.colors.black),
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Image(
                 modifier = Modifier
@@ -1016,7 +1000,7 @@ private fun ChatDetailImageUploadPreviewScreen(
                     .zoomable(zoomState),
                 painter = painter,
                 contentDescription = null,
-                contentScale = ContentScale.FillWidth
+                contentScale = ContentScale.FillWidth,
             )
         }
 
@@ -1025,18 +1009,18 @@ private fun ChatDetailImageUploadPreviewScreen(
                 .align(Alignment.TopCenter)
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
                 modifier = Modifier
                     .padding(vertical = 13.dp)
-                    .bounceClick(popBackStack)
+                    .bounceClick(popBackStack),
             ) {
                 Icon(
                     modifier = Modifier.size(28.dp),
                     painter = painterResource(id = R.drawable.ic_back),
                     contentDescription = "뒤로가기",
-                    tint = SeugiTheme.colors.white
+                    tint = SeugiTheme.colors.white,
                 )
                 Spacer(modifier = Modifier.width(16.dp))
             }
@@ -1048,14 +1032,14 @@ private fun ChatDetailImageUploadPreviewScreen(
                     .bounceClick(onClickSend),
                 painter = painterResource(id = R.drawable.ic_send_fill),
                 contentDescription = "전송하기",
-                tint = SeugiTheme.colors.white
+                tint = SeugiTheme.colors.white,
             )
         }
 
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .bounceClick(onClickRetry)
+                .bounceClick(onClickRetry),
         ) {
             Icon(
                 modifier = Modifier
@@ -1063,35 +1047,30 @@ private fun ChatDetailImageUploadPreviewScreen(
                     .size(24.dp),
                 painter = painterResource(id = R.drawable.ic_refresh_fill),
                 contentDescription = "재시도",
-                tint = SeugiTheme.colors.white
+                tint = SeugiTheme.colors.white,
             )
         }
     }
 }
 
 @Composable
-private fun ChatDetailImagePreviewScreen(
-    image: String,
-    fileIsExist: Boolean,
-    onClickDownload: () -> Unit,
-    popBackStack: () -> Unit,
-) {
+private fun ChatDetailImagePreviewScreen(image: String, fileIsExist: Boolean, onClickDownload: () -> Unit, popBackStack: () -> Unit) {
     val painter = rememberAsyncImagePainter(model = image)
     val zoomState = rememberZoomState()
     BackHandler(
         enabled = true,
-        onBack = popBackStack
+        onBack = popBackStack,
     )
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(SeugiTheme.colors.black)
+            .background(SeugiTheme.colors.black),
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Image(
                 modifier = Modifier
@@ -1099,7 +1078,7 @@ private fun ChatDetailImagePreviewScreen(
                     .zoomable(zoomState),
                 painter = painter,
                 contentDescription = null,
-                contentScale = ContentScale.FillWidth
+                contentScale = ContentScale.FillWidth,
             )
         }
 
@@ -1108,19 +1087,19 @@ private fun ChatDetailImagePreviewScreen(
                 .align(Alignment.TopCenter)
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
                 modifier = Modifier
                     .padding(vertical = 13.dp)
-                    .bounceClick(popBackStack)
+                    .bounceClick(popBackStack),
             ) {
                 Icon(
                     modifier = Modifier
                         .size(28.dp),
                     painter = painterResource(id = R.drawable.ic_back),
                     contentDescription = "뒤로가기",
-                    tint = SeugiTheme.colors.white
+                    tint = SeugiTheme.colors.white,
                 )
                 Spacer(modifier = Modifier.width(16.dp))
             }
@@ -1129,16 +1108,15 @@ private fun ChatDetailImagePreviewScreen(
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .bounceClick(onClickDownload)
+                    .bounceClick(onClickDownload),
             ) {
                 Icon(
                     modifier = Modifier
                         .padding(8.dp)
-                        .size(24.dp)
-                        ,
+                        .size(24.dp),
                     painter = painterResource(id = R.drawable.ic_expand_stop_down_line),
                     contentDescription = "재시도",
-                    tint = SeugiTheme.colors.white
+                    tint = SeugiTheme.colors.white,
                 )
             }
         }
@@ -1182,36 +1160,31 @@ private fun ChatDetailTextField(searchText: String, onValueChange: (String) -> U
 }
 
 @Composable
-private fun ResendDialog(
-    modifier: Modifier = Modifier,
-    text: String = "재전송하시겠습니까?",
-    onClickDelete: () -> Unit,
-    onClickResend: () -> Unit,
-) {
+private fun ResendDialog(modifier: Modifier = Modifier, text: String = "재전송하시겠습니까?", onClickDelete: () -> Unit, onClickResend: () -> Unit) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
             .background(
                 color = SeugiTheme.colors.white,
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(16.dp),
             ),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Text(
                 text = text,
                 style = SeugiTheme.typography.body1,
-                color = SeugiTheme.colors.black
+                color = SeugiTheme.colors.black,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
+                horizontalArrangement = Arrangement.End,
             ) {
                 Text(
                     modifier = Modifier
@@ -1219,7 +1192,7 @@ private fun ResendDialog(
                         .bounceClick(onClickDelete),
                     text = "삭제",
                     style = SeugiTheme.typography.subtitle2,
-                    color = SeugiTheme.colors.primary600
+                    color = SeugiTheme.colors.primary600,
                 )
                 Text(
                     modifier = Modifier
@@ -1227,7 +1200,7 @@ private fun ResendDialog(
                         .bounceClick(onClickResend),
                     text = "재전송",
                     style = SeugiTheme.typography.subtitle2,
-                    color = SeugiTheme.colors.primary600
+                    color = SeugiTheme.colors.primary600,
                 )
             }
         }

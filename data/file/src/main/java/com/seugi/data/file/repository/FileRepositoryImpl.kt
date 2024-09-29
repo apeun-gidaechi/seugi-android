@@ -10,12 +10,12 @@ import com.seugi.data.file.model.FileModel
 import com.seugi.data.file.model.FileType
 import com.seugi.file.FileDataSource
 import com.seugi.network.core.response.safeResponse
+import java.io.InputStream
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import java.io.InputStream
 
 class FileRepositoryImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
@@ -29,17 +29,12 @@ class FileRepositoryImpl @Inject constructor(
         .flowOn(dispatcher)
         .asResult()
 
-    override suspend fun fileUpload(
-        type: FileType,
-        fileName: String,
-        fileMimeType: String,
-        fileByteArray: ByteArray,
-    ): Flow<Result<FileModel>> = flow {
+    override suspend fun fileUpload(type: FileType, fileName: String, fileMimeType: String, fileByteArray: ByteArray): Flow<Result<FileModel>> = flow {
         val response = fileDataSource.fileUpload(
             type = type.name,
             fileName = fileName,
             fileMimeType = fileMimeType,
-            byteArray = fileByteArray
+            byteArray = fileByteArray,
         ).safeResponse()
 
         emit(response.toModel())
@@ -47,17 +42,12 @@ class FileRepositoryImpl @Inject constructor(
         .flowOn(dispatcher)
         .asResult()
 
-    override suspend fun fileUpload(
-        type: FileType,
-        fileName: String,
-        fileMimeType: String,
-        fileInputStream: InputStream,
-    ): Flow<Result<FileModel>> = flow {
+    override suspend fun fileUpload(type: FileType, fileName: String, fileMimeType: String, fileInputStream: InputStream): Flow<Result<FileModel>> = flow {
         val response = fileDataSource.fileUpload(
             type = type.name,
             fileName = fileName,
             fileMimeType = fileMimeType,
-            fileInputStream = fileInputStream
+            fileInputStream = fileInputStream,
         ).safeResponse()
 
         emit(response.toModel())

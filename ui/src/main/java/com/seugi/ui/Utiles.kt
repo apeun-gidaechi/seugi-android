@@ -35,7 +35,6 @@ fun changeNavigationColor(window: Window, backgroundColor: Color, isDark: Boolea
     }
 }
 
-
 data class ExKeyboardState(
     val isOpen: Boolean = false,
     val height: Dp = 0.dp,
@@ -72,23 +71,17 @@ fun rememberKeyboardOpen(): State<ExKeyboardState> {
     }
 }
 
-
-fun downloadFile(
-    context: Context,
-    url: String,
-    name: String,
-    extension: String? = null,
-) {
+fun downloadFile(context: Context, url: String, name: String, extension: String? = null) {
     try {
         // 웹 url인지 유효성 검사
         if (!Patterns.WEB_URL.matcher(url).matches()) {
             return
         }
 
-        val mimeType = getFileMimeType(extension?: name.substringAfterLast(".", ""))
+        val mimeType = getFileMimeType(extension ?: name.substringAfterLast(".", ""))
 
         val downloadManager = DownloadManager.Request(Uri.parse(url))
-        val filePath = "/seugi/${name}"
+        val filePath = "/seugi/$name"
         // 알림 설정
         downloadManager
             .setTitle(filePath)
@@ -96,9 +89,8 @@ fun downloadFile(
             .setMimeType(mimeType)
             .setDestinationInExternalPublicDir(
                 Environment.DIRECTORY_DOWNLOADS,
-                filePath
+                filePath,
             )
-
 
         val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         manager.enqueue(downloadManager)
@@ -107,21 +99,14 @@ fun downloadFile(
     }
 }
 
-fun checkFileExist(
-    fileName: String,
-): Boolean {
+fun checkFileExist(fileName: String): Boolean {
     val file = getFile(fileName)
     return file.isFile
 }
 
-fun getFile(
-    fileName: String
-): File =
-    File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/seugi/" + fileName)
+fun getFile(fileName: String): File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/seugi/" + fileName)
 
-fun getFileMimeType(
-    fileName: String
-): String {
+fun getFileMimeType(fileName: String): String {
     val extension = fileName.substringAfterLast(".", "")
     return when (extension) {
         "jpg", "png", "jpeg", "gif", "bmp", "webp" -> "image/*"
@@ -129,6 +114,6 @@ fun getFileMimeType(
         "midi", "mpeg", "wav", "mp3" -> "audio/*"
         "webm", "mp4", "ogg", "avi", "mkv", "flv", "m4p", "m4v" -> "video/*"
         "apk" -> "application/vnd.android.package-archive"
-        else -> "application/${extension}"
+        else -> "application/$extension"
     }
 }

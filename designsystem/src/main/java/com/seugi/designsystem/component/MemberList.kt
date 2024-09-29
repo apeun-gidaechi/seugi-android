@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,14 +31,7 @@ import com.seugi.designsystem.animation.AlphaIndication
 import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
-fun SeugiMemberList(
-    onClick: () -> Unit,
-    userName: String,
-    userProfile: String?,
-    isCrown: Boolean = false,
-    crownColor: Color = SeugiTheme.colors.black,
-    action: @Composable () -> Unit = {},
-) {
+fun SeugiMemberList(onClick: () -> Unit, userName: String, userProfile: String?, isCrown: Boolean = false, crownColor: Color = SeugiTheme.colors.black, action: @Composable () -> Unit = {}) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

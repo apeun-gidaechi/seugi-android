@@ -8,9 +8,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.joinAll
-import java.text.DecimalFormat
-import kotlin.math.floor
-import kotlin.math.ln
 
 fun <T1, T2, R> combineWhenAllComplete(flow1: Flow<T1>, flow2: Flow<T2>, transform: suspend (T1, T2) -> R): Flow<R> = flow {
     var lastValue1: T1? = null
@@ -45,7 +42,6 @@ inline fun <reified T, R> combineWhenAllComplete(vararg flows: Flow<T>, crossinl
 
     emit(transform(lastValues.map { it!! }.toTypedArray()))
 }
-
 
 @Suppress("DefaultLocale")
 fun byteToFormatString(byte: Long): String {

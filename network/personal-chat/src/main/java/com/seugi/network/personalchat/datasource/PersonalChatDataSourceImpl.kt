@@ -1,10 +1,10 @@
 package com.seugi.network.personalchat.datasource
 
-import com.seugi.network.personalchat.PersonalChatDataSource
-import com.seugi.network.personalchat.request.PersonalChatCreateRequest
 import com.seugi.network.core.SeugiUrl
 import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.response.ChatRoomResponse
+import com.seugi.network.personalchat.PersonalChatDataSource
+import com.seugi.network.personalchat.request.PersonalChatCreateRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -31,6 +31,5 @@ class PersonalChatDataSourceImpl @Inject constructor(
         )
     }.body()
 
-    override suspend fun getChat(roomId: String): BaseResponse<ChatRoomResponse> =
-        httpClient.get(SeugiUrl.PersonalChat.SEARCH_ROOM + "/${roomId}").body()
+    override suspend fun getChat(roomId: String): BaseResponse<ChatRoomResponse> = httpClient.get(SeugiUrl.PersonalChat.SEARCH_ROOM + "/$roomId").body()
 }

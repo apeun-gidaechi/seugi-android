@@ -31,7 +31,7 @@ fun ChatItem() {
                     createdAt = "오후 7:44",
                     count = 1,
                     onDateClick = {},
-                    onChatLongClick = {}
+                    onChatLongClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -45,7 +45,7 @@ fun ChatItem() {
                     createdAt = "오후 7:44",
                     count = 1,
                     onDateClick = {},
-                    onChatLongClick = {}
+                    onChatLongClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -57,7 +57,7 @@ fun ChatItem() {
                     createdAt = "오후 7:44",
                     count = 1,
                     onDateClick = {},
-                    onChatLongClick = {}
+                    onChatLongClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -69,7 +69,7 @@ fun ChatItem() {
                     createdAt = "오후 7:44",
                     count = 1,
                     onDateClick = {},
-                    onChatLongClick = {}
+                    onChatLongClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -87,7 +87,7 @@ fun ChatItem() {
                     createdAt = "오후 7:44",
                     count = 1,
                     onDateClick = {},
-                    onChatLongClick = {}
+                    onChatLongClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -99,7 +99,7 @@ fun ChatItem() {
                     createdAt = "오후 7:44",
                     count = 1,
                     onDateClick = {},
-                    onChatLongClick = {}
+                    onChatLongClick = {},
                 ),
             )
         }

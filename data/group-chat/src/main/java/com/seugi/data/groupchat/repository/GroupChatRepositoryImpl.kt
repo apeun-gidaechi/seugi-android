@@ -43,7 +43,7 @@ class GroupChatRepositoryImpl @Inject constructor(
 
     override suspend fun getGroupRoom(roomId: String): Flow<Result<ChatRoomModel>> = flow {
         val response = dataSource.getChat(
-            roomId = roomId
+            roomId = roomId,
         ).safeResponse()
 
         emit(response.toModel())

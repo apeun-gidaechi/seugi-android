@@ -40,9 +40,9 @@ class PersonalChatRepositoryImpl @Inject constructor(
         .flowOn(dispatcher)
         .asResult()
 
-    override suspend fun getChat(roomId: String): Flow<Result<ChatRoomModel>> = flow{
+    override suspend fun getChat(roomId: String): Flow<Result<ChatRoomModel>> = flow {
         val response = dataSource.getChat(
-            roomId = roomId
+            roomId = roomId,
         ).safeResponse()
 
         emit(response.toModel())

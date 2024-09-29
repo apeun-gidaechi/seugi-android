@@ -10,7 +10,7 @@ enum class MessageType {
     DELETE_MESSAGE,
     ADD_EMOJI,
     REMOVE_EMOJI,
-    TRANSFER_ADMIN
+    TRANSFER_ADMIN,
 }
 
 fun MessageType.isMessage(): Boolean = when (this) {

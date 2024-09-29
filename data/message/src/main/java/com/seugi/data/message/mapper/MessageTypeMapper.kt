@@ -1,11 +1,6 @@
 package com.seugi.data.message.mapper
 
 import com.seugi.data.message.model.MessageType
-import com.seugi.network.message.response.MessageTypeResponse
-import com.seugi.network.message.response.emoji.MessageEmojiResponse
-import com.seugi.network.message.response.message.MessageDeleteResponse
-import com.seugi.network.message.response.message.MessageMessageResponse
-import com.seugi.network.message.response.sub.MessageSubResponse
 
 internal fun String.toMessageType(): MessageType = when (this) {
     "MESSAGE" -> MessageType.MESSAGE

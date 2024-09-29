@@ -13,13 +13,13 @@ import com.seugi.data.message.model.MessageType
 import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
 import com.seugi.local.room.dao.TokenDao
 import com.seugi.network.message.MessageDataSource
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 class MessageRepositoryImpl @Inject constructor(
     private val datasource: MessageDataSource,
@@ -32,15 +32,12 @@ class MessageRepositoryImpl @Inject constructor(
                 chatRoomId = chatRoomId,
                 message = message,
                 messageUUID = messageUUID,
-                type = type.name
+                type = type.name,
             ),
         )
     }
 
-    override suspend fun subscribeRoom(
-        chatRoomId: String,
-        userId: Int,
-    ): Flow<Result<MessageRoomEvent>> {
+    override suspend fun subscribeRoom(chatRoomId: String, userId: Int): Flow<Result<MessageRoomEvent>> {
         if (!datasource.getIsConnect()) {
             val token = tokenDao.getToken()
             datasource.connectStomp(
@@ -55,10 +52,7 @@ class MessageRepositoryImpl @Inject constructor(
             .asResult()
     }
 
-    override suspend fun reSubscribeRoom(
-        chatRoomId: String,
-        userId: Int
-    ): Flow<Result<MessageRoomEvent>> {
+    override suspend fun reSubscribeRoom(chatRoomId: String, userId: Int): Flow<Result<MessageRoomEvent>> {
         val token = tokenDao.getToken()
         datasource.reConnectStomp(
             token?.token ?: "",

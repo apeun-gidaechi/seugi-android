@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class FileResponse(
     val url: String,
     val name: String,
-    val byte: Long
+    val byte: Long,
 )

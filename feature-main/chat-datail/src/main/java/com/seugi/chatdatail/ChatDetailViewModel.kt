@@ -27,6 +27,12 @@ import com.seugi.data.token.TokenRepository
 import com.seugi.stompclient.StompException
 import com.seugi.ui.toByteArray
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.net.SocketException
+import java.time.Duration
+import java.time.LocalDateTime
+import java.util.UUID
+import javax.inject.Inject
+import kotlin.math.abs
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -41,12 +47,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.net.SocketException
-import java.time.Duration
-import java.time.LocalDateTime
-import java.util.UUID
-import javax.inject.Inject
-import kotlin.math.abs
 
 @HiltViewModel
 class ChatDetailViewModel @Inject constructor(
@@ -80,13 +80,13 @@ class ChatDetailViewModel @Inject constructor(
                 email = "",
                 birth = "",
                 name = "",
-                picture = ""
+                picture = "",
             ),
             roomInfo = ChatRoomState(
                 chatRoomId,
                 "",
                 members = persistentListOf(),
-                0
+                0,
             ),
         )
         initProfile(workspaceId)
@@ -99,7 +99,7 @@ class ChatDetailViewModel @Inject constructor(
                 is Result.Success -> {
                     _state.update { state ->
                         state.copy(
-                            userInfo = it.data.member
+                            userInfo = it.data.member,
                         )
                     }
                 }
@@ -114,11 +114,11 @@ class ChatDetailViewModel @Inject constructor(
     private fun loadRoom(chatRoomId: String, isPersonal: Boolean) = viewModelScope.launch {
         val result = if (isPersonal) {
             personalChatRepository.getChat(
-                roomId = chatRoomId
+                roomId = chatRoomId,
             )
         } else {
             groupChatRepository.getGroupRoom(
-                roomId = chatRoomId
+                roomId = chatRoomId,
             )
         }
         result.collect {
@@ -133,7 +133,7 @@ class ChatDetailViewModel @Inject constructor(
                             id = chatRoomId,
                             roomName = it.data.chatName,
                             members = it.data.memberList.toImmutableList(),
-                            adminId = it.data.roomAdmin
+                            adminId = it.data.roomAdmin,
                         ),
                         users = users.toImmutableMap(),
                     )
@@ -194,12 +194,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelSend(
-        userId: Int,
-        content: String,
-        uuid: String = UUID.randomUUID().toString(),
-        type: MessageType
-    ) {
+    fun channelSend(userId: Int, content: String, uuid: String = UUID.randomUUID().toString(), type: MessageType) {
         viewModelScope.launch {
             // 파일, 이미지는 socket 서버 업로드전에 생김
             if (type == MessageType.MESSAGE) {
@@ -210,7 +205,7 @@ class ChatDetailViewModel @Inject constructor(
                 chatRoomId = state.value.roomInfo?.id ?: "",
                 message = content,
                 messageUUID = uuid,
-                type = type
+                type = type,
             )
             Log.d("TAG", "testSend: $result")
             when (result) {
@@ -219,7 +214,7 @@ class ChatDetailViewModel @Inject constructor(
                         failedSend(
                             type = type,
                             uuid = uuid,
-                            content = content
+                            content = content,
                         )
                         channelReconnect(userId)
                         return@launch
@@ -230,7 +225,7 @@ class ChatDetailViewModel @Inject constructor(
                         failedSend(
                             type = type,
                             uuid = uuid,
-                            content = content
+                            content = content,
                         )
 
                         // 전송후 실패했다면, 소켓 재연결
@@ -242,7 +237,7 @@ class ChatDetailViewModel @Inject constructor(
                     failedSend(
                         type = type,
                         uuid = uuid,
-                        content = content
+                        content = content,
                     )
                 }
                 is Result.Loading -> {}
@@ -250,32 +245,26 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelSend(
-        userId: Int,
-        image: Bitmap,
-        fileName: String,
-        uuid: String = UUID.randomUUID().toString()
-    ) {
+    fun channelSend(userId: Int, image: Bitmap, fileName: String, uuid: String = UUID.randomUUID().toString()) {
         viewModelScope.launch {
-
             _messageSaveQueueState.value += ChatLocalType.SendImg(
                 image = image,
                 fileName = fileName,
-                uuid = uuid
+                uuid = uuid,
             )
             fileRepository.fileUpload(
                 type = FileType.IMG,
                 fileName = fileName,
                 fileMimeType = "image/*",
-                fileByteArray = image.toByteArray()
+                fileByteArray = image.toByteArray(),
             ).collect {
                 when (it) {
                     is Result.Success -> {
                         channelSend(
                             userId = userId,
-                            content = "${it.data.url}::${fileName}",
+                            content = "${it.data.url}::$fileName",
                             type = MessageType.IMG,
-                            uuid = uuid
+                            uuid = uuid,
                         )
                     }
                     Result.Loading -> {}
@@ -284,7 +273,7 @@ class ChatDetailViewModel @Inject constructor(
                         _messageSaveQueueState.value += ChatLocalType.FailedImgUpload(
                             image = image,
                             fileName = fileName,
-                            uuid = uuid
+                            uuid = uuid,
                         )
 
                         it.throwable.printStackTrace()
@@ -294,13 +283,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelSend(
-        userId: Int,
-        fileByteArray: ByteArray,
-        fileMimeType: String,
-        fileName: String,
-        fileByte: Long
-    ) {
+    fun channelSend(userId: Int, fileByteArray: ByteArray, fileMimeType: String, fileName: String, fileByte: Long) {
         viewModelScope.launch {
             val uuid = UUID.randomUUID().toString()
 
@@ -315,15 +298,15 @@ class ChatDetailViewModel @Inject constructor(
                 type = FileType.FILE,
                 fileName = fileName,
                 fileMimeType = fileMimeType,
-                fileByteArray = fileByteArray
+                fileByteArray = fileByteArray,
             ).collect {
                 when (it) {
                     is Result.Success -> {
                         channelSend(
                             userId = userId,
-                            content = "${it.data.url}::${fileName}::${fileByte}",
+                            content = "${it.data.url}::$fileName::$fileByte",
                             type = MessageType.FILE,
-                            uuid = uuid
+                            uuid = uuid,
                         )
                     }
                     Result.Loading -> {}
@@ -343,12 +326,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelResend(
-        userId: Int,
-        content: String,
-        uuid: String,
-        type: MessageType = MessageType.MESSAGE
-    ) {
+    fun channelResend(userId: Int, content: String, uuid: String, type: MessageType = MessageType.MESSAGE) {
         _messageSaveQueueState.value -= uuid
         when {
             type == MessageType.FILE -> {
@@ -357,7 +335,7 @@ class ChatDetailViewModel @Inject constructor(
                     fileUrl = files[0],
                     fileName = files[1],
                     fileByte = files[2].toLong(),
-                    uuid = uuid
+                    uuid = uuid,
                 )
             }
             type == MessageType.IMG -> {
@@ -365,43 +343,31 @@ class ChatDetailViewModel @Inject constructor(
                 _messageSaveQueueState.value += ChatLocalType.SendImgUrl(
                     image = files[0],
                     fileName = files[1],
-                    uuid = uuid
+                    uuid = uuid,
                 )
             }
         }
         channelSend(userId, content, uuid, type)
     }
 
-    fun channelResend(
-        userId: Int,
-        fileName: String,
-        fileMimeType: String,
-        fileByteArray: ByteArray,
-        fileByte: Long,
-        uuid: String
-    ) {
+    fun channelResend(userId: Int, fileName: String, fileMimeType: String, fileByteArray: ByteArray, fileByte: Long, uuid: String) {
         _messageSaveQueueState.value -= uuid
         channelSend(
             userId = userId,
             fileName = fileName,
             fileMimeType = fileMimeType,
             fileByteArray = fileByteArray,
-            fileByte = fileByte
+            fileByte = fileByte,
         )
     }
 
-    fun channelReSend(
-        userId: Int,
-        image: Bitmap,
-        fileName: String,
-        uuid: String
-    ) {
+    fun channelReSend(userId: Int, image: Bitmap, fileName: String, uuid: String) {
         _messageSaveQueueState.value -= uuid
         channelSend(
             userId = userId,
             image = image,
             fileName = fileName,
-            uuid = uuid
+            uuid = uuid,
         )
     }
 
@@ -409,16 +375,14 @@ class ChatDetailViewModel @Inject constructor(
         _messageSaveQueueState.value -= uuid
     }
 
-    fun channelReconnect(
-        userId: Int
-    ) {
+    fun channelReconnect(userId: Int) {
         viewModelScope.launch {
             isReconnectTry = true
             subscribeChat?.cancel()
             val job = viewModelScope.async {
                 messageRepository.reSubscribeRoom(
                     chatRoomId = state.value.roomInfo?.id ?: "",
-                    userId = userId
+                    userId = userId,
                 ).collect {
                     it.collectMessage()
                 }
@@ -437,7 +401,7 @@ class ChatDetailViewModel @Inject constructor(
             val job = viewModelScope.async {
                 messageRepository.subscribeRoom(
                     chatRoomId = state.value.roomInfo?.id ?: "",
-                    userId = userId
+                    userId = userId,
                 ).collect {
                     it.collectMessage()
                 }
@@ -494,7 +458,6 @@ class ChatDetailViewModel @Inject constructor(
                         message[0] = formerItem.copy(isLast = false)
                     }
 
-
                     if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
                         isFirst = true
                         message.add(
@@ -503,7 +466,7 @@ class ChatDetailViewModel @Inject constructor(
                                 type = MessageType.MESSAGE,
                                 timestamp = LocalDateTime.of(data.timestamp.year, data.timestamp.monthValue, data.timestamp.dayOfMonth, 0, 0),
                                 userId = 0,
-                                text = ""
+                                text = "",
                             ),
                         )
                     }
@@ -517,9 +480,9 @@ class ChatDetailViewModel @Inject constructor(
 
                     // messageQueue 삭제 로직
                     if (data.userId == _state.value.userInfo?.id) {
-                        _messageSaveQueueState.value -= data.uuid?: ""
+                        _messageSaveQueueState.value -= data.uuid ?: ""
                     }
-                    _messageSaveQueueState.value -= data.uuid?: ""
+                    _messageSaveQueueState.value -= data.uuid ?: ""
                     _state.update {
                         it.copy(
                             message = message.toImmutableList(),
@@ -542,7 +505,6 @@ class ChatDetailViewModel @Inject constructor(
                         message[0] = formerItem.copy(isLast = false)
                     }
 
-
                     if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
                         message.add(
                             index = 0,
@@ -550,21 +512,21 @@ class ChatDetailViewModel @Inject constructor(
                                 type = MessageType.MESSAGE,
                                 timestamp = LocalDateTime.of(data.timestamp.year, data.timestamp.monthValue, data.timestamp.dayOfMonth, 0, 0),
                                 userId = 0,
-                                text = ""
+                                text = "",
                             ),
                         )
                     }
-                    _messageSaveQueueState.value -= data.uuid?: ""
+                    _messageSaveQueueState.value -= data.uuid ?: ""
                     message.add(
                         index = 0,
                         element = data.copy(
-                            isLast = true
+                            isLast = true,
                         ),
                     )
 
                     // messageQueue 삭제 로직
                     if (data.userId == _state.value.userInfo?.id) {
-                        _messageSaveQueueState.value -= data.uuid?: ""
+                        _messageSaveQueueState.value -= data.uuid ?: ""
                     }
                     _state.update {
                         it.copy(
@@ -577,14 +539,14 @@ class ChatDetailViewModel @Inject constructor(
                     val data = data as MessageParent.Img
                     // messageQueue 삭제 로직
                     if (data.userId == _state.value.userInfo?.id) {
-                        _messageSaveQueueState.value -= data.uuid?: ""
+                        _messageSaveQueueState.value -= data.uuid ?: ""
                     }
-                    _messageSaveQueueState.value -= data.uuid?: ""
+                    _messageSaveQueueState.value -= data.uuid ?: ""
                     _state.update {
                         it.copy(
                             message = it.message.toMutableList().apply {
                                 add(0, data)
-                            }.toImmutableList()
+                            }.toImmutableList(),
                         )
                     }
                 }
@@ -593,14 +555,14 @@ class ChatDetailViewModel @Inject constructor(
                     val data = data as MessageParent.File
                     // messageQueue 삭제 로직
                     if (data.userId == _state.value.userInfo?.id) {
-                        _messageSaveQueueState.value -= data.uuid?: ""
+                        _messageSaveQueueState.value -= data.uuid ?: ""
                     }
-                    _messageSaveQueueState.value -= data.uuid?: ""
+                    _messageSaveQueueState.value -= data.uuid ?: ""
                     _state.update {
                         it.copy(
                             message = it.message.toMutableList().apply {
                                 add(0, data)
-                            }.toImmutableList()
+                            }.toImmutableList(),
                         )
                     }
                 }
@@ -611,7 +573,7 @@ class ChatDetailViewModel @Inject constructor(
                         it.copy(
                             message = it.message.toMutableList().apply {
                                 add(0, data)
-                            }.toImmutableList()
+                            }.toImmutableList(),
                         )
                     }
                 }
@@ -622,7 +584,7 @@ class ChatDetailViewModel @Inject constructor(
                         it.copy(
                             message = it.message.toMutableList().apply {
                                 add(0, data)
-                            }.toImmutableList()
+                            }.toImmutableList(),
                         )
                     }
                 }
@@ -633,7 +595,7 @@ class ChatDetailViewModel @Inject constructor(
                         it.copy(
                             message = it.message.toMutableList().apply {
                                 add(0, data)
-                            }.toImmutableList()
+                            }.toImmutableList(),
                         )
                     }
                 }
@@ -692,7 +654,7 @@ class ChatDetailViewModel @Inject constructor(
             workspaceId = workspaceId,
             roomName = "",
             joinUsers = listOf(userId),
-            chatRoomImg = ""
+            chatRoomImg = "",
         ).collect {
             when (it) {
                 is Result.Success -> {
@@ -707,11 +669,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun failedSend(
-        type: MessageType,
-        uuid: String,
-        content: String
-    ) {
+    private fun failedSend(type: MessageType, uuid: String, content: String) {
         _messageSaveQueueState.value -= uuid
         if (type == MessageType.MESSAGE) {
             _messageSaveQueueState.value += ChatLocalType.FailedText(content, uuid)
@@ -721,14 +679,14 @@ class ChatDetailViewModel @Inject constructor(
                 fileUrl = files[0],
                 fileName = files[1],
                 fileByte = files[2].toLong(),
-                uuid = uuid
+                uuid = uuid,
             )
         } else if (type == MessageType.IMG) {
             val files = content.split("::")
             _messageSaveQueueState.value += ChatLocalType.FailedImgSend(
                 image = files[0],
                 fileName = files[1],
-                uuid = uuid
+                uuid = uuid,
             )
         }
     }

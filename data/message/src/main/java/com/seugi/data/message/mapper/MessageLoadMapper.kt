@@ -4,8 +4,7 @@ import com.seugi.data.message.model.MessageLoadModel
 import com.seugi.network.message.response.message.MessageLoadResponse
 import kotlinx.collections.immutable.toImmutableList
 
-fun MessageLoadResponse.toModel(userId: Int) =
-    MessageLoadModel(
-        firstMessageId = firstMessageId,
-        messages = messages.map { it.toModel(userId) }.toImmutableList()
-    )
+fun MessageLoadResponse.toModel(userId: Int) = MessageLoadModel(
+    firstMessageId = firstMessageId,
+    messages = messages.map { it.toModel(userId) }.toImmutableList(),
+)

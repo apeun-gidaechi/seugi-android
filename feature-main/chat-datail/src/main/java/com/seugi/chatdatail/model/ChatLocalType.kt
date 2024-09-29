@@ -5,20 +5,20 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 sealed class ChatLocalType(
-    open val uuid: String
+    open val uuid: String,
 ) {
-    data class FailedText(val text: String, override val uuid: String): ChatLocalType(uuid)
-    data class SendText(val text: String, override val uuid: String): ChatLocalType(uuid)
+    data class FailedText(val text: String, override val uuid: String) : ChatLocalType(uuid)
+    data class SendText(val text: String, override val uuid: String) : ChatLocalType(uuid)
 
-    data class FailedImgUpload(val image: Bitmap, val fileName: String, override val uuid: String): ChatLocalType(uuid)
+    data class FailedImgUpload(val image: Bitmap, val fileName: String, override val uuid: String) : ChatLocalType(uuid)
 
-    data class FailedImgSend(val image: String, val fileName: String, override val uuid: String): ChatLocalType(uuid)
+    data class FailedImgSend(val image: String, val fileName: String, override val uuid: String) : ChatLocalType(uuid)
 
-    data class SendImg(val image: Bitmap, val fileName: String, override val uuid: String): ChatLocalType(uuid)
+    data class SendImg(val image: Bitmap, val fileName: String, override val uuid: String) : ChatLocalType(uuid)
 
-    data class SendImgUrl(val image: String, val fileName: String, override val uuid: String): ChatLocalType(uuid)
+    data class SendImgUrl(val image: String, val fileName: String, override val uuid: String) : ChatLocalType(uuid)
 
-    data class FailedFileUpload(val fileByteArray: ByteArray, val fileName: String, val fileByte: Long, val fileMimeType: String, override val uuid: String): ChatLocalType(uuid) {
+    data class FailedFileUpload(val fileByteArray: ByteArray, val fileName: String, val fileByte: Long, val fileMimeType: String, override val uuid: String) : ChatLocalType(uuid) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
@@ -44,9 +44,9 @@ sealed class ChatLocalType(
         }
     }
 
-    data class FailedFileSend(val fileUrl: String, val fileName: String, val fileByte: Long, override val uuid: String): ChatLocalType(uuid)
+    data class FailedFileSend(val fileUrl: String, val fileName: String, val fileByte: Long, override val uuid: String) : ChatLocalType(uuid)
 
-    data class SendFile(val fileByteArray: ByteArray, val fileName: String, val fileByte: Long, val fileMimeType: String, override val uuid: String): ChatLocalType(uuid) {
+    data class SendFile(val fileByteArray: ByteArray, val fileName: String, val fileByte: Long, val fileMimeType: String, override val uuid: String) : ChatLocalType(uuid) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
@@ -72,7 +72,7 @@ sealed class ChatLocalType(
         }
     }
 
-    data class SendFileUrl(val fileUrl: String, val fileName: String, val fileByte: Long, override val uuid: String): ChatLocalType(uuid)
+    data class SendFileUrl(val fileUrl: String, val fileName: String, val fileByte: Long, override val uuid: String) : ChatLocalType(uuid)
 }
 
 internal fun Collection<ChatLocalType>.containsWithUUID(uuid: String): Boolean {

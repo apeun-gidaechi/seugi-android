@@ -10,14 +10,14 @@ sealed class MessageRoomEventResponse(
 
     data class Raw(
         override val type: String,
-        override val userId: Int
+        override val userId: Int,
     ) : MessageRoomEventResponse(type, userId)
 
     sealed class MessageParent(
         @Transient open val timestamp: LocalDateTime,
         @Transient override val type: String,
         @Transient override val userId: Int,
-    ): MessageRoomEventResponse(type, userId) {
+    ) : MessageRoomEventResponse(type, userId) {
         data class Message(
             val id: String,
             val chatRoomId: String,
@@ -39,32 +39,32 @@ sealed class MessageRoomEventResponse(
     data class Sub(
         override val type: String,
         override val userId: Int,
-    ): MessageRoomEventResponse(type, userId)
+    ) : MessageRoomEventResponse(type, userId)
 
     data class DeleteMessage(
         override val type: String,
         override val userId: Int,
         val messageId: String,
-    ): MessageRoomEventResponse(type, userId)
+    ) : MessageRoomEventResponse(type, userId)
 
     data class AddEmoji(
         override val type: String,
         override val userId: Int,
         val messageId: String,
-        val emojiId: Int
-    ): MessageRoomEventResponse(type, userId)
+        val emojiId: Int,
+    ) : MessageRoomEventResponse(type, userId)
 
     data class RemoveEmoji(
         override val type: String,
         override val userId: Int,
         val messageId: String,
-        val emojiId: Int
-    ): MessageRoomEventResponse(type, userId)
+        val emojiId: Int,
+    ) : MessageRoomEventResponse(type, userId)
 
     data class TransperAdmin(
         override val type: String,
         override val userId: Int,
         val roomId: String,
-        val eventList: List<Int>
-    ): MessageRoomEventResponse(type, userId)
+        val eventList: List<Int>,
+    ) : MessageRoomEventResponse(type, userId)
 }

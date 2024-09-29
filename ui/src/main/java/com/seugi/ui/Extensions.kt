@@ -19,9 +19,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import kotlinx.coroutines.flow.Flow
 import java.io.ByteArrayOutputStream
-
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun <SIDE_EFFECT : Any> Flow<SIDE_EFFECT>.CollectAsSideEffect(lifecycleState: Lifecycle.State = Lifecycle.State.STARTED, sideEffect: (suspend (sideEffect: SIDE_EFFECT) -> Unit)) {
@@ -49,15 +48,11 @@ fun Context.shortToast(text: String?) {
     Toast.makeText(this, text ?: "", Toast.LENGTH_SHORT).show()
 }
 
-fun ContentResolver.uriToBitmap(uri: Uri): Bitmap =
-    ImageDecoder.decodeBitmap(
-        ImageDecoder.createSource(this, uri)
-    )
+fun ContentResolver.uriToBitmap(uri: Uri): Bitmap = ImageDecoder.decodeBitmap(
+    ImageDecoder.createSource(this, uri),
+)
 
-
-fun Bitmap.toByteArray(
-    format: Bitmap.CompressFormat = Bitmap.CompressFormat.PNG,
-): ByteArray {
+fun Bitmap.toByteArray(format: Bitmap.CompressFormat = Bitmap.CompressFormat.PNG): ByteArray {
     val stream = ByteArrayOutputStream()
     compress(format, 100, stream)
     val byteArray = stream.toByteArray()
@@ -87,12 +82,10 @@ fun ContentResolver.getMimeType(uri: Uri): String? {
         MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
     }
 
-
     return mimeType
 }
 
-fun ContentResolver.getUriByteArray(uri: Uri): ByteArray =
-    this.openInputStream(uri)?.readBytes()?: ByteArray(0)
+fun ContentResolver.getUriByteArray(uri: Uri): ByteArray = this.openInputStream(uri)?.readBytes() ?: ByteArray(0)
 
 fun ContentResolver.getFileSize(uri: Uri): Long {
     var fileSize: Long = -1
