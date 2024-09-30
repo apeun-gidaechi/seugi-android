@@ -51,4 +51,6 @@ dependencies {
     implementation(projects.featureOnboarding.onboarding)
     implementation(projects.common)
     implementation(projects.data.token)
+    implementation(projects.data.firebaseToken)
+
 }

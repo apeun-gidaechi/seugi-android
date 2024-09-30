@@ -1,5 +1,8 @@
 import java.net.URI
 
+include(":data:firebase-token")
+
+
 include(":data:file")
 
 
