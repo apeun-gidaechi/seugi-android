@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.seugi.android.kotlin)
     alias(libs.plugins.seugi.android.compose)
     alias(libs.plugins.seugi.android.hilt)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -38,6 +39,11 @@ dependencies {
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.androidx.test.espresso)
     androidTestImplementation(platform(libs.androidx.compose.bom))
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.message)
+
 
     implementation(projects.network.core)
     implementation(projects.designsystem)
