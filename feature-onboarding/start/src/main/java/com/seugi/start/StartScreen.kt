@@ -1,5 +1,9 @@
 package com.seugi.start
 
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -27,13 +31,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.Scopes
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Scope
 import com.seugi.designsystem.component.ButtonType
 import com.seugi.designsystem.component.GradientPrimary
 import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiOAuthButton
 import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.coroutines.delay
+import androidx.compose.ui.platform.LocalContext as LocalContext1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,6 +65,31 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
         visibleCloud2 = true
         delay(500)
         visibleButton = true
+    }
+
+    val context = LocalContext1.current
+    val clientId = stringResource(com.seugi.designsystem.R.string.server_id)
+    val googleSignInOption = GoogleSignInOptions
+        .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestServerAuthCode(clientId)
+        .requestEmail()
+        .requestScopes(Scope(Scopes.EMAIL), Scope(Scopes.PROFILE))
+        .build()
+    val googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(context, googleSignInOption)
+
+    val googleAuthLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        try {
+            val account = task.getResult(ApiException::class.java)
+            val code = account.serverAuthCode
+            Log.d("TAG", "code: ${account.serverAuthCode}")
+            Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
+        } catch (e: ApiException) {
+            Log.e("TAG", "Google Sign-In 실패: ${e.statusCode} - ${e.message}")
+            Toast.makeText(context, "로그인 실패: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
     }
 
     SeugiTheme {
@@ -198,7 +235,9 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
                                 image = R.drawable.ic_google,
                                 text = "Google로 계속하기",
                                 onClick = {
-                                    navigateToOAuthSignIn()
+                                    googleSignInClient.signOut()
+                                    val signInIntent = googleSignInClient.signInIntent
+                                    googleAuthLauncher.launch(signInIntent)
                                     showBottomSheet = false
                                 },
                             )
