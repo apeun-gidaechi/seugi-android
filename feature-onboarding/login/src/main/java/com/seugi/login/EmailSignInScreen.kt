@@ -175,7 +175,7 @@ internal fun EmailSignInScreen(navigateToEmailSignUp: () -> Unit, popBackStack: 
                         pwError = pwValue.isEmpty()
 
                         if (!emailError && !pwError) {
-                            viewModel.emailSignIn(
+                            viewModel.getFCM(
                                 email = emailValue,
                                 password = pwValue,
                             )
