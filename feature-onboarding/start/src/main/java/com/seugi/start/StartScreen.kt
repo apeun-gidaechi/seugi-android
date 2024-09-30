@@ -49,7 +49,7 @@ import androidx.compose.ui.platform.LocalContext as LocalContext1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignIn: () -> Unit) {
+internal fun StartScreen(navigateToEmailSignIn: () -> Unit) {
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     var visibleCloud1 by remember { mutableStateOf(false) }
@@ -246,7 +246,6 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignI
                                 image = R.drawable.ic_apple,
                                 text = "Apple로 계속하기",
                                 onClick = {
-                                    navigateToOAuthSignIn()
                                     showBottomSheet = false
                                 },
                             )

@@ -15,8 +15,8 @@ fun NavController.navigateToStart(navOptions: NavOptions? = null) = navigate(STA
     }
 }
 
-fun NavGraphBuilder.startScreen(navigateToEmailSignIn: () -> Unit, navigateToOAuthSignIn: () -> Unit) {
+fun NavGraphBuilder.startScreen(navigateToEmailSignIn: () -> Unit) {
     composable(route = START_ROUTE) {
-        StartScreen(navigateToEmailSignIn = navigateToEmailSignIn, navigateToOAuthSignIn = navigateToOAuthSignIn)
+        StartScreen(navigateToEmailSignIn = navigateToEmailSignIn)
     }
 }
