@@ -46,11 +46,12 @@ fun SeugiChatList(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+                .padding(16.dp)
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
+                modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 SeugiAvatar(
@@ -86,7 +87,6 @@ fun SeugiChatList(
                     )
                 }
             }
-            Spacer(modifier = Modifier.weight(1f))
             Column(
                 horizontalAlignment = Alignment.End,
             ) {
@@ -129,7 +129,7 @@ private fun PreviewSeugiChatList() {
             )
             SeugiChatList(
                 userName = "노영재너럴캡숑짱ㅋ",
-                message = "정말 좋습니다",
+                message = "https://seugi.s3.ap-northeast-2.amazonaws.com/IMG/c10f85d3-5ce0-4bfd-887e-6aed0a8100b9-file",
                 createdAt = "12:39",
                 memberCount = 4,
                 onClick = {},

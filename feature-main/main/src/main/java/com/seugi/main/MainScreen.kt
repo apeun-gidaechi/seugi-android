@@ -164,6 +164,13 @@ internal fun MainScreen(
             chatDetailScreen(
                 userId = state.userId,
                 onNavigationVisibleChange = onNavigationVisibleChange,
+                navigateToChatDetail = { workspaceId, chatRoomId ->
+                    navHostController.navigateToChatDetail(
+                        workspaceId = workspaceId,
+                        chatRoomId = chatRoomId,
+                        isPersonal = true,
+                    )
+                },
                 popBackStack = {
                     navHostController.popBackStack()
                 },

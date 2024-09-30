@@ -1,7 +1,7 @@
-package com.seugi.data.personalchat.di
+package com.seugi.network.personalchat.di
 
-import com.seugi.data.personalchat.PersonalChatDataSource
-import com.seugi.data.personalchat.datasource.PersonalChatDataSourceImpl
+import com.seugi.network.personalchat.PersonalChatDataSource
+import com.seugi.network.personalchat.datasource.PersonalChatDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

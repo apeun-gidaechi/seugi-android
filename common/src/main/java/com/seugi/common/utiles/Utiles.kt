@@ -42,3 +42,19 @@ inline fun <reified T, R> combineWhenAllComplete(vararg flows: Flow<T>, crossinl
 
     emit(transform(lastValues.map { it!! }.toTypedArray()))
 }
+
+@Suppress("DefaultLocale")
+fun byteToFormatString(byte: Long): String {
+    if (byte < 1024) return "${byte}B" // 1KB 미만은 그대로 반환
+
+    val units = arrayOf("KB", "MB", "GB", "TB")
+    var value = byte.toDouble()
+    var unitIndex = -1
+
+    while (value >= 1024 && unitIndex < units.lastIndex) {
+        value /= 1024
+        unitIndex++
+    }
+
+    return String.format("%.1f%s", value, units[unitIndex])
+}

@@ -46,9 +46,15 @@ import com.seugi.designsystem.theme.SeugiTheme
  * @param onSendClick the event is click send icon.
  */
 @Composable
-fun SeugiChatTextField(modifier: Modifier = Modifier, value: String, placeholder: String = "", onValueChange: (String) -> Unit, onAddClick: () -> Unit = {}, onSendClick: () -> Unit = {}) {
-    val valueIsEmpty = value.isEmpty()
-
+fun SeugiChatTextField(
+    modifier: Modifier = Modifier,
+    value: String,
+    placeholder: String = "",
+    sendEnabled: Boolean = true,
+    onValueChange: (String) -> Unit,
+    onAddClick: () -> Unit = {},
+    onSendClick: () -> Unit = {},
+) {
     Surface(
         modifier = modifier
             .fillMaxWidth()
@@ -89,7 +95,7 @@ fun SeugiChatTextField(modifier: Modifier = Modifier, value: String, placeholder
                     onValueChange = onValueChange,
                     decorationBox = { innerTextField ->
                         Box {
-                            if (valueIsEmpty) {
+                            if (value.isEmpty()) {
                                 Text(
                                     text = placeholder,
                                     color = SeugiTheme.colors.gray500,
@@ -110,11 +116,11 @@ fun SeugiChatTextField(modifier: Modifier = Modifier, value: String, placeholder
                     .clickable(
                         role = Role.Button,
                         onClick = onSendClick,
-                        enabled = !valueIsEmpty,
+                        enabled = sendEnabled,
                     ),
                 painter = painterResource(id = R.drawable.ic_send_fill),
                 contentDescription = "send button",
-                colorFilter = ColorFilter.tint(if (valueIsEmpty) SeugiTheme.colors.gray400 else SeugiTheme.colors.primary500),
+                colorFilter = ColorFilter.tint(if (sendEnabled) SeugiTheme.colors.primary500 else SeugiTheme.colors.gray400),
             )
         }
     }

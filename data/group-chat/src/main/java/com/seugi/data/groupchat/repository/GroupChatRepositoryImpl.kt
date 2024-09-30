@@ -4,6 +4,7 @@ import com.seugi.common.model.Result
 import com.seugi.common.model.asResult
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
+import com.seugi.data.core.mapper.toModel
 import com.seugi.data.core.mapper.toModels
 import com.seugi.data.core.model.ChatRoomModel
 import com.seugi.data.groupchat.GroupChatRepository
@@ -39,4 +40,23 @@ class GroupChatRepositoryImpl @Inject constructor(
     }
         .flowOn(dispatcher)
         .asResult()
+
+    override suspend fun getGroupRoom(roomId: String): Flow<Result<ChatRoomModel>> = flow {
+        val response = dataSource.getChat(
+            roomId = roomId,
+        ).safeResponse()
+
+        emit(response.toModel())
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun leftRoom(chatRoomId: String): Flow<Result<Unit>> {
+        return flow {
+            val response = dataSource.leftRoom(chatRoomId).safeResponse()
+            emit(response ?: Unit)
+        }
+            .flowOn(dispatcher)
+            .asResult()
+    }
 }

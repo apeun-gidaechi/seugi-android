@@ -1,4 +1,4 @@
-package com.seugi.data.personalchat.response
+package com.seugi.network.personalchat.response
 
 import com.seugi.network.core.response.UserResponse
 import java.time.LocalDateTime

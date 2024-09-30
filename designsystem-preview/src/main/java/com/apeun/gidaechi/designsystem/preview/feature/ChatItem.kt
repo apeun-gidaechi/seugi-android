@@ -30,11 +30,9 @@ fun ChatItem() {
                     message = "iOS정말 재미없어요!",
                     createdAt = "오후 7:44",
                     count = 1,
+                    onDateClick = {},
+                    onChatLongClick = {},
                 ),
-                onChatLongClick = {
-                },
-                onDateClick = {
-                },
             )
             Spacer(modifier = Modifier.height(8.dp))
             SeugiChatItem(
@@ -46,11 +44,9 @@ fun ChatItem() {
                     message = "iOS정말 재미없어요!",
                     createdAt = "오후 7:44",
                     count = 1,
+                    onDateClick = {},
+                    onChatLongClick = {},
                 ),
-                onChatLongClick = {
-                },
-                onDateClick = {
-                },
             )
             Spacer(modifier = Modifier.height(32.dp))
             SeugiChatItem(
@@ -60,11 +56,9 @@ fun ChatItem() {
                     message = "iOS정말 재미없어요!",
                     createdAt = "오후 7:44",
                     count = 1,
+                    onDateClick = {},
+                    onChatLongClick = {},
                 ),
-                onChatLongClick = {
-                },
-                onDateClick = {
-                },
             )
             Spacer(modifier = Modifier.height(8.dp))
             SeugiChatItem(
@@ -74,11 +68,9 @@ fun ChatItem() {
                     message = "iOS정말 재미없어요!",
                     createdAt = "오후 7:44",
                     count = 1,
+                    onDateClick = {},
+                    onChatLongClick = {},
                 ),
-                onChatLongClick = {
-                },
-                onDateClick = {
-                },
             )
             Spacer(modifier = Modifier.height(32.dp))
             SeugiChatItem(
@@ -94,11 +86,9 @@ fun ChatItem() {
                     message = "iOS정말 재미없어요!",
                     createdAt = "오후 7:44",
                     count = 1,
+                    onDateClick = {},
+                    onChatLongClick = {},
                 ),
-                onChatLongClick = {
-                },
-                onDateClick = {
-                },
             )
             Spacer(modifier = Modifier.height(8.dp))
             SeugiChatItem(
@@ -108,11 +98,9 @@ fun ChatItem() {
                     message = "iOS정말 재미없어요!",
                     createdAt = "오후 7:44",
                     count = 1,
+                    onDateClick = {},
+                    onChatLongClick = {},
                 ),
-                onChatLongClick = {
-                },
-                onDateClick = {
-                },
             )
         }
     }

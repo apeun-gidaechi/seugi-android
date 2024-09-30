@@ -1,14 +1,15 @@
 package com.seugi.network.groupchat.datasource
 
-import com.seugi.data.personalchat.request.GroupChatCreateRequest
 import com.seugi.network.core.SeugiUrl
 import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.response.ChatRoomResponse
 import com.seugi.network.groupchat.GroupChatDataSource
+import com.seugi.network.personalchat.request.GroupChatCreateRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import javax.inject.Inject
@@ -30,4 +31,8 @@ class GroupChatDataSourceImpl @Inject constructor(
             ),
         )
     }.body()
+
+    override suspend fun getChat(roomId: String): BaseResponse<ChatRoomResponse> = httpClient.get(SeugiUrl.GroupChat.SEARCH_ROOM + "/$roomId").body()
+
+    override suspend fun leftRoom(chatRoomId: String): BaseResponse<Unit?> = httpClient.patch("${SeugiUrl.GroupChat.LEFT}/$chatRoomId").body()
 }

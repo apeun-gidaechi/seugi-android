@@ -1,5 +1,7 @@
 package com.seugi.data.file.model
 
 data class FileModel(
-    val fileUrl: String,
+    val url: String,
+    val name: String,
+    val byte: Long,
 )

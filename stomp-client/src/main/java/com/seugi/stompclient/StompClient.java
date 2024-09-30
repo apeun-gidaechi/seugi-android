@@ -121,7 +121,7 @@ public class StompClient {
                                     .subscribe(() -> {
                                         Log.d(TAG, "Publish open");
                                         lifecyclePublishSubject.onNext(lifecycleEvent);
-                                    });
+                                    }, Throwable::printStackTrace);
                             break;
 
                         case CLOSED:

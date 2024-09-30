@@ -61,7 +61,7 @@ class WorkspaceCreateViewModel @Inject constructor(
                         is Result.Success -> {
                             createWorkspace(
                                 workspaceName = workspaceName,
-                                workspaceImage = it.data,
+                                workspaceImage = it.data.url,
                             )
                         }
                         is Result.Error -> {

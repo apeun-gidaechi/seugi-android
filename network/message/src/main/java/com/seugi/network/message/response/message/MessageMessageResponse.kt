@@ -17,4 +17,5 @@ data class MessageMessageResponse(
     val timestamp: LocalDateTime,
     val read: List<Int>,
     val messageStatus: String,
+    val uuid: String?,
 ) : MessageTypeResponse()

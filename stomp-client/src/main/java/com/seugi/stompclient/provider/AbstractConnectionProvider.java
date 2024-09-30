@@ -6,6 +6,9 @@ import android.util.Log;
 
 import com.seugi.stompclient.dto.LifecycleEvent;
 
+import java.util.Arrays;
+import java.util.List;
+
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
@@ -107,6 +110,10 @@ public abstract class AbstractConnectionProvider implements ConnectionProvider {
 
     protected void emitMessage(String stompMessage) {
         Log.d(TAG, "Receive STOMP message: " + stompMessage);
+        if (stompMessage.startsWith("CONNECTED")) {
+            emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.CONNECTED, "CONNECTED STOMP"));
+        }
+
         messagesStream.onNext(stompMessage);
     }
 

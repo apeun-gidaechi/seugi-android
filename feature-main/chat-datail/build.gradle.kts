@@ -16,5 +16,10 @@ dependencies {
     implementation(projects.data.profile)
     implementation(projects.data.core)
     implementation(projects.data.token)
+    implementation(projects.data.file)
+    implementation(projects.data.perosnalChat)
+    implementation(projects.data.groupChat)
+    implementation(libs.coil.compose)
     implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.zoomable)
 }

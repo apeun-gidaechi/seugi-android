@@ -8,4 +8,5 @@ internal fun MessageStompLifecycleResponse.toModel() = when (this) {
     is MessageStompLifecycleResponse.Open -> MessageStompLifecycleModel.Open
     is MessageStompLifecycleResponse.FailedServerHeartbeat -> MessageStompLifecycleModel.FailedServerHeartbeat
     is MessageStompLifecycleResponse.Closed -> MessageStompLifecycleModel.Closed
+    is MessageStompLifecycleResponse.Connected -> MessageStompLifecycleModel.Connected
 }

@@ -1,4 +1,4 @@
-package com.seugi.data.personalchat.request
+package com.seugi.network.personalchat.request
 
 data class PersonalChatCreateRequest(
     val workspaceId: String,

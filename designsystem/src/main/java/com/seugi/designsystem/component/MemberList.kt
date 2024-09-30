@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,7 +31,7 @@ import com.seugi.designsystem.animation.AlphaIndication
 import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
-fun SeugiMemberList(userName: String, userProfile: String?, isCrown: Boolean = false, onClick: () -> Unit, crownColor: Color = SeugiTheme.colors.black) {
+fun SeugiMemberList(onClick: () -> Unit, userName: String, userProfile: String?, isCrown: Boolean = false, crownColor: Color = SeugiTheme.colors.black, action: @Composable () -> Unit = {}) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -71,12 +70,7 @@ fun SeugiMemberList(userName: String, userProfile: String?, isCrown: Boolean = f
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
-            Icon(
-                modifier = Modifier
-                    .size(24.dp),
-                painter = painterResource(R.drawable.ic_detail_vertical_line),
-                contentDescription = "",
-            )
+            action()
         }
     }
 }
@@ -233,11 +227,10 @@ private fun PreviewSeugiMemberList() {
             modifier = Modifier.fillMaxSize(),
         ) {
             SeugiMemberList(
+                onClick = {},
                 userName = "노영재",
                 userProfile = null,
                 isCrown = true,
-                onClick = {
-                },
                 crownColor = SeugiTheme.colors.yellow500,
             )
             SeugiMemberList(
