@@ -1,11 +1,5 @@
-package com.seugi.join.feature.oauth
+package com.seugi.join.feature
 
-import android.app.Activity
-import android.util.Log
-import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,60 +17,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.Scopes
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.Scope
-import com.google.android.gms.tasks.Task
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.ButtonType
 import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.textfield.SeugiTextField
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.join.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun OAuthSignUpScreen(
     popBackStack: () -> Unit,
     navigateToEmailSignUp: () -> Unit,
-    viewModel: OAuthSignUpViewModel = hiltViewModel()
 ) {
     var text by remember { mutableStateOf("") }
     var error by remember { mutableStateOf(false) }
-
-    val context = LocalContext.current
-    val clientId = stringResource(com.seugi.designsystem.R.string.server_id)
-    val googleSignInOption = GoogleSignInOptions
-        .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        .requestServerAuthCode(clientId)
-        .requestEmail()
-        .requestScopes(Scope(Scopes.EMAIL), Scope(Scopes.PROFILE))
-        .build()
-    val googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(context, googleSignInOption)
-
-    val googleAuthLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-        try {
-            val account = task.getResult(ApiException::class.java)
-            val code = account.serverAuthCode
-            Log.d("TAG", "code: ${account.serverAuthCode}")
-            Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
-        } catch (e: ApiException) {
-            Log.e("TAG", "Google Sign-In 실패: ${e.statusCode} - ${e.message}")
-            Toast.makeText(context, "로그인 실패: ${e.message}", Toast.LENGTH_SHORT).show()
-        }
-    }
 
 
     SeugiTheme {
@@ -136,11 +92,7 @@ internal fun OAuthSignUpScreen(
                         }),
                     )
                     SeugiFullWidthButton(
-                        onClick = {
-                            googleSignInClient.signOut()
-                            val signInIntent = googleSignInClient.signInIntent
-                            googleAuthLauncher.launch(signInIntent)
-                        },
+                        onClick = {},
                         type = ButtonType.Primary,
                         text = "계속하기",
                         modifier = Modifier.padding(vertical = 16.dp),
