@@ -78,7 +78,7 @@ internal fun StartScreen(
         .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestServerAuthCode(clientId)
         .requestEmail()
-        .requestProfile()
+        .requestScopes(Scope(Scopes.PROFILE), Scope(Scopes.EMAIL))
         .build()
     val googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(context, googleSignInOption)
 
