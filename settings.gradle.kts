@@ -1,5 +1,11 @@
 import java.net.URI
 
+include(":data:oauth")
+
+
+include(":network:oauth")
+
+
 include(":data:firebase-token")
 
 

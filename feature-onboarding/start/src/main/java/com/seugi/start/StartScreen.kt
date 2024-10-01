@@ -33,6 +33,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -49,7 +51,10 @@ import androidx.compose.ui.platform.LocalContext as LocalContext1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun StartScreen(navigateToEmailSignIn: () -> Unit) {
+internal fun StartScreen(
+    navigateToEmailSignIn: () -> Unit,
+    viewModel: StartViewModel = hiltViewModel()
+) {
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     var visibleCloud1 by remember { mutableStateOf(false) }
@@ -83,7 +88,8 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit) {
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         try {
             val account = task.getResult(ApiException::class.java)
-            val code = account.serverAuthCode
+            val code = account.serverAuthCode.toString()
+            viewModel.googleLogin(code = code)
             Log.d("TAG", "code: ${account.serverAuthCode}")
             Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
         } catch (e: ApiException) {

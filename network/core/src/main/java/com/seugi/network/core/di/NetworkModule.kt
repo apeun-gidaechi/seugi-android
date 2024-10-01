@@ -118,6 +118,7 @@ object NetworkModule {
                         SeugiUrl.Auth.EMAIL_SIGN_UP -> false
                         SeugiUrl.Auth.EMAIL_SIGN_IN -> false
                         SeugiUrl.Auth.GET_CODE -> false
+                        SeugiUrl.Oauth.GOOGLE_AUTHENTICATE -> false
                         else -> {
                             when (it.url.toString().split("?")[0]) {
                                 SeugiUrl.Member.REFRESH -> false

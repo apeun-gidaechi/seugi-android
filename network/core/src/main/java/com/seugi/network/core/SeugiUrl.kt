@@ -8,6 +8,7 @@ object SeugiUrl {
     const val FILE = "$BASE_URL/file"
     const val AI = "$AI_URL/ai"
     const val PROFILE = "$BASE_URL/profile"
+    const val OAUTH = "$BASE_URL/oauth"
 
     object Message {
         private const val WS_URL = BuildConfig.WS_URL
@@ -73,5 +74,9 @@ object SeugiUrl {
     object Timetable {
         const val ROOT = "${BASE_URL}/timetable"
         const val DAY = "$ROOT/day"
+    }
+
+    object Oauth{
+        const val GOOGLE_AUTHENTICATE = "${OAUTH}/google/authenticate"
     }
 }
