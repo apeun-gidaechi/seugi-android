@@ -42,7 +42,7 @@ jobs:
         with:
           name: "google-services.json"
           json: ${{ secrets.GOOGLE_SERVICES }}
-          dir: './$GITHUB_WORKSPACE/app'
+          dir: 'app/'
 
       - name: Build with Gradle
         run: ./gradlew build --parallel
@@ -64,3 +64,4 @@ jobs:
         with:
           name: release
           path: ./app/build/outputs/apk/release/app-release-unsigned.apk
+
