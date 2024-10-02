@@ -46,7 +46,10 @@ import com.seugi.designsystem.component.GradientPrimary
 import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiOAuthButton
 import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.login.model.EmailSignInSideEffect
+import com.seugi.start.model.StartSideEffect
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import androidx.compose.ui.platform.LocalContext as LocalContext1
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,11 +94,23 @@ internal fun StartScreen(
             val account = task.getResult(ApiException::class.java)
             val code = account.serverAuthCode.toString()
             viewModel.googleLogin(code = code)
-            Log.d("TAG", "code: ${account.serverAuthCode}")
-            Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
         } catch (e: ApiException) {
-            Log.e("TAG", "Google Sign-In 실패: ${e.statusCode} - ${e.message}")
-            Toast.makeText(context, "로그인 실패: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.startSideEffect.collectLatest { value ->
+            when (value) {
+                // Handle events
+                is StartSideEffect.SuccessLogin -> {
+                    navigateToMain()
+                }
+
+                is StartSideEffect.FailedLogin -> {
+                    Toast.makeText(context, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
