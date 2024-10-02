@@ -19,7 +19,8 @@ class OauthDatasourceImpl @Inject constructor(
         httpClient.post(SeugiUrl.Oauth.GOOGLE_AUTHENTICATE){
             setBody(
                 body = OauthRequest(
-                    code = code
+                    code = code,
+                    platform = "ANDROID"
                 )
             )
     }.body()

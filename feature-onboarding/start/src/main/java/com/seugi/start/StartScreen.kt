@@ -89,11 +89,10 @@ internal fun StartScreen(
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         try {
             val account = task.getResult(ApiException::class.java)
-//            val code = account.serverAuthCode ?:""
-//            viewModel.googleLogin(code = code)
+            val code = account.serverAuthCode.toString()
+            viewModel.googleLogin(code = code)
             Log.d("TAG", "code: ${account.serverAuthCode}")
             Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
-            navigateToMain()
         } catch (e: ApiException) {
             Log.e("TAG", "Google Sign-In 실패: ${e.statusCode} - ${e.message}")
             Toast.makeText(context, "로그인 실패: ${e.message}", Toast.LENGTH_SHORT).show()
