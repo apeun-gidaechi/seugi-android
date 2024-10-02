@@ -30,6 +30,7 @@ import com.seugi.designsystem.theme.SeugiTheme
 internal fun OAuthSignUpScreen(popBackStack: () -> Unit, navigateToEmailSignUp: () -> Unit) {
     var text by remember { mutableStateOf("") }
     var error by remember { mutableStateOf(false) }
+
     SeugiTheme {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -87,7 +88,7 @@ internal fun OAuthSignUpScreen(popBackStack: () -> Unit, navigateToEmailSignUp: 
                         }),
                     )
                     SeugiFullWidthButton(
-                        onClick = { error = true },
+                        onClick = {},
                         type = ButtonType.Primary,
                         text = "계속하기",
                         modifier = Modifier.padding(vertical = 16.dp),

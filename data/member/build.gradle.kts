@@ -10,6 +10,7 @@ android {
 dependencies {
     implementation(projects.network.signIn)
     implementation(projects.network.core)
+    implementation(projects.data.core)
     implementation(projects.common)
     implementation(libs.kotlinx.coroutines.android)
 }

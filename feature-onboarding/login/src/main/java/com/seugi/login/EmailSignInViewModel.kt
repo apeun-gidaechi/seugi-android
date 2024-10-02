@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
+import com.seugi.data.firebasetoken.FirebaseTokenRepository
 import com.seugi.data.member.MemberRepository
 import com.seugi.data.token.TokenRepository
 import com.seugi.login.model.EmailSignInSideEffect
@@ -24,6 +25,7 @@ import kotlinx.coroutines.launch
 class EmailSignInViewModel @Inject constructor(
     private val emailSignInRepository: MemberRepository,
     private val tokenRepository: TokenRepository,
+    private val firebaseTokenRepository: FirebaseTokenRepository,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
@@ -33,12 +35,33 @@ class EmailSignInViewModel @Inject constructor(
     private val _emailSignInSideEffect = Channel<EmailSignInSideEffect>()
     val emailSignInSideEffect = _emailSignInSideEffect.receiveAsFlow()
 
-    fun emailSignIn(email: String, password: String) {
+    fun getFCM(email: String, password: String) {
+        viewModelScope.launch(dispatcher) {
+            val fcmToken = firebaseTokenRepository.getToken().collect {
+                when (it) {
+                    is Result.Error -> {
+                        it.throwable.printStackTrace()
+                    }
+                    is Result.Success -> {
+                        emailSignIn(
+                            fcmToken = it.data.firebaseToken ?: "",
+                            email = email,
+                            password = password,
+                        )
+                    }
+                    is Result.Loading -> {}
+                }
+            }
+        }
+    }
+
+    private fun emailSignIn(fcmToken: String, email: String, password: String) {
         viewModelScope.launch(dispatcher) {
             emailSignInRepository.emailSignIn(
                 body = EmailSignInRequest(
                     email = email,
                     password = password,
+                    token = fcmToken,
                 ),
             ).collect {
                 when (it) {
@@ -47,8 +70,8 @@ class EmailSignInViewModel @Inject constructor(
                             val accessToken = it.data.accessToken
                             val refreshToken = it.data.refreshToken
                             tokenRepository.insertToken(
-                                accessToken = accessToken,
-                                refreshToken = refreshToken,
+                                accessToken = accessToken ?: "",
+                                refreshToken = refreshToken ?: "",
                             )
                         }.await()
                         _emailSignInSideEffect.send(

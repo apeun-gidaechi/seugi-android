@@ -13,4 +13,5 @@ dependencies {
     implementation(projects.common)
     implementation(projects.local.room)
     implementation(projects.network.token)
+    implementation(projects.data.core)
 }

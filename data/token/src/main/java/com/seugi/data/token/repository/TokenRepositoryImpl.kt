@@ -4,9 +4,9 @@ import com.seugi.common.model.Result
 import com.seugi.common.model.asResult
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
+import com.seugi.data.core.mapper.toModel
+import com.seugi.data.core.model.TokenModel
 import com.seugi.data.token.TokenRepository
-import com.seugi.data.token.mapper.toModel
-import com.seugi.data.token.model.TokenModel
 import com.seugi.local.room.dao.TokenDao
 import com.seugi.local.room.model.TokenEntity
 import com.seugi.network.token.TokenDatasource

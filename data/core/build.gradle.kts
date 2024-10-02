@@ -19,6 +19,8 @@ android {
 dependencies {
     implementation(projects.network.core)
     implementation(projects.common)
+    implementation(projects.local.room)
 
     implementation(libs.kotlinx.collections.immutable)
+    implementation(project(":local:room"))
 }

@@ -68,6 +68,13 @@ material3Android = "1.2.1"
 room = "2.6.1"
 
 
+# firebase
+google-services = "4.4.2"
+firebase-bom = "33.3.0"
+firebase-auth = "23.0.0"
+google-play-auth = "21.2.0"
+
+
 [libraries]
 
 # kotlin
@@ -133,6 +140,16 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
+# firebase
+firebase-bom = {group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom"}
+firebase-analytics = {group = "com.google.firebase", name = "firebase-analytics"}
+firebase-message = {group = "com.google.firebase", name = "firebase-messaging"}
+firebase-auth = {group = "com.google.firebase", name = "firebase-auth", version.ref = "firebase-auth"}
+
+#google
+google-play-auth = {group = "com.google.android.gms", name = "play-services-auth", version.ref = "google-play-auth" }
+
+
 # test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-ext-junit" }
@@ -175,6 +192,7 @@ dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hil
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+google-services = {id = "com.google.gms.google-services", version.ref = "google-services"}
 
 
 #custom

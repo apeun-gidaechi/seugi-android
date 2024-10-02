@@ -33,7 +33,7 @@ internal fun OnboardingScreen(navHostController: NavHostController = rememberNav
     ) {
         startScreen(
             navigateToEmailSignIn = { navHostController.navigateToEmailSignIn() },
-            navigateToOAuthSignIn = { navHostController.navigateToOAuthSignUp() },
+            navigateToMain = { onboardingToMain() },
         )
         emailSignInScreen(
             onboardingToMain = onboardingToMain,

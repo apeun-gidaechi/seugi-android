@@ -1,4 +1,4 @@
-package com.seugi.data.token.model
+package com.seugi.data.core.model
 
 data class TokenModel(
     val accessToken: String?,

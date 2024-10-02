@@ -1,9 +1,9 @@
-package com.seugi.network.response
+package com.seugi.network.core.response
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class EmailSignInResponse(
+data class TokenResponse(
     val accessToken: String,
     val refreshToken: String,
 )

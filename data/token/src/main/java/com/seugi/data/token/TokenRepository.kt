@@ -1,7 +1,7 @@
 package com.seugi.data.token
 
 import com.seugi.common.model.Result
-import com.seugi.data.token.model.TokenModel
+import com.seugi.data.core.model.TokenModel
 import kotlinx.coroutines.flow.Flow
 
 interface TokenRepository {
