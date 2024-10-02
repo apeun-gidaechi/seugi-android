@@ -16,7 +16,7 @@ import com.seugi.local.room.model.WorkspaceEntity
         TokenEntity::class,
         WorkspaceEntity::class,
         MealEntity::class,
-        FirebaseTokenEntity::class
+        FirebaseTokenEntity::class,
     ],
     version = 1,
     exportSchema = false,

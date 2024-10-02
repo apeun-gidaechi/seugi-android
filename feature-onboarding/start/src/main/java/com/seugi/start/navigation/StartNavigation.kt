@@ -19,7 +19,7 @@ fun NavGraphBuilder.startScreen(navigateToEmailSignIn: () -> Unit, navigateToMai
     composable(route = START_ROUTE) {
         StartScreen(
             navigateToEmailSignIn = navigateToEmailSignIn,
-            navigateToMain = navigateToMain
+            navigateToMain = navigateToMain,
         )
     }
 }

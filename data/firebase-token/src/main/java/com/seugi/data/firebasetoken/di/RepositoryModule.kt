@@ -1,7 +1,7 @@
-package com.seugi.data.firebase_token.di
+package com.seugi.data.firebasetoken.di
 
-import com.seugi.data.firebase_token.FirebaseTokenRepository
-import com.seugi.data.firebase_token.repository.FirebaseTokenRepositoryImpl
+import com.seugi.data.firebasetoken.FirebaseTokenRepository
+import com.seugi.data.firebasetoken.repository.FirebaseTokenRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

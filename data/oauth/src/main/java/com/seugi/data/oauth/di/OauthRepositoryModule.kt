@@ -12,7 +12,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 interface OauthRepositoryModule {
 
-
     @Singleton
     @Binds
     fun bindsOauthRepository(oauthRepositoryImpl: OauthRepositoryImpl): OauthRepository

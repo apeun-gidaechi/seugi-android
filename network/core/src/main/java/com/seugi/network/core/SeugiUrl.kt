@@ -76,7 +76,7 @@ object SeugiUrl {
         const val DAY = "$ROOT/day"
     }
 
-    object Oauth{
-        const val GOOGLE_AUTHENTICATE = "${OAUTH}/google/authenticate"
+    object Oauth {
+        const val GOOGLE_AUTHENTICATE = "$OAUTH/google/authenticate"
     }
 }

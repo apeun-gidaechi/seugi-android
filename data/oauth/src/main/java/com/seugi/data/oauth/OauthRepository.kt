@@ -1,8 +1,8 @@
 package com.seugi.data.oauth
 
-import kotlinx.coroutines.flow.Flow
 import com.seugi.common.model.Result
 import com.seugi.data.core.model.TokenModel
+import kotlinx.coroutines.flow.Flow
 
 interface OauthRepository {
 

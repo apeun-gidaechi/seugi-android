@@ -1,7 +1,7 @@
-package com.seugi.data.firebase_token
+package com.seugi.data.firebasetoken
 
 import com.seugi.common.model.Result
-import com.seugi.data.firebase_token.model.FirebaseTokenModel
+import com.seugi.data.firebasetoken.model.FirebaseTokenModel
 import kotlinx.coroutines.flow.Flow
 
 interface FirebaseTokenRepository {

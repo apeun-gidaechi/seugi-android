@@ -9,21 +9,20 @@ import com.seugi.data.core.model.TokenModel
 import com.seugi.data.oauth.OauthRepository
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.oauth.OauthDatasource
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
 class OauthRepositoryImpl @Inject constructor(
     private val oauthDatasource: OauthDatasource,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
-): OauthRepository {
-    override suspend fun authenticate(code: String): Flow<Result<TokenModel>> = flow{
+) : OauthRepository {
+    override suspend fun authenticate(code: String): Flow<Result<TokenModel>> = flow {
         val response = oauthDatasource.authenticate(code).safeResponse()
         emit(response.toModel())
     }
         .flowOn(dispatcher)
         .asResult()
-
 }

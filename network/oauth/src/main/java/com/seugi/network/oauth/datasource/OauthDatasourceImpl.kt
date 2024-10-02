@@ -12,16 +12,15 @@ import io.ktor.client.request.setBody
 import javax.inject.Inject
 
 class OauthDatasourceImpl @Inject constructor(
-    private val httpClient: HttpClient
-): OauthDatasource {
+    private val httpClient: HttpClient,
+) : OauthDatasource {
 
-    override suspend fun authenticate(code: String): BaseResponse<TokenResponse> =
-        httpClient.post(SeugiUrl.Oauth.GOOGLE_AUTHENTICATE){
-            setBody(
-                body = OauthRequest(
-                    code = code,
-                    platform = "ANDROID"
-                )
-            )
+    override suspend fun authenticate(code: String): BaseResponse<TokenResponse> = httpClient.post(SeugiUrl.Oauth.GOOGLE_AUTHENTICATE) {
+        setBody(
+            body = OauthRequest(
+                code = code,
+                platform = "ANDROID",
+            ),
+        )
     }.body()
 }

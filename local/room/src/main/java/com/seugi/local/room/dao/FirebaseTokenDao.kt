@@ -6,9 +6,8 @@ import com.seugi.local.room.base.BaseDao
 import com.seugi.local.room.model.FirebaseTokenEntity
 import com.seugi.local.room.util.SeugiTable
 
-
 @Dao
-interface FirebaseTokenDao: BaseDao<FirebaseTokenEntity> {
+interface FirebaseTokenDao : BaseDao<FirebaseTokenEntity> {
 
     @Query("SELECT * FROM ${SeugiTable.FIREBASE_TOKEN_TABLE} WHERE idx = 0")
     suspend fun getToken(): FirebaseTokenEntity?

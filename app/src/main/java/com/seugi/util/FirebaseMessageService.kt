@@ -1,19 +1,17 @@
 package com.seugi.util
 
 import android.util.Log
-import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.seugi.data.firebase_token.FirebaseTokenRepository
-import com.seugi.data.firebase_token.repository.FirebaseTokenRepositoryImpl
+import com.seugi.data.firebasetoken.FirebaseTokenRepository
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class FirebaseMessageService: FirebaseMessagingService() {
+class FirebaseMessageService : FirebaseMessagingService() {
 
     @Inject
     lateinit var firebaseRepository: FirebaseTokenRepository
@@ -22,10 +20,9 @@ class FirebaseMessageService: FirebaseMessagingService() {
         super.onNewToken(token)
 
         CoroutineScope(Dispatchers.IO).launch {
-
             Log.d("TAG", "firebase Token: $token")
             firebaseRepository.insertToken(
-                firebaseToken = token
+                firebaseToken = token,
             )
         }
     }

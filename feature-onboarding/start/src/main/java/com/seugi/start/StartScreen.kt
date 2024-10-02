@@ -1,7 +1,5 @@
 package com.seugi.start
 
-import android.util.Log
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,7 +18,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
@@ -33,6 +30,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext as LocalContext1
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -54,16 +52,10 @@ import com.seugi.designsystem.component.SeugiOAuthButton
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.start.model.LoginState
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
-import androidx.compose.ui.platform.LocalContext as LocalContext1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun StartScreen(
-    navigateToEmailSignIn: () -> Unit,
-    navigateToMain: () -> Unit,
-    viewModel: StartViewModel = hiltViewModel()
-) {
+internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToMain: () -> Unit, viewModel: StartViewModel = hiltViewModel()) {
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     var visibleCloud1 by remember { mutableStateOf(false) }
@@ -92,7 +84,7 @@ internal fun StartScreen(
     val googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(context, googleSignInOption)
 
     val googleAuthLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
+        contract = ActivityResultContracts.StartActivityForResult(),
     ) { result ->
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         try {
@@ -106,7 +98,7 @@ internal fun StartScreen(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    when(state.loginState){
+    when (state.loginState) {
         LoginState.Error -> {
             Toast.makeText(context, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show()
         }
@@ -118,7 +110,7 @@ internal fun StartScreen(
                 properties = DialogProperties(
                     dismissOnBackPress = true,
                     dismissOnClickOutside = true,
-                )
+                ),
             ) {
                 CircularProgressIndicator(
                     color = SeugiTheme.colors.white,
@@ -130,7 +122,6 @@ internal fun StartScreen(
         }
 
         LoginState.Init -> {
-
         }
     }
 

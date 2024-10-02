@@ -27,13 +27,9 @@ import com.seugi.designsystem.theme.SeugiTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun OAuthSignUpScreen(
-    popBackStack: () -> Unit,
-    navigateToEmailSignUp: () -> Unit,
-) {
+internal fun OAuthSignUpScreen(popBackStack: () -> Unit, navigateToEmailSignUp: () -> Unit) {
     var text by remember { mutableStateOf("") }
     var error by remember { mutableStateOf(false) }
-
 
     SeugiTheme {
         Scaffold(

@@ -1,6 +1,5 @@
 package com.seugi.network.datasource
 
-import android.media.session.MediaSession.Token
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.network.MemberDatasource
@@ -15,15 +14,15 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 
 class MemberDatasourceImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
     private val httpClient: HttpClient,
 ) : MemberDatasource {
     override suspend fun emailSignIn(body: EmailSignInRequest): BaseResponse<TokenResponse> = httpClient.post(
-        SeugiUrl.Auth.EMAIL_SIGN_IN
+        SeugiUrl.Auth.EMAIL_SIGN_IN,
     ) {
         setBody(body = body)
     }.body<BaseResponse<TokenResponse>>()

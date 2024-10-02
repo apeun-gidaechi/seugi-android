@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.seugi.data.firebase_token"
+    namespace = "com.seugi.data.firebasetoken"
 }
 
 dependencies {
