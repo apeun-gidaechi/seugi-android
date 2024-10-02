@@ -7,10 +7,14 @@ import com.seugi.common.model.Result
 import com.seugi.data.oauth.OauthRepository
 import com.seugi.data.token.TokenRepository
 import com.seugi.login.model.EmailSignInSideEffect
-import com.seugi.start.model.StartSideEffect
+import com.seugi.start.model.LoginState
+import com.seugi.start.model.StartUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,8 +24,8 @@ class StartViewModel @Inject constructor(
     private val tokenRepository: TokenRepository
 ): ViewModel() {
 
-    private val _startSideEffect = Channel<StartSideEffect>()
-    val startSideEffect = _startSideEffect.receiveAsFlow()
+    private val _state = MutableStateFlow(StartUiState())
+    val state = _state.asStateFlow()
 
     fun googleLogin(code: String){
         viewModelScope.launch {
@@ -32,12 +36,23 @@ class StartViewModel @Inject constructor(
                             accessToken = it.data.accessToken,
                             refreshToken = it.data.refreshToken
                         )
-                        _startSideEffect.send(StartSideEffect.SuccessLogin)
+
                     }
                     is Result.Error -> {
                         it.throwable.printStackTrace()
+                        _state.update {ui ->
+                            ui.copy(
+                                loginState = LoginState.Error
+                            )
+                        }
                     }
-                    is Result.Loading -> {}
+                    is Result.Loading -> {
+                        _state.update {ui ->
+                            ui.copy(
+                                loginState = LoginState.Loading
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -53,7 +68,11 @@ class StartViewModel @Inject constructor(
                 refreshToken = refreshToken
             )
         }
+        _state.update {ui ->
+            ui.copy(
+                loginState = LoginState.Success
+            )
+        }
     }
-
 
 }

@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.data.oauth)
     implementation(projects.common)
     implementation(projects.data.token)
+    implementation(projects.data.core)
 
 
     implementation("com.google.firebase:firebase-auth:23.0.0")

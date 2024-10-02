@@ -1,6 +1,7 @@
 package com.seugi.start
 
 import android.util.Log
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,6 +20,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -33,7 +36,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -46,8 +52,7 @@ import com.seugi.designsystem.component.GradientPrimary
 import com.seugi.designsystem.component.SeugiFullWidthButton
 import com.seugi.designsystem.component.SeugiOAuthButton
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.login.model.EmailSignInSideEffect
-import com.seugi.start.model.StartSideEffect
+import com.seugi.start.model.LoginState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import androidx.compose.ui.platform.LocalContext as LocalContext1
@@ -99,18 +104,33 @@ internal fun StartScreen(
         }
     }
 
-    LaunchedEffect(key1 = Unit) {
-        viewModel.startSideEffect.collectLatest { value ->
-            when (value) {
-                // Handle events
-                is StartSideEffect.SuccessLogin -> {
-                    navigateToMain()
-                }
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
-                is StartSideEffect.FailedLogin -> {
-                    Toast.makeText(context, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show()
-                }
+    when(state.loginState){
+        LoginState.Error -> {
+            Toast.makeText(context, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+        }
+        LoginState.Loading -> {
+            Dialog(
+                onDismissRequest = {
+                    state.loginState != LoginState.Loading
+                },
+                properties = DialogProperties(
+                    dismissOnBackPress = true,
+                    dismissOnClickOutside = true,
+                )
+            ) {
+                CircularProgressIndicator(
+                    color = SeugiTheme.colors.white,
+                )
             }
+        }
+        LoginState.Success -> {
+            navigateToMain()
+        }
+
+        LoginState.Init -> {
+
         }
     }
 
