@@ -6,11 +6,11 @@ import com.google.firebase.messaging.RemoteMessage
 import com.seugi.data.firebasetoken.FirebaseTokenRepository
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlin.coroutines.EmptyCoroutineContext
 
 @AndroidEntryPoint
 class FirebaseMessageService : FirebaseMessagingService() {
@@ -36,7 +36,6 @@ class FirebaseMessageService : FirebaseMessagingService() {
         Log.d("TAG", "Notification Body :: ${message.notification?.body}")
         Log.d("TAG", "Notification Data :: ${message.data}")
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
