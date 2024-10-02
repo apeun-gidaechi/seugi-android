@@ -90,7 +90,7 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToMain: () -
         try {
             val account = task.getResult(ApiException::class.java)
             val code = account.serverAuthCode.toString()
-            viewModel.googleLogin(code = code)
+            viewModel.getFcmToken(code = code)
         } catch (e: ApiException) {
             Toast.makeText(context, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show()
         }

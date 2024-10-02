@@ -5,5 +5,5 @@ import com.seugi.network.core.response.TokenResponse
 
 interface OauthDatasource {
 
-    suspend fun authenticate(code: String): BaseResponse<TokenResponse>
+    suspend fun authenticate(code: String, fcmToken: String): BaseResponse<TokenResponse>
 }

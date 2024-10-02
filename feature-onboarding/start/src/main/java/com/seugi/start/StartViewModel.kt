@@ -1,8 +1,10 @@
 package com.seugi.start
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
+import com.seugi.data.firebasetoken.FirebaseTokenRepository
 import com.seugi.data.oauth.OauthRepository
 import com.seugi.data.token.TokenRepository
 import com.seugi.start.model.LoginState
@@ -18,14 +20,18 @@ import kotlinx.coroutines.launch
 class StartViewModel @Inject constructor(
     private val oauthRepository: OauthRepository,
     private val tokenRepository: TokenRepository,
+    private val firebaseTokenRepository: FirebaseTokenRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(StartUiState())
     val state = _state.asStateFlow()
 
-    fun googleLogin(code: String) {
+    private fun googleLogin(code: String, fcmToken: String) {
         viewModelScope.launch {
-            oauthRepository.authenticate(code = code).collect {
+            oauthRepository.authenticate(
+                code = code,
+                fcmToken = fcmToken
+            ).collect {
                 when (it) {
                     is Result.Success -> {
                         insertToken(
@@ -41,13 +47,7 @@ class StartViewModel @Inject constructor(
                             )
                         }
                     }
-                    is Result.Loading -> {
-                        _state.update { ui ->
-                            ui.copy(
-                                loginState = LoginState.Loading,
-                            )
-                        }
-                    }
+                    is Result.Loading -> {}
                 }
             }
         }
@@ -64,6 +64,30 @@ class StartViewModel @Inject constructor(
             ui.copy(
                 loginState = LoginState.Success,
             )
+        }
+    }
+
+    fun getFcmToken(code: String){
+        viewModelScope.launch {
+            firebaseTokenRepository.getToken().collect{
+                when(it){
+                    is Result.Error -> {
+                        it.throwable.printStackTrace()
+                    }
+                    Result.Loading -> {
+                        _state.update { ui ->
+                            ui.copy(
+                                loginState = LoginState.Loading,
+                            )
+                        }
+                    }
+                    is Result.Success -> {
+                        val fcmToken = it.data.firebaseToken ?:""
+                        Log.d("TAG", "getFcmToken: $fcmToken")
+                        googleLogin(code, fcmToken)
+                    }
+                }
+            }
         }
     }
 }

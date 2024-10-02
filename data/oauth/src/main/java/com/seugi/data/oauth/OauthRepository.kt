@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface OauthRepository {
 
-    suspend fun authenticate(code: String): Flow<Result<TokenModel>>
+    suspend fun authenticate(code: String, fcmToken: String): Flow<Result<TokenModel>>
 }

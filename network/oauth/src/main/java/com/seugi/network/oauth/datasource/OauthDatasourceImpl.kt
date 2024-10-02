@@ -15,11 +15,12 @@ class OauthDatasourceImpl @Inject constructor(
     private val httpClient: HttpClient,
 ) : OauthDatasource {
 
-    override suspend fun authenticate(code: String): BaseResponse<TokenResponse> = httpClient.post(SeugiUrl.Oauth.GOOGLE_AUTHENTICATE) {
+    override suspend fun authenticate(code: String, fcmToken: String): BaseResponse<TokenResponse> = httpClient.post(SeugiUrl.Oauth.GOOGLE_AUTHENTICATE) {
         setBody(
             body = OauthRequest(
                 code = code,
                 platform = "ANDROID",
+                token = fcmToken
             ),
         )
     }.body()

@@ -19,8 +19,8 @@ class OauthRepositoryImpl @Inject constructor(
     private val oauthDatasource: OauthDatasource,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : OauthRepository {
-    override suspend fun authenticate(code: String): Flow<Result<TokenModel>> = flow {
-        val response = oauthDatasource.authenticate(code).safeResponse()
+    override suspend fun authenticate(code: String, fcmToken: String): Flow<Result<TokenModel>> = flow {
+        val response = oauthDatasource.authenticate(code, fcmToken).safeResponse()
         emit(response.toModel())
     }
         .flowOn(dispatcher)
