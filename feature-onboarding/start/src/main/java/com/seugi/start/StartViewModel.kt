@@ -35,8 +35,8 @@ class StartViewModel @Inject constructor(
                 when (it) {
                     is Result.Success -> {
                         insertToken(
-                            accessToken = it.data.accessToken ?:"",
-                            refreshToken = it.data.refreshToken ?:"",
+                            accessToken = it.data.accessToken ?: "",
+                            refreshToken = it.data.refreshToken ?: "",
                         )
                     }
                     is Result.Error -> {

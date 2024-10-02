@@ -70,8 +70,8 @@ class EmailSignInViewModel @Inject constructor(
                             val accessToken = it.data.accessToken
                             val refreshToken = it.data.refreshToken
                             tokenRepository.insertToken(
-                                accessToken = accessToken ?:"",
-                                refreshToken = refreshToken ?:"",
+                                accessToken = accessToken ?: "",
+                                refreshToken = refreshToken ?: "",
                             )
                         }.await()
                         _emailSignInSideEffect.send(
