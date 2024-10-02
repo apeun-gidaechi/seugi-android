@@ -14,6 +14,7 @@ dependencies {
     implementation(projects.featureOnboarding.join)
     implementation(projects.data.oauth)
     implementation(projects.common)
+    implementation(projects.data.token)
 
 
     implementation("com.google.firebase:firebase-auth:23.0.0")
