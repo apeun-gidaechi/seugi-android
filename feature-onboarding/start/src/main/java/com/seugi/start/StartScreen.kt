@@ -77,7 +77,7 @@ internal fun StartScreen(
     }
 
     val context = LocalContext1.current
-    val clientId = stringResource(com.seugi.designsystem.R.string.server_id)
+    val clientId = stringResource(R.string.server_id)
     val googleSignInOption = GoogleSignInOptions
         .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestServerAuthCode(clientId)
