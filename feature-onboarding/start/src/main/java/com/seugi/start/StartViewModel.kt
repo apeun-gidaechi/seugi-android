@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 class StartViewModel @Inject constructor(
     private val oauthRepository: OauthRepository,
     private val tokenRepository: TokenRepository,
-    private val firebaseTokenRepository: FirebaseTokenRepository
+    private val firebaseTokenRepository: FirebaseTokenRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(StartUiState())
@@ -30,7 +30,7 @@ class StartViewModel @Inject constructor(
         viewModelScope.launch {
             oauthRepository.authenticate(
                 code = code,
-                fcmToken = fcmToken
+                fcmToken = fcmToken,
             ).collect {
                 when (it) {
                     is Result.Success -> {
@@ -67,10 +67,10 @@ class StartViewModel @Inject constructor(
         }
     }
 
-    fun getFcmToken(code: String){
+    fun getFcmToken(code: String) {
         viewModelScope.launch {
-            firebaseTokenRepository.getToken().collect{
-                when(it){
+            firebaseTokenRepository.getToken().collect {
+                when (it) {
                     is Result.Error -> {
                         it.throwable.printStackTrace()
                     }
@@ -82,7 +82,7 @@ class StartViewModel @Inject constructor(
                         }
                     }
                     is Result.Success -> {
-                        val fcmToken = it.data.firebaseToken ?:""
+                        val fcmToken = it.data.firebaseToken ?: ""
                         Log.d("TAG", "getFcmToken: $fcmToken")
                         googleLogin(code, fcmToken)
                     }

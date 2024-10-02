@@ -20,7 +20,7 @@ class OauthDatasourceImpl @Inject constructor(
             body = OauthRequest(
                 code = code,
                 platform = "ANDROID",
-                token = fcmToken
+                token = fcmToken,
             ),
         )
     }.body()
