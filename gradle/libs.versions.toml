@@ -71,6 +71,8 @@ room = "2.6.1"
 # firebase
 google-services = "4.4.2"
 firebase-bom = "33.3.0"
+firebase-auth = "23.0.0"
+google-play-auth = "21.2.0"
 
 
 [libraries]
@@ -142,6 +144,11 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 firebase-bom = {group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom"}
 firebase-analytics = {group = "com.google.firebase", name = "firebase-analytics"}
 firebase-message = {group = "com.google.firebase", name = "firebase-messaging"}
+firebase-auth = {group = "com.google.firebase", name = "firebase-auth", version.ref = "firebase-auth"}
+
+#google
+google-play-auth = {group = "com.google.android.gms", name = "play-services-auth", version.ref = "google-play-auth" }
+
 
 # test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
