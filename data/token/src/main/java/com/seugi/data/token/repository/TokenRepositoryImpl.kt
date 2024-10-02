@@ -5,7 +5,7 @@ import com.seugi.common.model.asResult
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.core.mapper.toModel
-import com.seugi.data.core.model.LocalTokenModel
+import com.seugi.data.core.model.TokenModel
 import com.seugi.data.token.TokenRepository
 import com.seugi.local.room.dao.TokenDao
 import com.seugi.local.room.model.TokenEntity
@@ -30,7 +30,7 @@ class TokenRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getToken(): Flow<Result<LocalTokenModel>> {
+    override suspend fun getToken(): Flow<Result<TokenModel>> {
         return flow {
             val tokenEntity = tokenDao.getToken()
             emit(tokenEntity.toModel())
@@ -39,7 +39,7 @@ class TokenRepositoryImpl @Inject constructor(
             .asResult()
     }
 
-    override suspend fun newToken(): Flow<Result<LocalTokenModel>> {
+    override suspend fun newToken(): Flow<Result<TokenModel>> {
         return flow {
             tokenDao.getToken()?.apply {
                 val newTokenEntity = TokenEntity(
