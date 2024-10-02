@@ -13,5 +13,6 @@ dependencies {
     implementation(projects.network.signIn)
     implementation(projects.common)
     implementation(projects.data.token)
+    implementation(projects.data.core)
     implementation(projects.data.firebaseToken)
 }

@@ -4,9 +4,9 @@ import com.seugi.common.model.Result
 import com.seugi.common.model.asResult
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
+import com.seugi.data.core.mapper.toModel
+import com.seugi.data.core.model.TokenModel
 import com.seugi.data.member.MemberRepository
-import com.seugi.data.member.mapper.toModel
-import com.seugi.data.member.model.EmailSignInModel
 import com.seugi.network.MemberDatasource
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.request.EmailSignInRequest
@@ -20,7 +20,7 @@ class MemberRepositoryImpl @Inject constructor(
     private val datasource: MemberDatasource,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : MemberRepository {
-    override suspend fun emailSignIn(body: EmailSignInRequest): Flow<Result<EmailSignInModel>> {
+    override suspend fun emailSignIn(body: EmailSignInRequest): Flow<Result<TokenModel>> {
         return flow {
             val e = datasource.emailSignIn(body).safeResponse()
 
