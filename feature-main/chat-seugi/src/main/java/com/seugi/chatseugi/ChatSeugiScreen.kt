@@ -76,7 +76,6 @@ internal fun ChatSeugiScreen(
     workspace: String = "664bdd0b9dfce726abd30462",
     isPersonal: Boolean = false,
     chatRoomId: String = "665d9ec15e65717b19a62701",
-    onNavigationVisibleChange: (Boolean) -> Unit,
     popBackStack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -86,13 +85,6 @@ internal fun ChatSeugiScreen(
     val keyboardState by rememberKeyboardOpen()
 
     val density = LocalDensity.current
-
-    LifecycleResumeEffect(key1 = Unit) {
-        onNavigationVisibleChange(false)
-        onPauseOrDispose {
-            onNavigationVisibleChange(true)
-        }
-    }
 
     LaunchedEffect(key1 = keyboardState) {
         if (keyboardState.isOpen) {

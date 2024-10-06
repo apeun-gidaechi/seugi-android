@@ -44,7 +44,6 @@ import com.seugi.ui.CollectAsSideEffect
 internal fun SettingScreen(
     viewModel: SettingViewModel = hiltViewModel(),
     profileModel: ProfileModel,
-    onNavigationVisibleChange: (Boolean) -> Unit,
     navigationToOnboarding: () -> Unit,
     popBackStack: () -> Unit,
     showSnackbar: (text: String) -> Unit,
@@ -66,16 +65,6 @@ internal fun SettingScreen(
         }
     }
 
-    LaunchedEffect(true) {
-        onNavigationVisibleChange(false)
-    }
-
-    LifecycleResumeEffect {
-        onNavigationVisibleChange(false)
-        onPauseOrDispose {
-            onNavigationVisibleChange(true)
-        }
-    }
     Box {
         Scaffold(
             modifier = Modifier

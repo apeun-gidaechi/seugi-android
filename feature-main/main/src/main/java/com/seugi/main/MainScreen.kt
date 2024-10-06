@@ -1,5 +1,6 @@
 package com.seugi.main
 
+import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -61,6 +62,7 @@ import com.seugi.workspacedetail.navigation.navigateToWorkspaceDetail
 import com.seugi.workspacedetail.navigation.navigateToWorkspaceMember
 import com.seugi.workspacedetail.navigation.workspaceDetailScreen
 import com.seugi.workspacedetail.navigation.workspaceMemberScreen
+import kotlinx.collections.immutable.persistentListOf
 
 private const val NAVIGATION_ANIM = 400
 
@@ -72,23 +74,17 @@ internal fun MainScreen(
     showSnackbar: (text: String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val backstackEntry by navHostController.currentBackStackEntryAsState()
-    val selectItemState: BottomNavigationItemType by remember {
-        derivedStateOf {
-            when (backstackEntry?.destination?.route) {
-                HOME_ROUTE -> BottomNavigationItemType.Home
-                CHAT_ROUTE -> BottomNavigationItemType.Chat
-                ROOM_ROUTE -> BottomNavigationItemType.Group
-                NOTIFICATION_ROUTE -> BottomNavigationItemType.Notification
-                PROFILE_ROUTE -> BottomNavigationItemType.Profile
-                else -> BottomNavigationItemType.Home
-            }
+    val nowRoute = navHostController.currentBackStackEntryAsState().value?.destination?.route
+
+    val selectItemState: BottomNavigationItemType =
+        when (nowRoute) {
+            HOME_ROUTE -> BottomNavigationItemType.Home
+            CHAT_ROUTE -> BottomNavigationItemType.Chat
+            ROOM_ROUTE -> BottomNavigationItemType.Group
+            NOTIFICATION_ROUTE -> BottomNavigationItemType.Notification
+            PROFILE_ROUTE -> BottomNavigationItemType.Profile
+            else -> BottomNavigationItemType.Home
         }
-    }
-    var navigationVisible by remember { mutableStateOf(true) }
-    val onNavigationVisibleChange: (Boolean) -> Unit = {
-        navigationVisible = it
-    }
 
     LaunchedEffect(key1 = true) {
         viewModel.loadWorkspaceId()
@@ -99,7 +95,7 @@ internal fun MainScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            if (navigationVisible) {
+            if (nowRoute in listOf(HOME_ROUTE, CHAT_ROUTE, ROOM_ROUTE, NOTIFICATION_ROUTE, PROFILE_ROUTE)) {
                 SeugiBottomNavigation(selected = selectItemState) {
                     navHostController.navigate(
                         when (it) {
@@ -139,7 +135,6 @@ internal fun MainScreen(
                 navigateToJoinWorkspace = {
                     navHostController.navigateToSelectingJob()
                 },
-                onNavigationVisibleChange = onNavigationVisibleChange,
                 navigateToWorkspaceDetail = { id ->
                     navHostController.navigateToWorkspaceDetail(
                         workspaceId = id,
@@ -163,7 +158,6 @@ internal fun MainScreen(
             )
             chatDetailScreen(
                 userId = state.userId,
-                onNavigationVisibleChange = onNavigationVisibleChange,
                 navigateToChatDetail = { workspaceId, chatRoomId ->
                     navHostController.navigateToChatDetail(
                         workspaceId = workspaceId,
@@ -198,7 +192,6 @@ internal fun MainScreen(
                 popBackStack = {
                     navHostController.popBackStack()
                 },
-                onNavigationVisibleChange = onNavigationVisibleChange,
                 navigateToChatDetail = { chatId, workspaceId, isPersonal ->
                     navHostController.navigateToChatDetail(
                         chatRoomId = chatId,
@@ -234,7 +227,6 @@ internal fun MainScreen(
             )
 
             chatSeugiScreen(
-                onNavigationVisibleChange = onNavigationVisibleChange,
                 popBackStack = {
                     navHostController.popBackStack()
                 },
@@ -282,7 +274,6 @@ internal fun MainScreen(
             notificationCreate(
                 workspaceId = state.profile.workspaceId,
                 popBackStack = navHostController::popBackStack,
-                onNavigationVisibleChange = onNavigationVisibleChange,
             )
 
             notificationEdit(
@@ -290,7 +281,6 @@ internal fun MainScreen(
                 workspaceId = state.profile.workspaceId,
                 permission = state.profile.permission,
                 popBackStack = navHostController::popBackStack,
-                onNavigationVisibleChange = onNavigationVisibleChange,
             )
             workspaceDetailScreen(
                 navigateToJoinWorkspace = {
@@ -330,7 +320,6 @@ internal fun MainScreen(
 
             settingScreen(
                 profileModel = state.profile,
-                onNavigationVisibleChange = onNavigationVisibleChange,
                 navigationToOnboarding = mainToOnboarding,
                 popBackStack = navHostController::popBackStack,
                 showSnackbar = showSnackbar,

@@ -30,7 +30,7 @@ import com.seugi.notificationcreate.model.NotificationSideEffect
 import com.seugi.ui.CollectAsSideEffect
 
 @Composable
-internal fun NotificationCreateScreen(viewModel: NotificationCreateViewModel = hiltViewModel(), workspaceId: String, onNavigationVisibleChange: (visible: Boolean) -> Unit, popBackStack: () -> Unit) {
+internal fun NotificationCreateScreen(viewModel: NotificationCreateViewModel = hiltViewModel(), workspaceId: String, popBackStack: () -> Unit) {
     val context = LocalContext.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -49,17 +49,6 @@ internal fun NotificationCreateScreen(viewModel: NotificationCreateViewModel = h
 
     var titleText by remember { mutableStateOf("") }
     var contentText by remember { mutableStateOf("") }
-
-    LaunchedEffect(true) {
-        onNavigationVisibleChange(false)
-    }
-
-    LifecycleResumeEffect {
-        onNavigationVisibleChange(false)
-        onPauseOrDispose {
-            onNavigationVisibleChange(true)
-        }
-    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),

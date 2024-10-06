@@ -16,7 +16,6 @@ fun NavController.navigateToSetting(navOptions: NavOptions? = null) = this.navig
 
 fun NavGraphBuilder.settingScreen(
     profileModel: ProfileModel,
-    onNavigationVisibleChange: (Boolean) -> Unit,
     navigationToOnboarding: () -> Unit,
     popBackStack: () -> Unit,
     showSnackbar: (text: String) -> Unit,
@@ -24,7 +23,6 @@ fun NavGraphBuilder.settingScreen(
     composable(SETTING_ROUTE) {
         SettingScreen(
             profileModel = profileModel,
-            onNavigationVisibleChange = onNavigationVisibleChange,
             navigationToOnboarding = navigationToOnboarding,
             popBackStack = popBackStack,
             showSnackbar = showSnackbar,

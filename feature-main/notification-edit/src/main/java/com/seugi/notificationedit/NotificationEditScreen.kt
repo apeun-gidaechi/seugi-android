@@ -50,7 +50,6 @@ internal fun NotificationEditScreen(
     content: String,
     workspaceId: String,
     permission: WorkspacePermissionModel,
-    onNavigationVisibleChange: (visible: Boolean) -> Unit,
     popBackStack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -71,17 +70,6 @@ internal fun NotificationEditScreen(
 
     var titleText by remember { mutableStateOf(title) }
     var contentText by remember { mutableStateOf(content) }
-
-    LaunchedEffect(true) {
-        onNavigationVisibleChange(false)
-    }
-
-    LifecycleResumeEffect {
-        onNavigationVisibleChange(false)
-        onPauseOrDispose {
-            onNavigationVisibleChange(true)
-        }
-    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),

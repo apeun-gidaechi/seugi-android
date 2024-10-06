@@ -17,7 +17,6 @@ fun NavController.navigateToRoomCreate(workspaceId: String, userId: Int, navOpti
 
 fun NavGraphBuilder.roomCreateScreen(
     popBackStack: () -> Unit,
-    onNavigationVisibleChange: (Boolean) -> Unit,
     navigateToChatDetail: (chatId: String, workspaceId: String, isPersonal: Boolean) -> Unit,
 ) {
     composable(
@@ -29,7 +28,6 @@ fun NavGraphBuilder.roomCreateScreen(
     ) {
         RoomCreateScreen(
             popBackStack = popBackStack,
-            onNavigationVisibleChange = onNavigationVisibleChange,
             workspaceId = it.arguments?.getString("workspaceId") ?: "",
             navigateToChatDetail = navigateToChatDetail,
             userId = it.arguments?.getInt("userId") ?: 0,

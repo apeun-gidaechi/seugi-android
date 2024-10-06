@@ -129,7 +129,6 @@ internal fun ChatDetailScreen(
     workspaceId: String = "664bdd0b9dfce726abd30462",
     isPersonal: Boolean = false,
     chatRoomId: String = "665d9ec15e65717b19a62701",
-    onNavigationVisibleChange: (Boolean) -> Unit,
     navigateToChatDetail: (workspaceId: String, chatRoomId: String) -> Unit,
     popBackStack: () -> Unit,
 ) {
@@ -246,7 +245,6 @@ internal fun ChatDetailScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        onNavigationVisibleChange(false)
         viewModel.loadInfo(
             userId = userId,
             isPersonal = isPersonal,
@@ -256,13 +254,10 @@ internal fun ChatDetailScreen(
     }
 
     LifecycleStartEffect(key1 = Unit) {
-        onNavigationVisibleChange(false)
-
         viewModel.collectStompLifecycle(userId)
         viewModel.channelReconnect(userId)
         onStopOrDispose {
             viewModel.subscribeCancel()
-            onNavigationVisibleChange(true)
         }
     }
 

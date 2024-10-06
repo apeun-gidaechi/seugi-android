@@ -61,7 +61,6 @@ internal fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     navigateToChatSeugi: () -> Unit,
     navigateToJoinWorkspace: () -> Unit,
-    onNavigationVisibleChange: (Boolean) -> Unit,
     navigateToWorkspaceDetail: (String) -> Unit,
     navigateToWorkspaceCreate: () -> Unit,
 ) {
@@ -81,7 +80,6 @@ internal fun HomeScreen(
     val changeNavColor = SeugiTheme.colors.primary050
     LaunchedEffect(key1 = true) {
         viewModel.load()
-        onNavigationVisibleChange(true)
         if (!view.isInEditMode) {
             val window = (view.context as Activity).window
             changeNavigationColor(window, changeNavColor, false)
@@ -95,11 +93,9 @@ internal fun HomeScreen(
             leftText = "새 학교 만들기",
             rightText = "기존 학교 가입",
             onLeftRequest = {
-                onNavigationVisibleChange(false)
                 navigateToWorkspaceCreate()
             },
             onRightRequest = {
-                onNavigationVisibleChange(false)
                 navigateToJoinWorkspace()
             },
             onDismissRequest = {},
@@ -129,7 +125,6 @@ internal fun HomeScreen(
             SchoolCard(
                 workspaceId = state.nowWorkspaceId,
                 uiState = state.schoolState,
-                onNavigationVisibleChange = onNavigationVisibleChange,
                 navigateToWorkspaceDetail = navigateToWorkspaceDetail,
             )
         }

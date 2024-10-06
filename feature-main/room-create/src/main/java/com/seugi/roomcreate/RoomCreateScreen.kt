@@ -20,7 +20,6 @@ internal fun RoomCreateScreen(
     viewModel: RoomCreateViewModel = hiltViewModel(),
     workspaceId: String,
     popBackStack: () -> Unit,
-    onNavigationVisibleChange: (Boolean) -> Unit,
     navigateToChatDetail: (chatId: String, workspaceId: String, isPersonal: Boolean) -> Unit,
     userId: Int,
 ) {
@@ -36,15 +35,7 @@ internal fun RoomCreateScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        onNavigationVisibleChange(false)
         viewModel.loadUser(workspaceId, userId)
-    }
-
-    LifecycleResumeEffect(key1 = Unit) {
-        onNavigationVisibleChange(false)
-        onPauseOrDispose {
-            onNavigationVisibleChange(true)
-        }
     }
 
     AnimatedVisibility(visible = nowScreen == 1) {
