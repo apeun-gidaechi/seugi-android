@@ -1,6 +1,5 @@
 package com.seugi.main
 
-import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -9,10 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -62,7 +58,6 @@ import com.seugi.workspacedetail.navigation.navigateToWorkspaceDetail
 import com.seugi.workspacedetail.navigation.navigateToWorkspaceMember
 import com.seugi.workspacedetail.navigation.workspaceDetailScreen
 import com.seugi.workspacedetail.navigation.workspaceMemberScreen
-import kotlinx.collections.immutable.persistentListOf
 
 private const val NAVIGATION_ANIM = 400
 

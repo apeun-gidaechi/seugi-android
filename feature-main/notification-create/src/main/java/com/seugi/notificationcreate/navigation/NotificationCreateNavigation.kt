@@ -13,7 +13,7 @@ fun NavController.navigateToNotificationCreate(navOptions: NavOptions? = null) =
     navOptions = navOptions,
 )
 
-fun NavGraphBuilder.notificationCreate( workspaceId: String, popBackStack: () -> Unit) {
+fun NavGraphBuilder.notificationCreate(workspaceId: String, popBackStack: () -> Unit) {
     composable(NOTIFICATION_CREATE_ROUTE) {
         NotificationCreateScreen(
             popBackStack = popBackStack,
