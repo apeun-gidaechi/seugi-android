@@ -23,7 +23,7 @@ import com.seugi.home.HomeCard
 import com.seugi.home.model.CommonUiState
 
 @Composable
-internal fun SchoolCard(workspaceId: String, uiState: CommonUiState<String>, onNavigationVisibleChange: (Boolean) -> Unit, navigateToWorkspaceDetail: (String) -> Unit) {
+internal fun SchoolCard(workspaceId: String, uiState: CommonUiState<String>, navigateToWorkspaceDetail: (String) -> Unit) {
     HomeCard(
         text = "내 학교",
         image = painterResource(id = R.drawable.ic_school),
@@ -43,7 +43,6 @@ internal fun SchoolCard(workspaceId: String, uiState: CommonUiState<String>, onN
                     Spacer(modifier = Modifier.weight(1f))
                     SeugiButton(
                         onClick = {
-                            onNavigationVisibleChange(false)
                             navigateToWorkspaceDetail(workspaceId)
                         },
                         type = ButtonType.Gray,

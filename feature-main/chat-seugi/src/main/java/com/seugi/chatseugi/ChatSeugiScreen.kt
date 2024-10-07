@@ -51,7 +51,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.chatseugi.model.ChatData
 import com.seugi.common.utiles.toAmShortString
@@ -76,7 +75,6 @@ internal fun ChatSeugiScreen(
     workspace: String = "664bdd0b9dfce726abd30462",
     isPersonal: Boolean = false,
     chatRoomId: String = "665d9ec15e65717b19a62701",
-    onNavigationVisibleChange: (Boolean) -> Unit,
     popBackStack: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -86,13 +84,6 @@ internal fun ChatSeugiScreen(
     val keyboardState by rememberKeyboardOpen()
 
     val density = LocalDensity.current
-
-    LifecycleResumeEffect(key1 = Unit) {
-        onNavigationVisibleChange(false)
-        onPauseOrDispose {
-            onNavigationVisibleChange(true)
-        }
-    }
 
     LaunchedEffect(key1 = keyboardState) {
         if (keyboardState.isOpen) {

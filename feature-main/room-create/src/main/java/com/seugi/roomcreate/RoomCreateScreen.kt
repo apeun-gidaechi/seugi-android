@@ -8,7 +8,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.roomcreate.model.RoomCreateSideEffect
 import com.seugi.roomcreate.screen.FirstScreen
@@ -20,7 +19,6 @@ internal fun RoomCreateScreen(
     viewModel: RoomCreateViewModel = hiltViewModel(),
     workspaceId: String,
     popBackStack: () -> Unit,
-    onNavigationVisibleChange: (Boolean) -> Unit,
     navigateToChatDetail: (chatId: String, workspaceId: String, isPersonal: Boolean) -> Unit,
     userId: Int,
 ) {
@@ -36,15 +34,7 @@ internal fun RoomCreateScreen(
     }
 
     LaunchedEffect(key1 = true) {
-        onNavigationVisibleChange(false)
         viewModel.loadUser(workspaceId, userId)
-    }
-
-    LifecycleResumeEffect(key1 = Unit) {
-        onNavigationVisibleChange(false)
-        onPauseOrDispose {
-            onNavigationVisibleChange(true)
-        }
     }
 
     AnimatedVisibility(visible = nowScreen == 1) {

@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +24,6 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.data.core.model.ProfileModel
 import com.seugi.designsystem.R
@@ -44,7 +42,6 @@ import com.seugi.ui.CollectAsSideEffect
 internal fun SettingScreen(
     viewModel: SettingViewModel = hiltViewModel(),
     profileModel: ProfileModel,
-    onNavigationVisibleChange: (Boolean) -> Unit,
     navigationToOnboarding: () -> Unit,
     popBackStack: () -> Unit,
     showSnackbar: (text: String) -> Unit,
@@ -66,16 +63,6 @@ internal fun SettingScreen(
         }
     }
 
-    LaunchedEffect(true) {
-        onNavigationVisibleChange(false)
-    }
-
-    LifecycleResumeEffect {
-        onNavigationVisibleChange(false)
-        onPauseOrDispose {
-            onNavigationVisibleChange(true)
-        }
-    }
     Box {
         Scaffold(
             modifier = Modifier
