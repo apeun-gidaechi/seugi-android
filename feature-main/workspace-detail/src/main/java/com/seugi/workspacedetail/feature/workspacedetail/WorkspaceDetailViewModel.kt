@@ -85,7 +85,7 @@ class WorkspaceDetailViewModel @Inject constructor(
                 }
             }
             workspaceRepository.updateWorkspaceId(workspaceId)
-            changeWorkspaceId
+            changeWorkspaceId()
             setLoading(false)
         }
     }

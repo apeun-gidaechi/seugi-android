@@ -1,5 +1,6 @@
 package com.seugi.profile
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,6 +21,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -69,6 +71,13 @@ internal fun ProfileScreen(
         coroutineScope.launch {
             isShowDialog = false
         }
+    }
+    LaunchedEffect(key1 = workspaceId) {
+        Log.d("TAG", "ProfileScreen: $workspaceId")
+        val changeData = myProfile.copy(workspaceId = workspaceId)
+        viewModel.updateState(changeData)
+
+        changeProfileData(changeData)
     }
 
     viewModel.sideEffect.CollectAsSideEffect {

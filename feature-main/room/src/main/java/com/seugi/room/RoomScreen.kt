@@ -1,5 +1,6 @@
 package com.seugi.room
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -64,7 +65,7 @@ internal fun RoomScreen(
         onBack = onDone,
     )
 
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = workspaceId) {
         viewModel.loadChats(
             workspaceId = workspaceId,
         )

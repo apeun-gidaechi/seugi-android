@@ -1,5 +1,6 @@
 package com.seugi.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
@@ -12,6 +13,7 @@ import com.seugi.main.model.MainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -29,6 +31,7 @@ class MainViewModel @Inject constructor(
 
     fun loadWorkspaceId() = viewModelScope.launch(dispatcher) {
         launch {
+            delay(2000)
             val localWorkspaceId = workspaceRepository.getWorkspaceId()
             workspaceRepository.getMyWorkspaces().collect { response ->
                 when (response) {
@@ -68,10 +71,11 @@ class MainViewModel @Inject constructor(
 
     fun loadLocalWorkspaceId() {
         viewModelScope.launch {
+            val workspaceId =  workspaceRepository.getWorkspaceId()
             _state.update {
                 it.copy(
                     profile = it.profile.copy(
-                        workspaceId = workspaceRepository.getWorkspaceId(),
+                        workspaceId = workspaceId
                     ),
                 )
             }

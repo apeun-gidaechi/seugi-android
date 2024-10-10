@@ -141,6 +141,10 @@ internal fun NotificationScreen(
         }
     }
 
+    LaunchedEffect(key1 = workspaceId) {
+        viewModel.refreshFirstPage(workspaceId)
+    }
+
     if (isShowPopupDialog) {
         NotificationPopupDialog(
             isEditPermission = selectNotificationItem?.userId == userId,
