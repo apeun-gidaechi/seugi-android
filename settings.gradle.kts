@@ -126,5 +126,6 @@ include(
     ":feature-main:notification-create",
     ":feature-main:notification-edit",
     ":feature-main:setting",
+    ":feature-main:meal-widget",
     ":ui"
 )

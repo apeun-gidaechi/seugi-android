@@ -8,7 +8,7 @@ versionCode = "1"
 
 
 # kotlin
-kotlin = "1.9.22"
+kotlin = "1.9.23"
 kotlinx-coroutines = "1.8.0"
 kotlinx-collections-immutable = "0.3.7"
 kotlinx-serialization-json = "1.6.2"
@@ -16,7 +16,7 @@ kotlinx-datetime = "0.5.0"
 
 # android
 androidx-activity-compose = "1.8.2"
-androidx-compose-compiler = "1.5.8"
+androidx-compose-compiler = "1.5.13"
 androidx-compose-bom = "2024.03.00"
 androidx-core = "1.12.0"
 androidx-lifecycle = "2.7.0"
@@ -24,7 +24,9 @@ androidx-navigation = "2.7.7"
 androidx-hilt-navigation-compose = "1.1.0"
 androidx-material = "1.5.4"
 androidx-startup-runtime = "1.1.1"
-datastore = "1.0.0"
+androidx-glance-widget = "1.0.0-rc01"
+androidx-work = "2.8.1"
+datastore = "1.1.0"
 
 # third party
 dagger-hilt = "2.50"
@@ -48,7 +50,7 @@ androidx-test-espresso = "3.5.1"
 
 ## gradle plugin
 agp = "8.3.1"
-ksp = "1.9.22-1.0.16"
+ksp = "1.9.23-1.0.20"
 appcompat = "1.6.1"
 
 #agp = "8.3.1"
@@ -73,6 +75,7 @@ google-services = "4.4.2"
 firebase-bom = "33.3.0"
 firebase-auth = "23.0.0"
 google-play-auth = "21.2.0"
+coreKtx = "1.13.1"
 
 
 [libraries]
@@ -110,6 +113,9 @@ androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmode
 androidx-navigation = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "androidx-navigation" }
 androidx-datastore-preference = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 androidx-startup-runtime = { group = "androidx.startup", name = "startup-runtime", version.ref = "androidx-startup-runtime"}
+androidx-glance-appwidget = { group = "androidx.glance", name = "glance-appwidget", version.ref = "androidx-glance-widget"}
+androidx-glance-material3 = { group = "androidx.glance", name = "glance-material3", version.ref = "androidx-glance-widget"}
+androidx-work = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidx-work"}
 
 # third party
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagger-hilt" }
@@ -182,6 +188,7 @@ material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-monitor = { group = "androidx.test", name = "monitor", version.ref = "monitor" }
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

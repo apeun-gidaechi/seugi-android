@@ -1,5 +1,7 @@
 package com.seugi.common.utiles
 
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -8,6 +10,11 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.joinAll
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 fun <T1, T2, R> combineWhenAllComplete(flow1: Flow<T1>, flow2: Flow<T2>, transform: suspend (T1, T2) -> R): Flow<R> = flow {
     var lastValue1: T1? = null
@@ -57,4 +64,18 @@ fun byteToFormatString(byte: Long): String {
     }
 
     return String.format("%.1f%s", value, units[unitIndex])
+}
+
+object ImmutableListSerializer : KSerializer<ImmutableList<String>> {
+    private val listSerializer = ListSerializer(String.serializer())
+
+    override val descriptor = listSerializer.descriptor
+
+    override fun serialize(encoder: Encoder, value: ImmutableList<String>) {
+        listSerializer.serialize(encoder, value)
+    }
+
+    override fun deserialize(decoder: Decoder): ImmutableList<String> {
+        return persistentListOf(*listSerializer.deserialize(decoder).toTypedArray())
+    }
 }
