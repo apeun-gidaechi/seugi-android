@@ -1,6 +1,5 @@
 package com.seugi.main
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
@@ -71,11 +70,11 @@ class MainViewModel @Inject constructor(
 
     fun loadLocalWorkspaceId() {
         viewModelScope.launch {
-            val workspaceId =  workspaceRepository.getWorkspaceId()
+            val workspaceId = workspaceRepository.getWorkspaceId()
             _state.update {
                 it.copy(
                     profile = it.profile.copy(
-                        workspaceId = workspaceId
+                        workspaceId = workspaceId,
                     ),
                 )
             }
