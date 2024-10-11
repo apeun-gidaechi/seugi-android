@@ -1,7 +1,10 @@
 package com.seugi.meal.widget
 
 import android.annotation.SuppressLint
+import android.appwidget.AppWidgetProvider
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.InternalComposeApi
 import androidx.compose.runtime.LaunchedEffect
@@ -9,6 +12,8 @@ import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.currentComposer
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.glance.Button
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
@@ -20,21 +25,33 @@ import androidx.glance.LocalState
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import androidx.glance.appwidget.SizeMode
+import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.provideContent
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.appwidget.updateAll
 import androidx.glance.background
 import androidx.glance.unit.ColorProvider
 import androidx.glance.currentState
+import androidx.glance.layout.Alignment
+import androidx.glance.layout.Box
+import androidx.glance.layout.Column
 import androidx.glance.layout.Row
+import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxSize
+import androidx.glance.layout.fillMaxWidth
+import androidx.glance.layout.height
+import androidx.glance.layout.padding
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
+import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.Data
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.OutOfQuotaPolicy
+import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.seugi.meal.widget.definition.MealWidgetStateDefinition
@@ -44,112 +61,57 @@ import com.seugi.meal.widget.di.getWorkspaceRepository
 import com.seugi.meal.widget.model.MealWidgetState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.datetime.toKotlinLocalDate
+import kotlinx.datetime.toKotlinLocalDateTime
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.concurrent.TimeUnit
 
-
-class MealWidget: GlanceAppWidget() {
-
-    override val stateDefinition = MealWidgetStateDefinition
-
-    override val sizeMode: SizeMode = SizeMode.Exact
-
-    override suspend fun provideGlance(context: Context, id: GlanceId) {
-        provideContent {
-            GlanceTheme {
-                Content()
-            }
-        }
-    }
-
-    @Composable
-    fun Content() {
-        val context = LocalContext.current()
-        val glanceId = LocalGlanceId.current()
-        val size = LocalSize.current()
-
-        val mealState = (LocalState.current() as MealWidgetState)
-
-
-        Row(
-            modifier = GlanceModifier
-                .fillMaxSize()
-                .background(Color.Black)
-        ) {
-            when (mealState) {
-                MealWidgetState.Loading -> {
-                    Text(
-                        text = "하이!!",
-                        style = TextStyle(color = ColorProvider(Color.Blue))
-                    )
-                }
-                is MealWidgetState.Success -> {
-                    Text(
-                        text = "하이!! ${mealState.data.toString()}",
-                        style = TextStyle(color = ColorProvider(Color.Red))
-                    )
-                }
-
-                MealWidgetState.Error -> {}
-            }
-            Button(
-                "", {}
-            )
-
-            LaunchedEffect(Unit){
-                MealWorker.enqueue(
-                    context = context,
-                    size = size,
-                    glanceId = glanceId
-                )
-            }
-        }
-    }
-
-    override suspend fun onDelete(context: Context, glanceId: GlanceId) {
-        super.onDelete(context, glanceId)
-        MealWorker.cancel(context, glanceId)
-    }
-
-}
 
 class MealWorker(private val context: Context, workParams: WorkerParameters): CoroutineWorker(context, workParams) {
     @SuppressLint("RestrictedApi")
     override suspend fun doWork(): Result {
+        Log.d("TAG", "doWork: Launch Meal Load")
         val workspaceRepository = getWorkspaceRepository(context)
         val mealRepository = getMealRepository(context)
         setWidgetState(MealWidgetState.Loading)
-        mealRepository.getDateMeal(
-            workspaceId = workspaceRepository.getWorkspaceId(),
-            date = LocalDate.now().toKotlinLocalDate()
-        ).collectLatest { item ->
-            when (item) {
-                is com.seugi.common.model.Result.Success -> {
-                    setWidgetState(MealWidgetState.Success(item.data))
-                }
+        try {
+            mealRepository.getDateMeal(
+                workspaceId = workspaceRepository.getWorkspaceId(),
+                date = LocalDate.now().toKotlinLocalDate()
+            ).collectLatest { item ->
+                when (item) {
+                    is com.seugi.common.model.Result.Success -> {
+                        setWidgetState(MealWidgetState.Success(LocalDateTime.now().toKotlinLocalDateTime(), item.data))
+                    }
 
-                is com.seugi.common.model.Result.Error -> {
-                    setWidgetState(MealWidgetState.Error)
-                }
-                com.seugi.common.model.Result.Loading -> {
-                    setWidgetState(MealWidgetState.Loading)
+                    is com.seugi.common.model.Result.Error -> {
+                        setWidgetState(MealWidgetState.Error)
+                        throw item.throwable
+                    }
+
+                    com.seugi.common.model.Result.Loading -> {
+                        setWidgetState(MealWidgetState.Loading)
+                    }
                 }
             }
+        } catch (e: Exception) {
+            return Result.Failure()
         }
         return Result.Success()
     }
 
     private suspend fun setWidgetState(newState: MealWidgetState) {
         val manager = getGlanceWidgetManager(context)
-        val glanceIds = manager.getGlanceIds(MealWidget::class.java)
-        glanceIds.forEach { glanceId ->
-            updateAppWidgetState(
-                context = context,
-                definition = MealWidgetStateDefinition,
-                glanceId = glanceId,
-                updateState = { newState }
-            )
-        }
-        MealWidget().updateAll(context)
+//        val glanceIds = manager.getGlanceIds(MealWidget::class.java)
+//        glanceIds.forEach { glanceId ->
+//            updateAppWidgetState(
+//                context = context,
+//                definition = MealWidgetStateDefinition,
+//                glanceId = glanceId,
+//                updateState = { newState }
+//            )
+//        }
+//        MealWidget().updateAll(context)
     }
 
     companion object {
@@ -186,6 +148,22 @@ class MealWorker(private val context: Context, workParams: WorkerParameters): Co
             )
         }
 
+        fun enqueuePeriodic(context: Context) {
+            val constraints = Constraints.Builder()
+                .build()
+
+            val workManager = WorkManager.getInstance(context)
+            val periodicWorkRequest = PeriodicWorkRequestBuilder<MealWorker>(900, TimeUnit.SECONDS)
+                .setConstraints(constraints)
+                .build()
+
+            workManager.enqueueUniquePeriodicWork(
+                "MealUpdateWork",
+                ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
+                periodicWorkRequest
+            )
+        }
+
 
         fun cancel(context: Context, glanceId: GlanceId) {
             WorkManager.getInstance(context).cancelAllWorkByTag(glanceId.toString())
@@ -199,8 +177,15 @@ class MealWorker(private val context: Context, workParams: WorkerParameters): Co
 internal fun <T> ProvidableCompositionLocal<T>.current() =
     currentComposer.consume(this)
 
-class MealWidgetReceiver: GlanceAppWidgetReceiver() {
-    override val glanceAppWidget: GlanceAppWidget = MealWidget()
-}
+class MealWidgetReceiver: AppWidgetProvider() {
 
-const val MEAL_KEY = "MEAL"
+    override fun onReceive(context: Context, intent: Intent) {
+        super.onReceive(context, intent)
+
+    }
+
+    override fun onEnabled(context: Context?) {
+        super.onEnabled(context)
+//        pro
+    }
+}

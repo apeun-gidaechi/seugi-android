@@ -8,5 +8,5 @@
     android:minResizeWidth="128dp"
     android:maxResizeHeight="512dp"
     android:maxResizeWidth="512dp"
-    android:initialLayout="@layout/glance_default_loading_layout">
+    android:initialLayout="@layout/widget_meal_layout">
 </appwidget-provider>

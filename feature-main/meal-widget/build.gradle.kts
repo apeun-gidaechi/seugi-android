@@ -22,6 +22,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.designsystem)
     implementation(projects.common)
     implementation(projects.data.meal)
     implementation(projects.data.workspace)
