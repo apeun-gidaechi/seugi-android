@@ -17,5 +17,3 @@ data class MealModel(
     @Serializable(with = ImmutableListSerializer::class) val mealInfo: ImmutableList<String>,
     @Serializable(with = LocalDateIso8601Serializer::class) val mealDate: LocalDate,
 )
-
-

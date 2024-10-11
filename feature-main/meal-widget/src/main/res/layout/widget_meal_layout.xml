@@ -11,6 +11,7 @@
         android:gravity="center">
 
         <TextView
+            android:id="@+id/text_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="아침"
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.0"/>
         <TextView
+            android:id="@+id/text_kcal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="709Kcal"
@@ -41,30 +43,7 @@
         android:orientation="vertical"
         android:background="@drawable/shape18_white">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="깍두기"
-            android:textColor="#FF000000"
-            style="@style/Caption2"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="깍두기"
-            android:textColor="#FF000000"
-            style="@style/Caption2"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="깍두기"
-            android:textColor="#FF000000"
-            style="@style/Caption2"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="깍두기"
-            android:textColor="#FF000000"
-            style="@style/Caption2"/>
-        <TextView
+            android:id="@+id/text_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="깍두기"
