@@ -73,7 +73,6 @@ internal fun ProfileScreen(
         }
     }
     LaunchedEffect(key1 = workspaceId) {
-        Log.d("TAG", "ProfileScreen: $workspaceId")
         val changeData = myProfile.copy(workspaceId = workspaceId)
         viewModel.updateState(changeData)
 
