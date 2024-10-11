@@ -30,7 +30,6 @@ class MainViewModel @Inject constructor(
 
     fun loadWorkspaceId() = viewModelScope.launch(dispatcher) {
         launch {
-            delay(2000)
             val localWorkspaceId = workspaceRepository.getWorkspaceId()
             workspaceRepository.getMyWorkspaces().collect { response ->
                 when (response) {
