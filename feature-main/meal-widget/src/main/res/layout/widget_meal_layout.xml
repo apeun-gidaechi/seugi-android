@@ -36,20 +36,17 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="4dp"/>
-    <LinearLayout
+    <ListView
+        android:id="@+id/list_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp"
         android:orientation="vertical"
-        android:background="@drawable/shape18_white">
-        <TextView
-            android:id="@+id/text_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="깍두기"
-            android:textColor="#FF000000"
-            style="@style/Caption2"/>
-    </LinearLayout>
+        android:background="@drawable/shape18_white"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:listSelector="@android:color/transparent">
+    </ListView>
 
 
 </LinearLayout>

@@ -3,10 +3,14 @@ package com.seugi.meal.widget
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
+import android.content.Intent
 import android.widget.RemoteViews
+import android.widget.RemoteViewsService
 import com.seugi.common.model.Result
 import com.seugi.data.meal.response.MealModel
 import com.seugi.data.meal.response.MealType
+import com.seugi.meal.widget.MealWidgetReceiver.Companion.CONTENT
+import com.seugi.meal.widget.component.MealListProvider
 import com.seugi.meal.widget.di.getMealRepository
 import com.seugi.meal.widget.di.getWorkspaceRepository
 import kotlinx.collections.immutable.ImmutableList
@@ -17,6 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.toKotlinLocalDate
 import java.time.LocalDate
 import java.time.LocalTime
+import java.util.ArrayList
 
 private fun fetchMealData(
     context: Context,
@@ -37,11 +42,10 @@ fun updateAppWidgetUI(context: Context, appWidgetManager: AppWidgetManager, appW
 
     val time = LocalTime.now()
 
-
     val mealType: MealType =
         if (time.isBefore(LocalTime.of(8, 10))) MealType.BREAKFAST
         else if (time.isBefore(LocalTime.of(13, 30))) MealType.LUNCH
-        else MealType.BREAKFAST
+        else MealType.DINNER
 
     val item = data.find { it.mealType == mealType }
 
@@ -52,14 +56,26 @@ fun updateAppWidgetUI(context: Context, appWidgetManager: AppWidgetManager, appW
             MealType.DINNER -> "저녁"
         }
 
+    val intent = Intent(context, MealWidgetService::class.java)
+
     if (item != null) {
-        views.setTextViewText(R.id.text_category, category)
         views.setTextViewText(R.id.text_kcal, item.calorie)
-        views.setTextViewText(R.id.text_menu, item.menu.reduce { acc, s -> "${acc}\n${s}" })
+        intent.putExtra(CONTENT, ArrayList<String>().apply { addAll(item.menu) })
+    } else {
+        views.setTextViewText(R.id.text_kcal, "")
+        intent.putExtra(CONTENT, ArrayList<String>().apply { add("급식이 존재하지 않습니다.") })
     }
+    views.setTextViewText(R.id.text_category, category)
+    views.setRemoteAdapter(R.id.list_menu, intent)
 
     // 위젯 업데이트
     appWidgetManager.updateAppWidget(appWidgetId, views)
+}
+
+class MealWidgetService : RemoteViewsService() {
+    override fun onGetViewFactory(intent: Intent): RemoteViewsFactory {
+        return MealListProvider(this.applicationContext, intent)
+    }
 }
 
 class MealWidgetReceiver: AppWidgetProvider() {
@@ -95,4 +111,8 @@ class MealWidgetReceiver: AppWidgetProvider() {
             )
         }
     }
+    companion object {
+        const val CONTENT = "content"
+    }
+
 }
