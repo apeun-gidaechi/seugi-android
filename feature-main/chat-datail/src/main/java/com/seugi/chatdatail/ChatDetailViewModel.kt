@@ -466,11 +466,6 @@ class ChatDetailViewModel @Inject constructor(
 
                     var isFirst = data.userId != formerItem?.userId
                     if (
-                        formerItem is MessageParent.Me && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
-                    ) {
-                        message[0] = formerItem.copy(isLast = false)
-                    }
-                    if (
                         formerItem is MessageParent.Other && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
                     ) {
                         message[0] = formerItem.copy(isLast = false)
@@ -514,11 +509,6 @@ class ChatDetailViewModel @Inject constructor(
                     val formerItem = message.firstOrNull()
                     if (
                         formerItem is MessageParent.Me && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
-                    ) {
-                        message[0] = formerItem.copy(isLast = false)
-                    }
-                    if (
-                        formerItem is MessageParent.Other && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
                     ) {
                         message[0] = formerItem.copy(isLast = false)
                     }
