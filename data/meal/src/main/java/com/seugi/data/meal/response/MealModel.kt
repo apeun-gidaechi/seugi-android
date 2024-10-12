@@ -4,7 +4,6 @@ import com.seugi.common.utiles.ImmutableListSerializer
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.serializers.LocalDateIso8601Serializer
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 
 @Serializable

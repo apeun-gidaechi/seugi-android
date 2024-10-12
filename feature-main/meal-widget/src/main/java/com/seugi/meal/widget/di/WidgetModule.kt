@@ -21,23 +21,17 @@ object WidgetModule {
     fun providesGlanceWidgetManager(@ApplicationContext context: Context): GlanceAppWidgetManager = GlanceAppWidgetManager(context)
 }
 
-internal fun getMealRepository(
-    context: Context
-): MealRepository {
+internal fun getMealRepository(context: Context): MealRepository {
     val hiltEntryPoint = EntryPointAccessors.fromApplication(context, MealWidgetEntryPoint::class.java)
     return hiltEntryPoint.mealRepository()
 }
 
-internal fun getWorkspaceRepository(
-    context: Context
-): WorkspaceRepository {
+internal fun getWorkspaceRepository(context: Context): WorkspaceRepository {
     val hiltEntryPoint = EntryPointAccessors.fromApplication(context, MealWidgetEntryPoint::class.java)
     return hiltEntryPoint.workspaceRepository()
 }
 
-internal fun getGlanceWidgetManager(
-    context: Context
-): GlanceAppWidgetManager {
+internal fun getGlanceWidgetManager(context: Context): GlanceAppWidgetManager {
     val hiltEntryPoint = EntryPointAccessors.fromApplication(context, MealWidgetEntryPoint::class.java)
     return hiltEntryPoint.glanceAppWidgetManager()
 }

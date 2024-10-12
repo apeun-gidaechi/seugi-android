@@ -13,26 +13,23 @@ import com.seugi.meal.widget.MealWidgetReceiver.Companion.CONTENT
 import com.seugi.meal.widget.component.MealListProvider
 import com.seugi.meal.widget.di.getMealRepository
 import com.seugi.meal.widget.di.getWorkspaceRepository
+import java.time.LocalDate
+import java.time.LocalTime
+import java.util.ArrayList
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.datetime.toKotlinLocalDate
-import java.time.LocalDate
-import java.time.LocalTime
-import java.util.ArrayList
 
-private fun fetchMealData(
-    context: Context,
-    block: (Result<ImmutableList<MealModel>>) -> Unit
-)  {
+private fun fetchMealData(context: Context, block: (Result<ImmutableList<MealModel>>) -> Unit) {
     CoroutineScope(Dispatchers.IO).launch {
         val workspaceRepository = getWorkspaceRepository(context)
         val mealRepository = getMealRepository(context)
         mealRepository.getDateMeal(
             workspaceId = workspaceRepository.getWorkspaceId(),
-            date = LocalDate.now().toKotlinLocalDate()
+            date = LocalDate.now().toKotlinLocalDate(),
         ).collectLatest(block)
     }
 }
@@ -43,9 +40,13 @@ fun updateAppWidgetUI(context: Context, appWidgetManager: AppWidgetManager, appW
     val time = LocalTime.now()
 
     val mealType: MealType =
-        if (time.isBefore(LocalTime.of(8, 10))) MealType.BREAKFAST
-        else if (time.isBefore(LocalTime.of(13, 30))) MealType.LUNCH
-        else MealType.DINNER
+        if (time.isBefore(LocalTime.of(8, 10))) {
+            MealType.BREAKFAST
+        } else if (time.isBefore(LocalTime.of(13, 30))) {
+            MealType.LUNCH
+        } else {
+            MealType.DINNER
+        }
 
     val item = data.find { it.mealType == mealType }
 
@@ -78,13 +79,9 @@ class MealWidgetService : RemoteViewsService() {
     }
 }
 
-class MealWidgetReceiver: AppWidgetProvider() {
+class MealWidgetReceiver : AppWidgetProvider() {
 
-    override fun onUpdate(
-        context: Context?,
-        appWidgetManager: AppWidgetManager?,
-        appWidgetIds: IntArray?
-    ) {
+    override fun onUpdate(context: Context?, appWidgetManager: AppWidgetManager?, appWidgetIds: IntArray?) {
         if (context == null) return
         if (appWidgetManager == null) return
         if (appWidgetIds == null) return
@@ -99,7 +96,7 @@ class MealWidgetReceiver: AppWidgetProvider() {
                                 context = context,
                                 appWidgetManager = appWidgetManager,
                                 appWidgetId = appWidgetId,
-                                data = it.data
+                                data = it.data,
                             )
                         }
                         is Result.Error -> {
@@ -107,12 +104,11 @@ class MealWidgetReceiver: AppWidgetProvider() {
                         }
                         Result.Loading -> {}
                     }
-                }
+                },
             )
         }
     }
     companion object {
         const val CONTENT = "content"
     }
-
 }
