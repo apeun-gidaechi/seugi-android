@@ -14,7 +14,8 @@ class LocalDateTimeTypeAdapter : JsonDeserializer<LocalDateTime>, JsonSerializer
 
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): LocalDateTime {
         var dateString = json?.asString
-        if (dateString?.startsWith("0000") == true) {
+        // 서버에서 처리하는 최소 값, 채팅에서 주로 사용됨
+        if (dateString?.startsWith("0001") == true) {
             return LocalDateTime.MIN
         }
         val dateStrings = dateString!!.split(".")
