@@ -68,10 +68,11 @@ class MainViewModel @Inject constructor(
 
     fun loadLocalWorkspaceId() {
         viewModelScope.launch {
+            val workspaceId = workspaceRepository.getWorkspaceId()
             _state.update {
                 it.copy(
                     profile = it.profile.copy(
-                        workspaceId = workspaceRepository.getWorkspaceId(),
+                        workspaceId = workspaceId,
                     ),
                 )
             }

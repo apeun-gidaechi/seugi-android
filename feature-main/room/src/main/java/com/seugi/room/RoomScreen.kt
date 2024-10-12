@@ -64,7 +64,7 @@ internal fun RoomScreen(
         onBack = onDone,
     )
 
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = workspaceId) {
         viewModel.loadChats(
             workspaceId = workspaceId,
         )
