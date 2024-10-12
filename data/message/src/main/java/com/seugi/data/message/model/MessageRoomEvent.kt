@@ -27,7 +27,6 @@ sealed class MessageRoomEvent(
             val mention: ImmutableList<Int>,
             val mentionAll: Boolean,
             override val timestamp: LocalDateTime,
-            val read: ImmutableList<Int>,
         ) : MessageParent(timestamp, type, userId)
 
         data class Other(
@@ -46,7 +45,6 @@ sealed class MessageRoomEvent(
             val mention: ImmutableList<Int>,
             val mentionAll: Boolean,
             override val timestamp: LocalDateTime,
-            val read: ImmutableList<Int>,
         ) : MessageParent(timestamp, type, userId)
 
         data class File(

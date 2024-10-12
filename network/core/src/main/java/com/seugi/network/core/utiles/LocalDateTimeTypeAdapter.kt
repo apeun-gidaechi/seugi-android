@@ -14,6 +14,9 @@ class LocalDateTimeTypeAdapter : JsonDeserializer<LocalDateTime>, JsonSerializer
 
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): LocalDateTime {
         var dateString = json?.asString
+        if (dateString?.startsWith("0000") == true) {
+            return LocalDateTime.MIN
+        }
         val dateStrings = dateString!!.split(".")
         if (dateStrings[1].length != 6) {
             dateString = dateStrings[0] + "." + dateStrings[1] + "0".repeat(if (0 > 6 - dateStrings[1].length) 0 else 6 - dateStrings[1].length)

@@ -67,16 +67,19 @@ public class OkHttpConnectionProvider extends AbstractConnectionProvider {
 
                     @Override
                     public void onMessage(WebSocket webSocket, String text) {
+                        Log.d(TAG, "onMessage: " + text);
                         emitMessage(text);
                     }
 
                     @Override
                     public void onMessage(WebSocket webSocket, @NonNull ByteString bytes) {
+                        Log.d(TAG, "onMessage: " + bytes.utf8());
                         emitMessage(bytes.utf8());
                     }
 
                     @Override
                     public void onClosed(WebSocket webSocket, int code, String reason) {
+                        Log.d(TAG, "onClosed: " + reason);
                         openSocket = null;
                         emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.CLOSED));
                     }

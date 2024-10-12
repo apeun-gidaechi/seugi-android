@@ -32,7 +32,6 @@ sealed class MessageRoomEventResponse(
             val mention: List<Int>,
             val mentionAll: Boolean,
             override val timestamp: LocalDateTime,
-            val read: List<Int>,
         ) : MessageParent(timestamp, type, userId)
     }
 

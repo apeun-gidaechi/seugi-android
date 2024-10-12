@@ -45,3 +45,8 @@ fun String.toKotlinLocalDate(): LocalDate {
 }
 
 fun <T> List<T>.isEmptyGetNull(): List<T>? = this.ifEmpty { null }
+
+fun LocalDateTime.toEpochMilli() = this
+    .atZone(ZoneId.of("UTC"))
+    .withZoneSameInstant(ZoneId.systemDefault())
+    .toEpochSecond()

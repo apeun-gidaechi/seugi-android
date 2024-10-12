@@ -33,7 +33,6 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int)
                 mention = mention.toImmutableList(),
                 mentionAll = mentionAll,
                 timestamp = timestamp,
-                read = read.toImmutableList(),
             )
         } else {
             MessageRoomEvent.MessageParent.Other(
@@ -52,7 +51,6 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int)
                 mention = mention.toImmutableList(),
                 mentionAll = mentionAll,
                 timestamp = timestamp,
-                read = read.toImmutableList(),
             )
         }
     }

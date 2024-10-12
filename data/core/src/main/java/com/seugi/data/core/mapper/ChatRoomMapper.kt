@@ -18,7 +18,7 @@ fun ChatRoomResponse.toModel() = ChatRoomModel(
     chatName = chatName,
     chatRoomImg = chatRoomImg,
     createdAt = createdAt,
-    memberList = joinUserId.map {
+    memberList = joinUserInfo.map {
         it.toModel()
     }.toImmutableList(),
     chatStatusEnum = chatStatusEnum.toChatRoomStatusType(),
