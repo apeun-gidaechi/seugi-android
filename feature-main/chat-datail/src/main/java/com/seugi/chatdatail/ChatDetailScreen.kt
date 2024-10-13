@@ -664,7 +664,7 @@ internal fun ChatDetailScreen(
                                         isFirst = item.isFirst,
                                         isLast = item.isLast,
                                         userName = userInfo?.name ?: "",
-                                        userProfile = userInfo?.picture,
+                                        userProfile = userInfo?.picture?.ifEmpty { null },
                                         message = item.message,
                                         createdAt = item.timestamp.toAmShortString(),
                                         count = if (count <= 0) null else count,
