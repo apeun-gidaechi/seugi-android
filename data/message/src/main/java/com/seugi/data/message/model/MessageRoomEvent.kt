@@ -101,6 +101,10 @@ sealed class MessageRoomEvent(
         override val type: MessageType,
         override val userId: Int,
     ) : MessageRoomEvent(type, userId)
+    data class UnSub(
+        override val type: MessageType,
+        override val userId: Int,
+    ) : MessageRoomEvent(type, userId)
 
     data class DeleteMessage(
         override val type: MessageType,
@@ -155,6 +159,11 @@ fun MessageRoomEvent.copy(type: MessageType = this.type, userId: Int = this.user
         is MessageRoomEvent.TransperAdmin -> copy(
             type = type,
             userId = userId,
+        )
+
+        is MessageRoomEvent.UnSub -> copy(
+            type = type,
+            userId = userId
         )
     }
 }

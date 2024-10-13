@@ -40,6 +40,11 @@ sealed class MessageRoomEventResponse(
         override val userId: Int,
     ) : MessageRoomEventResponse(type, userId)
 
+    data class UnSub(
+        override val type: String,
+        override val userId: Int,
+    ) : MessageRoomEventResponse(type, userId)
+
     data class DeleteMessage(
         override val type: String,
         override val userId: Int,

@@ -13,6 +13,7 @@ internal fun MessageRoomEventResponse.toEventModel(userId: Int): MessageRoomEven
     is MessageRoomEventResponse.RemoveEmoji -> toModel()
     is MessageRoomEventResponse.Sub -> toModel()
     is MessageRoomEventResponse.TransperAdmin -> toModel()
+    is MessageRoomEventResponse.UnSub -> toModel()
 }
 
 internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int): MessageRoomEvent.MessageParent = when (type) {
@@ -122,6 +123,11 @@ internal fun MessageRoomEventResponse.RemoveEmoji.toModel() = MessageRoomEvent.R
 )
 
 internal fun MessageRoomEventResponse.Sub.toModel() = MessageRoomEvent.Sub(
+    type = type.toMessageType(),
+    userId = userId,
+)
+
+internal fun MessageRoomEventResponse.UnSub.toModel() = MessageRoomEvent.UnSub(
     type = type.toMessageType(),
     userId = userId,
 )

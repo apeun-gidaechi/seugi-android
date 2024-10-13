@@ -89,6 +89,9 @@ class MessageDataSourceImpl @Inject constructor(
                     "SUB" -> {
                         emit(message.payload.toResponse(MessageRoomEventResponse.Sub::class.java))
                     }
+                    "UNSUB" -> {
+                        emit(message.payload.toResponse(MessageRoomEventResponse.UnSub::class.java))
+                    }
                     "DELETE_MESSAGE" -> {
                         emit(message.payload.toResponse(MessageRoomEventResponse.DeleteMessage::class.java))
                     }

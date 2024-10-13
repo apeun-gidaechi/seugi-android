@@ -12,6 +12,7 @@ import com.seugi.chatdatail.model.containsWithUUID
 import com.seugi.chatdatail.model.minus
 import com.seugi.chatdatail.model.plus
 import com.seugi.common.model.Result
+import com.seugi.common.utiles.toDeviceLocalDateTime
 import com.seugi.common.utiles.toEpochMilli
 import com.seugi.data.core.model.UserInfoModel
 import com.seugi.data.core.model.UserModel
@@ -631,6 +632,35 @@ class ChatDetailViewModel @Inject constructor(
                         )
                     }
                 }
+                is MessageRoomEvent.UnSub -> {
+                    Log.d("TAG", "collectMessage: UNSUB User")
+                    _state.update {
+                        it.copy(
+                            roomInfo = it.roomInfo?.copy(
+                                members = it.roomInfo.members
+                                    .toMutableList()
+                                    .map { userInfo ->
+                                        if (userInfo.userInfo.id != data.userId) {
+                                            return@map userInfo
+                                        }
+                                        val timestamp = LocalDateTime.now()
+                                        Log.d("TAG", "collectMessage: UNSUB ${userInfo.copy(
+                                            userInfo = userInfo.userInfo,
+                                            timestamp = timestamp,
+                                            utcTimeMillis = timestamp.toEpochMilli()
+                                        )}")
+                                        userInfo.copy(
+                                            userInfo = userInfo.userInfo,
+                                            timestamp = timestamp,
+                                            utcTimeMillis = timestamp.toEpochMilli()
+                                        )
+                                    }
+                                    .sortedBy { it.utcTimeMillis }
+                                    .toImmutableList()
+                            ),
+                        )
+                    }
+                }
 
                 else -> {}
             }
@@ -715,7 +745,7 @@ internal fun MessageParent.getUserCount(
 ): ImmutableList<Int> =
     when (this) {
         is MessageParent.Me -> {
-            val utcTimeMillis = this.timestamp.toEpochMilli()
+            val utcTimeMillis = this.timestamp.toDeviceLocalDateTime().toEpochMilli()
             val readUsers = mutableListOf<Int>()
 
             // 현재 접속중인 유저수 세기
@@ -736,11 +766,14 @@ internal fun MessageParent.getUserCount(
                     else -> -1
                 }
             }
+            Log.d("TAG", "getUserCount: $utcTimeMillis")
+            Log.d("TAG", "getUserCount: $binaryIndex")
 
-            val index = if (binaryIndex >= 0) binaryIndex else -(binaryIndex + 1)
+            val index = if (binaryIndex >= 0) binaryIndex else users.size
             for (i in index until users.size) {
                 val user = users.getOrNull(i)
                 if (user != null) {
+                    Log.d("TAG", "getUserCount: ${user.userInfo.id } ${user.utcTimeMillis}")
                     readUsers.add(user.userInfo.id)
                 }
             }
@@ -753,13 +786,44 @@ internal fun MessageParent.getUserCount(
             readUsers.toImmutableList()
         }
         is MessageParent.Other -> {
-            val utcTimeMillis = this.timestamp.toEpochMilli()
+            val utcTimeMillis = this.timestamp.toDeviceLocalDateTime().toEpochMilli()
             val readUsers = mutableListOf<Int>()
-            users.forEach { userInfo ->
-                if (userInfo.utcTimeMillis == 0L || userInfo.utcTimeMillis >= utcTimeMillis) {
-                    readUsers.add(userInfo.userInfo.id)
+
+            // 현재 접속중인 유저수 세기
+            users.takeWhile {
+                Log.d("TAG", "getUserCount: ")
+                if (it.utcTimeMillis == 0L) {
+                    readUsers.add(it.userInfo.id)
+                }
+                it.utcTimeMillis == 0L
+            }
+
+            Log.d("TAG", "접속중인 유저수 :  ${readUsers}")
+
+            // 해당 메세지를 읽은 유저 카운트
+            val binaryIndex = users.binarySearch {
+                when {
+                    it.utcTimeMillis >= utcTimeMillis -> 0
+                    else -> -1
                 }
             }
+            Log.d("TAG", "getUserCount: $utcTimeMillis")
+            Log.d("TAG", "getUserCount: $binaryIndex")
+
+            val index = if (binaryIndex >= 0) binaryIndex else users.size
+            for (i in index until users.size) {
+                val user = users.getOrNull(i)
+                if (user != null) {
+                    Log.d("TAG", "getUserCount: ${user.userInfo.id } ${user.utcTimeMillis}")
+                    readUsers.add(user.userInfo.id)
+                }
+            }
+            Log.d("TAG", "다 읽은 유저수 :  ${readUsers}")
+//            users.forEach { userInfo ->
+//                if (userInfo.utcTimeMillis == 0L || userInfo.utcTimeMillis >= utcTimeMillis) {
+//                    readUsers.add(userInfo.userInfo.id)
+//                }
+//            }
             readUsers.toImmutableList()
         }
         else -> persistentListOf()
