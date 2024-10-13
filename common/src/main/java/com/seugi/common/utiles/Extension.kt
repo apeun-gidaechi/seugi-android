@@ -50,3 +50,6 @@ fun LocalDateTime.toEpochMilli() = this
     .atZone(ZoneId.of("UTC"))
     .withZoneSameInstant(ZoneId.systemDefault())
     .toEpochSecond()
+    .takeIf {
+        it >= 0
+    }?: 0

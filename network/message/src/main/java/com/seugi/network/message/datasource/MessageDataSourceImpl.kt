@@ -57,7 +57,7 @@ class MessageDataSourceImpl @Inject constructor(
                 }
                 LifecycleEvent.Type.ERROR -> {
                     Log.e("TAG", "error", it.exception)
-                    emit(MessageStompLifecycleResponse.Error(it.exception.cause ?: Throwable()))
+                    emit(MessageStompLifecycleResponse.Error(it.exception))
                 }
                 LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> {
                     emit(MessageStompLifecycleResponse.FailedServerHeartbeat)

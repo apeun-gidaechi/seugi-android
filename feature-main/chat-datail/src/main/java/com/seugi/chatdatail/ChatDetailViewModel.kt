@@ -171,8 +171,9 @@ class ChatDetailViewModel @Inject constructor(
                             Log.d("TAG", "collectStompLifecycle: $data")
                             when (data) {
                                 is MessageStompLifecycleModel.Error -> {
-                                    val exception = data.throwable as? Exception
-                                    when (exception) {
+//                                    val exception = data.exception as? Exception
+                                    Log.d("TAG", "collectStompLifecycle: ${data.exception}")
+                                    when (data.exception) {
                                         is StompException -> {
                                             tokenRepository.newToken().collect {
                                                 when (it) {
@@ -188,7 +189,7 @@ class ChatDetailViewModel @Inject constructor(
                                             }
                                         }
                                         is SocketException -> {
-                                            data.throwable.printStackTrace()
+                                            data.exception.printStackTrace()
 //                                            Log.d("TAG", "collectStompLifecycle: $data")
                                             channelReconnect(userId)
                                         }
