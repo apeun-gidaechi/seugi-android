@@ -1,5 +1,6 @@
 package com.seugi.designsystem.component
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -69,6 +70,10 @@ fun SeugiAvatar(modifier: Modifier = Modifier, image: String? = null, type: Avat
             model = image,
             contentDescription = "",
             contentScale = ContentScale.Crop,
+            onError = {
+                Log.d("TAG", "SeugiAvatar: $image")
+                it.result.throwable.printStackTrace()
+            }
         )
     }
 }

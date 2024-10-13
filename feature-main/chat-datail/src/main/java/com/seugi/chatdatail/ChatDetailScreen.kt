@@ -659,7 +659,7 @@ internal fun ChatDetailScreen(
                                 is MessageRoomEvent.MessageParent.Other -> {
                                     val readUser = item.getUserCount(state.roomInfo?.members?: persistentListOf())
                                     val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
-                                    val userInfo = state.users.get(item.userId)
+                                    val userInfo = state.users[item.userId]
                                     ChatItemType.Others(
                                         isFirst = item.isFirst,
                                         isLast = item.isLast,
