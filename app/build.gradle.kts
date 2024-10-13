@@ -53,5 +53,6 @@ dependencies {
     implementation(projects.common)
     implementation(projects.data.token)
     implementation(projects.data.firebaseToken)
+    implementation(projects.featureMain.mealWidget)
 
 }
