@@ -135,16 +135,16 @@ class ChatDetailViewModel @Inject constructor(
                             id = chatRoomId,
                             roomName = it.data.chatName,
                             members = it.data.memberList
-                                .sortedBy { it.utcTimeMillis }
                                 .map {
                                     if (it.userInfo.id == userId) {
                                         return@map it.copy(
                                             timestamp = LocalDateTime.MIN,
-                                            utcTimeMillis = 0
+                                            utcTimeMillis = 0L
                                         )
                                     }
                                     it
                                 }
+                                .sortedBy { it.utcTimeMillis }
                                 .toImmutableList(),
                             adminId = it.data.roomAdmin,
                         ),
@@ -717,11 +717,39 @@ internal fun MessageParent.getUserCount(
         is MessageParent.Me -> {
             val utcTimeMillis = this.timestamp.toEpochMilli()
             val readUsers = mutableListOf<Int>()
-            users.forEach { userInfo ->
-                if (userInfo.utcTimeMillis == 0L || userInfo.utcTimeMillis >= utcTimeMillis) {
-                    readUsers.add(userInfo.userInfo.id)
+
+            // 현재 접속중인 유저수 세기
+            users.takeWhile {
+                Log.d("TAG", "getUserCount: ")
+                if (it.utcTimeMillis == 0L) {
+                    readUsers.add(it.userInfo.id)
+                }
+                it.utcTimeMillis == 0L
+            }
+
+            Log.d("TAG", "접속중인 유저수 :  ${readUsers}")
+
+            // 해당 메세지를 읽은 유저 카운트
+            val binaryIndex = users.binarySearch {
+                when {
+                    it.utcTimeMillis >= utcTimeMillis -> 0
+                    else -> -1
                 }
             }
+
+            val index = if (binaryIndex >= 0) binaryIndex else -(binaryIndex + 1)
+            for (i in index until users.size) {
+                val user = users.getOrNull(i)
+                if (user != null) {
+                    readUsers.add(user.userInfo.id)
+                }
+            }
+            Log.d("TAG", "다 읽은 유저수 :  ${readUsers}")
+//            users.forEach { userInfo ->
+//                if (userInfo.utcTimeMillis == 0L || userInfo.utcTimeMillis >= utcTimeMillis) {
+//                    readUsers.add(userInfo.userInfo.id)
+//                }
+//            }
             readUsers.toImmutableList()
         }
         is MessageParent.Other -> {
