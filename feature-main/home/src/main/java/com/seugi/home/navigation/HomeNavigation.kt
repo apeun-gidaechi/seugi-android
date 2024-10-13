@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.home.HomeScreen
 
 const val HOME_ROUTE = "home"
@@ -18,9 +19,16 @@ fun NavController.navigateToHome(toRoute: String, fromRoute: String) {
     }
 }
 
-fun NavGraphBuilder.homeScreen(navigateToChatSeugi: () -> Unit, navigateToJoinWorkspace: () -> Unit, navigateToWorkspaceDetail: (String) -> Unit, navigateToWorkspaceCreate: () -> Unit) {
+fun NavGraphBuilder.homeScreen(
+    workspace: WorkspaceModel,
+    navigateToChatSeugi: () -> Unit,
+    navigateToJoinWorkspace: () -> Unit,
+    navigateToWorkspaceDetail: (String) -> Unit,
+    navigateToWorkspaceCreate: () -> Unit
+) {
     composable(HOME_ROUTE) {
         HomeScreen(
+            workspace = workspace,
             navigateToChatSeugi = navigateToChatSeugi,
             navigateToJoinWorkspace = navigateToJoinWorkspace,
             navigateToWorkspaceDetail = navigateToWorkspaceDetail,

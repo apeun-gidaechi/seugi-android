@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.seugi.local.room.SeugiDatabase
 import com.seugi.local.room.util.SeugiTable
+import com.seugi.local.room.util.LongListTypeConverter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

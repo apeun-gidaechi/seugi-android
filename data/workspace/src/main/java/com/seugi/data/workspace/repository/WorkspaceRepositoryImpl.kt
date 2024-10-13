@@ -4,11 +4,11 @@ import com.seugi.common.model.Result
 import com.seugi.common.model.asResult
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
-import com.seugi.data.core.mapper.toModel
 import com.seugi.data.core.mapper.toModels
 import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.data.workspace.mapper.localToModel
+import com.seugi.data.workspace.mapper.toEntity
 import com.seugi.data.workspace.mapper.toModel
 import com.seugi.data.workspace.mapper.toModels
 import com.seugi.data.workspace.model.CheckWorkspaceModel
@@ -69,13 +69,16 @@ class WorkspaceRepositoryImpl @Inject constructor(
         workspaceDao.updateWorkspaceIdById(0, workspaceId)
     }
 
-    override suspend fun insertWorkspaceId(workspaceId: String) {
-        workspaceDao.insert(WorkspaceEntity(idx = 0, workspaceId = workspaceId))
+    override suspend fun insertWorkspace(workspaceModel: WorkspaceModel) {
+        workspaceDao.insert(workspaceModel.toEntity())
     }
 
-    override suspend fun getWorkspaceId(): String {
-        return workspaceDao.getWorkspaceId()?.localToModel()?.workspaceId ?: ""
+    override suspend fun getLocalWorkspaceId(): String {
+        return workspaceDao.getWorkspace()?.localToModel()?.workspaceId ?: ""
     }
+
+    override suspend fun getLocalWorkspace(): WorkspaceModel? =
+        workspaceDao.getWorkspace()?.localToModel()
 
     override suspend fun getWaitWorkspaces(): Flow<Result<List<WaitWorkspaceModel>>> = flow {
         val response = workspaceDatasource.getWaitWorkspace().safeResponse()

@@ -9,6 +9,7 @@ import com.seugi.data.meal.MealRepository
 import com.seugi.data.meal.response.MealType
 import com.seugi.data.timetable.TimetableRepository
 import com.seugi.data.workspace.WorkspaceRepository
+import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.home.model.CommonUiState
 import com.seugi.home.model.HomeUiState
 import com.seugi.home.model.MealUiState
@@ -38,92 +39,25 @@ class HomeViewModel @Inject constructor(
     private val _state = MutableStateFlow(HomeUiState())
     val state = _state.asStateFlow()
 
-    fun load() {
+    fun load(
+        workspace: WorkspaceModel
+    ) {
         viewModelScope.launch(dispatcher) {
-            val localWorkspaceId = workspaceRepository.getWorkspaceId()
-            // 중복 로드 방지
-            if (localWorkspaceId.isNotEmpty() && localWorkspaceId == state.value.nowWorkspaceId) return@launch
+            // 처음 한번만 로딩하는 로직 추후 추가.
 
-            if (localWorkspaceId.isNotEmpty()) {
-                _state.update { mainUi ->
-                    mainUi.copy(
-                        nowWorkspaceId = localWorkspaceId,
-                    )
-                }
-                insertLocal(localWorkspaceId)
-                loadMeal(localWorkspaceId)
-                getWorkspaceName(localWorkspaceId)
-                loadTimetable(localWorkspaceId)
-                loadCatSeugi()
-                loadSchedule()
-            } else {
-                workspaceRepository.getMyWorkspaces().collect { response ->
-                    when (response) {
-                        is Result.Success -> {
-                            val workspaces = response.data
-                            var workspaceId = ""
-                            if (workspaces.isEmpty()) {
-                                // 서버에 워크페이스가 없을때 워크페이스 가입
-                                _state.update { mainUi ->
-                                    mainUi.copy(
-                                        showDialog = true,
-                                        schoolState = CommonUiState.NotFound,
-                                        timeScheduleState = CommonUiState.NotFound,
-                                        mealState = CommonUiState.NotFound,
-                                        catSeugiState = CommonUiState.NotFound,
-                                        schoolScheduleState = CommonUiState.NotFound,
-                                    )
-                                }
-                            } else {
-                                // 워크페이스가 있다면 로컬에 아이디와 비교
-                                if (localWorkspaceId.isEmpty()) {
-                                    // 로컬에 없으면 서버의 처음 워크페이스를 화면에
-                                    workspaceId = workspaces[0].workspaceId
-                                    _state.update { mainUi ->
-                                        mainUi.copy(
-                                            nowWorkspaceId = workspaces[0].workspaceId,
-                                        )
-                                    }
-                                } else {
-                                    workspaceId = localWorkspaceId
-                                    // 로컬에 있다면 로컬이랑 같은 아이디의 워크페이스를 화면에
-                                    workspaces.forEach {
-                                        if (localWorkspaceId == it.workspaceId) {
-                                            _state.update { mainUi ->
-                                                mainUi.copy(
-                                                    nowWorkspaceId = it.workspaceId,
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            insertLocal(workspaceId)
-                            loadMeal(workspaceId)
-                            getWorkspaceName(workspaceId)
-                            loadTimetable(workspaceId)
-                            loadCatSeugi()
-                            loadSchedule()
-                        }
-
-                        is Result.Error -> {
-                            response.throwable.printStackTrace()
-                        }
-
-                        Result.Loading -> {
-                            _state.update {
-                                it.copy(
-                                    schoolState = CommonUiState.Loading,
-                                    timeScheduleState = CommonUiState.Loading,
-                                    mealState = CommonUiState.Loading,
-                                    catSeugiState = CommonUiState.Loading,
-                                    schoolScheduleState = CommonUiState.Loading,
-                                )
-                            }
-                        }
-                    }
-                }
+            _state.update {
+                it.copy(
+                    schoolState = CommonUiState.Success(workspace.workspaceName),
+                    timeScheduleState = CommonUiState.Loading,
+                    mealState = CommonUiState.Loading,
+                    catSeugiState = CommonUiState.Loading,
+                    schoolScheduleState = CommonUiState.Loading,
+                )
             }
+            loadMeal(workspace.workspaceId)
+            loadTimetable(workspace.workspaceId)
+            loadCatSeugi()
+            loadSchedule()
         }
     }
 
@@ -206,41 +140,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun getWorkspaceName(workspaceId: String) {
-        viewModelScope.launch(dispatcher) {
-            launch {
-                workspaceRepository.getWorkspaceData(
-                    workspaceId = workspaceId,
-                ).collect { workspace ->
-                    when (workspace) {
-                        is Result.Success -> {
-                            _state.update {
-                                it.copy(
-                                    schoolState = CommonUiState.Success(workspace.data.workspaceName),
-                                )
-                            }
-                        }
-
-                        is Result.Loading -> {
-                            _state.update { state ->
-                                state.copy(
-                                    schoolState = CommonUiState.Loading,
-                                    timeScheduleState = CommonUiState.Loading,
-                                    mealState = CommonUiState.Loading,
-                                    catSeugiState = CommonUiState.Loading,
-                                    schoolScheduleState = CommonUiState.Loading,
-                                )
-                            }
-                        }
-
-                        else -> {
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     private fun loadCatSeugi() = viewModelScope.launch(dispatcher) {
         delay(1000)
         _state.update {
@@ -255,14 +154,6 @@ class HomeViewModel @Inject constructor(
         _state.update {
             it.copy(
                 schoolScheduleState = CommonUiState.NotFound,
-            )
-        }
-    }
-
-    private fun insertLocal(workspaceId: String) {
-        viewModelScope.launch(dispatcher) {
-            workspaceRepository.insertWorkspaceId(
-                workspaceId = workspaceId,
             )
         }
     }

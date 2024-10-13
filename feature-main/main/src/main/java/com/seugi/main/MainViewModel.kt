@@ -1,5 +1,6 @@
 package com.seugi.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
@@ -27,33 +28,60 @@ class MainViewModel @Inject constructor(
     private val _state = MutableStateFlow(MainUiState())
     val state = _state.asStateFlow()
 
-    fun loadWorkspaceId() = viewModelScope.launch(dispatcher) {
+    fun loadWorkspace() = viewModelScope.launch(dispatcher) {
         launch {
-            val localWorkspaceId = workspaceRepository.getWorkspaceId()
+            val localWorkspace = workspaceRepository.getLocalWorkspace()
+            // 중복 로드 방지
+            if (localWorkspace != null && localWorkspace.workspaceId == state.value.workspace.workspaceId) return@launch
+
+            if (localWorkspace?.workspaceId?.isNotEmpty() == true) {
+                Log.d("TAG", "loadWorkspace: init Local Workspace ${localWorkspace} ")
+                _state.update { uiState ->
+                    uiState.copy(
+                        workspace = localWorkspace
+                    )
+                }
+                return@launch
+            }
+
+            Log.d("TAG", "loadWorkspace: called workspace list")
             workspaceRepository.getMyWorkspaces().collect { response ->
                 when (response) {
                     is Result.Success -> {
                         val workspaces = response.data
-                        val workspaceId = when {
-                            workspaces.isEmpty() -> ""
-                            localWorkspaceId.isEmpty() -> {
-                                // 로컬에 아이디가 없으면 서버의 첫 번째 워크스페이스 ID 사용
-                                workspaces.first().workspaceId
-                            }
-                            else -> {
-                                // 로컬에 아이디가 있으면 그대로 사용
-                                localWorkspaceId
+                        var workspaceId = ""
+                        if (workspaces.isEmpty()) {
+                            // 서버에 워크페이스가 없을때 워크페이스 가입
+
+                        } else {
+                            // 워크페이스가 있다면 로컬에 아이디와 비교
+                            val localWorkspaceId = localWorkspace?.workspaceId?: ""
+                            if (localWorkspaceId.isEmpty()) {
+                                // 로컬에 없으면 서버의 처음 워크페이스를 화면에
+                                workspaceId = workspaces[0].workspaceId
+                                _state.update { mainUi ->
+                                    mainUi.copy(
+                                        workspace = workspaces[0],
+                                    )
+                                }
+                                workspaceRepository.insertWorkspace(workspaces[0])
+                            } else {
+                                workspaceId = localWorkspaceId
+                                // 로컬에 있다면 로컬이랑 같은 아이디의 워크페이스를 화면에
+                                workspaces.forEach {
+                                    if (workspaceId == it.workspaceId) {
+                                        _state.update { mainUi ->
+                                            mainUi.copy(
+                                                workspace = it,
+                                            )
+                                        }
+                                        workspaceRepository.insertWorkspace(it)
+                                    }
+                                }
                             }
                         }
-                        // 상태 업데이트 및 데이터 로드
-                        _state.update {
-                            it.copy(
-                                profile = it.profile.copy(
-                                    workspaceId = workspaceId,
-                                ),
-                            )
-                        }
-                        loadData(workspaceId = workspaceId)
+
+                        // 기존 로직
                     }
 
                     is Result.Error -> {
@@ -68,14 +96,16 @@ class MainViewModel @Inject constructor(
 
     fun loadLocalWorkspaceId() {
         viewModelScope.launch {
-            val workspaceId = workspaceRepository.getWorkspaceId()
+            val workspace = workspaceRepository.getLocalWorkspace()
             _state.update {
                 it.copy(
                     profile = it.profile.copy(
-                        workspaceId = workspaceId,
+                        workspaceId = workspace?.workspaceId?: "",
                     ),
+                    workspace = workspace?: it.workspace
                 )
             }
+            loadData(workspace?.workspaceId?: "")
         }
     }
 

@@ -28,7 +28,7 @@ private fun fetchMealData(context: Context, block: (Result<ImmutableList<MealMod
         val workspaceRepository = getWorkspaceRepository(context)
         val mealRepository = getMealRepository(context)
         mealRepository.getDateMeal(
-            workspaceId = workspaceRepository.getWorkspaceId(),
+            workspaceId = workspaceRepository.getLocalWorkspaceId(),
             date = LocalDate.now().toKotlinLocalDate(),
         ).collectLatest(block)
     }

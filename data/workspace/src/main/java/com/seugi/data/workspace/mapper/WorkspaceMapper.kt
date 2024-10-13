@@ -38,4 +38,10 @@ fun List<WorkspaceModel>.toEntities() = this.map {
 
 fun WorkspaceModel.toEntity() = WorkspaceEntity(
     workspaceId = workspaceId,
+    workspaceName = workspaceName,
+    workspaceAdmin = workspaceAdmin,
+    workspaceImageUrl = workspaceImageUrl,
+    teacher = teacher,
+    student = student,
+    middleAdmin = middleAdmin
 )
