@@ -647,7 +647,7 @@ internal fun ChatDetailScreen(
                                 },
                             type = when (item) {
                                 is MessageRoomEvent.MessageParent.Me -> {
-                                    val readUser = item.getUserCount(state.roomInfo?.members?: persistentListOf())
+                                    val readUser = item.getUserCount(state.roomInfo?.members ?: persistentListOf())
                                     val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
                                     ChatItemType.Me(
                                         isLast = item.isLast,
@@ -657,7 +657,7 @@ internal fun ChatDetailScreen(
                                     )
                                 }
                                 is MessageRoomEvent.MessageParent.Other -> {
-                                    val readUser = item.getUserCount(state.roomInfo?.members?: persistentListOf())
+                                    val readUser = item.getUserCount(state.roomInfo?.members ?: persistentListOf())
                                     val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
                                     val userInfo = state.users[item.userId]
                                     ChatItemType.Others(

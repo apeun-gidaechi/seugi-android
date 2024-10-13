@@ -17,5 +17,5 @@ fun UserResponse.toModel() = UserModel(
 fun UserInfoResponse.toModel() = UserInfoModel(
     timestamp = timestamp,
     userInfo = userInfo.toModel(),
-    utcTimeMillis = timestamp.toEpochMilli()
+    utcTimeMillis = timestamp.toEpochMilli(),
 )

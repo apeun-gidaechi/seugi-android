@@ -4,5 +4,5 @@ import java.time.LocalDateTime
 
 data class UserInfoResponse(
     val userInfo: UserResponse,
-    val timestamp: LocalDateTime
+    val timestamp: LocalDateTime,
 )

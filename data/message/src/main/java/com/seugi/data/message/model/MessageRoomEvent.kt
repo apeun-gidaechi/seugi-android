@@ -163,7 +163,7 @@ fun MessageRoomEvent.copy(type: MessageType = this.type, userId: Int = this.user
 
         is MessageRoomEvent.UnSub -> copy(
             type = type,
-            userId = userId
+            userId = userId,
         )
     }
 }

@@ -5,5 +5,5 @@ import java.time.LocalDateTime
 data class UserInfoModel(
     val userInfo: UserModel,
     val timestamp: LocalDateTime,
-    val utcTimeMillis: Long
+    val utcTimeMillis: Long,
 )

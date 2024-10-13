@@ -73,7 +73,7 @@ fun SeugiAvatar(modifier: Modifier = Modifier, image: String? = null, type: Avat
             onError = {
                 Log.d("TAG", "SeugiAvatar: $image")
                 it.result.throwable.printStackTrace()
-            }
+            },
         )
     }
 }

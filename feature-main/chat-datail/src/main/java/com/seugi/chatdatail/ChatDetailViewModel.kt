@@ -140,7 +140,7 @@ class ChatDetailViewModel @Inject constructor(
                                     if (it.userInfo.id == userId) {
                                         return@map it.copy(
                                             timestamp = LocalDateTime.MIN,
-                                            utcTimeMillis = 0L
+                                            utcTimeMillis = 0L,
                                         )
                                     }
                                     it
@@ -392,16 +392,13 @@ class ChatDetailViewModel @Inject constructor(
         _messageSaveQueueState.value -= uuid
     }
 
-    fun channelReconnect(
-        userId: Int,
-        roomId: String? = null
-    ) {
+    fun channelReconnect(userId: Int, roomId: String? = null) {
         viewModelScope.launch {
             isReconnectTry = true
             subscribeChat?.cancel()
             val job = viewModelScope.async {
                 messageRepository.reSubscribeRoom(
-                    chatRoomId = roomId?: state.value.roomInfo?.id ?: "",
+                    chatRoomId = roomId ?: state.value.roomInfo?.id ?: "",
                     userId = userId,
                 ).collect {
                     it.collectMessage()
@@ -623,11 +620,11 @@ class ChatDetailViewModel @Inject constructor(
                                         userInfo.copy(
                                             userInfo = userInfo.userInfo,
                                             timestamp = LocalDateTime.MIN,
-                                            utcTimeMillis = 0L
+                                            utcTimeMillis = 0L,
                                         )
                                     }
                                     .sortedBy { it.utcTimeMillis }
-                                    .toImmutableList()
+                                    .toImmutableList(),
                             ),
                         )
                     }
@@ -644,19 +641,22 @@ class ChatDetailViewModel @Inject constructor(
                                             return@map userInfo
                                         }
                                         val timestamp = LocalDateTime.now()
-                                        Log.d("TAG", "collectMessage: UNSUB ${userInfo.copy(
-                                            userInfo = userInfo.userInfo,
-                                            timestamp = timestamp,
-                                            utcTimeMillis = timestamp.toEpochMilli()
-                                        )}")
+                                        Log.d(
+                                            "TAG",
+                                            "collectMessage: UNSUB ${userInfo.copy(
+                                                userInfo = userInfo.userInfo,
+                                                timestamp = timestamp,
+                                                utcTimeMillis = timestamp.toEpochMilli(),
+                                            )}",
+                                        )
                                         userInfo.copy(
                                             userInfo = userInfo.userInfo,
                                             timestamp = timestamp,
-                                            utcTimeMillis = timestamp.toEpochMilli()
+                                            utcTimeMillis = timestamp.toEpochMilli(),
                                         )
                                     }
                                     .sortedBy { it.utcTimeMillis }
-                                    .toImmutableList()
+                                    .toImmutableList(),
                             ),
                         )
                     }
@@ -740,91 +740,88 @@ internal fun LocalDateTime.isDifferentDay(time: LocalDateTime): Boolean = when {
     else -> false
 }
 
-internal fun MessageParent.getUserCount(
-    users: List<UserInfoModel>
-): ImmutableList<Int> =
-    when (this) {
-        is MessageParent.Me -> {
-            val utcTimeMillis = this.timestamp.toDeviceLocalDateTime().toEpochMilli()
-            val readUsers = mutableListOf<Int>()
+internal fun MessageParent.getUserCount(users: List<UserInfoModel>): ImmutableList<Int> = when (this) {
+    is MessageParent.Me -> {
+        val utcTimeMillis = this.timestamp.toDeviceLocalDateTime().toEpochMilli()
+        val readUsers = mutableListOf<Int>()
 
-            // 현재 접속중인 유저수 세기
-            users.takeWhile {
-                Log.d("TAG", "getUserCount: ")
-                if (it.utcTimeMillis == 0L) {
-                    readUsers.add(it.userInfo.id)
-                }
-                it.utcTimeMillis == 0L
+        // 현재 접속중인 유저수 세기
+        users.takeWhile {
+            Log.d("TAG", "getUserCount: ")
+            if (it.utcTimeMillis == 0L) {
+                readUsers.add(it.userInfo.id)
             }
+            it.utcTimeMillis == 0L
+        }
 
-            Log.d("TAG", "접속중인 유저수 :  ${readUsers}")
+        Log.d("TAG", "접속중인 유저수 :  $readUsers")
 
-            // 해당 메세지를 읽은 유저 카운트
-            val binaryIndex = users.binarySearch {
-                when {
-                    it.utcTimeMillis >= utcTimeMillis -> 0
-                    else -> -1
-                }
+        // 해당 메세지를 읽은 유저 카운트
+        val binaryIndex = users.binarySearch {
+            when {
+                it.utcTimeMillis >= utcTimeMillis -> 0
+                else -> -1
             }
-            Log.d("TAG", "getUserCount: $utcTimeMillis")
-            Log.d("TAG", "getUserCount: $binaryIndex")
+        }
+        Log.d("TAG", "getUserCount: $utcTimeMillis")
+        Log.d("TAG", "getUserCount: $binaryIndex")
 
-            val index = if (binaryIndex >= 0) binaryIndex else users.size
-            for (i in index until users.size) {
-                val user = users.getOrNull(i)
-                if (user != null) {
-                    Log.d("TAG", "getUserCount: ${user.userInfo.id } ${user.utcTimeMillis}")
-                    readUsers.add(user.userInfo.id)
-                }
+        val index = if (binaryIndex >= 0) binaryIndex else users.size
+        for (i in index until users.size) {
+            val user = users.getOrNull(i)
+            if (user != null) {
+                Log.d("TAG", "getUserCount: ${user.userInfo.id } ${user.utcTimeMillis}")
+                readUsers.add(user.userInfo.id)
             }
-            Log.d("TAG", "다 읽은 유저수 :  ${readUsers}")
+        }
+        Log.d("TAG", "다 읽은 유저수 :  $readUsers")
 //            users.forEach { userInfo ->
 //                if (userInfo.utcTimeMillis == 0L || userInfo.utcTimeMillis >= utcTimeMillis) {
 //                    readUsers.add(userInfo.userInfo.id)
 //                }
 //            }
-            readUsers.toImmutableList()
-        }
-        is MessageParent.Other -> {
-            val utcTimeMillis = this.timestamp.toDeviceLocalDateTime().toEpochMilli()
-            val readUsers = mutableListOf<Int>()
-
-            // 현재 접속중인 유저수 세기
-            users.takeWhile {
-                Log.d("TAG", "getUserCount: ")
-                if (it.utcTimeMillis == 0L) {
-                    readUsers.add(it.userInfo.id)
-                }
-                it.utcTimeMillis == 0L
-            }
-
-            Log.d("TAG", "접속중인 유저수 :  ${readUsers}")
-
-            // 해당 메세지를 읽은 유저 카운트
-            val binaryIndex = users.binarySearch {
-                when {
-                    it.utcTimeMillis >= utcTimeMillis -> 0
-                    else -> -1
-                }
-            }
-            Log.d("TAG", "getUserCount: $utcTimeMillis")
-            Log.d("TAG", "getUserCount: $binaryIndex")
-
-            val index = if (binaryIndex >= 0) binaryIndex else users.size
-            for (i in index until users.size) {
-                val user = users.getOrNull(i)
-                if (user != null) {
-                    Log.d("TAG", "getUserCount: ${user.userInfo.id } ${user.utcTimeMillis}")
-                    readUsers.add(user.userInfo.id)
-                }
-            }
-            Log.d("TAG", "다 읽은 유저수 :  ${readUsers}")
-//            users.forEach { userInfo ->
-//                if (userInfo.utcTimeMillis == 0L || userInfo.utcTimeMillis >= utcTimeMillis) {
-//                    readUsers.add(userInfo.userInfo.id)
-//                }
-//            }
-            readUsers.toImmutableList()
-        }
-        else -> persistentListOf()
+        readUsers.toImmutableList()
     }
+    is MessageParent.Other -> {
+        val utcTimeMillis = this.timestamp.toDeviceLocalDateTime().toEpochMilli()
+        val readUsers = mutableListOf<Int>()
+
+        // 현재 접속중인 유저수 세기
+        users.takeWhile {
+            Log.d("TAG", "getUserCount: ")
+            if (it.utcTimeMillis == 0L) {
+                readUsers.add(it.userInfo.id)
+            }
+            it.utcTimeMillis == 0L
+        }
+
+        Log.d("TAG", "접속중인 유저수 :  $readUsers")
+
+        // 해당 메세지를 읽은 유저 카운트
+        val binaryIndex = users.binarySearch {
+            when {
+                it.utcTimeMillis >= utcTimeMillis -> 0
+                else -> -1
+            }
+        }
+        Log.d("TAG", "getUserCount: $utcTimeMillis")
+        Log.d("TAG", "getUserCount: $binaryIndex")
+
+        val index = if (binaryIndex >= 0) binaryIndex else users.size
+        for (i in index until users.size) {
+            val user = users.getOrNull(i)
+            if (user != null) {
+                Log.d("TAG", "getUserCount: ${user.userInfo.id } ${user.utcTimeMillis}")
+                readUsers.add(user.userInfo.id)
+            }
+        }
+        Log.d("TAG", "다 읽은 유저수 :  $readUsers")
+//            users.forEach { userInfo ->
+//                if (userInfo.utcTimeMillis == 0L || userInfo.utcTimeMillis >= utcTimeMillis) {
+//                    readUsers.add(userInfo.userInfo.id)
+//                }
+//            }
+        readUsers.toImmutableList()
+    }
+    else -> persistentListOf()
+}
