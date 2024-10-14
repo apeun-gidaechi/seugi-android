@@ -43,6 +43,7 @@ class MainViewModel @Inject constructor(
                         workspace = localWorkspace
                     )
                 }
+                loadProfile(localWorkspace.workspaceId)
                 return@launch
             }
 
@@ -51,7 +52,7 @@ class MainViewModel @Inject constructor(
                 when (response) {
                     is Result.Success -> {
                         val workspaces = response.data
-                        var workspaceId = ""
+                        var workspaceId: String
                         if (workspaces.isEmpty()) {
                             // 서버에 워크페이스가 없을때 워크페이스 가입
                             _state.update {
@@ -59,6 +60,7 @@ class MainViewModel @Inject constructor(
                                     notJoinWorkspace = true
                                 )
                             }
+                            return@collect
                         } else {
                             // 워크페이스가 있다면 로컬에 아이디와 비교
                             val localWorkspaceId = localWorkspace?.workspaceId?: ""
@@ -71,7 +73,6 @@ class MainViewModel @Inject constructor(
                                     )
                                 }
                                 workspaceRepository.insertWorkspace(workspaces[0])
-                                loadData(workspaces[0].workspaceId)
                             } else {
                                 workspaceId = localWorkspaceId
                                 // 로컬에 있다면 로컬이랑 같은 아이디의 워크페이스를 화면에
@@ -83,13 +84,12 @@ class MainViewModel @Inject constructor(
                                             )
                                         }
                                         workspaceRepository.insertWorkspace(it)
-                                        loadData(it.workspaceId)
                                     }
                                 }
                             }
                         }
-
                         // 기존 로직
+                        loadProfile(workspaces[0].workspaceId)
                     }
 
                     is Result.Error -> {
@@ -118,11 +118,11 @@ class MainViewModel @Inject constructor(
                     workspace = workspace?: it.workspace
                 )
             }
-            loadData(workspace?.workspaceId?: "")
+            loadProfile(workspace?.workspaceId?: "")
         }
     }
 
-    private fun loadData(workspaceId: String) {
+    private fun loadProfile(workspaceId: String) {
         viewModelScope.launch(dispatcher) {
             profileRepository.getProfile(workspaceId).collect {
                 when (it) {

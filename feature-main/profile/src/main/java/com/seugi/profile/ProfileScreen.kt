@@ -71,12 +71,6 @@ internal fun ProfileScreen(
             isShowDialog = false
         }
     }
-    LaunchedEffect(key1 = workspaceId) {
-        val changeData = myProfile.copy(workspaceId = workspaceId)
-        viewModel.updateState(changeData)
-
-        changeProfileData(changeData)
-    }
 
     viewModel.sideEffect.CollectAsSideEffect {
         when (it) {
