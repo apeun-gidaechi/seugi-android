@@ -66,6 +66,7 @@ internal fun EmailSignInScreen(navigateToEmailSignUp: () -> Unit, popBackStack: 
                     onNavigationIconClick = popBackStack,
                 )
             },
+            containerColor = SeugiTheme.colors.white
         ) {
             if (failedLogin) {
                 SeugiDialog(

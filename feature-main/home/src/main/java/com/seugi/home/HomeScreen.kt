@@ -270,6 +270,7 @@ internal fun HomeCard(
                     onClick = onClickDetail,
                     onChangeButtonState = onChangeButtonState,
                     requireUnconsumed = true,
+                    enabled = false
                 ),
         ) {
             Spacer(modifier = Modifier.width(16.dp))

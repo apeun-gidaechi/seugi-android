@@ -932,6 +932,7 @@ private fun ChatSideBarScreen(
                     onClick = onClickSetting,
                     size = 28.dp,
                     colors = IconButtonDefaults.iconButtonColors(contentColor = SeugiTheme.colors.gray600),
+                    enabled = false
                 )
             }
         },

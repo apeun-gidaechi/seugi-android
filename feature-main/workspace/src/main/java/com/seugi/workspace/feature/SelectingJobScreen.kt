@@ -56,6 +56,7 @@ internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit,
                     onNavigationIconClick = popBackStack,
                 )
             },
+            containerColor = SeugiTheme.colors.white
         ) {
             Column(
                 modifier = Modifier
@@ -72,7 +73,7 @@ internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit,
                         Text(
                             text = "학생이신가요?\n" + "아니면 선생님이신가요?",
                             style = SeugiTheme.typography.subtitle1,
-                            modifier = Modifier.bounceClick({}),
+                            modifier = Modifier.bounceClick({}, enabled = false),
                         )
                     }
                     Row {

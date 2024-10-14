@@ -104,6 +104,7 @@ fun EmailVerificationScreen(navigateToStart: () -> Unit, popBackStack: () -> Uni
                         onNavigationIconClick = { popBackStack() },
                     )
                 },
+                containerColor = SeugiTheme.colors.white
             ) {
                 if (dialogState.first.isNotEmpty()) {
                     SeugiDialog(

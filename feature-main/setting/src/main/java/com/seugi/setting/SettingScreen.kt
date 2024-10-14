@@ -98,8 +98,8 @@ internal fun SettingScreen(
                                 .padding(vertical = 8.dp)
                                 .size(64.dp)
                                 .bounceClick(
-                                    onClick = {
-                                    },
+                                    onClick = {},
+                                    enabled = false
                                 ),
                         ) {
                             SeugiAvatar(
@@ -128,8 +128,8 @@ internal fun SettingScreen(
                             modifier = Modifier
                                 .padding(vertical = 8.dp)
                                 .bounceClick(
-                                    onClick = {
-                                    },
+                                    onClick = {},
+                                    enabled = false
                                 ),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
