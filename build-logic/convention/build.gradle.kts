@@ -5,7 +5,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "com.apeun.gidaechi.seugi.build_logic"
+group = "com.seugi.build_logic"
 
 
 val compileKotlin: KotlinCompile by tasks
@@ -33,38 +33,42 @@ dependencies {
 gradlePlugin {
     plugins {
         register("androidApplication") {
-            id = "com.apeun.gidaechi.android.application"
-            implementationClass= "com.apeun.gidaechi.primitive.AndroidApplicationPlugin"
+            id = "com.seugi.android.application"
+            implementationClass= "com.seugi.primitive.AndroidApplicationPlugin"
         }
         register("androidCompose") {
-            id = "com.apeun.gidaechi.android.compose"
-            implementationClass = "com.apeun.gidaechi.primitive.AndroidComposePlugin"
+            id = "com.seugi.android.compose"
+            implementationClass = "com.seugi.primitive.AndroidComposePlugin"
         }
         register("androidHilt") {
-            id = "com.apeun.gidaechi.android.hilt"
-            implementationClass = "com.apeun.gidaechi.primitive.AndroidHiltPlugin"
+            id = "com.seugi.android.hilt"
+            implementationClass = "com.seugi.primitive.AndroidHiltPlugin"
         }
         register("androidKotlin") {
-            id = "com.apeun.gidaechi.android.kotlin"
-            implementationClass = "com.apeun.gidaechi.primitive.AndroidKotlinPlugin"
+            id = "com.seugi.android.kotlin"
+            implementationClass = "com.seugi.primitive.AndroidKotlinPlugin"
         }
         register("android") {
-            id = "com.apeun.gidaechi.android"
-            implementationClass = "com.apeun.gidaechi.primitive.AndroidPlugin"
+            id = "com.seugi.android"
+            implementationClass = "com.seugi.primitive.AndroidPlugin"
         }
         register("hilt") {
-            id = "com.apeun.gidaechi.hilt"
-            implementationClass = "com.apeun.gidaechi.primitive.HiltPlugin"
+            id = "com.seugi.hilt"
+            implementationClass = "com.seugi.primitive.HiltPlugin"
         }
         register("kotlinSerialization") {
-            id = "com.apeun.gidaechi.kotlin.serialization"
-            implementationClass = "com.apeun.gidaechi.primitive.KotlinSerializationPlugin"
+            id = "com.seugi.kotlin.serialization"
+            implementationClass = "com.seugi.primitive.KotlinSerializationPlugin"
         }
 
         //convention
         register("androidFeature") {
-            id = "com.apeun.gidaechi.android.feature"
-            implementationClass = "com.apeun.gidaechi.convention.AndroidFeaturePlugin"
+            id = "com.seugi.android.feature"
+            implementationClass = "com.seugi.convention.AndroidFeaturePlugin"
+        }
+        register("kotlin") {
+            id = "com.seugi.convention.kotlin"
+            implementationClass = "com.seugi.convention.KotlinPlugin"
         }
     }
 }

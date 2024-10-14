@@ -1,4 +1,4 @@
-//import com.apeun.gidaechi.dsl.androidTestImplementation
+//import com.seugi.dsl.androidTestImplementation
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
@@ -6,15 +6,16 @@ plugins {
     alias(libs.plugins.seugi.android.kotlin)
     alias(libs.plugins.seugi.android.compose)
     alias(libs.plugins.seugi.android.hilt)
+    alias(libs.plugins.google.services)
 }
 
 android {
-    namespace = "com.apeun.gidaechi.seugi"
+    namespace = "com.seugi"
 
     defaultConfig {
-        applicationId = "com.apeun.gidaechi.seugi"
+        applicationId = "com.seugi"
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -38,4 +39,20 @@ dependencies {
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.androidx.test.espresso)
     androidTestImplementation(platform(libs.androidx.compose.bom))
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.message)
+
+
+    implementation(projects.network.core)
+    implementation(projects.data.core)
+    implementation(projects.designsystem)
+    implementation(projects.featureMain.main)
+    implementation(projects.featureOnboarding.onboarding)
+    implementation(projects.common)
+    implementation(projects.data.token)
+    implementation(projects.data.firebaseToken)
+    implementation(projects.featureMain.mealWidget)
+
 }

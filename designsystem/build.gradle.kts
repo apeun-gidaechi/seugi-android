@@ -5,11 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "com.apeun.gidaechi.designsystem"
+    namespace = "com.seugi.designsystem"
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
     }
 }
 dependencies {
     api(libs.androidx.compose.material)
+    implementation(libs.coil.compose)
+    implementation(libs.rive)
 }

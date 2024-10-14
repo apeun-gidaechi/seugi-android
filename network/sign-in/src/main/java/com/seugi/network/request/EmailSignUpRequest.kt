@@ -1,0 +1,11 @@
+package com.seugi.network.request
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class EmailSignUpRequest(
+    val name: String,
+    val email: String,
+    val password: String,
+    val code: String,
+)

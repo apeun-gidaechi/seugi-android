@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Body1">
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineSpacingExtra">1dp</item>
+        <item name="fontFamily">@font/pretendard_semi_bold</item>
+        <item name="android:textColor">#FF000000</item>
+    </style>
+
+    <style name="Caption1">
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineSpacingExtra">1dp</item>
+        <item name="fontFamily">@font/pretendard_semi_bold</item>
+        <item name="android:textColor">#FF000000</item>
+    </style>
+
+    <style name="Caption2">
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineSpacingExtra">1dp</item>
+        <item name="fontFamily">@font/pretendard_regular</item>
+        <item name="android:textColor">#FF000000</item>
+    </style>
+</resources>

@@ -1,28 +1,32 @@
 [versions]
 complieSdk = "34"
+composeEmojiPicker = "1.0.0-alpha16"
 minSdk = "28"
 targetSdk = "34"
-appVersion = "1.0.0"
+appVersion = "0.0.1"
 versionCode = "1"
 
 
 # kotlin
-kotlin = "1.9.22"
-kotlinx-coroutines = "1.7.3"
+kotlin = "1.9.23"
+kotlinx-coroutines = "1.8.0"
 kotlinx-collections-immutable = "0.3.7"
 kotlinx-serialization-json = "1.6.2"
 kotlinx-datetime = "0.5.0"
 
 # android
 androidx-activity-compose = "1.8.2"
-androidx-compose-compiler = "1.5.8"
+androidx-compose-compiler = "1.5.13"
 androidx-compose-bom = "2024.03.00"
 androidx-core = "1.12.0"
 androidx-lifecycle = "2.7.0"
-androidx-navigation = "2.7.6"
+androidx-navigation = "2.7.7"
 androidx-hilt-navigation-compose = "1.1.0"
 androidx-material = "1.5.4"
-datastore = "1.0.0"
+androidx-startup-runtime = "1.1.1"
+androidx-glance-widget = "1.0.0-rc01"
+androidx-work = "2.8.1"
+datastore = "1.1.0"
 
 # third party
 dagger-hilt = "2.50"
@@ -31,6 +35,13 @@ material = "1.11.0"
 bottomsheetdialog = "1.3.1"
 ktor = "2.3.8"
 coil = "2.6.0"
+rive = "8.7.0"
+gson = "2.10.1"
+okhttp3 = "4.9.0"
+zoomable = "1.6.2"
+
+#socket
+stomp-android = "1.6.6"
 
 # test
 junit = "4.13.2"
@@ -39,7 +50,7 @@ androidx-test-espresso = "3.5.1"
 
 ## gradle plugin
 agp = "8.3.1"
-ksp = "1.9.22-1.0.16"
+ksp = "1.9.23-1.0.20"
 appcompat = "1.6.1"
 
 #agp = "8.3.1"
@@ -47,18 +58,35 @@ appcompat = "1.6.1"
 #junit = "4.13.2"
 #androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
+monitor = "1.6.1"
+junitKtx = "1.1.5"
+material3Android = "1.2.1"
 #lifecycle-runtime-ktx = "2.7.0"
 #activity-compose = "1.8.2"
 #compose-bom = "2024.03.00"
 
 
+## room
+room = "2.6.1"
+
+
+# firebase
+google-services = "4.4.2"
+firebase-bom = "33.3.0"
+firebase-auth = "23.0.0"
+google-play-auth = "21.2.0"
+coreKtx = "1.13.1"
+
+
 [libraries]
 
 # kotlin
+compose-emoji-picker = { module = "com.github.Abhimanyu14:compose-emoji-picker", version.ref = "composeEmojiPicker" }
 kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-rx = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-rx2", version.ref = "kotlinx-coroutines" }
 kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinx-datetime" }
@@ -83,7 +111,11 @@ androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "and
 androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
 androidx-navigation = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "androidx-navigation" }
-androidx-datastore-preference = { group = "androidx.datastore",name = "datastore-preferences", version.ref = "datastore" }
+androidx-datastore-preference = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+androidx-startup-runtime = { group = "androidx.startup", name = "startup-runtime", version.ref = "androidx-startup-runtime"}
+androidx-glance-appwidget = { group = "androidx.glance", name = "glance-appwidget", version.ref = "androidx-glance-widget"}
+androidx-glance-material3 = { group = "androidx.glance", name = "glance-material3", version.ref = "androidx-glance-widget"}
+androidx-work = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidx-work"}
 
 # third party
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "dagger-hilt" }
@@ -96,10 +128,33 @@ ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
-ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-serialization-kotlinx-gson = { group = "io.ktor", name = "ktor-serialization-gson", version.ref = "ktor" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 ktor-client-auth = { group = "io.ktor", name = "ktor-client-auth", version.ref = "ktor" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+rive = { group = "app.rive", name = "rive-android", version.ref = "rive" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3"}
+okhttp3 = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp3"}
+zoomable = { group = "net.engawapg.lib", name = "zoomable", version.ref = "zoomable"}
+
+# socket
+stomp-android = { group = "com.github.NaikSoftware", name = "StompProtocolAndroid", version.ref = "stomp-android" }
+
+# room
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+
+# firebase
+firebase-bom = {group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom"}
+firebase-analytics = {group = "com.google.firebase", name = "firebase-analytics"}
+firebase-message = {group = "com.google.firebase", name = "firebase-messaging"}
+firebase-auth = {group = "com.google.firebase", name = "firebase-auth", version.ref = "firebase-auth"}
+
+#google
+google-play-auth = {group = "com.google.android.gms", name = "play-services-auth", version.ref = "google-play-auth" }
+
 
 # test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -130,6 +185,10 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-monitor = { group = "androidx.test", name = "monitor", version.ref = "monitor" }
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
+androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -140,14 +199,18 @@ dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hil
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+google-services = {id = "com.google.gms.google-services", version.ref = "google-services"}
 
 
 #custom
-seugi-android-application = { id = "com.apeun.gidaechi.android.application", version = "unspecified" }
-seugi-android-compose = { id = "com.apeun.gidaechi.android.compose", version = "unspecified" }
-seugi-android-hilt = { id = "com.apeun.gidaechi.android.hilt", version = "unspecified" }
-seugi-android-kotlin = { id = "com.apeun.gidaechi.android.kotlin", version = "unspecified" }
-seugi-android = { id = "com.apeun.gidaechi.android", version = "unspecified" }
-seugi-kotlin-serialization = { id = "com.apeun.gidaechi.kotlin.serialization", version = "unspecified" }
+seugi-android-application = { id = "com.seugi.android.application", version = "unspecified" }
+seugi-android-feature = { id = "com.seugi.android.feature", version = "unspecified" }
+seugi-android-compose = { id = "com.seugi.android.compose", version = "unspecified" }
+seugi-android-hilt = { id = "com.seugi.android.hilt", version = "unspecified" }
+seugi-android-kotlin = { id = "com.seugi.android.kotlin", version = "unspecified" }
+seugi-android = { id = "com.seugi.android", version = "unspecified" }
+seugi-hilt = { id = "com.seugi.hilt", version = "unspecified"}
+seugi-kotlin-serialization = { id = "com.seugi.kotlin.serialization", version = "unspecified" }
+seugi-kotlin = { id = "com.seugi.convention.kotlin", version = "unspecified" }
 
 
