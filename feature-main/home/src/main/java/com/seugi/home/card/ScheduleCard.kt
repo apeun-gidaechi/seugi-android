@@ -1,5 +1,6 @@
 package com.seugi.home.card
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,20 +10,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastForEachIndexed
+import com.seugi.data.schedule.model.ScheduleModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.component.LoadingDotsIndicator
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.home.HomeCalendarCard
 import com.seugi.home.HomeCard
+import com.seugi.home.HomeErrorCard
 import com.seugi.home.HomeNotFoundText
 import com.seugi.home.model.CommonUiState
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.datetime.daysUntil
+import kotlinx.datetime.toKotlinLocalDate
+import java.time.LocalDate
 
 @Composable
-internal fun ScheduleCard(uiState: CommonUiState<ImmutableList<Triple<String, String, String>>>) {
+internal fun ScheduleCard(uiState: CommonUiState<ImmutableList<ScheduleModel>>) {
     HomeCard(
         text = "다가오는 일정",
         onClickDetail = { /*TODO*/ },
@@ -33,18 +42,27 @@ internal fun ScheduleCard(uiState: CommonUiState<ImmutableList<Triple<String, St
             is CommonUiState.Success -> {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    uiState.data.fastForEachIndexed { i, data ->
-                        HomeCalendarCard(date = data.first, content = data.second, dDay = data.third)
-                        if (i != 2) {
-                            Spacer(modifier = Modifier.height(16.dp))
-                        }
+                    uiState.data.fastForEach { schedule ->
+                        HomeCalendarCard(
+                            date = "${schedule.date.monthNumber}/${schedule.date.dayOfMonth}",
+                            content = schedule.eventName,
+                            dDay = "D-${-schedule.date.daysUntil(LocalDate.now().toKotlinLocalDate())}"
+                        )
                     }
                 }
             }
 
             is CommonUiState.NotFound -> {
                 HomeNotFoundText(text = "학교를 등록하고 일정을 확인하세요")
+            }
+
+            is CommonUiState.Error -> {
+                HomeErrorCard(
+                    text = "일정이 없어요",
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_emoji_happy)
+                )
             }
 
             else -> {
