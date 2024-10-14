@@ -1,5 +1,6 @@
 package com.seugi.workspacedetail.feature.workspacedetail
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.NoInteractionSource
 import com.seugi.designsystem.animation.bounceClick
@@ -58,18 +60,19 @@ fun WorkspaceDetailScreen(
     viewModel: WorkspaceDetailViewModel = hiltViewModel(),
     navigateToJoinWorkspace: () -> Unit,
     popBackStack: () -> Unit,
-    workspaceId: String,
+    workspace: WorkspaceModel,
     navigateToWorkspaceMember: (String) -> Unit,
     navigateToCreateWorkspace: () -> Unit,
-    changeWorkspaceId: () -> Unit,
+    changeWorkspace: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = workspace) {
+        Log.d("TAG", "WorkspaceDetailScreen: $workspace")
         viewModel.loadWorkspace()
-        viewModel.changeNowWorkspace(workspaceId, changeWorkspaceId)
+//        viewModel.changeNowWorkspace(workspaceId, changeWorkspaceId)
     }
     viewModel.sideEffect.CollectAsSideEffect {
         when (it) {
@@ -106,8 +109,8 @@ fun WorkspaceDetailScreen(
                                         modifier = Modifier
                                             .bounceClick(onClick = {
                                                 viewModel.changeNowWorkspace(
-                                                    workspaceId = item.workspaceId,
-                                                    changeWorkspaceId = changeWorkspaceId,
+                                                    workspace = item,
+                                                    changeWorkspace = changeWorkspace,
                                                 )
                                                 showDialog = false
                                             })
@@ -275,7 +278,7 @@ fun WorkspaceDetailScreen(
             ) {
                 SeugiRoundedCircleImage(
                     size = Size.ExtraSmall,
-                    image = state.nowWorkspace.workspaceImageUrl,
+                    image = workspace.workspaceImageUrl,
                     onClick = {},
                     modifier = Modifier.padding(start = 20.dp),
                 )
@@ -288,7 +291,7 @@ fun WorkspaceDetailScreen(
                     Text(
                         modifier = Modifier
                             .padding(start = 4.dp),
-                        text = state.nowWorkspace.workspaceName,
+                        text = workspace.workspaceName,
                         style = SeugiTheme.typography.body1,
                     )
                     Spacer(modifier = Modifier.weight(1f))
@@ -383,7 +386,7 @@ fun WorkspaceDetailScreen(
             Row(
                 modifier = Modifier
                     .clickable {
-                        navigateToWorkspaceMember(state.nowWorkspace.workspaceId)
+                        navigateToWorkspaceMember(workspace.workspaceId)
                     }
                     .fillMaxWidth()
                     .height(56.dp),

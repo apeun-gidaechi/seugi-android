@@ -20,7 +20,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -70,12 +69,6 @@ internal fun ProfileScreen(
         coroutineScope.launch {
             isShowDialog = false
         }
-    }
-    LaunchedEffect(key1 = workspaceId) {
-        val changeData = myProfile.copy(workspaceId = workspaceId)
-        viewModel.updateState(changeData)
-
-        changeProfileData(changeData)
     }
 
     viewModel.sideEffect.CollectAsSideEffect {

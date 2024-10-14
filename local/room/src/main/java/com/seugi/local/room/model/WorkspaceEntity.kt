@@ -9,4 +9,10 @@ data class WorkspaceEntity(
     @PrimaryKey
     var idx: Long = 0,
     val workspaceId: String,
+    val workspaceName: String,
+    val workspaceImageUrl: String,
+    val workspaceAdmin: Long,
+    val middleAdmin: List<Long>,
+    val teacher: List<Long>,
+    val student: List<Long>,
 )

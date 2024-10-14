@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.data.workspace.WorkspaceRepository
+import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.workspacedetail.feature.workspacedetail.model.WorkspaceDetailSideEffect
 import com.seugi.workspacedetail.feature.workspacedetail.model.WorkspaceDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -64,28 +65,11 @@ class WorkspaceDetailViewModel @Inject constructor(
             }
         }
     }
-    fun changeNowWorkspace(workspaceId: String, changeWorkspaceId: () -> Unit) {
+    fun changeNowWorkspace(workspace: WorkspaceModel, changeWorkspace: () -> Unit) {
         viewModelScope.launch {
             setLoading(true)
-            workspaceRepository.getWorkspaceData(workspaceId).collect {
-                when (it) {
-                    is Result.Success -> {
-                        _state.update { uiState ->
-                            uiState.copy(
-                                nowWorkspace = it.data,
-                            )
-                        }
-                    }
-                    is Result.Error -> {
-                        it.throwable.printStackTrace()
-                        _sideEffect.send(WorkspaceDetailSideEffect.Error(it.throwable))
-                    }
-                    else -> {
-                    }
-                }
-            }
-            workspaceRepository.updateWorkspaceId(workspaceId)
-            changeWorkspaceId()
+            workspaceRepository.updateWorkspace(workspace)
+            changeWorkspace()
             setLoading(false)
         }
     }

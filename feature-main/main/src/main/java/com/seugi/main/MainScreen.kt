@@ -9,7 +9,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -82,7 +81,7 @@ internal fun MainScreen(
         }
 
     LaunchedEffect(key1 = true) {
-        viewModel.loadWorkspaceId()
+        viewModel.loadWorkspace()
     }
 
     LaunchedEffect(state) {}
@@ -124,6 +123,8 @@ internal fun MainScreen(
             popExitTransition = { fadeOut(animationSpec = tween(NAVIGATION_ANIM)) },
         ) {
             homeScreen(
+                workspace = state.workspace,
+                notJoinWorkspace = state.notJoinWorkspace,
                 navigateToChatSeugi = {
                     navHostController.navigateToChatSeugi()
                 },
@@ -131,10 +132,8 @@ internal fun MainScreen(
                     navHostController.navigateToSelectingJob()
                 },
                 navigateToWorkspaceDetail = { id ->
-                    navHostController.navigateToWorkspaceDetail(
-                        workspaceId = id,
-                    )
-                    viewModel.loadLocalWorkspaceId()
+                    navHostController.navigateToWorkspaceDetail()
+                    viewModel.loadLocalWorkspace()
                 },
                 navigateToWorkspaceCreate = {
                     navHostController.navigateToWorkspaceCreate()
@@ -142,7 +141,7 @@ internal fun MainScreen(
             )
 
             chatScreen(
-                workspaceId = state.profile.workspaceId,
+                workspaceId = state.workspace.workspaceId,
                 navigateToChatDetail = { chatId ->
                     navHostController.navigateToChatDetail(
                         workspaceId = state.profile.workspaceId,
@@ -166,7 +165,7 @@ internal fun MainScreen(
             )
 
             roomScreen(
-                workspaceId = state.profile.workspaceId,
+                workspaceId = state.workspace.workspaceId,
                 userId = state.userId,
                 navigateToChatDetail = { chatId, workspaceId ->
                     navHostController.navigateToChatDetail(
@@ -197,7 +196,7 @@ internal fun MainScreen(
             )
 
             profileScreen(
-                workspaceId = state.profile.workspaceId,
+                workspaceId = state.workspace.workspaceId,
                 myProfile = state.profile,
                 showSnackbar = showSnackbar,
                 navigateToSetting = navHostController::navigateToSetting,
@@ -205,7 +204,7 @@ internal fun MainScreen(
             )
 
             notificationScreen(
-                workspaceId = state.profile.workspaceId,
+                workspaceId = state.workspace.workspaceId,
                 userId = state.userId,
                 permission = state.profile.permission,
                 navigateToNotificationCreate = {
@@ -267,17 +266,18 @@ internal fun MainScreen(
             )
 
             notificationCreate(
-                workspaceId = state.profile.workspaceId,
+                workspaceId = state.workspace.workspaceId,
                 popBackStack = navHostController::popBackStack,
             )
 
             notificationEdit(
                 userId = state.userId,
-                workspaceId = state.profile.workspaceId,
+                workspaceId = state.workspace.workspaceId,
                 permission = state.profile.permission,
                 popBackStack = navHostController::popBackStack,
             )
             workspaceDetailScreen(
+                workspace = state.workspace,
                 navigateToJoinWorkspace = {
                     navHostController.navigateToSelectingJob()
                 },
@@ -293,7 +293,7 @@ internal fun MainScreen(
                     navHostController.navigateToWorkspaceCreate()
                 },
                 changeWorkspace = {
-                    viewModel.loadLocalWorkspaceId()
+                    viewModel.loadWorkspace()
                 },
             )
             workspaceMemberScreen(

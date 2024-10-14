@@ -3,6 +3,7 @@ package com.seugi.main.model
 import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.core.model.UserModel
 import com.seugi.data.core.model.WorkspacePermissionModel
+import com.seugi.data.workspace.model.WorkspaceModel
 
 data class MainUiState(
     val userId: Int = -1,
@@ -27,4 +28,11 @@ data class MainUiState(
         schClass = 0,
         schNumber = 0,
     ),
+    val workspace: WorkspaceModel = WorkspaceModel(
+        workspaceId = "",
+        workspaceName = "",
+        workspaceAdmin = 0,
+        workspaceImageUrl = "",
+    ),
+    val notJoinWorkspace: Boolean = false,
 )
