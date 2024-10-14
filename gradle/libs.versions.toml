@@ -3,7 +3,7 @@ complieSdk = "34"
 composeEmojiPicker = "1.0.0-alpha16"
 minSdk = "28"
 targetSdk = "34"
-appVersion = "1.0.0"
+appVersion = "0.0.1"
 versionCode = "1"
 
 
