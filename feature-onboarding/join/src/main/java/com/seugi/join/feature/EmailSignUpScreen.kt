@@ -40,7 +40,7 @@ internal fun EmailSignUpScreen(navigateToEmailVerification: (name: String, email
                     onNavigationIconClick = popBackStack,
                 )
             },
-            containerColor = SeugiTheme.colors.white
+            containerColor = SeugiTheme.colors.white,
         ) {
             Column(
                 modifier = Modifier

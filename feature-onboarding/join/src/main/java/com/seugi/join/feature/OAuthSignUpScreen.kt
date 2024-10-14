@@ -40,7 +40,7 @@ internal fun OAuthSignUpScreen(popBackStack: () -> Unit, navigateToEmailSignUp: 
                     onNavigationIconClick = popBackStack,
                 )
             },
-            containerColor = SeugiTheme.colors.white
+            containerColor = SeugiTheme.colors.white,
         ) {
             Column(
                 modifier = Modifier

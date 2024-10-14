@@ -41,7 +41,7 @@ fun WaitingJoinScreen(joinToHome: () -> Unit, popBackStack: () -> Unit) {
                     onNavigationIconClick = popBackStack,
                 )
             },
-            containerColor = SeugiTheme.colors.white
+            containerColor = SeugiTheme.colors.white,
         ) {
             Column(
                 modifier = Modifier

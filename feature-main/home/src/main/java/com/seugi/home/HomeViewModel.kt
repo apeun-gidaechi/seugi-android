@@ -1,7 +1,5 @@
 package com.seugi.home
 
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
@@ -13,7 +11,6 @@ import com.seugi.data.schedule.ScheduleRepository
 import com.seugi.data.timetable.TimetableRepository
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.data.workspace.model.WorkspaceModel
-import com.seugi.designsystem.R
 import com.seugi.home.model.CommonUiState
 import com.seugi.home.model.HomeUiState
 import com.seugi.home.model.MealUiState
@@ -165,13 +162,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun loadSchedule(
-        workspaceId: String
-    ) = viewModelScope.launch(dispatcher) {
+    private fun loadSchedule(workspaceId: String) = viewModelScope.launch(dispatcher) {
         val date = LocalDate.now()
         scheduleRepository.getMonthSchedule(
             workspaceId = workspaceId,
-            month = date.monthValue
+            month = date.monthValue,
         ).collect {
             when (it) {
                 is Result.Success -> {
@@ -187,13 +182,13 @@ class HomeViewModel @Inject constructor(
                     if (filterItem.isEmpty()) {
                         _state.update { uiState ->
                             uiState.copy(
-                                schoolScheduleState = CommonUiState.Error
+                                schoolScheduleState = CommonUiState.Error,
                             )
                         }
                     } else {
                         _state.update { uiState ->
                             uiState.copy(
-                                schoolScheduleState = CommonUiState.Success(filterItem)
+                                schoolScheduleState = CommonUiState.Success(filterItem),
                             )
                         }
                     }

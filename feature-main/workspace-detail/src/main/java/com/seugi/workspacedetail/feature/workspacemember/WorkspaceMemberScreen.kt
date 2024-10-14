@@ -139,7 +139,7 @@ fun WorkspaceMemberScreen(
                 },
             )
         },
-        containerColor = SeugiTheme.colors.white
+        containerColor = SeugiTheme.colors.white,
     ) {
         Column(
             modifier = Modifier

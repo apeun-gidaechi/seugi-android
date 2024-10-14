@@ -3,9 +3,7 @@ package com.seugi.home.card
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,7 +13,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
-import androidx.compose.ui.util.fastForEachIndexed
 import com.seugi.data.schedule.model.ScheduleModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.component.LoadingDotsIndicator
@@ -25,10 +22,10 @@ import com.seugi.home.HomeCard
 import com.seugi.home.HomeErrorCard
 import com.seugi.home.HomeNotFoundText
 import com.seugi.home.model.CommonUiState
+import java.time.LocalDate
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toKotlinLocalDate
-import java.time.LocalDate
 
 @Composable
 internal fun ScheduleCard(uiState: CommonUiState<ImmutableList<ScheduleModel>>) {
@@ -42,13 +39,13 @@ internal fun ScheduleCard(uiState: CommonUiState<ImmutableList<ScheduleModel>>) 
             is CommonUiState.Success -> {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     uiState.data.fastForEach { schedule ->
                         HomeCalendarCard(
                             date = "${schedule.date.monthNumber}/${schedule.date.dayOfMonth}",
                             content = schedule.eventName,
-                            dDay = "D-${-schedule.date.daysUntil(LocalDate.now().toKotlinLocalDate())}"
+                            dDay = "D-${-schedule.date.daysUntil(LocalDate.now().toKotlinLocalDate())}",
                         )
                     }
                 }
@@ -61,7 +58,7 @@ internal fun ScheduleCard(uiState: CommonUiState<ImmutableList<ScheduleModel>>) 
             is CommonUiState.Error -> {
                 HomeErrorCard(
                     text = "일정이 없어요",
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_emoji_happy)
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_emoji_happy),
                 )
             }
 

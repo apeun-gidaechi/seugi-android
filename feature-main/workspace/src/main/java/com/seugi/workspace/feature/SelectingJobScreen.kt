@@ -56,7 +56,7 @@ internal fun SelectingJobScreen(navigateToSelectingRole: (role: String) -> Unit,
                     onNavigationIconClick = popBackStack,
                 )
             },
-            containerColor = SeugiTheme.colors.white
+            containerColor = SeugiTheme.colors.white,
         ) {
             Column(
                 modifier = Modifier

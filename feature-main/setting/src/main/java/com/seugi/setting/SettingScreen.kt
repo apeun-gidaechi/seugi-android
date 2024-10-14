@@ -99,7 +99,7 @@ internal fun SettingScreen(
                                 .size(64.dp)
                                 .bounceClick(
                                     onClick = {},
-                                    enabled = false
+                                    enabled = false,
                                 ),
                         ) {
                             SeugiAvatar(
@@ -129,7 +129,7 @@ internal fun SettingScreen(
                                 .padding(vertical = 8.dp)
                                 .bounceClick(
                                     onClick = {},
-                                    enabled = false
+                                    enabled = false,
                                 ),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {

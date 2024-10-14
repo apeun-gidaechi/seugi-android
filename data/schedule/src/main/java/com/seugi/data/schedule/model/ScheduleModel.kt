@@ -9,5 +9,5 @@ data class ScheduleModel(
     val date: LocalDate,
     val eventName: String,
     val eventContent: String,
-    val grade: ImmutableList<Int>
+    val grade: ImmutableList<Int>,
 )

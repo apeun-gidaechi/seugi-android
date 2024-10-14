@@ -8,5 +8,5 @@ data class ScheduleResponse(
     val date: LocalDate,
     val eventName: String,
     val eventContent: String,
-    val grade: List<Int>
+    val grade: List<Int>,
 )
