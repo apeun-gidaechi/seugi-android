@@ -1,6 +1,9 @@
 package com.seugi.data.core.mapper
 
+import com.seugi.common.utiles.toEpochMilli
+import com.seugi.data.core.model.UserInfoModel
 import com.seugi.data.core.model.UserModel
+import com.seugi.network.core.response.UserInfoResponse
 import com.seugi.network.core.response.UserResponse
 
 fun UserResponse.toModel() = UserModel(
@@ -9,4 +12,10 @@ fun UserResponse.toModel() = UserModel(
     birth = birth,
     name = name,
     picture = picture,
+)
+
+fun UserInfoResponse.toModel() = UserInfoModel(
+    timestamp = timestamp,
+    userInfo = userInfo.toModel(),
+    utcTimeMillis = timestamp.toEpochMilli(),
 )

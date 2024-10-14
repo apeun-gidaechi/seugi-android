@@ -66,7 +66,10 @@ public abstract class AbstractConnectionProvider implements ConnectionProvider {
     public Completable send(String stompMessage) {
         return Completable.fromCallable(() -> {
             if (getSocket() == null) {
-                throw new IllegalStateException("Not connected");
+
+//                throw new IllegalStateException("Not connected");
+                Log.d(TAG, "Not Connected");
+                return null;
             } else {
                 Log.d(TAG, "Send STOMP message: " + stompMessage);
                 rawSend(stompMessage);

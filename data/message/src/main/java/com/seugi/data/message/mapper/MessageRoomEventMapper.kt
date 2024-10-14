@@ -13,6 +13,7 @@ internal fun MessageRoomEventResponse.toEventModel(userId: Int): MessageRoomEven
     is MessageRoomEventResponse.RemoveEmoji -> toModel()
     is MessageRoomEventResponse.Sub -> toModel()
     is MessageRoomEventResponse.TransperAdmin -> toModel()
+    is MessageRoomEventResponse.UnSub -> toModel()
 }
 
 internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int): MessageRoomEvent.MessageParent = when (type) {
@@ -22,7 +23,7 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int)
                 id = id,
                 chatRoomId = chatRoomId,
                 type = type.toMessageType(),
-                userId = userId,
+                userId = this.userId,
                 isLast = false,
                 message = message,
                 messageStatus = messageStatus,
@@ -33,14 +34,13 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int)
                 mention = mention.toImmutableList(),
                 mentionAll = mentionAll,
                 timestamp = timestamp,
-                read = read.toImmutableList(),
             )
         } else {
             MessageRoomEvent.MessageParent.Other(
                 id = id,
                 chatRoomId = chatRoomId,
                 type = type.toMessageType(),
-                userId = userId,
+                userId = this.userId,
                 isFirst = false,
                 isLast = false,
                 message = message,
@@ -52,7 +52,6 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int)
                 mention = mention.toImmutableList(),
                 mentionAll = mentionAll,
                 timestamp = timestamp,
-                read = read.toImmutableList(),
             )
         }
     }
@@ -63,7 +62,7 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int)
             fileName = text[1],
             timestamp = timestamp,
             type = type.toMessageType(),
-            userId = userId,
+            userId = this.userId,
             uuid = uuid,
         )
     }
@@ -75,7 +74,7 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int)
             fileSize = text[2].toLong(),
             timestamp = timestamp,
             type = type.toMessageType(),
-            userId = userId,
+            userId = this.userId,
             uuid = uuid,
         )
     }
@@ -83,7 +82,7 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int)
     "ENTER" -> {
         MessageRoomEvent.MessageParent.Enter(
             type = type.toMessageType(),
-            userId = userId,
+            userId = this.userId,
             timestamp = timestamp,
             roomId = chatRoomId,
             eventList = eventList?.toImmutableList() ?: persistentListOf(),
@@ -92,7 +91,7 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int)
     "LEFT" -> {
         MessageRoomEvent.MessageParent.Left(
             type = type.toMessageType(),
-            userId = userId,
+            userId = this.userId,
             timestamp = timestamp,
             roomId = chatRoomId,
             eventList = eventList?.toImmutableList() ?: persistentListOf(),
@@ -124,6 +123,11 @@ internal fun MessageRoomEventResponse.RemoveEmoji.toModel() = MessageRoomEvent.R
 )
 
 internal fun MessageRoomEventResponse.Sub.toModel() = MessageRoomEvent.Sub(
+    type = type.toMessageType(),
+    userId = userId,
+)
+
+internal fun MessageRoomEventResponse.UnSub.toModel() = MessageRoomEvent.UnSub(
     type = type.toMessageType(),
     userId = userId,
 )

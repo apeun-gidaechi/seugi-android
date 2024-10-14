@@ -12,6 +12,9 @@ import com.seugi.chatdatail.model.containsWithUUID
 import com.seugi.chatdatail.model.minus
 import com.seugi.chatdatail.model.plus
 import com.seugi.common.model.Result
+import com.seugi.common.utiles.toDeviceLocalDateTime
+import com.seugi.common.utiles.toEpochMilli
+import com.seugi.data.core.model.UserInfoModel
 import com.seugi.data.core.model.UserModel
 import com.seugi.data.file.FileRepository
 import com.seugi.data.file.model.FileType
@@ -90,7 +93,7 @@ class ChatDetailViewModel @Inject constructor(
             ),
         )
         initProfile(workspaceId)
-        loadRoom(chatRoomId, isPersonal)
+        loadRoom(chatRoomId, isPersonal, userId)
     }
 
     private fun initProfile(workspaceId: String) = viewModelScope.launch {
@@ -111,7 +114,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun loadRoom(chatRoomId: String, isPersonal: Boolean) = viewModelScope.launch {
+    private fun loadRoom(chatRoomId: String, isPersonal: Boolean, userId: Int) = viewModelScope.launch {
         val result = if (isPersonal) {
             personalChatRepository.getChat(
                 roomId = chatRoomId,
@@ -126,13 +129,24 @@ class ChatDetailViewModel @Inject constructor(
                 is Result.Success -> {
                     val users: MutableMap<Int, UserModel> = mutableMapOf()
                     it.data.memberList.forEach { user ->
-                        users[user.id] = user
+                        users[user.userInfo.id] = user.userInfo
                     }
                     _state.value = _state.value.copy(
                         roomInfo = ChatRoomState(
                             id = chatRoomId,
                             roomName = it.data.chatName,
-                            members = it.data.memberList.toImmutableList(),
+                            members = it.data.memberList
+                                .map {
+                                    if (it.userInfo.id == userId) {
+                                        return@map it.copy(
+                                            timestamp = LocalDateTime.MIN,
+                                            utcTimeMillis = 0L,
+                                        )
+                                    }
+                                    it
+                                }
+                                .sortedBy { it.utcTimeMillis }
+                                .toImmutableList(),
                             adminId = it.data.roomAdmin,
                         ),
                         users = users.toImmutableMap(),
@@ -158,8 +172,9 @@ class ChatDetailViewModel @Inject constructor(
                             Log.d("TAG", "collectStompLifecycle: $data")
                             when (data) {
                                 is MessageStompLifecycleModel.Error -> {
-                                    val exception = data.throwable as? Exception
-                                    when (exception) {
+//                                    val exception = data.exception as? Exception
+                                    Log.d("TAG", "collectStompLifecycle: ${data.exception}")
+                                    when (data.exception) {
                                         is StompException -> {
                                             tokenRepository.newToken().collect {
                                                 when (it) {
@@ -175,6 +190,8 @@ class ChatDetailViewModel @Inject constructor(
                                             }
                                         }
                                         is SocketException -> {
+                                            data.exception.printStackTrace()
+//                                            Log.d("TAG", "collectStompLifecycle: $data")
                                             channelReconnect(userId)
                                         }
                                     }
@@ -375,13 +392,13 @@ class ChatDetailViewModel @Inject constructor(
         _messageSaveQueueState.value -= uuid
     }
 
-    fun channelReconnect(userId: Int) {
+    fun channelReconnect(userId: Int, roomId: String? = null) {
         viewModelScope.launch {
             isReconnectTry = true
             subscribeChat?.cancel()
             val job = viewModelScope.async {
                 messageRepository.reSubscribeRoom(
-                    chatRoomId = state.value.roomInfo?.id ?: "",
+                    chatRoomId = roomId ?: state.value.roomInfo?.id ?: "",
                     userId = userId,
                 ).collect {
                     it.collectMessage()
@@ -389,9 +406,9 @@ class ChatDetailViewModel @Inject constructor(
             }
             subscribeChat = job
             job.await()
-            Log.d("TAG", "next Channel Connect: ")
-            channelConnect(userId)
-            Log.d("TAG", "testReconnect: ")
+//            Log.d("TAG", "next Channel Connect: ")
+//            channelConnect(userId)
+//            Log.d("TAG", "testReconnect: ")
         }
     }
 
@@ -448,11 +465,6 @@ class ChatDetailViewModel @Inject constructor(
 
                     var isFirst = data.userId != formerItem?.userId
                     if (
-                        formerItem is MessageParent.Me && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
-                    ) {
-                        message[0] = formerItem.copy(isLast = false)
-                    }
-                    if (
                         formerItem is MessageParent.Other && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
                     ) {
                         message[0] = formerItem.copy(isLast = false)
@@ -496,11 +508,6 @@ class ChatDetailViewModel @Inject constructor(
                     val formerItem = message.firstOrNull()
                     if (
                         formerItem is MessageParent.Me && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
-                    ) {
-                        message[0] = formerItem.copy(isLast = false)
-                    }
-                    if (
-                        formerItem is MessageParent.Other && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
                     ) {
                         message[0] = formerItem.copy(isLast = false)
                     }
@@ -603,33 +610,54 @@ class ChatDetailViewModel @Inject constructor(
                 is MessageRoomEvent.Sub -> {
                     _state.update {
                         it.copy(
-                            message = it.message.map { nowMessage ->
-                                when (nowMessage) {
-                                    is MessageParent.Me ->
-                                        nowMessage.copy(
-                                            read = nowMessage.read
-                                                .toMutableList()
-                                                .apply {
-                                                    add(data.userId)
-                                                }
-                                                .distinct()
-                                                .toImmutableList(),
+                            roomInfo = it.roomInfo?.copy(
+                                members = it.roomInfo.members
+                                    .toMutableList()
+                                    .map { userInfo ->
+                                        if (userInfo.userInfo.id != data.userId) {
+                                            return@map userInfo
+                                        }
+                                        userInfo.copy(
+                                            userInfo = userInfo.userInfo,
+                                            timestamp = LocalDateTime.MIN,
+                                            utcTimeMillis = 0L,
                                         )
-
-                                    is MessageParent.Other ->
-                                        nowMessage.copy(
-                                            read = nowMessage.read
-                                                .toMutableList()
-                                                .apply {
-                                                    add(data.userId)
-                                                }
-                                                .distinct()
-                                                .toImmutableList(),
+                                    }
+                                    .sortedBy { it.utcTimeMillis }
+                                    .toImmutableList(),
+                            ),
+                        )
+                    }
+                }
+                is MessageRoomEvent.UnSub -> {
+                    Log.d("TAG", "collectMessage: UNSUB User")
+                    _state.update {
+                        it.copy(
+                            roomInfo = it.roomInfo?.copy(
+                                members = it.roomInfo.members
+                                    .toMutableList()
+                                    .map { userInfo ->
+                                        if (userInfo.userInfo.id != data.userId) {
+                                            return@map userInfo
+                                        }
+                                        val timestamp = LocalDateTime.now()
+                                        Log.d(
+                                            "TAG",
+                                            "collectMessage: UNSUB ${userInfo.copy(
+                                                userInfo = userInfo.userInfo,
+                                                timestamp = timestamp,
+                                                utcTimeMillis = timestamp.toEpochMilli(),
+                                            )}",
                                         )
-
-                                    else -> nowMessage
-                                }
-                            }.toImmutableList(),
+                                        userInfo.copy(
+                                            userInfo = userInfo.userInfo,
+                                            timestamp = timestamp,
+                                            utcTimeMillis = timestamp.toEpochMilli(),
+                                        )
+                                    }
+                                    .sortedBy { it.utcTimeMillis }
+                                    .toImmutableList(),
+                            ),
                         )
                     }
                 }
@@ -710,4 +738,90 @@ internal fun LocalDateTime.isDifferentDay(time: LocalDateTime): Boolean = when {
     this.monthValue != time.monthValue -> true
     this.dayOfMonth != time.dayOfMonth -> true
     else -> false
+}
+
+internal fun MessageParent.getUserCount(users: List<UserInfoModel>): ImmutableList<Int> = when (this) {
+    is MessageParent.Me -> {
+        val utcTimeMillis = this.timestamp.toDeviceLocalDateTime().toEpochMilli()
+        val readUsers = mutableListOf<Int>()
+
+        // 현재 접속중인 유저수 세기
+        users.takeWhile {
+            Log.d("TAG", "getUserCount: ")
+            if (it.utcTimeMillis == 0L) {
+                readUsers.add(it.userInfo.id)
+            }
+            it.utcTimeMillis == 0L
+        }
+
+        Log.d("TAG", "접속중인 유저수 :  $readUsers")
+
+        // 해당 메세지를 읽은 유저 카운트
+        val binaryIndex = users.binarySearch {
+            when {
+                it.utcTimeMillis >= utcTimeMillis -> 0
+                else -> -1
+            }
+        }
+        Log.d("TAG", "getUserCount: $utcTimeMillis")
+        Log.d("TAG", "getUserCount: $binaryIndex")
+
+        val index = if (binaryIndex >= 0) binaryIndex else users.size
+        for (i in index until users.size) {
+            val user = users.getOrNull(i)
+            if (user != null) {
+                Log.d("TAG", "getUserCount: ${user.userInfo.id } ${user.utcTimeMillis}")
+                readUsers.add(user.userInfo.id)
+            }
+        }
+        Log.d("TAG", "다 읽은 유저수 :  $readUsers")
+//            users.forEach { userInfo ->
+//                if (userInfo.utcTimeMillis == 0L || userInfo.utcTimeMillis >= utcTimeMillis) {
+//                    readUsers.add(userInfo.userInfo.id)
+//                }
+//            }
+        readUsers.toImmutableList()
+    }
+    is MessageParent.Other -> {
+        val utcTimeMillis = this.timestamp.toDeviceLocalDateTime().toEpochMilli()
+        val readUsers = mutableListOf<Int>()
+
+        // 현재 접속중인 유저수 세기
+        users.takeWhile {
+            Log.d("TAG", "getUserCount: ")
+            if (it.utcTimeMillis == 0L) {
+                readUsers.add(it.userInfo.id)
+            }
+            it.utcTimeMillis == 0L
+        }
+
+        Log.d("TAG", "접속중인 유저수 :  $readUsers")
+
+        // 해당 메세지를 읽은 유저 카운트
+        val binaryIndex = users.binarySearch {
+            when {
+                it.utcTimeMillis >= utcTimeMillis -> 0
+                else -> -1
+            }
+        }
+        Log.d("TAG", "getUserCount: $utcTimeMillis")
+        Log.d("TAG", "getUserCount: $binaryIndex")
+
+        val index = if (binaryIndex >= 0) binaryIndex else users.size
+        for (i in index until users.size) {
+            val user = users.getOrNull(i)
+            if (user != null) {
+                Log.d("TAG", "getUserCount: ${user.userInfo.id } ${user.utcTimeMillis}")
+                readUsers.add(user.userInfo.id)
+            }
+        }
+        Log.d("TAG", "다 읽은 유저수 :  $readUsers")
+//            users.forEach { userInfo ->
+//                if (userInfo.utcTimeMillis == 0L || userInfo.utcTimeMillis >= utcTimeMillis) {
+//                    readUsers.add(userInfo.userInfo.id)
+//                }
+//            }
+        readUsers.toImmutableList()
+    }
+    else -> persistentListOf()
 }

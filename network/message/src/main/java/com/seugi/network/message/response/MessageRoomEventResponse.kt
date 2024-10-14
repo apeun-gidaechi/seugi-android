@@ -32,11 +32,15 @@ sealed class MessageRoomEventResponse(
             val mention: List<Int>,
             val mentionAll: Boolean,
             override val timestamp: LocalDateTime,
-            val read: List<Int>,
         ) : MessageParent(timestamp, type, userId)
     }
 
     data class Sub(
+        override val type: String,
+        override val userId: Int,
+    ) : MessageRoomEventResponse(type, userId)
+
+    data class UnSub(
         override val type: String,
         override val userId: Int,
     ) : MessageRoomEventResponse(type, userId)

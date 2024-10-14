@@ -138,9 +138,9 @@ object NetworkModule {
     @Provides
     @Singleton
     fun providesOkhttpClient(): OkHttpClient = OkHttpClient.Builder()
-        .readTimeout(10, TimeUnit.SECONDS)
-        .writeTimeout(10, TimeUnit.SECONDS)
-        .connectTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(99999, TimeUnit.SECONDS)
+        .writeTimeout(99999, TimeUnit.SECONDS)
+        .connectTimeout(99999, TimeUnit.SECONDS)
         .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
         .build()
 

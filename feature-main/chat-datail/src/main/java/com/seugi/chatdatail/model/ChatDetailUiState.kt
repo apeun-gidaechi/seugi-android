@@ -1,5 +1,6 @@
 package com.seugi.chatdatail.model
 
+import com.seugi.data.core.model.UserInfoModel
 import com.seugi.data.core.model.UserModel
 import com.seugi.data.message.model.MessageRoomEvent
 import kotlinx.collections.immutable.ImmutableList
@@ -20,7 +21,7 @@ data class ChatDetailUiState(
 data class ChatRoomState(
     val id: String,
     val roomName: String,
-    val members: ImmutableList<UserModel> = persistentListOf(),
+    val members: ImmutableList<UserInfoModel> = persistentListOf(),
     val adminId: Int,
 )
 

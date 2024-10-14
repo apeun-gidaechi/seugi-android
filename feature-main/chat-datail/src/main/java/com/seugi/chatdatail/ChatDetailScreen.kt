@@ -83,6 +83,7 @@ import com.seugi.chatdatail.model.ChatLocalType
 import com.seugi.common.utiles.byteToFormatString
 import com.seugi.common.utiles.toAmShortString
 import com.seugi.common.utiles.toFullFormatString
+import com.seugi.data.core.model.UserInfoModel
 import com.seugi.data.core.model.UserModel
 import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.data.message.model.MessageType
@@ -255,7 +256,7 @@ internal fun ChatDetailScreen(
 
     LifecycleStartEffect(key1 = Unit) {
         viewModel.collectStompLifecycle(userId)
-        viewModel.channelReconnect(userId)
+        viewModel.channelReconnect(userId, chatRoomId)
         onStopOrDispose {
             viewModel.subscribeCancel()
         }
@@ -646,7 +647,8 @@ internal fun ChatDetailScreen(
                                 },
                             type = when (item) {
                                 is MessageRoomEvent.MessageParent.Me -> {
-                                    val count = (state.roomInfo?.members?.size ?: 0) - item.read.size
+                                    val readUser = item.getUserCount(state.roomInfo?.members ?: persistentListOf())
+                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
                                     ChatItemType.Me(
                                         isLast = item.isLast,
                                         message = item.message,
@@ -655,13 +657,14 @@ internal fun ChatDetailScreen(
                                     )
                                 }
                                 is MessageRoomEvent.MessageParent.Other -> {
-                                    val count = (state.roomInfo?.members?.size ?: 0) - item.read.size
-                                    val userInfo = state.users.get(item.userId)
+                                    val readUser = item.getUserCount(state.roomInfo?.members ?: persistentListOf())
+                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
+                                    val userInfo = state.users[item.userId]
                                     ChatItemType.Others(
                                         isFirst = item.isFirst,
                                         isLast = item.isLast,
                                         userName = userInfo?.name ?: "",
-                                        userProfile = userInfo?.picture,
+                                        userProfile = userInfo?.picture?.ifEmpty { null },
                                         message = item.message,
                                         createdAt = item.timestamp.toAmShortString(),
                                         count = if (count <= 0) null else count,
@@ -871,7 +874,7 @@ private fun ChatUploadDialogItem(@DrawableRes resId: Int, title: String, onClick
 @Composable
 private fun ChatSideBarScreen(
     adminId: Int?,
-    members: ImmutableList<UserModel>,
+    members: ImmutableList<UserInfoModel>,
     notificationState: Boolean,
     showLeft: Boolean,
     onClickMember: (UserModel) -> Unit,
@@ -948,12 +951,12 @@ private fun ChatSideBarScreen(
             }
             items(members) {
                 SeugiMemberList(
-                    userName = it.name,
-                    userProfile = it.picture.ifEmpty { null },
-                    isCrown = it.id == adminId,
+                    userName = it.userInfo.name,
+                    userProfile = it.userInfo.picture.ifEmpty { null },
+                    isCrown = it.userInfo.id == adminId,
                     crownColor = SeugiTheme.colors.yellow500,
                     onClick = {
-                        onClickMember(it)
+                        onClickMember(it.userInfo)
                     },
                     action = {
                         Icon(

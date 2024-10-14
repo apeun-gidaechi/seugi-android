@@ -67,16 +67,19 @@ public class OkHttpConnectionProvider extends AbstractConnectionProvider {
 
                     @Override
                     public void onMessage(WebSocket webSocket, String text) {
+                        Log.d(TAG, "onMessage: " + text);
                         emitMessage(text);
                     }
 
                     @Override
                     public void onMessage(WebSocket webSocket, @NonNull ByteString bytes) {
+                        Log.d(TAG, "onMessage: " + bytes.utf8());
                         emitMessage(bytes.utf8());
                     }
 
                     @Override
                     public void onClosed(WebSocket webSocket, int code, String reason) {
+                        Log.d(TAG, "onClosed: " + reason);
                         openSocket = null;
                         emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.CLOSED));
                     }
@@ -84,7 +87,8 @@ public class OkHttpConnectionProvider extends AbstractConnectionProvider {
                     @Override
                     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
                         // in OkHttp, a Failure is equivalent to a JWS-Error *and* a JWS-Close
-                        Log.e(TAG, "onFailure: " + (t instanceof SocketException));
+                        Log.e(TAG, "onFailure: " + t);
+                        t.printStackTrace();
                         if (t instanceof SocketException) {
                             emitLifecycleEvent(new LifecycleEvent(LifecycleEvent.Type.ERROR, new SocketException(t.getMessage())));
                         } else {

@@ -57,7 +57,7 @@ class MessageDataSourceImpl @Inject constructor(
                 }
                 LifecycleEvent.Type.ERROR -> {
                     Log.e("TAG", "error", it.exception)
-                    emit(MessageStompLifecycleResponse.Error(it.exception.cause ?: Throwable()))
+                    emit(MessageStompLifecycleResponse.Error(it.exception))
                 }
                 LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> {
                     emit(MessageStompLifecycleResponse.FailedServerHeartbeat)
@@ -88,6 +88,9 @@ class MessageDataSourceImpl @Inject constructor(
                     }
                     "SUB" -> {
                         emit(message.payload.toResponse(MessageRoomEventResponse.Sub::class.java))
+                    }
+                    "UNSUB" -> {
+                        emit(message.payload.toResponse(MessageRoomEventResponse.UnSub::class.java))
                     }
                     "DELETE_MESSAGE" -> {
                         emit(message.payload.toResponse(MessageRoomEventResponse.DeleteMessage::class.java))

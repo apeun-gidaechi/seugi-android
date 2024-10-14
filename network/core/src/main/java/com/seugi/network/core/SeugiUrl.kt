@@ -30,7 +30,7 @@ object SeugiUrl {
         const val ROOT = "${BASE_URL}/chat/group"
         const val LOAD_ALL = "$ROOT/search"
         const val CREATE = "$ROOT/create"
-        const val SEARCH_ROOM = "${PersonalChat.ROOT}/search/room"
+        const val SEARCH_ROOM = "$ROOT/search/room"
         const val LEFT = "$ROOT/left"
     }
 
