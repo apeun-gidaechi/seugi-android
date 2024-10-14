@@ -61,6 +61,19 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun setStateNotJoin() = viewModelScope.launch(dispatcher) {
+        _state.update {
+            it.copy(
+                showDialog = true,
+                schoolState = CommonUiState.Error,
+                timeScheduleState = CommonUiState.Error,
+                mealState = CommonUiState.Error,
+                catSeugiState = CommonUiState.Error,
+                schoolScheduleState = CommonUiState.Error,
+            )
+        }
+    }
+
     private fun loadMeal(workspaceId: String) = viewModelScope.launch(dispatcher) {
         launch {
             mealRepository.getDateMeal(

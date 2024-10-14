@@ -54,7 +54,11 @@ class MainViewModel @Inject constructor(
                         var workspaceId = ""
                         if (workspaces.isEmpty()) {
                             // 서버에 워크페이스가 없을때 워크페이스 가입
-
+                            _state.update {
+                                it.copy(
+                                    notJoinWorkspace = true
+                                )
+                            }
                         } else {
                             // 워크페이스가 있다면 로컬에 아이디와 비교
                             val localWorkspaceId = localWorkspace?.workspaceId?: ""
@@ -67,6 +71,7 @@ class MainViewModel @Inject constructor(
                                     )
                                 }
                                 workspaceRepository.insertWorkspace(workspaces[0])
+                                loadData(workspaces[0].workspaceId)
                             } else {
                                 workspaceId = localWorkspaceId
                                 // 로컬에 있다면 로컬이랑 같은 아이디의 워크페이스를 화면에
@@ -78,6 +83,7 @@ class MainViewModel @Inject constructor(
                                             )
                                         }
                                         workspaceRepository.insertWorkspace(it)
+                                        loadData(it.workspaceId)
                                     }
                                 }
                             }
@@ -89,7 +95,7 @@ class MainViewModel @Inject constructor(
                     is Result.Error -> {
                         _state.update {
                             it.copy(
-                                errorLoadWorkspace = true
+                                notJoinWorkspace = true
                             )
                         }
                         response.throwable.printStackTrace()

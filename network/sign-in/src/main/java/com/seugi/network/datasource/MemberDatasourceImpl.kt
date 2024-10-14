@@ -12,6 +12,7 @@ import com.seugi.network.request.EmailSignUpRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import javax.inject.Inject
@@ -27,7 +28,8 @@ class MemberDatasourceImpl @Inject constructor(
         setBody(body = body)
     }.body<BaseResponse<TokenResponse>>()
 
-    override suspend fun getCode(email: String): Response = httpClient.get("${SeugiUrl.Auth.GET_CODE}$email") {
+    override suspend fun getCode(email: String): Response = httpClient.get(SeugiUrl.Auth.GET_CODE) {
+        parameter("email", email)
     }.body()
 
     override suspend fun emailSignUp(name: String, email: String, password: String, code: String): Response = httpClient.post(

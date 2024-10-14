@@ -27,7 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -60,6 +59,7 @@ import com.seugi.home.card.TimeScheduleCard
 @Composable
 internal fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
+    notJoinWorkspace: Boolean,
     workspace: WorkspaceModel,
     navigateToChatSeugi: () -> Unit,
     navigateToJoinWorkspace: () -> Unit,
@@ -88,6 +88,12 @@ internal fun HomeScreen(
         if (!view.isInEditMode) {
             val window = (view.context as Activity).window
             changeNavigationColor(window, changeNavColor, false)
+        }
+    }
+
+    LaunchedEffect(key1 = notJoinWorkspace) {
+        if (notJoinWorkspace) {
+            viewModel.setStateNotJoin()
         }
     }
 

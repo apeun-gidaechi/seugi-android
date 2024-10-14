@@ -124,6 +124,7 @@ internal fun MainScreen(
         ) {
             homeScreen(
                 workspace = state.workspace,
+                notJoinWorkspace = state.notJoinWorkspace,
                 navigateToChatSeugi = {
                     navHostController.navigateToChatSeugi()
                 },

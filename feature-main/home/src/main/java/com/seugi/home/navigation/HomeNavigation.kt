@@ -21,6 +21,7 @@ fun NavController.navigateToHome(toRoute: String, fromRoute: String) {
 
 fun NavGraphBuilder.homeScreen(
     workspace: WorkspaceModel,
+    notJoinWorkspace: Boolean,
     navigateToChatSeugi: () -> Unit,
     navigateToJoinWorkspace: () -> Unit,
     navigateToWorkspaceDetail: (String) -> Unit,
@@ -29,6 +30,7 @@ fun NavGraphBuilder.homeScreen(
     composable(HOME_ROUTE) {
         HomeScreen(
             workspace = workspace,
+            notJoinWorkspace = notJoinWorkspace,
             navigateToChatSeugi = navigateToChatSeugi,
             navigateToJoinWorkspace = navigateToJoinWorkspace,
             navigateToWorkspaceDetail = navigateToWorkspaceDetail,

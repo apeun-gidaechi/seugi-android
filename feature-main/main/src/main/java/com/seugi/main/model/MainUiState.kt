@@ -34,5 +34,5 @@ data class MainUiState(
         workspaceAdmin = 0,
         workspaceImageUrl = ""
     ),
-    val errorLoadWorkspace: Boolean = false
+    val notJoinWorkspace: Boolean = false
 )

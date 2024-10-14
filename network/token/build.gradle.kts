@@ -12,4 +12,5 @@ dependencies {
     implementation(projects.common)
     implementation(projects.network.core)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.ktor.client.auth)
 }
