@@ -31,6 +31,8 @@ class MainViewModel @Inject constructor(
     fun loadWorkspace() = viewModelScope.launch(dispatcher) {
         launch {
             val localWorkspace = workspaceRepository.getLocalWorkspace()
+
+            Log.d("TAG", "loadWorkspace: $localWorkspace")
             // 중복 로드 방지
             if (localWorkspace != null && localWorkspace.workspaceId == state.value.workspace.workspaceId) return@launch
 
@@ -85,6 +87,11 @@ class MainViewModel @Inject constructor(
                     }
 
                     is Result.Error -> {
+                        _state.update {
+                            it.copy(
+                                errorLoadWorkspace = true
+                            )
+                        }
                         response.throwable.printStackTrace()
                     }
 
@@ -94,7 +101,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun loadLocalWorkspaceId() {
+    fun loadLocalWorkspace() {
         viewModelScope.launch {
             val workspace = workspaceRepository.getLocalWorkspace()
             _state.update {

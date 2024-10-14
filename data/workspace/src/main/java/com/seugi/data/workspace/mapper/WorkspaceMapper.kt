@@ -25,11 +25,12 @@ fun List<WorkspaceEntity>.localToModels() = this.map {
 
 fun WorkspaceEntity.localToModel() = WorkspaceModel(
     workspaceId = workspaceId,
-    workspaceImageUrl = "",
-    workspaceAdmin = 0,
-    middleAdmin = listOf<Long>(0).toImmutableList(),
-    student = listOf<Long>(0).toImmutableList(),
-    teacher = listOf<Long>(0).toImmutableList(),
+    workspaceName = workspaceName,
+    workspaceImageUrl = workspaceImageUrl,
+    workspaceAdmin = workspaceAdmin,
+    middleAdmin = middleAdmin.toImmutableList(),
+    student = student.toImmutableList(),
+    teacher = teacher.toImmutableList(),
 )
 
 fun List<WorkspaceModel>.toEntities() = this.map {

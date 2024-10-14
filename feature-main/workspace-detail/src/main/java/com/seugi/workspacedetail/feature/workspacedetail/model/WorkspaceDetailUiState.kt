@@ -7,8 +7,6 @@ import kotlinx.collections.immutable.persistentListOf
 
 data class WorkspaceDetailUiState(
     val loading: Boolean = false,
-    val nowWorkspace: WorkspaceModel = WorkspaceModel(),
-    val nowWorkspaceId: String = "",
     val myWorkspace: ImmutableList<WorkspaceModel> = persistentListOf(),
     val waitWorkspace: ImmutableList<WaitWorkspaceModel> = persistentListOf(),
 )

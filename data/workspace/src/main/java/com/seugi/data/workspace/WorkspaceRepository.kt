@@ -15,7 +15,7 @@ interface WorkspaceRepository {
     suspend fun getMembers(workspaceId: String): Flow<Result<List<ProfileModel>>>
 
     suspend fun getMyWorkspaces(): Flow<Result<List<WorkspaceModel>>>
-    suspend fun updateWorkspaceId(workspaceId: String)
+    suspend fun updateWorkspace(workspaceModel: WorkspaceModel)
     suspend fun insertWorkspace(workspaceModel: WorkspaceModel)
 
     suspend fun getLocalWorkspaceId(): String

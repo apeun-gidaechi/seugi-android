@@ -131,10 +131,8 @@ internal fun MainScreen(
                     navHostController.navigateToSelectingJob()
                 },
                 navigateToWorkspaceDetail = { id ->
-                    navHostController.navigateToWorkspaceDetail(
-                        workspaceId = id,
-                    )
-                    viewModel.loadLocalWorkspaceId()
+                    navHostController.navigateToWorkspaceDetail()
+                    viewModel.loadLocalWorkspace()
                 },
                 navigateToWorkspaceCreate = {
                     navHostController.navigateToWorkspaceCreate()
@@ -278,6 +276,7 @@ internal fun MainScreen(
                 popBackStack = navHostController::popBackStack,
             )
             workspaceDetailScreen(
+                workspace = state.workspace,
                 navigateToJoinWorkspace = {
                     navHostController.navigateToSelectingJob()
                 },
@@ -293,7 +292,7 @@ internal fun MainScreen(
                     navHostController.navigateToWorkspaceCreate()
                 },
                 changeWorkspace = {
-                    viewModel.loadLocalWorkspaceId()
+                    viewModel.loadWorkspace()
                 },
             )
             workspaceMemberScreen(

@@ -1,5 +1,6 @@
 package com.seugi.data.workspace.repository
 
+import android.util.Log
 import com.seugi.common.model.Result
 import com.seugi.common.model.asResult
 import com.seugi.common.utiles.DispatcherType
@@ -15,7 +16,6 @@ import com.seugi.data.workspace.model.CheckWorkspaceModel
 import com.seugi.data.workspace.model.WaitWorkspaceModel
 import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.local.room.dao.WorkspaceDao
-import com.seugi.local.room.model.WorkspaceEntity
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.workspace.WorkspaceDataSource
 import javax.inject.Inject
@@ -65,8 +65,17 @@ class WorkspaceRepositoryImpl @Inject constructor(
         .flowOn(dispatcher)
         .asResult()
 
-    override suspend fun updateWorkspaceId(workspaceId: String) {
-        workspaceDao.updateWorkspaceIdById(0, workspaceId)
+    override suspend fun updateWorkspace(workspaceModel: WorkspaceModel) {
+        workspaceDao.updateWorkspaceIdById(
+            idx = 0,
+            newWorkspaceId = workspaceModel.workspaceId,
+            workspaceName = workspaceModel.workspaceName,
+            workspaceAdmin = workspaceModel.workspaceAdmin,
+            workspaceImageUrl = workspaceModel.workspaceImageUrl,
+            middleAdmin = workspaceModel.middleAdmin,
+            teacher = workspaceModel.teacher,
+            student = workspaceModel.student
+        )
     }
 
     override suspend fun insertWorkspace(workspaceModel: WorkspaceModel) {

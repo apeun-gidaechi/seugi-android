@@ -33,5 +33,6 @@ data class MainUiState(
         workspaceName = "",
         workspaceAdmin = 0,
         workspaceImageUrl = ""
-    )
+    ),
+    val errorLoadWorkspace: Boolean = false
 )
