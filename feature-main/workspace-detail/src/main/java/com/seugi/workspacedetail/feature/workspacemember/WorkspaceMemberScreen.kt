@@ -132,13 +132,14 @@ fun WorkspaceMemberScreen(
                         ),
                         contentDescription = null,
                         modifier = Modifier
-                            .bounceClick({ Log.d("TAG", "검색: ") })
+                            .bounceClick({ Log.d("TAG", "검색: ") }, enabled = false)
                             .padding(end = 16.dp)
                             .size(28.dp),
                     )
                 },
             )
         },
+        containerColor = SeugiTheme.colors.white,
     ) {
         Column(
             modifier = Modifier

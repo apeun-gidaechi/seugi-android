@@ -65,6 +65,7 @@ fun JoinSuccessScreen(
                     onNavigationIconClick = popBackStack,
                 )
             },
+            containerColor = SeugiTheme.colors.white,
         ) {
             Column(
                 modifier = Modifier

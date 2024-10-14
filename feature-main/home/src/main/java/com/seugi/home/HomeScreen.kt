@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -269,6 +270,7 @@ internal fun HomeCard(
                     onClick = onClickDetail,
                     onChangeButtonState = onChangeButtonState,
                     requireUnconsumed = true,
+                    enabled = false,
                 ),
         ) {
             Spacer(modifier = Modifier.width(16.dp))
@@ -439,5 +441,26 @@ internal fun HomeSchoolSelectCard(text: String, isSelect: Boolean, onClick: () -
                 )
             }
         }
+    }
+}
+
+@Composable
+internal fun HomeErrorCard(modifier: Modifier = Modifier, text: String, imageVector: ImageVector) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Image(
+            modifier = Modifier.size(64.dp),
+            imageVector = imageVector,
+            contentDescription = null,
+        )
+        Text(
+            text = text,
+            style = SeugiTheme.typography.subtitle2,
+            color = SeugiTheme.colors.black,
+        )
     }
 }

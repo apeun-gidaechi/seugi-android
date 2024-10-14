@@ -1,6 +1,7 @@
 package com.seugi.home.model
 
 import com.seugi.data.meal.response.MealModel
+import com.seugi.data.schedule.model.ScheduleModel
 import com.seugi.data.timetable.model.TimetableModel
 import java.time.LocalTime
 import kotlinx.collections.immutable.ImmutableList
@@ -12,7 +13,7 @@ data class HomeUiState(
     val timeScheduleState: CommonUiState<TimeScheduleUiState> = CommonUiState.Loading,
     val mealState: CommonUiState<MealUiState> = CommonUiState.Loading,
     val catSeugiState: CommonUiState<ImmutableList<String>> = CommonUiState.Loading,
-    val schoolScheduleState: CommonUiState<ImmutableList<Triple<String, String, String>>> = CommonUiState.Loading,
+    val schoolScheduleState: CommonUiState<ImmutableList<ScheduleModel>> = CommonUiState.Loading,
 )
 
 sealed interface CommonUiState<out T> {

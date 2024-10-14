@@ -162,7 +162,7 @@ fun WorkspaceDetailScreen(
                                     Row {
                                         Row(
                                             modifier = Modifier
-                                                .bounceClick(onClick = {})
+                                                .bounceClick(onClick = {}, enabled = false)
                                                 .fillMaxWidth()
                                                 .height(56.dp)
                                                 .background(

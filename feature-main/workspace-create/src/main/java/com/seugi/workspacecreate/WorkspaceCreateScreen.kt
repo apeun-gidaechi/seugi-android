@@ -79,6 +79,7 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
                     },
                 )
             },
+            containerColor = SeugiTheme.colors.white,
 
         ) { paddingValues ->
             Column(

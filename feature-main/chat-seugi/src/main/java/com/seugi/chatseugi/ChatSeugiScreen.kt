@@ -364,6 +364,7 @@ private fun SeugiChatItemAiLoading(modifier: Modifier = Modifier, isFirst: Boole
                             interactionSource = remember { MutableInteractionSource() },
                             indication = AlphaIndication,
                             onClick = {},
+                            enabled = false,
                         ),
                     contentAlignment = Alignment.Center,
                 ) {

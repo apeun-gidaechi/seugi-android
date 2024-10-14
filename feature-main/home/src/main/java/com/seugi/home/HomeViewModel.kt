@@ -7,6 +7,7 @@ import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.meal.MealRepository
 import com.seugi.data.meal.response.MealType
+import com.seugi.data.schedule.ScheduleRepository
 import com.seugi.data.timetable.TimetableRepository
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.data.workspace.model.WorkspaceModel
@@ -33,6 +34,7 @@ class HomeViewModel @Inject constructor(
     private val workspaceRepository: WorkspaceRepository,
     private val mealRepository: MealRepository,
     private val timetableRepository: TimetableRepository,
+    private val scheduleRepository: ScheduleRepository,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
@@ -55,7 +57,7 @@ class HomeViewModel @Inject constructor(
             loadMeal(workspace.workspaceId)
             loadTimetable(workspace.workspaceId)
             loadCatSeugi()
-            loadSchedule()
+            loadSchedule(workspace.workspaceId)
         }
     }
 
@@ -160,12 +162,46 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun loadSchedule() = viewModelScope.launch(dispatcher) {
-        delay(1000)
-        _state.update {
-            it.copy(
-                schoolScheduleState = CommonUiState.NotFound,
-            )
+    private fun loadSchedule(workspaceId: String) = viewModelScope.launch(dispatcher) {
+        val date = LocalDate.now()
+        scheduleRepository.getMonthSchedule(
+            workspaceId = workspaceId,
+            month = date.monthValue,
+        ).collect {
+            when (it) {
+                is Result.Success -> {
+                    val filterItem = it.data
+                        .filter {
+                            date.dayOfMonth <= it.date.dayOfMonth
+                        }
+                        .sortedBy {
+                            it.date
+                        }
+                        .take(3)
+                        .toImmutableList()
+                    if (filterItem.isEmpty()) {
+                        _state.update { uiState ->
+                            uiState.copy(
+                                schoolScheduleState = CommonUiState.Error,
+                            )
+                        }
+                    } else {
+                        _state.update { uiState ->
+                            uiState.copy(
+                                schoolScheduleState = CommonUiState.Success(filterItem),
+                            )
+                        }
+                    }
+                }
+                Result.Loading -> {}
+                is Result.Error -> {
+                    _state.update {
+                        it.copy(
+                            schoolScheduleState = CommonUiState.Error,
+                        )
+                    }
+                }
+            }
         }
     }
 }
