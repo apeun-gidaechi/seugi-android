@@ -44,5 +44,5 @@ fun WorkspaceModel.toEntity() = WorkspaceEntity(
     workspaceImageUrl = workspaceImageUrl,
     teacher = teacher,
     student = student,
-    middleAdmin = middleAdmin
+    middleAdmin = middleAdmin,
 )

@@ -1,6 +1,5 @@
 package com.seugi.data.workspace.repository
 
-import android.util.Log
 import com.seugi.common.model.Result
 import com.seugi.common.model.asResult
 import com.seugi.common.utiles.DispatcherType
@@ -74,7 +73,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
             workspaceImageUrl = workspaceModel.workspaceImageUrl,
             middleAdmin = workspaceModel.middleAdmin,
             teacher = workspaceModel.teacher,
-            student = workspaceModel.student
+            student = workspaceModel.student,
         )
     }
 
@@ -86,8 +85,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         return workspaceDao.getWorkspace()?.localToModel()?.workspaceId ?: ""
     }
 
-    override suspend fun getLocalWorkspace(): WorkspaceModel? =
-        workspaceDao.getWorkspace()?.localToModel()
+    override suspend fun getLocalWorkspace(): WorkspaceModel? = workspaceDao.getWorkspace()?.localToModel()
 
     override suspend fun getWaitWorkspaces(): Flow<Result<List<WaitWorkspaceModel>>> = flow {
         val response = workspaceDatasource.getWaitWorkspace().safeResponse()

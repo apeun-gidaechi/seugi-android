@@ -39,9 +39,7 @@ class HomeViewModel @Inject constructor(
     private val _state = MutableStateFlow(HomeUiState())
     val state = _state.asStateFlow()
 
-    fun load(
-        workspace: WorkspaceModel
-    ) {
+    fun load(workspace: WorkspaceModel) {
         viewModelScope.launch(dispatcher) {
             // 처음 한번만 로딩하는 로직 추후 추가.
 

@@ -14,5 +14,5 @@ data class WorkspaceEntity(
     val workspaceAdmin: Long,
     val middleAdmin: List<Long>,
     val teacher: List<Long>,
-    val student: List<Long>
+    val student: List<Long>,
 )

@@ -37,10 +37,10 @@ class MainViewModel @Inject constructor(
             if (localWorkspace != null && localWorkspace.workspaceId == state.value.workspace.workspaceId) return@launch
 
             if (localWorkspace?.workspaceId?.isNotEmpty() == true) {
-                Log.d("TAG", "loadWorkspace: init Local Workspace ${localWorkspace} ")
+                Log.d("TAG", "loadWorkspace: init Local Workspace $localWorkspace ")
                 _state.update { uiState ->
                     uiState.copy(
-                        workspace = localWorkspace
+                        workspace = localWorkspace,
                     )
                 }
                 loadProfile(localWorkspace.workspaceId)
@@ -57,13 +57,13 @@ class MainViewModel @Inject constructor(
                             // 서버에 워크페이스가 없을때 워크페이스 가입
                             _state.update {
                                 it.copy(
-                                    notJoinWorkspace = true
+                                    notJoinWorkspace = true,
                                 )
                             }
                             return@collect
                         } else {
                             // 워크페이스가 있다면 로컬에 아이디와 비교
-                            val localWorkspaceId = localWorkspace?.workspaceId?: ""
+                            val localWorkspaceId = localWorkspace?.workspaceId ?: ""
                             if (localWorkspaceId.isEmpty()) {
                                 // 로컬에 없으면 서버의 처음 워크페이스를 화면에
                                 workspaceId = workspaces[0].workspaceId
@@ -95,7 +95,7 @@ class MainViewModel @Inject constructor(
                     is Result.Error -> {
                         _state.update {
                             it.copy(
-                                notJoinWorkspace = true
+                                notJoinWorkspace = true,
                             )
                         }
                         response.throwable.printStackTrace()
@@ -113,12 +113,12 @@ class MainViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     profile = it.profile.copy(
-                        workspaceId = workspace?.workspaceId?: "",
+                        workspaceId = workspace?.workspaceId ?: "",
                     ),
-                    workspace = workspace?: it.workspace
+                    workspace = workspace ?: it.workspace,
                 )
             }
-            loadProfile(workspace?.workspaceId?: "")
+            loadProfile(workspace?.workspaceId ?: "")
         }
     }
 

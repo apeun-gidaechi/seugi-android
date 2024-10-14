@@ -32,7 +32,7 @@ data class MainUiState(
         workspaceId = "",
         workspaceName = "",
         workspaceAdmin = 0,
-        workspaceImageUrl = ""
+        workspaceImageUrl = "",
     ),
-    val notJoinWorkspace: Boolean = false
+    val notJoinWorkspace: Boolean = false,
 )
