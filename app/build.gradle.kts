@@ -14,8 +14,8 @@ android {
 
     defaultConfig {
         applicationId = "com.seugi"
-        versionCode = 1
-        versionName = "0.0.1"
+        versionCode = 4
+        versionName = "0.0.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
