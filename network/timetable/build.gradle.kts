@@ -11,4 +11,11 @@ android {
 dependencies {
     implementation(projects.common)
     implementation(projects.network.core)
+
+    androidTestImplementation(libs.kotlinx.serialization.json)
+    androidTestImplementation(libs.ktor.client.mock)
+    androidTestImplementation(libs.junit)
+    androidTestImplementation(libs.kotlin.test)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+//    androidTestImplementation(libs.testng)
 }

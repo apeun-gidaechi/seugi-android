@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">스기</string>
     <string name="widget_meal_description">스기 급식</string>
+    <string name="widget_timetable_description">스기 시간표 위젯</string>
 </resources>

@@ -10,7 +10,9 @@ import com.seugi.local.room.dao.TokenDao
 import com.seugi.local.room.model.TokenEntity
 import com.seugi.network.core.SeugiUrl
 import com.seugi.network.core.response.BaseResponse
+import com.seugi.network.core.response.FakeLocalDateResponse
 import com.seugi.network.core.response.safeResponse
+import com.seugi.network.core.utiles.FakeLocalDateResponseTypeAdapter
 import com.seugi.network.core.utiles.LocalDateTimeTypeAdapter
 import com.seugi.network.core.utiles.removeBearer
 import com.seugi.stompclient.Stomp
@@ -56,6 +58,7 @@ object NetworkModule {
         install(ContentNegotiation) {
             gson {
                 registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeTypeAdapter())
+                registerTypeAdapter(FakeLocalDateResponse::class.java, FakeLocalDateResponseTypeAdapter())
                 setPrettyPrinting()
                 setLenient()
             }

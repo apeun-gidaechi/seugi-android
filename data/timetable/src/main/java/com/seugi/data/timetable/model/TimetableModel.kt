@@ -1,5 +1,7 @@
 package com.seugi.data.timetable.model
 
+import kotlinx.datetime.LocalDate
+
 data class TimetableModel(
     val id: Long,
     val workspaceId: String,
@@ -7,5 +9,5 @@ data class TimetableModel(
     val classNum: String,
     val time: String,
     val subject: String,
-    val date: String,
+    val date: LocalDate,
 )
