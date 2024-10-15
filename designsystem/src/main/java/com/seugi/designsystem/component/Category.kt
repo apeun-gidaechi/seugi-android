@@ -15,7 +15,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.seugi.designsystem.animation.ButtonState
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.theme.SeugiTheme
 

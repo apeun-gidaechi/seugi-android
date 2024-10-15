@@ -49,7 +49,6 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.designsystem.R
-import com.seugi.designsystem.animation.ButtonState
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiDialog
 import com.seugi.designsystem.component.SeugiTopBar
@@ -276,14 +275,7 @@ internal fun HomeCard(modifier: Modifier = Modifier, text: String, image: Painte
 }
 
 @Composable
-internal fun HomeCard(
-    modifier: Modifier = Modifier,
-    text: String,
-    onClickDetail: () -> Unit,
-    image: Painter,
-    colorFilter: ColorFilter? = null,
-    content: @Composable () -> Unit,
-) {
+internal fun HomeCard(modifier: Modifier = Modifier, text: String, onClickDetail: () -> Unit, image: Painter, colorFilter: ColorFilter? = null, content: @Composable () -> Unit) {
     Column(
         modifier = modifier
             .padding(horizontal = 20.dp)
