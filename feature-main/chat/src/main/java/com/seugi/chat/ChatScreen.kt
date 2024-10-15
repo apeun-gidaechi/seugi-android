@@ -127,6 +127,7 @@ internal fun ChatScreen(
             items(state.chatItems) { item ->
                 SeugiChatList(
                     userName = item.chatName,
+                    userProfile = item.chatRoomImg?.ifEmpty { null },
                     message = item.lastMessage ?: "",
                     createdAt = item.lastMessageTimestamp?.toAmShortString() ?: "",
                     count = item.notReadCnt,
