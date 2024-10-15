@@ -19,6 +19,7 @@ import com.seugi.stompclient.dto.StompMessage
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.coroutineScope
@@ -27,6 +28,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.reactive.asFlow
+import kotlinx.datetime.LocalDateTime
 
 class MessageDataSourceImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
@@ -46,8 +48,10 @@ class MessageDataSourceImpl @Inject constructor(
 
     override suspend fun getIsConnect(): Boolean = stompClient.isConnected
 
-    override suspend fun getMessage(chatRoomId: String, page: Int, size: Int): BaseResponse<MessageLoadResponse> =
-        httpClient.get("${SeugiUrl.Message.GET_MESSAGE}/$chatRoomId?page=$page&size=$size").body<BaseResponse<MessageLoadResponse>>()
+    override suspend fun getMessage(chatRoomId: String, timestamp: LocalDateTime?): BaseResponse<MessageLoadResponse> =
+        httpClient.get("${SeugiUrl.Message.GET_MESSAGE}/$chatRoomId") {
+            parameter("timestamp", timestamp)
+        }.body<BaseResponse<MessageLoadResponse>>()
 
     override suspend fun collectStompLifecycle(): Flow<MessageStompLifecycleResponse> = flow {
         stompClient.lifecycle().asFlow().collect {

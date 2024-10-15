@@ -270,8 +270,10 @@ internal fun ChatDetailScreen(
 
     LaunchedEffect(key1 = scrollState.canScrollForward) {
         if (!scrollState.canScrollForward) {
-            // TODO 페이징 재구현
-//            viewModel.nextPage()
+            viewModel.loadMessage(
+                userId = userId,
+                chatRoomId = chatRoomId
+            )
         }
     }
 

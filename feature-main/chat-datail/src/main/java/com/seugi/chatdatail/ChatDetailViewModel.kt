@@ -50,6 +50,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.toKotlinLocalDateTime
 
 @HiltViewModel
 class ChatDetailViewModel @Inject constructor(
@@ -94,6 +95,33 @@ class ChatDetailViewModel @Inject constructor(
         )
         initProfile(workspaceId)
         loadRoom(chatRoomId, isPersonal, userId)
+    }
+
+    fun loadMessage(chatRoomId: String, userId: Int) = viewModelScope.launch {
+        if (state.value.isLastPage) return@launch
+        val timestamp = if (state.value.isInit) state.value.message.lastOrNull()?.timestamp else null
+
+        messageRepository.getMessage(
+            chatRoomId = chatRoomId,
+            timestamp = timestamp?.toKotlinLocalDateTime(),
+            userId = userId
+        ).collect {
+            when (it) {
+                is Result.Success -> {
+                    _state.update { uiState ->
+                        uiState.copy(
+                            isInit = true,
+                            isLastPage = it.data.messages.size != 30
+                        )
+                    }
+                    it.data.messages.collectMessage()
+                }
+                Result.Loading -> {}
+                is Result.Error -> {
+                    it.throwable.printStackTrace()
+                }
+            }
+        }
     }
 
     private fun initProfile(workspaceId: String) = viewModelScope.launch {
@@ -452,6 +480,84 @@ class ChatDetailViewModel @Inject constructor(
                     is Result.Loading -> {}
                 }
             }
+        }
+    }
+
+    private fun List<MessageParent>.collectMessage(): Unit  {
+        // 생길 수 있는 문제점.
+        // 최상단에 있는 Date와 충돌할 가능성이 있다. -> Date라면 지우고 추가 달리기
+        // 최상단에 있는 채팅의 isFirst 변경해야할 수 있음 (둘다 유저가 같다면)
+        // 데이터 불러올 때 날짜 비교해서 사이에 끼워넣기
+
+        if (this.isEmpty()) {
+            return
+        }
+
+        val data = this
+            .sortedByDescending { it.timestamp }
+            .toMutableList()
+        val message = _state.value.message.toMutableList()
+
+        val remoteFirstItem = data.first()
+        val lastItem = message.lastOrNull()
+        if (lastItem is MessageParent.Date) {
+            // 날짜가 같다면 삭제
+            if (remoteFirstItem.timestamp.isDifferentDay(lastItem.timestamp).not()) {
+                message.removeLast()
+            }
+        }
+
+        // 최상단에 있는 채팅 isFirst 놔둬야 할지 비교
+        if (lastItem is MessageParent.Other && lastItem.isFirst) {
+            if (remoteFirstItem.userId == lastItem.userId) {
+                message.removeLast()
+                message.add(lastItem.copy(
+                    isFirst = false
+                ))
+            }
+        }
+
+        data.forEachIndexed { index, messageParent ->
+
+            val formerItem = data.getOrNull(index + 1)
+            val nextItem = if (index == 0) message.lastOrNull() else data.getOrNull(index - 1)
+
+            var isFirst = messageParent.userId != formerItem?.userId
+            val isLast = messageParent.userId != nextItem?.userId || messageParent.timestamp.isDifferentMin(nextItem.timestamp)
+            if (formerItem != null && messageParent.timestamp.isDifferentDay(formerItem.timestamp)) {
+                isFirst = true
+                message.add(
+                    element = MessageParent.Date(
+                        type = MessageType.MESSAGE,
+                        timestamp = LocalDateTime.of(messageParent.timestamp.year, messageParent.timestamp.monthValue, messageParent.timestamp.dayOfMonth, 0, 0),
+                        userId = 0,
+                        text = "",
+                    ),
+                )
+            }
+
+            val newData = when (messageParent) {
+                is MessageParent.Me -> messageParent.copy(
+                    isLast = isLast,
+                )
+                is MessageParent.Other -> {
+                    messageParent.copy(
+                        isLast = isLast,
+                        isFirst = isFirst,
+                    )
+                }
+                else -> messageParent
+            }
+            message.add(newData)
+
+        }
+
+        _state.update {
+            it.copy(
+                message = message
+                    .distinct()
+                    .toImmutableList(),
+            )
         }
     }
 

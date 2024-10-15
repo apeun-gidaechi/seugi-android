@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.LocalDateTime
 
 class MessageRepositoryImpl @Inject constructor(
     private val datasource: MessageDataSource,
@@ -67,9 +68,9 @@ class MessageRepositoryImpl @Inject constructor(
             .asResult()
     }
 
-    override suspend fun getMessage(chatRoomId: String, page: Int, size: Int, userId: Int): Flow<Result<MessageLoadModel>> {
+    override suspend fun getMessage(chatRoomId: String, timestamp: LocalDateTime?, userId: Int): Flow<Result<MessageLoadModel>> {
         return flow<MessageLoadModel> {
-            val e = datasource.getMessage(chatRoomId, page, size)
+            val e = datasource.getMessage(chatRoomId, timestamp)
 
             emit(e.data.toModel(userId))
         }

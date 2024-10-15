@@ -6,6 +6,7 @@ import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.data.message.model.MessageType
 import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.LocalDateTime
 
 interface MessageRepository {
 
@@ -15,7 +16,7 @@ interface MessageRepository {
 
     suspend fun reSubscribeRoom(chatRoomId: String, userId: Int): Flow<Result<MessageRoomEvent>>
 
-    suspend fun getMessage(chatRoomId: String, page: Int, size: Int, userId: Int): Flow<Result<MessageLoadModel>>
+    suspend fun getMessage(chatRoomId: String, timestamp: LocalDateTime?, userId: Int): Flow<Result<MessageLoadModel>>
 
     suspend fun collectStompLifecycle(): Flow<Result<MessageStompLifecycleModel>>
 }
