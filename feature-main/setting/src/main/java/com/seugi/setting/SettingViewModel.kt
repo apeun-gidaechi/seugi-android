@@ -116,11 +116,14 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-    fun fileUpload(name: String, context: Context, profileUri: Uri?) {
+    fun fileUpload(name: String,fileByteArray: ByteArray, fileMimeType: String, fileName: String, fileByte: Long) {
         viewModelScope.launch {
-            if (profileUri != null) {
-                val file = uriToFile(context = context, uri = profileUri).toString()
-                fileRepository.fileUpload(file = file, type = FileType.IMG).collect {
+            fileRepository.fileUpload(
+                type = FileType.FILE,
+                fileName = fileName,
+                fileMimeType = fileMimeType,
+                fileByteArray = fileByteArray,
+            ).collect {
                     when (it) {
                         is Result.Success -> {
                             editProfile(name, it.data.url, "")
@@ -134,41 +137,6 @@ class SettingViewModel @Inject constructor(
                         }
                     }
                 }
-            }
-        }
-    }
-
-    private fun uriToFile(context: Context, uri: Uri): File? {
-        val contentResolver: ContentResolver = context.contentResolver
-        val file = createTempFile(context, uri)
-
-        file?.let {
-            try {
-                val inputStream: InputStream? = contentResolver.openInputStream(uri)
-                val outputStream: OutputStream = FileOutputStream(file)
-                inputStream?.copyTo(outputStream)
-                inputStream?.close()
-                outputStream.close()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                return null
-            }
-        }
-        return file
-    }
-
-    private fun createTempFile(context: Context, uri: Uri): File? {
-        val fileName = uri.lastPathSegment?.split("/")?.lastOrNull()
-        return try {
-            val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-            File.createTempFile(
-                fileName ?: "temp_image",
-                ".jpg",
-                storageDir,
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
         }
     }
 }

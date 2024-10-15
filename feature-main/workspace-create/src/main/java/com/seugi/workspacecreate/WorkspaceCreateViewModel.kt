@@ -30,7 +30,7 @@ class WorkspaceCreateViewModel @Inject constructor(
     private val _sideEffect = Channel<WorkspaceCreateSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
 
-    private fun createWorkspace(workspaceName: String, workspaceImage: String) {
+    fun createWorkspace(workspaceName: String, workspaceImage: String) {
         viewModelScope.launch {
             workspaceRepository.createWorkspace(
                 workspaceName = workspaceName,
@@ -51,67 +51,27 @@ class WorkspaceCreateViewModel @Inject constructor(
         }
     }
 
-    fun fileUpload(context: Context, workspaceUri: Uri?, workspaceName: String) {
+    fun fileUpload(workspaceName: String,fileByteArray: ByteArray, fileMimeType: String, fileName: String, fileByte: Long) {
         viewModelScope.launch {
-            val file: String
-            if (workspaceUri != null) {
-                file = uriToFile(context = context, uri = workspaceUri).toString()
-                fileRepository.fileUpload(file = file, type = FileType.IMG).collect {
-                    when (it) {
-                        is Result.Success -> {
-                            createWorkspace(
-                                workspaceName = workspaceName,
-                                workspaceImage = it.data.url,
-                            )
-                        }
-                        is Result.Error -> {
-                            it.throwable.printStackTrace()
-                            _sideEffect.send(WorkspaceCreateSideEffect.Error(it.throwable))
-                        }
-                        else -> {
-                        }
+            fileRepository.fileUpload(
+                type = FileType.FILE,
+                fileName = fileName,
+                fileMimeType = fileMimeType,
+                fileByteArray = fileByteArray,
+            ).collect {
+                when (it) {
+                    is Result.Success -> {
+                        createWorkspace(workspaceName, it.data.url)
+                    }
+
+                    is Result.Error -> {
+                        it.throwable.printStackTrace()
+                    }
+
+                    else -> {
                     }
                 }
-            } else {
-                createWorkspace(
-                    workspaceName = workspaceName,
-                    workspaceImage = "",
-                )
             }
-        }
-    }
-
-    private fun uriToFile(context: Context, uri: Uri): File? {
-        val contentResolver: ContentResolver = context.contentResolver
-        val file = createTempFile(context, uri)
-
-        file?.let {
-            try {
-                val inputStream: InputStream? = contentResolver.openInputStream(uri)
-                val outputStream: OutputStream = FileOutputStream(file)
-                inputStream?.copyTo(outputStream)
-                inputStream?.close()
-                outputStream.close()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                return null
-            }
-        }
-        return file
-    }
-
-    private fun createTempFile(context: Context, uri: Uri): File? {
-        val fileName = uri.lastPathSegment?.split("/")?.lastOrNull()
-        return try {
-            val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-            File.createTempFile(
-                fileName ?: "temp_image",
-                ".jpg",
-                storageDir,
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
         }
     }
 }

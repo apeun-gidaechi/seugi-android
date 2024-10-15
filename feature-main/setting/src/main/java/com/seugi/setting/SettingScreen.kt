@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +45,10 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.setting.model.SettingSideEffect
 import com.seugi.ui.CollectAsSideEffect
+import com.seugi.ui.getFileName
+import com.seugi.ui.getFileSize
+import com.seugi.ui.getMimeType
+import com.seugi.ui.getUriByteArray
 
 @Composable
 internal fun SettingScreen(
@@ -57,12 +62,23 @@ internal fun SettingScreen(
     val uriHandler = LocalUriHandler.current
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
+    val contentResolver = context.contentResolver
+
 
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
     ) { uri: Uri? ->
-        selectedImageUri = uri
-        viewModel.fileUpload(name = profileModel.member.name, context = context, profileUri = selectedImageUri)
+        if (uri != null) {
+            selectedImageUri = uri
+            contentResolver.getUriByteArray(uri)
+            viewModel.fileUpload(
+                name = profileModel.member.name,
+                fileName = contentResolver.getFileName(uri).toString(),
+                fileMimeType = contentResolver.getMimeType(uri).toString(),
+                fileByteArray = contentResolver.getUriByteArray(uri),
+                fileByte = contentResolver.getFileSize(uri)
+            )
+        }
     }
 
     val uiState by viewModel.state.collectAsStateWithLifecycle()
