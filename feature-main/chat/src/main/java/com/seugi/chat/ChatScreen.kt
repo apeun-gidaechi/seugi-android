@@ -3,9 +3,11 @@ package com.seugi.chat
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
@@ -36,7 +38,13 @@ import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
-internal fun ChatScreen(viewModel: ChatViewModel = hiltViewModel(), workspaceId: String, navigateToChatDetail: (chatID: String) -> Unit) {
+internal fun ChatScreen(
+    viewModel: ChatViewModel = hiltViewModel(),
+    userId: Int,
+    workspaceId: String,
+    navigateToChatDetail: (chatID: String) -> Unit,
+    navigateToCreateRoom: (workspaceId: String, userId: Int) -> Unit,
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
     var searchText by remember { mutableStateOf("") }
@@ -88,6 +96,14 @@ internal fun ChatScreen(viewModel: ChatViewModel = hiltViewModel(), workspaceId:
                 },
                 actions = {
                     if (!isSearchMode) {
+                        SeugiIconButton(
+                            resId = R.drawable.ic_add_fill,
+                            size = 28.dp,
+                            onClick = {
+                                navigateToCreateRoom(workspaceId, userId)
+                            },
+                        )
+                        Spacer(modifier = Modifier.width(16.dp))
                         SeugiIconButton(
                             resId = R.drawable.ic_search,
                             size = 28.dp,
