@@ -129,5 +129,6 @@ include(
     ":feature-main:notification-edit",
     ":feature-main:setting",
     ":feature-main:meal-widget",
+    ":feature-main:timetable-widget",
     ":ui"
 )

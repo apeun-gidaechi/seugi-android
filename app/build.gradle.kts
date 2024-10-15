@@ -54,5 +54,6 @@ dependencies {
     implementation(projects.data.token)
     implementation(projects.data.firebaseToken)
     implementation(projects.featureMain.mealWidget)
+    implementation(projects.featureMain.timetableWidget)
 
 }

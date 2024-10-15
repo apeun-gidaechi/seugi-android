@@ -43,7 +43,7 @@
         <receiver
             android:name=".meal.widget.MealWidgetReceiver"
             android:exported="true"
-            android:label="Hello World">
+            android:label="급식 위젯">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -55,6 +55,23 @@
 
         <service
             android:name=".meal.widget.MealWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <receiver
+            android:name=".timetable.widget.TimetableWidgetReceiver"
+            android:exported="true"
+            android:label="시간표 위젯">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/timetable_widget_info"
+                />
+        </receiver>
+
+        <service
+            android:name=".timetable.widget.TimetableWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
 
