@@ -21,7 +21,7 @@ fun NavGraphBuilder.settingScreen(profileModel: ProfileModel, navigationToOnboar
             navigationToOnboarding = navigationToOnboarding,
             popBackStack = popBackStack,
             showSnackbar = showSnackbar,
-            reloadProfile = reloadProfile
+            reloadProfile = reloadProfile,
         )
     }
 }

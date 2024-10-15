@@ -19,6 +19,10 @@ import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.setting.model.SettingSideEffect
 import com.seugi.setting.model.SettingUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
@@ -27,10 +31,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
@@ -95,14 +95,14 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-    private fun editProfile(name: String, profileImage: String, birth: String){
+    private fun editProfile(name: String, profileImage: String, birth: String) {
         viewModelScope.launch {
             memberRepository.editProfile(
                 name = name,
                 picture = profileImage,
-                birth = birth
-            ).collect{
-                when(it){
+                birth = birth,
+            ).collect {
+                when (it) {
                     is Result.Error -> {
                         it.throwable.printStackTrace()
                     }
@@ -128,7 +128,6 @@ class SettingViewModel @Inject constructor(
 
                         is Result.Error -> {
                             it.throwable.printStackTrace()
-
                         }
 
                         else -> {
@@ -173,6 +172,3 @@ class SettingViewModel @Inject constructor(
         }
     }
 }
-
-
-

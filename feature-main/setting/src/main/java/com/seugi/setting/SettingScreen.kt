@@ -1,7 +1,6 @@
 package com.seugi.setting
 
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -53,7 +52,7 @@ internal fun SettingScreen(
     navigationToOnboarding: () -> Unit,
     popBackStack: () -> Unit,
     showSnackbar: (text: String) -> Unit,
-    reloadProfile: () -> Unit
+    reloadProfile: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
@@ -123,7 +122,7 @@ internal fun SettingScreen(
                                 .bounceClick(
                                     onClick = {
                                         galleryLauncher.launch("image/*")
-                                    }
+                                    },
                                 ),
                         ) {
                             SeugiAvatar(

@@ -2,7 +2,6 @@ package com.seugi.data.member
 
 import com.seugi.common.model.Result
 import com.seugi.data.core.model.TokenModel
-import com.seugi.network.core.response.Response
 import com.seugi.network.request.EmailSignInRequest
 import kotlinx.coroutines.flow.Flow
 

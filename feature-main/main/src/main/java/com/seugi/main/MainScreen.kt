@@ -318,7 +318,7 @@ internal fun MainScreen(
                 navigationToOnboarding = mainToOnboarding,
                 popBackStack = navHostController::popBackStack,
                 showSnackbar = showSnackbar,
-                reloadProfile = viewModel::loadLocalWorkspace
+                reloadProfile = viewModel::loadLocalWorkspace,
             )
         }
     }

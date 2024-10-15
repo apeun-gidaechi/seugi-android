@@ -8,7 +8,6 @@ import com.seugi.data.core.mapper.toModel
 import com.seugi.data.core.model.TokenModel
 import com.seugi.data.member.MemberRepository
 import com.seugi.network.MemberDatasource
-import com.seugi.network.core.response.Response
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.request.EmailSignInRequest
 import javax.inject.Inject
@@ -62,16 +61,12 @@ class MemberRepositoryImpl @Inject constructor(
         .flowOn(dispatcher)
         .asResult()
 
-    override suspend fun editProfile(
-        name: String,
-        picture: String,
-        birth: String
-    ): Flow<Result<Boolean>> {
+    override suspend fun editProfile(name: String, picture: String, birth: String): Flow<Result<Boolean>> {
         return flow {
             val response = datasource.editProfile(
                 name = name,
                 picture = picture,
-                birth = birth
+                birth = birth,
             ).safeResponse()
 
             emit(response)

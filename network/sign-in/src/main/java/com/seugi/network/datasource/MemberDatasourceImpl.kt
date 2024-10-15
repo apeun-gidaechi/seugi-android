@@ -48,14 +48,14 @@ class MemberDatasourceImpl @Inject constructor(
     }.body()
 
     override suspend fun editProfile(name: String, picture: String, birth: String): Response = httpClient.patch(
-        SeugiUrl.Member.EDIT
-    ){
+        SeugiUrl.Member.EDIT,
+    ) {
         setBody(
             EditRequest(
                 name = name,
                 picture = picture,
-                birth = birth
-            )
+                birth = birth,
+            ),
         )
     }.body()
 }
