@@ -130,13 +130,15 @@ internal fun SettingScreen(
                                 type = AvatarType.ExtraLarge,
                                 image = profileModel.member.picture.ifEmpty { null },
                             )
-                            Image(
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .align(Alignment.BottomEnd),
-                                painter = painterResource(id = R.drawable.ic_add_fill),
-                                contentDescription = null,
-                            )
+                            if (profileModel.member.picture.isEmpty()) {
+                                Image(
+                                    modifier = Modifier
+                                        .size(24.dp)
+                                        .align(Alignment.BottomEnd),
+                                    painter = painterResource(id = R.drawable.ic_add_fill),
+                                    contentDescription = null,
+                                )
+                            }
                         }
                     }
                 }
