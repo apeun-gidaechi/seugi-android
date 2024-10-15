@@ -283,11 +283,11 @@ fun WorkspaceDetailScreen(
                         onClick = {},
                         modifier = Modifier.padding(start = 20.dp),
                     )
-                }else{
+                } else {
                     SeugiRoundedCircleImage(
                         size = Size.ExtraSmall,
                         onClick = {},
-                        modifier = Modifier.padding(start = 20.dp)
+                        modifier = Modifier.padding(start = 20.dp),
                     )
                 }
                 Column(

@@ -1,9 +1,5 @@
 package com.seugi.workspacecreate
 
-import android.content.ContentResolver
-import android.content.Context
-import android.net.Uri
-import android.os.Environment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
@@ -12,10 +8,6 @@ import com.seugi.data.file.model.FileType
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.workspacecreate.model.WorkspaceCreateSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
 import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -51,7 +43,7 @@ class WorkspaceCreateViewModel @Inject constructor(
         }
     }
 
-    fun fileUpload(workspaceName: String,fileByteArray: ByteArray, fileMimeType: String, fileName: String, fileByte: Long) {
+    fun fileUpload(workspaceName: String, fileByteArray: ByteArray, fileMimeType: String, fileName: String, fileByte: Long) {
         viewModelScope.launch {
             fileRepository.fileUpload(
                 type = FileType.FILE,

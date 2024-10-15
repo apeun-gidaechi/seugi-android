@@ -165,7 +165,7 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
                     onClick = {
                         schoolNameError = schoolNameText.isEmpty()
                         if (!schoolNameError) {
-                            if (selectedImageUri != null){
+                            if (selectedImageUri != null) {
                                 viewModel.fileUpload(
                                     workspaceName = schoolNameText,
                                     fileName = contentResolver.getFileName(selectedImageUri!!)
@@ -173,12 +173,12 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
                                     fileMimeType = contentResolver.getMimeType(selectedImageUri!!)
                                         .toString(),
                                     fileByteArray = contentResolver.getUriByteArray(selectedImageUri!!),
-                                    fileByte = contentResolver.getFileSize(selectedImageUri!!)
+                                    fileByte = contentResolver.getFileSize(selectedImageUri!!),
                                 )
-                            }else {
+                            } else {
                                 viewModel.createWorkspace(
                                     workspaceName = schoolNameText,
-                                    workspaceImage = ""
+                                    workspaceImage = "",
                                 )
                             }
                         }

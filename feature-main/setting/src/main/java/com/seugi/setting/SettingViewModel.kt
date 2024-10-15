@@ -1,9 +1,5 @@
 package com.seugi.setting
 
-import android.content.ContentResolver
-import android.content.Context
-import android.net.Uri
-import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,10 +15,6 @@ import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.setting.model.SettingSideEffect
 import com.seugi.setting.model.SettingUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.Channel
@@ -116,7 +108,7 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-    fun fileUpload(name: String,fileByteArray: ByteArray, fileMimeType: String, fileName: String, fileByte: Long) {
+    fun fileUpload(name: String, fileByteArray: ByteArray, fileMimeType: String, fileName: String, fileByte: Long) {
         viewModelScope.launch {
             fileRepository.fileUpload(
                 type = FileType.FILE,
@@ -124,19 +116,19 @@ class SettingViewModel @Inject constructor(
                 fileMimeType = fileMimeType,
                 fileByteArray = fileByteArray,
             ).collect {
-                    when (it) {
-                        is Result.Success -> {
-                            editProfile(name, it.data.url, "")
-                        }
+                when (it) {
+                    is Result.Success -> {
+                        editProfile(name, it.data.url, "")
+                    }
 
-                        is Result.Error -> {
-                            it.throwable.printStackTrace()
-                        }
+                    is Result.Error -> {
+                        it.throwable.printStackTrace()
+                    }
 
-                        else -> {
-                        }
+                    else -> {
                     }
                 }
+            }
         }
     }
 }

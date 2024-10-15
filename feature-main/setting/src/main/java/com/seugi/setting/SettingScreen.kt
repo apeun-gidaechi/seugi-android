@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,7 +63,6 @@ internal fun SettingScreen(
     val context = LocalContext.current
     val contentResolver = context.contentResolver
 
-
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
     ) { uri: Uri? ->
@@ -76,7 +74,7 @@ internal fun SettingScreen(
                 fileName = contentResolver.getFileName(uri).toString(),
                 fileMimeType = contentResolver.getMimeType(uri).toString(),
                 fileByteArray = contentResolver.getUriByteArray(uri),
-                fileByte = contentResolver.getFileSize(uri)
+                fileByte = contentResolver.getFileSize(uri),
             )
         }
     }
