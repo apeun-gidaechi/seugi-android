@@ -905,6 +905,7 @@ internal fun MessageParent.getUserCount(users: List<UserInfoModel>): ImmutableLi
 
         // 해당 메세지를 읽은 유저 카운트
         val binaryIndex = users.binarySearch {
+            Log.d("TAG", "getUserCount: ${it.utcTimeMillis} $utcTimeMillis")
             when {
                 it.utcTimeMillis >= utcTimeMillis -> 0
                 else -> -1
