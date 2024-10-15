@@ -536,6 +536,11 @@ class ChatDetailViewModel @Inject constructor(
                 )
             }
 
+            if (formerItem is MessageParent.Enter || formerItem is MessageParent.Left) {
+                isFirst = true
+            }
+            Log.d("TAG", "collectMessage: ${isFirst} ${messageParent.userId} ${formerItem?.userId}")
+
             val newData = when (messageParent) {
                 is MessageParent.Me -> messageParent.copy(
                     isLast = isLast,
@@ -853,14 +858,12 @@ internal fun MessageParent.getUserCount(users: List<UserInfoModel>): ImmutableLi
 
         // 현재 접속중인 유저수 세기
         users.takeWhile {
-            Log.d("TAG", "getUserCount: ")
             if (it.utcTimeMillis == 0L) {
                 readUsers.add(it.userInfo.id)
             }
             it.utcTimeMillis == 0L
         }
 
-        Log.d("TAG", "접속중인 유저수 :  $readUsers")
 
         // 해당 메세지를 읽은 유저 카운트
         val binaryIndex = users.binarySearch {
@@ -869,23 +872,14 @@ internal fun MessageParent.getUserCount(users: List<UserInfoModel>): ImmutableLi
                 else -> -1
             }
         }
-        Log.d("TAG", "getUserCount: $utcTimeMillis")
-        Log.d("TAG", "getUserCount: $binaryIndex")
 
         val index = if (binaryIndex >= 0) binaryIndex else users.size
         for (i in index until users.size) {
             val user = users.getOrNull(i)
             if (user != null) {
-                Log.d("TAG", "getUserCount: ${user.userInfo.id } ${user.utcTimeMillis}")
                 readUsers.add(user.userInfo.id)
             }
         }
-        Log.d("TAG", "다 읽은 유저수 :  $readUsers")
-//            users.forEach { userInfo ->
-//                if (userInfo.utcTimeMillis == 0L || userInfo.utcTimeMillis >= utcTimeMillis) {
-//                    readUsers.add(userInfo.userInfo.id)
-//                }
-//            }
         readUsers.toImmutableList()
     }
     is MessageParent.Other -> {
@@ -894,14 +888,14 @@ internal fun MessageParent.getUserCount(users: List<UserInfoModel>): ImmutableLi
 
         // 현재 접속중인 유저수 세기
         users.takeWhile {
-            Log.d("TAG", "getUserCount: ")
+//            Log.d("TAG", "getUserCount: ")
             if (it.utcTimeMillis == 0L) {
                 readUsers.add(it.userInfo.id)
             }
             it.utcTimeMillis == 0L
         }
 
-        Log.d("TAG", "접속중인 유저수 :  $readUsers")
+//        Log.d("TAG", "접속중인 유저수 :  $readUsers")
 
         // 해당 메세지를 읽은 유저 카운트
         val binaryIndex = users.binarySearch {
@@ -911,18 +905,18 @@ internal fun MessageParent.getUserCount(users: List<UserInfoModel>): ImmutableLi
                 else -> -1
             }
         }
-        Log.d("TAG", "getUserCount: $utcTimeMillis")
-        Log.d("TAG", "getUserCount: $binaryIndex")
+//        Log.d("TAG", "getUserCount: $utcTimeMillis")
+//        Log.d("TAG", "getUserCount: $binaryIndex")
 
         val index = if (binaryIndex >= 0) binaryIndex else users.size
         for (i in index until users.size) {
             val user = users.getOrNull(i)
             if (user != null) {
-                Log.d("TAG", "getUserCount: ${user.userInfo.id } ${user.utcTimeMillis}")
+//                Log.d("TAG", "getUserCount: ${user.userInfo.id } ${user.utcTimeMillis}")
                 readUsers.add(user.userInfo.id)
             }
         }
-        Log.d("TAG", "다 읽은 유저수 :  $readUsers")
+//        Log.d("TAG", "다 읽은 유저수 :  $readUsers")
 //            users.forEach { userInfo ->
 //                if (userInfo.utcTimeMillis == 0L || userInfo.utcTimeMillis >= utcTimeMillis) {
 //                    readUsers.add(userInfo.userInfo.id)
