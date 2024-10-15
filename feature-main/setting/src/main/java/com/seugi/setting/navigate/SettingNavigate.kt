@@ -14,13 +14,14 @@ fun NavController.navigateToSetting(navOptions: NavOptions? = null) = this.navig
     navOptions = navOptions,
 )
 
-fun NavGraphBuilder.settingScreen(profileModel: ProfileModel, navigationToOnboarding: () -> Unit, popBackStack: () -> Unit, showSnackbar: (text: String) -> Unit) {
+fun NavGraphBuilder.settingScreen(profileModel: ProfileModel, navigationToOnboarding: () -> Unit, popBackStack: () -> Unit, showSnackbar: (text: String) -> Unit, reloadProfile: () -> Unit) {
     composable(SETTING_ROUTE) {
         SettingScreen(
             profileModel = profileModel,
             navigationToOnboarding = navigationToOnboarding,
             popBackStack = popBackStack,
             showSnackbar = showSnackbar,
+            reloadProfile = reloadProfile
         )
     }
 }

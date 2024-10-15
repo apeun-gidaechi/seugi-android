@@ -53,6 +53,7 @@ internal fun SettingScreen(
     navigationToOnboarding: () -> Unit,
     popBackStack: () -> Unit,
     showSnackbar: (text: String) -> Unit,
+    reloadProfile: () -> Unit
 ) {
     val uriHandler = LocalUriHandler.current
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
@@ -79,7 +80,7 @@ internal fun SettingScreen(
             }
 
             SettingSideEffect.SuccessEdit -> {
-
+                reloadProfile()
                 showSnackbar("멤버 정보 변경 성공 !!")
             }
         }
