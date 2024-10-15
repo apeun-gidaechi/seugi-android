@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext as LocalContext1
 import androidx.compose.ui.res.painterResource
@@ -126,120 +127,126 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToMain: () -
     }
 
     SeugiTheme {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    brush = GradientPrimary,
-                ),
         ) {
-            Spacer(modifier = Modifier.height(70.dp))
-
-            AnimatedVisibility(
-                visible = visibleCloud1,
-                enter = slideInVertically(
-                    initialOffsetY = { 120 },
-                    animationSpec = tween(durationMillis = 1000),
-                ) + fadeIn(
-                    initialAlpha = 0f,
-                    animationSpec = tween(durationMillis = 1000),
-                ),
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = GradientPrimary,
+                    ),
             ) {
-                Box(modifier = Modifier.padding(bottom = 20.dp)) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End,
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.img_cloud1),
-                            contentDescription = "",
-                        )
-                    }
-                }
-            }
+                Spacer(modifier = Modifier.height(70.dp))
 
-            AnimatedVisibility(
-                visible = visibleText,
-                enter = slideInVertically(
-                    initialOffsetY = { 120 },
-                    animationSpec = tween(durationMillis = 1000),
-                ) + fadeIn(
-                    initialAlpha = 0f,
-                    animationSpec = tween(durationMillis = 1000),
-                ),
-            ) {
-                Box(modifier = Modifier.padding(bottom = 20.dp)) {
-                    Column(
-                        modifier = Modifier.padding(start = 24.dp),
-                    ) {
-                        Text(
-                            text = "스기",
-                            style = SeugiTheme.typography.display1,
-                            color = SeugiTheme.colors.white,
-                        )
-                        Text(
-                            text = "학생, 선생님 모두 함께하는\n스마트 스쿨 플랫폼",
-                            style = SeugiTheme.typography.subtitle2,
-                            color = SeugiTheme.colors.white,
-                        )
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            AnimatedVisibility(
-                visible = visibleCloud2,
-                enter = slideInVertically(
-                    initialOffsetY = { 120 },
-                    animationSpec = tween(durationMillis = 1000),
-                ) + fadeIn(
-                    initialAlpha = 0f,
-                    animationSpec = tween(durationMillis = 1000),
-                ),
-            ) {
-                Box(modifier = Modifier.padding(bottom = 20.dp)) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Start,
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.img_cloud2),
-                            contentDescription = "",
-                        )
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            AnimatedVisibility(
-                visible = visibleButton,
-                enter = slideInVertically(
-                    initialOffsetY = { it },
-                    animationSpec = tween(durationMillis = 1000),
-                ) + fadeIn(
-                    initialAlpha = 0f,
-                    animationSpec = tween(durationMillis = 1000),
-                ),
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(bottom = 20.dp),
-                    verticalArrangement = Arrangement.Bottom,
+                AnimatedVisibility(
+                    visible = visibleCloud1,
+                    enter = slideInVertically(
+                        initialOffsetY = { 120 },
+                        animationSpec = tween(durationMillis = 1000),
+                    ) + fadeIn(
+                        initialAlpha = 0f,
+                        animationSpec = tween(durationMillis = 1000),
+                    ),
                 ) {
-                    SeugiFullWidthButton(
-                        onClick = { showBottomSheet = true },
-                        type = ButtonType.Transparent,
-                        text = "시작하기",
-                        modifier = Modifier
-                            .padding(horizontal = 20.dp),
-                    )
+                    Box(modifier = Modifier.padding(bottom = 20.dp)) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End,
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.img_cloud1),
+                                contentDescription = "",
+                            )
+                        }
+                    }
                 }
+
+                AnimatedVisibility(
+                    visible = visibleText,
+                    enter = slideInVertically(
+                        initialOffsetY = { 120 },
+                        animationSpec = tween(durationMillis = 1000),
+                    ) + fadeIn(
+                        initialAlpha = 0f,
+                        animationSpec = tween(durationMillis = 1000),
+                    ),
+                ) {
+                    Box(modifier = Modifier.padding(bottom = 20.dp)) {
+                        Column(
+                            modifier = Modifier.padding(start = 24.dp),
+                        ) {
+                            Text(
+                                text = "스기",
+                                style = SeugiTheme.typography.display1,
+                                color = SeugiTheme.colors.white,
+                            )
+                            Text(
+                                text = "학생, 선생님 모두 함께하는\n스마트 스쿨 플랫폼",
+                                style = SeugiTheme.typography.subtitle2,
+                                color = SeugiTheme.colors.white,
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                AnimatedVisibility(
+                    visible = visibleCloud2,
+                    enter = slideInVertically(
+                        initialOffsetY = { 120 },
+                        animationSpec = tween(durationMillis = 1000),
+                    ) + fadeIn(
+                        initialAlpha = 0f,
+                        animationSpec = tween(durationMillis = 1000),
+                    ),
+                ) {
+                    Box(modifier = Modifier.padding(bottom = 20.dp)) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Start,
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.img_cloud2),
+                                contentDescription = "",
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+        }
+
+        AnimatedVisibility(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 20.dp),
+            visible = visibleButton,
+            enter = slideInVertically(
+                initialOffsetY = { it },
+                animationSpec = tween(durationMillis = 1000),
+            ) + fadeIn(
+                initialAlpha = 0f,
+                animationSpec = tween(durationMillis = 1000),
+            ),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.Bottom,
+            ) {
+                SeugiFullWidthButton(
+                    onClick = { showBottomSheet = true },
+                    type = ButtonType.Transparent,
+                    text = "시작하기",
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp),
+                )
             }
+        }
 
             if (showBottomSheet) {
                 ModalBottomSheet(
