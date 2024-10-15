@@ -62,15 +62,11 @@ internal fun MealCard(uiState: CommonUiState<MealUiState>, onClickDetail: () -> 
     val indicatorOffset by remember {
         derivedStateOf { (pagerState.currentPage * 10).dp }
     }
-    var nowButtonState by remember { mutableStateOf(ButtonState.Idle) }
     HomeCard(
         text = "오늘의 급식",
         image = painterResource(id = R.drawable.ic_utensils_line),
         colorFilter = ColorFilter.tint(SeugiTheme.colors.gray600),
         onClickDetail = onClickDetail,
-        onChangeButtonState = {
-            nowButtonState = it
-        },
     ) {
         when (uiState) {
             is CommonUiState.Success -> {

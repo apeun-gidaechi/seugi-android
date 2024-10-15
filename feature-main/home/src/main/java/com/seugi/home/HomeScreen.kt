@@ -282,7 +282,6 @@ internal fun HomeCard(
     onClickDetail: () -> Unit,
     image: Painter,
     colorFilter: ColorFilter? = null,
-    onChangeButtonState: (ButtonState) -> Unit = {},
     content: @Composable () -> Unit,
 ) {
     Column(
@@ -301,8 +300,6 @@ internal fun HomeCard(
             modifier = Modifier
                 .bounceClick(
                     onClick = onClickDetail,
-                    onChangeButtonState = onChangeButtonState,
-                    requireUnconsumed = true,
                     enabled = false,
                 ),
         ) {

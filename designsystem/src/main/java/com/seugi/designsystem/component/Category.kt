@@ -29,13 +29,10 @@ import com.seugi.designsystem.theme.SeugiTheme
  */
 @Composable
 fun SeugiCategory(modifier: Modifier = Modifier, category: String, isChoose: Boolean, onClick: () -> Unit = {}) {
-    var buttonState by remember { mutableStateOf(ButtonState.Idle) }
-
     val animBackgroundColor by animateColorAsState(
         targetValue = when {
-            isChoose && buttonState == ButtonState.Idle -> SeugiTheme.colors.primary500
-            isChoose && buttonState == ButtonState.Hold -> SeugiTheme.colors.primary500.copy(alpha = 0.7f)
-            !isChoose && buttonState == ButtonState.Hold -> SeugiTheme.colors.gray100.copy(alpha = 0.7f)
+            isChoose -> SeugiTheme.colors.primary500
+            !isChoose -> SeugiTheme.colors.gray100.copy(alpha = 0.7f)
             else -> SeugiTheme.colors.gray100
         },
         label = "",
@@ -49,9 +46,6 @@ fun SeugiCategory(modifier: Modifier = Modifier, category: String, isChoose: Boo
         modifier = modifier
             .bounceClick(
                 onClick = onClick,
-                onChangeButtonState = {
-                    buttonState = it
-                },
             ),
         shape = RoundedCornerShape(17.dp),
         color = animBackgroundColor,

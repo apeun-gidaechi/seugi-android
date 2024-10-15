@@ -38,25 +38,13 @@ sealed class ListItemType {
 
 @Composable
 fun SeugiListItem(modifier: Modifier = Modifier, type: ListItemType = ListItemType.Normal, text: String, onClick: () -> Unit) {
-    var buttonState by remember { mutableStateOf(ButtonState.Idle) }
-    val animColor by animateColorAsState(
-        targetValue = if (buttonState == ButtonState.Idle) SeugiTheme.colors.white else SeugiTheme.colors.gray100,
-        label = "",
-    )
 
     Box(
         modifier = modifier
             .fillMaxWidth()
             .height(56.dp)
-            .background(
-                color = animColor,
-                shape = RoundedCornerShape(8.dp),
-            )
             .bounceClick(
                 onClick = onClick,
-                onChangeButtonState = {
-                    buttonState = it
-                },
             ),
     ) {
         Row(
