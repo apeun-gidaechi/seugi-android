@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
@@ -94,14 +95,35 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-    fun fileUpload(context: Context, profileUri: Uri?) {
+    private fun editProfile(name: String, profileImage: String, birth: String){
+        viewModelScope.launch {
+            memberRepository.editProfile(
+                name = name,
+                picture = profileImage,
+                birth = birth
+            ).collect{
+                when(it){
+                    is Result.Error -> {
+                        it.throwable.printStackTrace()
+                    }
+                    is Result.Loading -> {}
+                    is Result.Success -> {
+                        _sideEffect.send(SettingSideEffect.SuccessEdit)
+                        Log.d("TAG", "editProfile: ${it.data}")
+                    }
+                }
+            }
+        }
+    }
+
+    fun fileUpload(name: String, context: Context, profileUri: Uri?) {
         viewModelScope.launch {
             if (profileUri != null) {
-                val file = uriToFile(context = context, uri = profileUri!!).toString()
+                val file = uriToFile(context = context, uri = profileUri).toString()
                 fileRepository.fileUpload(file = file, type = FileType.IMG).collect {
                     when (it) {
                         is Result.Success -> {
-
+                            editProfile(name, it.data.url, "")
                         }
 
                         is Result.Error -> {

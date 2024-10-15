@@ -62,7 +62,7 @@ internal fun SettingScreen(
         contract = ActivityResultContracts.GetContent(),
     ) { uri: Uri? ->
         selectedImageUri = uri
-        viewModel.fileUpload(context = context, profileUri = selectedImageUri)
+        viewModel.fileUpload(name = profileModel.member.name, context = context, profileUri = selectedImageUri)
     }
 
     val uiState by viewModel.state.collectAsStateWithLifecycle()
@@ -76,6 +76,11 @@ internal fun SettingScreen(
             }
             is SettingSideEffect.FailedWithdraw -> {
                 showSnackbar("회원탈퇴에 실패했습니다.")
+            }
+
+            SettingSideEffect.SuccessEdit -> {
+
+                showSnackbar("멤버 정보 변경 성공 !!")
             }
         }
     }
