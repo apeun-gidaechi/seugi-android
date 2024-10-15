@@ -129,7 +129,7 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToMain: () -
     SeugiTheme {
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             Column(
                 modifier = Modifier
@@ -218,35 +218,35 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToMain: () -
                     }
                 }
                 Spacer(modifier = Modifier.height(20.dp))
-        }
-
-        AnimatedVisibility(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 20.dp),
-            visible = visibleButton,
-            enter = slideInVertically(
-                initialOffsetY = { it },
-                animationSpec = tween(durationMillis = 1000),
-            ) + fadeIn(
-                initialAlpha = 0f,
-                animationSpec = tween(durationMillis = 1000),
-            ),
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.Bottom,
-            ) {
-                SeugiFullWidthButton(
-                    onClick = { showBottomSheet = true },
-                    type = ButtonType.Transparent,
-                    text = "시작하기",
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp),
-                )
             }
-        }
+
+            AnimatedVisibility(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 20.dp),
+                visible = visibleButton,
+                enter = slideInVertically(
+                    initialOffsetY = { it },
+                    animationSpec = tween(durationMillis = 1000),
+                ) + fadeIn(
+                    initialAlpha = 0f,
+                    animationSpec = tween(durationMillis = 1000),
+                ),
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.Bottom,
+                ) {
+                    SeugiFullWidthButton(
+                        onClick = { showBottomSheet = true },
+                        type = ButtonType.Transparent,
+                        text = "시작하기",
+                        modifier = Modifier
+                            .padding(horizontal = 20.dp),
+                    )
+                }
+            }
 
             if (showBottomSheet) {
                 ModalBottomSheet(
