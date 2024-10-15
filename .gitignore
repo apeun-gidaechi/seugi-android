@@ -10,7 +10,7 @@ report/
 # Local configuration file (sdk path, etc)
 local.properties
 
-feature-onboarding/start/src/main/res/values/*
+seugi-android/feature-onboarding/start/src/main/res/values/*
 
 # Log/OS Files
 *.log
