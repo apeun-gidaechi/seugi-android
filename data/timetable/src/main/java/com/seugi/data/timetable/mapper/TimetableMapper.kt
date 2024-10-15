@@ -1,10 +1,8 @@
 package com.seugi.data.timetable.mapper
 
-import com.seugi.common.utiles.toKotlinLocalDate
 import com.seugi.data.timetable.model.TimetableModel
 import com.seugi.network.timetable.response.TimetableResponse
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.toKotlinLocalDate
 
 fun TimetableResponse.toModel() = TimetableModel(
     id = id,

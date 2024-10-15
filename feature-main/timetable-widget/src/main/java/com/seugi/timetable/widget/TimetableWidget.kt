@@ -12,21 +12,21 @@ import com.seugi.data.timetable.model.TimetableModel
 import com.seugi.timetable.widget.component.TimetableListProvider
 import com.seugi.timetable.widget.di.getTimetableRepository
 import com.seugi.timetable.widget.di.getWorkspaceRepository
+import java.time.LocalDate
+import kotlin.collections.ArrayList
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.datetime.toKotlinLocalDate
-import java.time.LocalDate
-import kotlin.collections.ArrayList
 
 private fun fetchTimetableData(context: Context, block: (Result<ImmutableList<TimetableModel>>) -> Unit) {
     CoroutineScope(Dispatchers.IO).launch {
         val workspaceRepository = getWorkspaceRepository(context)
         val timetableRepository = getTimetableRepository(context)
         timetableRepository.getTimetableDay(
-            workspaceId = workspaceRepository.getLocalWorkspaceId()
+            workspaceId = workspaceRepository.getLocalWorkspaceId(),
         ).collectLatest(block)
     }
 }

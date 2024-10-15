@@ -5,7 +5,6 @@ import android.content.Intent
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.seugi.timetable.widget.R
-
 import com.seugi.timetable.widget.TimetableWidgetReceiver
 
 class TimetableListProvider(private val context: Context, intent: Intent) :
