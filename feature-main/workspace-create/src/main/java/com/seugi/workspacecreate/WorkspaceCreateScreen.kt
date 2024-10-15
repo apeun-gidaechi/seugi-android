@@ -67,6 +67,7 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
                 Toast.makeText(context, it.throwable.message, Toast.LENGTH_SHORT).show()
             }
             is WorkspaceCreateSideEffect.SuccessCreate -> {
+                popBackStack()
                 Toast.makeText(context, "워크페이스가 성공적으로 등록되었습니다.", Toast.LENGTH_SHORT).show()
             }
         }
