@@ -111,7 +111,7 @@ class SettingViewModel @Inject constructor(
     fun fileUpload(name: String, fileByteArray: ByteArray, fileMimeType: String, fileName: String, fileByte: Long) {
         viewModelScope.launch {
             fileRepository.fileUpload(
-                type = FileType.FILE,
+                type = FileType.IMG,
                 fileName = fileName,
                 fileMimeType = fileMimeType,
                 fileByteArray = fileByteArray,
