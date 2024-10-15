@@ -104,14 +104,14 @@ class ChatDetailViewModel @Inject constructor(
         messageRepository.getMessage(
             chatRoomId = chatRoomId,
             timestamp = timestamp?.toKotlinLocalDateTime(),
-            userId = userId
+            userId = userId,
         ).collect {
             when (it) {
                 is Result.Success -> {
                     _state.update { uiState ->
                         uiState.copy(
                             isInit = true,
-                            isLastPage = it.data.messages.size != 30
+                            isLastPage = it.data.messages.size != 30,
                         )
                     }
                     it.data.messages.collectMessage()
@@ -483,7 +483,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun List<MessageParent>.collectMessage(): Unit  {
+    private fun List<MessageParent>.collectMessage() {
         // 생길 수 있는 문제점.
         // 최상단에 있는 Date와 충돌할 가능성이 있다. -> Date라면 지우고 추가 달리기
         // 최상단에 있는 채팅의 isFirst 변경해야할 수 있음 (둘다 유저가 같다면)
@@ -511,9 +511,11 @@ class ChatDetailViewModel @Inject constructor(
         if (lastItem is MessageParent.Other && lastItem.isFirst) {
             if (remoteFirstItem.userId == lastItem.userId) {
                 message.removeLast()
-                message.add(lastItem.copy(
-                    isFirst = false
-                ))
+                message.add(
+                    lastItem.copy(
+                        isFirst = false,
+                    ),
+                )
             }
         }
 
@@ -539,7 +541,7 @@ class ChatDetailViewModel @Inject constructor(
             if (formerItem is MessageParent.Enter || formerItem is MessageParent.Left) {
                 isFirst = true
             }
-            Log.d("TAG", "collectMessage: ${isFirst} ${messageParent.userId} ${formerItem?.userId}")
+            Log.d("TAG", "collectMessage: $isFirst ${messageParent.userId} ${formerItem?.userId}")
 
             val newData = when (messageParent) {
                 is MessageParent.Me -> messageParent.copy(
@@ -554,7 +556,6 @@ class ChatDetailViewModel @Inject constructor(
                 else -> messageParent
             }
             message.add(newData)
-
         }
 
         _state.update {
@@ -863,7 +864,6 @@ internal fun MessageParent.getUserCount(users: List<UserInfoModel>): ImmutableLi
             }
             it.utcTimeMillis == 0L
         }
-
 
         // 해당 메세지를 읽은 유저 카운트
         val binaryIndex = users.binarySearch {

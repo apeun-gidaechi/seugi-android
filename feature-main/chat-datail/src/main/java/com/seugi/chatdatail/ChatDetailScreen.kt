@@ -272,7 +272,7 @@ internal fun ChatDetailScreen(
         if (!scrollState.canScrollForward) {
             viewModel.loadMessage(
                 userId = userId,
-                chatRoomId = chatRoomId
+                chatRoomId = chatRoomId,
             )
         }
     }

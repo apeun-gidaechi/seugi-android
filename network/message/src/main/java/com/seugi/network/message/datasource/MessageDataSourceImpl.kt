@@ -48,10 +48,9 @@ class MessageDataSourceImpl @Inject constructor(
 
     override suspend fun getIsConnect(): Boolean = stompClient.isConnected
 
-    override suspend fun getMessage(chatRoomId: String, timestamp: LocalDateTime?): BaseResponse<MessageLoadResponse> =
-        httpClient.get("${SeugiUrl.Message.GET_MESSAGE}/$chatRoomId") {
-            parameter("timestamp", timestamp)
-        }.body<BaseResponse<MessageLoadResponse>>()
+    override suspend fun getMessage(chatRoomId: String, timestamp: LocalDateTime?): BaseResponse<MessageLoadResponse> = httpClient.get("${SeugiUrl.Message.GET_MESSAGE}/$chatRoomId") {
+        parameter("timestamp", timestamp)
+    }.body<BaseResponse<MessageLoadResponse>>()
 
     override suspend fun collectStompLifecycle(): Flow<MessageStompLifecycleResponse> = flow {
         stompClient.lifecycle().asFlow().collect {
