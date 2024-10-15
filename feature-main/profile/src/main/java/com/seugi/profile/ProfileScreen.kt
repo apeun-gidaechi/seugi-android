@@ -170,7 +170,10 @@ internal fun ProfileScreen(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Spacer(modifier = Modifier.width(16.dp))
-            SeugiAvatar(type = AvatarType.Medium)
+            SeugiAvatar(
+                type = AvatarType.Medium,
+                image = myProfile.member.picture.ifEmpty { null },
+            )
             Spacer(modifier = Modifier.width(10.dp))
             Text(
                 text = myProfile.member.name,

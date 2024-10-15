@@ -17,4 +17,6 @@ dependencies {
     implementation(projects.data.token)
     implementation(projects.data.member)
     implementation(projects.data.workspace)
+    implementation(projects.data.file)
+
 }

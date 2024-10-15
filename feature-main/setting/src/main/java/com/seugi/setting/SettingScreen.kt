@@ -1,5 +1,8 @@
 package com.seugi.setting
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -16,10 +19,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -37,6 +44,10 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.setting.model.SettingSideEffect
 import com.seugi.ui.CollectAsSideEffect
+import com.seugi.ui.getFileName
+import com.seugi.ui.getFileSize
+import com.seugi.ui.getMimeType
+import com.seugi.ui.getUriByteArray
 
 @Composable
 internal fun SettingScreen(
@@ -45,8 +56,28 @@ internal fun SettingScreen(
     navigationToOnboarding: () -> Unit,
     popBackStack: () -> Unit,
     showSnackbar: (text: String) -> Unit,
+    reloadProfile: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    val context = LocalContext.current
+    val contentResolver = context.contentResolver
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+    ) { uri: Uri? ->
+        if (uri != null) {
+            selectedImageUri = uri
+            contentResolver.getUriByteArray(uri)
+            viewModel.fileUpload(
+                name = profileModel.member.name,
+                fileName = contentResolver.getFileName(uri).toString(),
+                fileMimeType = contentResolver.getMimeType(uri).toString(),
+                fileByteArray = contentResolver.getUriByteArray(uri),
+                fileByte = contentResolver.getFileSize(uri),
+            )
+        }
+    }
 
     val uiState by viewModel.state.collectAsStateWithLifecycle()
     viewModel.sideEffect.CollectAsSideEffect {
@@ -59,6 +90,11 @@ internal fun SettingScreen(
             }
             is SettingSideEffect.FailedWithdraw -> {
                 showSnackbar("회원탈퇴에 실패했습니다.")
+            }
+
+            SettingSideEffect.SuccessEdit -> {
+                reloadProfile()
+                showSnackbar("멤버 정보 변경 성공 !!")
             }
         }
     }
@@ -98,8 +134,9 @@ internal fun SettingScreen(
                                 .padding(vertical = 8.dp)
                                 .size(64.dp)
                                 .bounceClick(
-                                    onClick = {},
-                                    enabled = false,
+                                    onClick = {
+                                        galleryLauncher.launch("image/*")
+                                    },
                                 ),
                         ) {
                             SeugiAvatar(
@@ -107,13 +144,15 @@ internal fun SettingScreen(
                                 type = AvatarType.ExtraLarge,
                                 image = profileModel.member.picture.ifEmpty { null },
                             )
-                            Image(
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .align(Alignment.BottomEnd),
-                                painter = painterResource(id = R.drawable.ic_add_fill),
-                                contentDescription = null,
-                            )
+                            if (profileModel.member.picture.isEmpty()) {
+                                Image(
+                                    modifier = Modifier
+                                        .size(24.dp)
+                                        .align(Alignment.BottomEnd),
+                                    painter = painterResource(id = R.drawable.ic_add_fill),
+                                    contentDescription = null,
+                                )
+                            }
                         }
                     }
                 }

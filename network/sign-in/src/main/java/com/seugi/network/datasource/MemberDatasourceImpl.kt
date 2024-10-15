@@ -7,12 +7,14 @@ import com.seugi.network.core.SeugiUrl
 import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.response.Response
 import com.seugi.network.core.response.TokenResponse
+import com.seugi.network.request.EditRequest
 import com.seugi.network.request.EmailSignInRequest
 import com.seugi.network.request.EmailSignUpRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import javax.inject.Inject
@@ -41,6 +43,18 @@ class MemberDatasourceImpl @Inject constructor(
                 email = email,
                 password = password,
                 code = code,
+            ),
+        )
+    }.body()
+
+    override suspend fun editProfile(name: String, picture: String, birth: String): Response = httpClient.patch(
+        SeugiUrl.Member.EDIT,
+    ) {
+        setBody(
+            EditRequest(
+                name = name,
+                picture = picture,
+                birth = birth,
             ),
         )
     }.body()

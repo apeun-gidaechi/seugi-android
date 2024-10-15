@@ -37,6 +37,10 @@ import com.seugi.designsystem.component.Size
 import com.seugi.designsystem.component.textfield.SeugiTextField
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.ui.CollectAsSideEffect
+import com.seugi.ui.getFileName
+import com.seugi.ui.getFileSize
+import com.seugi.ui.getMimeType
+import com.seugi.ui.getUriByteArray
 import com.seugi.workspacecreate.model.WorkspaceCreateSideEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,6 +53,7 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
     var schoolNameError by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
+    val contentResolver = context.contentResolver
 
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
@@ -62,6 +67,7 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
                 Toast.makeText(context, it.throwable.message, Toast.LENGTH_SHORT).show()
             }
             is WorkspaceCreateSideEffect.SuccessCreate -> {
+                popBackStack()
                 Toast.makeText(context, "워크페이스가 성공적으로 등록되었습니다.", Toast.LENGTH_SHORT).show()
             }
         }
@@ -100,19 +106,23 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
                             SeugiRoundedCircleImage(
                                 image = selectedImageUri.toString(),
                                 size = Size.Small,
-                                onClick = {},
+                                onClick = {
+                                    galleryLauncher.launch("image/*")
+                                },
                             )
                         } else {
                             SeugiRoundedCircleImage(
                                 size = Size.Small,
-                                onClick = {},
+                                onClick = {
+                                    galleryLauncher.launch("image/*")
+                                },
+                            )
+                            SeugiIconButton(
+                                resId = R.drawable.ic_add_fill,
+                                onClick = { galleryLauncher.launch("image/*") },
+                                colors = IconButtonDefaults.iconButtonColors(contentColor = SeugiTheme.colors.gray600),
                             )
                         }
-                        SeugiIconButton(
-                            resId = R.drawable.ic_add_fill,
-                            onClick = { galleryLauncher.launch("image/*") },
-                            colors = IconButtonDefaults.iconButtonColors(contentColor = SeugiTheme.colors.gray600),
-                        )
                     }
                 }
                 Row(
@@ -155,11 +165,22 @@ fun WorkspaceCreateScreen(popBackStack: () -> Unit, viewModel: WorkspaceCreateVi
                     onClick = {
                         schoolNameError = schoolNameText.isEmpty()
                         if (!schoolNameError) {
-                            viewModel.fileUpload(
-                                workspaceName = schoolNameText,
-                                context = context,
-                                workspaceUri = selectedImageUri,
-                            )
+                            if (selectedImageUri != null) {
+                                viewModel.fileUpload(
+                                    workspaceName = schoolNameText,
+                                    fileName = contentResolver.getFileName(selectedImageUri!!)
+                                        .toString(),
+                                    fileMimeType = contentResolver.getMimeType(selectedImageUri!!)
+                                        .toString(),
+                                    fileByteArray = contentResolver.getUriByteArray(selectedImageUri!!),
+                                    fileByte = contentResolver.getFileSize(selectedImageUri!!),
+                                )
+                            } else {
+                                viewModel.createWorkspace(
+                                    workspaceName = schoolNameText,
+                                    workspaceImage = "",
+                                )
+                            }
                         }
                     },
                     type = ButtonType.Primary,

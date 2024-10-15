@@ -276,12 +276,20 @@ fun WorkspaceDetailScreen(
                     .height(60.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                SeugiRoundedCircleImage(
-                    size = Size.ExtraSmall,
-                    image = workspace.workspaceImageUrl,
-                    onClick = {},
-                    modifier = Modifier.padding(start = 20.dp),
-                )
+                if (workspace.workspaceImageUrl.isNotEmpty()) {
+                    SeugiRoundedCircleImage(
+                        size = Size.ExtraSmall,
+                        image = workspace.workspaceImageUrl,
+                        onClick = {},
+                        modifier = Modifier.padding(start = 20.dp),
+                    )
+                } else {
+                    SeugiRoundedCircleImage(
+                        size = Size.ExtraSmall,
+                        onClick = {},
+                        modifier = Modifier.padding(start = 20.dp),
+                    )
+                }
                 Column(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 20.dp)
