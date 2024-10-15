@@ -1,11 +1,17 @@
 package com.seugi.setting
 
+import android.content.ContentResolver
+import android.content.Context
+import android.net.Uri
+import android.os.Environment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.common.utiles.combineWhenAllComplete
+import com.seugi.data.file.FileRepository
+import com.seugi.data.file.model.FileType
 import com.seugi.data.member.MemberRepository
 import com.seugi.data.token.TokenRepository
 import com.seugi.data.workspace.WorkspaceRepository
@@ -20,12 +26,17 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val workspaceRepository: WorkspaceRepository,
     private val tokenRepository: TokenRepository,
     private val memberRepository: MemberRepository,
+    private val fileRepository: FileRepository,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
@@ -82,4 +93,64 @@ class SettingViewModel @Inject constructor(
             }
         }
     }
+
+    fun fileUpload(context: Context, profileUri: Uri?) {
+        viewModelScope.launch {
+            if (profileUri != null) {
+                val file = uriToFile(context = context, uri = profileUri!!).toString()
+                fileRepository.fileUpload(file = file, type = FileType.IMG).collect {
+                    when (it) {
+                        is Result.Success -> {
+
+                        }
+
+                        is Result.Error -> {
+                            it.throwable.printStackTrace()
+
+                        }
+
+                        else -> {
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun uriToFile(context: Context, uri: Uri): File? {
+        val contentResolver: ContentResolver = context.contentResolver
+        val file = createTempFile(context, uri)
+
+        file?.let {
+            try {
+                val inputStream: InputStream? = contentResolver.openInputStream(uri)
+                val outputStream: OutputStream = FileOutputStream(file)
+                inputStream?.copyTo(outputStream)
+                inputStream?.close()
+                outputStream.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return null
+            }
+        }
+        return file
+    }
+
+    private fun createTempFile(context: Context, uri: Uri): File? {
+        val fileName = uri.lastPathSegment?.split("/")?.lastOrNull()
+        return try {
+            val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            File.createTempFile(
+                fileName ?: "temp_image",
+                ".jpg",
+                storageDir,
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
 }
+
+
+

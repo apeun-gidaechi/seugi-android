@@ -1,5 +1,9 @@
 package com.seugi.setting
 
+import android.net.Uri
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -16,10 +20,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -47,6 +55,15 @@ internal fun SettingScreen(
     showSnackbar: (text: String) -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    val context = LocalContext.current
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+    ) { uri: Uri? ->
+        selectedImageUri = uri
+        viewModel.fileUpload(context = context, profileUri = selectedImageUri)
+    }
 
     val uiState by viewModel.state.collectAsStateWithLifecycle()
     viewModel.sideEffect.CollectAsSideEffect {
@@ -98,8 +115,9 @@ internal fun SettingScreen(
                                 .padding(vertical = 8.dp)
                                 .size(64.dp)
                                 .bounceClick(
-                                    onClick = {},
-                                    enabled = false,
+                                    onClick = {
+                                        galleryLauncher.launch("image/*")
+                                    }
                                 ),
                         ) {
                             SeugiAvatar(
