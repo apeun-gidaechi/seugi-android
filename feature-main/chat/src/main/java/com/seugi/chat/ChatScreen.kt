@@ -41,8 +41,9 @@ import kotlinx.coroutines.launch
 internal fun ChatScreen(
     viewModel: ChatViewModel = hiltViewModel(),
     userId: Int,
-    workspaceId: String, navigateToChatDetail: (chatID: String) -> Unit,
-    navigateToCreateRoom: (workspaceId: String, userId: Int) -> Unit
+    workspaceId: String,
+    navigateToChatDetail: (chatID: String) -> Unit,
+    navigateToCreateRoom: (workspaceId: String, userId: Int) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
