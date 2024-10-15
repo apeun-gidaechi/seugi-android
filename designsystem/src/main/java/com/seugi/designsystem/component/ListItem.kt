@@ -1,8 +1,6 @@
 package com.seugi.designsystem.component
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,7 +22,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.R
-import com.seugi.designsystem.animation.ButtonState
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.theme.SeugiTheme
 
@@ -38,25 +34,12 @@ sealed class ListItemType {
 
 @Composable
 fun SeugiListItem(modifier: Modifier = Modifier, type: ListItemType = ListItemType.Normal, text: String, onClick: () -> Unit) {
-    var buttonState by remember { mutableStateOf(ButtonState.Idle) }
-    val animColor by animateColorAsState(
-        targetValue = if (buttonState == ButtonState.Idle) SeugiTheme.colors.white else SeugiTheme.colors.gray100,
-        label = "",
-    )
-
     Box(
         modifier = modifier
             .fillMaxWidth()
             .height(56.dp)
-            .background(
-                color = animColor,
-                shape = RoundedCornerShape(8.dp),
-            )
             .bounceClick(
                 onClick = onClick,
-                onChangeButtonState = {
-                    buttonState = it
-                },
             ),
     ) {
         Row(

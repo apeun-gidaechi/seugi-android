@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,8 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,8 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.seugi.designsystem.animation.ButtonState
 import com.seugi.designsystem.animation.bounceClick
+import com.seugi.designsystem.animation.rememberBounceIndication
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.theme.SeugiTheme
@@ -151,36 +148,26 @@ fun SeugiDialog(title: String, content: String, leftText: String = "취소", rig
 
 @Composable
 private fun DialogButton(modifier: Modifier, text: String, textColor: Color, backgroundColor: Color, onClick: () -> Unit) {
-    var buttonState by remember { mutableStateOf(ButtonState.Idle) }
     Box(
         modifier = modifier
             .height(54.dp)
+            .fillMaxWidth()
             .bounceClick(
                 onClick = onClick,
-                onChangeButtonState = {
-                    buttonState = it
-                },
+                indication = rememberBounceIndication(
+                    showBackground = false,
+                ),
+            )
+            .background(
+                color = backgroundColor,
+                shape = RoundedCornerShape(12.dp),
             ),
     ) {
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-                .background(
-                    color =
-                    if (buttonState == ButtonState.Idle) {
-                        backgroundColor
-                    } else {
-                        backgroundColor.copy(alpha = 0.7f)
-                    },
-                    shape = RoundedCornerShape(12.dp),
-                ),
-        ) {
-            Text(
-                modifier = Modifier.align(Alignment.Center),
-                text = text,
-                color = textColor,
-                style = SeugiTheme.typography.subtitle2,
-            )
-        }
+        Text(
+            modifier = Modifier.align(Alignment.Center),
+            text = text,
+            color = textColor,
+            style = SeugiTheme.typography.subtitle2,
+        )
     }
 }

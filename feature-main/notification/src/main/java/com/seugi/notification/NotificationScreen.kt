@@ -443,7 +443,6 @@ internal fun NotificationCard(
         modifier = modifier.combinedBounceClick(
             onClick = onClickNotification,
             onLongClick = onLongClick,
-            requireUnconsumed = true,
         ),
     ) {
         Column(
