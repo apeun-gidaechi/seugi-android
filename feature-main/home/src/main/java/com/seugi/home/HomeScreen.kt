@@ -63,8 +63,10 @@ import com.seugi.home.card.ScheduleCard
 import com.seugi.home.card.SchoolCard
 import com.seugi.home.card.TimeScheduleCard
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
-    ExperimentalMaterialApi::class
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalFoundationApi::class,
+    ExperimentalMaterialApi::class,
 )
 @Composable
 internal fun HomeScreen(
@@ -137,71 +139,69 @@ internal fun HomeScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .pullRefresh(pullRefreshState)
-    ){
-    LazyColumn(
-        modifier = Modifier
-            .background(SeugiTheme.colors.primary050)
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+            .pullRefresh(pullRefreshState),
     ) {
-        item {
-            SeugiTopBar(
-                title = {
-                    Text(
-                        text = "홈",
-                        style = SeugiTheme.typography.subtitle1,
-                        color = SeugiTheme.colors.black,
-                    )
-                },
-                containerColors = Color.Transparent,
-            )
-        }
+        LazyColumn(
+            modifier = Modifier
+                .background(SeugiTheme.colors.primary050)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            item {
+                SeugiTopBar(
+                    title = {
+                        Text(
+                            text = "홈",
+                            style = SeugiTheme.typography.subtitle1,
+                            color = SeugiTheme.colors.black,
+                        )
+                    },
+                    containerColors = Color.Transparent,
+                )
+            }
 
-        item {
-            SchoolCard(
-                workspaceId = state.nowWorkspaceId,
-                uiState = state.schoolState,
-                navigateToWorkspaceDetail = navigateToWorkspaceDetail,
-            )
-        }
+            item {
+                SchoolCard(
+                    workspaceId = state.nowWorkspaceId,
+                    uiState = state.schoolState,
+                    navigateToWorkspaceDetail = navigateToWorkspaceDetail,
+                )
+            }
 
-        item {
-            TimeScheduleCard(
-                uiState = state.timeScheduleState,
-                onClickDetail = {},
-            )
-        }
+            item {
+                TimeScheduleCard(
+                    uiState = state.timeScheduleState,
+                    onClickDetail = {},
+                )
+            }
 
-        item {
-            MealCard(
-                uiState = state.mealState,
-                onClickDetail = {},
-            )
-        }
+            item {
+                MealCard(
+                    uiState = state.mealState,
+                    onClickDetail = {},
+                )
+            }
 
-        item {
-            CatSeugiCard(
-                uiState = state.catSeugiState,
-                navigateToChatSeugi = navigateToChatSeugi,
-            )
-        }
+            item {
+                CatSeugiCard(
+                    uiState = state.catSeugiState,
+                    navigateToChatSeugi = navigateToChatSeugi,
+                )
+            }
 
-        item {
-            ScheduleCard(uiState = state.schoolScheduleState)
+            item {
+                ScheduleCard(uiState = state.schoolScheduleState)
+            }
+            item {
+                Spacer(modifier = Modifier.height(32.dp))
+            }
         }
-        item {
-            Spacer(modifier = Modifier.height(32.dp))
-        }
-
-    }
         PullRefreshIndicator(
             modifier = Modifier.align(Alignment.TopCenter),
             refreshing = isRefreshing,
             state = pullRefreshState,
         )
     }
-
 }
 
 private fun changeNavigationColor(window: Window, backgroundColor: Color, isDark: Boolean) {
