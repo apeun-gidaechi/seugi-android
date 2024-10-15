@@ -14,4 +14,10 @@ data class ProfileModel(
     val schGrade: Int,
     val schClass: Int,
     val schNumber: Int,
-)
+) {
+    val nameAndNick
+        get() =
+            if (nick.isEmpty()) member.name
+            else "${member.name} ($nick)"
+
+}
