@@ -36,7 +36,7 @@ class TimetableListProvider(private val context: Context, intent: Intent) :
      */
     override fun getViewAt(position: Int): RemoteViews {
         val remoteView = RemoteViews(context.packageName, R.layout.item_meal_menu)
-        remoteView.setTextViewText(R.id.text_menu, "${position}교시 : ${content[position]}")
+        remoteView.setTextViewText(R.id.text_menu, "${position+1}교시 : ${content[position]}")
         return remoteView
     }
 
