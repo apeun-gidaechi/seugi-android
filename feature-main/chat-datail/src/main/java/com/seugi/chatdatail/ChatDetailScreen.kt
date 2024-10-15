@@ -270,8 +270,10 @@ internal fun ChatDetailScreen(
 
     LaunchedEffect(key1 = scrollState.canScrollForward) {
         if (!scrollState.canScrollForward) {
-            // TODO 페이징 재구현
-//            viewModel.nextPage()
+            viewModel.loadMessage(
+                userId = userId,
+                chatRoomId = chatRoomId,
+            )
         }
     }
 
@@ -715,7 +717,7 @@ internal fun ChatDetailScreen(
 
                                 is MessageRoomEvent.MessageParent.Left -> ChatItemType.Else("${state.users[item.userId]?.name ?: ""}님이 방에서 퇴장하셨습니다.")
 
-                                is MessageRoomEvent.MessageParent.Enter -> ChatItemType.Else("${state.users[item.userId]?.name ?: ""}님이 방에서 입장하셨습니다.")
+                                is MessageRoomEvent.MessageParent.Enter -> ChatItemType.Else("${state.users[item.userId]?.name ?: ""}님이 방에 입장하셨습니다.")
 
                                 is MessageRoomEvent.MessageParent.Etc -> ChatItemType.Else(item.toString())
                             },
