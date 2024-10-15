@@ -141,12 +141,19 @@ internal fun MainScreen(
             )
 
             chatScreen(
+                userId = state.userId,
                 workspaceId = state.workspace.workspaceId,
                 navigateToChatDetail = { chatId ->
                     navHostController.navigateToChatDetail(
                         workspaceId = state.profile.workspaceId,
                         chatRoomId = chatId,
                         isPersonal = true,
+                    )
+                },
+                navigateToCreateRoom = { workspaceId, userId ->
+                    navHostController.navigateToRoomCreate(
+                        workspaceId = workspaceId,
+                        userId = userId,
                     )
                 },
             )
