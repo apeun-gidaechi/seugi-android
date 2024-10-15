@@ -157,7 +157,7 @@ internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) 
                         SeugiMemberList(
                             modifier = Modifier.align(Alignment.Center),
                             userName = item.name,
-                            userProfile = item.memberProfile,
+                            userProfile = item.memberProfile?.ifEmpty{ null },
                             checked = item.checked,
                             onCheckedChangeListener = {
                                 updateChecked(item.id)
