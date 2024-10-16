@@ -66,7 +66,7 @@ class NotificationViewModel @Inject constructor(
                                 .distinctBy {
                                     Pair(it.workspaceId, it.id)
                                 }
-                                .sortedBy {
+                                .sortedByDescending {
                                     it.creationDate
                                 }
                                 .toImmutableList(),
@@ -96,7 +96,7 @@ class NotificationViewModel @Inject constructor(
                                 .distinctBy {
                                     Pair(it.workspaceId, it.id)
                                 }
-                                .sortedBy {
+                                .sortedByDescending {
                                     it.creationDate
                                 }
                                 .toImmutableList(),
