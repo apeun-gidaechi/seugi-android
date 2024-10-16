@@ -512,6 +512,7 @@ internal fun NotificationCard(
                     Spacer(modifier = Modifier.width(10.dp))
                     emojiList.fastForEach {
                         NotificationEmoji(
+                            modifier = Modifier.padding(vertical = 3.5.dp),
                             emoji = it.emoji,
                             count = it.userList.size,
                             isChecked = it.userList.contains(userId),
