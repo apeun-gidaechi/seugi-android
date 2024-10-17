@@ -61,7 +61,7 @@ fun SeugiTopBar(
             Spacer(modifier = Modifier.width(16.dp))
         }
         Row(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         ) {
             title()
         }

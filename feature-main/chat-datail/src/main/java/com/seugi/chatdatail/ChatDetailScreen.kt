@@ -642,7 +642,7 @@ internal fun ChatDetailScreen(
                             }
                             else -> false
                         }
-                    }
+                    },
                 ) { item ->
                     Column(
                         modifier = Modifier
