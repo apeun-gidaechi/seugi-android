@@ -15,7 +15,7 @@ internal fun MealResponse.toModel() = MealModel(
     menu = menu.toImmutableList(),
     calorie = calorie,
     mealInfo = mealInfo.toImmutableList(),
-    mealDate = mealDate.toKotlinLocalDate(),
+    mealDate = mealDate,
 )
 
 internal fun MealEntity.toModel() = MealModel(

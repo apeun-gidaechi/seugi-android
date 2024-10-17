@@ -13,6 +13,7 @@ import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.response.FakeLocalDateResponse
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.core.utiles.FakeLocalDateResponseTypeAdapter
+import com.seugi.network.core.utiles.KotlinLocalDateTypeAdapter
 import com.seugi.network.core.utiles.LocalDateTimeTypeAdapter
 import com.seugi.network.core.utiles.removeBearer
 import com.seugi.stompclient.Stomp
@@ -45,6 +46,8 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.serializers.LocalDateIso8601Serializer
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
@@ -58,6 +61,7 @@ object NetworkModule {
         install(ContentNegotiation) {
             gson {
                 registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeTypeAdapter())
+                registerTypeAdapter(LocalDate::class.java, KotlinLocalDateTypeAdapter())
                 registerTypeAdapter(FakeLocalDateResponse::class.java, FakeLocalDateResponseTypeAdapter())
                 setPrettyPrinting()
                 setLenient()

@@ -8,7 +8,7 @@ import kotlinx.datetime.LocalDate
 internal fun ScheduleResponse.toModel() = ScheduleModel(
     id = id,
     workspaceId = workspaceId,
-    date = LocalDate(date.substring(0, 4).toInt(), date.substring(4, 6).toInt(), date.substring(6, 8).toInt()),
+    date = date,
     eventName = eventName,
     eventContent = eventContent,
     grade = grade.toImmutableList(),

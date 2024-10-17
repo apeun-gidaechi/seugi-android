@@ -11,7 +11,7 @@ fun TimetableResponse.toModel() = TimetableModel(
     classNum = classNum,
     time = time,
     subject = subject,
-    date = LocalDate(date.substring(0, 4).toInt(), date.substring(4, 6).toInt(), date.substring(6, 8).toInt()),
+    date = date,
 )
 
 fun List<TimetableResponse>.toModels() = this.map {
