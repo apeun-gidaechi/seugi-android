@@ -60,6 +60,7 @@ import com.seugi.workspacedetail.navigation.workspaceMemberScreen
 import kotlinx.coroutines.delay
 
 private const val NAVIGATION_ANIM = 400
+private const val LOAD_WORKSPACE_DELAY = 10000L
 
 @Composable
 internal fun MainScreen(
@@ -87,7 +88,7 @@ internal fun MainScreen(
 
     LaunchedEffect(key1 = state.notJoinWorkspace) {
         while (state.notJoinWorkspace) {
-            delay(10000)
+            delay(LOAD_WORKSPACE_DELAY)
             viewModel.loadWorkspace()
         }
     }
