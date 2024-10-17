@@ -3,7 +3,6 @@ package com.seugi.data.schedule.mapper
 import com.seugi.data.schedule.model.ScheduleModel
 import com.seugi.network.schedule.response.ScheduleResponse
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.datetime.LocalDate
 
 internal fun ScheduleResponse.toModel() = ScheduleModel(
     id = id,

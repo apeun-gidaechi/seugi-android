@@ -47,7 +47,6 @@ import javax.inject.Singleton
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.serializers.LocalDateIso8601Serializer
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
