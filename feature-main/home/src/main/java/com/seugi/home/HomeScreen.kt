@@ -119,7 +119,7 @@ internal fun HomeScreen(
         }
     }
 
-    if (state.showDialog) {
+    if (notJoinWorkspace) {
         SeugiDialog(
             title = "학교 등록하기",
             content = "학교를 등록한 뒤 스기를 사용할 수 있어요",

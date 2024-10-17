@@ -7,7 +7,6 @@ import java.time.LocalTime
 import kotlinx.collections.immutable.ImmutableList
 
 data class HomeUiState(
-    val showDialog: Boolean = false,
     val nowWorkspaceId: String = "",
     val schoolState: CommonUiState<String> = CommonUiState.Loading,
     val timeScheduleState: CommonUiState<TimeScheduleUiState> = CommonUiState.Loading,

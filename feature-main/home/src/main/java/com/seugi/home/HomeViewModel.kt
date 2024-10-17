@@ -64,7 +64,6 @@ class HomeViewModel @Inject constructor(
     fun setStateNotJoin() = viewModelScope.launch(dispatcher) {
         _state.update {
             it.copy(
-                showDialog = true,
                 schoolState = CommonUiState.Error,
                 timeScheduleState = CommonUiState.Error,
                 mealState = CommonUiState.Error,

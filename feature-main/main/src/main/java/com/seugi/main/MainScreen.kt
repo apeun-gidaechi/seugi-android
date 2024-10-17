@@ -57,8 +57,10 @@ import com.seugi.workspacedetail.navigation.navigateToWorkspaceDetail
 import com.seugi.workspacedetail.navigation.navigateToWorkspaceMember
 import com.seugi.workspacedetail.navigation.workspaceDetailScreen
 import com.seugi.workspacedetail.navigation.workspaceMemberScreen
+import kotlinx.coroutines.delay
 
 private const val NAVIGATION_ANIM = 400
+private const val LOAD_WORKSPACE_DELAY = 10000L
 
 @Composable
 internal fun MainScreen(
@@ -84,7 +86,12 @@ internal fun MainScreen(
         viewModel.loadWorkspace()
     }
 
-    LaunchedEffect(state) {}
+    LaunchedEffect(key1 = state.notJoinWorkspace) {
+        while (state.notJoinWorkspace) {
+            delay(LOAD_WORKSPACE_DELAY)
+            viewModel.loadWorkspace()
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
