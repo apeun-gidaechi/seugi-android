@@ -1,5 +1,6 @@
 package com.seugi.main
 
+import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -57,6 +58,7 @@ import com.seugi.workspacedetail.navigation.navigateToWorkspaceDetail
 import com.seugi.workspacedetail.navigation.navigateToWorkspaceMember
 import com.seugi.workspacedetail.navigation.workspaceDetailScreen
 import com.seugi.workspacedetail.navigation.workspaceMemberScreen
+import kotlinx.coroutines.delay
 
 private const val NAVIGATION_ANIM = 400
 
@@ -84,7 +86,12 @@ internal fun MainScreen(
         viewModel.loadWorkspace()
     }
 
-    LaunchedEffect(state) {}
+    LaunchedEffect(key1 = state.notJoinWorkspace) {
+        while(state.notJoinWorkspace){
+            delay(10000)
+            viewModel.loadWorkspace()
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),

@@ -2,6 +2,7 @@ package com.seugi.home
 
 import android.app.Activity
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowInsetsController
@@ -119,7 +120,7 @@ internal fun HomeScreen(
         }
     }
 
-    if (state.showDialog) {
+    if (notJoinWorkspace) {
         SeugiDialog(
             title = "학교 등록하기",
             content = "학교를 등록한 뒤 스기를 사용할 수 있어요",
