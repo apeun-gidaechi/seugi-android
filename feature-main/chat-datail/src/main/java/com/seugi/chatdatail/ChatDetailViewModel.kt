@@ -23,6 +23,7 @@ import com.seugi.data.message.MessageRepository
 import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.data.message.model.MessageRoomEvent.MessageParent
 import com.seugi.data.message.model.MessageType
+import com.seugi.data.message.model.isMessage
 import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
 import com.seugi.data.personalchat.PersonalChatRepository
 import com.seugi.data.profile.ProfileRepository
@@ -525,7 +526,10 @@ class ChatDetailViewModel @Inject constructor(
             val nextItem = if (index == 0) message.lastOrNull() else data.getOrNull(index - 1)
 
             var isFirst = messageParent.userId != formerItem?.userId
-            val isLast = messageParent.userId != nextItem?.userId || messageParent.timestamp.isDifferentMin(nextItem.timestamp)
+            val isLast = messageParent.userId != nextItem?.userId ||
+                    messageParent.timestamp.isDifferentMin(nextItem.timestamp) ||
+                    formerItem is MessageParent.Enter
+            
             if (formerItem != null && messageParent.timestamp.isDifferentDay(formerItem.timestamp)) {
                 isFirst = true
                 message.add(
