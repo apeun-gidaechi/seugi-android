@@ -9,11 +9,12 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import javax.inject.Inject
+import kotlinx.datetime.LocalDate
 
 class MealDataSourceImpl @Inject constructor(
     private val httpClient: HttpClient,
 ) : MealDataSource {
-    override suspend fun getDateMeal(workspaceId: String, date: String): BaseResponse<List<MealResponse>> = httpClient.get(SeugiUrl.Meal.ROOT) {
+    override suspend fun getDateMeal(workspaceId: String, date: LocalDate): BaseResponse<List<MealResponse>> = httpClient.get(SeugiUrl.Meal.ROOT) {
         parameter("workspaceId", workspaceId)
         parameter("date", date)
     }.body()

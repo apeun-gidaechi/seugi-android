@@ -48,7 +48,7 @@ class MealRepositoryImpl @Inject constructor(
                 }
                 ?: dataSource.getDateMeal(
                     workspaceId = workspaceId,
-                    date = date.toNotSpaceString(),
+                    date = date,
                 ).safeResponse()
                     .toModels()
                     .toImmutableList().also {
