@@ -1,6 +1,5 @@
 package com.seugi.main
 
-import android.util.Log
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -87,7 +86,7 @@ internal fun MainScreen(
     }
 
     LaunchedEffect(key1 = state.notJoinWorkspace) {
-        while(state.notJoinWorkspace){
+        while (state.notJoinWorkspace) {
             delay(10000)
             viewModel.loadWorkspace()
         }
