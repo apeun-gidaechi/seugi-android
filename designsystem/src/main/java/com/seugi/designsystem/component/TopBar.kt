@@ -60,8 +60,11 @@ fun SeugiTopBar(
             )
             Spacer(modifier = Modifier.width(16.dp))
         }
-        title()
-        Spacer(modifier = Modifier.weight(1f))
+        Row(
+            modifier = Modifier.weight(1f)
+        ) {
+            title()
+        }
         actions()
         Spacer(modifier = Modifier.width(16.dp))
     }
