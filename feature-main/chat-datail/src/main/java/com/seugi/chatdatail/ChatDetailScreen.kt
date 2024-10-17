@@ -630,7 +630,20 @@ internal fun ChatDetailScreen(
                         }
                     }
                 }
-                items(state.message) { item ->
+                items(
+                    state.message.filter {
+                        if (searchText.isEmpty()) return@filter true
+                        when (it) {
+                            is MessageRoomEvent.MessageParent.Me -> {
+                                it.message.contains(searchText)
+                            }
+                            is MessageRoomEvent.MessageParent.Other -> {
+                                it.message.contains(searchText)
+                            }
+                            else -> false
+                        }
+                    },
+                ) { item ->
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()

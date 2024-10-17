@@ -339,20 +339,20 @@ private fun SeugiChatItemOthers(
                         style = SeugiTheme.typography.body1,
                     )
                 }
-                if (isLast) {
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Column(
-                        modifier = Modifier
-                            .clickable(
-                                onClick = onDateClick,
-                            ),
-                        verticalArrangement = Arrangement.Bottom,
-                    ) {
-                        Text(
-                            text = count?.toString() ?: "",
-                            color = SeugiTheme.colors.gray600,
-                            style = SeugiTheme.typography.caption1,
-                        )
+                Spacer(modifier = Modifier.width(8.dp))
+                Column(
+                    modifier = Modifier
+                        .clickable(
+                            onClick = onDateClick,
+                        ),
+                    verticalArrangement = Arrangement.Bottom,
+                ) {
+                    Text(
+                        text = count?.toString() ?: "",
+                        color = SeugiTheme.colors.gray600,
+                        style = SeugiTheme.typography.caption1,
+                    )
+                    if (isLast) {
                         Text(
                             text = createdAt,
                             color = SeugiTheme.colors.gray600,
@@ -378,28 +378,28 @@ private fun SeugiChatItemMe(modifier: Modifier = Modifier, isLast: Boolean, mess
         modifier = modifier,
         verticalAlignment = Alignment.Bottom,
     ) {
-        if (isLast) {
-            Column(
-                modifier = Modifier
-                    .clickable(
-                        onClick = onDateClick,
-                    ),
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.End,
-            ) {
-                Text(
-                    text = count?.toString() ?: "",
-                    color = SeugiTheme.colors.gray600,
-                    style = SeugiTheme.typography.caption1,
-                )
+        Column(
+            modifier = Modifier
+                .clickable(
+                    onClick = onDateClick,
+                ),
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.End,
+        ) {
+            Text(
+                text = count?.toString() ?: "",
+                color = SeugiTheme.colors.gray600,
+                style = SeugiTheme.typography.caption1,
+            )
+            if (isLast) {
                 Text(
                     text = createdAt,
                     color = SeugiTheme.colors.gray600,
                     style = SeugiTheme.typography.caption2,
                 )
             }
-            Spacer(modifier = Modifier.width(8.dp))
         }
+        Spacer(modifier = Modifier.width(8.dp))
         Box(
             modifier = Modifier
                 .dropShadow(
