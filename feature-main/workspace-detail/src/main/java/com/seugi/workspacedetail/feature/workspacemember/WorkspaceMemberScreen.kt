@@ -2,6 +2,7 @@ package com.seugi.workspacedetail.feature.workspacemember
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -47,6 +48,7 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.ui.CollectAsSideEffect
 import com.seugi.ui.component.OtherProfileBottomSheet
+import com.seugi.ui.component.SeugiMemberListLoading
 import com.seugi.workspacedetail.feature.workspacemember.model.WorkspaceMemberSideEffect
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -197,6 +199,12 @@ fun WorkspaceMemberScreen(
                         it.permission == WorkspacePermissionModel.STUDENT
                     } else {
                         it.permission != WorkspacePermissionModel.STUDENT
+                    }
+                }
+
+                if (state.isLoading) {
+                    items(3) {
+                        SeugiMemberListLoading()
                     }
                 }
 
