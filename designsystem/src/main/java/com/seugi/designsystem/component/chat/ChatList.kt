@@ -67,6 +67,7 @@ fun SeugiChatList(
                             text = userName,
                             style = SeugiTheme.typography.subtitle2,
                             color = SeugiTheme.colors.black,
+                            maxLines = 1,
                         )
                         if (memberCount != null) {
                             Spacer(modifier = Modifier.width(4.dp))
