@@ -44,6 +44,7 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.modifier.verticalScrollbar
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.roomcreate.model.RoomCreateUiState
+import com.seugi.ui.component.SeugiMemberListLoading
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -149,6 +150,17 @@ internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) 
             LazyColumn(
                 modifier = Modifier.background(SeugiTheme.colors.white),
             ) {
+                if (state.isLoading) {
+                    items(3) {
+                        Box(
+                            modifier = Modifier.height(72.dp),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            SeugiMemberListLoading()
+                        }
+                    }
+                }
+
                 items(
                     items = state.userItem,
                     key = { it.id },
