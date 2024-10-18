@@ -525,7 +525,10 @@ class ChatDetailViewModel @Inject constructor(
             val nextItem = if (index == 0) message.lastOrNull() else data.getOrNull(index - 1)
 
             var isFirst = messageParent.userId != formerItem?.userId
-            val isLast = messageParent.userId != nextItem?.userId || messageParent.timestamp.isDifferentMin(nextItem.timestamp)
+            val isLast = messageParent.userId != nextItem?.userId ||
+                messageParent.timestamp.isDifferentMin(nextItem.timestamp) ||
+                formerItem is MessageParent.Enter
+
             if (formerItem != null && messageParent.timestamp.isDifferentDay(formerItem.timestamp)) {
                 isFirst = true
                 message.add(
