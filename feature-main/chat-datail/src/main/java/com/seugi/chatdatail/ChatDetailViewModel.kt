@@ -239,11 +239,16 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelSend(userId: Long, content: String, uuid: String = UUID.randomUUID().toString(), type: MessageType) {
+    fun channelSend(
+        userId: Int, content: String,
+        uuid: String = UUID.randomUUID().toString(),
+        type: MessageType,
+        mention: List<Int> = emptyList(),
+    ) {
         viewModelScope.launch {
             // 파일, 이미지는 socket 서버 업로드전에 생김
             if (type == MessageType.MESSAGE) {
-                _messageSaveQueueState.value += ChatLocalType.SendText(content, uuid)
+                _messageSaveQueueState.value += ChatLocalType.SendText(content, mention, uuid)
             }
 
             val result = messageRepository.sendMessage(
@@ -251,6 +256,7 @@ class ChatDetailViewModel @Inject constructor(
                 message = content,
                 messageUUID = uuid,
                 type = type,
+                mention = mention
             )
             Log.d("TAG", "testSend: $result")
             when (result) {
@@ -371,7 +377,13 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelResend(userId: Long, content: String, uuid: String, type: MessageType = MessageType.MESSAGE) {
+    fun channelResend(
+        userId: Int,
+        content: String,
+        uuid: String,
+        type: MessageType = MessageType.MESSAGE,
+        mention: List<Int> = emptyList(),
+    ) {
         _messageSaveQueueState.value -= uuid
         when {
             type == MessageType.FILE -> {
@@ -392,7 +404,7 @@ class ChatDetailViewModel @Inject constructor(
                 )
             }
         }
-        channelSend(userId, content, uuid, type)
+        channelSend(userId, content, uuid, type, mention)
     }
 
     fun channelResend(userId: Long, fileName: String, fileMimeType: String, fileByteArray: ByteArray, fileByte: Long, uuid: String) {
@@ -812,10 +824,10 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun failedSend(type: MessageType, uuid: String, content: String) {
+    private fun failedSend(type: MessageType, uuid: String, content: String, mention: List<Int> = emptyList()) {
         _messageSaveQueueState.value -= uuid
         if (type == MessageType.MESSAGE) {
-            _messageSaveQueueState.value += ChatLocalType.FailedText(content, uuid)
+            _messageSaveQueueState.value += ChatLocalType.FailedText(content, mention, uuid)
         } else if (type == MessageType.FILE) {
             val files = content.split("::")
             _messageSaveQueueState.value += ChatLocalType.FailedFileSend(

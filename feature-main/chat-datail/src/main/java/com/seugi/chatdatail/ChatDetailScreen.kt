@@ -314,6 +314,7 @@ internal fun ChatDetailScreen(
                                 userId = userId,
                                 content = it.text,
                                 uuid = it.uuid,
+                                mention = it.mention
                             )
                         }
                         is ChatLocalType.FailedImgSend -> {
@@ -473,10 +474,16 @@ internal fun ChatDetailScreen(
                         },
                         sendEnabled = text.isNotEmpty(),
                         onSendClick = {
+                            val mentionList = mutableListOf<Int>()
+
+                            if (text.startsWith("스기야 ")) {
+                                mentionList.add(-1)
+                            }
                             viewModel.channelSend(
                                 userId = userId,
                                 content = text,
                                 type = MessageType.MESSAGE,
+                                mention = mentionList
                             )
                             text = ""
                         },

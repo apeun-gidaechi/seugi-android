@@ -10,7 +10,7 @@ import kotlinx.datetime.LocalDateTime
 
 interface MessageRepository {
 
-    suspend fun sendMessage(chatRoomId: String, message: String, messageUUID: String, type: MessageType): Result<Boolean>
+    suspend fun sendMessage(chatRoomId: String, message: String, messageUUID: String, type: MessageType, mention: List<Int>): Result<Boolean>
 
     suspend fun subscribeRoom(chatRoomId: String, userId: Long): Flow<Result<MessageRoomEvent>>
 

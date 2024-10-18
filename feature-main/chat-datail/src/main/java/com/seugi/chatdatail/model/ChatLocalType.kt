@@ -7,8 +7,8 @@ import kotlinx.collections.immutable.toImmutableList
 sealed class ChatLocalType(
     open val uuid: String,
 ) {
-    data class FailedText(val text: String, override val uuid: String) : ChatLocalType(uuid)
-    data class SendText(val text: String, override val uuid: String) : ChatLocalType(uuid)
+    data class FailedText(val text: String, val mention: List<Int>, override val uuid: String) : ChatLocalType(uuid)
+    data class SendText(val text: String,  val mention: List<Int>, override val uuid: String) : ChatLocalType(uuid)
 
     data class FailedImgUpload(val image: Bitmap, val fileName: String, override val uuid: String) : ChatLocalType(uuid)
 
