@@ -32,7 +32,7 @@ class WorkspaceMemberViewModel @Inject constructor(
         if (_state.value.member.size == 0) {
             _state.update {
                 it.copy(
-                    isLoading = true
+                    isLoading = true,
                 )
             }
         }
@@ -43,7 +43,7 @@ class WorkspaceMemberViewModel @Inject constructor(
                         _state.update { ui ->
                             ui.copy(
                                 member = it.data.toImmutableList(),
-                                isLoading = false
+                                isLoading = false,
                             )
                         }
                     }

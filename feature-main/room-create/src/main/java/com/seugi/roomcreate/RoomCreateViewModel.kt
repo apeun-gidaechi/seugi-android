@@ -39,7 +39,7 @@ class RoomCreateViewModel @Inject constructor(
     fun loadUser(workspaceId: String, userId: Int) = viewModelScope.launch(dispatcher) {
         _state.update {
             it.copy(
-                isLoading = true
+                isLoading = true,
             )
         }
         workspaceRepository.getMembers(workspaceId).collect {
@@ -58,7 +58,7 @@ class RoomCreateViewModel @Inject constructor(
                     }
                     _state.value = _state.value.copy(
                         userItem = users.filter { it.id != userId }.toImmutableList(),
-                        isLoading = false
+                        isLoading = false,
                     )
                 }
                 is Result.Loading -> {}

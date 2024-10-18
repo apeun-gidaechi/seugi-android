@@ -11,24 +11,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
-import com.seugi.designsystem.R
-import com.seugi.designsystem.component.AvatarType
-import com.seugi.designsystem.component.SeugiAvatar
-import com.seugi.designsystem.component.SeugiImage
 import com.seugi.designsystem.component.shimmerEffectBrush
-import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
-fun SeugiMemberListLoading(
-    modifier: Modifier = Modifier,
-) {
-
+fun SeugiMemberListLoading(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -42,14 +32,13 @@ fun SeugiMemberListLoading(
             ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            
             Box(
                 modifier = Modifier
                     .size(36.dp)
                     .background(
                         brush = shimmerEffectBrush(),
-                        shape = CircleShape
-                    )
+                        shape = CircleShape,
+                    ),
             )
             Spacer(modifier = Modifier.width(16.dp))
 
@@ -59,8 +48,8 @@ fun SeugiMemberListLoading(
                     .height(21.dp)
                     .background(
                         brush = shimmerEffectBrush(),
-                        shape = RoundedCornerShape(12.dp)
-                    )
+                        shape = RoundedCornerShape(12.dp),
+                    ),
             )
             Spacer(modifier = Modifier.weight(1f))
         }

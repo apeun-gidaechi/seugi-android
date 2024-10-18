@@ -154,7 +154,7 @@ internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) 
                     items(3) {
                         Box(
                             modifier = Modifier.height(72.dp),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             SeugiMemberListLoading()
                         }
