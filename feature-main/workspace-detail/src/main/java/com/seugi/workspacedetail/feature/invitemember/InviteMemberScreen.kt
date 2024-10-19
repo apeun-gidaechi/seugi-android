@@ -49,9 +49,8 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InviteMemberScreen(modifier: Modifier = Modifier) {
+fun InviteMemberScreen(popBackStack: () -> Unit,) {
 
     val tabItems: ImmutableList<String> = persistentListOf("선생님", "학생")
     var selectedTabIndex by remember { mutableIntStateOf(0) }
@@ -67,7 +66,7 @@ fun InviteMemberScreen(modifier: Modifier = Modifier) {
                     Text(text = "멤버 초대", style = SeugiTheme.typography.subtitle1)
                 },
                 onNavigationIconClick = {
-
+                    popBackStack()
                 }
             )
         },
@@ -218,10 +217,4 @@ internal fun SelectMemberCard(text: String, onClick: () -> Unit) {
                 .padding(horizontal = 12.dp)
         )
     }
-}
-
-@Preview
-@Composable
-private fun InviteMemberPrevice() {
-    InviteMemberScreen()
 }

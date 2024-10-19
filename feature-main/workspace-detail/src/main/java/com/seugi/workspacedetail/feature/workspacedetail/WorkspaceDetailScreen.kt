@@ -64,6 +64,7 @@ fun WorkspaceDetailScreen(
     navigateToWorkspaceMember: (String) -> Unit,
     navigateToCreateWorkspace: () -> Unit,
     changeWorkspace: () -> Unit,
+    navigateToInviteMember: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showDialog by remember { mutableStateOf(false) }
@@ -418,6 +419,9 @@ fun WorkspaceDetailScreen(
             }
             Row(
                 modifier = Modifier
+                    .clickable {
+                        navigateToInviteMember()
+                    }
                     .fillMaxWidth()
                     .height(56.dp),
                 verticalAlignment = Alignment.CenterVertically,
