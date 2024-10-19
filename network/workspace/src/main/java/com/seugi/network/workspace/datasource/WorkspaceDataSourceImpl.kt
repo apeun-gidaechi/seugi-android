@@ -9,6 +9,7 @@ import com.seugi.network.workspace.WorkspaceDataSource
 import com.seugi.network.workspace.request.CreateWorkspaceRequest
 import com.seugi.network.workspace.request.WorkspaceApplicationRequest
 import com.seugi.network.workspace.response.CheckWorkspaceResponse
+import com.seugi.network.workspace.response.RetrieveMemberResponse
 import com.seugi.network.workspace.response.WaitWorkspaceResponse
 import com.seugi.network.workspace.response.WorkspaceResponse
 import io.ktor.client.HttpClient
@@ -57,5 +58,13 @@ class WorkspaceDataSourceImpl @Inject constructor(
                 workspaceImageUrl = workspaceImage,
             ),
         )
+    }.body()
+
+    override suspend fun getWaitMembers(
+        workspaceId: String,
+        role: String
+    ): BaseResponse<List<RetrieveMemberResponse>> = httpClient.get(SeugiUrl.Workspace.GET_WAIT_MEMBERS){
+        parameter("workspaceId", workspaceId)
+        parameter("role", role)
     }.body()
 }

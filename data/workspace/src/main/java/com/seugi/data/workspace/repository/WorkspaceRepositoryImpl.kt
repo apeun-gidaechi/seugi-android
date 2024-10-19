@@ -12,6 +12,7 @@ import com.seugi.data.workspace.mapper.toEntity
 import com.seugi.data.workspace.mapper.toModel
 import com.seugi.data.workspace.mapper.toModels
 import com.seugi.data.workspace.model.CheckWorkspaceModel
+import com.seugi.data.workspace.model.RetrieveMemberModel
 import com.seugi.data.workspace.model.WaitWorkspaceModel
 import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.local.room.dao.WorkspaceDao
@@ -119,4 +120,20 @@ class WorkspaceRepositoryImpl @Inject constructor(
     }
         .flowOn(dispatcher)
         .asResult()
+
+    override suspend fun getWaitMembers(
+        workspaceId: String,
+        role: String
+    ): Flow<Result<List<RetrieveMemberModel>>> =
+        flow {
+            val response = workspaceDatasource.getWaitMembers(
+                workspaceId = workspaceId,
+                role = role
+            ).safeResponse()
+
+            emit(response.toModels())
+        }
+            .flowOn(dispatcher)
+            .asResult()
+
 }

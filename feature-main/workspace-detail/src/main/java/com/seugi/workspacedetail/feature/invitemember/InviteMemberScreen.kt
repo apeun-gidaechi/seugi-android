@@ -26,6 +26,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -37,6 +39,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.seugi.data.core.model.WorkspacePermissionModel
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.ButtonType
 import com.seugi.designsystem.component.SeugiButton
@@ -47,15 +51,30 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import androidx.compose.foundation.lazy.items
 
 
 @Composable
-fun InviteMemberScreen(popBackStack: () -> Unit,) {
+fun InviteMemberScreen(
+    popBackStack: () -> Unit,
+    viewModel: InviteMemberViewModel = hiltViewModel()
+) {
 
     val tabItems: ImmutableList<String> = persistentListOf("선생님", "학생")
     var selectedTabIndex by remember { mutableIntStateOf(0) }
     var checked by remember { mutableStateOf(true) }
+    val state = viewModel.state.collectAsState()
 
+    LaunchedEffect(key1 = true) {
+        viewModel.getWaitMembers(
+            workspaceId = "669e339593e10f4f59f8c583",
+            role = WorkspacePermissionModel.STUDENT.name
+        )
+        viewModel.getWaitMembers(
+            workspaceId = "669e339593e10f4f59f8c583",
+            role = WorkspacePermissionModel.TEACHER.name
+        )
+    }
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -134,11 +153,12 @@ fun InviteMemberScreen(popBackStack: () -> Unit,) {
                         .wrapContentHeight()
                         .padding(top = 12.dp)
                 ) {
-                    items(300) {
+                    val members = if (selectedTabIndex == 0) state.value.teacher else state.value.student
+                    items(items = members, key = {it.id}) { member ->
                         SeugiMemberList(
                             modifier = Modifier.padding(horizontal = 4.dp),
-                            userName = "노영재",
-                            userProfile = null,
+                            userName = member.name,
+                            userProfile = member.picture,
                             checked = checked,
                             onCheckedChangeListener = {
                                 checked = it
