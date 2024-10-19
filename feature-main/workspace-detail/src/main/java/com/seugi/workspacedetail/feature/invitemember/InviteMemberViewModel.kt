@@ -9,6 +9,7 @@ import com.seugi.workspacedetail.feature.invitemember.model.RoomMemberItem
 import com.seugi.workspacedetail.feature.invitemember.model.WaitMemberUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -102,6 +103,23 @@ class InviteMemberViewModel @Inject constructor(
                         it
                     }
                 }.toImmutableList()
+            )
+        }
+    }
+
+    fun updateCheckedMembers(
+        teachers: List<RoomMemberItem>,
+        students: List<RoomMemberItem>
+    ){
+        val studentChecked = students.filter { it.checked }.map { it.id }
+        val teacherChecked = teachers.filter { it.checked }.map { it.id }
+        val checkedMembers = mutableListOf<Long>().apply {
+            addAll(studentChecked)
+            addAll(teacherChecked)
+        }
+        _state.update { ui ->
+            ui.copy(
+                checked = checkedMembers.toImmutableList()
             )
         }
     }

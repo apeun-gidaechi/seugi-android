@@ -8,6 +8,7 @@ import kotlinx.collections.immutable.toImmutableList
 data class WaitMemberUiState (
     val student: ImmutableList<RoomMemberItem> = persistentListOf(),
     val teacher: ImmutableList<RoomMemberItem> = persistentListOf(),
+    val checked: ImmutableList<Long> = persistentListOf()
 )
 
 data class RoomMemberItem(
