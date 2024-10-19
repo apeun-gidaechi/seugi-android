@@ -182,7 +182,9 @@ fun InviteMemberScreen(
                         modifier = Modifier
                             .padding(start = 4.dp)
                     )
-                    BoxWithConstraints {
+                    BoxWithConstraints(
+                        modifier = Modifier.padding(top = 12.dp)
+                    ) {
                         val itemWidth = maxWidth / tabItems.size
                         SeugiSegmentedButtonLayout(
                             containerColor = SeugiTheme.colors.gray100,
