@@ -46,7 +46,16 @@ import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import androidx.compose.foundation.lazy.items
+import com.seugi.designsystem.component.SeugiDialog
+import com.seugi.designsystem.R
+import com.seugi.workspacedetail.feature.invitemember.model.DialogModel
 
+enum class InviteDialogType{
+    CODE,
+    ADD,
+    CANCEL,
+    CLOSE
+}
 
 @Composable
 fun InviteMemberScreen(
@@ -56,8 +65,10 @@ fun InviteMemberScreen(
 
     val tabItems: ImmutableList<String> = persistentListOf("선생님", "학생")
     var selectedTabIndex by remember { mutableIntStateOf(0) }
-    var checked by remember { mutableStateOf(true) }
     val state = viewModel.state.collectAsState()
+    var dialogType by remember { mutableStateOf(InviteDialogType.CLOSE) }
+
+    var dialogData by remember { mutableStateOf(DialogModel()) }
 
     LaunchedEffect(key1 = true) {
         viewModel.getWaitMembers(
@@ -67,6 +78,55 @@ fun InviteMemberScreen(
         viewModel.getWaitMembers(
             workspaceId = "669e339593e10f4f59f8c583",
             role = WorkspacePermissionModel.TEACHER.name
+        )
+    }
+
+    LaunchedEffect(key1 = dialogType) {
+        if (dialogType == InviteDialogType.ADD){
+            dialogData = DialogModel(
+                title = "가입을 수락하시겠습니까?",
+                lText = "취소",
+                rText = "수락",
+                onClick = {
+
+                }
+            )
+        }else if(dialogType == InviteDialogType.CANCEL){
+            dialogData = DialogModel(
+                title = "가입을 거절하시겠습니까?",
+                lText = "취소",
+                rText = "거절",
+                onClick = {
+
+                }
+            )
+        }else if(dialogType == InviteDialogType.CODE){
+            dialogData = DialogModel(
+                title = "초대코드는 Lx07AI 입니다",
+                lText = "닫기",
+                rText = "복사",
+                onClick = {
+
+                },
+                icon = R.drawable.ic_copy_line
+            )
+        }
+    }
+
+
+
+    if (dialogType != InviteDialogType.CLOSE){
+        // TODO 나중에 dialog 수정하기
+        SeugiDialog(
+            title = dialogData.title,
+            onDismissRequest = {dialogType = InviteDialogType.CLOSE},
+            rightText = dialogData.rText,
+            leftText = dialogData.lText,
+            onRightRequest = {},
+            onLeftRequest = {dialogType = InviteDialogType.CLOSE},
+            rButtonColor = if (dialogType == InviteDialogType.CANCEL) SeugiTheme.colors.red200 else SeugiTheme.colors.primary500,
+            rTextColor = if (dialogType == InviteDialogType.CANCEL) SeugiTheme.colors.red500 else SeugiTheme.colors.white,
+            icon = dialogData.icon
         )
     }
     Scaffold(
@@ -104,7 +164,9 @@ fun InviteMemberScreen(
                     )
                     SelectMemberCard(
                         text = "학생코드 확인",
-                        onClick = {}
+                        onClick = {
+                            dialogType = InviteDialogType.CODE
+                        }
                     )
                 }
 
@@ -196,7 +258,9 @@ fun InviteMemberScreen(
                     modifier = Modifier
                         .weight(1f)
                         .height(45.dp),
-                    onClick = {},
+                    onClick = {
+                        dialogType = InviteDialogType.CANCEL
+                    },
                     type = ButtonType.Red,
                     text = "거절"
                 )
@@ -204,7 +268,9 @@ fun InviteMemberScreen(
                     modifier = Modifier
                         .weight(2f)
                         .height(45.dp),
-                    onClick = {},
+                    onClick = {
+                        dialogType = InviteDialogType.ADD
+                    },
                     type = ButtonType.Primary,
                     text = "수락"
                 )
