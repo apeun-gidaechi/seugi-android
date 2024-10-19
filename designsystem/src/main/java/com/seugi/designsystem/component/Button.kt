@@ -190,10 +190,10 @@ fun SeugiFullWidthButton(
  */
 @Composable
 fun SeugiButton(
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
     type: ButtonType,
     text: String,
-    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     isLoading: Boolean = false,
     shape: Shape = RoundedCornerShape(12.dp),
@@ -226,57 +226,55 @@ fun SeugiButton(
         label = "",
     )
 
-    Box(modifier = buttonModifier) {
-        Button(
-            onClick = onClick,
-            modifier = buttonModifier
-                .then(modifier)
-                .height(36.dp)
-                .graphicsLayer {
-                    scaleX = scale
-                    scaleY = scale
-                }
-                .pointerInput(buttonState) {
-                    awaitPointerEventScope {
-                        buttonState = if (buttonState == ButtonState.Hold) {
-                            waitForUpOrCancellation()
-                            ButtonState.Idle
-                        } else {
-                            awaitFirstDown(false)
-                            ButtonState.Hold
-                        }
+    Button(
+        onClick = onClick,
+        modifier = modifier
+            .then(buttonModifier)
+            .height(36.dp)
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
+            .pointerInput(buttonState) {
+                awaitPointerEventScope {
+                    buttonState = if (buttonState == ButtonState.Hold) {
+                        waitForUpOrCancellation()
+                        ButtonState.Idle
+                    } else {
+                        awaitFirstDown(false)
+                        ButtonState.Hold
                     }
-                },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = animColor,
-                contentColor = buttonColor.textColor,
-                disabledContainerColor = animColor,
-                disabledContentColor = buttonColor.disableTextColor,
-            ),
-            enabled = isEnabled,
-            shape = shape,
-            contentPadding = contentPadding,
-            interactionSource = interactionSource,
-        ) {
-            Box {
-                if (isLoading) {
-                    RiveAnimation(
-                        modifier = Modifier.align(Alignment.Center),
-                        resId = R.raw.loading_dots,
-                        contentDescription = "loading gif",
-                        autoplay = true,
-                        animationName = buttonColor.animName,
-                    )
                 }
-                Text(
-                    modifier = Modifier
-                        .padding(horizontal = 12.dp)
-                        .align(Alignment.Center)
-                        .alpha(if (isLoading) 0f else 1f),
-                    text = text,
-                    style = SeugiTheme.typography.body2,
+            },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = animColor,
+            contentColor = buttonColor.textColor,
+            disabledContainerColor = animColor,
+            disabledContentColor = buttonColor.disableTextColor,
+        ),
+        enabled = isEnabled,
+        shape = shape,
+        contentPadding = contentPadding,
+        interactionSource = interactionSource,
+    ) {
+        Box {
+            if (isLoading) {
+                RiveAnimation(
+                    modifier = Modifier.align(Alignment.Center),
+                    resId = R.raw.loading_dots,
+                    contentDescription = "loading gif",
+                    autoplay = true,
+                    animationName = buttonColor.animName,
                 )
             }
+            Text(
+                modifier = Modifier
+                    .padding(horizontal = 12.dp)
+                    .align(Alignment.Center)
+                    .alpha(if (isLoading) 0f else 1f),
+                text = text,
+                style = SeugiTheme.typography.body2,
+            )
         }
     }
 }
@@ -330,11 +328,46 @@ data class ButtonColor(
 
 @Composable
 private fun ButtonType.colors() = when (this) {
-    is ButtonType.Primary -> ButtonColor(SeugiTheme.colors.white, SeugiTheme.colors.primary500, SeugiTheme.colors.white, SeugiTheme.colors.primary200, "Loading_White")
-    is ButtonType.Black -> ButtonColor(SeugiTheme.colors.white, SeugiTheme.colors.black, SeugiTheme.colors.white, SeugiTheme.colors.gray600, "Loading_White")
-    is ButtonType.Gray -> ButtonColor(SeugiTheme.colors.gray600, SeugiTheme.colors.gray100, SeugiTheme.colors.gray500, SeugiTheme.colors.gray100, "Loading_Gray")
-    is ButtonType.Red -> ButtonColor(SeugiTheme.colors.red500, SeugiTheme.colors.red200, SeugiTheme.colors.red300, SeugiTheme.colors.red200, "Loading_White")
-    is ButtonType.Shadow -> ButtonColor(SeugiTheme.colors.black, SeugiTheme.colors.white, SeugiTheme.colors.gray500, SeugiTheme.colors.white, "Loading_Gray")
+    is ButtonType.Primary -> ButtonColor(
+        SeugiTheme.colors.white,
+        SeugiTheme.colors.primary500,
+        SeugiTheme.colors.white,
+        SeugiTheme.colors.primary200,
+        "Loading_White"
+    )
+
+    is ButtonType.Black -> ButtonColor(
+        SeugiTheme.colors.white,
+        SeugiTheme.colors.black,
+        SeugiTheme.colors.white,
+        SeugiTheme.colors.gray600,
+        "Loading_White"
+    )
+
+    is ButtonType.Gray -> ButtonColor(
+        SeugiTheme.colors.gray600,
+        SeugiTheme.colors.gray100,
+        SeugiTheme.colors.gray500,
+        SeugiTheme.colors.gray100,
+        "Loading_Gray"
+    )
+
+    is ButtonType.Red -> ButtonColor(
+        SeugiTheme.colors.red500,
+        SeugiTheme.colors.red200,
+        SeugiTheme.colors.red300,
+        SeugiTheme.colors.red200,
+        "Loading_White"
+    )
+
+    is ButtonType.Shadow -> ButtonColor(
+        SeugiTheme.colors.black,
+        SeugiTheme.colors.white,
+        SeugiTheme.colors.gray500,
+        SeugiTheme.colors.white,
+        "Loading_Gray"
+    )
+
     is ButtonType.Transparent -> ButtonColor(
         SeugiTheme.colors.black,
         SeugiTheme.colors.transparent,
