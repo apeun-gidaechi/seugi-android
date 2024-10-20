@@ -46,6 +46,7 @@ import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import androidx.compose.foundation.lazy.items
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.designsystem.component.SeugiDialog
 import com.seugi.designsystem.R
 import com.seugi.workspacedetail.feature.invitemember.model.DialogModel
@@ -65,7 +66,7 @@ fun InviteMemberScreen(
 
     val tabItems: ImmutableList<String> = persistentListOf("선생님", "학생")
     var selectedTabIndex by remember { mutableIntStateOf(0) }
-    val state = viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     var dialogType by remember { mutableStateOf(InviteDialogType.CLOSE) }
 
     var dialogData by remember { mutableStateOf(DialogModel()) }
@@ -88,7 +89,7 @@ fun InviteMemberScreen(
                 lText = "취소",
                 rText = "수락",
                 onClick = {
-
+                    dialogType = InviteDialogType.CLOSE
                 }
             )
         }else if(dialogType == InviteDialogType.CANCEL){
@@ -97,7 +98,7 @@ fun InviteMemberScreen(
                 lText = "취소",
                 rText = "거절",
                 onClick = {
-
+                    dialogType = InviteDialogType.CLOSE
                 }
             )
         }else if(dialogType == InviteDialogType.CODE){
@@ -106,7 +107,7 @@ fun InviteMemberScreen(
                 lText = "닫기",
                 rText = "복사",
                 onClick = {
-
+                    dialogType = InviteDialogType.CLOSE
                 },
                 icon = R.drawable.ic_copy_line
             )
@@ -122,7 +123,7 @@ fun InviteMemberScreen(
             onDismissRequest = {dialogType = InviteDialogType.CLOSE},
             rightText = dialogData.rText,
             leftText = dialogData.lText,
-            onRightRequest = {},
+            onRightRequest = dialogData.onClick,
             onLeftRequest = {dialogType = InviteDialogType.CLOSE},
             rButtonColor = if (dialogType == InviteDialogType.CANCEL) SeugiTheme.colors.red200 else SeugiTheme.colors.primary500,
             rTextColor = if (dialogType == InviteDialogType.CANCEL) SeugiTheme.colors.red500 else SeugiTheme.colors.white,
@@ -211,7 +212,7 @@ fun InviteMemberScreen(
                         .wrapContentHeight()
                         .padding(top = 12.dp)
                 ) {
-                    val members = if (selectedTabIndex == 0) state.value.teacher else state.value.student
+                    val members = if (selectedTabIndex == 0) state.teacher else state.student
                     Log.d("TAG", "$members: ")
                     items(items = members, key = {it.id}) { member ->
                         SeugiMemberList(
