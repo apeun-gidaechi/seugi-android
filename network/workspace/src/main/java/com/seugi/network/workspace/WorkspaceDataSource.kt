@@ -24,4 +24,5 @@ interface WorkspaceDataSource {
     suspend fun getWaitMembers(workspaceId: String, role: String): BaseResponse<List<RetrieveMemberResponse>>
     suspend fun getWorkspaceCode(workspaceId: String): BaseResponse<String>
     suspend fun addMember(workspaceId: String, userSet: List<Long>, role: String): Response
+    suspend fun cancelMember(workspaceId: String, userSet: List<Long>, role: String): Response
 }

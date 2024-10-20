@@ -106,6 +106,12 @@ fun InviteMemberScreen(
                 lText = "취소",
                 rText = "거절",
                 onClick = {
+                    viewModel.checkedMember(
+                        workspaceId = "669e339593e10f4f59f8c583",
+                        teacherIds = state.teacher.filter { it.checked }.map { it.id },
+                        studentIds = state.student.filter { it.checked }.map { it.id },
+                        feature = "거절"
+                    )
                     dialogType = InviteDialogType.CLOSE
                 }
             )

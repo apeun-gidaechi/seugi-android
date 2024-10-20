@@ -6,7 +6,7 @@ import com.seugi.network.core.response.ProfileResponse
 import com.seugi.network.core.response.Response
 import com.seugi.network.core.response.WorkspacePermissionResponse
 import com.seugi.network.workspace.WorkspaceDataSource
-import com.seugi.network.workspace.request.AddMemberRequest
+import com.seugi.network.workspace.request.InviteMemberRequest
 import com.seugi.network.workspace.request.CreateWorkspaceRequest
 import com.seugi.network.workspace.request.WorkspaceApplicationRequest
 import com.seugi.network.workspace.response.CheckWorkspaceResponse
@@ -15,6 +15,7 @@ import com.seugi.network.workspace.response.WaitWorkspaceResponse
 import com.seugi.network.workspace.response.WorkspaceResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
@@ -95,7 +96,21 @@ class WorkspaceDataSourceImpl @Inject constructor(
         role: String
     ): Response = httpClient.patch(SeugiUrl.Workspace.ADD_MEMBER) {
         setBody(
-            body = AddMemberRequest(
+            body = InviteMemberRequest(
+                workspaceId = workspaceId,
+                userSet = userSet,
+                role = role
+            )
+        )
+    }.body()
+
+    override suspend fun cancelMember(
+        workspaceId: String,
+        userSet: List<Long>,
+        role: String
+    ): Response = httpClient.delete(SeugiUrl.Workspace.CANCEL_MEMBER) {
+        setBody(
+            body = InviteMemberRequest(
                 workspaceId = workspaceId,
                 userSet = userSet,
                 role = role

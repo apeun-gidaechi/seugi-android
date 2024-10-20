@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class AddMemberRequest(
+data class InviteMemberRequest(
     val workspaceId: String,
     val userSet: List<Long>,
     val role: String

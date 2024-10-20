@@ -154,7 +154,7 @@ class InviteMemberViewModel @Inject constructor(
         } else if (teacherIds.isEmpty()) {
             addOrCancel(
                 workspaceId = workspaceId,
-                userSet = teacherIds,
+                userSet = studentIds,
                 role = WorkspacePermissionModel.STUDENT.name,
                 feature = feature
             )
@@ -190,14 +190,30 @@ class InviteMemberViewModel @Inject constructor(
                     role = role
                 ).collect {
                     when (it) {
-                        is Result.Error -> {}
+                        is Result.Error -> {
+                            it.throwable.printStackTrace()
+                        }
                         is Result.Loading -> {}
                         is Result.Success -> {}
                     }
                 }
             }
         }else if (feature == "거절"){
-            // TODO 선택 거절
+            viewModelScope.launch {
+                workspaceRepository.cancelMember(
+                    workspaceId = workspaceId,
+                    userSet = userSet,
+                    role = role
+                ).collect {
+                    when (it) {
+                        is Result.Error -> {
+                            it.throwable.printStackTrace()
+                        }
+                        is Result.Loading -> {}
+                        is Result.Success -> {}
+                    }
+                }
+            }
         }
     }
 }
