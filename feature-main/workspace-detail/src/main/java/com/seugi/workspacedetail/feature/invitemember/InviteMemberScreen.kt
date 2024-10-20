@@ -80,6 +80,9 @@ fun InviteMemberScreen(
             workspaceId = "669e339593e10f4f59f8c583",
             role = WorkspacePermissionModel.TEACHER.name
         )
+        viewModel.getWorkspaceCode(
+            workspaceId = "669e339593e10f4f59f8c583"
+        )
     }
 
     LaunchedEffect(key1 = dialogType) {
@@ -103,7 +106,7 @@ fun InviteMemberScreen(
             )
         }else if(dialogType == InviteDialogType.CODE){
             dialogData = DialogModel(
-                title = "초대코드는 Lx07AI 입니다",
+                title = "초대코드는 ${state.workspaceCode} 입니다",
                 lText = "닫기",
                 rText = "복사",
                 onClick = {

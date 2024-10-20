@@ -72,7 +72,9 @@ class InviteMemberViewModel @Inject constructor(
                         }
                     }
 
-                    is Result.Error -> {}
+                    is Result.Error -> {
+                        it.throwable.printStackTrace()
+                    }
                     is Result.Loading -> {}
                 }
             }
@@ -121,6 +123,26 @@ class InviteMemberViewModel @Inject constructor(
             ui.copy(
                 checked = checkedMembers.toImmutableList()
             )
+        }
+    }
+
+    fun getWorkspaceCode(workspaceId: String){
+        viewModelScope.launch {
+            workspaceRepository.getWorkspaceCode(workspaceId).collect{
+                when(it){
+                    is Result.Error -> {
+                        it.throwable.printStackTrace()
+                    }
+                    is Result.Loading -> {}
+                    is Result.Success -> {
+                        _state.update { ui ->
+                            ui.copy(
+                                workspaceCode = it.data
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }

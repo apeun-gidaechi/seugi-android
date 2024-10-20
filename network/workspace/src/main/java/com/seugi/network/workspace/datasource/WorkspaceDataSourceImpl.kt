@@ -67,4 +67,9 @@ class WorkspaceDataSourceImpl @Inject constructor(
         parameter("workspaceId", workspaceId)
         parameter("role", role)
     }.body()
+
+    override suspend fun getWorkspaceCode(workspaceId: String): BaseResponse<String> =
+        httpClient.get("${SeugiUrl.Workspace.GET_WORKSPACE_CODE}/$workspaceId"){
+
+    }.body()
 }
