@@ -86,7 +86,7 @@ class MessageDataSourceImpl @Inject constructor(
                 val type = message.payload.toResponse(MessageRoomEventResponse.Raw::class.java).type
 
                 when (type) {
-                    "MESSAGE", "FILE", "IMG", "ENTER", "LEFT" -> {
+                    "MESSAGE", "FILE", "IMG", "ENTER", "LEFT", "BOT" -> {
                         emit(message.payload.toResponse(MessageRoomEventResponse.MessageParent.Message::class.java))
                     }
                     "SUB" -> {

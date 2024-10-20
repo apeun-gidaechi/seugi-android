@@ -539,7 +539,7 @@ class ChatDetailViewModel @Inject constructor(
             var isFirst = messageParent.userId != formerItem?.userId
             val isLast = messageParent.userId != nextItem?.userId ||
                 messageParent.timestamp.isDifferentMin(nextItem.timestamp) ||
-                formerItem is MessageParent.Enter
+                formerItem is MessageParent.Enter || formerItem is MessageParent.Left
 
             if (formerItem != null && messageParent.timestamp.isDifferentDay(formerItem.timestamp)) {
                 isFirst = true
@@ -662,6 +662,42 @@ class ChatDetailViewModel @Inject constructor(
                     if (data.userId == _state.value.userInfo?.id) {
                         _messageSaveQueueState.value -= data.uuid ?: ""
                     }
+                    _state.update {
+                        it.copy(
+                            message = message.toImmutableList(),
+                        )
+                    }
+                }
+
+                is MessageParent.BOT -> {
+                    val data = data as MessageParent.BOT
+
+                    val message = _state.value.message.toMutableList()
+                    val formerItem = message.firstOrNull()
+                    if (
+                        formerItem is MessageParent.BOT && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
+                    ) {
+                        message[0] = formerItem.copy(isLast = false)
+                    }
+
+                    if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
+                        message.add(
+                            index = 0,
+                            element = MessageParent.Date(
+                                type = MessageType.MESSAGE,
+                                timestamp = LocalDateTime.of(data.timestamp.year, data.timestamp.monthValue, data.timestamp.dayOfMonth, 0, 0),
+                                userId = 0,
+                                text = "",
+                            ),
+                        )
+                    }
+                    message.add(
+                        index = 0,
+                        element = data.copy(
+                            isLast = true,
+                        ),
+                    )
+
                     _state.update {
                         it.copy(
                             message = message.toImmutableList(),

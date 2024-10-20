@@ -47,6 +47,24 @@ sealed class MessageRoomEvent(
             override val timestamp: LocalDateTime,
         ) : MessageParent(timestamp, type, userId)
 
+        data class BOT(
+            val id: String,
+            val chatRoomId: String,
+            val isFirst: Boolean,
+            val isLast: Boolean,
+            override val type: MessageType,
+            override val userId: Int,
+            val message: String,
+            val messageStatus: String,
+            val uuid: String?,
+            val emoticon: String?,
+            val eventList: ImmutableList<Int>?,
+            val emojiList: ImmutableList<MessageEmojiModel>,
+            val mention: ImmutableList<Int>,
+            val mentionAll: Boolean,
+            override val timestamp: LocalDateTime,
+        ) : MessageParent(timestamp, type, userId)
+
         data class File(
             val url: String,
             val fileName: String,
@@ -220,6 +238,14 @@ fun MessageRoomEvent.MessageParent.copy(timestamp: LocalDateTime = this.timestam
         )
     }
     is MessageRoomEvent.MessageParent.Etc -> {
+        this.copy(
+            type = type,
+            userId = userId,
+            timestamp = timestamp,
+        )
+    }
+
+    is MessageRoomEvent.MessageParent.BOT -> {
         this.copy(
             type = type,
             userId = userId,

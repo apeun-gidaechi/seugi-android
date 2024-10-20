@@ -98,6 +98,26 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
         )
     }
 
+    "BOT" -> {
+        MessageRoomEvent.MessageParent.BOT(
+            id = id,
+            chatRoomId = chatRoomId,
+            type = type.toMessageType(),
+            userId = this.userId,
+            isFirst = true,
+            isLast = true,
+            message = message,
+            messageStatus = messageStatus,
+            uuid = uuid,
+            emoticon = emoticon,
+            eventList = eventList?.toImmutableList() ?: persistentListOf(),
+            emojiList = emojiList.map { it.toModel() }.toImmutableList(),
+            mention = mention.toImmutableList(),
+            mentionAll = mentionAll,
+            timestamp = timestamp,
+        )
+    }
+
     else -> throw IllegalArgumentException("Not Invalid MessageRoomEventResponse.Raw Type")
 }
 
