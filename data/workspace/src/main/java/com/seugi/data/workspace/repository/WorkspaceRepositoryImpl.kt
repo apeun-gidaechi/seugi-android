@@ -153,5 +153,21 @@ class WorkspaceRepositoryImpl @Inject constructor(
             .flowOn(dispatcher)
             .asResult()
 
+    override suspend fun addMember(
+        workspaceId: String,
+        userSet: List<Long>,
+        role: String
+    ): Flow<Result<Boolean>> = flow{
+        val response = workspaceDatasource.addMember(
+            workspaceId = workspaceId,
+            userSet = userSet,
+            role = role
+        ).safeResponse()
+
+        emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
 
 }

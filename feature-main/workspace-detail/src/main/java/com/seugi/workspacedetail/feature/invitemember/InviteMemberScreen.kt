@@ -22,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -92,6 +91,12 @@ fun InviteMemberScreen(
                 lText = "취소",
                 rText = "수락",
                 onClick = {
+                    viewModel.checkedMember(
+                        workspaceId = "669e339593e10f4f59f8c583",
+                        teacherIds = state.teacher.filter { it.checked }.map { it.id },
+                        studentIds = state.student.filter { it.checked }.map { it.id },
+                        feature = "수락"
+                    )
                     dialogType = InviteDialogType.CLOSE
                 }
             )
