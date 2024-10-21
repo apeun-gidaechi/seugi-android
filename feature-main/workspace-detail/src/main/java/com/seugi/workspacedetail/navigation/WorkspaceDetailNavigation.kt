@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.seugi.data.core.model.WorkspacePermissionModel
 import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.workspacedetail.feature.workspacedetail.WorkspaceDetailScreen
 
@@ -24,7 +25,7 @@ fun NavGraphBuilder.workspaceDetailScreen(
     navigateToCreateWorkspace: () -> Unit,
     changeWorkspace: () -> Unit,
     navigateToInviteMember: () -> Unit,
-    myRole: String,
+    myRole: WorkspacePermissionModel,
 ) {
     composable(
         route = WORKSPACE_DETAIL_ROUTE,

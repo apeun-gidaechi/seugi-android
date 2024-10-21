@@ -40,6 +40,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.data.core.model.WorkspacePermissionModel
+import com.seugi.data.core.model.isAdmin
 import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.NoInteractionSource
@@ -66,7 +67,7 @@ fun WorkspaceDetailScreen(
     navigateToCreateWorkspace: () -> Unit,
     changeWorkspace: () -> Unit,
     navigateToInviteMember: () -> Unit,
-    myRole: String,
+    myRole: WorkspacePermissionModel,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showDialog by remember { mutableStateOf(false) }
@@ -419,7 +420,7 @@ fun WorkspaceDetailScreen(
                     contentScale = ContentScale.Crop,
                 )
             }
-            if (myRole == WorkspacePermissionModel.ADMIN.name || myRole == WorkspacePermissionModel.MIDDLE_ADMIN.name) {
+            if (myRole.isAdmin()) {
                 Row(
                     modifier = Modifier
                         .clickable {
