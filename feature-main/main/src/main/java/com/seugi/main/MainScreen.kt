@@ -338,7 +338,8 @@ internal fun MainScreen(
                 reloadProfile = viewModel::loadLocalWorkspace,
             )
             inviteMemberScreen(
-                popBackStack = navHostController::popBackStack
+                popBackStack = navHostController::popBackStack,
+                workspaceId = state.profile.workspaceId
             )
         }
     }

@@ -60,6 +60,7 @@ enum class InviteDialogType{
 @Composable
 fun InviteMemberScreen(
     popBackStack: () -> Unit,
+    workspaceId: String,
     viewModel: InviteMemberViewModel = hiltViewModel()
 ) {
 
@@ -74,10 +75,10 @@ fun InviteMemberScreen(
 
     LaunchedEffect(key1 = true) {
         viewModel.getWaitMembers(
-            workspaceId = "669e339593e10f4f59f8c583",
+            workspaceId = workspaceId
         )
         viewModel.getWorkspaceCode(
-            workspaceId = "669e339593e10f4f59f8c583"
+            workspaceId = workspaceId
         )
     }
 
@@ -89,7 +90,7 @@ fun InviteMemberScreen(
                 rText = "수락",
                 onClick = {
                     viewModel.checkedMember(
-                        workspaceId = "669e339593e10f4f59f8c583",
+                        workspaceId = workspaceId,
                         teacherIds = state.teacher.filter { it.checked }.map { it.id },
                         studentIds = state.student.filter { it.checked }.map { it.id },
                         feature = "수락"
@@ -104,7 +105,7 @@ fun InviteMemberScreen(
                 rText = "거절",
                 onClick = {
                     viewModel.checkedMember(
-                        workspaceId = "669e339593e10f4f59f8c583",
+                        workspaceId = workspaceId,
                         teacherIds = state.teacher.filter { it.checked }.map { it.id },
                         studentIds = state.student.filter { it.checked }.map { it.id },
                         feature = "거절"

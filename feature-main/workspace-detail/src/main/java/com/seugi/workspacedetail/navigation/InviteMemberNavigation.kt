@@ -19,11 +19,13 @@ fun NavController.navigateToInviteMember(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.inviteMemberScreen(
     popBackStack: () -> Unit,
+    workspaceId: String
 ) {
     composable(
         route = INVITE_MEMBER_ROUTE,
     ) {
         InviteMemberScreen(
+            workspaceId = workspaceId,
             popBackStack = popBackStack
         )
     }
