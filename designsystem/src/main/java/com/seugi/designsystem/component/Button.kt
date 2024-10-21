@@ -190,10 +190,10 @@ fun SeugiFullWidthButton(
  */
 @Composable
 fun SeugiButton(
-    modifier: Modifier = Modifier,
     onClick: () -> Unit,
     type: ButtonType,
     text: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     isLoading: Boolean = false,
     shape: Shape = RoundedCornerShape(12.dp),
