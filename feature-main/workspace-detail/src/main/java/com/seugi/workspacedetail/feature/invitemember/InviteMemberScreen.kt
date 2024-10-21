@@ -52,6 +52,7 @@ import com.seugi.workspacedetail.feature.invitemember.model.DialogModel
 import com.seugi.workspacedetail.feature.invitemember.model.InviteSideEffect
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 
 enum class InviteDialogType {
@@ -74,12 +75,15 @@ fun InviteMemberScreen(popBackStack: () -> Unit, workspaceId: String, viewModel:
     val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
-        viewModel.getWaitMembers(
-            workspaceId = workspaceId,
-        )
-        viewModel.getWorkspaceCode(
-            workspaceId = workspaceId,
-        )
+        val jab1 = async {
+            viewModel.getWaitMembers(
+                workspaceId = workspaceId,
+            )
+            viewModel.getWorkspaceCode(
+                workspaceId = workspaceId,
+            )
+        }
+        jab1.start()
     }
 
     LaunchedEffect(key1 = dialogType) {
