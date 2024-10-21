@@ -176,7 +176,7 @@ fun InviteMemberScreen(popBackStack: () -> Unit, workspaceId: String, viewModel:
                 title = {
                     Text(text = "멤버 초대", style = SeugiTheme.typography.subtitle1)
                 },
-                onNavigationIconClick = popBackStack
+                onNavigationIconClick = popBackStack,
             )
         },
     ) {
