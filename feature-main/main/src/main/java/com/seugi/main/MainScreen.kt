@@ -311,7 +311,8 @@ internal fun MainScreen(
                 changeWorkspace = {
                     viewModel.loadWorkspace()
                 },
-                navigateToInviteMember = navHostController::navigateToInviteMember
+                navigateToInviteMember = navHostController::navigateToInviteMember,
+                myRole = state.profile.permission.name
             )
             workspaceMemberScreen(
                 showSnackbar = showSnackbar,
