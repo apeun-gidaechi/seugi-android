@@ -83,9 +83,9 @@ internal fun NotificationScreen(
     viewModel: NotificationViewModel = hiltViewModel(),
     permission: WorkspacePermissionModel,
     workspaceId: String,
-    userId: Int,
+    userId: Long,
     navigateToNotificationCreate: () -> Unit,
-    navigateToNotificationEdit: (id: Long, title: String, content: String, userId: Int) -> Unit,
+    navigateToNotificationEdit: (id: Long, title: String, content: String, userId: Long) -> Unit,
 ) {
     val view = LocalView.current
     val context = LocalContext.current

@@ -15,14 +15,14 @@ data class ChatDetailUiState(
     val isInit: Boolean = false,
     val isLastPage: Boolean = false,
     val message: ImmutableList<MessageRoomEvent.MessageParent> = persistentListOf(),
-    val users: ImmutableMap<Int, UserModel> = persistentMapOf(),
+    val users: ImmutableMap<Long, UserModel> = persistentMapOf(),
 )
 
 data class ChatRoomState(
     val id: String,
     val roomName: String,
     val members: ImmutableList<UserInfoModel> = persistentListOf(),
-    val adminId: Int,
+    val adminId: Long,
 )
 
 sealed interface ChatDetailSideEffect {

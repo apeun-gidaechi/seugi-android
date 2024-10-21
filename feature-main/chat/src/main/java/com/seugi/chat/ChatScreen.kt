@@ -40,10 +40,10 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun ChatScreen(
     viewModel: ChatViewModel = hiltViewModel(),
-    userId: Int,
+    userId: Long,
     workspaceId: String,
     navigateToChatDetail: (chatID: String) -> Unit,
-    navigateToCreateRoom: (workspaceId: String, userId: Int) -> Unit,
+    navigateToCreateRoom: (workspaceId: String, userId: Long) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()

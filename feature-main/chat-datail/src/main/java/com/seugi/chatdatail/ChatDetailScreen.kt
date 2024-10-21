@@ -126,7 +126,7 @@ import net.engawapg.lib.zoomable.zoomable
 @Composable
 internal fun ChatDetailScreen(
     viewModel: ChatDetailViewModel = hiltViewModel(),
-    userId: Int,
+    userId: Long,
     workspaceId: String = "664bdd0b9dfce726abd30462",
     isPersonal: Boolean = false,
     chatRoomId: String = "665d9ec15e65717b19a62701",
@@ -888,7 +888,7 @@ private fun ChatUploadDialogItem(@DrawableRes resId: Int, title: String, onClick
 
 @Composable
 private fun ChatSideBarScreen(
-    adminId: Int?,
+    adminId: Long?,
     members: ImmutableList<UserInfoModel>,
     notificationState: Boolean,
     showLeft: Boolean,

@@ -6,7 +6,7 @@ import com.seugi.data.core.model.WorkspacePermissionModel
 import com.seugi.data.workspace.model.WorkspaceModel
 
 data class MainUiState(
-    val userId: Int = -1,
+    val userId: Long = -1,
     val profile: ProfileModel = ProfileModel(
         status = "",
         member = UserModel(

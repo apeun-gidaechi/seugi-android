@@ -7,7 +7,7 @@ interface GroupChatDataSource {
 
     suspend fun getGroupRoomList(workspaceId: String): BaseResponse<List<ChatRoomResponse>>
 
-    suspend fun createChat(workspaceId: String, roomName: String, joinUsers: List<Int>, chatRoomImg: String): BaseResponse<String>
+    suspend fun createChat(workspaceId: String, roomName: String, joinUsers: List<Long>, chatRoomImg: String): BaseResponse<String>
 
     suspend fun getChat(roomId: String): BaseResponse<ChatRoomResponse>
 

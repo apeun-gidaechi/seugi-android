@@ -13,10 +13,10 @@ fun NavController.navigateToNotification(navOptions: NavOptions?) = navigate(NOT
 
 fun NavGraphBuilder.notificationScreen(
     workspaceId: String,
-    userId: Int,
+    userId: Long,
     permission: WorkspacePermissionModel,
     navigateToNotificationCreate: () -> Unit,
-    navigateToNotificationEdit: (id: Long, title: String, content: String, userId: Int) -> Unit,
+    navigateToNotificationEdit: (id: Long, title: String, content: String, userId: Long) -> Unit,
 ) {
     composable(NOTIFICATION_ROUTE) {
         NotificationScreen(

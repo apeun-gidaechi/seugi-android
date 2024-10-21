@@ -12,9 +12,9 @@ fun NavController.navigateToRoom(navOptions: NavOptions?) = navigate(ROOM_ROUTE,
 
 fun NavGraphBuilder.roomScreen(
     workspaceId: String,
-    userId: Int,
+    userId: Long,
     navigateToChatDetail: (roomId: String, workspaceId: String) -> Unit,
-    navigateToCreateRoom: (workspaceId: String, userId: Int) -> Unit,
+    navigateToCreateRoom: (workspaceId: String, userId: Long) -> Unit,
 ) {
     composable(ROOM_ROUTE) {
         RoomScreen(

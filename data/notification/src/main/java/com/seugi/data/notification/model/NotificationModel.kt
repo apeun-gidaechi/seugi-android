@@ -6,7 +6,7 @@ import kotlinx.collections.immutable.ImmutableList
 data class NotificationModel(
     val id: Long,
     val workspaceId: String,
-    val userId: Int,
+    val userId: Long,
     val userName: String,
     val title: String,
     val content: String,

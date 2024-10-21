@@ -5,19 +5,19 @@ import kotlinx.collections.immutable.ImmutableList
 
 sealed class MessageRoomEvent(
     open val type: MessageType,
-    open val userId: Int,
+    open val userId: Long,
 ) {
     sealed class MessageParent(
         open val timestamp: LocalDateTime,
         override val type: MessageType,
-        override val userId: Int,
+        override val userId: Long,
     ) : MessageRoomEvent(type, userId) {
         data class Me(
             val id: String,
             val chatRoomId: String,
             val isLast: Boolean,
             override val type: MessageType,
-            override val userId: Int,
+            override val userId: Long,
             val message: String,
             val messageStatus: String,
             val uuid: String?,
@@ -35,7 +35,7 @@ sealed class MessageRoomEvent(
             val isFirst: Boolean,
             val isLast: Boolean,
             override val type: MessageType,
-            override val userId: Int,
+            override val userId: Long,
             val message: String,
             val messageStatus: String,
             val uuid: String?,
@@ -54,7 +54,7 @@ sealed class MessageRoomEvent(
             val uuid: String?,
             override val timestamp: LocalDateTime,
             override val type: MessageType,
-            override val userId: Int,
+            override val userId: Long,
         ) : MessageParent(timestamp, type, userId)
 
         data class Img(
@@ -63,12 +63,12 @@ sealed class MessageRoomEvent(
             val uuid: String?,
             override val timestamp: LocalDateTime,
             override val type: MessageType,
-            override val userId: Int,
+            override val userId: Long,
         ) : MessageParent(timestamp, type, userId)
 
         data class Enter(
             override val type: MessageType,
-            override val userId: Int,
+            override val userId: Long,
             override val timestamp: LocalDateTime,
             val roomId: String,
             val eventList: ImmutableList<Int>,
@@ -76,7 +76,7 @@ sealed class MessageRoomEvent(
 
         data class Left(
             override val type: MessageType,
-            override val userId: Int,
+            override val userId: Long,
             override val timestamp: LocalDateTime,
             val roomId: String,
             val eventList: ImmutableList<Int>,
@@ -84,14 +84,14 @@ sealed class MessageRoomEvent(
 
         data class Date(
             override val type: MessageType,
-            override val userId: Int,
+            override val userId: Long,
             override val timestamp: LocalDateTime,
             val text: String,
         ) : MessageParent(timestamp, type, userId)
 
         data class Etc(
             override val type: MessageType,
-            override val userId: Int,
+            override val userId: Long,
             override val timestamp: LocalDateTime,
             val text: String,
         ) : MessageParent(timestamp, type, userId)
@@ -99,42 +99,42 @@ sealed class MessageRoomEvent(
 
     data class Sub(
         override val type: MessageType,
-        override val userId: Int,
+        override val userId: Long,
     ) : MessageRoomEvent(type, userId)
     data class UnSub(
         override val type: MessageType,
-        override val userId: Int,
+        override val userId: Long,
     ) : MessageRoomEvent(type, userId)
 
     data class DeleteMessage(
         override val type: MessageType,
-        override val userId: Int,
+        override val userId: Long,
         val messageId: String,
     ) : MessageRoomEvent(type, userId)
 
     data class AddEmoji(
         override val type: MessageType,
-        override val userId: Int,
+        override val userId: Long,
         val messageId: String,
         val emojiId: Int,
     ) : MessageRoomEvent(type, userId)
 
     data class RemoveEmoji(
         override val type: MessageType,
-        override val userId: Int,
+        override val userId: Long,
         val messageId: String,
         val emojiId: Int,
     ) : MessageRoomEvent(type, userId)
 
     data class TransperAdmin(
         override val type: MessageType,
-        override val userId: Int,
+        override val userId: Long,
         val roomId: String,
         val eventList: ImmutableList<Int>,
     ) : MessageRoomEvent(type, userId)
 }
 
-fun MessageRoomEvent.copy(type: MessageType = this.type, userId: Int = this.userId) {
+fun MessageRoomEvent.copy(type: MessageType = this.type, userId: Long = this.userId) {
     when (this) {
         is MessageRoomEvent.AddEmoji -> copy(
             type = type,
@@ -168,7 +168,7 @@ fun MessageRoomEvent.copy(type: MessageType = this.type, userId: Int = this.user
     }
 }
 
-fun MessageRoomEvent.MessageParent.copy(timestamp: LocalDateTime = this.timestamp, type: MessageType = this.type, userId: Int = this.userId) = when (this) {
+fun MessageRoomEvent.MessageParent.copy(timestamp: LocalDateTime = this.timestamp, type: MessageType = this.type, userId: Long = this.userId) = when (this) {
     is MessageRoomEvent.MessageParent.Enter -> {
         this.copy(
             type = type,

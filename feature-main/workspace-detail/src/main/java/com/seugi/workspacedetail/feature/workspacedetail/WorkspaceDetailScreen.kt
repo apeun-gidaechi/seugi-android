@@ -39,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.seugi.data.core.model.WorkspacePermissionModel
+import com.seugi.data.core.model.isAdmin
 import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.NoInteractionSource
@@ -56,7 +58,7 @@ import com.seugi.workspacedetail.feature.workspacedetail.model.WorkspaceDetailSi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WorkspaceDetailScreen(
+internal fun WorkspaceDetailScreen(
     viewModel: WorkspaceDetailViewModel = hiltViewModel(),
     navigateToJoinWorkspace: () -> Unit,
     popBackStack: () -> Unit,
@@ -64,6 +66,8 @@ fun WorkspaceDetailScreen(
     navigateToWorkspaceMember: (String) -> Unit,
     navigateToCreateWorkspace: () -> Unit,
     changeWorkspace: () -> Unit,
+    navigateToInviteMember: () -> Unit,
+    myRole: WorkspacePermissionModel,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showDialog by remember { mutableStateOf(false) }
@@ -416,27 +420,32 @@ fun WorkspaceDetailScreen(
                     contentScale = ContentScale.Crop,
                 )
             }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = "멤버 초대",
-                    style = SeugiTheme.typography.subtitle2,
-                    modifier = Modifier.padding(start = 20.dp),
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                Image(
+            if (myRole.isAdmin()) {
+                Row(
                     modifier = Modifier
-                        .padding(end = 20.dp)
-                        .size(24.dp),
-                    painter = painterResource(id = R.drawable.ic_expand_right_line),
-                    contentDescription = "설정 톱니바퀴",
-                    colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
-                    contentScale = ContentScale.Crop,
-                )
+                        .clickable {
+                            navigateToInviteMember()
+                        }
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = "멤버 초대",
+                        style = SeugiTheme.typography.subtitle2,
+                        modifier = Modifier.padding(start = 20.dp),
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Image(
+                        modifier = Modifier
+                            .padding(end = 20.dp)
+                            .size(24.dp),
+                        painter = painterResource(id = R.drawable.ic_expand_right_line),
+                        contentDescription = "설정 톱니바퀴",
+                        colorFilter = ColorFilter.tint(SeugiTheme.colors.gray400),
+                        contentScale = ContentScale.Crop,
+                    )
+                }
             }
         }
     }

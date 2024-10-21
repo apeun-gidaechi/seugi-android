@@ -14,7 +14,7 @@ data class RoomCreateUiState(
 }
 
 data class RoomMemberItem(
-    val id: Int = 0,
+    val id: Long = 0,
     val name: String,
     val memberProfile: String? = null,
     val checked: Boolean = false,

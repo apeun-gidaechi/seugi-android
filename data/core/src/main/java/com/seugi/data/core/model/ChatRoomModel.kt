@@ -7,7 +7,7 @@ data class ChatRoomModel(
     val id: String,
     val workspaceId: String,
     val type: ChatRoomType,
-    val roomAdmin: Int,
+    val roomAdmin: Long,
     val chatName: String,
     val createdAt: LocalDateTime,
     val chatRoomImg: String?,

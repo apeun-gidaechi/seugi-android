@@ -27,7 +27,7 @@ class PersonalChatRepositoryImpl @Inject constructor(
         .flowOn(dispatcher)
         .asResult()
 
-    override suspend fun createChat(workspaceId: String, roomName: String, joinUsers: List<Int>, chatRoomImg: String): Flow<Result<String>> = flow {
+    override suspend fun createChat(workspaceId: String, roomName: String, joinUsers: List<Long>, chatRoomImg: String): Flow<Result<String>> = flow {
         val response = dataSource.createChat(
             workspaceId = workspaceId,
             roomName = roomName,
