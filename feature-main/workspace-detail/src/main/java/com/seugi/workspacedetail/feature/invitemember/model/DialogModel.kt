@@ -6,5 +6,5 @@ data class DialogModel(
     val lText: String = "",
     val rText: String = "",
     val icon: Int? = null,
-    val onClick: () -> Unit = {}
+    val onClick: () -> Unit = {},
 )

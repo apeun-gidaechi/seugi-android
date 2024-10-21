@@ -4,9 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.workspacedetail.feature.invitemember.InviteMemberScreen
-import com.seugi.workspacedetail.feature.workspacedetail.WorkspaceDetailScreen
 
 const val INVITE_MEMBER_ROUTE = "INVITE_MEMBER_ROUTE"
 
@@ -17,16 +15,13 @@ fun NavController.navigateToInviteMember(navOptions: NavOptions? = null) {
     )
 }
 
-fun NavGraphBuilder.inviteMemberScreen(
-    popBackStack: () -> Unit,
-    workspaceId: String,
-) {
+fun NavGraphBuilder.inviteMemberScreen(popBackStack: () -> Unit, workspaceId: String) {
     composable(
         route = INVITE_MEMBER_ROUTE,
     ) {
         InviteMemberScreen(
             workspaceId = workspaceId,
-            popBackStack = popBackStack
+            popBackStack = popBackStack,
         )
     }
 }

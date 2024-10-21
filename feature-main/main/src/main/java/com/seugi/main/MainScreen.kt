@@ -312,7 +312,7 @@ internal fun MainScreen(
                     viewModel.loadWorkspace()
                 },
                 navigateToInviteMember = navHostController::navigateToInviteMember,
-                myRole = state.profile.permission.name
+                myRole = state.profile.permission.name,
             )
             workspaceMemberScreen(
                 showSnackbar = showSnackbar,
@@ -340,7 +340,7 @@ internal fun MainScreen(
             )
             inviteMemberScreen(
                 popBackStack = navHostController::popBackStack,
-                workspaceId = state.profile.workspaceId
+                workspaceId = state.profile.workspaceId,
             )
         }
     }

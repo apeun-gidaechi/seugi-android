@@ -24,7 +24,7 @@ fun NavGraphBuilder.workspaceDetailScreen(
     navigateToCreateWorkspace: () -> Unit,
     changeWorkspace: () -> Unit,
     navigateToInviteMember: () -> Unit,
-    myRole: String
+    myRole: String,
 ) {
     composable(
         route = WORKSPACE_DETAIL_ROUTE,
@@ -37,7 +37,7 @@ fun NavGraphBuilder.workspaceDetailScreen(
             navigateToCreateWorkspace = navigateToCreateWorkspace,
             changeWorkspace = changeWorkspace,
             navigateToInviteMember = navigateToInviteMember,
-            myRole = myRole
+            myRole = myRole,
         )
     }
 }

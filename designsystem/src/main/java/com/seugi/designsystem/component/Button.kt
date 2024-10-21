@@ -333,7 +333,7 @@ private fun ButtonType.colors() = when (this) {
         SeugiTheme.colors.primary500,
         SeugiTheme.colors.white,
         SeugiTheme.colors.primary200,
-        "Loading_White"
+        "Loading_White",
     )
 
     is ButtonType.Black -> ButtonColor(
@@ -341,7 +341,7 @@ private fun ButtonType.colors() = when (this) {
         SeugiTheme.colors.black,
         SeugiTheme.colors.white,
         SeugiTheme.colors.gray600,
-        "Loading_White"
+        "Loading_White",
     )
 
     is ButtonType.Gray -> ButtonColor(
@@ -349,7 +349,7 @@ private fun ButtonType.colors() = when (this) {
         SeugiTheme.colors.gray100,
         SeugiTheme.colors.gray500,
         SeugiTheme.colors.gray100,
-        "Loading_Gray"
+        "Loading_Gray",
     )
 
     is ButtonType.Red -> ButtonColor(
@@ -357,7 +357,7 @@ private fun ButtonType.colors() = when (this) {
         SeugiTheme.colors.red200,
         SeugiTheme.colors.red300,
         SeugiTheme.colors.red200,
-        "Loading_White"
+        "Loading_White",
     )
 
     is ButtonType.Shadow -> ButtonColor(
@@ -365,7 +365,7 @@ private fun ButtonType.colors() = when (this) {
         SeugiTheme.colors.white,
         SeugiTheme.colors.gray500,
         SeugiTheme.colors.white,
-        "Loading_Gray"
+        "Loading_Gray",
     )
 
     is ButtonType.Transparent -> ButtonColor(

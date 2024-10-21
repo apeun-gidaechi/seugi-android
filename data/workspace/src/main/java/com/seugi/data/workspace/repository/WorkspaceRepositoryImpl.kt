@@ -38,11 +38,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
             .asResult()
     }
 
-    override suspend fun workspaceApplication(
-        workspaceId: String,
-        workspaceCode: String,
-        role: String
-    ): Flow<Result<String>> {
+    override suspend fun workspaceApplication(workspaceId: String, workspaceCode: String, role: String): Flow<Result<String>> {
         return flow {
             val data = workspaceDatasource.workspaceApplication(
                 workspaceId = workspaceId,
@@ -90,8 +86,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
         return workspaceDao.getWorkspace()?.localToModel()?.workspaceId ?: ""
     }
 
-    override suspend fun getLocalWorkspace(): WorkspaceModel? =
-        workspaceDao.getWorkspace()?.localToModel()
+    override suspend fun getLocalWorkspace(): WorkspaceModel? = workspaceDao.getWorkspace()?.localToModel()
 
     override suspend fun getWaitWorkspaces(): Flow<Result<List<WaitWorkspaceModel>>> = flow {
         val response = workspaceDatasource.getWaitWorkspace().safeResponse()
@@ -100,18 +95,14 @@ class WorkspaceRepositoryImpl @Inject constructor(
         .flowOn(dispatcher)
         .asResult()
 
-    override suspend fun getWorkspaceData(workspaceId: String): Flow<Result<WorkspaceModel>> =
-        flow {
-            val response = workspaceDatasource.getWorkspaceData(workspaceId).safeResponse()
-            emit(response.toModel())
-        }
-            .flowOn(dispatcher)
-            .asResult()
+    override suspend fun getWorkspaceData(workspaceId: String): Flow<Result<WorkspaceModel>> = flow {
+        val response = workspaceDatasource.getWorkspaceData(workspaceId).safeResponse()
+        emit(response.toModel())
+    }
+        .flowOn(dispatcher)
+        .asResult()
 
-    override suspend fun createWorkspace(
-        workspaceName: String,
-        workspaceImage: String
-    ): Flow<Result<String>> = flow {
+    override suspend fun createWorkspace(workspaceName: String, workspaceImage: String): Flow<Result<String>> = flow {
         val response = workspaceDatasource.createWorkspace(
             workspaceName = workspaceName,
             workspaceImage = workspaceImage,
@@ -130,38 +121,29 @@ class WorkspaceRepositoryImpl @Inject constructor(
         .flowOn(dispatcher)
         .asResult()
 
-    override suspend fun getWaitMembers(
-        workspaceId: String,
-        role: String
-    ): Flow<Result<List<RetrieveMemberModel>>> =
-        flow {
-            val response = workspaceDatasource.getWaitMembers(
-                workspaceId = workspaceId,
-                role = role
-            ).safeResponse()
+    override suspend fun getWaitMembers(workspaceId: String, role: String): Flow<Result<List<RetrieveMemberModel>>> = flow {
+        val response = workspaceDatasource.getWaitMembers(
+            workspaceId = workspaceId,
+            role = role,
+        ).safeResponse()
 
-            emit(response.toModels())
-        }
-            .flowOn(dispatcher)
-            .asResult()
+        emit(response.toModels())
+    }
+        .flowOn(dispatcher)
+        .asResult()
 
-    override suspend fun getWorkspaceCode(workspaceId: String): Flow<Result<String>> =
-        flow {
-            val response = workspaceDatasource.getWorkspaceCode(workspaceId).safeResponse()
-            emit(response)
-        }
-            .flowOn(dispatcher)
-            .asResult()
+    override suspend fun getWorkspaceCode(workspaceId: String): Flow<Result<String>> = flow {
+        val response = workspaceDatasource.getWorkspaceCode(workspaceId).safeResponse()
+        emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
 
-    override suspend fun addMember(
-        workspaceId: String,
-        userSet: List<Long>,
-        role: String
-    ): Flow<Result<Boolean>> = flow{
+    override suspend fun addMember(workspaceId: String, userSet: List<Long>, role: String): Flow<Result<Boolean>> = flow {
         val response = workspaceDatasource.addMember(
             workspaceId = workspaceId,
             userSet = userSet,
-            role = role
+            role = role,
         ).safeResponse()
 
         emit(response)
@@ -169,21 +151,15 @@ class WorkspaceRepositoryImpl @Inject constructor(
         .flowOn(dispatcher)
         .asResult()
 
-    override suspend fun cancelMember(
-        workspaceId: String,
-        userSet: List<Long>,
-        role: String
-    ): Flow<Result<Boolean>> = flow{
+    override suspend fun cancelMember(workspaceId: String, userSet: List<Long>, role: String): Flow<Result<Boolean>> = flow {
         val response = workspaceDatasource.cancelMember(
             workspaceId = workspaceId,
             userSet = userSet,
-            role = role
+            role = role,
         ).safeResponse()
 
         emit(response)
     }
         .flowOn(dispatcher)
         .asResult()
-
-
 }

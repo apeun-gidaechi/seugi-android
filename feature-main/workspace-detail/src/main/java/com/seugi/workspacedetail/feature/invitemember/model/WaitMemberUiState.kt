@@ -3,11 +3,11 @@ package com.seugi.workspacedetail.feature.invitemember.model
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-data class WaitMemberUiState (
+data class WaitMemberUiState(
     val student: ImmutableList<RoomMemberItem> = persistentListOf(),
     val teacher: ImmutableList<RoomMemberItem> = persistentListOf(),
     val workspaceCode: String = "",
-    val waitMemberSize: Int = 0
+    val waitMemberSize: Int = 0,
 )
 
 data class RoomMemberItem(

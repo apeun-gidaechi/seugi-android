@@ -66,7 +66,7 @@ fun WorkspaceDetailScreen(
     navigateToCreateWorkspace: () -> Unit,
     changeWorkspace: () -> Unit,
     navigateToInviteMember: () -> Unit,
-    myRole: String
+    myRole: String,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showDialog by remember { mutableStateOf(false) }
@@ -419,7 +419,7 @@ fun WorkspaceDetailScreen(
                     contentScale = ContentScale.Crop,
                 )
             }
-            if (myRole == WorkspacePermissionModel.ADMIN.name || myRole ==WorkspacePermissionModel.MIDDLE_ADMIN.name) {
+            if (myRole == WorkspacePermissionModel.ADMIN.name || myRole == WorkspacePermissionModel.MIDDLE_ADMIN.name) {
                 Row(
                     modifier = Modifier
                         .clickable {

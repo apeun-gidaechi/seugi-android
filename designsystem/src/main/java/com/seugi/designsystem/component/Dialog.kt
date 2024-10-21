@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -95,7 +94,6 @@ fun SeugiDialog(title: String, content: String, onDismissRequest: () -> Unit) {
     }
 }
 
-
 // TODO 나중에 dialog 수정하기
 @Composable
 fun SeugiDialog(
@@ -135,8 +133,8 @@ fun SeugiDialog(
                         color = SeugiTheme.colors.black,
                         style = SeugiTheme.typography.subtitle1,
                     )
-                    if (content?.isNotEmpty() == true){
-                    Spacer(modifier = Modifier.height(8.dp))
+                    if (content?.isNotEmpty() == true) {
+                        Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = content,
                             color = SeugiTheme.colors.gray700,
@@ -155,7 +153,7 @@ fun SeugiDialog(
                         text = leftText,
                         textColor = lTextColor,
                         backgroundColor = SeugiTheme.colors.gray100,
-                        onClick = onLeftRequest
+                        onClick = onLeftRequest,
                     )
                     DialogButton(
                         modifier = Modifier.weight(1f),
@@ -163,7 +161,7 @@ fun SeugiDialog(
                         textColor = rTextColor,
                         backgroundColor = rButtonColor,
                         onClick = onRightRequest,
-                        image = icon
+                        image = icon,
                     )
                 }
             }
@@ -191,21 +189,21 @@ private fun DialogButton(modifier: Modifier, text: String, textColor: Color, bac
         Row(
             modifier = Modifier
                 .align(Alignment.Center),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = text,
                 color = textColor,
                 style = SeugiTheme.typography.subtitle2,
             )
-            if (image != null){
+            if (image != null) {
                 Image(
                     painter = painterResource(id = image),
                     contentDescription = null,
                     modifier = Modifier
                         .size(24.dp)
                         .padding(start = 4.dp),
-                    colorFilter = ColorFilter.tint(SeugiTheme.colors.white)
+                    colorFilter = ColorFilter.tint(SeugiTheme.colors.white),
                 )
             }
         }

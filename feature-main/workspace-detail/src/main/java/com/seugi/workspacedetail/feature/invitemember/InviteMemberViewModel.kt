@@ -10,37 +10,35 @@ import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.workspacedetail.feature.invitemember.model.RoomMemberItem
 import com.seugi.workspacedetail.feature.invitemember.model.WaitMemberUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class InviteMemberViewModel @Inject constructor(
-    private val workspaceRepository: WorkspaceRepository
+    private val workspaceRepository: WorkspaceRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(WaitMemberUiState())
     val state = _state.asStateFlow()
 
-    fun getWaitMembers(
-        workspaceId: String,
-    ) {
+    fun getWaitMembers(workspaceId: String) {
         viewModelScope.launch {
             combineWhenAllComplete(
                 workspaceRepository.getWaitMembers(
                     workspaceId = workspaceId,
-                    role = WorkspacePermissionModel.STUDENT.name
+                    role = WorkspacePermissionModel.STUDENT.name,
                 ),
                 workspaceRepository.getWaitMembers(
                     workspaceId = workspaceId,
-                    role = WorkspacePermissionModel.TEACHER.name
-                )
-            ){ student, teacher ->
+                    role = WorkspacePermissionModel.TEACHER.name,
+                ),
+            ) { student, teacher ->
                 var listSize = 0
-                when(student){
+                when (student) {
                     is Result.Error -> {
                         student.throwable.printStackTrace()
                         return@combineWhenAllComplete
@@ -56,17 +54,17 @@ class InviteMemberViewModel @Inject constructor(
                                     name = it.name,
                                     memberProfile = it.picture,
                                     checked = false,
-                                )
+                                ),
                             )
                         }
                         _state.update { ui ->
                             ui.copy(
-                                student = students.toImmutableList()
+                                student = students.toImmutableList(),
                             )
                         }
                     }
                 }
-                when(teacher){
+                when (teacher) {
                     is Result.Error -> {
                         teacher.throwable.printStackTrace()
                         return@combineWhenAllComplete
@@ -82,22 +80,22 @@ class InviteMemberViewModel @Inject constructor(
                                     name = it.name,
                                     memberProfile = it.picture,
                                     checked = false,
-                                )
+                                ),
                             )
                         }
                         _state.update { ui ->
                             ui.copy(
-                                teacher = teachers.toImmutableList()
+                                teacher = teachers.toImmutableList(),
                             )
                         }
                     }
                 }
                 _state.update {
                     it.copy(
-                        waitMemberSize = listSize
+                        waitMemberSize = listSize,
                     )
                 }
-            }.collect{
+            }.collect {
                 // TODO 성공 메새지
             }
         }
@@ -114,7 +112,7 @@ class InviteMemberViewModel @Inject constructor(
                     } else {
                         it
                     }
-                }.toImmutableList()
+                }.toImmutableList(),
             )
         } else {
             _state.value = _state.value.copy(
@@ -126,11 +124,10 @@ class InviteMemberViewModel @Inject constructor(
                     } else {
                         it
                     }
-                }.toImmutableList()
+                }.toImmutableList(),
             )
         }
     }
-
 
     fun getWorkspaceCode(workspaceId: String) {
         viewModelScope.launch {
@@ -144,7 +141,7 @@ class InviteMemberViewModel @Inject constructor(
                     is Result.Success -> {
                         _state.update { ui ->
                             ui.copy(
-                                workspaceCode = it.data
+                                workspaceCode = it.data,
                             )
                         }
                     }
@@ -153,61 +150,50 @@ class InviteMemberViewModel @Inject constructor(
         }
     }
 
-    fun checkedMember(
-        workspaceId: String,
-        studentIds: List<Long>,
-        teacherIds: List<Long>,
-        feature: String
-    ) {
+    fun checkedMember(workspaceId: String, studentIds: List<Long>, teacherIds: List<Long>, feature: String) {
         // 선택된 유저가 없으면 리턴
         if (studentIds.isEmpty() && teacherIds.isEmpty()) {
             return
-        // 선택된 학생이 없으면 선생 신청 수락
+            // 선택된 학생이 없으면 선생 신청 수락
         } else if (studentIds.isEmpty()) {
             addOrCancel(
                 workspaceId = workspaceId,
                 userSet = teacherIds,
                 role = WorkspacePermissionModel.TEACHER.name,
-                feature = feature
+                feature = feature,
             )
-        // 선택된 선생이 없으면 학생 신청 수락
+            // 선택된 선생이 없으면 학생 신청 수락
         } else if (teacherIds.isEmpty()) {
             addOrCancel(
                 workspaceId = workspaceId,
                 userSet = studentIds,
                 role = WorkspacePermissionModel.STUDENT.name,
-                feature = feature
+                feature = feature,
             )
-        // 둘다 선택되었으면 두번 요청
+            // 둘다 선택되었으면 두번 요청
         } else {
             addOrCancel(
                 workspaceId = workspaceId,
                 userSet = studentIds,
                 role = WorkspacePermissionModel.STUDENT.name,
-                feature = feature
+                feature = feature,
             )
             addOrCancel(
                 workspaceId = workspaceId,
                 userSet = teacherIds,
                 role = WorkspacePermissionModel.TEACHER.name,
-                feature = feature
+                feature = feature,
             )
         }
-
     }
 
-    private fun addOrCancel(
-        workspaceId: String,
-        userSet: List<Long>,
-        role: String,
-        feature: String
-    ) {
+    private fun addOrCancel(workspaceId: String, userSet: List<Long>, role: String, feature: String) {
         if (feature == "수락") {
             viewModelScope.launch {
                 workspaceRepository.addMember(
                     workspaceId = workspaceId,
                     userSet = userSet,
-                    role = role
+                    role = role,
                 ).collect {
                     when (it) {
                         is Result.Error -> {
@@ -220,12 +206,12 @@ class InviteMemberViewModel @Inject constructor(
                     }
                 }
             }
-        }else if (feature == "거절"){
+        } else if (feature == "거절") {
             viewModelScope.launch {
                 workspaceRepository.cancelMember(
                     workspaceId = workspaceId,
                     userSet = userSet,
-                    role = role
+                    role = role,
                 ).collect {
                     when (it) {
                         is Result.Error -> {
@@ -241,19 +227,19 @@ class InviteMemberViewModel @Inject constructor(
         }
     }
 
-    private fun filterMember(role: String, userSet: List<Long>){
-        _state.update {ui ->
-            if (role == "TEACHER"){
+    private fun filterMember(role: String, userSet: List<Long>) {
+        _state.update { ui ->
+            if (role == "TEACHER") {
                 ui.copy(
                     teacher = ui.teacher.filter {
                         it.id !in userSet
-                    }.toImmutableList()
+                    }.toImmutableList(),
                 )
-            }else{
+            } else {
                 ui.copy(
                     student = ui.student.filter {
                         it.id !in userSet
-                    }.toImmutableList()
+                    }.toImmutableList(),
                 )
             }
         }
