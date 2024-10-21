@@ -52,6 +52,10 @@ object SeugiUrl {
         const val PERMISSION = "$WORKSPACE/permission"
         const val GET_MY_WORKSPACES = WORKSPACE
         const val GET_MY_WAIT_WORKSPACES = "$WORKSPACE/my/wait-list"
+        const val GET_WAIT_MEMBERS = "$WORKSPACE/wait-list"
+        const val GET_WORKSPACE_CODE = "$WORKSPACE/code"
+        const val ADD_MEMBER = "$WORKSPACE/add"
+        const val CANCEL_MEMBER = "$WORKSPACE/cancel"
     }
 
     object Notification {

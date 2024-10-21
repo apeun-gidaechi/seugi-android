@@ -53,6 +53,8 @@ import com.seugi.workspace.navigation.selectingJob
 import com.seugi.workspace.navigation.waitingJoin
 import com.seugi.workspacecreate.navigation.navigateToWorkspaceCreate
 import com.seugi.workspacecreate.navigation.workspaceCreateScreen
+import com.seugi.workspacedetail.navigation.inviteMemberScreen
+import com.seugi.workspacedetail.navigation.navigateToInviteMember
 import com.seugi.workspacedetail.navigation.navigateToWorkspaceDetail
 import com.seugi.workspacedetail.navigation.navigateToWorkspaceMember
 import com.seugi.workspacedetail.navigation.workspaceDetailScreen
@@ -309,6 +311,8 @@ internal fun MainScreen(
                 changeWorkspace = {
                     viewModel.loadWorkspace()
                 },
+                navigateToInviteMember = navHostController::navigateToInviteMember,
+                myRole = state.profile.permission.name,
             )
             workspaceMemberScreen(
                 showSnackbar = showSnackbar,
@@ -333,6 +337,10 @@ internal fun MainScreen(
                 popBackStack = navHostController::popBackStack,
                 showSnackbar = showSnackbar,
                 reloadProfile = viewModel::loadLocalWorkspace,
+            )
+            inviteMemberScreen(
+                popBackStack = navHostController::popBackStack,
+                workspaceId = state.profile.workspaceId,
             )
         }
     }

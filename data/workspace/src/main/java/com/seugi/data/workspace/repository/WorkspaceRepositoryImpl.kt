@@ -12,6 +12,7 @@ import com.seugi.data.workspace.mapper.toEntity
 import com.seugi.data.workspace.mapper.toModel
 import com.seugi.data.workspace.mapper.toModels
 import com.seugi.data.workspace.model.CheckWorkspaceModel
+import com.seugi.data.workspace.model.RetrieveMemberModel
 import com.seugi.data.workspace.model.WaitWorkspaceModel
 import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.local.room.dao.WorkspaceDao
@@ -116,6 +117,48 @@ class WorkspaceRepositoryImpl @Inject constructor(
         workspaceDao.deleteWorkspace()
 
         emit(true)
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun getWaitMembers(workspaceId: String, role: String): Flow<Result<List<RetrieveMemberModel>>> = flow {
+        val response = workspaceDatasource.getWaitMembers(
+            workspaceId = workspaceId,
+            role = role,
+        ).safeResponse()
+
+        emit(response.toModels())
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun getWorkspaceCode(workspaceId: String): Flow<Result<String>> = flow {
+        val response = workspaceDatasource.getWorkspaceCode(workspaceId).safeResponse()
+        emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun addMember(workspaceId: String, userSet: List<Long>, role: String): Flow<Result<Boolean>> = flow {
+        val response = workspaceDatasource.addMember(
+            workspaceId = workspaceId,
+            userSet = userSet,
+            role = role,
+        ).safeResponse()
+
+        emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun cancelMember(workspaceId: String, userSet: List<Long>, role: String): Flow<Result<Boolean>> = flow {
+        val response = workspaceDatasource.cancelMember(
+            workspaceId = workspaceId,
+            userSet = userSet,
+            role = role,
+        ).safeResponse()
+
+        emit(response)
     }
         .flowOn(dispatcher)
         .asResult()
