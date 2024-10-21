@@ -19,6 +19,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -36,6 +37,11 @@ class RoomCreateViewModel @Inject constructor(
     val sideEffect = _sideEffect.receiveAsFlow()
 
     fun loadUser(workspaceId: String, userId: Long) = viewModelScope.launch(dispatcher) {
+        _state.update {
+            it.copy(
+                isLoading = true,
+            )
+        }
         workspaceRepository.getMembers(workspaceId).collect {
             when (it) {
                 is Result.Success -> {
@@ -52,6 +58,7 @@ class RoomCreateViewModel @Inject constructor(
                     }
                     _state.value = _state.value.copy(
                         userItem = users.filter { it.id != userId }.toImmutableList(),
+                        isLoading = false,
                     )
                 }
                 is Result.Loading -> {}

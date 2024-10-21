@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -55,7 +56,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.makeappssimple.abhimanyu.composeemojipicker.ComposeEmojiPickerBottomSheetUI
+import com.github.apeun.gidaechi.emojipicker.EmojiPicker
 import com.seugi.common.utiles.toTimeString
 import com.seugi.data.core.model.WorkspacePermissionModel
 import com.seugi.data.core.model.isAdmin
@@ -186,6 +187,7 @@ internal fun NotificationScreen(
                     userId = userId.toLong(),
                     emoji = it,
                 )
+                isModalBottomSheetVisible = false
             },
             onDismissRequest = {
                 isModalBottomSheetVisible = false
@@ -301,34 +303,20 @@ internal fun NotificationScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectBottomSheet(isVisible: Boolean, sheetState: SheetState, onSelectEmoji: (emoji: String) -> Unit, onDismissRequest: () -> Unit) {
-    var searchText by remember { mutableStateOf("") }
     ModalBottomSheet(
         sheetState = sheetState,
         shape = RectangleShape,
         tonalElevation = 0.dp,
         onDismissRequest = {
             onDismissRequest()
-            searchText = ""
         },
         dragHandle = null,
         windowInsets = WindowInsets(0),
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-        ) {
-            ComposeEmojiPickerBottomSheetUI(
-                onEmojiClick = { emoji ->
-                    onSelectEmoji(emoji.character)
-                    onDismissRequest()
-                },
-                onEmojiLongClick = {},
-                searchText = searchText,
-                updateSearchText = { updatedSearchText ->
-                    searchText = updatedSearchText
-                },
-            )
-        }
+        EmojiPicker(
+            modifier = Modifier.fillMaxHeight(0.5f),
+            onClick = onSelectEmoji,
+        )
     }
 }
 

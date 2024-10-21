@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 data class RoomCreateUiState(
+    val isLoading: Boolean = false,
     val userItem: ImmutableList<RoomMemberItem> = persistentListOf(),
 ) {
     val checkedMemberState: ImmutableList<RoomMemberItem> by lazy {

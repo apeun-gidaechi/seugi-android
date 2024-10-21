@@ -47,6 +47,7 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.ui.CollectAsSideEffect
 import com.seugi.ui.component.OtherProfileBottomSheet
+import com.seugi.ui.component.SeugiMemberListLoading
 import com.seugi.workspacedetail.feature.workspacemember.model.WorkspaceMemberSideEffect
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -197,6 +198,12 @@ fun WorkspaceMemberScreen(
                         it.permission == WorkspacePermissionModel.STUDENT
                     } else {
                         it.permission != WorkspacePermissionModel.STUDENT
+                    }
+                }
+
+                if (state.isLoading) {
+                    items(3) {
+                        SeugiMemberListLoading()
                     }
                 }
 
