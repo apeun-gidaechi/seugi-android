@@ -72,6 +72,7 @@ fun InviteMemberScreen(
 
     var dialogData by remember { mutableStateOf(DialogModel()) }
     val clipboardManager = LocalClipboardManager.current
+    val waitMEmber = state.student + state.teacher
 
     LaunchedEffect(key1 = true) {
         viewModel.getWaitMembers(
@@ -196,7 +197,7 @@ fun InviteMemberScreen(
                         .padding(horizontal = 20.dp)
                 ) {
                     Text(
-                        text = "5명으로부터 가입 요청이 왔어요",
+                        text = "${waitMEmber.size}명으로부터 가입 요청이 왔어요",
                         style = SeugiTheme.typography.subtitle2,
                         modifier = Modifier
                             .padding(start = 4.dp)
@@ -283,7 +284,8 @@ fun InviteMemberScreen(
                         dialogType = InviteDialogType.CANCEL
                     },
                     type = ButtonType.Red,
-                    text = "거절"
+                    text = "거절",
+                    enabled = if (waitMEmber.filter { it.checked }.isEmpty()) false else true
                 )
                 SeugiButton(
                     modifier = Modifier
@@ -293,7 +295,8 @@ fun InviteMemberScreen(
                         dialogType = InviteDialogType.ADD
                     },
                     type = ButtonType.Primary,
-                    text = "수락"
+                    text = "수락",
+                    enabled = if (waitMEmber.filter { it.checked }.isEmpty()) false else true
                 )
             }
         }
