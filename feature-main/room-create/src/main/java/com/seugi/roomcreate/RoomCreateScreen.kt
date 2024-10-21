@@ -20,7 +20,7 @@ internal fun RoomCreateScreen(
     workspaceId: String,
     popBackStack: () -> Unit,
     navigateToChatDetail: (chatId: String, workspaceId: String, isPersonal: Boolean) -> Unit,
-    userId: Int,
+    userId: Long,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var nowScreen by remember { mutableStateOf(1) }

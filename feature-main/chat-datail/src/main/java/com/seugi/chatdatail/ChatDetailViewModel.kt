@@ -77,7 +77,7 @@ class ChatDetailViewModel @Inject constructor(
 
     private var isReconnectTry: Boolean = false
 
-    fun loadInfo(userId: Int, chatRoomId: String, isPersonal: Boolean, workspaceId: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun loadInfo(userId: Long, chatRoomId: String, isPersonal: Boolean, workspaceId: String) = viewModelScope.launch(Dispatchers.IO) {
         _state.value = _state.value.copy(
             userInfo = UserModel(
                 id = userId,
@@ -97,7 +97,7 @@ class ChatDetailViewModel @Inject constructor(
         loadRoom(chatRoomId, isPersonal, userId)
     }
 
-    fun loadMessage(chatRoomId: String, userId: Int) = viewModelScope.launch {
+    fun loadMessage(chatRoomId: String, userId: Long) = viewModelScope.launch {
         if (state.value.isLastPage) return@launch
         val timestamp = if (state.value.isInit) state.value.message.lastOrNull()?.timestamp else null
 
@@ -142,7 +142,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun loadRoom(chatRoomId: String, isPersonal: Boolean, userId: Int) = viewModelScope.launch {
+    private fun loadRoom(chatRoomId: String, isPersonal: Boolean, userId: Long) = viewModelScope.launch {
         val result = if (isPersonal) {
             personalChatRepository.getChat(
                 roomId = chatRoomId,
@@ -155,7 +155,7 @@ class ChatDetailViewModel @Inject constructor(
         result.collect {
             when (it) {
                 is Result.Success -> {
-                    val users: MutableMap<Int, UserModel> = mutableMapOf()
+                    val users: MutableMap<Long, UserModel> = mutableMapOf()
                     it.data.memberList.forEach { user ->
                         users[user.userInfo.id] = user.userInfo
                     }
@@ -189,7 +189,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun collectStompLifecycle(userId: Int) {
+    fun collectStompLifecycle(userId: Long) {
         viewModelScope.launch {
             val job = viewModelScope.async {
                 messageRepository.collectStompLifecycle().collect {
@@ -239,7 +239,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelSend(userId: Int, content: String, uuid: String = UUID.randomUUID().toString(), type: MessageType) {
+    fun channelSend(userId: Long, content: String, uuid: String = UUID.randomUUID().toString(), type: MessageType) {
         viewModelScope.launch {
             // 파일, 이미지는 socket 서버 업로드전에 생김
             if (type == MessageType.MESSAGE) {
@@ -290,7 +290,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelSend(userId: Int, image: Bitmap, fileName: String, uuid: String = UUID.randomUUID().toString()) {
+    fun channelSend(userId: Long, image: Bitmap, fileName: String, uuid: String = UUID.randomUUID().toString()) {
         viewModelScope.launch {
             _messageSaveQueueState.value += ChatLocalType.SendImg(
                 image = image,
@@ -328,7 +328,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelSend(userId: Int, fileByteArray: ByteArray, fileMimeType: String, fileName: String, fileByte: Long) {
+    fun channelSend(userId: Long, fileByteArray: ByteArray, fileMimeType: String, fileName: String, fileByte: Long) {
         viewModelScope.launch {
             val uuid = UUID.randomUUID().toString()
 
@@ -371,7 +371,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelResend(userId: Int, content: String, uuid: String, type: MessageType = MessageType.MESSAGE) {
+    fun channelResend(userId: Long, content: String, uuid: String, type: MessageType = MessageType.MESSAGE) {
         _messageSaveQueueState.value -= uuid
         when {
             type == MessageType.FILE -> {
@@ -395,7 +395,7 @@ class ChatDetailViewModel @Inject constructor(
         channelSend(userId, content, uuid, type)
     }
 
-    fun channelResend(userId: Int, fileName: String, fileMimeType: String, fileByteArray: ByteArray, fileByte: Long, uuid: String) {
+    fun channelResend(userId: Long, fileName: String, fileMimeType: String, fileByteArray: ByteArray, fileByte: Long, uuid: String) {
         _messageSaveQueueState.value -= uuid
         channelSend(
             userId = userId,
@@ -406,7 +406,7 @@ class ChatDetailViewModel @Inject constructor(
         )
     }
 
-    fun channelReSend(userId: Int, image: Bitmap, fileName: String, uuid: String) {
+    fun channelReSend(userId: Long, image: Bitmap, fileName: String, uuid: String) {
         _messageSaveQueueState.value -= uuid
         channelSend(
             userId = userId,
@@ -420,7 +420,7 @@ class ChatDetailViewModel @Inject constructor(
         _messageSaveQueueState.value -= uuid
     }
 
-    fun channelReconnect(userId: Int, roomId: String? = null) {
+    fun channelReconnect(userId: Long, roomId: String? = null) {
         viewModelScope.launch {
             isReconnectTry = true
             subscribeChat?.cancel()
@@ -440,7 +440,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun channelConnect(userId: Int) {
+    private fun channelConnect(userId: Long) {
         viewModelScope.launch {
             subscribeChat?.cancel()
             val job = viewModelScope.async {
@@ -788,7 +788,7 @@ class ChatDetailViewModel @Inject constructor(
         const val MESSAGE_TIMEOUT = 6000L
     }
 
-    fun getPersonalChat(workspaceId: String, userId: Int) = viewModelScope.launch {
+    fun getPersonalChat(workspaceId: String, userId: Long) = viewModelScope.launch {
         // 개인 채팅방이 있을 경우 존재하는 방을 리턴하므로 중복 X
         personalChatRepository.createChat(
             workspaceId = workspaceId,
@@ -852,10 +852,10 @@ internal fun LocalDateTime.isDifferentDay(time: LocalDateTime): Boolean = when {
     else -> false
 }
 
-internal fun MessageParent.getUserCount(users: List<UserInfoModel>): ImmutableList<Int> = when (this) {
+internal fun MessageParent.getUserCount(users: List<UserInfoModel>): ImmutableList<Long> = when (this) {
     is MessageParent.Me -> {
         val utcTimeMillis = this.timestamp.toDeviceLocalDateTime().toEpochMilli()
-        val readUsers = mutableListOf<Int>()
+        val readUsers = mutableListOf<Long>()
 
         // 현재 접속중인 유저수 세기
         users.takeWhile {
@@ -884,7 +884,7 @@ internal fun MessageParent.getUserCount(users: List<UserInfoModel>): ImmutableLi
     }
     is MessageParent.Other -> {
         val utcTimeMillis = this.timestamp.toDeviceLocalDateTime().toEpochMilli()
-        val readUsers = mutableListOf<Int>()
+        val readUsers = mutableListOf<Long>()
 
         // 현재 접속중인 유저수 세기
         users.takeWhile {

@@ -4,6 +4,7 @@ import com.seugi.network.core.SeugiUrl
 import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.response.ProfileResponse
 import com.seugi.network.core.response.Response
+import com.seugi.network.core.response.UserResponse
 import com.seugi.network.core.response.WorkspacePermissionResponse
 import com.seugi.network.workspace.WorkspaceDataSource
 import com.seugi.network.workspace.request.CreateWorkspaceRequest
@@ -62,7 +63,7 @@ class WorkspaceDataSourceImpl @Inject constructor(
         )
     }.body()
 
-    override suspend fun getWaitMembers(workspaceId: String, role: String): BaseResponse<List<RetrieveMemberResponse>> = httpClient.get(SeugiUrl.Workspace.GET_WAIT_MEMBERS) {
+    override suspend fun getWaitMembers(workspaceId: String, role: String): BaseResponse<List<UserResponse>> = httpClient.get(SeugiUrl.Workspace.GET_WAIT_MEMBERS) {
         parameter("workspaceId", workspaceId)
         parameter("role", role)
     }.body()

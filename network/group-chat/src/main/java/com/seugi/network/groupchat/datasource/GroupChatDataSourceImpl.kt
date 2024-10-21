@@ -21,7 +21,7 @@ class GroupChatDataSourceImpl @Inject constructor(
         parameter("workspace", workspaceId)
     }.body()
 
-    override suspend fun createChat(workspaceId: String, roomName: String, joinUsers: List<Int>, chatRoomImg: String): BaseResponse<String> = httpClient.post(SeugiUrl.GroupChat.CREATE) {
+    override suspend fun createChat(workspaceId: String, roomName: String, joinUsers: List<Long>, chatRoomImg: String): BaseResponse<String> = httpClient.post(SeugiUrl.GroupChat.CREATE) {
         setBody(
             GroupChatCreateRequest(
                 workspaceId = workspaceId,

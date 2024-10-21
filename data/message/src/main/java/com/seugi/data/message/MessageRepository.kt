@@ -12,11 +12,11 @@ interface MessageRepository {
 
     suspend fun sendMessage(chatRoomId: String, message: String, messageUUID: String, type: MessageType): Result<Boolean>
 
-    suspend fun subscribeRoom(chatRoomId: String, userId: Int): Flow<Result<MessageRoomEvent>>
+    suspend fun subscribeRoom(chatRoomId: String, userId: Long): Flow<Result<MessageRoomEvent>>
 
-    suspend fun reSubscribeRoom(chatRoomId: String, userId: Int): Flow<Result<MessageRoomEvent>>
+    suspend fun reSubscribeRoom(chatRoomId: String, userId: Long): Flow<Result<MessageRoomEvent>>
 
-    suspend fun getMessage(chatRoomId: String, timestamp: LocalDateTime?, userId: Int): Flow<Result<MessageLoadModel>>
+    suspend fun getMessage(chatRoomId: String, timestamp: LocalDateTime?, userId: Long): Flow<Result<MessageLoadModel>>
 
     suspend fun collectStompLifecycle(): Flow<Result<MessageStompLifecycleModel>>
 }

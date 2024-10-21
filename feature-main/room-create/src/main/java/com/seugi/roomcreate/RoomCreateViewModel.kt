@@ -35,7 +35,7 @@ class RoomCreateViewModel @Inject constructor(
     private val _sideEffect = Channel<RoomCreateSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
 
-    fun loadUser(workspaceId: String, userId: Int) = viewModelScope.launch(dispatcher) {
+    fun loadUser(workspaceId: String, userId: Long) = viewModelScope.launch(dispatcher) {
         workspaceRepository.getMembers(workspaceId).collect {
             when (it) {
                 is Result.Success -> {
@@ -62,7 +62,7 @@ class RoomCreateViewModel @Inject constructor(
         }
     }
 
-    fun updateChecked(userId: Int) {
+    fun updateChecked(userId: Long) {
         _state.value = _state.value.copy(
             userItem = _state.value.userItem.map {
                 if (it.id == userId) {

@@ -5,7 +5,7 @@ import com.seugi.network.message.response.MessageRoomEventResponse
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
-internal fun MessageRoomEventResponse.toEventModel(userId: Int): MessageRoomEvent = when (this) {
+internal fun MessageRoomEventResponse.toEventModel(userId: Long): MessageRoomEvent = when (this) {
     is MessageRoomEventResponse.MessageParent.Message -> toModel(userId)
     is MessageRoomEventResponse.DeleteMessage -> toModel()
     is MessageRoomEventResponse.AddEmoji -> toModel()
@@ -16,7 +16,7 @@ internal fun MessageRoomEventResponse.toEventModel(userId: Int): MessageRoomEven
     is MessageRoomEventResponse.UnSub -> toModel()
 }
 
-internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int): MessageRoomEvent.MessageParent = when (type) {
+internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long): MessageRoomEvent.MessageParent = when (type) {
     "MESSAGE" -> {
         if (userId == this.userId) {
             MessageRoomEvent.MessageParent.Me(

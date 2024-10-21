@@ -42,9 +42,9 @@ import kotlinx.coroutines.launch
 internal fun RoomScreen(
     viewModel: RoomViewModel = hiltViewModel(),
     workspaceId: String,
-    userId: Int,
+    userId: Long,
     navigateToChatDetail: (roomId: String, workspaceId: String) -> Unit,
-    navigateToCreateRoom: (workspaceId: String, userId: Int) -> Unit,
+    navigateToCreateRoom: (workspaceId: String, userId: Long) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()

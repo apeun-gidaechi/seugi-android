@@ -41,8 +41,8 @@ import com.seugi.ui.shortToast
 @Composable
 internal fun NotificationEditScreen(
     viewModel: NotificationEditViewModel = hiltViewModel(),
-    userId: Int,
-    writerId: Int,
+    userId: Long,
+    writerId: Long,
     id: Long,
     title: String,
     content: String,

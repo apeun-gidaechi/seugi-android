@@ -12,7 +12,7 @@ const val CHAT_ROUTE = "chat"
 fun NavController.navigateToChat(navOptions: NavOptions?) = navigate(CHAT_ROUTE, navOptions)
 
 @OptIn(ExperimentalMaterial3Api::class)
-fun NavGraphBuilder.chatScreen(userId: Int, workspaceId: String, navigateToChatDetail: (chatID: String) -> Unit, navigateToCreateRoom: (workspaceId: String, userId: Int) -> Unit) {
+fun NavGraphBuilder.chatScreen(userId: Long, workspaceId: String, navigateToChatDetail: (chatID: String) -> Unit, navigateToCreateRoom: (workspaceId: String, userId: Long) -> Unit) {
     composable(CHAT_ROUTE) {
         ChatScreen(
             userId = userId,

@@ -38,7 +38,7 @@ class MessageRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun subscribeRoom(chatRoomId: String, userId: Int): Flow<Result<MessageRoomEvent>> {
+    override suspend fun subscribeRoom(chatRoomId: String, userId: Long): Flow<Result<MessageRoomEvent>> {
         if (!datasource.getIsConnect()) {
             val token = tokenDao.getToken()
             datasource.connectStomp(
@@ -53,7 +53,7 @@ class MessageRepositoryImpl @Inject constructor(
             .asResult()
     }
 
-    override suspend fun reSubscribeRoom(chatRoomId: String, userId: Int): Flow<Result<MessageRoomEvent>> {
+    override suspend fun reSubscribeRoom(chatRoomId: String, userId: Long): Flow<Result<MessageRoomEvent>> {
         val token = tokenDao.getToken()
         datasource.reConnectStomp(
             token?.token ?: "",
@@ -68,7 +68,7 @@ class MessageRepositoryImpl @Inject constructor(
             .asResult()
     }
 
-    override suspend fun getMessage(chatRoomId: String, timestamp: LocalDateTime?, userId: Int): Flow<Result<MessageLoadModel>> {
+    override suspend fun getMessage(chatRoomId: String, timestamp: LocalDateTime?, userId: Long): Flow<Result<MessageLoadModel>> {
         return flow<MessageLoadModel> {
             val e = datasource.getMessage(chatRoomId, timestamp)
 

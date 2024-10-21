@@ -52,7 +52,7 @@ class WorkspaceMemberViewModel @Inject constructor(
         personalChatRepository.createChat(
             workspaceId = workspaceId,
             roomName = "",
-            joinUsers = listOf(targetUserId.toInt()),
+            joinUsers = listOf(targetUserId),
             chatRoomImg = "",
         ).collect {
             when (it) {

@@ -49,7 +49,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) -> Unit, popBackStack: () -> Unit, nextScreen: () -> Unit) {
+internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Long) -> Unit, popBackStack: () -> Unit, nextScreen: () -> Unit) {
     val selectScrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     var beforeItemSize by remember { mutableStateOf(0) }
