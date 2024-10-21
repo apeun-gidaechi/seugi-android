@@ -131,19 +131,19 @@ fun InviteMemberScreen(popBackStack: () -> Unit, workspaceId: String, viewModel:
         viewModel.sideEffect.collectLatest { value ->
             when (value) {
                 is InviteSideEffect.Error -> {
-                    Toast.makeText(context,"오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
                 }
                 is InviteSideEffect.FilledAdd -> {
-                    Toast.makeText(context,"참가 수락에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "참가 수락에 실패했습니다.", Toast.LENGTH_SHORT).show()
                 }
                 is InviteSideEffect.FilledCancel -> {
-                    Toast.makeText(context,"참가 거절에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "참가 거절에 실패했습니다.", Toast.LENGTH_SHORT).show()
                 }
                 is InviteSideEffect.SuccessAdd -> {
-                    Toast.makeText(context,"참가 수락에 성공했습니다!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "참가 수락에 성공했습니다!", Toast.LENGTH_SHORT).show()
                 }
                 is InviteSideEffect.SuccessCancel -> {
-                    Toast.makeText(context,"참가 거절에 성공했습니다!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "참가 거절에 성공했습니다!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
