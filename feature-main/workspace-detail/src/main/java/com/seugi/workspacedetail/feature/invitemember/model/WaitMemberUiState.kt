@@ -16,3 +16,12 @@ data class RoomMemberItem(
     val memberProfile: String? = null,
     val checked: Boolean = false,
 )
+
+
+sealed class InviteSideEffect(){
+    data object SuccessAdd: InviteSideEffect()
+    data object SuccessCancel: InviteSideEffect()
+    data object FilledAdd: InviteSideEffect()
+    data object FilledCancel: InviteSideEffect()
+    data object Error: InviteSideEffect()
+}

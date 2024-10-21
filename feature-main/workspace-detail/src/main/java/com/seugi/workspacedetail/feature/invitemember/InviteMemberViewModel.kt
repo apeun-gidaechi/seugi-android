@@ -7,13 +7,16 @@ import com.seugi.common.model.Result
 import com.seugi.common.utiles.combineWhenAllComplete
 import com.seugi.data.core.model.WorkspacePermissionModel
 import com.seugi.data.workspace.WorkspaceRepository
+import com.seugi.workspacedetail.feature.invitemember.model.InviteSideEffect
 import com.seugi.workspacedetail.feature.invitemember.model.RoomMemberItem
 import com.seugi.workspacedetail.feature.invitemember.model.WaitMemberUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -24,6 +27,9 @@ class InviteMemberViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(WaitMemberUiState())
     val state = _state.asStateFlow()
+
+    private val _sideEffect = Channel<InviteSideEffect>()
+    val sideEffect = _sideEffect.receiveAsFlow()
 
     fun getWaitMembers(workspaceId: String) {
         viewModelScope.launch {
@@ -41,6 +47,7 @@ class InviteMemberViewModel @Inject constructor(
                 when (student) {
                     is Result.Error -> {
                         student.throwable.printStackTrace()
+                        _sideEffect.send(InviteSideEffect.Error)
                         return@combineWhenAllComplete
                     }
                     is Result.Loading -> {}
@@ -67,6 +74,7 @@ class InviteMemberViewModel @Inject constructor(
                 when (teacher) {
                     is Result.Error -> {
                         teacher.throwable.printStackTrace()
+                        _sideEffect.send(InviteSideEffect.Error)
                         return@combineWhenAllComplete
                     }
                     is Result.Loading -> {}
@@ -197,10 +205,12 @@ class InviteMemberViewModel @Inject constructor(
                 ).collect {
                     when (it) {
                         is Result.Error -> {
+                            _sideEffect.send(InviteSideEffect.FilledAdd)
                             it.throwable.printStackTrace()
                         }
                         is Result.Loading -> {}
                         is Result.Success -> {
+                            _sideEffect.send(InviteSideEffect.SuccessAdd)
                             filterMember(role = role, userSet = userSet)
                         }
                     }
@@ -215,10 +225,12 @@ class InviteMemberViewModel @Inject constructor(
                 ).collect {
                     when (it) {
                         is Result.Error -> {
+                            _sideEffect.send(InviteSideEffect.FilledCancel)
                             it.throwable.printStackTrace()
                         }
                         is Result.Loading -> {}
                         is Result.Success -> {
+                            _sideEffect.send(InviteSideEffect.SuccessCancel)
                             filterMember(role = role, userSet = userSet)
                         }
                     }

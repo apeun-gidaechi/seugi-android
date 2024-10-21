@@ -1,5 +1,6 @@
 package com.seugi.workspacedetail.feature.invitemember
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
@@ -47,8 +49,10 @@ import com.seugi.designsystem.component.SeugiSegmentedButtonLayout
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.workspacedetail.feature.invitemember.model.DialogModel
+import com.seugi.workspacedetail.feature.invitemember.model.InviteSideEffect
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.collectLatest
 
 enum class InviteDialogType {
     CODE,
@@ -67,6 +71,7 @@ fun InviteMemberScreen(popBackStack: () -> Unit, workspaceId: String, viewModel:
     var dialogData by remember { mutableStateOf(DialogModel()) }
     val clipboardManager = LocalClipboardManager.current
     val waitMEmber = state.student + state.teacher
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
         viewModel.getWaitMembers(
@@ -119,6 +124,28 @@ fun InviteMemberScreen(popBackStack: () -> Unit, workspaceId: String, viewModel:
                 },
                 icon = R.drawable.ic_copy_line,
             )
+        }
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.sideEffect.collectLatest { value ->
+            when (value) {
+                is InviteSideEffect.Error -> {
+                    Toast.makeText(context,"오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                }
+                is InviteSideEffect.FilledAdd -> {
+                    Toast.makeText(context,"참가 수락에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                }
+                is InviteSideEffect.FilledCancel -> {
+                    Toast.makeText(context,"참가 거절에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                }
+                is InviteSideEffect.SuccessAdd -> {
+                    Toast.makeText(context,"참가 수락에 성공했습니다!", Toast.LENGTH_SHORT).show()
+                }
+                is InviteSideEffect.SuccessCancel -> {
+                    Toast.makeText(context,"참가 거절에 성공했습니다!", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
