@@ -45,6 +45,8 @@ import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.designsystem.component.SeugiDialog
 import com.seugi.designsystem.R
@@ -69,6 +71,7 @@ fun InviteMemberScreen(
     var dialogType by remember { mutableStateOf(InviteDialogType.CLOSE) }
 
     var dialogData by remember { mutableStateOf(DialogModel()) }
+    val clipboardManager = LocalClipboardManager.current
 
     LaunchedEffect(key1 = true) {
         viewModel.getWaitMembers(
@@ -121,6 +124,7 @@ fun InviteMemberScreen(
                 lText = "닫기",
                 rText = "복사",
                 onClick = {
+                    clipboardManager.setText(AnnotatedString(state.workspaceCode))
                     dialogType = InviteDialogType.CLOSE
                 },
                 icon = R.drawable.ic_copy_line
