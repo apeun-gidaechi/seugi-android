@@ -13,6 +13,7 @@ import com.seugi.workspacedetail.feature.invitemember.model.WaitMemberUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -157,39 +158,44 @@ class InviteMemberViewModel @Inject constructor(
     }
 
     fun checkedMember(workspaceId: String, studentIds: List<Long>, teacherIds: List<Long>, feature: String) {
-        // 선택된 유저가 없으면 리턴
-        if (studentIds.isEmpty() && teacherIds.isEmpty()) {
-            return
-            // 선택된 학생이 없으면 선생 신청 수락
-        } else if (studentIds.isEmpty()) {
-            addOrCancel(
-                workspaceId = workspaceId,
-                userSet = teacherIds,
-                role = WorkspacePermissionModel.TEACHER.name,
-                feature = feature,
-            )
-            // 선택된 선생이 없으면 학생 신청 수락
-        } else if (teacherIds.isEmpty()) {
-            addOrCancel(
-                workspaceId = workspaceId,
-                userSet = studentIds,
-                role = WorkspacePermissionModel.STUDENT.name,
-                feature = feature,
-            )
-            // 둘다 선택되었으면 두번 요청
-        } else {
-            addOrCancel(
-                workspaceId = workspaceId,
-                userSet = studentIds,
-                role = WorkspacePermissionModel.STUDENT.name,
-                feature = feature,
-            )
-            addOrCancel(
-                workspaceId = workspaceId,
-                userSet = teacherIds,
-                role = WorkspacePermissionModel.TEACHER.name,
-                feature = feature,
-            )
+        viewModelScope.launch {
+            // 선택된 유저가 없으면 리턴
+            if (studentIds.isEmpty() && teacherIds.isEmpty()) {
+                return@launch
+                // 선택된 학생이 없으면 선생 신청 수락
+            } else if (studentIds.isEmpty()) {
+                addOrCancel(
+                    workspaceId = workspaceId,
+                    userSet = teacherIds,
+                    role = WorkspacePermissionModel.TEACHER.name,
+                    feature = feature,
+                )
+                // 선택된 선생이 없으면 학생 신청 수락
+            } else if (teacherIds.isEmpty()) {
+                addOrCancel(
+                    workspaceId = workspaceId,
+                    userSet = studentIds,
+                    role = WorkspacePermissionModel.STUDENT.name,
+                    feature = feature,
+                )
+                // 둘다 선택되었으면 두번 요청
+            } else {
+                val jab1 = async {
+                    addOrCancel(
+                        workspaceId = workspaceId,
+                        userSet = studentIds,
+                        role = WorkspacePermissionModel.STUDENT.name,
+                        feature = feature,
+                    )
+                    addOrCancel(
+                        workspaceId = workspaceId,
+                        userSet = teacherIds,
+                        role = WorkspacePermissionModel.TEACHER.name,
+                        feature = feature,
+                    )
+                }
+                jab1.start()
+            }
         }
     }
 
