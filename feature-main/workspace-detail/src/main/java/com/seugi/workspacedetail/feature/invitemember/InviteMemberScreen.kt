@@ -70,7 +70,7 @@ fun InviteMemberScreen(popBackStack: () -> Unit, workspaceId: String, viewModel:
 
     var dialogData by remember { mutableStateOf(DialogModel()) }
     val clipboardManager = LocalClipboardManager.current
-    val waitMEmber = state.student + state.teacher
+    val waitMember = state.student + state.teacher
     val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
@@ -298,7 +298,7 @@ fun InviteMemberScreen(popBackStack: () -> Unit, workspaceId: String, viewModel:
                     },
                     type = ButtonType.Red,
                     text = "거절",
-                    enabled = if (waitMEmber.filter { it.checked }.isEmpty()) false else true,
+                    enabled = if (waitMember.filter { it.checked }.isEmpty()) false else true,
                 )
                 SeugiButton(
                     modifier = Modifier
@@ -309,7 +309,7 @@ fun InviteMemberScreen(popBackStack: () -> Unit, workspaceId: String, viewModel:
                     },
                     type = ButtonType.Primary,
                     text = "수락",
-                    enabled = if (waitMEmber.filter { it.checked }.isEmpty()) false else true,
+                    enabled = if (waitMember.filter { it.checked }.isEmpty()) false else true,
                 )
             }
         }
