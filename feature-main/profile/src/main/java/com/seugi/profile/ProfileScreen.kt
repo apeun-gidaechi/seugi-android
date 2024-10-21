@@ -176,7 +176,7 @@ internal fun ProfileScreen(
             )
             Spacer(modifier = Modifier.width(10.dp))
             Text(
-                text = myProfile.member.name,
+                text = "${myProfile.member.name} ${if (myProfile.nick.isEmpty()) "" else "(${myProfile.nick})"}",
                 style = SeugiTheme.typography.subtitle2,
                 color = SeugiTheme.colors.black,
             )
