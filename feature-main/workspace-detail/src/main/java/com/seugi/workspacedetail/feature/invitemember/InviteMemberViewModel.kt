@@ -194,7 +194,9 @@ class InviteMemberViewModel @Inject constructor(
                             it.throwable.printStackTrace()
                         }
                         is Result.Loading -> {}
-                        is Result.Success -> {}
+                        is Result.Success -> {
+                            filterMember(role = role, userSet = userSet)
+                        }
                     }
                 }
             }
@@ -210,9 +212,29 @@ class InviteMemberViewModel @Inject constructor(
                             it.throwable.printStackTrace()
                         }
                         is Result.Loading -> {}
-                        is Result.Success -> {}
+                        is Result.Success -> {
+                            filterMember(role = role, userSet = userSet)
+                        }
                     }
                 }
+            }
+        }
+    }
+
+    private fun filterMember(role: String, userSet: List<Long>){
+        _state.update {ui ->
+            if (role == "TEACHER"){
+                ui.copy(
+                    teacher = ui.teacher.filter {
+                        it.id !in userSet
+                    }.toImmutableList()
+                )
+            }else{
+                ui.copy(
+                    student = ui.student.filter {
+                        it.id !in userSet
+                    }.toImmutableList()
+                )
             }
         }
     }

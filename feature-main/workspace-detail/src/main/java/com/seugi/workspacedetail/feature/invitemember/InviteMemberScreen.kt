@@ -232,7 +232,6 @@ fun InviteMemberScreen(
                         .padding(top = 12.dp)
                 ) {
                     val members = if (selectedTabIndex == 0) state.teacher else state.student
-                    Log.d("TAG", "$members: ")
                     items(items = members, key = {it.id}) { member ->
                         SeugiMemberList(
                             modifier = Modifier.padding(horizontal = 4.dp),
