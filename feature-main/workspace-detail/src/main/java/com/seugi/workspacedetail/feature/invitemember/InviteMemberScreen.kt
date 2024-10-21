@@ -54,6 +54,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 enum class InviteDialogType {
     CODE,
@@ -75,15 +76,16 @@ fun InviteMemberScreen(popBackStack: () -> Unit, workspaceId: String, viewModel:
     val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
-        val jab1 = async {
+        launch {
             viewModel.getWaitMembers(
                 workspaceId = workspaceId,
             )
+        }
+        launch {
             viewModel.getWorkspaceCode(
                 workspaceId = workspaceId,
             )
         }
-        jab1.start()
     }
 
     LaunchedEffect(key1 = dialogType) {
@@ -221,13 +223,13 @@ fun InviteMemberScreen(popBackStack: () -> Unit, workspaceId: String, viewModel:
                     BoxWithConstraints(
                         modifier = Modifier.padding(top = 12.dp),
                     ) {
-                        val itemWidth = maxWidth / tabItems.size
                         SeugiSegmentedButtonLayout(
                             containerColor = SeugiTheme.colors.gray100,
                             shape = RoundedCornerShape(12.dp),
                             indicatorShape = RoundedCornerShape(8.dp),
                             selectedIndex = selectedTabIndex,
                         ) {
+                            val itemWidth = maxWidth / tabItems.size
                             tabItems.fastForEachIndexed { index, text ->
                                 SeugiSegmentedButton(
                                     modifier = Modifier

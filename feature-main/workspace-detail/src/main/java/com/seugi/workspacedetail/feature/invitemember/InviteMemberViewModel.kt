@@ -180,13 +180,15 @@ class InviteMemberViewModel @Inject constructor(
                 )
                 // 둘다 선택되었으면 두번 요청
             } else {
-                val jab1 = async {
+                launch {
                     addOrCancel(
                         workspaceId = workspaceId,
                         userSet = studentIds,
                         role = WorkspacePermissionModel.STUDENT.name,
                         feature = feature,
                     )
+                }
+                launch {
                     addOrCancel(
                         workspaceId = workspaceId,
                         userSet = teacherIds,
@@ -194,7 +196,6 @@ class InviteMemberViewModel @Inject constructor(
                         feature = feature,
                     )
                 }
-                jab1.start()
             }
         }
     }
