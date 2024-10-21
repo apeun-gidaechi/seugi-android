@@ -1,10 +1,10 @@
 package com.seugi.workspacedetail.feature.invitemember
 
-import android.util.Log
 import androidx.compose.ui.util.fastForEach
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
+import com.seugi.common.utiles.combineWhenAllComplete
 import com.seugi.data.core.model.WorkspacePermissionModel
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.workspacedetail.feature.invitemember.model.RoomMemberItem
@@ -27,58 +27,78 @@ class InviteMemberViewModel @Inject constructor(
 
     fun getWaitMembers(
         workspaceId: String,
-        role: String
     ) {
         viewModelScope.launch {
-            workspaceRepository.getWaitMembers(
-                workspaceId = workspaceId,
-                role = role
-            ).collect {
-                when (it) {
+            combineWhenAllComplete(
+                workspaceRepository.getWaitMembers(
+                    workspaceId = workspaceId,
+                    role = WorkspacePermissionModel.STUDENT.name
+                ),
+                workspaceRepository.getWaitMembers(
+                    workspaceId = workspaceId,
+                    role = WorkspacePermissionModel.TEACHER.name
+                )
+            ){ student, teacher ->
+                var listSize = 0
+                when(student){
+                    is Result.Error -> {
+                        student.throwable.printStackTrace()
+                        return@combineWhenAllComplete
+                    }
+                    is Result.Loading -> {}
                     is Result.Success -> {
-                        if (role == "STUDENT") {
-                            val students = mutableListOf<RoomMemberItem>()
-                            it.data.fastForEach {
-                                students.add(
-                                    RoomMemberItem(
-                                        id = it.id,
-                                        name = it.name,
-                                        memberProfile = it.picture,
-                                        checked = false,
-                                    )
+                        listSize += student.data.size
+                        val students = mutableListOf<RoomMemberItem>()
+                        student.data.fastForEach {
+                            students.add(
+                                RoomMemberItem(
+                                    id = it.id,
+                                    name = it.name,
+                                    memberProfile = it.picture,
+                                    checked = false,
                                 )
-                            }
-                            _state.update { ui ->
-                                ui.copy(
-                                    student = students.toImmutableList()
-                                )
-                            }
-                        } else if (role == "TEACHER") {
-                            val teachers = mutableListOf<RoomMemberItem>()
-                            it.data.fastForEach {
-                                teachers.add(
-                                    RoomMemberItem(
-                                        id = it.id,
-                                        name = it.name,
-                                        memberProfile = it.picture,
-                                        checked = false,
-                                    )
-                                )
-                            }
-                            _state.update { ui ->
-                                ui.copy(
-                                    teacher = teachers.toImmutableList()
-                                )
-                            }
+                            )
+                        }
+                        _state.update { ui ->
+                            ui.copy(
+                                student = students.toImmutableList()
+                            )
                         }
                     }
-
-                    is Result.Error -> {
-                        it.throwable.printStackTrace()
-                    }
-
-                    is Result.Loading -> {}
                 }
+                when(teacher){
+                    is Result.Error -> {
+                        teacher.throwable.printStackTrace()
+                        return@combineWhenAllComplete
+                    }
+                    is Result.Loading -> {}
+                    is Result.Success -> {
+                        listSize += teacher.data.size
+                        val teachers = mutableListOf<RoomMemberItem>()
+                        teacher.data.fastForEach {
+                            teachers.add(
+                                RoomMemberItem(
+                                    id = it.id,
+                                    name = it.name,
+                                    memberProfile = it.picture,
+                                    checked = false,
+                                )
+                            )
+                        }
+                        _state.update { ui ->
+                            ui.copy(
+                                teacher = teachers.toImmutableList()
+                            )
+                        }
+                    }
+                }
+                _state.update {
+                    it.copy(
+                        waitMemberSize = listSize
+                    )
+                }
+            }.collect{
+                // TODO 성공 메새지
             }
         }
     }

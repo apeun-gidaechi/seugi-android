@@ -1,6 +1,5 @@
 package com.seugi.workspacedetail.feature.invitemember
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,7 +32,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.seugi.data.core.model.WorkspacePermissionModel
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.ButtonType
 import com.seugi.designsystem.component.SeugiButton
@@ -77,11 +75,6 @@ fun InviteMemberScreen(
     LaunchedEffect(key1 = true) {
         viewModel.getWaitMembers(
             workspaceId = "669e339593e10f4f59f8c583",
-            role = WorkspacePermissionModel.STUDENT.name
-        )
-        viewModel.getWaitMembers(
-            workspaceId = "669e339593e10f4f59f8c583",
-            role = WorkspacePermissionModel.TEACHER.name
         )
         viewModel.getWorkspaceCode(
             workspaceId = "669e339593e10f4f59f8c583"
@@ -197,7 +190,7 @@ fun InviteMemberScreen(
                         .padding(horizontal = 20.dp)
                 ) {
                     Text(
-                        text = "${waitMEmber.size}명으로부터 가입 요청이 왔어요",
+                        text = "${state.waitMemberSize}명으로부터 가입 요청이 왔어요",
                         style = SeugiTheme.typography.subtitle2,
                         modifier = Modifier
                             .padding(start = 4.dp)
