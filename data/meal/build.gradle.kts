@@ -16,6 +16,7 @@ android {
 
 dependencies {
     implementation(projects.network.meal)
+    api(projects.data.core)
     implementation(projects.local.room)
     implementation(projects.common)
 }

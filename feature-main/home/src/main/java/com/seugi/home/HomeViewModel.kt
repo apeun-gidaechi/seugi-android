@@ -6,7 +6,7 @@ import com.seugi.common.model.Result
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.meal.MealRepository
-import com.seugi.data.meal.response.MealType
+import com.seugi.data.core.model.MealType
 import com.seugi.data.schedule.ScheduleRepository
 import com.seugi.data.timetable.TimetableRepository
 import com.seugi.data.workspace.WorkspaceRepository

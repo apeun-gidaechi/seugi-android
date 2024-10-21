@@ -1,4 +1,4 @@
-package com.seugi.data.meal.response
+package com.seugi.data.core.model
 
 import com.seugi.common.utiles.ImmutableListSerializer
 import kotlinx.collections.immutable.ImmutableList

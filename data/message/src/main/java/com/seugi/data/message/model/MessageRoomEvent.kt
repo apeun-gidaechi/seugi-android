@@ -1,16 +1,18 @@
 package com.seugi.data.message.model
 
+import com.seugi.data.core.model.MealModel
+import com.seugi.network.message.response.message.MessageEmojiResponse
 import java.time.LocalDateTime
 import kotlinx.collections.immutable.ImmutableList
 
 sealed class MessageRoomEvent(
-    open val type: MessageType,
-    open val userId: Long,
+    @Transient open val type: MessageType,
+    @Transient open val userId: Int,
 ) {
     sealed class MessageParent(
-        open val timestamp: LocalDateTime,
-        override val type: MessageType,
-        override val userId: Long,
+        @Transient open val timestamp: LocalDateTime,
+        @Transient override val type: MessageType,
+        @Transient override val userId: Int,
     ) : MessageRoomEvent(type, userId) {
         data class Me(
             val id: String,
@@ -47,23 +49,38 @@ sealed class MessageRoomEvent(
             override val timestamp: LocalDateTime,
         ) : MessageParent(timestamp, type, userId)
 
-        data class BOT(
-            val id: String,
-            val chatRoomId: String,
-            val isFirst: Boolean,
-            val isLast: Boolean,
-            override val type: MessageType,
-            override val userId: Int,
-            val message: String,
-            val messageStatus: String,
-            val uuid: String?,
-            val emoticon: String?,
-            val eventList: ImmutableList<Int>?,
-            val emojiList: ImmutableList<MessageEmojiModel>,
-            val mention: ImmutableList<Int>,
-            val mentionAll: Boolean,
-            override val timestamp: LocalDateTime,
-        ) : MessageParent(timestamp, type, userId)
+        sealed class BOT(
+            @Transient open val id: String,
+            @Transient open val chatRoomId: String,
+            @Transient open val isFirst: Boolean,
+            @Transient open val isLast: Boolean,
+            @Transient override val type: MessageType,
+            @Transient override val userId: Int,
+            @Transient open val messageStatus: String,
+            @Transient open val emoticon: String?,
+            @Transient open val eventList: ImmutableList<Int>?,
+            @Transient open val emojiList: ImmutableList<MessageEmojiModel>,
+            @Transient open val mention: ImmutableList<Int>,
+            @Transient open val mentionAll: Boolean,
+            @Transient override val timestamp: LocalDateTime,
+        ) : MessageParent(timestamp, type, userId) {
+            data class Meal(
+                override val type: MessageType,
+                val message: ImmutableList<MealModel>,
+                override val messageStatus: String,
+                override val emoticon: String?,
+                override val eventList: ImmutableList<Int>?,
+                override val id: String,
+                override val emojiList: ImmutableList<MessageEmojiModel>,
+                override val chatRoomId: String,
+                override val timestamp: LocalDateTime,
+                override val userId: Int,
+                override val mention: ImmutableList<Int>,
+                override val mentionAll: Boolean,
+                override val isFirst: Boolean,
+                override val isLast: Boolean,
+            ): BOT(id, chatRoomId, isFirst, isLast, type, userId, messageStatus, emoticon, eventList, emojiList, mention, mentionAll, timestamp)
+        }
 
         data class File(
             val url: String,
@@ -152,28 +169,67 @@ sealed class MessageRoomEvent(
     ) : MessageRoomEvent(type, userId)
 }
 
-fun MessageRoomEvent.copy(type: MessageType = this.type, userId: Long = this.userId) {
+fun MessageRoomEvent.MessageParent.BOT.copy(
+    id: String = this.id,
+    chatRoomId: String = this.chatRoomId,
+    isFirst: Boolean = this.isFirst,
+    isLast: Boolean = this.isLast,
+    type: MessageType = this.type,
+    userId: Int = this.userId,
+    messageStatus: String = this.messageStatus,
+    emoticon: String? = this.emoticon,
+    eventList: ImmutableList<Int>? = this.eventList,
+    emojiList: ImmutableList<MessageEmojiModel> = this.emojiList,
+    mention: ImmutableList<Int> = this.mention,
+    mentionAll: Boolean = this.mentionAll,
+    timestamp: LocalDateTime = this.timestamp,
+): MessageRoomEvent.MessageParent.BOT =
+    when (this) {
+        is MessageRoomEvent.MessageParent.BOT.Meal -> {
+            this.copy(
+                type = type,
+                message = this.message,
+                messageStatus = messageStatus,
+                emoticon = emoticon,
+                eventList = eventList,
+                id = id,
+                emojiList = emojiList,
+                chatRoomId = chatRoomId,
+                timestamp = timestamp,
+                userId = userId,
+                mention = mention,
+                mentionAll = mentionAll,
+                isFirst = isFirst,
+                isLast = isLast,
+            )
+        }
+    }
+
+fun MessageRoomEvent.copy(
+    type: MessageType = this.type,
+    userId: Int = this.userId,
+) {
     when (this) {
         is MessageRoomEvent.AddEmoji -> copy(
             type = type,
             userId = userId,
         )
+
         is MessageRoomEvent.DeleteMessage -> this.copy(
             type = type,
             userId = userId,
         )
-        is MessageRoomEvent.MessageParent -> copy(
-            type = type,
-            userId = userId,
-        )
+
         is MessageRoomEvent.RemoveEmoji -> copy(
             type = type,
             userId = userId,
         )
+
         is MessageRoomEvent.Sub -> copy(
             type = type,
             userId = userId,
         )
+
         is MessageRoomEvent.TransperAdmin -> copy(
             type = type,
             userId = userId,
@@ -183,73 +239,15 @@ fun MessageRoomEvent.copy(type: MessageType = this.type, userId: Long = this.use
             type = type,
             userId = userId,
         )
-    }
-}
-
-fun MessageRoomEvent.MessageParent.copy(timestamp: LocalDateTime = this.timestamp, type: MessageType = this.type, userId: Long = this.userId) = when (this) {
-    is MessageRoomEvent.MessageParent.Enter -> {
-        this.copy(
-            type = type,
-            userId = userId,
-            timestamp = timestamp,
-        )
-    }
-    is MessageRoomEvent.MessageParent.File -> {
-        this.copy(
-            type = type,
-            userId = userId,
-            timestamp = timestamp,
-        )
-    }
-    is MessageRoomEvent.MessageParent.Img -> {
-        this.copy(
-            type = type,
-            userId = userId,
-            timestamp = timestamp,
-        )
-    }
-    is MessageRoomEvent.MessageParent.Left -> {
-        this.copy(
-            type = type,
-            userId = userId,
-            timestamp = timestamp,
-        )
-    }
-    is MessageRoomEvent.MessageParent.Me -> {
-        this.copy(
-            type = type,
-            userId = userId,
-            timestamp = timestamp,
-        )
-    }
-    is MessageRoomEvent.MessageParent.Other -> {
-        this.copy(
-            type = type,
-            userId = userId,
-            timestamp = timestamp,
-        )
+        is MessageRoomEvent.MessageParent.BOT.Meal -> TODO()
+        is MessageRoomEvent.MessageParent.Date -> TODO()
+        is MessageRoomEvent.MessageParent.Enter -> TODO()
+        is MessageRoomEvent.MessageParent.Etc -> TODO()
+        is MessageRoomEvent.MessageParent.File -> TODO()
+        is MessageRoomEvent.MessageParent.Img -> TODO()
+        is MessageRoomEvent.MessageParent.Left -> TODO()
+        is MessageRoomEvent.MessageParent.Me -> TODO()
+        is MessageRoomEvent.MessageParent.Other -> TODO()
     }
 
-    is MessageRoomEvent.MessageParent.Date -> {
-        this.copy(
-            type = type,
-            userId = userId,
-            timestamp = timestamp,
-        )
-    }
-    is MessageRoomEvent.MessageParent.Etc -> {
-        this.copy(
-            type = type,
-            userId = userId,
-            timestamp = timestamp,
-        )
-    }
-
-    is MessageRoomEvent.MessageParent.BOT -> {
-        this.copy(
-            type = type,
-            userId = userId,
-            timestamp = timestamp,
-        )
-    }
 }

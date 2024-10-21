@@ -740,7 +740,7 @@ internal fun ChatDetailScreen(
                                 is MessageRoomEvent.MessageParent.Enter -> ChatItemType.Else("${state.users[item.userId]?.name ?: ""}님이 방에 입장하셨습니다.")
 
                                 is MessageRoomEvent.MessageParent.Etc -> ChatItemType.Else(item.toString())
-                                is MessageRoomEvent.MessageParent.BOT -> {
+                                is MessageRoomEvent.MessageParent.BOT.Meal -> {
                                     val readUser = item.getUserCount(
                                         state.roomInfo?.members ?: persistentListOf()
                                     )
@@ -748,7 +748,7 @@ internal fun ChatDetailScreen(
                                     ChatItemType.Ai(
                                         isFirst = item.isFirst,
                                         isLast = item.isLast,
-                                        message = item.message,
+                                        message = item.message.toString(),
                                         createdAt = item.timestamp.toAmShortString(),
                                         count = if (count <= 0) null else count,
                                     )

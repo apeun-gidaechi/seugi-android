@@ -23,6 +23,7 @@ import com.seugi.data.message.MessageRepository
 import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.data.message.model.MessageRoomEvent.MessageParent
 import com.seugi.data.message.model.MessageType
+import com.seugi.data.message.model.copy
 import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
 import com.seugi.data.personalchat.PersonalChatRepository
 import com.seugi.data.profile.ProfileRepository
@@ -677,7 +678,9 @@ class ChatDetailViewModel @Inject constructor(
                     if (
                         formerItem is MessageParent.BOT && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
                     ) {
-                        message[0] = formerItem.copy(isLast = false)
+                        if (formerItem is MessageParent.BOT.Meal) {
+                            message[0] = formerItem.copy(isLast = false)
+                        }
                     }
 
                     if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {

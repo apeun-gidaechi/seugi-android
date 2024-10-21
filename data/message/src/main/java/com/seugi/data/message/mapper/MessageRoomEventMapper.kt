@@ -1,6 +1,13 @@
 package com.seugi.data.message.mapper
 
+import android.util.Log
+import com.seugi.data.core.mapper.toModels
+import com.seugi.data.core.model.MealModel
+import com.seugi.data.message.model.MessageBotRawKeyword
+import com.seugi.data.message.model.MessageBotRawKeywordInData
 import com.seugi.data.message.model.MessageRoomEvent
+import com.seugi.network.core.utiles.toResponse
+import com.seugi.network.meal.response.MealResponse
 import com.seugi.network.message.response.MessageRoomEventResponse
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -16,109 +23,119 @@ internal fun MessageRoomEventResponse.toEventModel(userId: Long): MessageRoomEve
     is MessageRoomEventResponse.UnSub -> toModel()
 }
 
-internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long): MessageRoomEvent.MessageParent = when (type) {
-    "MESSAGE" -> {
-        if (userId == this.userId) {
-            MessageRoomEvent.MessageParent.Me(
-                id = id,
-                chatRoomId = chatRoomId,
+internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int): MessageRoomEvent.MessageParent {
+    Log.d("TAG", "toModel: $type")
+    return when (type) {
+        "BOT" -> {
+            Log.d("TAG", "toModel: HI ${this.message}")
+            val botKeyword = this.message.toResponse(MessageBotRawKeyword::class.java)
+            Log.d("TAG", "toModel: HI ${botKeyword.keyword}")
+            when (botKeyword.keyword) {
+                "급식" -> {
+                    val botData = message.toResponse<MessageBotRawKeywordInData<List<MealResponse>>>()
+                    MessageRoomEvent.MessageParent.BOT.Meal(
+                        id = id,
+                        chatRoomId = chatRoomId,
+                        type = type.toMessageType(),
+                        userId = this.userId,
+                        isFirst = true,
+                        isLast = true,
+                        message = botData.data.toModels().toImmutableList(),
+                        messageStatus = messageStatus,
+                        emoticon = emoticon,
+                        eventList = eventList?.toImmutableList() ?: persistentListOf(),
+                        emojiList = emojiList.map { it.toModel() }.toImmutableList(),
+                        mention = mention.toImmutableList(),
+                        mentionAll = mentionAll,
+                        timestamp = timestamp,
+                    )
+                }
+                else -> throw IllegalArgumentException("알 수 없는 응답")
+            }
+        }
+        "MESSAGE" -> {
+            if (userId == this.userId) {
+                MessageRoomEvent.MessageParent.Me(
+                    id = id,
+                    chatRoomId = chatRoomId,
+                    type = type.toMessageType(),
+                    userId = this.userId,
+                    isLast = false,
+                    message = message,
+                    messageStatus = messageStatus,
+                    uuid = uuid,
+                    emoticon = emoticon,
+                    eventList = eventList?.toImmutableList() ?: persistentListOf(),
+                    emojiList = emojiList.map { it.toModel() }.toImmutableList(),
+                    mention = mention.toImmutableList(),
+                    mentionAll = mentionAll,
+                    timestamp = timestamp,
+                )
+            } else {
+                MessageRoomEvent.MessageParent.Other(
+                    id = id,
+                    chatRoomId = chatRoomId,
+                    type = type.toMessageType(),
+                    userId = this.userId,
+                    isFirst = false,
+                    isLast = false,
+                    message = message,
+                    messageStatus = messageStatus,
+                    uuid = uuid,
+                    emoticon = emoticon,
+                    eventList = eventList?.toImmutableList() ?: persistentListOf(),
+                    emojiList = emojiList.map { it.toModel() }.toImmutableList(),
+                    mention = mention.toImmutableList(),
+                    mentionAll = mentionAll,
+                    timestamp = timestamp,
+                )
+            }
+        }
+        "IMG" -> {
+            val text = message.split("::")
+            MessageRoomEvent.MessageParent.Img(
+                url = text[0],
+                fileName = text[1],
+                timestamp = timestamp,
                 type = type.toMessageType(),
                 userId = this.userId,
-                isLast = false,
-                message = message,
-                messageStatus = messageStatus,
                 uuid = uuid,
-                emoticon = emoticon,
-                eventList = eventList?.toImmutableList() ?: persistentListOf(),
-                emojiList = emojiList.map { it.toModel() }.toImmutableList(),
-                mention = mention.toImmutableList(),
-                mentionAll = mentionAll,
-                timestamp = timestamp,
-            )
-        } else {
-            MessageRoomEvent.MessageParent.Other(
-                id = id,
-                chatRoomId = chatRoomId,
-                type = type.toMessageType(),
-                userId = this.userId,
-                isFirst = false,
-                isLast = false,
-                message = message,
-                messageStatus = messageStatus,
-                uuid = uuid,
-                emoticon = emoticon,
-                eventList = eventList?.toImmutableList() ?: persistentListOf(),
-                emojiList = emojiList.map { it.toModel() }.toImmutableList(),
-                mention = mention.toImmutableList(),
-                mentionAll = mentionAll,
-                timestamp = timestamp,
             )
         }
-    }
-    "IMG" -> {
-        val text = message.split("::")
-        MessageRoomEvent.MessageParent.Img(
-            url = text[0],
-            fileName = text[1],
-            timestamp = timestamp,
-            type = type.toMessageType(),
-            userId = this.userId,
-            uuid = uuid,
-        )
-    }
-    "FILE" -> {
-        val text = message.split("::")
-        MessageRoomEvent.MessageParent.File(
-            url = text[0],
-            fileName = text[1],
-            fileSize = text[2].toLong(),
-            timestamp = timestamp,
-            type = type.toMessageType(),
-            userId = this.userId,
-            uuid = uuid,
-        )
-    }
+        "FILE" -> {
+            val text = message.split("::")
+            MessageRoomEvent.MessageParent.File(
+                url = text[0],
+                fileName = text[1],
+                fileSize = text[2].toLong(),
+                timestamp = timestamp,
+                type = type.toMessageType(),
+                userId = this.userId,
+                uuid = uuid,
+            )
+        }
 
-    "ENTER" -> {
-        MessageRoomEvent.MessageParent.Enter(
-            type = type.toMessageType(),
-            userId = this.userId,
-            timestamp = timestamp,
-            roomId = chatRoomId,
-            eventList = eventList?.toImmutableList() ?: persistentListOf(),
-        )
-    }
-    "LEFT" -> {
-        MessageRoomEvent.MessageParent.Left(
-            type = type.toMessageType(),
-            userId = this.userId,
-            timestamp = timestamp,
-            roomId = chatRoomId,
-            eventList = eventList?.toImmutableList() ?: persistentListOf(),
-        )
-    }
+        "ENTER" -> {
+            MessageRoomEvent.MessageParent.Enter(
+                type = type.toMessageType(),
+                userId = this.userId,
+                timestamp = timestamp,
+                roomId = chatRoomId,
+                eventList = eventList?.toImmutableList() ?: persistentListOf(),
+            )
+        }
+        "LEFT" -> {
+            MessageRoomEvent.MessageParent.Left(
+                type = type.toMessageType(),
+                userId = this.userId,
+                timestamp = timestamp,
+                roomId = chatRoomId,
+                eventList = eventList?.toImmutableList() ?: persistentListOf(),
+            )
+        }
 
-    "BOT" -> {
-        MessageRoomEvent.MessageParent.BOT(
-            id = id,
-            chatRoomId = chatRoomId,
-            type = type.toMessageType(),
-            userId = this.userId,
-            isFirst = true,
-            isLast = true,
-            message = message,
-            messageStatus = messageStatus,
-            uuid = uuid,
-            emoticon = emoticon,
-            eventList = eventList?.toImmutableList() ?: persistentListOf(),
-            emojiList = emojiList.map { it.toModel() }.toImmutableList(),
-            mention = mention.toImmutableList(),
-            mentionAll = mentionAll,
-            timestamp = timestamp,
-        )
+        else -> throw IllegalArgumentException("Not Invalid MessageRoomEventResponse.Raw Type")
     }
-
-    else -> throw IllegalArgumentException("Not Invalid MessageRoomEventResponse.Raw Type")
 }
 
 // event mapper

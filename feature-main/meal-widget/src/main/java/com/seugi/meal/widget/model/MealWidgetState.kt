@@ -1,6 +1,6 @@
 package com.seugi.meal.widget.model
 
-import com.seugi.data.meal.response.MealModel
+import com.seugi.data.core.model.MealModel
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
@@ -16,7 +16,7 @@ sealed interface MealWidgetState {
     @Serializable
     data class Success(
         val timestamp: LocalDateTime,
-        val data: List<MealModel>,
+        val data: List<com.seugi.data.core.model.MealModel>,
     ) : MealWidgetState
 
     //
