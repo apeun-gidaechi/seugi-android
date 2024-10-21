@@ -10,7 +10,6 @@ import com.seugi.network.workspace.request.CreateWorkspaceRequest
 import com.seugi.network.workspace.request.InviteMemberRequest
 import com.seugi.network.workspace.request.WorkspaceApplicationRequest
 import com.seugi.network.workspace.response.CheckWorkspaceResponse
-import com.seugi.network.workspace.response.RetrieveMemberResponse
 import com.seugi.network.workspace.response.WaitWorkspaceResponse
 import com.seugi.network.workspace.response.WorkspaceResponse
 import io.ktor.client.HttpClient

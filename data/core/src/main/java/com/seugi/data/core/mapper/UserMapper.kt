@@ -20,3 +20,7 @@ fun UserInfoResponse.toModel() = UserInfoModel(
     userInfo = userInfo.toModel(),
     utcTimeMillis = timestamp.toDeviceLocalDateTime().toEpochMilli(),
 )
+
+fun List<UserResponse>.toModels() = this.map{
+    it.toModel()
+}
