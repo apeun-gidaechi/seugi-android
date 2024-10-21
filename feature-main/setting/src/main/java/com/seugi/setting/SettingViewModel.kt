@@ -87,7 +87,7 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-    private fun editProfile(name: String, profileImage: String, birth: String) {
+    fun editProfile(name: String, profileImage: String, birth: String) {
         viewModelScope.launch {
             memberRepository.editProfile(
                 name = name,
@@ -108,7 +108,7 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-    fun fileUpload(name: String, fileByteArray: ByteArray, fileMimeType: String, fileName: String, fileByte: Long) {
+    fun fileUpload(name: String, fileByteArray: ByteArray, fileMimeType: String, fileName: String, fileByte: Long, birth: String) {
         viewModelScope.launch {
             fileRepository.fileUpload(
                 type = FileType.IMG,
@@ -118,7 +118,7 @@ class SettingViewModel @Inject constructor(
             ).collect {
                 when (it) {
                     is Result.Success -> {
-                        editProfile(name, it.data.url, "")
+                        editProfile(name, it.data.url, birth)
                     }
 
                     is Result.Error -> {
