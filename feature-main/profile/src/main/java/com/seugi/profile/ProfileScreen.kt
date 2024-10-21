@@ -215,6 +215,21 @@ internal fun ProfileScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
         ProfileCard(
+            title = "닉네",
+            content = myProfile.wire,
+            onClickEdit = {
+                editTextTarget = "wire"
+                isShowDialog = true
+            },
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        SeugiDivider(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            type = DividerType.WIDTH,
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+        ProfileCard(
             title = "직위",
             content = myProfile.spot,
             onClickEdit = {
@@ -272,6 +287,21 @@ internal fun ProfileScreen(
             modifier = Modifier.padding(horizontal = 16.dp),
             type = DividerType.WIDTH,
         )
+        Spacer(modifier = Modifier.height(8.dp))
+        ProfileCard(
+            title = "근무 위치",
+            content = myProfile.wire,
+            onClickEdit = {
+                editTextTarget = "wire"
+                isShowDialog = true
+            },
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        SeugiDivider(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            type = DividerType.WIDTH,
+        )
+
     }
 }
 
