@@ -1,6 +1,6 @@
 package com.seugi.data.timetable.mapper
 
-import com.seugi.data.timetable.model.TimetableModel
+import com.seugi.data.core.model.TimetableModel
 import com.seugi.network.timetable.response.TimetableResponse
 
 fun TimetableResponse.toModel() = TimetableModel(

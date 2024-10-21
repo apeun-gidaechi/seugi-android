@@ -1,7 +1,7 @@
 package com.seugi.data.timetable
 
 import com.seugi.common.model.Result
-import com.seugi.data.timetable.model.TimetableModel
+import com.seugi.data.core.model.TimetableModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 

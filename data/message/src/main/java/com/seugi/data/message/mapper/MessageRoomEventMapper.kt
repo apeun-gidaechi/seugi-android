@@ -3,6 +3,7 @@ package com.seugi.data.message.mapper
 import android.util.Log
 import com.seugi.data.core.mapper.toModels
 import com.seugi.data.core.model.MealModel
+import com.seugi.data.core.model.TimetableModel
 import com.seugi.data.message.model.MessageBotRawKeyword
 import com.seugi.data.message.model.MessageBotRawKeywordInData
 import com.seugi.data.message.model.MessageRoomEvent
@@ -41,6 +42,25 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int)
                         isFirst = true,
                         isLast = true,
                         message = botData.data.toModels().toImmutableList(),
+                        messageStatus = messageStatus,
+                        emoticon = emoticon,
+                        eventList = eventList?.toImmutableList() ?: persistentListOf(),
+                        emojiList = emojiList.map { it.toModel() }.toImmutableList(),
+                        mention = mention.toImmutableList(),
+                        mentionAll = mentionAll,
+                        timestamp = timestamp,
+                    )
+                }
+                "시간표" -> {
+                    val botData = message.toResponse<MessageBotRawKeywordInData<List<TimetableModel>>>()
+                    MessageRoomEvent.MessageParent.BOT.Timetable(
+                        id = id,
+                        chatRoomId = chatRoomId,
+                        type = type.toMessageType(),
+                        userId = this.userId,
+                        isFirst = true,
+                        isLast = true,
+                        message = botData.data.toImmutableList(),
                         messageStatus = messageStatus,
                         emoticon = emoticon,
                         eventList = eventList?.toImmutableList() ?: persistentListOf(),

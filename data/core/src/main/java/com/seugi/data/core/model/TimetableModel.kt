@@ -1,4 +1,4 @@
-package com.seugi.data.timetable.model
+package com.seugi.data.core.model
 
 import kotlinx.datetime.LocalDate
 
