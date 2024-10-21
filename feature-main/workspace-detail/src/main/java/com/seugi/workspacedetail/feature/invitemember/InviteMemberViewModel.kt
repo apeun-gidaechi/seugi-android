@@ -103,9 +103,7 @@ class InviteMemberViewModel @Inject constructor(
                         waitMemberSize = listSize,
                     )
                 }
-            }.collect {
-                // TODO 성공 메새지
-            }
+            }.collect {}
         }
     }
 
