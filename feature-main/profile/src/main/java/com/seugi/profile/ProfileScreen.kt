@@ -133,7 +133,7 @@ internal fun ProfileScreen(
                                 belong = if (editTextTarget == "belong") editText else belong,
                                 phone = if (editTextTarget == "phone") editText else phone,
                                 wire = if (editTextTarget == "wire") editText else wire,
-                                location = location,
+                                location = if (editTextTarget == "location") editText else location,
                             )
                         }
                         viewModel.updateState(changeData)
@@ -222,9 +222,9 @@ internal fun ProfileScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 ProfileCard(
                     title = "닉네임",
-                    content = myProfile.wire,
+                    content = myProfile.nick,
                     onClickEdit = {
-                        editTextTarget = "wire"
+                        editTextTarget = "nick"
                         isShowDialog = true
                     },
                 )
@@ -306,9 +306,9 @@ internal fun ProfileScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 ProfileCard(
                     title = "근무 위치",
-                    content = myProfile.wire,
+                    content = myProfile.location,
                     onClickEdit = {
-                        editTextTarget = "wire"
+                        editTextTarget = "location"
                         isShowDialog = true
                     },
                 )
@@ -373,5 +373,7 @@ private fun getTargetTextToString(text: String): Pair<String, String> = when (te
     "belong" -> Pair("소속", "을")
     "phone" -> Pair("휴대전화번호", "를")
     "wire" -> Pair("유선전화번호", "를")
+    "nick" -> Pair("닉네임", "을")
+    "location" -> Pair("근무 위치", "를")
     else -> Pair("", "")
 }
