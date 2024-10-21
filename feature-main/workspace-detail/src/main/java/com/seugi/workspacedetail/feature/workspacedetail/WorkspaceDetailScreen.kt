@@ -58,7 +58,7 @@ import com.seugi.workspacedetail.feature.workspacedetail.model.WorkspaceDetailSi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WorkspaceDetailScreen(
+internal fun WorkspaceDetailScreen(
     viewModel: WorkspaceDetailViewModel = hiltViewModel(),
     navigateToJoinWorkspace: () -> Unit,
     popBackStack: () -> Unit,
