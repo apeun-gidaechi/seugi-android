@@ -1,6 +1,7 @@
 package com.seugi.data.message.model
 
 import com.seugi.data.core.model.MealModel
+import com.seugi.data.core.model.NotificationModel
 import com.seugi.data.core.model.TimetableModel
 import com.seugi.network.message.response.message.MessageEmojiResponse
 import java.time.LocalDateTime
@@ -85,6 +86,23 @@ sealed class MessageRoomEvent(
             data class Timetable(
                 override val type: MessageType,
                 val message: ImmutableList<TimetableModel>,
+                override val messageStatus: String,
+                override val emoticon: String?,
+                override val eventList: ImmutableList<Int>?,
+                override val id: String,
+                override val emojiList: ImmutableList<MessageEmojiModel>,
+                override val chatRoomId: String,
+                override val timestamp: LocalDateTime,
+                override val userId: Int,
+                override val mention: ImmutableList<Int>,
+                override val mentionAll: Boolean,
+                override val isFirst: Boolean,
+                override val isLast: Boolean,
+            ): BOT(id, chatRoomId, isFirst, isLast, type, userId, messageStatus, emoticon, eventList, emojiList, mention, mentionAll, timestamp)
+
+            data class Notification(
+                override val type: MessageType,
+                val message: ImmutableList<NotificationModel>,
                 override val messageStatus: String,
                 override val emoticon: String?,
                 override val eventList: ImmutableList<Int>?,
@@ -240,6 +258,24 @@ fun MessageRoomEvent.MessageParent.BOT.copy(
                 isLast = isLast,
             )
         }
+        is MessageRoomEvent.MessageParent.BOT.Notification -> {
+            this.copy(
+                type = type,
+                message = this.message,
+                messageStatus = messageStatus,
+                emoticon = emoticon,
+                eventList = eventList,
+                id = id,
+                emojiList = emojiList,
+                chatRoomId = chatRoomId,
+                timestamp = timestamp,
+                userId = userId,
+                mention = mention,
+                mentionAll = mentionAll,
+                isFirst = isFirst,
+                isLast = isLast,
+            )
+        }
     }
 
 fun MessageRoomEvent.copy(
@@ -286,6 +322,7 @@ fun MessageRoomEvent.copy(
         is MessageRoomEvent.MessageParent.Me -> TODO()
         is MessageRoomEvent.MessageParent.Other -> TODO()
         is MessageRoomEvent.MessageParent.BOT.Timetable -> TODO()
+        is MessageRoomEvent.MessageParent.BOT.Notification -> TODO()
     }
 
 }

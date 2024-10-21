@@ -5,8 +5,8 @@ import com.seugi.common.model.asResult
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.notification.NotificationRepository
-import com.seugi.data.notification.mapper.toModels
-import com.seugi.data.notification.model.NotificationModel
+import com.seugi.data.core.mapper.toModels
+import com.seugi.data.core.model.NotificationModel
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.notification.NotificationDataSource
 import javax.inject.Inject

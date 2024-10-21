@@ -3,6 +3,7 @@ package com.seugi.data.message.mapper
 import android.util.Log
 import com.seugi.data.core.mapper.toModels
 import com.seugi.data.core.model.MealModel
+import com.seugi.data.core.model.NotificationModel
 import com.seugi.data.core.model.TimetableModel
 import com.seugi.data.message.model.MessageBotRawKeyword
 import com.seugi.data.message.model.MessageBotRawKeywordInData
@@ -10,6 +11,7 @@ import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.network.core.utiles.toResponse
 import com.seugi.network.meal.response.MealResponse
 import com.seugi.network.message.response.MessageRoomEventResponse
+import com.seugi.network.notification.response.NotificationResponse
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
@@ -61,6 +63,25 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int)
                         isFirst = true,
                         isLast = true,
                         message = botData.data.toImmutableList(),
+                        messageStatus = messageStatus,
+                        emoticon = emoticon,
+                        eventList = eventList?.toImmutableList() ?: persistentListOf(),
+                        emojiList = emojiList.map { it.toModel() }.toImmutableList(),
+                        mention = mention.toImmutableList(),
+                        mentionAll = mentionAll,
+                        timestamp = timestamp,
+                    )
+                }
+                "공지" -> {
+                    val botData = message.toResponse<MessageBotRawKeywordInData<List<NotificationResponse>>>()
+                    MessageRoomEvent.MessageParent.BOT.Notification(
+                        id = id,
+                        chatRoomId = chatRoomId,
+                        type = type.toMessageType(),
+                        userId = this.userId,
+                        isFirst = true,
+                        isLast = true,
+                        message = botData.data.toModels().toImmutableList(),
                         messageStatus = messageStatus,
                         emoticon = emoticon,
                         eventList = eventList?.toImmutableList() ?: persistentListOf(),
