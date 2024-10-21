@@ -52,7 +52,6 @@ import com.seugi.workspacedetail.feature.invitemember.model.DialogModel
 import com.seugi.workspacedetail.feature.invitemember.model.InviteSideEffect
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
