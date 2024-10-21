@@ -241,7 +241,7 @@ internal fun SettingScreen(
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Text(
-                                text = "${profileModel.member.name}",
+                                text = profileModel.member.name,
                                 style = SeugiTheme.typography.subtitle2,
                                 color = SeugiTheme.colors.black,
                             )
