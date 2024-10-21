@@ -24,6 +24,7 @@ import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.data.message.model.MessageRoomEvent.MessageParent
 import com.seugi.data.message.model.MessageType
 import com.seugi.data.message.model.copy
+import com.seugi.data.message.model.getVisibleMessage
 import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
 import com.seugi.data.personalchat.PersonalChatRepository
 import com.seugi.data.profile.ProfileRepository
@@ -180,6 +181,19 @@ class ChatDetailViewModel @Inject constructor(
                         ),
                         users = users.toImmutableMap(),
                     )
+
+                    _state.update { state ->
+                        state.copy(
+                            message = state.message.map {
+                                if (it !is MessageParent.BOT.DrawLots) {
+                                    return@map it
+                                }
+                                it.copy(
+                                    visibleMessage = it.getVisibleMessage(state.roomInfo?.members)
+                                )
+                            }.toImmutableList()
+                        )
+                    }
                 }
 
                 is Result.Loading -> {}
@@ -557,9 +571,11 @@ class ChatDetailViewModel @Inject constructor(
             if (formerItem is MessageParent.Enter || formerItem is MessageParent.Left) {
                 isFirst = true
             }
+
+
             Log.d("TAG", "collectMessage: $isFirst ${messageParent.userId} ${formerItem?.userId}")
 
-            val newData = when (messageParent) {
+            var newData = when (messageParent) {
                 is MessageParent.Me -> messageParent.copy(
                     isLast = isLast,
                 )
@@ -568,6 +584,20 @@ class ChatDetailViewModel @Inject constructor(
                         isLast = isLast,
                         isFirst = isFirst,
                     )
+                }
+                is MessageParent.BOT -> {
+                    if (messageParent is MessageParent.BOT.DrawLots)  {
+                         messageParent.copy(
+                             visibleMessage = messageParent.getVisibleMessage(state.value.roomInfo?.members),
+                             isLast = isLast,
+                             isFirst = isFirst
+                        )
+                    } else {
+                        messageParent.copy(
+                            isLast = isLast,
+                            isFirst = isFirst
+                        )
+                    }
                 }
                 else -> messageParent
             }
@@ -671,7 +701,7 @@ class ChatDetailViewModel @Inject constructor(
                 }
 
                 is MessageParent.BOT -> {
-                    val data = data as MessageParent.BOT
+                    var data = data as MessageParent.BOT
 
                     val message = _state.value.message.toMutableList()
                     val formerItem = message.firstOrNull()
@@ -692,6 +722,12 @@ class ChatDetailViewModel @Inject constructor(
                                 userId = 0,
                                 text = "",
                             ),
+                        )
+                    }
+
+                    if (data is MessageParent.BOT.DrawLots && state.value.roomInfo?.members?.isNotEmpty() == true) {
+                        data = data.copy(
+                            visibleMessage = data.getVisibleMessage(state.value.roomInfo?.members)
                         )
                     }
                     message.add(

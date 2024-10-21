@@ -1,8 +1,10 @@
 package com.seugi.data.message.model
 
+import android.util.Log
 import com.seugi.data.core.model.MealModel
 import com.seugi.data.core.model.NotificationModel
 import com.seugi.data.core.model.TimetableModel
+import com.seugi.data.core.model.UserInfoModel
 import com.seugi.network.message.response.message.MessageEmojiResponse
 import java.time.LocalDateTime
 import kotlinx.collections.immutable.ImmutableList
@@ -103,6 +105,24 @@ sealed class MessageRoomEvent(
             data class Notification(
                 override val type: MessageType,
                 val message: ImmutableList<NotificationModel>,
+                override val messageStatus: String,
+                override val emoticon: String?,
+                override val eventList: ImmutableList<Int>?,
+                override val id: String,
+                override val emojiList: ImmutableList<MessageEmojiModel>,
+                override val chatRoomId: String,
+                override val timestamp: LocalDateTime,
+                override val userId: Int,
+                override val mention: ImmutableList<Int>,
+                override val mentionAll: Boolean,
+                override val isFirst: Boolean,
+                override val isLast: Boolean,
+            ): BOT(id, chatRoomId, isFirst, isLast, type, userId, messageStatus, emoticon, eventList, emojiList, mention, mentionAll, timestamp)
+
+            data class DrawLots(
+                override val type: MessageType,
+                val message: String,
+                val visibleMessage: String,
                 override val messageStatus: String,
                 override val emoticon: String?,
                 override val eventList: ImmutableList<Int>?,
@@ -276,6 +296,25 @@ fun MessageRoomEvent.MessageParent.BOT.copy(
                 isLast = isLast,
             )
         }
+
+        is MessageRoomEvent.MessageParent.BOT.DrawLots -> {
+            this.copy(
+                type = type,
+                message = this.message,
+                messageStatus = messageStatus,
+                emoticon = emoticon,
+                eventList = eventList,
+                id = id,
+                emojiList = emojiList,
+                chatRoomId = chatRoomId,
+                timestamp = timestamp,
+                userId = userId,
+                mention = mention,
+                mentionAll = mentionAll,
+                isFirst = isFirst,
+                isLast = isLast,
+            )
+        }
     }
 
 fun MessageRoomEvent.copy(
@@ -323,6 +362,27 @@ fun MessageRoomEvent.copy(
         is MessageRoomEvent.MessageParent.Other -> TODO()
         is MessageRoomEvent.MessageParent.BOT.Timetable -> TODO()
         is MessageRoomEvent.MessageParent.BOT.Notification -> TODO()
+        is MessageRoomEvent.MessageParent.BOT.DrawLots -> TODO()
     }
 
+}
+
+fun MessageRoomEvent.MessageParent.BOT.DrawLots.getVisibleMessage(
+    members: List<UserInfoModel>?
+): String {
+
+    val regex = "::(\\d+)::".toRegex()
+    val results = regex.findAll(this.message)
+
+    val numbers = results.mapNotNull { result ->
+        result.groupValues[1].toIntOrNull()
+    }.toList()
+
+    val visibleMessage = "사람을 ${numbers.size}명 뽑았어요\n" +
+            numbers.mapNotNull { number ->
+                members?.map { it.userInfo }?.firstOrNull { it.id == number }?.name
+            }.joinToString(" ")
+
+    Log.d("TAG", "getVisibleMessage: 사람뽑기 :${results.toList()}  ${numbers}, ${visibleMessage}")
+    return visibleMessage
 }
