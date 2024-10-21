@@ -218,7 +218,6 @@ internal fun ProfileScreen(
                 )
             }
             item {
-
                 Spacer(modifier = Modifier.height(8.dp))
                 ProfileCard(
                     title = "닉네임",
@@ -235,7 +234,6 @@ internal fun ProfileScreen(
                 )
             }
             item {
-
                 Spacer(modifier = Modifier.height(8.dp))
                 ProfileCard(
                     title = "직위",
@@ -250,10 +248,8 @@ internal fun ProfileScreen(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     type = DividerType.WIDTH,
                 )
-
             }
             item {
-
                 Spacer(modifier = Modifier.height(8.dp))
                 ProfileCard(
                     title = "소속",
@@ -322,7 +318,6 @@ internal fun ProfileScreen(
                 Spacer(modifier = Modifier.height(32.dp))
             }
         }
-
     }
 }
 

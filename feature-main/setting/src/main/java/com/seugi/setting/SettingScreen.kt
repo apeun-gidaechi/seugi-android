@@ -90,7 +90,7 @@ internal fun SettingScreen(
                 fileMimeType = contentResolver.getMimeType(uri).toString(),
                 fileByteArray = contentResolver.getUriByteArray(uri),
                 fileByte = contentResolver.getFileSize(uri),
-                birth = profileModel.member.birth
+                birth = profileModel.member.birth,
             )
         }
     }
@@ -114,7 +114,7 @@ internal fun SettingScreen(
             }
         }
     }
-    if (showBottomSheet){
+    if (showBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = { showBottomSheet = false },
             sheetState = modalBottomSheetState,
@@ -130,13 +130,13 @@ internal fun SettingScreen(
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
                 ) {
                     Text(
                         text = "이름 수정",
                         style = SeugiTheme.typography.subtitle2,
                         color = SeugiTheme.colors.black,
-                        modifier = Modifier.padding(start = 4.dp)
+                        modifier = Modifier.padding(start = 4.dp),
                     )
                     Spacer(modifier = Modifier.height(4.dp))
 
@@ -236,7 +236,7 @@ internal fun SettingScreen(
                                 .bounceClick(
                                     onClick = {
                                         showBottomSheet = true
-                                    }
+                                    },
                                 ),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
