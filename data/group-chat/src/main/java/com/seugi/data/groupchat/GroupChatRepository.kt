@@ -13,4 +13,6 @@ interface GroupChatRepository {
     suspend fun getGroupRoom(roomId: String): Flow<Result<ChatRoomModel>>
 
     suspend fun leftRoom(chatRoomId: String): Flow<Result<Unit>>
+
+    suspend fun addMembers(chatRoomId: String, chatMemberUsers: List<Long>): Flow<Result<Boolean>>
 }

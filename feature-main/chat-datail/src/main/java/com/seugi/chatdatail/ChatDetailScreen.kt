@@ -439,7 +439,13 @@ internal fun ChatDetailScreen(
             popBackStack = {
                 nowPage = NowPage.CHAT
             },
-            nextScreen = {}
+            nextScreen = {
+                viewModel.memberInvite(
+                    chatRoomId = chatRoomId,
+                    members = it
+                )
+                nowPage = NowPage.CHAT
+            }
         )
     }
 }

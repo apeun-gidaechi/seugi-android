@@ -14,6 +14,8 @@ import com.seugi.chatdatail.model.plus
 import com.seugi.common.model.Result
 import com.seugi.common.utiles.toDeviceLocalDateTime
 import com.seugi.common.utiles.toEpochMilli
+import com.seugi.common.utiles.toMap
+import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.core.model.UserInfoModel
 import com.seugi.data.core.model.UserModel
 import com.seugi.data.file.FileRepository
@@ -50,6 +52,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -231,6 +234,62 @@ class ChatDetailViewModel @Inject constructor(
             }
         }
     }
+
+    fun memberInvite(
+        chatRoomId: String,
+        members: List<ProfileModel>
+    ) = viewModelScope.launch {
+        groupChatRepository.addMembers(
+            chatRoomId = chatRoomId,
+            chatMemberUsers = members.map { it.member.id }
+        ).collect {
+            when (it) {
+                is Result.Success -> {
+                    _state.update {
+                        it.copy(
+                            roomInfo = it.roomInfo?.copy(
+                                members = it.roomInfo.members
+                                    .toMutableList()
+                                    .apply {
+                                        addAll(
+                                            members.map {
+                                                UserInfoModel(
+                                                    userInfo = it.member,
+                                                    timestamp = LocalDateTime.of(2000, 1, 1, 1, 1),
+                                                    utcTimeMillis = 3L
+                                                )
+                                            }
+                                        )
+                                    }
+                                    .toImmutableList(),
+                            ),
+                            users = it.users.toMutableMap()
+                                .apply {
+                                    putAll(
+                                        members
+                                            .map { it.member }
+                                            .toMap { it.id }
+                                    )
+                                }
+                                .toImmutableMap()
+                        )
+                    }
+                }
+                Result.Loading -> {
+
+                }
+                is Result.Error -> {
+
+                }
+            }
+        }
+    }
+
+
+
+
+
+
 
     fun collectStompLifecycle(userId: Long) {
         viewModelScope.launch {

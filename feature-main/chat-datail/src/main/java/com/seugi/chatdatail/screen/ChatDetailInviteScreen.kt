@@ -59,7 +59,7 @@ internal fun ChatDetailInviteScreen(
     state: ChatDetailUiState,
     users: ImmutableList<UserModel>,
     popBackStack: () -> Unit,
-    nextScreen: () -> Unit
+    nextScreen: (ImmutableList<ProfileModel>) -> Unit
 ) {
     val selectScrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
@@ -105,7 +105,12 @@ internal fun ChatDetailInviteScreen(
                             .clip(RoundedCornerShape(4.dp))
                             .clickable(
                                 role = Role.Button,
-                                onClick = nextScreen,
+                                onClick = {
+                                    if (checkedMemberState.isEmpty()) {
+                                        return@clickable
+                                    }
+                                    nextScreen(checkedMemberState)
+                                },
                             ),
                     ) {
                         Text(
