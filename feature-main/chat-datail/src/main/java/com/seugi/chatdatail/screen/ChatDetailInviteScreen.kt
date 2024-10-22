@@ -170,11 +170,7 @@ internal fun ChatDetailInviteScreen(
                                 checkedMemberState = checkedMemberState
                                     .toMutableList()
                                     .apply {
-                                        if (it in checkedMemberState) {
-                                            minus(it)
-                                        } else {
-                                            add(it)
-                                        }
+                                        remove(it)
                                     }
                                     .toImmutableList()
                             },
@@ -214,7 +210,7 @@ internal fun ChatDetailInviteScreen(
                                         if (it) {
                                             add(item)
                                         } else {
-                                            minus(item)
+                                            remove(item)
                                         }
                                     }
                                     .toImmutableList()
