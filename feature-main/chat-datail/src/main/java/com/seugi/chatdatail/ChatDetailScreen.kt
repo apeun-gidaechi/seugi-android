@@ -314,7 +314,7 @@ internal fun ChatDetailScreen(
                                 userId = userId,
                                 content = it.text,
                                 uuid = it.uuid,
-                                mention = it.mention
+                                mention = it.mention,
                             )
                         }
                         is ChatLocalType.FailedImgSend -> {
@@ -483,7 +483,7 @@ internal fun ChatDetailScreen(
                                 userId = userId,
                                 content = text,
                                 type = MessageType.MESSAGE,
-                                mention = mentionList
+                                mention = mentionList,
                             )
                             text = ""
                         },
@@ -742,7 +742,7 @@ internal fun ChatDetailScreen(
                                 is MessageRoomEvent.MessageParent.Etc -> ChatItemType.Else(item.toString())
                                 is MessageRoomEvent.MessageParent.BOT.Meal -> {
                                     val readUser = item.getUserCount(
-                                        state.roomInfo?.members ?: persistentListOf()
+                                        state.roomInfo?.members ?: persistentListOf(),
                                     )
                                     val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
                                     ChatItemType.Ai(
@@ -756,7 +756,7 @@ internal fun ChatDetailScreen(
 
                                 is MessageRoomEvent.MessageParent.BOT.Timetable -> {
                                     val readUser = item.getUserCount(
-                                        state.roomInfo?.members ?: persistentListOf()
+                                        state.roomInfo?.members ?: persistentListOf(),
                                     )
                                     val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
                                     ChatItemType.Ai(
@@ -770,7 +770,7 @@ internal fun ChatDetailScreen(
 
                                 is MessageRoomEvent.MessageParent.BOT.Notification -> {
                                     val readUser = item.getUserCount(
-                                        state.roomInfo?.members ?: persistentListOf()
+                                        state.roomInfo?.members ?: persistentListOf(),
                                     )
                                     val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
                                     ChatItemType.Ai(
@@ -784,7 +784,7 @@ internal fun ChatDetailScreen(
 
                                 is MessageRoomEvent.MessageParent.BOT.DrawLots -> {
                                     val readUser = item.getUserCount(
-                                        state.roomInfo?.members ?: persistentListOf()
+                                        state.roomInfo?.members ?: persistentListOf(),
                                     )
                                     val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
                                     ChatItemType.Ai(
@@ -798,7 +798,7 @@ internal fun ChatDetailScreen(
 
                                 is MessageRoomEvent.MessageParent.BOT.TeamBuild -> {
                                     val readUser = item.getUserCount(
-                                        state.roomInfo?.members ?: persistentListOf()
+                                        state.roomInfo?.members ?: persistentListOf(),
                                     )
                                     val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
                                     ChatItemType.Ai(
@@ -812,7 +812,7 @@ internal fun ChatDetailScreen(
 
                                 is MessageRoomEvent.MessageParent.BOT.Etc -> {
                                     val readUser = item.getUserCount(
-                                        state.roomInfo?.members ?: persistentListOf()
+                                        state.roomInfo?.members ?: persistentListOf(),
                                     )
                                     val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
                                     ChatItemType.Ai(
@@ -826,7 +826,7 @@ internal fun ChatDetailScreen(
 
                                 is MessageRoomEvent.MessageParent.BOT.NotSupport -> {
                                     val readUser = item.getUserCount(
-                                        state.roomInfo?.members ?: persistentListOf()
+                                        state.roomInfo?.members ?: persistentListOf(),
                                     )
                                     val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
                                     ChatItemType.Ai(

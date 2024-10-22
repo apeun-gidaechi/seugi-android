@@ -194,7 +194,7 @@ class ChatDetailViewModel @Inject constructor(
                                     newMessage = messageParent.copy(visibleMessage = messageParent.getVisibleMessage(state.roomInfo?.members))
                                 }
                                 newMessage
-                            }.toImmutableList()
+                            }.toImmutableList(),
                         )
                     }
                 }
@@ -257,12 +257,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelSend(
-        userId: Int, content: String,
-        uuid: String = UUID.randomUUID().toString(),
-        type: MessageType,
-        mention: List<Int> = emptyList(),
-    ) {
+    fun channelSend(userId: Int, content: String, uuid: String = UUID.randomUUID().toString(), type: MessageType, mention: List<Int> = emptyList()) {
         viewModelScope.launch {
             // 파일, 이미지는 socket 서버 업로드전에 생김
             if (type == MessageType.MESSAGE) {
@@ -274,7 +269,7 @@ class ChatDetailViewModel @Inject constructor(
                 message = content,
                 messageUUID = uuid,
                 type = type,
-                mention = mention
+                mention = mention,
             )
             Log.d("TAG", "testSend: $result")
             when (result) {
@@ -284,7 +279,7 @@ class ChatDetailViewModel @Inject constructor(
                             type = type,
                             uuid = uuid,
                             content = content,
-                            mention = mention
+                            mention = mention,
                         )
                         channelReconnect(userId)
                         return@launch
@@ -396,13 +391,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelResend(
-        userId: Int,
-        content: String,
-        uuid: String,
-        type: MessageType = MessageType.MESSAGE,
-        mention: List<Int> = emptyList(),
-    ) {
+    fun channelResend(userId: Int, content: String, uuid: String, type: MessageType = MessageType.MESSAGE, mention: List<Int> = emptyList()) {
         _messageSaveQueueState.value -= uuid
         when {
             type == MessageType.FILE -> {
@@ -576,7 +565,6 @@ class ChatDetailViewModel @Inject constructor(
                 isFirst = true
             }
 
-
             var newData = when (messageParent) {
                 is MessageParent.Me -> messageParent.copy(
                     isLast = isLast,
@@ -588,23 +576,22 @@ class ChatDetailViewModel @Inject constructor(
                     )
                 }
                 is MessageParent.BOT -> {
-                    if (messageParent is MessageParent.BOT.DrawLots)  {
-                         messageParent.copy(
-                             visibleMessage = messageParent.getVisibleMessage(state.value.roomInfo?.members),
-                             isLast = isLast,
-                             isFirst = isFirst
+                    if (messageParent is MessageParent.BOT.DrawLots) {
+                        messageParent.copy(
+                            visibleMessage = messageParent.getVisibleMessage(state.value.roomInfo?.members),
+                            isLast = isLast,
+                            isFirst = isFirst,
                         )
                     } else if (messageParent is MessageParent.BOT.TeamBuild) {
                         messageParent.copy(
                             visibleMessage = messageParent.getVisibleMessage(state.value.roomInfo?.members),
                             isLast = isLast,
-                            isFirst = isFirst
+                            isFirst = isFirst,
                         )
-                    }
-                    else {
+                    } else {
                         messageParent.copy(
                             isLast = isLast,
-                            isFirst = isFirst
+                            isFirst = isFirst,
                         )
                     }
                 }
@@ -736,13 +723,13 @@ class ChatDetailViewModel @Inject constructor(
 
                     if (data is MessageParent.BOT.DrawLots && state.value.roomInfo?.members?.isNotEmpty() == true) {
                         data = data.copy(
-                            visibleMessage = data.getVisibleMessage(state.value.roomInfo?.members)
+                            visibleMessage = data.getVisibleMessage(state.value.roomInfo?.members),
                         )
                     }
 
                     if (data is MessageParent.BOT.TeamBuild && state.value.roomInfo?.members?.isNotEmpty() == true) {
                         data = data.copy(
-                            visibleMessage = data.getVisibleMessage(state.value.roomInfo?.members)
+                            visibleMessage = data.getVisibleMessage(state.value.roomInfo?.members),
                         )
                     }
                     message.add(

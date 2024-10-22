@@ -122,7 +122,7 @@ class MessageDataSourceImpl @Inject constructor(
             message = message,
             uuid = messageUUID,
             type = type,
-            mention = mention
+            mention = mention,
         ).toJsonString()
 
         val sendContent = StompMessage(

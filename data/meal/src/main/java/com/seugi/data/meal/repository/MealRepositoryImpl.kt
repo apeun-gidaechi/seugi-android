@@ -10,8 +10,8 @@ import com.seugi.common.utiles.toNotSpaceString
 import com.seugi.data.core.mapper.toModels
 import com.seugi.data.core.model.MealModel
 import com.seugi.data.meal.MealRepository
-import com.seugi.data.meal.mapper.toModels
 import com.seugi.data.meal.mapper.toEntity
+import com.seugi.data.meal.mapper.toModels
 import com.seugi.local.room.dao.MealDao
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.meal.MealDataSource

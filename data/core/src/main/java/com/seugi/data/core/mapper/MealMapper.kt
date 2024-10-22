@@ -23,7 +23,6 @@ fun String.toMealType() = when (this) {
     else -> MealType.DINNER
 }
 
-
 @JvmName("ListMealResponsetoModels")
 fun List<MealResponse>.toModels() = this.map {
     it.toModel()

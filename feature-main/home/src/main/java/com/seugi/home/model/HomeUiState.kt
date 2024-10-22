@@ -1,8 +1,8 @@
 package com.seugi.home.model
 
 import com.seugi.data.core.model.MealModel
-import com.seugi.data.schedule.model.ScheduleModel
 import com.seugi.data.core.model.TimetableModel
+import com.seugi.data.schedule.model.ScheduleModel
 import java.time.LocalTime
 import kotlinx.collections.immutable.ImmutableList
 

@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
-import com.seugi.data.notification.NotificationRepository
 import com.seugi.data.core.model.NotificationEmojiModel
+import com.seugi.data.notification.NotificationRepository
 import com.seugi.notification.model.NotificationSideEffect
 import com.seugi.notification.model.NotificationUiState
 import dagger.hilt.android.lifecycle.HiltViewModel

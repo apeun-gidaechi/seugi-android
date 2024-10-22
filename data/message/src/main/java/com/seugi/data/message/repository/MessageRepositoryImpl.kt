@@ -34,7 +34,7 @@ class MessageRepositoryImpl @Inject constructor(
                 message = message,
                 messageUUID = messageUUID,
                 type = type.name,
-                mention = mention
+                mention = mention,
             ),
         )
     }

@@ -5,9 +5,9 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.headers
+import java.time.LocalDateTime
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.datetime.LocalDate
-import java.time.LocalDateTime
 
 inline fun <reified T> String.toResponse(): T {
     val type = object : TypeToken<T>() {}.type
