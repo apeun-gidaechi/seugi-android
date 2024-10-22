@@ -29,6 +29,7 @@ import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
 import com.seugi.data.personalchat.PersonalChatRepository
 import com.seugi.data.profile.ProfileRepository
 import com.seugi.data.token.TokenRepository
+import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.stompclient.StompException
 import com.seugi.ui.toByteArray
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -59,6 +60,7 @@ class ChatDetailViewModel @Inject constructor(
     private val messageRepository: MessageRepository,
     private val personalChatRepository: PersonalChatRepository,
     private val groupChatRepository: GroupChatRepository,
+    private val workspaceRepository: WorkspaceRepository,
     private val profileRepository: ProfileRepository,
     private val tokenRepository: TokenRepository,
     private val fileRepository: FileRepository,
@@ -96,7 +98,7 @@ class ChatDetailViewModel @Inject constructor(
             ),
         )
         initProfile(workspaceId)
-        loadRoom(chatRoomId, isPersonal, userId)
+        loadRoom(chatRoomId, isPersonal, userId, workspaceId)
     }
 
     fun loadMessage(chatRoomId: String, userId: Long) = viewModelScope.launch {
@@ -144,7 +146,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun loadRoom(chatRoomId: String, isPersonal: Boolean, userId: Long) = viewModelScope.launch {
+    private fun loadRoom(chatRoomId: String, isPersonal: Boolean, userId: Long, workspaceId: String) = viewModelScope.launch {
         val result = if (isPersonal) {
             personalChatRepository.getChat(
                 roomId = chatRoomId,
@@ -197,9 +199,32 @@ class ChatDetailViewModel @Inject constructor(
                             }.toImmutableList(),
                         )
                     }
+
+                    loadWorkspaceMembers(workspaceId)
                 }
 
                 is Result.Loading -> {}
+                is Result.Error -> {
+                    it.throwable.printStackTrace()
+                }
+            }
+        }
+    }
+
+    private suspend fun loadWorkspaceMembers(
+        workspaceId: String
+    ) {
+        workspaceRepository.getMembers(workspaceId = workspaceId).collect {
+            when (it) {
+                is Result.Success -> {
+                    _state.update { state ->
+                        state.copy(
+                            workspaceUsers = it.data.toImmutableList()
+                        )
+                    }
+
+                }
+                Result.Loading -> {}
                 is Result.Error -> {
                     it.throwable.printStackTrace()
                 }

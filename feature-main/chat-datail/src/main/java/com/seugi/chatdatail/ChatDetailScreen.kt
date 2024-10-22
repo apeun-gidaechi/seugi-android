@@ -1,6 +1,5 @@
 package com.seugi.chatdatail
 
-import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
@@ -25,7 +24,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -63,7 +61,6 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
@@ -71,7 +68,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -81,36 +77,21 @@ import coil.compose.rememberAsyncImagePainter
 import com.seugi.chatdatail.model.ChatDetailSideEffect
 import com.seugi.chatdatail.model.ChatLocalType
 import com.seugi.chatdatail.screen.ChatDetailChatScreen
-import com.seugi.common.utiles.byteToFormatString
-import com.seugi.common.utiles.toAmShortString
-import com.seugi.common.utiles.toFullFormatString
+import com.seugi.chatdatail.screen.ChatDetailInviteScreen
 import com.seugi.data.core.model.UserInfoModel
 import com.seugi.data.core.model.UserModel
 import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.data.message.model.MessageType
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
-import com.seugi.designsystem.component.DividerType
 import com.seugi.designsystem.component.DragState
-import com.seugi.designsystem.component.SeugiDivider
 import com.seugi.designsystem.component.SeugiIconButton
 import com.seugi.designsystem.component.SeugiImage
 import com.seugi.designsystem.component.SeugiMemberList
-import com.seugi.designsystem.component.SeugiRightSideScaffold
-import com.seugi.designsystem.component.SeugiTopBar
-import com.seugi.designsystem.component.chat.ChatItemType
-import com.seugi.designsystem.component.chat.SeugiChatItem
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
-import com.seugi.designsystem.component.modifier.`if`
-import com.seugi.designsystem.component.textfield.SeugiChatTextField
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.ui.addFocusCleaner
-import com.seugi.ui.checkFileExist
 import com.seugi.ui.component.OtherProfileBottomSheet
-import com.seugi.ui.downloadFile
-import com.seugi.ui.getFile
-import com.seugi.ui.getFileMimeType
 import com.seugi.ui.getFileName
 import com.seugi.ui.getFileSize
 import com.seugi.ui.getMimeType
@@ -118,10 +99,15 @@ import com.seugi.ui.getUriByteArray
 import com.seugi.ui.rememberKeyboardOpen
 import com.seugi.ui.uriToBitmap
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import net.engawapg.lib.zoomable.rememberZoomState
 import net.engawapg.lib.zoomable.zoomable
+
+private enum class NowPage {
+    CHAT,
+    INVITE
+}
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -221,6 +207,8 @@ internal fun ChatDetailScreen(
     var showSelectUrlImagePreview by remember { mutableStateOf(false) }
     var selectUrlImageItem: MessageRoomEvent.MessageParent.Img? by remember { mutableStateOf(null) }
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
+
+    var nowPage: NowPage by remember { mutableStateOf(NowPage.CHAT) }
 
     LaunchedEffect(key1 = sideEffect) {
         if (sideEffect == null) {
@@ -386,53 +374,74 @@ internal fun ChatDetailScreen(
         )
     }
 
-    ChatDetailChatScreen(
-        viewModel = viewModel,
-        state = state,
-        focusManager = focusManager,
-        focusRequester = focusRequester,
-        coroutineScope = coroutineScope,
-        context = context,
-        fileLauncher = fileLauncher,
-        galleryLauncher = galleryLauncher,
-        anchoredState = anchoredState,
-        launcher = launcher,
-        scrollState = scrollState,
-        userId = userId,
-        chatRoomId = chatRoomId,
-        isPersonal = isPersonal,
-        isSearch = isSearch,
-        searchText = searchText,
-        isOpenSidebar = isOpenSidebar,
-        isShowUploadDialog = isShowUploadDialog,
-        text = text,
-        notificationState = notificationState,
-        messageQueueState = messageQueueState,
-        showImagePreview = showImagePreview,
-        selectedImageBitmap = selectedImageBitmap,
-        showSelectUrlImagePreview = showSelectUrlImagePreview,
-        selectedFileName = selectedFileName,
-        selectUrlImageItem = selectUrlImageItem,
-        resendChatItem = resendChatItem,
-        isShowReSendDialog = isShowReSendDialog,
-        popBackStack = popBackStack,
-        onTextChange = { text = it },
-        onSearchTextChange = { searchText = it },
-        onIsSearchChange = { isSearch = it },
-        onsOtherProfileStateChange = { otherProfileState = it},
-        onIsOpenSidebarChange = { isOpenSidebar = it },
-        onIsShowUploadDialogChange = { isShowUploadDialog = it },
-        onShowOtherProfileBottomSheetChange = { showOtherProfileBottomSheet = it },
-        onNotificationStateChange = { notificationState = it },
-        onIsShowReSendDialog = { isShowReSendDialog = it },
-        onResendChatItemChange = { resendChatItem = it },
-        onSelectUrlImageItemChange = { selectUrlImageItem = it },
-        onShowSelectUrlImagePreview = { showSelectUrlImagePreview = it },
-        onShowImagePreview = { showImagePreview = it },
-        onSelectedFileName = { selectedFileName = it },
-        onSelectedImageBitmap = { selectedImageBitmap = it }
-    )
+    AnimatedVisibility(
+        visible = nowPage == NowPage.CHAT,
+        enter = fadeIn(),
+        exit = fadeOut(),
+    ) {
+        ChatDetailChatScreen(
+            viewModel = viewModel,
+            state = state,
+            focusManager = focusManager,
+            focusRequester = focusRequester,
+            coroutineScope = coroutineScope,
+            context = context,
+            fileLauncher = fileLauncher,
+            galleryLauncher = galleryLauncher,
+            anchoredState = anchoredState,
+            launcher = launcher,
+            scrollState = scrollState,
+            userId = userId,
+            chatRoomId = chatRoomId,
+            isPersonal = isPersonal,
+            isSearch = isSearch,
+            searchText = searchText,
+            isOpenSidebar = isOpenSidebar,
+            isShowUploadDialog = isShowUploadDialog,
+            text = text,
+            notificationState = notificationState,
+            messageQueueState = messageQueueState,
+            showImagePreview = showImagePreview,
+            selectedImageBitmap = selectedImageBitmap,
+            showSelectUrlImagePreview = showSelectUrlImagePreview,
+            selectedFileName = selectedFileName,
+            selectUrlImageItem = selectUrlImageItem,
+            resendChatItem = resendChatItem,
+            isShowReSendDialog = isShowReSendDialog,
+            popBackStack = popBackStack,
+            onTextChange = { text = it },
+            onClickInviteMember = { nowPage = NowPage.INVITE },
+            onSearchTextChange = { searchText = it },
+            onIsSearchChange = { isSearch = it },
+            onsOtherProfileStateChange = { otherProfileState = it},
+            onIsOpenSidebarChange = { isOpenSidebar = it },
+            onIsShowUploadDialogChange = { isShowUploadDialog = it },
+            onShowOtherProfileBottomSheetChange = { showOtherProfileBottomSheet = it },
+            onNotificationStateChange = { notificationState = it },
+            onIsShowReSendDialog = { isShowReSendDialog = it },
+            onResendChatItemChange = { resendChatItem = it },
+            onSelectUrlImageItemChange = { selectUrlImageItem = it },
+            onShowSelectUrlImagePreview = { showSelectUrlImagePreview = it },
+            onShowImagePreview = { showImagePreview = it },
+            onSelectedFileName = { selectedFileName = it },
+            onSelectedImageBitmap = { selectedImageBitmap = it }
+        )
+    }
 
+    AnimatedVisibility(
+        visible = nowPage == NowPage.INVITE,
+        enter = fadeIn(),
+        exit = fadeOut(),
+    ) {
+        ChatDetailInviteScreen(
+            state = state,
+            users = state.users.values.toImmutableList(),
+            popBackStack = {
+                nowPage = NowPage.CHAT
+            },
+            nextScreen = {}
+        )
+    }
 }
 
 @Composable
@@ -518,7 +527,7 @@ internal fun ChatSideBarScreen(
     adminId: Long?,
     members: ImmutableList<UserInfoModel>,
     notificationState: Boolean,
-    showLeft: Boolean,
+    isPersonal: Boolean,
     onClickMember: (UserModel) -> Unit,
     onClickInviteMember: () -> Unit,
     onClickLeft: () -> Unit,
@@ -551,7 +560,7 @@ internal fun ChatSideBarScreen(
                     .padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                if (showLeft) {
+                if (!isPersonal) {
                     SeugiIconButton(
                         resId = R.drawable.ic_logout_line,
                         onClick = onClickLeft,
@@ -587,10 +596,12 @@ internal fun ChatSideBarScreen(
                 .background(SeugiTheme.colors.white),
         ) {
             item {
-                SeugiMemberList(
-                    text = "멤버 초대하기",
-                    onClick = onClickInviteMember,
-                )
+                if (!isPersonal) {
+                    SeugiMemberList(
+                        text = "멤버 초대하기",
+                        onClick = onClickInviteMember,
+                    )
+                }
             }
             items(members) {
                 SeugiMemberList(

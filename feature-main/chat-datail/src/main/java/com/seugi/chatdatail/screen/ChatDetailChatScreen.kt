@@ -11,7 +11,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.AnchoredDraggableState
@@ -110,6 +109,7 @@ internal fun ChatDetailChatScreen(
     isShowReSendDialog: Boolean,
     popBackStack: () -> Unit,
     onTextChange: (String) -> Unit,
+    onClickInviteMember: () -> Unit,
     onSearchTextChange: (String) -> Unit,
     onIsSearchChange: (Boolean) -> Unit,
     onsOtherProfileStateChange: (UserModel) -> Unit,
@@ -237,8 +237,8 @@ internal fun ChatDetailChatScreen(
                         adminId = state.roomInfo?.adminId,
                         members = state.roomInfo?.members ?: persistentListOf(),
                         notificationState = notificationState,
-                        showLeft = !isPersonal,
-                        onClickInviteMember = {},
+                        isPersonal = isPersonal,
+                        onClickInviteMember = onClickInviteMember,
                         onClickMember = {
                             if (it.id == userId) {
                                 return@ChatSideBarScreen
