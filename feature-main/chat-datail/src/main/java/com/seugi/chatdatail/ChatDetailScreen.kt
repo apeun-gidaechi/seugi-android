@@ -80,6 +80,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.seugi.chatdatail.model.ChatDetailSideEffect
 import com.seugi.chatdatail.model.ChatLocalType
+import com.seugi.chatdatail.screen.ChatDetailChatScreen
 import com.seugi.common.utiles.byteToFormatString
 import com.seugi.common.utiles.toAmShortString
 import com.seugi.common.utiles.toFullFormatString
@@ -385,535 +386,57 @@ internal fun ChatDetailScreen(
         )
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(SeugiTheme.colors.primary050)
-            .focusable(),
-    ) {
-        SeugiRightSideScaffold(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(SeugiTheme.colors.primary050)
-                .addFocusCleaner(
-                    focusManager = focusManager,
-                ),
-            topBar = {
-                SeugiTopBar(
-                    modifier = Modifier.fillMaxWidth(),
-                    title = {
-                        if (isSearch) {
-                            ChatDetailTextField(
-                                searchText = searchText,
-                                onValueChange = {
-                                    searchText = it
-                                },
-                                enabled = true,
-                                placeholder = "메세지 검색",
-                                onDone = {
-                                    searchText = ""
-                                    isSearch = false
-                                },
-                            )
-                        } else {
-                            Text(
-                                text = state.roomInfo?.roomName ?: "",
-                                style = SeugiTheme.typography.subtitle1,
-                                color = SeugiTheme.colors.black,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
-                    },
-                    actions = {
-                        if (!isSearch) {
-                            SeugiIconButton(
-                                resId = R.drawable.ic_search,
-                                size = 28.dp,
-                                onClick = {
-                                    isSearch = true
-                                    searchText = ""
-                                },
-                            )
-                            Spacer(modifier = Modifier.width(16.dp))
-                            SeugiIconButton(
-                                resId = R.drawable.ic_hamburger_horizontal_line,
-                                size = 28.dp,
-                                onClick = {
-                                    isOpenSidebar = true
-                                    coroutineScope.launch {
-                                        anchoredState.animateTo(DragState.START)
-                                    }
-                                },
-                            )
-                        }
-                    },
-                    shadow = true,
-                    onNavigationIconClick = {
-                        if (isSearch) {
-                            isSearch = !isSearch
-                        } else {
-                            popBackStack()
-                        }
-                    },
-                )
-            },
-            bottomBar = {
-                Column {
-                    SeugiChatTextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                horizontal = 8.dp,
-                            )
-                            .dropShadow(DropShadowType.EvBlack1),
-                        value = text,
-                        placeholder = "메세지 보내기",
-                        onValueChange = {
-                            text = it
-                        },
-                        sendEnabled = text.isNotEmpty(),
-                        onSendClick = {
-                            val mentionList = mutableListOf<Long>()
+    ChatDetailChatScreen(
+        viewModel = viewModel,
+        state = state,
+        focusManager = focusManager,
+        focusRequester = focusRequester,
+        coroutineScope = coroutineScope,
+        context = context,
+        fileLauncher = fileLauncher,
+        galleryLauncher = galleryLauncher,
+        anchoredState = anchoredState,
+        launcher = launcher,
+        scrollState = scrollState,
+        userId = userId,
+        chatRoomId = chatRoomId,
+        isPersonal = isPersonal,
+        isSearch = isSearch,
+        searchText = searchText,
+        isOpenSidebar = isOpenSidebar,
+        isShowUploadDialog = isShowUploadDialog,
+        text = text,
+        notificationState = notificationState,
+        messageQueueState = messageQueueState,
+        showImagePreview = showImagePreview,
+        selectedImageBitmap = selectedImageBitmap,
+        showSelectUrlImagePreview = showSelectUrlImagePreview,
+        selectedFileName = selectedFileName,
+        selectUrlImageItem = selectUrlImageItem,
+        resendChatItem = resendChatItem,
+        isShowReSendDialog = isShowReSendDialog,
+        popBackStack = popBackStack,
+        onTextChange = { text = it },
+        onSearchTextChange = { searchText = it },
+        onIsSearchChange = { isSearch = it },
+        onsOtherProfileStateChange = { otherProfileState = it},
+        onIsOpenSidebarChange = { isOpenSidebar = it },
+        onIsShowUploadDialogChange = { isShowUploadDialog = it },
+        onShowOtherProfileBottomSheetChange = { showOtherProfileBottomSheet = it },
+        onNotificationStateChange = { notificationState = it },
+        onIsShowReSendDialog = { isShowReSendDialog = it },
+        onResendChatItemChange = { resendChatItem = it },
+        onSelectUrlImageItemChange = { selectUrlImageItem = it },
+        onShowSelectUrlImagePreview = { showSelectUrlImagePreview = it },
+        onShowImagePreview = { showImagePreview = it },
+        onSelectedFileName = { selectedFileName = it },
+        onSelectedImageBitmap = { selectedImageBitmap = it }
+    )
 
-                            if (text.startsWith("스기야 ")) {
-                                mentionList.add(-1)
-                            }
-                            viewModel.channelSend(
-                                userId = userId,
-                                content = text,
-                                type = MessageType.MESSAGE,
-                                mention = mentionList,
-                            )
-                            text = ""
-                        },
-                        onAddClick = {
-                            isShowUploadDialog = true
-                        },
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-            },
-            sideBar = {
-                Row {
-                    SeugiDivider(type = DividerType.HEIGHT)
-                    ChatSideBarScreen(
-                        adminId = state.roomInfo?.adminId,
-                        members = state.roomInfo?.members ?: persistentListOf(),
-                        notificationState = notificationState,
-                        showLeft = !isPersonal,
-                        onClickInviteMember = {},
-                        onClickMember = {
-                            if (it.id == userId) {
-                                return@ChatSideBarScreen
-                            }
-                            otherProfileState = it
-                            showOtherProfileBottomSheet = true
-                        },
-                        onClickLeft = {
-                            if (!isPersonal) {
-                                viewModel.leftRoom(chatRoomId)
-                            }
-                        },
-                        onClickNotification = {
-                            notificationState = !notificationState
-                        },
-                        onClickSetting = { },
-                    )
-                }
-            },
-            onSideBarClose = {
-                coroutineScope.launch {
-                    anchoredState.animateTo(DragState.END)
-                    isOpenSidebar = false
-                }
-            },
-            startPadding = 62.dp,
-            state = anchoredState,
-        ) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(it)
-                    .background(SeugiTheme.colors.primary050),
-                contentPadding = PaddingValues(
-                    horizontal = 8.dp,
-                ),
-                state = scrollState,
-                reverseLayout = true,
-            ) {
-                items(messageQueueState.reversed()) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                bottom = 8.dp,
-                            ),
-                        horizontalAlignment = Alignment.End,
-                    ) {
-                        val onClickRetry: (ChatLocalType) -> Unit = {
-                            resendChatItem = it
-                            isShowReSendDialog = true
-                        }
-                        when (it) {
-                            is ChatLocalType.SendText -> {
-                                SeugiChatItem(
-                                    type = ChatItemType.Sending(message = it.text),
-                                )
-                            }
-                            is ChatLocalType.FailedText -> {
-                                SeugiChatItem(
-                                    type = ChatItemType.Failed(
-                                        message = it.text,
-                                        onClickRetry = { onClickRetry(it) },
-                                    ),
-                                )
-                            }
-                            is ChatLocalType.SendFile -> {
-                                SeugiChatItem(
-                                    type = ChatItemType.FileSending(
-                                        fileName = it.fileName,
-                                        fileSize = byteToFormatString(it.fileByte),
-                                    ),
-                                )
-                            }
-                            is ChatLocalType.FailedFileUpload -> {
-                                SeugiChatItem(
-                                    type = ChatItemType.FileFailed(
-                                        onClickRetry = { onClickRetry(it) },
-                                        fileName = it.fileName,
-                                        fileSize = byteToFormatString(it.fileByte),
-                                    ),
-                                )
-                            }
-                            is ChatLocalType.FailedFileSend -> {
-                                SeugiChatItem(
-                                    type = ChatItemType.FileFailed(
-                                        onClickRetry = { onClickRetry(it) },
-                                        fileName = it.fileName,
-                                        fileSize = byteToFormatString(it.fileByte),
-                                    ),
-                                )
-                            }
-                            is ChatLocalType.SendImg -> {
-                                SeugiChatItem(
-                                    type = ChatItemType.ImageSending(
-                                        image = it.image.asImageBitmap(),
-                                    ),
-                                )
-                            }
-                            is ChatLocalType.FailedImgUpload -> {
-                                SeugiChatItem(
-                                    type = ChatItemType.ImageFailedBitmap(
-                                        onClickRetry = { onClickRetry(it) },
-                                        image = it.image.asImageBitmap(),
-                                    ),
-                                )
-                            }
-                            is ChatLocalType.FailedImgSend -> {
-                                SeugiChatItem(
-                                    type = ChatItemType.ImageFailedUrl(
-                                        onClickRetry = { onClickRetry(it) },
-                                        image = it.image,
-                                    ),
-                                )
-                            }
-
-                            is ChatLocalType.SendFileUrl -> {
-                                SeugiChatItem(
-                                    type = ChatItemType.FileSending(
-                                        fileName = it.fileName,
-                                        fileSize = byteToFormatString(it.fileByte),
-                                    ),
-                                )
-                            }
-                            is ChatLocalType.SendImgUrl -> {
-                                SeugiChatItem(
-                                    type = ChatItemType.ImageSendingUrl(
-                                        image = it.image,
-                                    ),
-                                )
-                            }
-                        }
-                    }
-                }
-                items(
-                    state.message.filter {
-                        if (searchText.isEmpty()) return@filter true
-                        when (it) {
-                            is MessageRoomEvent.MessageParent.Me -> {
-                                it.message.contains(searchText)
-                            }
-                            is MessageRoomEvent.MessageParent.Other -> {
-                                it.message.contains(searchText)
-                            }
-                            else -> false
-                        }
-                    },
-                ) { item ->
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                bottom = 8.dp,
-                            ),
-                    ) {
-                        SeugiChatItem(
-                            modifier = Modifier
-                                .`if`(
-                                    item is MessageRoomEvent.MessageParent.Me ||
-                                        (item is MessageRoomEvent.MessageParent.Img && item.userId == userId) ||
-                                        (item is MessageRoomEvent.MessageParent.File && item.userId == userId),
-                                ) {
-                                    align(Alignment.End)
-                                },
-                            type = when (item) {
-                                is MessageRoomEvent.MessageParent.Me -> {
-                                    val readUser = item.getUserCount(state.roomInfo?.members ?: persistentListOf())
-                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
-                                    ChatItemType.Me(
-                                        isLast = item.isLast,
-                                        message = item.message,
-                                        createdAt = item.timestamp.toAmShortString(),
-                                        count = if (count <= 0) null else count,
-                                    )
-                                }
-                                is MessageRoomEvent.MessageParent.Other -> {
-                                    val readUser = item.getUserCount(state.roomInfo?.members ?: persistentListOf())
-                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
-                                    val userInfo = state.users[item.userId]
-                                    ChatItemType.Others(
-                                        isFirst = item.isFirst,
-                                        isLast = item.isLast,
-                                        userName = userInfo?.name ?: "",
-                                        userProfile = userInfo?.picture?.ifEmpty { null },
-                                        message = item.message,
-                                        createdAt = item.timestamp.toAmShortString(),
-                                        count = if (count <= 0) null else count,
-                                    )
-                                }
-
-                                is MessageRoomEvent.MessageParent.Date ->
-                                    ChatItemType.Date(item.timestamp.toFullFormatString())
-
-                                is MessageRoomEvent.MessageParent.Img -> {
-                                    Log.d("TAG", "ChatDetailScreen: $item $userId")
-                                    ChatItemType.Image(
-                                        onClick = {
-                                            selectUrlImageItem = item
-                                            showSelectUrlImagePreview = true
-                                        },
-                                        image = item.url,
-                                        isMe = item.userId == userId,
-                                    )
-                                }
-
-                                is MessageRoomEvent.MessageParent.File ->
-                                    ChatItemType.File(
-                                        onClick = {
-                                            if (!checkFileExist(item.fileName)) {
-                                                downloadFile(
-                                                    context = context,
-                                                    url = item.url,
-                                                    name = item.fileName,
-                                                )
-                                            } else {
-                                                val intent = Intent(Intent.ACTION_VIEW)
-                                                intent.setDataAndType(
-                                                    Uri.fromFile(getFile(item.fileName)),
-                                                    getFileMimeType(item.fileName),
-                                                )
-                                                try {
-                                                    launcher.launch(intent)
-                                                } catch (e: Exception) {
-                                                    // not open app
-                                                }
-                                            }
-                                        },
-                                        isMe = item.userId == userId,
-                                        fileName = item.fileName,
-                                        fileSize = byteToFormatString(item.fileSize),
-                                    )
-
-                                is MessageRoomEvent.MessageParent.Left -> ChatItemType.Else("${state.users[item.userId]?.name ?: ""}님이 방에서 퇴장하셨습니다.")
-
-                                is MessageRoomEvent.MessageParent.Enter -> ChatItemType.Else("${state.users[item.userId]?.name ?: ""}님이 방에 입장하셨습니다.")
-
-                                is MessageRoomEvent.MessageParent.Etc -> ChatItemType.Else(item.toString())
-                                is MessageRoomEvent.MessageParent.BOT.Meal -> {
-                                    val readUser = item.getUserCount(
-                                        state.roomInfo?.members ?: persistentListOf(),
-                                    )
-                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
-                                    ChatItemType.Ai(
-                                        isFirst = item.isFirst,
-                                        isLast = item.isLast,
-                                        message = item.message.toString(),
-                                        createdAt = item.timestamp.toAmShortString(),
-                                        count = if (count <= 0) null else count,
-                                    )
-                                }
-
-                                is MessageRoomEvent.MessageParent.BOT.Timetable -> {
-                                    val readUser = item.getUserCount(
-                                        state.roomInfo?.members ?: persistentListOf(),
-                                    )
-                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
-                                    ChatItemType.Ai(
-                                        isFirst = item.isFirst,
-                                        isLast = item.isLast,
-                                        message = item.message.toString(),
-                                        createdAt = item.timestamp.toAmShortString(),
-                                        count = if (count <= 0) null else count,
-                                    )
-                                }
-
-                                is MessageRoomEvent.MessageParent.BOT.Notification -> {
-                                    val readUser = item.getUserCount(
-                                        state.roomInfo?.members ?: persistentListOf(),
-                                    )
-                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
-                                    ChatItemType.Ai(
-                                        isFirst = item.isFirst,
-                                        isLast = item.isLast,
-                                        message = item.message.toString(),
-                                        createdAt = item.timestamp.toAmShortString(),
-                                        count = if (count <= 0) null else count,
-                                    )
-                                }
-
-                                is MessageRoomEvent.MessageParent.BOT.DrawLots -> {
-                                    val readUser = item.getUserCount(
-                                        state.roomInfo?.members ?: persistentListOf(),
-                                    )
-                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
-                                    ChatItemType.Ai(
-                                        isFirst = item.isFirst,
-                                        isLast = item.isLast,
-                                        message = item.visibleMessage,
-                                        createdAt = item.timestamp.toAmShortString(),
-                                        count = if (count <= 0) null else count,
-                                    )
-                                }
-
-                                is MessageRoomEvent.MessageParent.BOT.TeamBuild -> {
-                                    val readUser = item.getUserCount(
-                                        state.roomInfo?.members ?: persistentListOf(),
-                                    )
-                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
-                                    ChatItemType.Ai(
-                                        isFirst = item.isFirst,
-                                        isLast = item.isLast,
-                                        message = item.visibleMessage,
-                                        createdAt = item.timestamp.toAmShortString(),
-                                        count = if (count <= 0) null else count,
-                                    )
-                                }
-
-                                is MessageRoomEvent.MessageParent.BOT.Etc -> {
-                                    val readUser = item.getUserCount(
-                                        state.roomInfo?.members ?: persistentListOf(),
-                                    )
-                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
-                                    ChatItemType.Ai(
-                                        isFirst = item.isFirst,
-                                        isLast = item.isLast,
-                                        message = item.message,
-                                        createdAt = item.timestamp.toAmShortString(),
-                                        count = if (count <= 0) null else count,
-                                    )
-                                }
-
-                                is MessageRoomEvent.MessageParent.BOT.NotSupport -> {
-                                    val readUser = item.getUserCount(
-                                        state.roomInfo?.members ?: persistentListOf(),
-                                    )
-                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
-                                    ChatItemType.Ai(
-                                        isFirst = item.isFirst,
-                                        isLast = item.isLast,
-                                        message = item.message,
-                                        createdAt = item.timestamp.toAmShortString(),
-                                        count = if (count <= 0) null else count,
-                                    )
-                                }
-                            },
-                        )
-                    }
-                }
-            }
-        }
-        if (isShowUploadDialog) {
-            ChatUploadDialog(
-                focusRequester = focusRequester,
-                onDismissRequest = {
-                    isShowUploadDialog = false
-                    Log.d("TAG", "ChatDetailScreen: dismiss")
-                },
-                onFileUploadClick = {
-                    fileLauncher.launch("*/*")
-                },
-                onImageUploadClick = {
-                    galleryLauncher.launch("image/*")
-                },
-            )
-        }
-        AnimatedVisibility(
-            visible = showImagePreview,
-            enter = fadeIn(),
-            exit = fadeOut(),
-        ) {
-            if (selectedImageBitmap != null) {
-                ChatDetailImageUploadPreviewScreen(
-                    imageBitmap = selectedImageBitmap!!.asImageBitmap(),
-                    onClickRetry = {
-                        galleryLauncher.launch("image/*")
-                    },
-                    onClickSend = {
-                        if (selectedImageBitmap != null) {
-                            showImagePreview = false
-                            viewModel.channelSend(
-                                userId = userId,
-                                image = selectedImageBitmap!!,
-                                fileName = selectedFileName,
-                            )
-                            selectedFileName = ""
-                            selectedImageBitmap = null
-                        }
-                    },
-                    popBackStack = {
-                        showImagePreview = false
-                    },
-                )
-            }
-        }
-        AnimatedVisibility(visible = showSelectUrlImagePreview) {
-            if (selectUrlImageItem != null) {
-                ChatDetailImagePreviewScreen(
-                    image = selectUrlImageItem!!.url,
-                    fileIsExist = checkFileExist(selectUrlImageItem?.fileName!!),
-                    onClickDownload = {
-                        val image = selectUrlImageItem!!
-                        if (!checkFileExist(image.fileName)) {
-                            downloadFile(
-                                context = context,
-                                url = image.url,
-                                name = image.fileName,
-                            )
-                        }
-                    },
-                    popBackStack = {
-                        selectUrlImageItem = null
-                        showSelectUrlImagePreview = false
-                    },
-                )
-            }
-        }
-    }
 }
 
 @Composable
-private fun BoxScope.ChatUploadDialog(focusRequester: FocusRequester, onDismissRequest: () -> Unit, onFileUploadClick: () -> Unit, onImageUploadClick: () -> Unit) {
+internal fun BoxScope.ChatUploadDialog(focusRequester: FocusRequester, onDismissRequest: () -> Unit, onFileUploadClick: () -> Unit, onImageUploadClick: () -> Unit) {
     var isFirst by remember { mutableStateOf(true) }
 
     LaunchedEffect(key1 = true) {
@@ -991,7 +514,7 @@ private fun ChatUploadDialogItem(@DrawableRes resId: Int, title: String, onClick
 }
 
 @Composable
-private fun ChatSideBarScreen(
+internal fun ChatSideBarScreen(
     adminId: Long?,
     members: ImmutableList<UserInfoModel>,
     notificationState: Boolean,
@@ -1093,7 +616,7 @@ private fun ChatSideBarScreen(
 }
 
 @Composable
-private fun ChatDetailImageUploadPreviewScreen(imageBitmap: ImageBitmap, onClickRetry: () -> Unit, onClickSend: () -> Unit, popBackStack: () -> Unit) {
+internal fun ChatDetailImageUploadPreviewScreen(imageBitmap: ImageBitmap, onClickRetry: () -> Unit, onClickSend: () -> Unit, popBackStack: () -> Unit) {
     val painter = BitmapPainter(imageBitmap)
     val zoomState = rememberZoomState(contentSize = painter.intrinsicSize)
 
@@ -1172,7 +695,7 @@ private fun ChatDetailImageUploadPreviewScreen(imageBitmap: ImageBitmap, onClick
 }
 
 @Composable
-private fun ChatDetailImagePreviewScreen(image: String, fileIsExist: Boolean, onClickDownload: () -> Unit, popBackStack: () -> Unit) {
+internal fun ChatDetailImagePreviewScreen(image: String, fileIsExist: Boolean, onClickDownload: () -> Unit, popBackStack: () -> Unit) {
     val painter = rememberAsyncImagePainter(model = image)
     val zoomState = rememberZoomState()
     BackHandler(
@@ -1242,7 +765,7 @@ private fun ChatDetailImagePreviewScreen(image: String, fileIsExist: Boolean, on
 }
 
 @Composable
-private fun ChatDetailTextField(searchText: String, onValueChange: (String) -> Unit, placeholder: String = "", enabled: Boolean = true, onDone: () -> Unit) {
+internal fun ChatDetailTextField(searchText: String, onValueChange: (String) -> Unit, placeholder: String = "", enabled: Boolean = true, onDone: () -> Unit) {
     val focusManager = LocalFocusManager.current
 
     BasicTextField(
@@ -1278,7 +801,7 @@ private fun ChatDetailTextField(searchText: String, onValueChange: (String) -> U
 }
 
 @Composable
-private fun ResendDialog(modifier: Modifier = Modifier, text: String = "재전송하시겠습니까?", onClickDelete: () -> Unit, onClickResend: () -> Unit) {
+internal fun ResendDialog(modifier: Modifier = Modifier, text: String = "재전송하시겠습니까?", onClickDelete: () -> Unit, onClickResend: () -> Unit) {
     Box(
         modifier = modifier
             .fillMaxWidth()
