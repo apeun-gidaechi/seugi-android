@@ -1,6 +1,5 @@
 package com.seugi.network.task.datasource
 
-import com.seugi.data.task.R
 import com.seugi.network.core.SeugiUrl
 import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.response.Response

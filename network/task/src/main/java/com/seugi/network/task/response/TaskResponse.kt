@@ -5,8 +5,8 @@ import java.time.LocalDateTime
 
 data class TaskResponse(
     val id: Long,
-    val workspace: String,
+    val workspaceId: String,
     val title: String,
-    val description: String,
-    val dueDate: LocalDateTime
+    val description: String?,
+    val dueDate: LocalDateTime?
 )

@@ -8,6 +8,7 @@ import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.core.model.MealType
 import com.seugi.data.meal.MealRepository
 import com.seugi.data.schedule.ScheduleRepository
+import com.seugi.data.task.TaskRepository
 import com.seugi.data.timetable.TimetableRepository
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.data.workspace.model.WorkspaceModel
@@ -35,6 +36,7 @@ class HomeViewModel @Inject constructor(
     private val mealRepository: MealRepository,
     private val timetableRepository: TimetableRepository,
     private val scheduleRepository: ScheduleRepository,
+    private val taskRepository: TaskRepository,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
@@ -58,6 +60,7 @@ class HomeViewModel @Inject constructor(
             loadTimetable(workspace.workspaceId)
             loadCatSeugi()
             loadSchedule(workspace.workspaceId)
+            loadTask(workspace.workspaceId)
         }
     }
 
@@ -197,6 +200,39 @@ class HomeViewModel @Inject constructor(
                     _state.update {
                         it.copy(
                             schoolScheduleState = CommonUiState.Error,
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun loadTask(workspaceId: String) = viewModelScope.launch(dispatcher) {
+        taskRepository.getWorkspaceTaskAll(
+            workspaceId = workspaceId
+        ).collect {
+            when (it) {
+                is Result.Success -> {
+                    _state.update { state ->
+                        state.copy(
+                            taskState = CommonUiState.Success(
+                                it.data
+                                    .filter { it.dueDate != null }
+                                    .sortedBy {
+                                        it.dueDate
+                                    }
+                                    .take(3)
+                                    .toImmutableList()
+                            )
+                        )
+                    }
+                }
+                Result.Loading -> {}
+                is Result.Error -> {
+                    it.throwable.printStackTrace()
+                    _state.update { state ->
+                        state.copy(
+                            taskState = CommonUiState.Error
                         )
                     }
                 }

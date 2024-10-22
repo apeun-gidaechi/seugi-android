@@ -1,11 +1,12 @@
 package com.seugi.data.task.model
 
-import java.time.LocalDateTime
+import kotlinx.datetime.LocalDateTime
+
 
 data class TaskModel(
     val id: Long,
-    val workspace: String,
+    val workspaceId: String,
     val title: String,
-    val description: String,
-    val dueDate: LocalDateTime
+    val description: String?,
+    val dueDate: LocalDateTime?
 )

@@ -150,6 +150,9 @@ internal fun MainScreen(
                 navigateToWorkspaceCreate = {
                     navHostController.navigateToWorkspaceCreate()
                 },
+                navigateToTask = {
+
+                }
             )
 
             chatScreen(
