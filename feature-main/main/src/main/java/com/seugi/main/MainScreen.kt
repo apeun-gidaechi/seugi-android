@@ -42,6 +42,8 @@ import com.seugi.roomcreate.navigation.navigateToRoomCreate
 import com.seugi.roomcreate.navigation.roomCreateScreen
 import com.seugi.setting.navigate.navigateToSetting
 import com.seugi.setting.navigate.settingScreen
+import com.seugi.timetable.navigation.navigateToTimetable
+import com.seugi.timetable.navigation.timetableScreen
 import com.seugi.workspace.navigation.WAITING_JOIN
 import com.seugi.workspace.navigation.joinSuccess
 import com.seugi.workspace.navigation.navigateToJoinSuccess
@@ -140,6 +142,7 @@ internal fun MainScreen(
                 navigateToJoinWorkspace = {
                     navHostController.navigateToSelectingJob()
                 },
+                navigateToTimetable = navHostController::navigateToTimetable,
                 navigateToWorkspaceDetail = { id ->
                     navHostController.navigateToWorkspaceDetail()
                     viewModel.loadLocalWorkspace()
@@ -338,6 +341,12 @@ internal fun MainScreen(
                 showSnackbar = showSnackbar,
                 reloadProfile = viewModel::loadLocalWorkspace,
             )
+
+            timetableScreen(
+                popBackStack = navHostController::popBackStack,
+                workspaceId = state.workspace.workspaceId
+            )
+
             inviteMemberScreen(
                 popBackStack = navHostController::popBackStack,
                 workspaceId = state.profile.workspaceId,

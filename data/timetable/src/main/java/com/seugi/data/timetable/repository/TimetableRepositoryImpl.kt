@@ -30,4 +30,14 @@ class TimetableRepositoryImpl @Inject constructor(
     }
         .flowOn(dispatcher)
         .asResult()
+
+    override suspend fun getTimetableWeekend(workspaceId: String): Flow<Result<ImmutableList<TimetableModel>>> = flow {
+        val response = timetableDataSource.getTimetableWeekend(
+            workspaceId = workspaceId,
+        ).safeResponse()
+
+        emit(response.toModels().toImmutableList())
+    }
+        .flowOn(dispatcher)
+        .asResult()
 }

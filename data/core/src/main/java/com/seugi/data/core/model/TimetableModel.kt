@@ -1,5 +1,6 @@
 package com.seugi.data.core.model
 
+import io.ktor.util.date.WeekDay
 import kotlinx.datetime.LocalDate
 
 data class TimetableModel(
@@ -10,4 +11,5 @@ data class TimetableModel(
     val time: String,
     val subject: String,
     val date: LocalDate,
+    val weekday: String,
 )

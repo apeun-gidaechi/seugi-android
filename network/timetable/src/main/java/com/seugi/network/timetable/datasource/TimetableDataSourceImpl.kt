@@ -16,4 +16,8 @@ class TimetableDataSourceImpl @Inject constructor(
     override suspend fun getTimetableDay(workspaceId: String): BaseResponse<List<TimetableResponse>> = httpClient.get(SeugiUrl.Timetable.DAY) {
         parameter("workspaceId", workspaceId)
     }.body()
+
+    override suspend fun getTimetableWeekend(workspaceId: String): BaseResponse<List<TimetableResponse>> = httpClient.get(SeugiUrl.Timetable.WEEKEND) {
+        parameter("workspaceId", workspaceId)
+    }.body()
 }
