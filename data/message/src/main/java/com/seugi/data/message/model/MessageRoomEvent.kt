@@ -136,6 +136,24 @@ sealed class MessageRoomEvent(
                 override val isFirst: Boolean,
                 override val isLast: Boolean,
             ): BOT(id, chatRoomId, isFirst, isLast, type, userId, messageStatus, emoticon, eventList, emojiList, mention, mentionAll, timestamp)
+
+            data class TeamBuild(
+                override val type: MessageType,
+                val message: String,
+                val visibleMessage: String,
+                override val messageStatus: String,
+                override val emoticon: String?,
+                override val eventList: ImmutableList<Int>?,
+                override val id: String,
+                override val emojiList: ImmutableList<MessageEmojiModel>,
+                override val chatRoomId: String,
+                override val timestamp: LocalDateTime,
+                override val userId: Int,
+                override val mention: ImmutableList<Int>,
+                override val mentionAll: Boolean,
+                override val isFirst: Boolean,
+                override val isLast: Boolean,
+            ): BOT(id, chatRoomId, isFirst, isLast, type, userId, messageStatus, emoticon, eventList, emojiList, mention, mentionAll, timestamp)
         }
 
         data class File(
@@ -315,6 +333,25 @@ fun MessageRoomEvent.MessageParent.BOT.copy(
                 isLast = isLast,
             )
         }
+
+        is MessageRoomEvent.MessageParent.BOT.TeamBuild -> {
+            this.copy(
+                type = type,
+                message = this.message,
+                messageStatus = messageStatus,
+                emoticon = emoticon,
+                eventList = eventList,
+                id = id,
+                emojiList = emojiList,
+                chatRoomId = chatRoomId,
+                timestamp = timestamp,
+                userId = userId,
+                mention = mention,
+                mentionAll = mentionAll,
+                isFirst = isFirst,
+                isLast = isLast,
+            )
+        }
     }
 
 fun MessageRoomEvent.copy(
@@ -363,6 +400,7 @@ fun MessageRoomEvent.copy(
         is MessageRoomEvent.MessageParent.BOT.Timetable -> TODO()
         is MessageRoomEvent.MessageParent.BOT.Notification -> TODO()
         is MessageRoomEvent.MessageParent.BOT.DrawLots -> TODO()
+        is MessageRoomEvent.MessageParent.BOT.TeamBuild -> TODO()
     }
 
 }
@@ -384,5 +422,18 @@ fun MessageRoomEvent.MessageParent.BOT.DrawLots.getVisibleMessage(
             }.joinToString(" ")
 
     Log.d("TAG", "getVisibleMessage: 사람뽑기 :${results.toList()}  ${numbers}, ${visibleMessage}")
+    return visibleMessage
+}
+
+fun MessageRoomEvent.MessageParent.BOT.TeamBuild.getVisibleMessage(
+    members: List<UserInfoModel>?
+): String {
+
+    var visibleMessage = this.message
+
+    members?.forEach {
+        visibleMessage = visibleMessage.replace("::${it.userInfo.id}::", it.userInfo.name)
+    }
+    Log.d("TAG", "getVisibleMessage: 팀 빌딩 : $visibleMessage")
     return visibleMessage
 }

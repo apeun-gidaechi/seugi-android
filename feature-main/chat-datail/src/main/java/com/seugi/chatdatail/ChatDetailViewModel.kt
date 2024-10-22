@@ -185,12 +185,18 @@ class ChatDetailViewModel @Inject constructor(
                     _state.update { state ->
                         state.copy(
                             message = state.message.map {
-                                if (it !is MessageParent.BOT.DrawLots) {
-                                    return@map it
+                                if (it is MessageParent.BOT.DrawLots) {
+                                    return@map it.copy(
+                                        visibleMessage = it.getVisibleMessage(state.roomInfo?.members)
+                                    )
                                 }
-                                it.copy(
-                                    visibleMessage = it.getVisibleMessage(state.roomInfo?.members)
-                                )
+
+                                if (it is MessageParent.BOT.TeamBuild) {
+                                    return@map it.copy(
+                                        visibleMessage = it.getVisibleMessage(state.roomInfo?.members)
+                                    )
+                                }
+                                it
                             }.toImmutableList()
                         )
                     }
@@ -726,6 +732,12 @@ class ChatDetailViewModel @Inject constructor(
                     }
 
                     if (data is MessageParent.BOT.DrawLots && state.value.roomInfo?.members?.isNotEmpty() == true) {
+                        data = data.copy(
+                            visibleMessage = data.getVisibleMessage(state.value.roomInfo?.members)
+                        )
+                    }
+
+                    if (data is MessageParent.BOT.TeamBuild && state.value.roomInfo?.members?.isNotEmpty() == true) {
                         data = data.copy(
                             visibleMessage = data.getVisibleMessage(state.value.roomInfo?.members)
                         )
