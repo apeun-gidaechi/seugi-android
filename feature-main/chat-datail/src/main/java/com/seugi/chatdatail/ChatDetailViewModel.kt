@@ -184,19 +184,16 @@ class ChatDetailViewModel @Inject constructor(
 
                     _state.update { state ->
                         state.copy(
-                            message = state.message.map {
-                                if (it is MessageParent.BOT.DrawLots) {
-                                    return@map it.copy(
-                                        visibleMessage = it.getVisibleMessage(state.roomInfo?.members)
-                                    )
+                            message = state.message.map { messageParent ->
+                                var newMessage = messageParent
+                                if (messageParent is MessageParent.BOT.DrawLots) {
+                                    newMessage = messageParent.copy(visibleMessage = messageParent.getVisibleMessage(state.roomInfo?.members))
                                 }
 
-                                if (it is MessageParent.BOT.TeamBuild) {
-                                    return@map it.copy(
-                                        visibleMessage = it.getVisibleMessage(state.roomInfo?.members)
-                                    )
+                                if (messageParent is MessageParent.BOT.TeamBuild) {
+                                    newMessage = messageParent.copy(visibleMessage = messageParent.getVisibleMessage(state.roomInfo?.members))
                                 }
-                                it
+                                newMessage
                             }.toImmutableList()
                         )
                     }
@@ -287,6 +284,7 @@ class ChatDetailViewModel @Inject constructor(
                             type = type,
                             uuid = uuid,
                             content = content,
+                            mention = mention
                         )
                         channelReconnect(userId)
                         return@launch
@@ -578,8 +576,6 @@ class ChatDetailViewModel @Inject constructor(
                 isFirst = true
             }
 
-
-            Log.d("TAG", "collectMessage: $isFirst ${messageParent.userId} ${formerItem?.userId}")
 
             var newData = when (messageParent) {
                 is MessageParent.Me -> messageParent.copy(

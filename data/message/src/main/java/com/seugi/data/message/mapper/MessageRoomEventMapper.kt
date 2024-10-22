@@ -1,9 +1,6 @@
 package com.seugi.data.message.mapper
 
-import android.util.Log
 import com.seugi.data.core.mapper.toModels
-import com.seugi.data.core.model.MealModel
-import com.seugi.data.core.model.NotificationModel
 import com.seugi.data.core.model.TimetableModel
 import com.seugi.data.message.model.MessageBotRawKeyword
 import com.seugi.data.message.model.MessageBotRawKeywordInData
@@ -27,12 +24,9 @@ internal fun MessageRoomEventResponse.toEventModel(userId: Long): MessageRoomEve
 }
 
 internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int): MessageRoomEvent.MessageParent {
-    Log.d("TAG", "toModel: $type")
     return when (type) {
         "BOT" -> {
-            Log.d("TAG", "toModel: HI ${this.message}")
             val botKeyword = this.message.toResponse(MessageBotRawKeyword::class.java)
-            Log.d("TAG", "toModel: HI ${botKeyword.keyword}")
             when (botKeyword.keyword) {
                 "급식" -> {
                     val botData = message.toResponse<MessageBotRawKeywordInData<List<MealResponse>>>()

@@ -494,7 +494,6 @@ fun MessageRoomEvent.MessageParent.BOT.DrawLots.getVisibleMessage(
                 members?.map { it.userInfo }?.firstOrNull { it.id == number }?.name
             }.joinToString(" ")
 
-    Log.d("TAG", "getVisibleMessage: 사람뽑기 :${results.toList()}  ${numbers}, ${visibleMessage}")
     return visibleMessage
 }
 
@@ -507,6 +506,5 @@ fun MessageRoomEvent.MessageParent.BOT.TeamBuild.getVisibleMessage(
     members?.forEach {
         visibleMessage = visibleMessage.replace("::${it.userInfo.id}::", it.userInfo.name)
     }
-    Log.d("TAG", "getVisibleMessage: 팀 빌딩 : $visibleMessage")
     return visibleMessage
 }
