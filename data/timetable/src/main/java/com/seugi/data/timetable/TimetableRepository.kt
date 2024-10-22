@@ -8,4 +8,6 @@ import kotlinx.coroutines.flow.Flow
 interface TimetableRepository {
 
     suspend fun getTimetableDay(workspaceId: String): Flow<Result<ImmutableList<TimetableModel>>>
+
+    suspend fun getTimetableWeekend(workspaceId: String): Flow<Result<ImmutableList<TimetableModel>>>
 }

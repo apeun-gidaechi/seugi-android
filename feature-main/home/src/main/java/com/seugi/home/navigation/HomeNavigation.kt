@@ -24,6 +24,7 @@ fun NavGraphBuilder.homeScreen(
     notJoinWorkspace: Boolean,
     navigateToChatSeugi: () -> Unit,
     navigateToJoinWorkspace: () -> Unit,
+    navigateToTimetable: () -> Unit,
     navigateToWorkspaceDetail: (String) -> Unit,
     navigateToWorkspaceCreate: () -> Unit,
 ) {
@@ -33,6 +34,7 @@ fun NavGraphBuilder.homeScreen(
             notJoinWorkspace = notJoinWorkspace,
             navigateToChatSeugi = navigateToChatSeugi,
             navigateToJoinWorkspace = navigateToJoinWorkspace,
+            navigateToTimetable = navigateToTimetable,
             navigateToWorkspaceDetail = navigateToWorkspaceDetail,
             navigateToWorkspaceCreate = navigateToWorkspaceCreate,
         )

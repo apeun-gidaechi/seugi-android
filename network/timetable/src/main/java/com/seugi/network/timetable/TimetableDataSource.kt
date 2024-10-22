@@ -6,4 +6,6 @@ import com.seugi.network.timetable.response.TimetableResponse
 interface TimetableDataSource {
 
     suspend fun getTimetableDay(workspaceId: String): BaseResponse<List<TimetableResponse>>
+
+    suspend fun getTimetableWeekend(workspaceId: String): BaseResponse<List<TimetableResponse>>
 }

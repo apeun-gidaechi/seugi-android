@@ -10,4 +10,5 @@ data class TimetableModel(
     val time: String,
     val subject: String,
     val date: LocalDate,
+    val weekday: String,
 )

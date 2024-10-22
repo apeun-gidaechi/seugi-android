@@ -80,6 +80,7 @@ object SeugiUrl {
     object Timetable {
         const val ROOT = "${BASE_URL}/timetable"
         const val DAY = "$ROOT/day"
+        const val WEEKEND = "$ROOT/weekend"
     }
 
     object Oauth {

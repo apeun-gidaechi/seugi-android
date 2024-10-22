@@ -74,6 +74,7 @@ internal fun HomeScreen(
     workspace: WorkspaceModel,
     navigateToChatSeugi: () -> Unit,
     navigateToJoinWorkspace: () -> Unit,
+    navigateToTimetable: () -> Unit,
     navigateToWorkspaceDetail: (String) -> Unit,
     navigateToWorkspaceCreate: () -> Unit,
 ) {
@@ -170,7 +171,7 @@ internal fun HomeScreen(
             item {
                 TimeScheduleCard(
                     uiState = state.timeScheduleState,
-                    onClickDetail = {},
+                    onClickDetail = navigateToTimetable,
                 )
             }
 
@@ -292,7 +293,7 @@ internal fun HomeCard(modifier: Modifier = Modifier, text: String, onClickDetail
             modifier = Modifier
                 .bounceClick(
                     onClick = onClickDetail,
-                    enabled = false,
+                    enabled = true,
                 ),
         ) {
             Spacer(modifier = Modifier.width(16.dp))

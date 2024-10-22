@@ -127,6 +127,7 @@ include(
     ":feature-onboarding:onboarding",
     ":feature-main:notification-create",
     ":feature-main:notification-edit",
+    ":feature-main:timetable",
     ":feature-main:setting",
     ":feature-main:meal-widget",
     ":feature-main:timetable-widget",
