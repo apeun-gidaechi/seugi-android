@@ -16,27 +16,20 @@ import java.time.LocalDateTime
 import javax.inject.Inject
 
 class TaskDataSourceImpl @Inject constructor(
-    private val httpClient: HttpClient
-): TaskDataSource {
-    override suspend fun getWorkspaceTaskAll(workspaceId: String): BaseResponse<List<TaskResponse>> =
-        httpClient.get("${SeugiUrl.TASK}/${workspaceId}").body()
+    private val httpClient: HttpClient,
+) : TaskDataSource {
+    override suspend fun getWorkspaceTaskAll(workspaceId: String): BaseResponse<List<TaskResponse>> = httpClient.get("${SeugiUrl.TASK}/$workspaceId").body()
 
-    override suspend fun getClassroomAll(): BaseResponse<List<TaskGoogleResponse>> =
-        httpClient.get(SeugiUrl.Task.CLASSROOM).body()
+    override suspend fun getClassroomAll(): BaseResponse<List<TaskGoogleResponse>> = httpClient.get(SeugiUrl.Task.CLASSROOM).body()
 
-    override suspend fun createTask(
-        workspaceId: String,
-        title: String,
-        description: String,
-        dueDate: LocalDateTime,
-    ): Response = httpClient.post(SeugiUrl.TASK) {
-            setBody(
-                TaskCreateRequest(
-                    workspaceId = workspaceId,
-                    title = title,
-                    description = description,
-                    dueDate = dueDate
-                )
-            )
-        }.body()
+    override suspend fun createTask(workspaceId: String, title: String, description: String, dueDate: LocalDateTime): Response = httpClient.post(SeugiUrl.TASK) {
+        setBody(
+            TaskCreateRequest(
+                workspaceId = workspaceId,
+                title = title,
+                description = description,
+                dueDate = dueDate,
+            ),
+        )
+    }.body()
 }

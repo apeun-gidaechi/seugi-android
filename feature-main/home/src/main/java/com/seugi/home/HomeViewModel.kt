@@ -219,7 +219,6 @@ class HomeViewModel @Inject constructor(
                     }
 
                     Result.Loading -> {
-
                     }
 
                     is Result.Success -> {
@@ -231,7 +230,7 @@ class HomeViewModel @Inject constructor(
 
         combineWhenAllComplete(
             taskRepository.getGoogleTaskAll(),
-            taskRepository.getWorkspaceTaskAll(workspaceId)
+            taskRepository.getWorkspaceTaskAll(workspaceId),
         ) { google, workspace ->
             val tasks = mutableListOf<TaskModel>()
             var failedGoogleOauth = false
@@ -242,7 +241,6 @@ class HomeViewModel @Inject constructor(
                 }
 
                 Result.Loading -> {
-
                 }
 
                 is Result.Error -> {
@@ -260,19 +258,18 @@ class HomeViewModel @Inject constructor(
                 }
 
                 is Result.Error -> {
-
                 }
             }
 
             return@combineWhenAllComplete Pair(
                 tasks.toImmutableList(),
-                failedGoogleOauth && failedWorkspace
+                failedGoogleOauth && failedWorkspace,
             )
         }.collect {
             if (it.second) {
                 _state.update { state ->
                     state.copy(
-                        taskState = CommonUiState.Error
+                        taskState = CommonUiState.Error,
                     )
                 }
                 return@collect
@@ -286,8 +283,8 @@ class HomeViewModel @Inject constructor(
                                 it.dueDate
                             }
                             .take(3)
-                            .toImmutableList()
-                    )
+                            .toImmutableList(),
+                    ),
                 )
             }
         }

@@ -23,7 +23,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -39,11 +38,7 @@ import com.seugi.ui.CollectAsSideEffect
 import java.time.LocalDate
 
 @Composable
-internal fun TaskCreateScreen(
-    viewModel: TaskCreateViewModel = hiltViewModel(),
-    popBackStack: () -> Unit,
-    workspaceId: String,
-) {
+internal fun TaskCreateScreen(viewModel: TaskCreateViewModel = hiltViewModel(), popBackStack: () -> Unit, workspaceId: String) {
     val context = LocalContext.current
     var isLoading by remember { mutableStateOf(false) }
     viewModel.sideEffect.CollectAsSideEffect {
@@ -78,7 +73,7 @@ internal fun TaskCreateScreen(
                 date = datePickerState.selectedDate
                 datePickerState.selectedDate = LocalDate.now()
                 isShowDatePicekrDialog = false
-            }
+            },
         )
     }
     Scaffold(
@@ -88,7 +83,7 @@ internal fun TaskCreateScreen(
                     Text(
                         text = "과제 만들기",
                         color = SeugiTheme.colors.black,
-                        style = SeugiTheme.typography.subtitle1
+                        style = SeugiTheme.typography.subtitle1,
                     )
                 },
                 actions = {
@@ -96,7 +91,7 @@ internal fun TaskCreateScreen(
                         modifier = Modifier
                             .background(
                                 color = if (!isLoading) SeugiTheme.colors.primary500 else SeugiTheme.colors.primary500.copy(alpha = 0.5f),
-                                shape = RoundedCornerShape(14.dp)
+                                shape = RoundedCornerShape(14.dp),
                             )
                             .bounceClick(
                                 onClick = {
@@ -105,44 +100,44 @@ internal fun TaskCreateScreen(
                                         workspaceId = workspaceId,
                                         title = titleText,
                                         description = descriptionText,
-                                        dueDate = date.atTime(0, 0, 0)
+                                        dueDate = date.atTime(0, 0, 0),
                                     )
                                 },
-                                enabled = !isLoading
-                            )
+                                enabled = !isLoading,
+                            ),
                     ) {
                         Text(
                             modifier = Modifier.padding(
                                 vertical = 4.dp,
-                                horizontal = 10.dp
+                                horizontal = 10.dp,
                             ),
                             text = "만들기",
                             color = SeugiTheme.colors.white,
-                            style = SeugiTheme.typography.body1
+                            style = SeugiTheme.typography.body1,
                         )
                     }
                 },
                 containerColors = SeugiTheme.colors.primary050,
-                onNavigationIconClick = popBackStack
+                onNavigationIconClick = popBackStack,
             )
         },
-        containerColor = SeugiTheme.colors.primary050
+        containerColor = SeugiTheme.colors.primary050,
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
                 .padding(horizontal = 20.dp)
                 .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text(
                 modifier = Modifier.padding(
                     start = 4.dp,
-                    top = 8.dp
+                    top = 8.dp,
                 ),
                 text = "제목",
                 color = SeugiTheme.colors.black,
-                style = SeugiTheme.typography.subtitle2
+                style = SeugiTheme.typography.subtitle2,
             )
 
             SeugiTextField(
@@ -153,14 +148,14 @@ internal fun TaskCreateScreen(
                 },
                 onClickDelete = {
                     titleText = ""
-                }
+                },
             )
 
             SeugiTextField(
                 modifier = Modifier
                     .heightIn(
                         min = 265.dp,
-                        max = 340.dp
+                        max = 340.dp,
                     )
                     .fillMaxWidth(),
                 value = descriptionText,
@@ -173,18 +168,14 @@ internal fun TaskCreateScreen(
                 text = "${date.monthValue}월 ${date.dayOfMonth}일까지",
                 onClick = {
                     isShowDatePicekrDialog = true
-                }
+                },
             )
         }
     }
 }
 
 @Composable
-private fun SeugiDatePickerButton(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun SeugiDatePickerButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
     Row(
         modifier = Modifier
             .background(
@@ -196,27 +187,27 @@ private fun SeugiDatePickerButton(
                 color = SeugiTheme.colors.gray400,
                 shape = RoundedCornerShape(12.dp),
             )
-            .bounceClick(onClick)
+            .bounceClick(onClick),
     ) {
         Row(
             modifier = Modifier
                 .padding(
                     horizontal = 12.dp,
-                    vertical = 15.dp
+                    vertical = 15.dp,
                 )
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Text(
                 text = text,
                 color = SeugiTheme.colors.black,
-                style = SeugiTheme.typography.subtitle2
+                style = SeugiTheme.typography.subtitle2,
             )
             Spacer(modifier = Modifier.weight(1f))
             Icon(
                 modifier = Modifier.size(24.dp),
                 painter = painterResource(id = com.seugi.designsystem.R.drawable.ic_calendar_line),
                 contentDescription = null,
-                tint = SeugiTheme.colors.gray500
+                tint = SeugiTheme.colors.gray500,
             )
         }
     }

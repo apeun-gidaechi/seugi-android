@@ -8,7 +8,6 @@ data class TaskUiState(
     val workspaceTaskState: CommonUiState<ImmutableList<TaskModel>> = CommonUiState.Loading,
 )
 
-
 sealed interface CommonUiState<out T> {
     data class Success<out T>(val data: T) : CommonUiState<T>
     data object Loading : CommonUiState<Nothing>

@@ -156,7 +156,7 @@ internal fun MainScreen(
                 },
                 navigateToTask = {
                     navHostController.navigateToTask()
-                }
+                },
             )
 
             chatScreen(
@@ -363,12 +363,12 @@ internal fun MainScreen(
                 popBackStack = navHostController::popBackStack,
                 workspaceId = state.workspace.workspaceId,
                 profile = state.profile,
-                navigateToTaskCreate = navHostController::navigateToTaskCreate
+                navigateToTaskCreate = navHostController::navigateToTaskCreate,
             )
 
             taskCreateScreen(
                 popBackStack = navHostController::popBackStack,
-                workspaceId = state.workspace.workspaceId
+                workspaceId = state.workspace.workspaceId,
             )
         }
     }

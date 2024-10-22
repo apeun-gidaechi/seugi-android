@@ -10,10 +10,7 @@ const val TASK_CREATE_ROUTE = "task_create"
 
 fun NavController.navigateToTaskCreate(navOptions: NavOptions? = null) = this.navigate(TASK_CREATE_ROUTE, navOptions)
 
-fun NavGraphBuilder.taskCreateScreen(
-    popBackStack: () -> Unit,
-    workspaceId: String,
-) {
+fun NavGraphBuilder.taskCreateScreen(popBackStack: () -> Unit, workspaceId: String) {
     composable(TASK_CREATE_ROUTE) {
         TaskCreateScreen(
             popBackStack = popBackStack,

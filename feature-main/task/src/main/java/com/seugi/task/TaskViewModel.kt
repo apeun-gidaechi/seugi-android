@@ -7,21 +7,19 @@ import com.seugi.data.task.TaskRepository
 import com.seugi.task.model.CommonUiState
 import com.seugi.task.model.TaskUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class TaskViewModel @Inject constructor(
-    private val taskRepository: TaskRepository
-): ViewModel() {
+    private val taskRepository: TaskRepository,
+) : ViewModel() {
 
     private val _state = MutableStateFlow(TaskUiState())
     val state = _state.asStateFlow()
-
-
 
     fun getClassroomTask() = viewModelScope.launch {
         taskRepository.getGoogleTaskAll().collect {
@@ -29,7 +27,7 @@ class TaskViewModel @Inject constructor(
                 is Result.Success -> {
                     _state.update { state ->
                         state.copy(
-                            classroomTaskState = CommonUiState.Success(it.data)
+                            classroomTaskState = CommonUiState.Success(it.data),
                         )
                     }
                 }
@@ -37,7 +35,7 @@ class TaskViewModel @Inject constructor(
                 is Result.Error -> {
                     _state.update { state ->
                         state.copy(
-                            classroomTaskState = CommonUiState.Error
+                            classroomTaskState = CommonUiState.Error,
                         )
                     }
                 }
@@ -45,15 +43,13 @@ class TaskViewModel @Inject constructor(
         }
     }
 
-    fun getWorkspaceTask(
-        workspaceId: String
-    ) = viewModelScope.launch {
+    fun getWorkspaceTask(workspaceId: String) = viewModelScope.launch {
         taskRepository.getWorkspaceTaskAll(workspaceId).collect {
             when (it) {
                 is Result.Success -> {
                     _state.update { state ->
                         state.copy(
-                            workspaceTaskState  = CommonUiState.Success(it.data)
+                            workspaceTaskState = CommonUiState.Success(it.data),
                         )
                     }
                 }
@@ -61,7 +57,7 @@ class TaskViewModel @Inject constructor(
                 is Result.Error -> {
                     _state.update { state ->
                         state.copy(
-                            workspaceTaskState = CommonUiState.Error
+                            workspaceTaskState = CommonUiState.Error,
                         )
                     }
                 }

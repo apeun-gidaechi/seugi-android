@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.data.core.model.ProfileModel
-import com.seugi.data.core.model.UserModel
 import com.seugi.data.core.model.isTeacher
 import com.seugi.designsystem.R
 import com.seugi.designsystem.component.SeugiTopBar
@@ -37,19 +36,12 @@ import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.task.model.CommonUiState
+import java.time.LocalDate
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toKotlinLocalDate
-import java.time.LocalDate
 
 @Composable
-internal fun TaskScreen(
-    viewModel: TaskViewModel = hiltViewModel(),
-    popBackStack: () -> Unit,
-    workspaceId: String,
-    profile: ProfileModel,
-    navigateToTaskCreate: () -> Unit
-) {
-
+internal fun TaskScreen(viewModel: TaskViewModel = hiltViewModel(), popBackStack: () -> Unit, workspaceId: String, profile: ProfileModel, navigateToTaskCreate: () -> Unit) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(workspaceId) {
@@ -59,7 +51,6 @@ internal fun TaskScreen(
         viewModel.getWorkspaceTask(workspaceId)
     }
 
-
     Scaffold(
         topBar = {
             SeugiTopBar(
@@ -67,11 +58,11 @@ internal fun TaskScreen(
                     Text(
                         text = "과제",
                         color = SeugiTheme.colors.black,
-                        style = SeugiTheme.typography.subtitle1
+                        style = SeugiTheme.typography.subtitle1,
                     )
                 },
                 onNavigationIconClick = popBackStack,
-                containerColors = SeugiTheme.colors.primary050
+                containerColors = SeugiTheme.colors.primary050,
             )
         },
         containerColor = SeugiTheme.colors.primary050,
@@ -87,20 +78,19 @@ internal fun TaskScreen(
                             modifier = Modifier.size(30.dp),
                             painter = painterResource(id = R.drawable.ic_add),
                             contentDescription = null,
-                            tint = SeugiTheme.colors.white
+                            tint = SeugiTheme.colors.white,
                         )
-                    }
+                    },
                 )
             }
-        }
+        },
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .padding(paddingValues)
                 .padding(horizontal = 20.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-
             if (uiState.classroomTaskState is CommonUiState.Success) {
                 item {
                     TaskTitleCard(
@@ -120,7 +110,7 @@ internal fun TaskScreen(
                     } else {
                         TaskCard(
                             title = it.title,
-                            description = it.description?: "",
+                            description = it.description ?: "",
                             dDay = "D-${-it.dueDate!!.date.daysUntil(LocalDate.now().toKotlinLocalDate())}",
                         )
                     }
@@ -146,7 +136,7 @@ internal fun TaskScreen(
                     } else {
                         TaskCard(
                             title = it.title,
-                            description = it.description?: "",
+                            description = it.description ?: "",
                             dDay = "D-${-it.dueDate!!.date.daysUntil(LocalDate.now().toKotlinLocalDate())}",
                         )
                     }
@@ -157,66 +147,57 @@ internal fun TaskScreen(
 }
 
 @Composable
-private fun TaskTitleCard(
-    modifier: Modifier = Modifier,
-    title: String
-) {
+private fun TaskTitleCard(modifier: Modifier = Modifier, title: String) {
     Text(
         modifier = Modifier.padding(
             start = 4.dp,
-            top = 8.dp
+            top = 8.dp,
         ),
         text = title,
         color = SeugiTheme.colors.black,
-        style = SeugiTheme.typography.subtitle2
+        style = SeugiTheme.typography.subtitle2,
     )
 }
 
 @Composable
-private fun TaskCard(
-    modifier: Modifier = Modifier,
-    title: String,
-    description: String,
-    dDay: String,
-) {
-
+private fun TaskCard(modifier: Modifier = Modifier, title: String, description: String, dDay: String) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .dropShadow(DropShadowType.EvPrimary1)
             .background(
                 color = SeugiTheme.colors.white,
-                shape = RoundedCornerShape(12.dp)
-            )
+                shape = RoundedCornerShape(12.dp),
+            ),
     ) {
         Column(
-            modifier = Modifier.padding(12.dp)
+            modifier = Modifier.padding(12.dp),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
                     text = title,
                     color = SeugiTheme.colors.black,
-                    style = SeugiTheme.typography.body1
+                    style = SeugiTheme.typography.body1,
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Box(
                     modifier = Modifier.background(
                         color = SeugiTheme.colors.primary500,
-                        shape = RoundedCornerShape(14.dp)
-                    )
+                        shape = RoundedCornerShape(14.dp),
+                    ),
                 ) {
                     Text(
                         modifier = Modifier.padding(
                             horizontal = 10.dp,
-                            vertical = 4.dp
+                            vertical = 4.dp,
                         ),
                         text = dDay,
                         color = SeugiTheme.colors.white,
-                        style = SeugiTheme.typography.body1
+                        style = SeugiTheme.typography.body1,
                     )
                 }
             }
@@ -225,7 +206,7 @@ private fun TaskCard(
             Text(
                 text = description,
                 color = SeugiTheme.colors.gray600,
-                style = SeugiTheme.typography.body2
+                style = SeugiTheme.typography.body2,
             )
         }
     }

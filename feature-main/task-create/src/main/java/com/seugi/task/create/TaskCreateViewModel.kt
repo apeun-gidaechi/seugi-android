@@ -6,33 +6,26 @@ import com.seugi.common.model.Result
 import com.seugi.data.task.TaskRepository
 import com.seugi.task.create.model.TaskCreateSideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDateTime
+import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.LocalDateTime
-import javax.inject.Inject
 
 @HiltViewModel
 class TaskCreateViewModel @Inject constructor(
-    private val taskRepository: TaskRepository
-): ViewModel() {
+    private val taskRepository: TaskRepository,
+) : ViewModel() {
 
     private val _sideEffect = Channel<TaskCreateSideEffect>()
     val sideEffect = _sideEffect.receiveAsFlow()
 
-
-    fun createTask(
-        workspaceId: String,
-        title: String,
-        description: String,
-        dueDate: LocalDateTime
-    ) = viewModelScope.launch {
+    fun createTask(workspaceId: String, title: String, description: String, dueDate: LocalDateTime) = viewModelScope.launch {
         taskRepository.createTask(
             workspaceId = workspaceId,
             title = title,
             description = description,
-            dueDate = dueDate
+            dueDate = dueDate,
         ).collect {
             when (it) {
                 is Result.Success -> {
@@ -46,5 +39,4 @@ class TaskCreateViewModel @Inject constructor(
             }
         }
     }
-
 }

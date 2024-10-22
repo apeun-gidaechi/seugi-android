@@ -199,7 +199,7 @@ internal fun HomeScreen(
             item {
                 TaskCard(
                     uiState = state.taskState,
-                    navigateToTask = navigateToTask
+                    navigateToTask = navigateToTask,
                 )
             }
 

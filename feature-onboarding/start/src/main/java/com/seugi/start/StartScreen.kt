@@ -87,7 +87,7 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToMain: () -
             Scope(Scopes.EMAIL),
             Scope("https://www.googleapis.com/auth/classroom.courses.readonly"),
             Scope("https://www.googleapis.com/auth/classroom.coursework.me.readonly"),
-            Scope("https://www.googleapis.com/auth/classroom.coursework.students.readonly")
+            Scope("https://www.googleapis.com/auth/classroom.coursework.students.readonly"),
 
         )
         .build()
