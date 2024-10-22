@@ -150,7 +150,23 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int)
                         timestamp = timestamp,
                     )
                 }
-                else -> throw IllegalArgumentException("알 수 없는 응답")
+                else ->
+                    MessageRoomEvent.MessageParent.BOT.Etc(
+                        id = id,
+                        chatRoomId = chatRoomId,
+                        type = type.toMessageType(),
+                        userId = this.userId,
+                        isFirst = true,
+                        isLast = true,
+                        message = "현재 버전에서 지원하지 않는 메세지 유형입니다.",
+                        messageStatus = messageStatus,
+                        emoticon = emoticon,
+                        eventList = eventList?.toImmutableList() ?: persistentListOf(),
+                        emojiList = emojiList.map { it.toModel() }.toImmutableList(),
+                        mention = mention.toImmutableList(),
+                        mentionAll = mentionAll,
+                        timestamp = timestamp,
+                    )
             }
         }
         "MESSAGE" -> {
