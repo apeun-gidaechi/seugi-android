@@ -281,14 +281,6 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToMain: () -
                                     showBottomSheet = false
                                 },
                             )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            SeugiOAuthButton(
-                                image = R.drawable.ic_apple,
-                                text = "Apple로 계속하기",
-                                onClick = {
-                                    showBottomSheet = false
-                                },
-                            )
                         }
                         Spacer(modifier = Modifier.height(50.dp))
                     }
