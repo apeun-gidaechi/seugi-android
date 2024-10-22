@@ -107,7 +107,7 @@ import net.engawapg.lib.zoomable.zoomable
 
 private enum class NowPage {
     CHAT,
-    INVITE
+    INVITE,
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -354,16 +354,16 @@ internal fun ChatDetailScreen(
     }
 
     if (showOtherProfileBottomSheet) {
-        val profile: ProfileModel? = state.workspaceUsersMap.getOrDefault(otherProfileState?.id?: 0, null)
+        val profile: ProfileModel? = state.workspaceUsersMap.getOrDefault(otherProfileState?.id ?: 0, null)
         OtherProfileBottomSheet(
-            profile =  otherProfileState?.picture,
+            profile = otherProfileState?.picture,
             name = otherProfileState?.name ?: "",
-            status = profile?.status?: "",
-            spot = profile?.spot?: "",
-            belong = profile?.belong?: "",
-            phone = profile?.phone?: "",
-            wire = profile?.wire?: "",
-            location = profile?.location?: "",
+            status = profile?.status ?: "",
+            spot = profile?.spot ?: "",
+            belong = profile?.belong ?: "",
+            phone = profile?.phone ?: "",
+            wire = profile?.wire ?: "",
+            location = profile?.location ?: "",
             onClickChat = {
                 viewModel.getPersonalChat(
                     workspaceId = workspaceId,
@@ -415,7 +415,7 @@ internal fun ChatDetailScreen(
             onClickInviteMember = { nowPage = NowPage.INVITE },
             onSearchTextChange = { searchText = it },
             onIsSearchChange = { isSearch = it },
-            onsOtherProfileStateChange = { otherProfileState = it},
+            onsOtherProfileStateChange = { otherProfileState = it },
             onIsOpenSidebarChange = { isOpenSidebar = it },
             onIsShowUploadDialogChange = { isShowUploadDialog = it },
             onShowOtherProfileBottomSheetChange = { showOtherProfileBottomSheet = it },
@@ -426,7 +426,7 @@ internal fun ChatDetailScreen(
             onShowSelectUrlImagePreview = { showSelectUrlImagePreview = it },
             onShowImagePreview = { showImagePreview = it },
             onSelectedFileName = { selectedFileName = it },
-            onSelectedImageBitmap = { selectedImageBitmap = it }
+            onSelectedImageBitmap = { selectedImageBitmap = it },
         )
     }
 
@@ -444,10 +444,10 @@ internal fun ChatDetailScreen(
             nextScreen = {
                 viewModel.memberInvite(
                     chatRoomId = chatRoomId,
-                    members = it
+                    members = it,
                 )
                 nowPage = NowPage.CHAT
-            }
+            },
         )
     }
 }

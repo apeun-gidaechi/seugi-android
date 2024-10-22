@@ -57,7 +57,7 @@ fun LocalDateTime.toEpochMilli() = this
 fun <T, R> List<T>.toMap(key: (T) -> R): MutableMap<R, T> {
     val mutableMap = mutableMapOf<R, T>()
     this.forEach {
-        mutableMap[key(it)] =  it
+        mutableMap[key(it)] = it
     }
 
     return mutableMap

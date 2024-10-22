@@ -214,19 +214,16 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadWorkspaceMembers(
-        workspaceId: String
-    ) {
+    private suspend fun loadWorkspaceMembers(workspaceId: String) {
         workspaceRepository.getMembers(workspaceId = workspaceId).collect {
             when (it) {
                 is Result.Success -> {
                     _state.update { state ->
                         state.copy(
                             workspaceUsers = it.data.toImmutableList(),
-                            workspaceUsersMap = it.data.toMap { it.member.id }.toImmutableMap()
+                            workspaceUsersMap = it.data.toMap { it.member.id }.toImmutableMap(),
                         )
                     }
-
                 }
                 Result.Loading -> {}
                 is Result.Error -> {
@@ -236,13 +233,10 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun memberInvite(
-        chatRoomId: String,
-        members: List<ProfileModel>
-    ) = viewModelScope.launch {
+    fun memberInvite(chatRoomId: String, members: List<ProfileModel>) = viewModelScope.launch {
         groupChatRepository.addMembers(
             chatRoomId = chatRoomId,
-            chatMemberUsers = members.map { it.member.id }
+            chatMemberUsers = members.map { it.member.id },
         ).collect {
             when (it) {
                 is Result.Success -> {
@@ -257,9 +251,9 @@ class ChatDetailViewModel @Inject constructor(
                                                 UserInfoModel(
                                                     userInfo = it.member,
                                                     timestamp = LocalDateTime.of(2000, 1, 1, 1, 1),
-                                                    utcTimeMillis = 3L
+                                                    utcTimeMillis = 3L,
                                                 )
-                                            }
+                                            },
                                         )
                                     }
                                     .toImmutableList(),
@@ -269,7 +263,7 @@ class ChatDetailViewModel @Inject constructor(
                                     putAll(
                                         members
                                             .map { it.member }
-                                            .toMap { it.id }
+                                            .toMap { it.id },
                                     )
                                 }
                                 .toImmutableMap(),
@@ -277,20 +271,12 @@ class ChatDetailViewModel @Inject constructor(
                     }
                 }
                 Result.Loading -> {
-
                 }
                 is Result.Error -> {
-
                 }
             }
         }
     }
-
-
-
-
-
-
 
     fun collectStompLifecycle(userId: Long) {
         viewModelScope.launch {

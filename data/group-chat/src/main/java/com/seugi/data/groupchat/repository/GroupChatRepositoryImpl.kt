@@ -60,13 +60,10 @@ class GroupChatRepositoryImpl @Inject constructor(
             .asResult()
     }
 
-    override suspend fun addMembers(
-        chatRoomId: String,
-        chatMemberUsers: List<Long>,
-    ): Flow<Result<Boolean>> = flow {
+    override suspend fun addMembers(chatRoomId: String, chatMemberUsers: List<Long>): Flow<Result<Boolean>> = flow {
         dataSource.addMembers(
             chatRoomId = chatRoomId,
-            chatMemberUsers = chatMemberUsers
+            chatMemberUsers = chatMemberUsers,
         ).safeResponse()
 
         emit(true)

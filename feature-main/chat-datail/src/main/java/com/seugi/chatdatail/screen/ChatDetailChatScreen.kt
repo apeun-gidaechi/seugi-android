@@ -399,8 +399,8 @@ internal fun ChatDetailChatScreen(
                             modifier = Modifier
                                 .`if`(
                                     item is MessageRoomEvent.MessageParent.Me ||
-                                            (item is MessageRoomEvent.MessageParent.Img && item.userId == userId) ||
-                                            (item is MessageRoomEvent.MessageParent.File && item.userId == userId),
+                                        (item is MessageRoomEvent.MessageParent.Img && item.userId == userId) ||
+                                        (item is MessageRoomEvent.MessageParent.File && item.userId == userId),
                                 ) {
                                     align(Alignment.End)
                                 },

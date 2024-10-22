@@ -1,9 +1,7 @@
 package com.seugi.network.groupchat
 
-import com.seugi.common.model.Result
 import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.response.ChatRoomResponse
-import kotlinx.coroutines.flow.Flow
 
 interface GroupChatDataSource {
 

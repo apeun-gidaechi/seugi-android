@@ -55,12 +55,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun ChatDetailInviteScreen(
-    state: ChatDetailUiState,
-    users: ImmutableList<UserModel>,
-    popBackStack: () -> Unit,
-    nextScreen: (ImmutableList<ProfileModel>) -> Unit
-) {
+internal fun ChatDetailInviteScreen(state: ChatDetailUiState, users: ImmutableList<UserModel>, popBackStack: () -> Unit, nextScreen: (ImmutableList<ProfileModel>) -> Unit) {
     val selectScrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     var checkedMemberState: ImmutableList<ProfileModel> by remember { mutableStateOf(persistentListOf()) }
@@ -77,7 +72,7 @@ internal fun ChatDetailInviteScreen(
 
     BackHandler(
         enabled = true,
-        onBack = popBackStack
+        onBack = popBackStack,
     )
 
     val roomJoinUserIdList = users.map { it.id }.toImmutableList()

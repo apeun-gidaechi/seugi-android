@@ -37,15 +37,12 @@ class GroupChatDataSourceImpl @Inject constructor(
 
     override suspend fun leftRoom(chatRoomId: String): BaseResponse<Unit?> = httpClient.patch("${SeugiUrl.GroupChat.LEFT}/$chatRoomId").body()
 
-    override suspend fun addMembers(
-        chatRoomId: String,
-        chatMemberUsers: List<Long>,
-    ): BaseResponse<Unit?> = httpClient.post(SeugiUrl.GroupChat.MEMBER_ADD) {
+    override suspend fun addMembers(chatRoomId: String, chatMemberUsers: List<Long>): BaseResponse<Unit?> = httpClient.post(SeugiUrl.GroupChat.MEMBER_ADD) {
         setBody(
             GroupChatMemberAddRequest(
-                chatRoomId =  chatRoomId,
-                chatMemberUsers = chatMemberUsers
-            )
+                chatRoomId = chatRoomId,
+                chatMemberUsers = chatMemberUsers,
+            ),
         )
     }.body()
 }
