@@ -273,6 +273,7 @@ class ChatDetailViewModel @Inject constructor(
                 Result.Loading -> {
                 }
                 is Result.Error -> {
+                    it.throwable.printStackTrace()
                 }
             }
         }
