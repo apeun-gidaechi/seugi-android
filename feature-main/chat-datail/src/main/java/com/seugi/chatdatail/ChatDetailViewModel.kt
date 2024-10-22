@@ -598,7 +598,14 @@ class ChatDetailViewModel @Inject constructor(
                              isLast = isLast,
                              isFirst = isFirst
                         )
-                    } else {
+                    } else if (messageParent is MessageParent.BOT.TeamBuild) {
+                        messageParent.copy(
+                            visibleMessage = messageParent.getVisibleMessage(state.value.roomInfo?.members),
+                            isLast = isLast,
+                            isFirst = isFirst
+                        )
+                    }
+                    else {
                         messageParent.copy(
                             isLast = isLast,
                             isFirst = isFirst
