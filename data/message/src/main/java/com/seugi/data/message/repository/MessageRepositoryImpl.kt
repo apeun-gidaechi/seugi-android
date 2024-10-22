@@ -27,7 +27,7 @@ class MessageRepositoryImpl @Inject constructor(
     private val tokenDao: TokenDao,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : MessageRepository {
-    override suspend fun sendMessage(chatRoomId: String, message: String, messageUUID: String, type: MessageType, mention: List<Int>): Result<Boolean> {
+    override suspend fun sendMessage(chatRoomId: String, message: String, messageUUID: String, type: MessageType, mention: List<Long>): Result<Boolean> {
         return Result.Success(
             datasource.sendMessage(
                 chatRoomId = chatRoomId,

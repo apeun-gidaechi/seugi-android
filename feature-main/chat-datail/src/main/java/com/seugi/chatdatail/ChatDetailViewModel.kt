@@ -257,7 +257,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelSend(userId: Int, content: String, uuid: String = UUID.randomUUID().toString(), type: MessageType, mention: List<Int> = emptyList()) {
+    fun channelSend(userId: Long, content: String, uuid: String = UUID.randomUUID().toString(), type: MessageType, mention: List<Long> = emptyList()) {
         viewModelScope.launch {
             // 파일, 이미지는 socket 서버 업로드전에 생김
             if (type == MessageType.MESSAGE) {
@@ -391,7 +391,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelResend(userId: Int, content: String, uuid: String, type: MessageType = MessageType.MESSAGE, mention: List<Int> = emptyList()) {
+    fun channelResend(userId: Long, content: String, uuid: String, type: MessageType = MessageType.MESSAGE, mention: List<Long> = emptyList()) {
         _messageSaveQueueState.value -= uuid
         when {
             type == MessageType.FILE -> {
@@ -901,7 +901,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun failedSend(type: MessageType, uuid: String, content: String, mention: List<Int> = emptyList()) {
+    private fun failedSend(type: MessageType, uuid: String, content: String, mention: List<Long> = emptyList()) {
         _messageSaveQueueState.value -= uuid
         if (type == MessageType.MESSAGE) {
             _messageSaveQueueState.value += ChatLocalType.FailedText(content, mention, uuid)

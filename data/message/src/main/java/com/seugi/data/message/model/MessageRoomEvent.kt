@@ -9,12 +9,12 @@ import kotlinx.collections.immutable.ImmutableList
 
 sealed class MessageRoomEvent(
     @Transient open val type: MessageType,
-    @Transient open val userId: Int,
+    @Transient open val userId: Long,
 ) {
     sealed class MessageParent(
         @Transient open val timestamp: LocalDateTime,
         @Transient override val type: MessageType,
-        @Transient override val userId: Int,
+        @Transient override val userId: Long,
     ) : MessageRoomEvent(type, userId) {
         data class Me(
             val id: String,
@@ -57,7 +57,7 @@ sealed class MessageRoomEvent(
             @Transient open val isFirst: Boolean,
             @Transient open val isLast: Boolean,
             @Transient override val type: MessageType,
-            @Transient override val userId: Int,
+            @Transient override val userId: Long,
             @Transient open val messageStatus: String,
             @Transient open val emoticon: String?,
             @Transient open val eventList: ImmutableList<Int>?,
@@ -76,7 +76,7 @@ sealed class MessageRoomEvent(
                 override val emojiList: ImmutableList<MessageEmojiModel>,
                 override val chatRoomId: String,
                 override val timestamp: LocalDateTime,
-                override val userId: Int,
+                override val userId: Long,
                 override val mention: ImmutableList<Int>,
                 override val mentionAll: Boolean,
                 override val isFirst: Boolean,
@@ -93,7 +93,7 @@ sealed class MessageRoomEvent(
                 override val emojiList: ImmutableList<MessageEmojiModel>,
                 override val chatRoomId: String,
                 override val timestamp: LocalDateTime,
-                override val userId: Int,
+                override val userId: Long,
                 override val mention: ImmutableList<Int>,
                 override val mentionAll: Boolean,
                 override val isFirst: Boolean,
@@ -110,7 +110,7 @@ sealed class MessageRoomEvent(
                 override val emojiList: ImmutableList<MessageEmojiModel>,
                 override val chatRoomId: String,
                 override val timestamp: LocalDateTime,
-                override val userId: Int,
+                override val userId: Long,
                 override val mention: ImmutableList<Int>,
                 override val mentionAll: Boolean,
                 override val isFirst: Boolean,
@@ -128,7 +128,7 @@ sealed class MessageRoomEvent(
                 override val emojiList: ImmutableList<MessageEmojiModel>,
                 override val chatRoomId: String,
                 override val timestamp: LocalDateTime,
-                override val userId: Int,
+                override val userId: Long,
                 override val mention: ImmutableList<Int>,
                 override val mentionAll: Boolean,
                 override val isFirst: Boolean,
@@ -146,7 +146,7 @@ sealed class MessageRoomEvent(
                 override val emojiList: ImmutableList<MessageEmojiModel>,
                 override val chatRoomId: String,
                 override val timestamp: LocalDateTime,
-                override val userId: Int,
+                override val userId: Long,
                 override val mention: ImmutableList<Int>,
                 override val mentionAll: Boolean,
                 override val isFirst: Boolean,
@@ -163,7 +163,7 @@ sealed class MessageRoomEvent(
                 override val emojiList: ImmutableList<MessageEmojiModel>,
                 override val chatRoomId: String,
                 override val timestamp: LocalDateTime,
-                override val userId: Int,
+                override val userId: Long,
                 override val mention: ImmutableList<Int>,
                 override val mentionAll: Boolean,
                 override val isFirst: Boolean,
@@ -180,7 +180,7 @@ sealed class MessageRoomEvent(
                 override val emojiList: ImmutableList<MessageEmojiModel>,
                 override val chatRoomId: String,
                 override val timestamp: LocalDateTime,
-                override val userId: Int,
+                override val userId: Long,
                 override val mention: ImmutableList<Int>,
                 override val mentionAll: Boolean,
                 override val isFirst: Boolean,
@@ -281,7 +281,7 @@ fun MessageRoomEvent.MessageParent.BOT.copy(
     isFirst: Boolean = this.isFirst,
     isLast: Boolean = this.isLast,
     type: MessageType = this.type,
-    userId: Int = this.userId,
+    userId: Long = this.userId,
     messageStatus: String = this.messageStatus,
     emoticon: String? = this.emoticon,
     eventList: ImmutableList<Int>? = this.eventList,
@@ -423,7 +423,7 @@ fun MessageRoomEvent.MessageParent.BOT.copy(
     }
 }
 
-fun MessageRoomEvent.copy(type: MessageType = this.type, userId: Int = this.userId) {
+fun MessageRoomEvent.copy(type: MessageType = this.type, userId: Long = this.userId) {
     when (this) {
         is MessageRoomEvent.AddEmoji -> copy(
             type = type,
@@ -482,7 +482,7 @@ fun MessageRoomEvent.MessageParent.BOT.DrawLots.getVisibleMessage(members: List<
 
     val visibleMessage = "사람을 ${numbers.size}명 뽑았어요\n" +
         numbers.mapNotNull { number ->
-            members?.map { it.userInfo }?.firstOrNull { it.id == number }?.name
+            members?.map { it.userInfo }?.firstOrNull { it.id == number.toLong() }?.name
         }.joinToString(" ")
 
     return visibleMessage

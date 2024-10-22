@@ -23,7 +23,7 @@ internal fun MessageRoomEventResponse.toEventModel(userId: Long): MessageRoomEve
     is MessageRoomEventResponse.UnSub -> toModel()
 }
 
-internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int): MessageRoomEvent.MessageParent {
+internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long): MessageRoomEvent.MessageParent {
     return when (type) {
         "BOT" -> {
             val botKeyword = this.message.toResponse(MessageBotRawKeyword::class.java)

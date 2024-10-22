@@ -474,7 +474,7 @@ internal fun ChatDetailScreen(
                         },
                         sendEnabled = text.isNotEmpty(),
                         onSendClick = {
-                            val mentionList = mutableListOf<Int>()
+                            val mentionList = mutableListOf<Long>()
 
                             if (text.startsWith("스기야 ")) {
                                 mentionList.add(-1)
