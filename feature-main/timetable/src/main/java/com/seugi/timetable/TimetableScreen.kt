@@ -136,7 +136,7 @@ internal fun TimetableScreen(viewModel: TimetableViewModel = hiltViewModel(), wo
                             Text(
                                 text = key[0].toString(),
                                 style = SeugiTheme.typography.caption2,
-                                color = SeugiTheme.colors.gray500,
+                                color = SeugiTheme.colors.gray600,
                             )
                         }
 
@@ -152,7 +152,7 @@ internal fun TimetableScreen(viewModel: TimetableViewModel = hiltViewModel(), wo
                                 Text(
                                     text = item?.subject ?: "",
                                     style = SeugiTheme.typography.body2,
-                                    color = SeugiTheme.colors.gray500,
+                                    color = SeugiTheme.colors.black,
                                 )
                             }
                         }
