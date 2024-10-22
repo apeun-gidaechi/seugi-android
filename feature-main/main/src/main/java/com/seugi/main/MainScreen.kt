@@ -44,6 +44,8 @@ import com.seugi.setting.navigate.navigateToSetting
 import com.seugi.setting.navigate.settingScreen
 import com.seugi.timetable.navigation.navigateToTimetable
 import com.seugi.timetable.navigation.timetableScreen
+import com.seugi.task.navigation.navigateToTask
+import com.seugi.task.navigation.taskScreen
 import com.seugi.workspace.navigation.WAITING_JOIN
 import com.seugi.workspace.navigation.joinSuccess
 import com.seugi.workspace.navigation.navigateToJoinSuccess
@@ -151,7 +153,7 @@ internal fun MainScreen(
                     navHostController.navigateToWorkspaceCreate()
                 },
                 navigateToTask = {
-
+                    navHostController.navigateToTask()
                 }
             )
 
@@ -353,6 +355,11 @@ internal fun MainScreen(
             inviteMemberScreen(
                 popBackStack = navHostController::popBackStack,
                 workspaceId = state.profile.workspaceId,
+            )
+
+            taskScreen(
+                popBackStack = navHostController::popBackStack,
+                workspaceId = state.workspace.workspaceId,
             )
         }
     }

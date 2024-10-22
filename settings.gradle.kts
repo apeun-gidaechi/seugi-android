@@ -133,5 +133,6 @@ include(
     ":feature-main:setting",
     ":feature-main:meal-widget",
     ":feature-main:timetable-widget",
+    ":feature-main:task",
     ":ui"
 )
