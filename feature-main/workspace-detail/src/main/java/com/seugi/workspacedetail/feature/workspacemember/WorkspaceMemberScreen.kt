@@ -193,7 +193,7 @@ fun WorkspaceMemberScreen(
                     .background(SeugiTheme.colors.white)
                     .padding(horizontal = 4.dp),
             ) {
-                val student = state.member.filter { it ->
+                val student = state.member.filter {
                     if (selectedTabIndex == 1) {
                         it.permission == WorkspacePermissionModel.STUDENT
                     } else {
