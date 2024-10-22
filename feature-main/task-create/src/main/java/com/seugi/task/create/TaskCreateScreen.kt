@@ -1,5 +1,6 @@
 package com.seugi.task.create
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -23,21 +24,37 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiDatePickerDialog
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.rememberSeugiDatePickerState
 import com.seugi.designsystem.component.textfield.SeugiTextField
 import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.task.create.model.TaskCreateSideEffect
+import com.seugi.ui.CollectAsSideEffect
 import java.time.LocalDate
 
 @Composable
 internal fun TaskCreateScreen(
+    viewModel: TaskCreateViewModel = hiltViewModel(),
     popBackStack: () -> Unit,
     workspaceId: String,
 ) {
+    val context = LocalContext.current
+    var isLoading by remember { mutableStateOf(false) }
+    viewModel.sideEffect.CollectAsSideEffect {
+        when (it) {
+            is TaskCreateSideEffect.Failed -> {
+                isLoading = false
+                Toast.makeText(context, "과제 생성에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+            }
+            TaskCreateSideEffect.Success -> popBackStack()
+        }
+    }
 
     var titleText by remember { mutableStateOf("") }
     var descriptionText by remember { mutableStateOf("") }
@@ -78,8 +95,20 @@ internal fun TaskCreateScreen(
                     Box(
                         modifier = Modifier
                             .background(
-                                color = SeugiTheme.colors.primary500,
+                                color = if (!isLoading) SeugiTheme.colors.primary500 else SeugiTheme.colors.primary500.copy(alpha = 0.5f),
                                 shape = RoundedCornerShape(14.dp)
+                            )
+                            .bounceClick(
+                                onClick = {
+                                    isLoading = true
+                                    viewModel.createTask(
+                                        workspaceId = workspaceId,
+                                        title = titleText,
+                                        description = descriptionText,
+                                        dueDate = date.atTime(0, 0, 0)
+                                    )
+                                },
+                                enabled = !isLoading
                             )
                     ) {
                         Text(

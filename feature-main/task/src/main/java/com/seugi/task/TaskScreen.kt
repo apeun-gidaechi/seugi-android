@@ -76,7 +76,7 @@ internal fun TaskScreen(
         },
         containerColor = SeugiTheme.colors.primary050,
         floatingActionButton = {
-            if (!profile.permission.isTeacher()) {
+            if (profile.permission.isTeacher()) {
                 FloatingActionButton(
                     modifier = Modifier.size(60.dp),
                     onClick = navigateToTaskCreate,
