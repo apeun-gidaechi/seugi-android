@@ -9,10 +9,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,9 +24,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.seugi.data.core.model.ProfileModel
+import com.seugi.data.core.model.UserModel
+import com.seugi.data.core.model.isTeacher
+import com.seugi.designsystem.R
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
@@ -37,6 +46,8 @@ internal fun TaskScreen(
     viewModel: TaskViewModel = hiltViewModel(),
     popBackStack: () -> Unit,
     workspaceId: String,
+    profile: ProfileModel,
+    navigateToTaskCreate: () -> Unit
 ) {
 
     val uiState by viewModel.state.collectAsStateWithLifecycle()
@@ -63,7 +74,25 @@ internal fun TaskScreen(
                 containerColors = SeugiTheme.colors.primary050
             )
         },
-        containerColor = SeugiTheme.colors.primary050
+        containerColor = SeugiTheme.colors.primary050,
+        floatingActionButton = {
+            if (!profile.permission.isTeacher()) {
+                FloatingActionButton(
+                    modifier = Modifier.size(60.dp),
+                    onClick = navigateToTaskCreate,
+                    containerColor = SeugiTheme.colors.primary500,
+                    shape = CircleShape,
+                    content = {
+                        Icon(
+                            modifier = Modifier.size(30.dp),
+                            painter = painterResource(id = R.drawable.ic_add),
+                            contentDescription = null,
+                            tint = SeugiTheme.colors.white
+                        )
+                    }
+                )
+            }
+        }
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier

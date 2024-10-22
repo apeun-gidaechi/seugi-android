@@ -29,5 +29,6 @@ dependencies {
     implementation(projects.featureMain.timetable)
     implementation(projects.featureMain.setting)
     implementation(projects.featureMain.task)
+    implementation(projects.featureMain.taskCreate)
 
 }
