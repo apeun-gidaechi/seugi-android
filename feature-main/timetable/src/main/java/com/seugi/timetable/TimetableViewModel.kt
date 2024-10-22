@@ -6,6 +6,7 @@ import com.seugi.common.model.Result
 import com.seugi.data.core.model.TimetableModel
 import com.seugi.data.timetable.TimetableRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentMapOf
@@ -15,20 +16,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class TimetableViewModel @Inject constructor(
-    private val timetableRepository: TimetableRepository
-): ViewModel() {
+    private val timetableRepository: TimetableRepository,
+) : ViewModel() {
 
     private val _state = MutableStateFlow<ImmutableMap<String, ImmutableList<TimetableModel>>>(
-        persistentMapOf())
+        persistentMapOf(),
+    )
     val state = _state.asStateFlow()
 
     fun loadTimeTable(workspaceId: String) = viewModelScope.launch {
         timetableRepository.getTimetableWeekend(
-            workspaceId = workspaceId
+            workspaceId = workspaceId,
         ).collect {
             when (it) {
                 is Result.Success -> {
@@ -46,7 +47,6 @@ class TimetableViewModel @Inject constructor(
                     }
                 }
                 Result.Loading -> {
-
                 }
                 is Result.Error -> {
                     it.throwable.printStackTrace()

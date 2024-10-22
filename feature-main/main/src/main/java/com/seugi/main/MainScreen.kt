@@ -344,7 +344,7 @@ internal fun MainScreen(
 
             timetableScreen(
                 popBackStack = navHostController::popBackStack,
-                workspaceId = state.workspace.workspaceId
+                workspaceId = state.workspace.workspaceId,
             )
 
             inviteMemberScreen(

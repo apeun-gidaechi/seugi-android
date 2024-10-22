@@ -21,7 +21,7 @@ fun TimetableResponse.toModel() = TimetableModel(
         java.time.DayOfWeek.FRIDAY -> "금"
         java.time.DayOfWeek.SATURDAY -> "토"
         java.time.DayOfWeek.SUNDAY -> "일"
-    }
+    },
 )
 
 fun List<TimetableResponse>.toModels() = this.map {

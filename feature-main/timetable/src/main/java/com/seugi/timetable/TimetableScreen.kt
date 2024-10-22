@@ -33,22 +33,16 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.theme.SeugiTheme
-import kotlinx.collections.immutable.persistentListOf
 import java.time.DayOfWeek
 import java.time.LocalDate
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-internal fun TimetableScreen(
-    viewModel: TimetableViewModel = hiltViewModel(),
-    workspaceId: String,
-    popBackStack: () -> Unit,
-) {
-
+internal fun TimetableScreen(viewModel: TimetableViewModel = hiltViewModel(), workspaceId: String, popBackStack: () -> Unit) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(workspaceId) {
         if (workspaceId.isEmpty()) return@LaunchedEffect
-
 
         viewModel.loadTimeTable(workspaceId)
     }
@@ -64,19 +58,19 @@ internal fun TimetableScreen(
                     Text(
                         text = "시간표",
                         style = SeugiTheme.typography.subtitle1,
-                        color = SeugiTheme.colors.black
+                        color = SeugiTheme.colors.black,
                     )
                 },
                 onNavigationIconClick = popBackStack,
-                containerColors = SeugiTheme.colors.primary050
+                containerColors = SeugiTheme.colors.primary050,
             )
-        }
+        },
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
                 .padding(horizontal = 16.dp)
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             Row(
                 modifier = Modifier
@@ -84,30 +78,30 @@ internal fun TimetableScreen(
                     .dropShadow(DropShadowType.EvBlack1)
                     .background(
                         color = SeugiTheme.colors.white,
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(12.dp),
                     ),
                 horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     modifier = Modifier.padding(vertical = 13.5.dp),
                     text = "${startDayOfWeek.monthValue}/${startDayOfWeek.dayOfMonth}" +
-                            "~${endDayOfWeek.monthValue}/${endDayOfWeek.dayOfMonth}",
+                        "~${endDayOfWeek.monthValue}/${endDayOfWeek.dayOfMonth}",
                     style = SeugiTheme.typography.subtitle2,
-                    color = SeugiTheme.colors.black
+                    color = SeugiTheme.colors.black,
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     Box(
                         modifier = Modifier
                             .size(24.dp)
-                            .border(BorderStroke(1.dp, SeugiTheme.colors.gray100))
+                            .border(BorderStroke(1.dp, SeugiTheme.colors.gray100)),
                     )
                     persistentListOf("월", "화", "수", "목", "금").forEach {
                         Box(
@@ -115,34 +109,34 @@ internal fun TimetableScreen(
                                 .weight(1f)
                                 .height(24.dp)
                                 .border(BorderStroke(1.dp, SeugiTheme.colors.gray100)),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             Text(
                                 text = it,
                                 style = SeugiTheme.typography.caption2,
-                                color = SeugiTheme.colors.gray500
+                                color = SeugiTheme.colors.gray500,
                             )
                         }
                     }
                 }
-                uiState.keys.sorted().forEach {key ->
+                uiState.keys.sorted().forEach { key ->
                     val value = uiState.getOrDefault(key, null)
                     Row(
                         modifier = Modifier
                             .weight(1f)
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
                     ) {
                         Box(
                             modifier = Modifier
                                 .fillMaxHeight()
                                 .width(24.dp)
                                 .border(BorderStroke(1.dp, SeugiTheme.colors.gray100)),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             Text(
                                 text = key[0].toString(),
                                 style = SeugiTheme.typography.caption2,
-                                color = SeugiTheme.colors.gray500
+                                color = SeugiTheme.colors.gray500,
                             )
                         }
 
@@ -153,12 +147,12 @@ internal fun TimetableScreen(
                                     .fillMaxHeight()
                                     .weight(1f)
                                     .border(BorderStroke(1.dp, SeugiTheme.colors.gray100)),
-                                contentAlignment = Alignment.Center
+                                contentAlignment = Alignment.Center,
                             ) {
                                 Text(
-                                    text = item?.subject?: "",
+                                    text = item?.subject ?: "",
                                     style = SeugiTheme.typography.body2,
-                                    color = SeugiTheme.colors.gray500
+                                    color = SeugiTheme.colors.gray500,
                                 )
                             }
                         }
@@ -167,5 +161,4 @@ internal fun TimetableScreen(
             }
         }
     }
-
 }
