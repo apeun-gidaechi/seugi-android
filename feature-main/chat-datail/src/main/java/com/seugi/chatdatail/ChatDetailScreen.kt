@@ -809,6 +809,20 @@ internal fun ChatDetailScreen(
                                         count = if (count <= 0) null else count,
                                     )
                                 }
+
+                                is MessageRoomEvent.MessageParent.BOT.Etc -> {
+                                    val readUser = item.getUserCount(
+                                        state.roomInfo?.members ?: persistentListOf()
+                                    )
+                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
+                                    ChatItemType.Ai(
+                                        isFirst = item.isFirst,
+                                        isLast = item.isLast,
+                                        message = item.message,
+                                        createdAt = item.timestamp.toAmShortString(),
+                                        count = if (count <= 0) null else count,
+                                    )
+                                }
                             },
                         )
                     }

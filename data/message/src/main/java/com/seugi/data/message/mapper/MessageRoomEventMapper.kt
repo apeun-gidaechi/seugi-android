@@ -131,6 +131,25 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Int)
                         timestamp = timestamp,
                     )
                 }
+                "기타" -> {
+                    val botData = message.toResponse<MessageBotRawKeywordInData<String>>()
+                    MessageRoomEvent.MessageParent.BOT.Etc(
+                        id = id,
+                        chatRoomId = chatRoomId,
+                        type = type.toMessageType(),
+                        userId = this.userId,
+                        isFirst = true,
+                        isLast = true,
+                        message = botData.data,
+                        messageStatus = messageStatus,
+                        emoticon = emoticon,
+                        eventList = eventList?.toImmutableList() ?: persistentListOf(),
+                        emojiList = emojiList.map { it.toModel() }.toImmutableList(),
+                        mention = mention.toImmutableList(),
+                        mentionAll = mentionAll,
+                        timestamp = timestamp,
+                    )
+                }
                 else -> throw IllegalArgumentException("알 수 없는 응답")
             }
         }
