@@ -18,6 +18,7 @@ data class ChatDetailUiState(
     val message: ImmutableList<MessageRoomEvent.MessageParent> = persistentListOf(),
     val users: ImmutableMap<Long, UserModel> = persistentMapOf(),
     val workspaceUsers: ImmutableList<ProfileModel> = persistentListOf(),
+    val workspaceUsersMap: ImmutableMap<Long, ProfileModel> = persistentMapOf(),
 )
 
 data class ChatRoomState(

@@ -222,7 +222,8 @@ class ChatDetailViewModel @Inject constructor(
                 is Result.Success -> {
                     _state.update { state ->
                         state.copy(
-                            workspaceUsers = it.data.toImmutableList()
+                            workspaceUsers = it.data.toImmutableList(),
+                            workspaceUsersMap = it.data.toMap { it.member.id }.toImmutableMap()
                         )
                     }
 
@@ -271,7 +272,7 @@ class ChatDetailViewModel @Inject constructor(
                                             .toMap { it.id }
                                     )
                                 }
-                                .toImmutableMap()
+                                .toImmutableMap(),
                         )
                     }
                 }

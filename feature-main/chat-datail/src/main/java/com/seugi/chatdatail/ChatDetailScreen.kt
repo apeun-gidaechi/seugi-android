@@ -78,6 +78,7 @@ import com.seugi.chatdatail.model.ChatDetailSideEffect
 import com.seugi.chatdatail.model.ChatLocalType
 import com.seugi.chatdatail.screen.ChatDetailChatScreen
 import com.seugi.chatdatail.screen.ChatDetailInviteScreen
+import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.core.model.UserInfoModel
 import com.seugi.data.core.model.UserModel
 import com.seugi.data.message.model.MessageRoomEvent
@@ -353,15 +354,16 @@ internal fun ChatDetailScreen(
     }
 
     if (showOtherProfileBottomSheet) {
+        val profile: ProfileModel? = state.workspaceUsersMap.getOrDefault(otherProfileState?.id?: 0, null)
         OtherProfileBottomSheet(
-            profile = otherProfileState?.picture,
+            profile =  otherProfileState?.picture,
             name = otherProfileState?.name ?: "",
-            status = "",
-            spot = "",
-            belong = "",
-            phone = "",
-            wire = "",
-            location = "",
+            status = profile?.status?: "",
+            spot = profile?.spot?: "",
+            belong = profile?.belong?: "",
+            phone = profile?.phone?: "",
+            wire = profile?.wire?: "",
+            location = profile?.location?: "",
             onClickChat = {
                 viewModel.getPersonalChat(
                     workspaceId = workspaceId,
