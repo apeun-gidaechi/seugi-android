@@ -1,12 +1,12 @@
-package com.seugi.data.notification.mapper
+package com.seugi.data.core.mapper
 
-import com.seugi.data.notification.model.NotificationEmojiModel
-import com.seugi.data.notification.model.NotificationModel
+import com.seugi.data.core.model.NotificationEmojiModel
+import com.seugi.data.core.model.NotificationModel
 import com.seugi.network.notification.response.NotificationEmojiResponse
 import com.seugi.network.notification.response.NotificationResponse
 import kotlinx.collections.immutable.toImmutableList
 
-internal fun NotificationResponse.toModel() = NotificationModel(
+fun NotificationResponse.toModel() = NotificationModel(
     id = id,
     workspaceId = workspaceId,
     userId = userId,
@@ -19,16 +19,16 @@ internal fun NotificationResponse.toModel() = NotificationModel(
 )
 
 @JvmName("ListNotificationResponseToModels")
-internal fun List<NotificationResponse>.toModels() = this.map {
+fun List<NotificationResponse>.toModels() = this.map {
     it.toModel()
 }
 
-internal fun NotificationEmojiResponse.toModel() = NotificationEmojiModel(
+fun NotificationEmojiResponse.toModel() = NotificationEmojiModel(
     emoji = emoji,
     userList = userList.toImmutableList(),
 )
 
 @JvmName("ListNotificationEmojiResponseToModels")
-internal fun List<NotificationEmojiResponse>.toModels() = this.map {
+fun List<NotificationEmojiResponse>.toModels() = this.map {
     it.toModel()
 }

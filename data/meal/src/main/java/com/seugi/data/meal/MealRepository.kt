@@ -1,7 +1,7 @@
 package com.seugi.data.meal
 
 import com.seugi.common.model.Result
-import com.seugi.data.meal.response.MealModel
+import com.seugi.data.core.model.MealModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDate

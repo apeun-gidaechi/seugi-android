@@ -314,6 +314,7 @@ internal fun ChatDetailScreen(
                                 userId = userId,
                                 content = it.text,
                                 uuid = it.uuid,
+                                mention = it.mention,
                             )
                         }
                         is ChatLocalType.FailedImgSend -> {
@@ -473,10 +474,16 @@ internal fun ChatDetailScreen(
                         },
                         sendEnabled = text.isNotEmpty(),
                         onSendClick = {
+                            val mentionList = mutableListOf<Long>()
+
+                            if (text.startsWith("스기야 ")) {
+                                mentionList.add(-1)
+                            }
                             viewModel.channelSend(
                                 userId = userId,
                                 content = text,
                                 type = MessageType.MESSAGE,
+                                mention = mentionList,
                             )
                             text = ""
                         },
@@ -733,6 +740,103 @@ internal fun ChatDetailScreen(
                                 is MessageRoomEvent.MessageParent.Enter -> ChatItemType.Else("${state.users[item.userId]?.name ?: ""}님이 방에 입장하셨습니다.")
 
                                 is MessageRoomEvent.MessageParent.Etc -> ChatItemType.Else(item.toString())
+                                is MessageRoomEvent.MessageParent.BOT.Meal -> {
+                                    val readUser = item.getUserCount(
+                                        state.roomInfo?.members ?: persistentListOf(),
+                                    )
+                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
+                                    ChatItemType.Ai(
+                                        isFirst = item.isFirst,
+                                        isLast = item.isLast,
+                                        message = item.message.toString(),
+                                        createdAt = item.timestamp.toAmShortString(),
+                                        count = if (count <= 0) null else count,
+                                    )
+                                }
+
+                                is MessageRoomEvent.MessageParent.BOT.Timetable -> {
+                                    val readUser = item.getUserCount(
+                                        state.roomInfo?.members ?: persistentListOf(),
+                                    )
+                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
+                                    ChatItemType.Ai(
+                                        isFirst = item.isFirst,
+                                        isLast = item.isLast,
+                                        message = item.message.toString(),
+                                        createdAt = item.timestamp.toAmShortString(),
+                                        count = if (count <= 0) null else count,
+                                    )
+                                }
+
+                                is MessageRoomEvent.MessageParent.BOT.Notification -> {
+                                    val readUser = item.getUserCount(
+                                        state.roomInfo?.members ?: persistentListOf(),
+                                    )
+                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
+                                    ChatItemType.Ai(
+                                        isFirst = item.isFirst,
+                                        isLast = item.isLast,
+                                        message = item.message.toString(),
+                                        createdAt = item.timestamp.toAmShortString(),
+                                        count = if (count <= 0) null else count,
+                                    )
+                                }
+
+                                is MessageRoomEvent.MessageParent.BOT.DrawLots -> {
+                                    val readUser = item.getUserCount(
+                                        state.roomInfo?.members ?: persistentListOf(),
+                                    )
+                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
+                                    ChatItemType.Ai(
+                                        isFirst = item.isFirst,
+                                        isLast = item.isLast,
+                                        message = item.visibleMessage,
+                                        createdAt = item.timestamp.toAmShortString(),
+                                        count = if (count <= 0) null else count,
+                                    )
+                                }
+
+                                is MessageRoomEvent.MessageParent.BOT.TeamBuild -> {
+                                    val readUser = item.getUserCount(
+                                        state.roomInfo?.members ?: persistentListOf(),
+                                    )
+                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
+                                    ChatItemType.Ai(
+                                        isFirst = item.isFirst,
+                                        isLast = item.isLast,
+                                        message = item.visibleMessage,
+                                        createdAt = item.timestamp.toAmShortString(),
+                                        count = if (count <= 0) null else count,
+                                    )
+                                }
+
+                                is MessageRoomEvent.MessageParent.BOT.Etc -> {
+                                    val readUser = item.getUserCount(
+                                        state.roomInfo?.members ?: persistentListOf(),
+                                    )
+                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
+                                    ChatItemType.Ai(
+                                        isFirst = item.isFirst,
+                                        isLast = item.isLast,
+                                        message = item.message,
+                                        createdAt = item.timestamp.toAmShortString(),
+                                        count = if (count <= 0) null else count,
+                                    )
+                                }
+
+                                is MessageRoomEvent.MessageParent.BOT.NotSupport -> {
+                                    val readUser = item.getUserCount(
+                                        state.roomInfo?.members ?: persistentListOf(),
+                                    )
+                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
+                                    ChatItemType.Ai(
+                                        isFirst = item.isFirst,
+                                        isLast = item.isLast,
+                                        message = item.message,
+                                        createdAt = item.timestamp.toAmShortString(),
+                                        count = if (count <= 0) null else count,
+                                    )
+                                }
                             },
                         )
                     }

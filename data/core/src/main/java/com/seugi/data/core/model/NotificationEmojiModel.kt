@@ -1,4 +1,4 @@
-package com.seugi.data.notification.model
+package com.seugi.data.core.model
 
 import kotlinx.collections.immutable.ImmutableList
 

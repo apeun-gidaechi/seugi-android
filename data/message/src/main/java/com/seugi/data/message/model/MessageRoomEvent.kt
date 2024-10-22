@@ -1,16 +1,20 @@
 package com.seugi.data.message.model
 
+import com.seugi.data.core.model.MealModel
+import com.seugi.data.core.model.NotificationModel
+import com.seugi.data.core.model.TimetableModel
+import com.seugi.data.core.model.UserInfoModel
 import java.time.LocalDateTime
 import kotlinx.collections.immutable.ImmutableList
 
 sealed class MessageRoomEvent(
-    open val type: MessageType,
-    open val userId: Long,
+    @Transient open val type: MessageType,
+    @Transient open val userId: Long,
 ) {
     sealed class MessageParent(
-        open val timestamp: LocalDateTime,
-        override val type: MessageType,
-        override val userId: Long,
+        @Transient open val timestamp: LocalDateTime,
+        @Transient override val type: MessageType,
+        @Transient override val userId: Long,
     ) : MessageRoomEvent(type, userId) {
         data class Me(
             val id: String,
@@ -46,6 +50,143 @@ sealed class MessageRoomEvent(
             val mentionAll: Boolean,
             override val timestamp: LocalDateTime,
         ) : MessageParent(timestamp, type, userId)
+
+        sealed class BOT(
+            @Transient open val id: String,
+            @Transient open val chatRoomId: String,
+            @Transient open val isFirst: Boolean,
+            @Transient open val isLast: Boolean,
+            @Transient override val type: MessageType,
+            @Transient override val userId: Long,
+            @Transient open val messageStatus: String,
+            @Transient open val emoticon: String?,
+            @Transient open val eventList: ImmutableList<Int>?,
+            @Transient open val emojiList: ImmutableList<MessageEmojiModel>,
+            @Transient open val mention: ImmutableList<Int>,
+            @Transient open val mentionAll: Boolean,
+            @Transient override val timestamp: LocalDateTime,
+        ) : MessageParent(timestamp, type, userId) {
+            data class Meal(
+                override val type: MessageType,
+                val message: ImmutableList<MealModel>,
+                override val messageStatus: String,
+                override val emoticon: String?,
+                override val eventList: ImmutableList<Int>?,
+                override val id: String,
+                override val emojiList: ImmutableList<MessageEmojiModel>,
+                override val chatRoomId: String,
+                override val timestamp: LocalDateTime,
+                override val userId: Long,
+                override val mention: ImmutableList<Int>,
+                override val mentionAll: Boolean,
+                override val isFirst: Boolean,
+                override val isLast: Boolean,
+            ) : BOT(id, chatRoomId, isFirst, isLast, type, userId, messageStatus, emoticon, eventList, emojiList, mention, mentionAll, timestamp)
+
+            data class Timetable(
+                override val type: MessageType,
+                val message: ImmutableList<TimetableModel>,
+                override val messageStatus: String,
+                override val emoticon: String?,
+                override val eventList: ImmutableList<Int>?,
+                override val id: String,
+                override val emojiList: ImmutableList<MessageEmojiModel>,
+                override val chatRoomId: String,
+                override val timestamp: LocalDateTime,
+                override val userId: Long,
+                override val mention: ImmutableList<Int>,
+                override val mentionAll: Boolean,
+                override val isFirst: Boolean,
+                override val isLast: Boolean,
+            ) : BOT(id, chatRoomId, isFirst, isLast, type, userId, messageStatus, emoticon, eventList, emojiList, mention, mentionAll, timestamp)
+
+            data class Notification(
+                override val type: MessageType,
+                val message: ImmutableList<NotificationModel>,
+                override val messageStatus: String,
+                override val emoticon: String?,
+                override val eventList: ImmutableList<Int>?,
+                override val id: String,
+                override val emojiList: ImmutableList<MessageEmojiModel>,
+                override val chatRoomId: String,
+                override val timestamp: LocalDateTime,
+                override val userId: Long,
+                override val mention: ImmutableList<Int>,
+                override val mentionAll: Boolean,
+                override val isFirst: Boolean,
+                override val isLast: Boolean,
+            ) : BOT(id, chatRoomId, isFirst, isLast, type, userId, messageStatus, emoticon, eventList, emojiList, mention, mentionAll, timestamp)
+
+            data class DrawLots(
+                override val type: MessageType,
+                val message: String,
+                val visibleMessage: String,
+                override val messageStatus: String,
+                override val emoticon: String?,
+                override val eventList: ImmutableList<Int>?,
+                override val id: String,
+                override val emojiList: ImmutableList<MessageEmojiModel>,
+                override val chatRoomId: String,
+                override val timestamp: LocalDateTime,
+                override val userId: Long,
+                override val mention: ImmutableList<Int>,
+                override val mentionAll: Boolean,
+                override val isFirst: Boolean,
+                override val isLast: Boolean,
+            ) : BOT(id, chatRoomId, isFirst, isLast, type, userId, messageStatus, emoticon, eventList, emojiList, mention, mentionAll, timestamp)
+
+            data class TeamBuild(
+                override val type: MessageType,
+                val message: String,
+                val visibleMessage: String,
+                override val messageStatus: String,
+                override val emoticon: String?,
+                override val eventList: ImmutableList<Int>?,
+                override val id: String,
+                override val emojiList: ImmutableList<MessageEmojiModel>,
+                override val chatRoomId: String,
+                override val timestamp: LocalDateTime,
+                override val userId: Long,
+                override val mention: ImmutableList<Int>,
+                override val mentionAll: Boolean,
+                override val isFirst: Boolean,
+                override val isLast: Boolean,
+            ) : BOT(id, chatRoomId, isFirst, isLast, type, userId, messageStatus, emoticon, eventList, emojiList, mention, mentionAll, timestamp)
+
+            data class Etc(
+                override val type: MessageType,
+                val message: String,
+                override val messageStatus: String,
+                override val emoticon: String?,
+                override val eventList: ImmutableList<Int>?,
+                override val id: String,
+                override val emojiList: ImmutableList<MessageEmojiModel>,
+                override val chatRoomId: String,
+                override val timestamp: LocalDateTime,
+                override val userId: Long,
+                override val mention: ImmutableList<Int>,
+                override val mentionAll: Boolean,
+                override val isFirst: Boolean,
+                override val isLast: Boolean,
+            ) : BOT(id, chatRoomId, isFirst, isLast, type, userId, messageStatus, emoticon, eventList, emojiList, mention, mentionAll, timestamp)
+
+            data class NotSupport(
+                override val type: MessageType,
+                val message: String,
+                override val messageStatus: String,
+                override val emoticon: String?,
+                override val eventList: ImmutableList<Int>?,
+                override val id: String,
+                override val emojiList: ImmutableList<MessageEmojiModel>,
+                override val chatRoomId: String,
+                override val timestamp: LocalDateTime,
+                override val userId: Long,
+                override val mention: ImmutableList<Int>,
+                override val mentionAll: Boolean,
+                override val isFirst: Boolean,
+                override val isLast: Boolean,
+            ) : BOT(id, chatRoomId, isFirst, isLast, type, userId, messageStatus, emoticon, eventList, emojiList, mention, mentionAll, timestamp)
+        }
 
         data class File(
             val url: String,
@@ -134,28 +275,176 @@ sealed class MessageRoomEvent(
     ) : MessageRoomEvent(type, userId)
 }
 
+fun MessageRoomEvent.MessageParent.BOT.copy(
+    id: String = this.id,
+    chatRoomId: String = this.chatRoomId,
+    isFirst: Boolean = this.isFirst,
+    isLast: Boolean = this.isLast,
+    type: MessageType = this.type,
+    userId: Long = this.userId,
+    messageStatus: String = this.messageStatus,
+    emoticon: String? = this.emoticon,
+    eventList: ImmutableList<Int>? = this.eventList,
+    emojiList: ImmutableList<MessageEmojiModel> = this.emojiList,
+    mention: ImmutableList<Int> = this.mention,
+    mentionAll: Boolean = this.mentionAll,
+    timestamp: LocalDateTime = this.timestamp,
+): MessageRoomEvent.MessageParent.BOT = when (this) {
+    is MessageRoomEvent.MessageParent.BOT.Meal -> {
+        this.copy(
+            type = type,
+            message = this.message,
+            messageStatus = messageStatus,
+            emoticon = emoticon,
+            eventList = eventList,
+            id = id,
+            emojiList = emojiList,
+            chatRoomId = chatRoomId,
+            timestamp = timestamp,
+            userId = userId,
+            mention = mention,
+            mentionAll = mentionAll,
+            isFirst = isFirst,
+            isLast = isLast,
+        )
+    }
+
+    is MessageRoomEvent.MessageParent.BOT.Timetable -> {
+        this.copy(
+            type = type,
+            message = this.message,
+            messageStatus = messageStatus,
+            emoticon = emoticon,
+            eventList = eventList,
+            id = id,
+            emojiList = emojiList,
+            chatRoomId = chatRoomId,
+            timestamp = timestamp,
+            userId = userId,
+            mention = mention,
+            mentionAll = mentionAll,
+            isFirst = isFirst,
+            isLast = isLast,
+        )
+    }
+    is MessageRoomEvent.MessageParent.BOT.Notification -> {
+        this.copy(
+            type = type,
+            message = this.message,
+            messageStatus = messageStatus,
+            emoticon = emoticon,
+            eventList = eventList,
+            id = id,
+            emojiList = emojiList,
+            chatRoomId = chatRoomId,
+            timestamp = timestamp,
+            userId = userId,
+            mention = mention,
+            mentionAll = mentionAll,
+            isFirst = isFirst,
+            isLast = isLast,
+        )
+    }
+
+    is MessageRoomEvent.MessageParent.BOT.DrawLots -> {
+        this.copy(
+            type = type,
+            message = this.message,
+            messageStatus = messageStatus,
+            emoticon = emoticon,
+            eventList = eventList,
+            id = id,
+            emojiList = emojiList,
+            chatRoomId = chatRoomId,
+            timestamp = timestamp,
+            userId = userId,
+            mention = mention,
+            mentionAll = mentionAll,
+            isFirst = isFirst,
+            isLast = isLast,
+        )
+    }
+
+    is MessageRoomEvent.MessageParent.BOT.TeamBuild -> {
+        this.copy(
+            type = type,
+            message = this.message,
+            messageStatus = messageStatus,
+            emoticon = emoticon,
+            eventList = eventList,
+            id = id,
+            emojiList = emojiList,
+            chatRoomId = chatRoomId,
+            timestamp = timestamp,
+            userId = userId,
+            mention = mention,
+            mentionAll = mentionAll,
+            isFirst = isFirst,
+            isLast = isLast,
+        )
+    }
+
+    is MessageRoomEvent.MessageParent.BOT.Etc -> {
+        this.copy(
+            type = type,
+            message = this.message,
+            messageStatus = messageStatus,
+            emoticon = emoticon,
+            eventList = eventList,
+            id = id,
+            emojiList = emojiList,
+            chatRoomId = chatRoomId,
+            timestamp = timestamp,
+            userId = userId,
+            mention = mention,
+            mentionAll = mentionAll,
+            isFirst = isFirst,
+            isLast = isLast,
+        )
+    }
+
+    is MessageRoomEvent.MessageParent.BOT.NotSupport -> {
+        this.copy(
+            type = type,
+            message = this.message,
+            messageStatus = messageStatus,
+            emoticon = emoticon,
+            eventList = eventList,
+            id = id,
+            emojiList = emojiList,
+            chatRoomId = chatRoomId,
+            timestamp = timestamp,
+            userId = userId,
+            mention = mention,
+            mentionAll = mentionAll,
+            isFirst = isFirst,
+            isLast = isLast,
+        )
+    }
+}
+
 fun MessageRoomEvent.copy(type: MessageType = this.type, userId: Long = this.userId) {
     when (this) {
         is MessageRoomEvent.AddEmoji -> copy(
             type = type,
             userId = userId,
         )
+
         is MessageRoomEvent.DeleteMessage -> this.copy(
             type = type,
             userId = userId,
         )
-        is MessageRoomEvent.MessageParent -> copy(
-            type = type,
-            userId = userId,
-        )
+
         is MessageRoomEvent.RemoveEmoji -> copy(
             type = type,
             userId = userId,
         )
+
         is MessageRoomEvent.Sub -> copy(
             type = type,
             userId = userId,
         )
+
         is MessageRoomEvent.TransperAdmin -> copy(
             type = type,
             userId = userId,
@@ -165,65 +454,45 @@ fun MessageRoomEvent.copy(type: MessageType = this.type, userId: Long = this.use
             type = type,
             userId = userId,
         )
+        is MessageRoomEvent.MessageParent.BOT.Meal -> TODO()
+        is MessageRoomEvent.MessageParent.Date -> TODO()
+        is MessageRoomEvent.MessageParent.Enter -> TODO()
+        is MessageRoomEvent.MessageParent.Etc -> TODO()
+        is MessageRoomEvent.MessageParent.File -> TODO()
+        is MessageRoomEvent.MessageParent.Img -> TODO()
+        is MessageRoomEvent.MessageParent.Left -> TODO()
+        is MessageRoomEvent.MessageParent.Me -> TODO()
+        is MessageRoomEvent.MessageParent.Other -> TODO()
+        is MessageRoomEvent.MessageParent.BOT.Timetable -> TODO()
+        is MessageRoomEvent.MessageParent.BOT.Notification -> TODO()
+        is MessageRoomEvent.MessageParent.BOT.DrawLots -> TODO()
+        is MessageRoomEvent.MessageParent.BOT.TeamBuild -> TODO()
+        is MessageRoomEvent.MessageParent.BOT.Etc -> TODO()
+        is MessageRoomEvent.MessageParent.BOT.NotSupport -> TODO()
     }
 }
 
-fun MessageRoomEvent.MessageParent.copy(timestamp: LocalDateTime = this.timestamp, type: MessageType = this.type, userId: Long = this.userId) = when (this) {
-    is MessageRoomEvent.MessageParent.Enter -> {
-        this.copy(
-            type = type,
-            userId = userId,
-            timestamp = timestamp,
-        )
-    }
-    is MessageRoomEvent.MessageParent.File -> {
-        this.copy(
-            type = type,
-            userId = userId,
-            timestamp = timestamp,
-        )
-    }
-    is MessageRoomEvent.MessageParent.Img -> {
-        this.copy(
-            type = type,
-            userId = userId,
-            timestamp = timestamp,
-        )
-    }
-    is MessageRoomEvent.MessageParent.Left -> {
-        this.copy(
-            type = type,
-            userId = userId,
-            timestamp = timestamp,
-        )
-    }
-    is MessageRoomEvent.MessageParent.Me -> {
-        this.copy(
-            type = type,
-            userId = userId,
-            timestamp = timestamp,
-        )
-    }
-    is MessageRoomEvent.MessageParent.Other -> {
-        this.copy(
-            type = type,
-            userId = userId,
-            timestamp = timestamp,
-        )
-    }
+fun MessageRoomEvent.MessageParent.BOT.DrawLots.getVisibleMessage(members: List<UserInfoModel>?): String {
+    val regex = "::(\\d+)::".toRegex()
+    val results = regex.findAll(this.message)
 
-    is MessageRoomEvent.MessageParent.Date -> {
-        this.copy(
-            type = type,
-            userId = userId,
-            timestamp = timestamp,
-        )
+    val numbers = results.mapNotNull { result ->
+        result.groupValues[1].toIntOrNull()
+    }.toList()
+
+    val visibleMessage = "사람을 ${numbers.size}명 뽑았어요\n" +
+        numbers.mapNotNull { number ->
+            members?.map { it.userInfo }?.firstOrNull { it.id == number.toLong() }?.name
+        }.joinToString(" ")
+
+    return visibleMessage
+}
+
+fun MessageRoomEvent.MessageParent.BOT.TeamBuild.getVisibleMessage(members: List<UserInfoModel>?): String {
+    var visibleMessage = this.message
+
+    members?.forEach {
+        visibleMessage = visibleMessage.replace("::${it.userInfo.id}::", it.userInfo.name)
     }
-    is MessageRoomEvent.MessageParent.Etc -> {
-        this.copy(
-            type = type,
-            userId = userId,
-            timestamp = timestamp,
-        )
-    }
+    return visibleMessage
 }

@@ -23,6 +23,8 @@ import com.seugi.data.message.MessageRepository
 import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.data.message.model.MessageRoomEvent.MessageParent
 import com.seugi.data.message.model.MessageType
+import com.seugi.data.message.model.copy
+import com.seugi.data.message.model.getVisibleMessage
 import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
 import com.seugi.data.personalchat.PersonalChatRepository
 import com.seugi.data.profile.ProfileRepository
@@ -179,6 +181,22 @@ class ChatDetailViewModel @Inject constructor(
                         ),
                         users = users.toImmutableMap(),
                     )
+
+                    _state.update { state ->
+                        state.copy(
+                            message = state.message.map { messageParent ->
+                                var newMessage = messageParent
+                                if (messageParent is MessageParent.BOT.DrawLots) {
+                                    newMessage = messageParent.copy(visibleMessage = messageParent.getVisibleMessage(state.roomInfo?.members))
+                                }
+
+                                if (messageParent is MessageParent.BOT.TeamBuild) {
+                                    newMessage = messageParent.copy(visibleMessage = messageParent.getVisibleMessage(state.roomInfo?.members))
+                                }
+                                newMessage
+                            }.toImmutableList(),
+                        )
+                    }
                 }
 
                 is Result.Loading -> {}
@@ -239,11 +257,11 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelSend(userId: Long, content: String, uuid: String = UUID.randomUUID().toString(), type: MessageType) {
+    fun channelSend(userId: Long, content: String, uuid: String = UUID.randomUUID().toString(), type: MessageType, mention: List<Long> = emptyList()) {
         viewModelScope.launch {
             // 파일, 이미지는 socket 서버 업로드전에 생김
             if (type == MessageType.MESSAGE) {
-                _messageSaveQueueState.value += ChatLocalType.SendText(content, uuid)
+                _messageSaveQueueState.value += ChatLocalType.SendText(content, mention, uuid)
             }
 
             val result = messageRepository.sendMessage(
@@ -251,6 +269,7 @@ class ChatDetailViewModel @Inject constructor(
                 message = content,
                 messageUUID = uuid,
                 type = type,
+                mention = mention,
             )
             Log.d("TAG", "testSend: $result")
             when (result) {
@@ -260,6 +279,7 @@ class ChatDetailViewModel @Inject constructor(
                             type = type,
                             uuid = uuid,
                             content = content,
+                            mention = mention,
                         )
                         channelReconnect(userId)
                         return@launch
@@ -371,7 +391,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun channelResend(userId: Long, content: String, uuid: String, type: MessageType = MessageType.MESSAGE) {
+    fun channelResend(userId: Long, content: String, uuid: String, type: MessageType = MessageType.MESSAGE, mention: List<Long> = emptyList()) {
         _messageSaveQueueState.value -= uuid
         when {
             type == MessageType.FILE -> {
@@ -392,7 +412,7 @@ class ChatDetailViewModel @Inject constructor(
                 )
             }
         }
-        channelSend(userId, content, uuid, type)
+        channelSend(userId, content, uuid, type, mention)
     }
 
     fun channelResend(userId: Long, fileName: String, fileMimeType: String, fileByteArray: ByteArray, fileByte: Long, uuid: String) {
@@ -527,7 +547,7 @@ class ChatDetailViewModel @Inject constructor(
             var isFirst = messageParent.userId != formerItem?.userId
             val isLast = messageParent.userId != nextItem?.userId ||
                 messageParent.timestamp.isDifferentMin(nextItem.timestamp) ||
-                formerItem is MessageParent.Enter
+                formerItem is MessageParent.Enter || formerItem is MessageParent.Left
 
             if (formerItem != null && messageParent.timestamp.isDifferentDay(formerItem.timestamp)) {
                 isFirst = true
@@ -544,9 +564,8 @@ class ChatDetailViewModel @Inject constructor(
             if (formerItem is MessageParent.Enter || formerItem is MessageParent.Left) {
                 isFirst = true
             }
-            Log.d("TAG", "collectMessage: $isFirst ${messageParent.userId} ${formerItem?.userId}")
 
-            val newData = when (messageParent) {
+            var newData = when (messageParent) {
                 is MessageParent.Me -> messageParent.copy(
                     isLast = isLast,
                 )
@@ -555,6 +574,26 @@ class ChatDetailViewModel @Inject constructor(
                         isLast = isLast,
                         isFirst = isFirst,
                     )
+                }
+                is MessageParent.BOT -> {
+                    if (messageParent is MessageParent.BOT.DrawLots) {
+                        messageParent.copy(
+                            visibleMessage = messageParent.getVisibleMessage(state.value.roomInfo?.members),
+                            isLast = isLast,
+                            isFirst = isFirst,
+                        )
+                    } else if (messageParent is MessageParent.BOT.TeamBuild) {
+                        messageParent.copy(
+                            visibleMessage = messageParent.getVisibleMessage(state.value.roomInfo?.members),
+                            isLast = isLast,
+                            isFirst = isFirst,
+                        )
+                    } else {
+                        messageParent.copy(
+                            isLast = isLast,
+                            isFirst = isFirst,
+                        )
+                    }
                 }
                 else -> messageParent
             }
@@ -650,6 +689,56 @@ class ChatDetailViewModel @Inject constructor(
                     if (data.userId == _state.value.userInfo?.id) {
                         _messageSaveQueueState.value -= data.uuid ?: ""
                     }
+                    _state.update {
+                        it.copy(
+                            message = message.toImmutableList(),
+                        )
+                    }
+                }
+
+                is MessageParent.BOT -> {
+                    var data = data as MessageParent.BOT
+
+                    val message = _state.value.message.toMutableList()
+                    val formerItem = message.firstOrNull()
+                    if (
+                        formerItem is MessageParent.BOT && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
+                    ) {
+                        if (formerItem is MessageParent.BOT.Meal) {
+                            message[0] = formerItem.copy(isLast = false)
+                        }
+                    }
+
+                    if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
+                        message.add(
+                            index = 0,
+                            element = MessageParent.Date(
+                                type = MessageType.MESSAGE,
+                                timestamp = LocalDateTime.of(data.timestamp.year, data.timestamp.monthValue, data.timestamp.dayOfMonth, 0, 0),
+                                userId = 0,
+                                text = "",
+                            ),
+                        )
+                    }
+
+                    if (data is MessageParent.BOT.DrawLots && state.value.roomInfo?.members?.isNotEmpty() == true) {
+                        data = data.copy(
+                            visibleMessage = data.getVisibleMessage(state.value.roomInfo?.members),
+                        )
+                    }
+
+                    if (data is MessageParent.BOT.TeamBuild && state.value.roomInfo?.members?.isNotEmpty() == true) {
+                        data = data.copy(
+                            visibleMessage = data.getVisibleMessage(state.value.roomInfo?.members),
+                        )
+                    }
+                    message.add(
+                        index = 0,
+                        element = data.copy(
+                            isLast = true,
+                        ),
+                    )
+
                     _state.update {
                         it.copy(
                             message = message.toImmutableList(),
@@ -812,10 +901,10 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun failedSend(type: MessageType, uuid: String, content: String) {
+    private fun failedSend(type: MessageType, uuid: String, content: String, mention: List<Long> = emptyList()) {
         _messageSaveQueueState.value -= uuid
         if (type == MessageType.MESSAGE) {
-            _messageSaveQueueState.value += ChatLocalType.FailedText(content, uuid)
+            _messageSaveQueueState.value += ChatLocalType.FailedText(content, mention, uuid)
         } else if (type == MessageType.FILE) {
             val files = content.split("::")
             _messageSaveQueueState.value += ChatLocalType.FailedFileSend(

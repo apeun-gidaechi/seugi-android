@@ -19,8 +19,12 @@ class LocalDateTimeTypeAdapter : JsonDeserializer<LocalDateTime>, JsonSerializer
             return LocalDateTime.MIN
         }
         val dateStrings = dateString!!.split(".")
-        if (dateStrings[1].length != 6) {
-            dateString = dateStrings[0] + "." + dateStrings[1] + "0".repeat(if (0 > 6 - dateStrings[1].length) 0 else 6 - dateStrings[1].length)
+        if (dateStrings.size == 1) {
+            dateString = dateStrings[0] + ".000000"
+        } else {
+            if (dateStrings[1].length != 6) {
+                dateString = dateStrings[0] + "." + dateStrings[1] + "0".repeat(if (0 > 6 - dateStrings[1].length) 0 else 6 - dateStrings[1].length)
+            }
         }
         return LocalDateTime.parse(dateString.substring(startIndex = 0, endIndex = 26), formatter)
     }

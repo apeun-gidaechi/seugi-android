@@ -8,7 +8,7 @@ import android.util.Log
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.seugi.common.model.Result
-import com.seugi.data.timetable.model.TimetableModel
+import com.seugi.data.core.model.TimetableModel
 import com.seugi.timetable.widget.component.TimetableListProvider
 import com.seugi.timetable.widget.di.getTimetableRepository
 import com.seugi.timetable.widget.di.getWorkspaceRepository

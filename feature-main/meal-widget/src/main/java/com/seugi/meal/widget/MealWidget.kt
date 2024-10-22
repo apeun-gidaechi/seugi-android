@@ -7,8 +7,8 @@ import android.content.Intent
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import com.seugi.common.model.Result
-import com.seugi.data.meal.response.MealModel
-import com.seugi.data.meal.response.MealType
+import com.seugi.data.core.model.MealModel
+import com.seugi.data.core.model.MealType
 import com.seugi.meal.widget.MealWidgetReceiver.Companion.CONTENT
 import com.seugi.meal.widget.component.MealListProvider
 import com.seugi.meal.widget.di.getMealRepository
@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.datetime.toKotlinLocalDate
 
-private fun fetchMealData(context: Context, block: (Result<ImmutableList<MealModel>>) -> Unit) {
+private fun fetchMealData(context: Context, block: (Result<ImmutableList<com.seugi.data.core.model.MealModel>>) -> Unit) {
     CoroutineScope(Dispatchers.IO).launch {
         val workspaceRepository = getWorkspaceRepository(context)
         val mealRepository = getMealRepository(context)
@@ -34,27 +34,27 @@ private fun fetchMealData(context: Context, block: (Result<ImmutableList<MealMod
     }
 }
 
-fun updateAppWidgetUI(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int, data: ImmutableList<MealModel>) {
+fun updateAppWidgetUI(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int, data: ImmutableList<com.seugi.data.core.model.MealModel>) {
     val views = RemoteViews(context.packageName, R.layout.widget_meal_layout)
 
     val time = LocalTime.now()
 
-    val mealType: MealType =
+    val mealType: com.seugi.data.core.model.MealType =
         if (time.isBefore(LocalTime.of(8, 10))) {
-            MealType.BREAKFAST
+            com.seugi.data.core.model.MealType.BREAKFAST
         } else if (time.isBefore(LocalTime.of(13, 30))) {
-            MealType.LUNCH
+            com.seugi.data.core.model.MealType.LUNCH
         } else {
-            MealType.DINNER
+            com.seugi.data.core.model.MealType.DINNER
         }
 
     val item = data.find { it.mealType == mealType }
 
     val category =
         when (mealType) {
-            MealType.BREAKFAST -> "아침"
-            MealType.LUNCH -> "점심"
-            MealType.DINNER -> "저녁"
+            com.seugi.data.core.model.MealType.BREAKFAST -> "아침"
+            com.seugi.data.core.model.MealType.LUNCH -> "점심"
+            com.seugi.data.core.model.MealType.DINNER -> "저녁"
         }
 
     val intent = Intent(context, MealWidgetService::class.java)

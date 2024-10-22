@@ -86,7 +86,7 @@ class MessageDataSourceImpl @Inject constructor(
                 val type = message.payload.toResponse(MessageRoomEventResponse.Raw::class.java).type
 
                 when (type) {
-                    "MESSAGE", "FILE", "IMG", "ENTER", "LEFT" -> {
+                    "MESSAGE", "FILE", "IMG", "ENTER", "LEFT", "BOT" -> {
                         emit(message.payload.toResponse(MessageRoomEventResponse.MessageParent.Message::class.java))
                     }
                     "SUB" -> {
@@ -111,7 +111,7 @@ class MessageDataSourceImpl @Inject constructor(
             }
     }
 
-    override suspend fun sendMessage(chatRoomId: String, message: String, messageUUID: String, type: String): Boolean {
+    override suspend fun sendMessage(chatRoomId: String, message: String, messageUUID: String, type: String, mention: List<Long>): Boolean {
         // 연결이 되지 않는 경우 연결 강제성 부여
         if (!stompClient.isConnected) {
             return false
@@ -122,6 +122,7 @@ class MessageDataSourceImpl @Inject constructor(
             message = message,
             uuid = messageUUID,
             type = type,
+            mention = mention,
         ).toJsonString()
 
         val sendContent = StompMessage(

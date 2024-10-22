@@ -1,7 +1,7 @@
 package com.seugi.data.notification
 
 import com.seugi.common.model.Result
-import com.seugi.data.notification.model.NotificationModel
+import com.seugi.data.core.model.NotificationModel
 import kotlinx.coroutines.flow.Flow
 
 interface NotificationRepository {
