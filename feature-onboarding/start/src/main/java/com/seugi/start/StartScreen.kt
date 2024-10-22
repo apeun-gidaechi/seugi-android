@@ -1,5 +1,7 @@
 package com.seugi.start
 
+import android.app.Activity
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -80,19 +82,28 @@ internal fun StartScreen(navigateToEmailSignIn: () -> Unit, navigateToMain: () -
         .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestServerAuthCode(clientId)
         .requestEmail()
-        .requestScopes(Scope(Scopes.PROFILE), Scope(Scopes.EMAIL))
+        .requestScopes(
+            Scope(Scopes.PROFILE),
+            Scope(Scopes.EMAIL),
+            Scope("https://www.googleapis.com/auth/classroom.courses.readonly"),
+            Scope("https://www.googleapis.com/auth/classroom.coursework.me.readonly"),
+            Scope("https://www.googleapis.com/auth/classroom.coursework.students.readonly")
+
+        )
         .build()
     val googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(context, googleSignInOption)
 
     val googleAuthLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
     ) { result ->
+        Log.d("", "StartScreen: ${result.resultCode == Activity.RESULT_CANCELED}")
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         try {
             val account = task.getResult(ApiException::class.java)
             val code = account.serverAuthCode.toString()
             viewModel.getFcmToken(code = code)
         } catch (e: ApiException) {
+            Log.d("TAG", "StartScreen: $e")
             Toast.makeText(context, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show()
         }
     }

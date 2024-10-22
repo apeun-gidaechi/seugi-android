@@ -78,10 +78,10 @@ internal fun TimeScheduleCard(uiState: CommonUiState<TimeScheduleUiState>, onCli
                             .fillMaxWidth()
                             .height(34.dp)
                             .align(Alignment.BottomStart),
-                    ) {
+                        ) {
                         Box(
                             modifier = Modifier
-                                .weight(selectIndex.toFloat() + 0.9f)
+                                .weight(if (selectIndex.toFloat() + 0.9f <= 0f) 0.01f else selectIndex.toFloat() + 0.9f)
                                 .fillMaxHeight()
                                 .background(
                                     color = SeugiTheme.colors.primary500,

@@ -10,5 +10,7 @@ interface TaskRepository {
 
     suspend fun getWorkspaceTaskAll(workspaceId: String): Flow<Result<ImmutableList<TaskModel>>>
 
+    suspend fun getGoogleTaskAll(): Flow<Result<ImmutableList<TaskModel>>>
+
     suspend fun createTask(workspaceId: String, title: String, description: String, dueDate: LocalDateTime): Flow<Result<Boolean>>
 }

@@ -91,4 +91,8 @@ object SeugiUrl {
     object Schedule {
         const val MONTH = "$SCHEDULE/month"
     }
+
+    object Task {
+        const val CLASSROOM = "$TASK/classroom"
+    }
 }

@@ -5,6 +5,7 @@ import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.response.Response
 import com.seugi.network.task.TaskDataSource
 import com.seugi.network.task.request.TaskCreateRequest
+import com.seugi.network.task.response.TaskGoogleResponse
 import com.seugi.network.task.response.TaskResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -19,6 +20,9 @@ class TaskDataSourceImpl @Inject constructor(
 ): TaskDataSource {
     override suspend fun getWorkspaceTaskAll(workspaceId: String): BaseResponse<List<TaskResponse>> =
         httpClient.get("${SeugiUrl.TASK}/${workspaceId}").body()
+
+    override suspend fun getClassroomAll(): BaseResponse<List<TaskGoogleResponse>> =
+        httpClient.get(SeugiUrl.Task.CLASSROOM).body()
 
     override suspend fun createTask(
         workspaceId: String,

@@ -1,14 +1,17 @@
 package com.seugi.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
+import com.seugi.common.utiles.combineWhenAllComplete
 import com.seugi.data.core.model.MealType
 import com.seugi.data.meal.MealRepository
 import com.seugi.data.schedule.ScheduleRepository
 import com.seugi.data.task.TaskRepository
+import com.seugi.data.task.model.TaskModel
 import com.seugi.data.timetable.TimetableRepository
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.data.workspace.model.WorkspaceModel
@@ -208,34 +211,84 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun loadTask(workspaceId: String) = viewModelScope.launch(dispatcher) {
-        taskRepository.getWorkspaceTaskAll(
-            workspaceId = workspaceId
-        ).collect {
-            when (it) {
+        launch {
+            taskRepository.getGoogleTaskAll().collect {
+                when (it) {
+                    is Result.Error -> {
+                        it.throwable.printStackTrace()
+                    }
+
+                    Result.Loading -> {
+
+                    }
+
+                    is Result.Success -> {
+                        Log.d("TAG", "loadTask: ${it.data}")
+                    }
+                }
+            }
+        }
+
+        combineWhenAllComplete(
+            taskRepository.getGoogleTaskAll(),
+            taskRepository.getWorkspaceTaskAll(workspaceId)
+        ) { google, workspace ->
+            val tasks = mutableListOf<TaskModel>()
+            var failedGoogleOauth = false
+            var failedWorkspace = false
+            when (google) {
                 is Result.Success -> {
-                    _state.update { state ->
-                        state.copy(
-                            taskState = CommonUiState.Success(
-                                it.data
-                                    .filter { it.dueDate != null }
-                                    .sortedBy {
-                                        it.dueDate
-                                    }
-                                    .take(3)
-                                    .toImmutableList()
-                            )
-                        )
-                    }
+                    tasks.addAll(google.data)
                 }
-                Result.Loading -> {}
+
+                Result.Loading -> {
+
+                }
+
                 is Result.Error -> {
-                    it.throwable.printStackTrace()
-                    _state.update { state ->
-                        state.copy(
-                            taskState = CommonUiState.Error
-                        )
-                    }
+                    failedGoogleOauth = true
                 }
+            }
+
+            when (workspace) {
+                is Result.Success -> {
+                    tasks.addAll(workspace.data)
+                }
+
+                Result.Loading -> {
+                    failedWorkspace = true
+                }
+
+                is Result.Error -> {
+
+                }
+            }
+
+            return@combineWhenAllComplete Pair(
+                tasks.toImmutableList(),
+                failedGoogleOauth && failedWorkspace
+            )
+        }.collect {
+            if (it.second) {
+                _state.update { state ->
+                    state.copy(
+                        taskState = CommonUiState.Error
+                    )
+                }
+                return@collect
+            }
+            _state.update { state ->
+                state.copy(
+                    taskState = CommonUiState.Success(
+                        it.first
+                            .filter { it.dueDate != null }
+                            .sortedBy {
+                                it.dueDate
+                            }
+                            .take(3)
+                            .toImmutableList()
+                    )
+                )
             }
         }
     }

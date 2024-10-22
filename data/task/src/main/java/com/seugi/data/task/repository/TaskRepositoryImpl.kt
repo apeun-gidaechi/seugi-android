@@ -1,5 +1,6 @@
 package com.seugi.data.task.repository
 
+import com.seugi.common.model.Result
 import com.seugi.common.model.asResult
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
@@ -25,6 +26,14 @@ class TaskRepositoryImpl @Inject constructor(
         val response = taskDataSource.getWorkspaceTaskAll(
             workspaceId = workspaceId
         ).safeResponse()
+
+        emit(response.toModels().toImmutableList())
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun getGoogleTaskAll(): Flow<Result<ImmutableList<TaskModel>>> = flow {
+        val response = taskDataSource.getClassroomAll().safeResponse()
 
         emit(response.toModels().toImmutableList())
     }
