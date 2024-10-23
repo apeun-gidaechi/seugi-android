@@ -1,6 +1,7 @@
 package com.seugi.meal
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
@@ -30,6 +33,7 @@ import com.seugi.designsystem.component.SeugiDatePickerMonth
 import com.seugi.designsystem.component.SeugiDivider
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.rememberSeugiDatePickerState
+import com.seugi.designsystem.component.shimmerEffectBrush
 import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.collections.immutable.ImmutableList
 
@@ -97,7 +101,11 @@ fun MealScreen(
                     )
             ) {
                 Spacer(modifier = Modifier.height(22.dp))
-
+                if (uiState.isLoading) {
+                    MealLoadingCard(Modifier.padding(horizontal = 16.dp))
+                    MealLoadingCard(Modifier.padding(horizontal = 16.dp))
+                    MealLoadingCard(Modifier.padding(horizontal = 16.dp))
+                }
                 if (uiState.filterMealData.breakfast != null) {
                     MealCard(
                         modifier = Modifier.padding(horizontal = 16.dp),
@@ -177,6 +185,90 @@ private fun MealCard(
                 color = SeugiTheme.colors.black
             )
         }
+        Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+@Composable
+private fun MealLoadingCard(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .width(28.dp)
+                    .height(21.dp)
+                    .background(
+                        brush = shimmerEffectBrush(),
+                        shape = CircleShape
+                    )
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Box(
+                modifier = Modifier
+                    .width(51.dp)
+                    .height(18.dp)
+                    .background(
+                        brush = shimmerEffectBrush(),
+                        shape = CircleShape
+                    )
+            )
+        }
+        Box(
+            modifier = Modifier
+                .width(120.dp)
+                .height(18.dp)
+                .background(
+                    brush = shimmerEffectBrush(),
+                    shape = CircleShape
+                )
+        )
+
+        Box(
+            modifier = Modifier
+                .width(120.dp)
+                .height(18.dp)
+                .background(
+                    brush = shimmerEffectBrush(),
+                    shape = CircleShape
+                )
+        )
+        Box(
+            modifier = Modifier
+                .width(120.dp)
+                .height(18.dp)
+                .background(
+                    brush = shimmerEffectBrush(),
+                    shape = CircleShape
+                )
+        )
+        Box(
+            modifier = Modifier
+                .width(120.dp)
+                .height(18.dp)
+                .background(
+                    brush = shimmerEffectBrush(),
+                    shape = CircleShape
+                )
+        )
+        Box(
+            modifier = Modifier
+                .width(120.dp)
+                .height(18.dp)
+                .background(
+                    brush = shimmerEffectBrush(),
+                    shape = CircleShape
+                )
+        )
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
