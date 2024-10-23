@@ -1,9 +1,13 @@
 package com.seugi
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +19,7 @@ import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -24,11 +29,17 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
+import com.seugi.designsystem.component.SeugiDialog
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.main.navigation.MAIN_ROUTE
 import com.seugi.main.navigation.mainScreen
@@ -54,7 +65,9 @@ class MainActivity : ComponentActivity() {
             var showSplash by remember { mutableStateOf(true) }
             val snackbarHostState = remember { SnackbarHostState() }
             val coroutineScope = rememberCoroutineScope()
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                RequestNotificationPermissionDialog()
+            }
             LaunchedEffect(state) {
                 if (state == null) {
                     delay(2000)
@@ -122,6 +135,29 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+fun RequestNotificationPermissionDialog() {
+    val permissionState = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+    val context = LocalContext.current
+
+    if (!permissionState.status.isGranted) {
+        if (permissionState.status.shouldShowRationale) {
+            Toast.makeText(context, "알림을 켜주세요", Toast.LENGTH_SHORT).show()
+        } else {
+            SeugiDialog(
+                title = "스기 알람 설정",
+                content = "스기의 알람 기능을 이용하기 위해선 권한을 허용해야합니다.",
+                buttonText = "확인",
+                onDismissRequest = {
+                    permissionState.launchPermissionRequest()
+                },
+            )
         }
     }
 }

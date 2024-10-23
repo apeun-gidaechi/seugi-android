@@ -2,4 +2,6 @@
     <string name="app_name">스기</string>
     <string name="widget_meal_description">스기 급식</string>
     <string name="widget_timetable_description">스기 시간표 위젯</string>
+    <string name="default_notification_channel_id">seugi_default_channle</string>
+    <string name="default_notification_channel_name">Seugi Default Channle</string>
 </resources>
