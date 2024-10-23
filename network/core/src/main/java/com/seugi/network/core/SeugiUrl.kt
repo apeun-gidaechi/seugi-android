@@ -10,6 +10,7 @@ object SeugiUrl {
     const val PROFILE = "$BASE_URL/profile"
     const val OAUTH = "$BASE_URL/oauth"
     const val SCHEDULE = "$BASE_URL/schedule"
+    const val TASK = "$BASE_URL/task"
 
     object Message {
         private const val WS_URL = BuildConfig.WS_URL
@@ -90,5 +91,9 @@ object SeugiUrl {
 
     object Schedule {
         const val MONTH = "$SCHEDULE/month"
+    }
+
+    object Task {
+        const val CLASSROOM = "$TASK/classroom"
     }
 }

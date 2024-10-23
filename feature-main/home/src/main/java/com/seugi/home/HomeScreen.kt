@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
@@ -60,6 +61,7 @@ import com.seugi.home.card.CatSeugiCard
 import com.seugi.home.card.MealCard
 import com.seugi.home.card.ScheduleCard
 import com.seugi.home.card.SchoolCard
+import com.seugi.home.card.TaskCard
 import com.seugi.home.card.TimeScheduleCard
 
 @OptIn(
@@ -77,6 +79,7 @@ internal fun HomeScreen(
     navigateToTimetable: () -> Unit,
     navigateToWorkspaceDetail: (String) -> Unit,
     navigateToWorkspaceCreate: () -> Unit,
+    navigateToTask: () -> Unit,
 ) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -192,6 +195,14 @@ internal fun HomeScreen(
             item {
                 ScheduleCard(uiState = state.schoolScheduleState)
             }
+
+            item {
+                TaskCard(
+                    uiState = state.taskState,
+                    navigateToTask = navigateToTask,
+                )
+            }
+
             item {
                 Spacer(modifier = Modifier.height(32.dp))
             }
@@ -394,11 +405,13 @@ internal fun HomeCalendarCard(modifier: Modifier = Modifier, date: String, conte
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(
+            modifier = Modifier.weight(1f),
             text = content,
             style = SeugiTheme.typography.body2,
             color = SeugiTheme.colors.black,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
-        Spacer(modifier = Modifier.weight(1f))
         Text(
             text = dDay,
             style = SeugiTheme.typography.body2,

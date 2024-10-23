@@ -42,6 +42,10 @@ import com.seugi.roomcreate.navigation.navigateToRoomCreate
 import com.seugi.roomcreate.navigation.roomCreateScreen
 import com.seugi.setting.navigate.navigateToSetting
 import com.seugi.setting.navigate.settingScreen
+import com.seugi.task.create.navigation.navigateToTaskCreate
+import com.seugi.task.create.navigation.taskCreateScreen
+import com.seugi.task.navigation.navigateToTask
+import com.seugi.task.navigation.taskScreen
 import com.seugi.timetable.navigation.navigateToTimetable
 import com.seugi.timetable.navigation.timetableScreen
 import com.seugi.workspace.navigation.WAITING_JOIN
@@ -149,6 +153,9 @@ internal fun MainScreen(
                 },
                 navigateToWorkspaceCreate = {
                     navHostController.navigateToWorkspaceCreate()
+                },
+                navigateToTask = {
+                    navHostController.navigateToTask()
                 },
             )
 
@@ -350,6 +357,18 @@ internal fun MainScreen(
             inviteMemberScreen(
                 popBackStack = navHostController::popBackStack,
                 workspaceId = state.profile.workspaceId,
+            )
+
+            taskScreen(
+                popBackStack = navHostController::popBackStack,
+                workspaceId = state.workspace.workspaceId,
+                profile = state.profile,
+                navigateToTaskCreate = navHostController::navigateToTaskCreate,
+            )
+
+            taskCreateScreen(
+                popBackStack = navHostController::popBackStack,
+                workspaceId = state.workspace.workspaceId,
             )
         }
     }

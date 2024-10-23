@@ -59,7 +59,7 @@ fun SeugiTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
-    onClickDelete: () -> Unit,
+    onClickDelete: (() -> Unit)? = null,
     placeholder: String = "",
     enabled: Boolean = true,
     singleLine: Boolean = true,
@@ -119,7 +119,7 @@ fun SeugiTextField(
                     },
                     label = null,
                     trailingIcon = {
-                        if (value.isNotEmpty()) {
+                        if (value.isNotEmpty() && onClickDelete != null) {
                             SeugiIconButton(
                                 resId = R.drawable.ic_close_fill,
                                 onClick = onClickDelete,
