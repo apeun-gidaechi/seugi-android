@@ -14,6 +14,8 @@ import com.seugi.chatdatail.model.plus
 import com.seugi.common.model.Result
 import com.seugi.common.utiles.toDeviceLocalDateTime
 import com.seugi.common.utiles.toEpochMilli
+import com.seugi.common.utiles.toMap
+import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.core.model.UserInfoModel
 import com.seugi.data.core.model.UserModel
 import com.seugi.data.file.FileRepository
@@ -29,6 +31,7 @@ import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
 import com.seugi.data.personalchat.PersonalChatRepository
 import com.seugi.data.profile.ProfileRepository
 import com.seugi.data.token.TokenRepository
+import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.stompclient.StompException
 import com.seugi.ui.toByteArray
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -49,6 +52,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -59,6 +63,7 @@ class ChatDetailViewModel @Inject constructor(
     private val messageRepository: MessageRepository,
     private val personalChatRepository: PersonalChatRepository,
     private val groupChatRepository: GroupChatRepository,
+    private val workspaceRepository: WorkspaceRepository,
     private val profileRepository: ProfileRepository,
     private val tokenRepository: TokenRepository,
     private val fileRepository: FileRepository,
@@ -96,7 +101,7 @@ class ChatDetailViewModel @Inject constructor(
             ),
         )
         initProfile(workspaceId)
-        loadRoom(chatRoomId, isPersonal, userId)
+        loadRoom(chatRoomId, isPersonal, userId, workspaceId)
     }
 
     fun loadMessage(chatRoomId: String, userId: Long) = viewModelScope.launch {
@@ -144,7 +149,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun loadRoom(chatRoomId: String, isPersonal: Boolean, userId: Long) = viewModelScope.launch {
+    private fun loadRoom(chatRoomId: String, isPersonal: Boolean, userId: Long, workspaceId: String) = viewModelScope.launch {
         val result = if (isPersonal) {
             personalChatRepository.getChat(
                 roomId = chatRoomId,
@@ -197,9 +202,76 @@ class ChatDetailViewModel @Inject constructor(
                             }.toImmutableList(),
                         )
                     }
+
+                    loadWorkspaceMembers(workspaceId)
                 }
 
                 is Result.Loading -> {}
+                is Result.Error -> {
+                    it.throwable.printStackTrace()
+                }
+            }
+        }
+    }
+
+    private suspend fun loadWorkspaceMembers(workspaceId: String) {
+        workspaceRepository.getMembers(workspaceId = workspaceId).collect {
+            when (it) {
+                is Result.Success -> {
+                    _state.update { state ->
+                        state.copy(
+                            workspaceUsers = it.data.toImmutableList(),
+                            workspaceUsersMap = it.data.toMap { it.member.id }.toImmutableMap(),
+                        )
+                    }
+                }
+                Result.Loading -> {}
+                is Result.Error -> {
+                    it.throwable.printStackTrace()
+                }
+            }
+        }
+    }
+
+    fun memberInvite(chatRoomId: String, members: List<ProfileModel>) = viewModelScope.launch {
+        groupChatRepository.addMembers(
+            chatRoomId = chatRoomId,
+            chatMemberUsers = members.map { it.member.id },
+        ).collect {
+            when (it) {
+                is Result.Success -> {
+                    _state.update {
+                        it.copy(
+                            roomInfo = it.roomInfo?.copy(
+                                members = it.roomInfo.members
+                                    .toMutableList()
+                                    .apply {
+                                        addAll(
+                                            members.map {
+                                                UserInfoModel(
+                                                    userInfo = it.member,
+                                                    timestamp = LocalDateTime.of(2000, 1, 1, 1, 1),
+                                                    utcTimeMillis = 3L,
+                                                )
+                                            },
+                                        )
+                                    }
+                                    .toImmutableList(),
+                            ),
+                            users = it.users.toMutableMap()
+                                .apply {
+                                    putAll(
+                                        members
+                                            .map { it.member }
+                                            .toMap { it.id },
+                                    )
+                                }
+                                .toImmutableMap(),
+                        )
+                    }
+                }
+                Result.Loading -> {
+                }
                 is Result.Error -> {
                     it.throwable.printStackTrace()
                 }

@@ -33,6 +33,7 @@ object SeugiUrl {
         const val CREATE = "$ROOT/create"
         const val SEARCH_ROOM = "$ROOT/search/room"
         const val LEFT = "$ROOT/left"
+        const val MEMBER_ADD = "$ROOT/member/add"
     }
 
     object Profile {

@@ -12,4 +12,6 @@ interface GroupChatDataSource {
     suspend fun getChat(roomId: String): BaseResponse<ChatRoomResponse>
 
     suspend fun leftRoom(chatRoomId: String): BaseResponse<Unit?>
+
+    suspend fun addMembers(chatRoomId: String, chatMemberUsers: List<Long>): BaseResponse<Unit?>
 }

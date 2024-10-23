@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.data.file)
     implementation(projects.data.perosnalChat)
     implementation(projects.data.groupChat)
+    implementation(projects.data.workspace)
     implementation(libs.coil.compose)
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.zoomable)
