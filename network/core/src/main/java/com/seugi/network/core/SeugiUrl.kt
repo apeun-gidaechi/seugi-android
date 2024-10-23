@@ -2,11 +2,11 @@ package com.seugi.network.core
 
 object SeugiUrl {
     private const val BASE_URL = BuildConfig.BASE_URL
-    private const val AI_URL = BuildConfig.AI_URL
+    private const val AI_URL = "${BASE_URL}/ai"
 
     const val WORKSPACE = "$BASE_URL/workspace"
     const val FILE = "$BASE_URL/file"
-    const val AI = "$AI_URL/ai"
+    const val AI = "$BASE_URL/ai"
     const val PROFILE = "$BASE_URL/profile"
     const val OAUTH = "$BASE_URL/oauth"
     const val SCHEDULE = "$BASE_URL/schedule"

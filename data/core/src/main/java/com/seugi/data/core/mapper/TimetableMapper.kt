@@ -1,4 +1,4 @@
-package com.seugi.data.timetable.mapper
+package com.seugi.data.core.mapper
 
 import com.seugi.data.core.model.TimetableModel
 import com.seugi.network.timetable.response.TimetableResponse

@@ -16,7 +16,12 @@ class CatSeugiDataSourceImpl @Inject constructor(
     private val httpClient: HttpClient,
 ) : CatSeugiDataSource {
     override suspend fun sendText(text: String): BaseResponse<String> = httpClient.post(SeugiUrl.AI) {
-        setBody(CatSeugiRequest(text))
+        setBody(
+            CatSeugiRequest(
+                message = text,
+                roomId = "67177e4ac6b844040200d65c",
+            ),
+        )
         contentType(ContentType.Application.Json)
     }.body()
 }

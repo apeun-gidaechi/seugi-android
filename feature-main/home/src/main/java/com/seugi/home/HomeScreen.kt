@@ -287,7 +287,15 @@ internal fun HomeCard(modifier: Modifier = Modifier, text: String, image: Painte
 }
 
 @Composable
-internal fun HomeCard(modifier: Modifier = Modifier, text: String, onClickDetail: () -> Unit, image: Painter, colorFilter: ColorFilter? = null, content: @Composable () -> Unit) {
+internal fun HomeCard(
+    modifier: Modifier = Modifier,
+    text: String,
+    onClickDetail: () -> Unit,
+    image: Painter,
+    colorFilter: ColorFilter? = null,
+    blockNav: Boolean = false,
+    content: @Composable () -> Unit,
+) {
     Column(
         modifier = modifier
             .padding(horizontal = 20.dp)
@@ -304,7 +312,7 @@ internal fun HomeCard(modifier: Modifier = Modifier, text: String, onClickDetail
             modifier = Modifier
                 .bounceClick(
                     onClick = onClickDetail,
-                    enabled = true,
+                    enabled = !blockNav,
                 ),
         ) {
             Spacer(modifier = Modifier.width(16.dp))
@@ -334,15 +342,17 @@ internal fun HomeCard(modifier: Modifier = Modifier, text: String, onClickDetail
                 color = SeugiTheme.colors.black,
             )
             Spacer(modifier = Modifier.weight(1f))
-            Image(
-                modifier = Modifier
-                    .size(24.dp)
-                    .align(Alignment.CenterVertically),
-                painter = painterResource(id = R.drawable.ic_expand_right_line),
-                contentDescription = "상세보기",
-                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
-            )
-            Spacer(modifier = Modifier.width(12.dp))
+            if (!blockNav) {
+                Image(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .align(Alignment.CenterVertically),
+                    painter = painterResource(id = R.drawable.ic_expand_right_line),
+                    contentDescription = "상세보기",
+                    colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+            }
         }
         Spacer(modifier = Modifier.height(12.dp))
         Box(
