@@ -34,7 +34,7 @@ import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
-fun SeugiDialog(title: String, content: String, onDismissRequest: () -> Unit) {
+fun SeugiDialog(title: String, content: String, buttonText: String = "닫기", onDismissRequest: () -> Unit,) {
     Dialog(
         onDismissRequest = onDismissRequest,
     ) {
@@ -83,7 +83,7 @@ fun SeugiDialog(title: String, content: String, onDismissRequest: () -> Unit) {
                                 horizontal = 12.dp,
                                 vertical = (7.5).dp,
                             ),
-                            text = "닫기",
+                            text = buttonText,
                             color = SeugiTheme.colors.primary500,
                             style = SeugiTheme.typography.subtitle2,
                         )

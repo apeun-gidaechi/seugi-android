@@ -1,4 +1,5 @@
 [versions]
+accompanistPermissions = "0.30.1"
 complieSdk = "34"
 composeEmojiPicker = "1.0.2"
 minSdk = "28"
@@ -82,6 +83,7 @@ testng = "6.9.6"
 [libraries]
 
 # kotlin
+accompanist-permissions = { group = "com.google.accompanist",name = "accompanist-permissions", version.ref = "accompanistPermissions" }
 compose-emoji-picker = { module = "com.github.apeun-gidaechi:emojipicker", version.ref = "composeEmojiPicker" }
 kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }

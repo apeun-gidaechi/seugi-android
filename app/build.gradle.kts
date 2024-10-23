@@ -43,6 +43,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.message)
+    implementation(libs.accompanist.permissions)
 
 
     implementation(projects.network.core)
