@@ -34,6 +34,7 @@ internal fun ScheduleCard(uiState: CommonUiState<ImmutableList<ScheduleModel>>) 
         onClickDetail = { /*TODO*/ },
         image = painterResource(id = R.drawable.ic_calendar_line),
         colorFilter = ColorFilter.tint(SeugiTheme.colors.gray600),
+        blockNav = true
     ) {
         when (uiState) {
             is CommonUiState.Success -> {
