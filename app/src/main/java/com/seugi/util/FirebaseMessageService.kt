@@ -18,11 +18,11 @@ import com.seugi.data.firebasetoken.FirebaseTokenRepository
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.random.Random
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 @AndroidEntryPoint
 class FirebaseMessageService : FirebaseMessagingService() {
@@ -44,7 +44,7 @@ class FirebaseMessageService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        message.notification?.let {message ->
+        message.notification?.let { message ->
             sendNotification(message)
         }
         Log.d("TAG", "Notification Title :: ${message.notification?.title}")
@@ -58,7 +58,10 @@ class FirebaseMessageService : FirebaseMessagingService() {
         }
 
         val pendingIntent = PendingIntent.getActivity(
-            this, 0, intent, FLAG_IMMUTABLE
+            this,
+            0,
+            intent,
+            FLAG_IMMUTABLE,
         )
 
         val channelId = getString(R.string.default_notification_channel_id)
