@@ -159,7 +159,7 @@ internal fun MainScreen(
                 navigateToTask = {
                     navHostController.navigateToTask()
                 },
-                navigateToMeal = navHostController::navigateToMeal
+                navigateToMeal = navHostController::navigateToMeal,
             )
 
             chatScreen(
@@ -376,7 +376,7 @@ internal fun MainScreen(
 
             mealScreen(
                 workspaceId = state.workspace.workspaceId,
-                popBackStack = navHostController::popBackStack
+                popBackStack = navHostController::popBackStack,
             )
         }
     }

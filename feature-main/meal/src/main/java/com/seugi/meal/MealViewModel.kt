@@ -9,30 +9,28 @@ import com.seugi.data.meal.MealRepository
 import com.seugi.meal.model.MealFilterUiState
 import com.seugi.meal.model.MealUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDate
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.toJavaLocalDate
-import java.time.LocalDate
-import javax.inject.Inject
 
 @HiltViewModel
 class MealViewModel @Inject constructor(
-    private val mealRepository: MealRepository
-): ViewModel() {
+    private val mealRepository: MealRepository,
+) : ViewModel() {
 
     private val _state = MutableStateFlow(MealUiState())
     val state = _state.asStateFlow()
 
-    fun loadMeal(
-        workspaceId: String,
-    ) = viewModelScope.launch {
+    fun loadMeal(workspaceId: String) = viewModelScope.launch {
         val date = LocalDate.now()
         mealRepository.getMonthMeal(
             workspaceId = workspaceId,
             year = date.year,
-            month = date.monthValue
+            month = date.monthValue,
         ).collect {
             when (it) {
                 is Result.Success -> {
@@ -55,7 +53,7 @@ class MealViewModel @Inject constructor(
                         state.copy(
                             isLoading = false,
                             mealData = it.data,
-                            filterMealData = mealFilteredUiState
+                            filterMealData = mealFilteredUiState,
                         )
                     }
                 }
@@ -87,7 +85,7 @@ class MealViewModel @Inject constructor(
 
         _state.update {
             it.copy(
-                filterMealData = mealFilteredUiState
+                filterMealData = mealFilteredUiState,
             )
         }
     }

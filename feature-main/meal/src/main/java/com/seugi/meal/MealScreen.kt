@@ -26,8 +26,6 @@ import androidx.compose.ui.util.fastForEach
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.designsystem.component.DividerType
-import com.seugi.designsystem.component.SeugiDatePicker
-import com.seugi.designsystem.component.SeugiDatePickerColors
 import com.seugi.designsystem.component.SeugiDatePickerDefaults
 import com.seugi.designsystem.component.SeugiDatePickerMonth
 import com.seugi.designsystem.component.SeugiDivider
@@ -38,12 +36,7 @@ import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
-fun MealScreen(
-    viewModel: MealViewModel = hiltViewModel(),
-    workspaceId: String,
-    popBackStack: () -> Unit
-) {
-
+fun MealScreen(viewModel: MealViewModel = hiltViewModel(), workspaceId: String, popBackStack: () -> Unit) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
 
     val datePickerState = rememberSeugiDatePickerState()
@@ -63,20 +56,20 @@ fun MealScreen(
                     Text(
                         text = "급식",
                         style = SeugiTheme.typography.subtitle1,
-                        color = SeugiTheme.colors.black
+                        color = SeugiTheme.colors.black,
                     )
                 },
                 onNavigationIconClick = popBackStack,
-                containerColors = SeugiTheme.colors.primary050
+                containerColors = SeugiTheme.colors.primary050,
             )
         },
-        containerColor = SeugiTheme.colors.primary050
+        containerColor = SeugiTheme.colors.primary050,
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             Spacer(modifier = Modifier.height(12.dp))
             SeugiDatePickerMonth(
@@ -89,7 +82,7 @@ fun MealScreen(
                 isFixedSize = false,
                 onClickDate = { date, isValid ->
                     datePickerState.selectedDate = date
-                }
+                },
             )
             Spacer(modifier = Modifier.height(16.dp))
             Column(
@@ -97,8 +90,8 @@ fun MealScreen(
                     .fillMaxSize()
                     .background(
                         color = SeugiTheme.colors.white,
-                        shape = RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp)
-                    )
+                        shape = RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp),
+                    ),
             ) {
                 Spacer(modifier = Modifier.height(22.dp))
                 if (uiState.isLoading) {
@@ -111,12 +104,12 @@ fun MealScreen(
                         modifier = Modifier.padding(horizontal = 16.dp),
                         category = "아침",
                         kcal = uiState.filterMealData.breakfast!!.calorie,
-                        menu = uiState.filterMealData.breakfast!!.menu
+                        menu = uiState.filterMealData.breakfast!!.menu,
                     )
                     if (uiState.filterMealData.lunch != null || uiState.filterMealData.dinner != null) {
                         SeugiDivider(
                             modifier = Modifier.padding(horizontal = 16.dp),
-                            type = DividerType.WIDTH
+                            type = DividerType.WIDTH,
                         )
                     }
                 }
@@ -126,12 +119,12 @@ fun MealScreen(
                         modifier = Modifier.padding(horizontal = 16.dp),
                         category = "점심",
                         kcal = uiState.filterMealData.lunch!!.calorie,
-                        menu = uiState.filterMealData.lunch!!.menu
+                        menu = uiState.filterMealData.lunch!!.menu,
                     )
                     if (uiState.filterMealData.dinner != null) {
                         SeugiDivider(
                             modifier = Modifier.padding(horizontal = 16.dp),
-                            type = DividerType.WIDTH
+                            type = DividerType.WIDTH,
                         )
                     }
                 }
@@ -141,48 +134,42 @@ fun MealScreen(
                         modifier = Modifier.padding(horizontal = 16.dp),
                         category = "저녁",
                         kcal = uiState.filterMealData.dinner!!.calorie,
-                        menu = uiState.filterMealData.dinner!!.menu
+                        menu = uiState.filterMealData.dinner!!.menu,
                     )
                 }
             }
         }
     }
-
 }
 
 @Composable
-private fun MealCard(
-    modifier: Modifier = Modifier,
-    category: String,
-    kcal: String,
-    menu: ImmutableList<String>,
-) {
+private fun MealCard(modifier: Modifier = Modifier, category: String, kcal: String, menu: ImmutableList<String>) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = category,
                 style = SeugiTheme.typography.subtitle2,
-                color = SeugiTheme.colors.black
+                color = SeugiTheme.colors.black,
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = kcal,
                 style = SeugiTheme.typography.body2,
-                color = SeugiTheme.colors.gray600
+                color = SeugiTheme.colors.gray600,
             )
         }
         menu.fastForEach {
             Text(
                 text = it,
                 style = SeugiTheme.typography.body2,
-                color = SeugiTheme.colors.black
+                color = SeugiTheme.colors.black,
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -190,18 +177,16 @@ private fun MealCard(
 }
 
 @Composable
-private fun MealLoadingCard(
-    modifier: Modifier = Modifier,
-) {
+private fun MealLoadingCard(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
                 modifier = Modifier
@@ -209,8 +194,8 @@ private fun MealLoadingCard(
                     .height(21.dp)
                     .background(
                         brush = shimmerEffectBrush(),
-                        shape = CircleShape
-                    )
+                        shape = CircleShape,
+                    ),
             )
             Spacer(modifier = Modifier.weight(1f))
             Box(
@@ -219,8 +204,8 @@ private fun MealLoadingCard(
                     .height(18.dp)
                     .background(
                         brush = shimmerEffectBrush(),
-                        shape = CircleShape
-                    )
+                        shape = CircleShape,
+                    ),
             )
         }
         Box(
@@ -229,8 +214,8 @@ private fun MealLoadingCard(
                 .height(18.dp)
                 .background(
                     brush = shimmerEffectBrush(),
-                    shape = CircleShape
-                )
+                    shape = CircleShape,
+                ),
         )
 
         Box(
@@ -239,8 +224,8 @@ private fun MealLoadingCard(
                 .height(18.dp)
                 .background(
                     brush = shimmerEffectBrush(),
-                    shape = CircleShape
-                )
+                    shape = CircleShape,
+                ),
         )
         Box(
             modifier = Modifier
@@ -248,8 +233,8 @@ private fun MealLoadingCard(
                 .height(18.dp)
                 .background(
                     brush = shimmerEffectBrush(),
-                    shape = CircleShape
-                )
+                    shape = CircleShape,
+                ),
         )
         Box(
             modifier = Modifier
@@ -257,8 +242,8 @@ private fun MealLoadingCard(
                 .height(18.dp)
                 .background(
                     brush = shimmerEffectBrush(),
-                    shape = CircleShape
-                )
+                    shape = CircleShape,
+                ),
         )
         Box(
             modifier = Modifier
@@ -266,8 +251,8 @@ private fun MealLoadingCard(
                 .height(18.dp)
                 .background(
                     brush = shimmerEffectBrush(),
-                    shape = CircleShape
-                )
+                    shape = CircleShape,
+                ),
         )
         Spacer(modifier = Modifier.height(16.dp))
     }

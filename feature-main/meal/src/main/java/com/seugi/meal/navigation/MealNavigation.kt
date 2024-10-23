@@ -10,14 +10,11 @@ const val MEAL_ROUTE = "meal"
 
 fun NavController.navigateToMeal(navOptions: NavOptions? = null) = this.navigate(MEAL_ROUTE)
 
-fun NavGraphBuilder.mealScreen(
-    workspaceId: String,
-    popBackStack: () -> Unit
-) {
+fun NavGraphBuilder.mealScreen(workspaceId: String, popBackStack: () -> Unit) {
     composable(MEAL_ROUTE) {
         MealScreen(
             workspaceId = workspaceId,
-            popBackStack = popBackStack
+            popBackStack = popBackStack,
         )
     }
 }

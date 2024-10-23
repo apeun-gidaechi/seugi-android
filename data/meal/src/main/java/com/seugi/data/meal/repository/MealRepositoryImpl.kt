@@ -61,15 +61,11 @@ class MealRepositoryImpl @Inject constructor(
         .flowOn(dispatcher)
         .asResult()
 
-    override suspend fun getMonthMeal(
-        workspaceId: String,
-        year: Int,
-        month: Int,
-    ): Flow<Result<ImmutableList<MealModel>>> = flow {
+    override suspend fun getMonthMeal(workspaceId: String, year: Int, month: Int): Flow<Result<ImmutableList<MealModel>>> = flow {
         val response: ImmutableList<MealModel> =
             mealDao.getMonthMeals(
                 workspaceId = workspaceId,
-                datePattern = year.toString() + month.toString().padStart(2, '0')
+                datePattern = year.toString() + month.toString().padStart(2, '0'),
             )
                 .apply {
                     Log.d("TAG", "getDateMeal: $this")

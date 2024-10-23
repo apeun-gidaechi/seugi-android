@@ -7,7 +7,7 @@ import kotlinx.collections.immutable.persistentListOf
 data class MealUiState(
     val isLoading: Boolean = true,
     val mealData: ImmutableList<MealModel> = persistentListOf(),
-    val filterMealData: MealFilterUiState = MealFilterUiState()
+    val filterMealData: MealFilterUiState = MealFilterUiState(),
 )
 
 data class MealFilterUiState(
