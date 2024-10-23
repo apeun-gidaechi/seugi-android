@@ -375,6 +375,7 @@ internal fun MainScreen(
             )
 
             mealScreen(
+                workspaceId = state.workspace.workspaceId,
                 popBackStack = navHostController::popBackStack
             )
         }

@@ -18,4 +18,8 @@ class MealDataSourceImpl @Inject constructor(
         parameter("workspaceId", workspaceId)
         parameter("date", date)
     }.body()
+
+    override suspend fun getMonthMeal(workspaceId: String): BaseResponse<List<MealResponse>> = httpClient.get(SeugiUrl.Meal.ALL) {
+        parameter("workspaceId", workspaceId)
+    }.body()
 }

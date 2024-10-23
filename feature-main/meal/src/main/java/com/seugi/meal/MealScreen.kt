@@ -11,14 +11,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Divider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.designsystem.component.DividerType
 import com.seugi.designsystem.component.SeugiDatePicker
 import com.seugi.designsystem.component.SeugiDatePickerColors
@@ -29,14 +32,25 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.rememberSeugiDatePickerState
 import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun MealScreen(
+    viewModel: MealViewModel = hiltViewModel(),
+    workspaceId: String,
     popBackStack: () -> Unit
 ) {
 
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
+
     val datePickerState = rememberSeugiDatePickerState()
+
+    LaunchedEffect(workspaceId) {
+        viewModel.loadMeal(workspaceId)
+    }
+
+    LaunchedEffect(datePickerState.selectedDate) {
+        viewModel.changeDate(datePickerState.selectedDate)
+    }
 
     Scaffold(
         topBar = {
@@ -70,51 +84,58 @@ fun MealScreen(
                 isValidDate = datePickerState::validDate,
                 isFixedSize = false,
                 onClickDate = { date, isValid ->
-
+                    datePickerState.selectedDate = date
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
             Column(
-                modifier = Modifier.background(
-                    color = SeugiTheme.colors.white,
-                    shape = RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp)
-                )
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        color = SeugiTheme.colors.white,
+                        shape = RoundedCornerShape(topStart = 18.dp, topEnd = 18.dp)
+                    )
             ) {
                 Spacer(modifier = Modifier.height(22.dp))
-                MealCard(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    category = "아침",
-                    kcal = "960Kcal",
-                    menu = persistentListOf("쇠고기우엉볶음밥", "불고기치즈파니니", "계란실파국", "오이생채", "배추김치")
-                )
-                SeugiDivider(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    type = DividerType.WIDTH
-                )
 
-                MealCard(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    category = "점심",
-                    kcal = "960Kcal",
-                    menu = persistentListOf("쇠고기우엉볶음밥", "불고기치즈파니니", "계란실파국", "오이생채", "배추김치")
-                )
-                SeugiDivider(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    type = DividerType.WIDTH
-                )
+                if (uiState.filterMealData.breakfast != null) {
+                    MealCard(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        category = "아침",
+                        kcal = uiState.filterMealData.breakfast!!.calorie,
+                        menu = uiState.filterMealData.breakfast!!.menu
+                    )
+                    if (uiState.filterMealData.lunch != null || uiState.filterMealData.dinner != null) {
+                        SeugiDivider(
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            type = DividerType.WIDTH
+                        )
+                    }
+                }
 
-                MealCard(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    category = "저녁",
-                    kcal = "960Kcal",
-                    menu = persistentListOf("쇠고기우엉볶음밥", "불고기치즈파니니", "계란실파국", "오이생채", "배추김치")
-                )
-                SeugiDivider(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    type = DividerType.WIDTH
-                )
+                if (uiState.filterMealData.lunch != null) {
+                    MealCard(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        category = "점심",
+                        kcal = uiState.filterMealData.lunch!!.calorie,
+                        menu = uiState.filterMealData.lunch!!.menu
+                    )
+                    if (uiState.filterMealData.dinner != null) {
+                        SeugiDivider(
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            type = DividerType.WIDTH
+                        )
+                    }
+                }
 
-
+                if (uiState.filterMealData.dinner != null) {
+                    MealCard(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        category = "저녁",
+                        kcal = uiState.filterMealData.dinner!!.calorie,
+                        menu = uiState.filterMealData.dinner!!.menu
+                    )
+                }
             }
         }
     }

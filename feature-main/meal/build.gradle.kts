@@ -12,4 +12,6 @@ dependencies {
     implementation(projects.common)
     implementation(projects.data.meal)
 
+    implementation(libs.kotlinx.datetime)
+
 }
