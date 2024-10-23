@@ -60,7 +60,8 @@ class TaskViewModel @Inject constructor(
                             workspaceTaskState = CommonUiState.Error,
                         )
                     }
-                    it.throwable.printStackTrace()                }
+                    it.throwable.printStackTrace()
+                }
             }
         }
     }
