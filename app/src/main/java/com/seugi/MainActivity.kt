@@ -1,5 +1,6 @@
 package com.seugi
 
+import android.Manifest
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
@@ -38,6 +39,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import com.seugi.designsystem.component.SeugiDialog
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.main.navigation.MAIN_ROUTE
 import com.seugi.main.navigation.mainScreen
@@ -48,14 +50,6 @@ import com.seugi.onboarding.navigation.onboardingScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import android.Manifest
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.ui.window.Dialog
-import com.seugi.designsystem.component.SeugiDialog
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -144,6 +138,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -152,15 +147,16 @@ fun RequestNotificationPermissionDialog() {
     val context = LocalContext.current
 
     if (!permissionState.status.isGranted) {
-        if (permissionState.status.shouldShowRationale) Toast.makeText(context, "알림 설정해", Toast.LENGTH_SHORT).show()
-        else {
+        if (permissionState.status.shouldShowRationale) {
+            Toast.makeText(context, "알림을 켜주세요", Toast.LENGTH_SHORT).show()
+        } else {
             SeugiDialog(
                 title = "스기 알람 설정",
                 content = "스기의 알람 기능을 이용하기 위해선 권한을 허용해야합니다.",
                 buttonText = "확인",
                 onDismissRequest = {
                     permissionState.launchPermissionRequest()
-                }
+                },
             )
         }
     }

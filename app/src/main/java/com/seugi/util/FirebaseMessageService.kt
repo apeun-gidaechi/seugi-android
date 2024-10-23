@@ -74,11 +74,8 @@ class FirebaseMessageService : FirebaseMessagingService() {
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Log.d("TAG", "if ${Build.VERSION.SDK_INT}: ")
             val channel = NotificationChannel(channelId, channelName, IMPORTANCE_DEFAULT)
             manager.createNotificationChannel(channel)
-        }else {
-            Log.d("TAG", "else ${Build.VERSION.SDK_INT}: ")
         }
 
         manager.notify(Random.nextInt(), notificationBuilder.build())
