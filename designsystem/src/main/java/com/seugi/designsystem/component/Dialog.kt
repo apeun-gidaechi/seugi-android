@@ -34,7 +34,7 @@ import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
-fun SeugiDialog(title: String, content: String, buttonText: String = "닫기", onDismissRequest: () -> Unit,) {
+fun SeugiDialog(title: String, content: String, buttonText: String = "닫기", onDismissRequest: () -> Unit) {
     Dialog(
         onDismissRequest = onDismissRequest,
     ) {
