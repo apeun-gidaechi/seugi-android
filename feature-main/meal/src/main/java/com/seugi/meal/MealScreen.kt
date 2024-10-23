@@ -36,7 +36,7 @@ import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
-fun MealScreen(viewModel: MealViewModel = hiltViewModel(), workspaceId: String, popBackStack: () -> Unit) {
+internal fun MealScreen(viewModel: MealViewModel = hiltViewModel(), workspaceId: String, popBackStack: () -> Unit) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
 
     val datePickerState = rememberSeugiDatePickerState()
