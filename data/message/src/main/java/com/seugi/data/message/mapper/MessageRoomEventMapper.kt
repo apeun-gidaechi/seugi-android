@@ -1,7 +1,6 @@
 package com.seugi.data.message.mapper
 
 import com.seugi.data.core.mapper.toModels
-import com.seugi.data.core.model.TimetableModel
 import com.seugi.data.message.model.MessageBotRawKeyword
 import com.seugi.data.message.model.MessageBotRawKeywordInData
 import com.seugi.data.message.model.MessageRoomEvent
