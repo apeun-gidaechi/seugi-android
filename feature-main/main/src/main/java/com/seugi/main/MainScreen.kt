@@ -28,6 +28,8 @@ import com.seugi.designsystem.component.SeugiBottomNavigation
 import com.seugi.home.navigation.HOME_ROUTE
 import com.seugi.home.navigation.homeScreen
 import com.seugi.home.navigation.navigateToHome
+import com.seugi.meal.navigation.mealScreen
+import com.seugi.meal.navigation.navigateToMeal
 import com.seugi.notification.navigation.NOTIFICATION_ROUTE
 import com.seugi.notification.navigation.notificationScreen
 import com.seugi.notificationcreate.navigation.navigateToNotificationCreate
@@ -157,6 +159,7 @@ internal fun MainScreen(
                 navigateToTask = {
                     navHostController.navigateToTask()
                 },
+                navigateToMeal = navHostController::navigateToMeal
             )
 
             chatScreen(
@@ -369,6 +372,10 @@ internal fun MainScreen(
             taskCreateScreen(
                 popBackStack = navHostController::popBackStack,
                 workspaceId = state.workspace.workspaceId,
+            )
+
+            mealScreen(
+                popBackStack = navHostController::popBackStack
             )
         }
     }

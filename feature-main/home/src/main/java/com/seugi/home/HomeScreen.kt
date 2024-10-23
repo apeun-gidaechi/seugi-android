@@ -80,6 +80,7 @@ internal fun HomeScreen(
     navigateToWorkspaceDetail: (String) -> Unit,
     navigateToWorkspaceCreate: () -> Unit,
     navigateToTask: () -> Unit,
+    navigateToMeal: () -> Unit,
 ) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -181,7 +182,7 @@ internal fun HomeScreen(
             item {
                 MealCard(
                     uiState = state.mealState,
-                    onClickDetail = {},
+                    onClickDetail = navigateToMeal,
                 )
             }
 

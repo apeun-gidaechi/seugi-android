@@ -107,14 +107,14 @@ fun SeugiDatePicker(
             .padding(24.dp)
             .background(color = colors.containerColor),
     ) {
-        SeugiTimePickerHeader(
+        SeugiDatePickerHeader(
             month = state.month,
             colors = colors,
             onClickPrevMonth = onClickPrevMonth,
             onClickNextMonth = onClickNextMonth,
         )
         Spacer(modifier = Modifier.height(16.dp))
-        SeugiTimePickerMonth(
+        SeugiDatePickerMonth(
             month = state.month,
             selectDate = state.selectedDate,
             weekdayNames = state.weekdayNames,
@@ -133,7 +133,7 @@ fun SeugiDatePicker(
 }
 
 @Composable
-private fun SeugiTimePickerHeader(month: CalendarMonth, colors: SeugiDatePickerColors, onClickPrevMonth: () -> Unit, onClickNextMonth: () -> Unit) {
+private fun SeugiDatePickerHeader(month: CalendarMonth, colors: SeugiDatePickerColors, onClickPrevMonth: () -> Unit, onClickNextMonth: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -178,7 +178,8 @@ private fun SeugiTimePickerHeader(month: CalendarMonth, colors: SeugiDatePickerC
 }
 
 @Composable
-private fun SeugiTimePickerMonth(
+fun SeugiDatePickerMonth(
+    modifier: Modifier = Modifier,
     month: CalendarMonth,
     selectDate: LocalDate?,
     weekdayNames: List<String>,
@@ -188,7 +189,7 @@ private fun SeugiTimePickerMonth(
     onClickDate: (date: LocalDate, isValid: Boolean) -> Unit,
 ) {
     BoxWithConstraints(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
         maxWidth
         Column {
