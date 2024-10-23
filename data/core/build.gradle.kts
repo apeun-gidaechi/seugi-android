@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.local.room)
     implementation(projects.network.meal)
     implementation(projects.network.notification)
+    implementation(projects.network.timetable)
 
     implementation(libs.kotlinx.collections.immutable)
 }

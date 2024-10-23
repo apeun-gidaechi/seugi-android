@@ -9,6 +9,7 @@ import com.seugi.network.core.utiles.toResponse
 import com.seugi.network.meal.response.MealResponse
 import com.seugi.network.message.response.MessageRoomEventResponse
 import com.seugi.network.notification.response.NotificationResponse
+import com.seugi.network.timetable.response.TimetableResponse
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
@@ -48,7 +49,7 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
                     )
                 }
                 "시간표" -> {
-                    val botData = message.toResponse<MessageBotRawKeywordInData<List<TimetableModel>>>()
+                    val botData = message.toResponse<MessageBotRawKeywordInData<List<TimetableResponse>>>()
                     MessageRoomEvent.MessageParent.BOT.Timetable(
                         id = id,
                         chatRoomId = chatRoomId,
@@ -56,7 +57,7 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
                         userId = this.userId,
                         isFirst = true,
                         isLast = true,
-                        message = botData.data.toImmutableList(),
+                        message = botData.data.toModels().toImmutableList(),
                         messageStatus = messageStatus,
                         emoticon = emoticon,
                         eventList = eventList?.toImmutableList() ?: persistentListOf(),
