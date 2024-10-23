@@ -65,7 +65,7 @@ internal fun MealCard(uiState: CommonUiState<MealUiState>, onClickDetail: () -> 
         image = painterResource(id = R.drawable.ic_utensils_line),
         colorFilter = ColorFilter.tint(SeugiTheme.colors.gray600),
         onClickDetail = onClickDetail,
-        blockNav = true
+        blockNav = true,
     ) {
         when (uiState) {
             is CommonUiState.Success -> {

@@ -287,7 +287,15 @@ internal fun HomeCard(modifier: Modifier = Modifier, text: String, image: Painte
 }
 
 @Composable
-internal fun HomeCard(modifier: Modifier = Modifier, text: String, onClickDetail: () -> Unit, image: Painter, colorFilter: ColorFilter? = null, blockNav: Boolean = false, content: @Composable () -> Unit) {
+internal fun HomeCard(
+    modifier: Modifier = Modifier,
+    text: String,
+    onClickDetail: () -> Unit,
+    image: Painter,
+    colorFilter: ColorFilter? = null,
+    blockNav: Boolean = false,
+    content: @Composable () -> Unit,
+) {
     Column(
         modifier = modifier
             .padding(horizontal = 20.dp)
