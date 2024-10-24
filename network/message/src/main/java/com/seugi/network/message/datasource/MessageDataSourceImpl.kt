@@ -8,7 +8,9 @@ import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.utiles.toJsonString
 import com.seugi.network.core.utiles.toResponse
 import com.seugi.network.message.MessageDataSource
+import com.seugi.network.message.request.CatSeugiRequest
 import com.seugi.network.message.request.MessageRequest
+import com.seugi.network.message.response.CatSeugiResponse
 import com.seugi.network.message.response.MessageRoomEventResponse
 import com.seugi.network.message.response.message.MessageLoadResponse
 import com.seugi.network.message.response.stomp.MessageStompLifecycleResponse
@@ -20,6 +22,10 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.coroutineScope
@@ -138,4 +144,14 @@ class MessageDataSourceImpl @Inject constructor(
         )
         return true
     }
+
+    override suspend fun sendText(text: String): BaseResponse<String> = httpClient.post(SeugiUrl.AI) {
+        setBody(
+            CatSeugiRequest(
+                message = text,
+                roomId = "67177e4ac6b844040200d65c",
+            ),
+        )
+        contentType(ContentType.Application.Json)
+    }.body()
 }

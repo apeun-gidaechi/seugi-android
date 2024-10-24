@@ -1,18 +1,30 @@
 package com.seugi.data.message.repository
 
+import android.util.Log
 import com.seugi.common.model.Result
 import com.seugi.common.model.asResult
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
+import com.seugi.data.core.mapper.toModel
+import com.seugi.data.core.mapper.toModels
+import com.seugi.data.core.model.MealModel
+import com.seugi.data.core.model.TimetableModel
 import com.seugi.data.message.MessageRepository
 import com.seugi.data.message.mapper.toEventModel
 import com.seugi.data.message.mapper.toModel
+import com.seugi.data.message.model.CatSeugiResponse
+import com.seugi.data.message.model.MessageBotRawKeyword
+import com.seugi.data.message.model.MessageBotRawKeywordInData
 import com.seugi.data.message.model.MessageLoadModel
 import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.data.message.model.MessageType
 import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
 import com.seugi.local.room.dao.TokenDao
+import com.seugi.network.core.response.safeResponse
+import com.seugi.network.core.utiles.toResponse
+import com.seugi.network.meal.response.MealResponse
 import com.seugi.network.message.MessageDataSource
+import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
@@ -81,6 +93,62 @@ class MessageRepositoryImpl @Inject constructor(
 
     override suspend fun collectStompLifecycle(): Flow<Result<MessageStompLifecycleModel>> = datasource.collectStompLifecycle()
         .map { it.toModel() }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun sendText(text: String): Flow<Result<String>> = flow {
+        val response = datasource.sendText(text).safeResponse()
+
+        val keyword = response.toResponse<MessageBotRawKeyword>().keyword
+        Log.d("TAG", "sendText: $keyword")
+        val result: CatSeugiResponse = when (keyword) {
+            "급식" -> {
+                val data = response.toResponse<MessageBotRawKeywordInData<List<MealResponse>>>()
+                CatSeugiResponse.Meal(
+                    data = data.data.toModels().toImmutableList()
+                )
+            }
+            "시간표" ->{
+                val data = response.toResponse<MessageBotRawKeywordInData<List<TimetableModel>>>()
+                CatSeugiResponse.Timetable(
+                    data = data.data.toImmutableList()
+                )
+            }
+            "기타" ->{
+                val data = response.toResponse<MessageBotRawKeywordInData<String>>()
+                CatSeugiResponse.ETC(
+                    data = data.data
+                )
+            }
+            "공지" ->{
+                val data = response.toResponse<MessageBotRawKeywordInData<String>>()
+                CatSeugiResponse.ETC(
+                    data = data.data
+                )
+            }
+            "사람 뽑기" ->{
+                val data = response.toResponse<MessageBotRawKeywordInData<String>>()
+                CatSeugiResponse.ETC(
+                    data = data.data
+                )
+            }
+            "팀짜기" ->{
+                val data = response.toResponse<MessageBotRawKeywordInData<String>>()
+                CatSeugiResponse.ETC(
+                    data = data.data
+                )
+            }
+            else -> {
+                CatSeugiResponse.NotSupport(
+                    data = "현재 버전에서 지원하지 않는 메세지 유형입니다.",
+                )
+            }
+        }
+
+
+
+        emit(result.toModel())
+    }
         .flowOn(dispatcher)
         .asResult()
 }
