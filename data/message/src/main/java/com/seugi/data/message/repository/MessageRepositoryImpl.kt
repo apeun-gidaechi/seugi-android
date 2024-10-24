@@ -8,6 +8,7 @@ import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.core.mapper.toModel
 import com.seugi.data.core.mapper.toModels
 import com.seugi.data.core.model.MealModel
+import com.seugi.data.core.model.NotificationModel
 import com.seugi.data.core.model.TimetableModel
 import com.seugi.data.message.MessageRepository
 import com.seugi.data.message.mapper.toEventModel
@@ -24,6 +25,7 @@ import com.seugi.network.core.response.safeResponse
 import com.seugi.network.core.utiles.toResponse
 import com.seugi.network.meal.response.MealResponse
 import com.seugi.network.message.MessageDataSource
+import com.seugi.network.notification.response.NotificationResponse
 import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -121,9 +123,9 @@ class MessageRepositoryImpl @Inject constructor(
                 )
             }
             "공지" ->{
-                val data = response.toResponse<MessageBotRawKeywordInData<String>>()
-                CatSeugiResponse.ETC(
-                    data = data.data
+                val data = response.toResponse<MessageBotRawKeywordInData<List<NotificationResponse>>>()
+                CatSeugiResponse.Notification(
+                    data = data.data.toModels().toImmutableList()
                 )
             }
             "사람 뽑기" ->{

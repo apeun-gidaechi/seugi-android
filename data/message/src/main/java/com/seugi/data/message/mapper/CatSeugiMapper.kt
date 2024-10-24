@@ -61,5 +61,15 @@ fun CatSeugiResponse.toModel(): String {
             val result = this.data.replace("::", "")
             result
         }
+        is CatSeugiResponse.Notification ->{
+            var visibleMessage = ""
+            this.data.forEach {
+                visibleMessage += "${it.userName} 선생님이 공지를 작성하셨어요\n" +
+                        "제목: ${it.title}" +
+                        it.content
+            }
+
+            visibleMessage
+        }
     }
 }
