@@ -1,6 +1,7 @@
 package com.seugi.data.message.mapper
 
 import com.seugi.data.core.mapper.toModels
+import com.seugi.data.core.model.MealType
 import com.seugi.data.message.model.MessageBotRawKeyword
 import com.seugi.data.message.model.MessageBotRawKeywordInData
 import com.seugi.data.message.model.MessageRoomEvent
@@ -9,8 +10,10 @@ import com.seugi.network.meal.response.MealResponse
 import com.seugi.network.message.response.MessageRoomEventResponse
 import com.seugi.network.notification.response.NotificationResponse
 import com.seugi.network.timetable.response.TimetableResponse
+import java.time.LocalDate
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.datetime.toKotlinLocalDate
 
 internal fun MessageRoomEventResponse.toEventModel(userId: Long): MessageRoomEvent = when (this) {
     is MessageRoomEventResponse.MessageParent.Message -> toModel(userId)
@@ -30,6 +33,58 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
             when (botKeyword.keyword) {
                 "급식" -> {
                     val botData = message.toResponse<MessageBotRawKeywordInData<List<MealResponse>>>()
+                    val response = botData.data
+                        .toModels()
+                        .filter { it.mealDate == LocalDate.now().toKotlinLocalDate() }
+                        .toImmutableList()
+
+                    val breakfast = response.firstOrNull { it.mealType == MealType.BREAKFAST }
+                    val lunch = response.firstOrNull { it.mealType == MealType.LUNCH }
+                    val dinner = response.firstOrNull { it.mealType == MealType.DINNER }
+
+                    var visibleMessage = ""
+
+                    if (breakfast != null) {
+                        visibleMessage += "- 오늘의 조식\n"
+                        breakfast.menu.forEachIndexed { index, s ->
+                            visibleMessage += s
+                            if (index != breakfast.menu.lastIndex) {
+                                visibleMessage += "\n"
+                            }
+                        }
+
+                        if (lunch != null || dinner != null) {
+                            visibleMessage += "\n\n"
+                        }
+                    }
+
+                    if (lunch != null) {
+                        visibleMessage += "- 오늘의 중식\n"
+                        lunch.menu.forEachIndexed { index, s ->
+                            visibleMessage += s
+                            if (index != lunch.menu.lastIndex) {
+                                visibleMessage += "\n"
+                            }
+                        }
+                        if (dinner != null) {
+                            visibleMessage += "\n\n"
+                        }
+                    }
+
+                    if (dinner != null) {
+                        visibleMessage += "- 오늘의 석식\n"
+                        dinner.menu.forEachIndexed { index, s ->
+                            visibleMessage += s
+                            if (index != dinner.menu.lastIndex) {
+                                visibleMessage += "\n"
+                            }
+                        }
+                    }
+
+                    if (visibleMessage == "") {
+                        visibleMessage = "오늘의 급식 없습니다."
+                    }
+
                     MessageRoomEvent.MessageParent.BOT.Meal(
                         id = id,
                         chatRoomId = chatRoomId,
@@ -38,6 +93,7 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
                         isFirst = true,
                         isLast = true,
                         message = botData.data.toModels().toImmutableList(),
+                        visibleMessage = visibleMessage,
                         messageStatus = messageStatus,
                         emoticon = emoticon,
                         eventList = eventList?.toImmutableList() ?: persistentListOf(),
@@ -49,6 +105,11 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
                 }
                 "시간표" -> {
                     val botData = message.toResponse<MessageBotRawKeywordInData<List<TimetableResponse>>>()
+
+                    val response = botData.data.toModels().toImmutableList()
+
+                    val responseToString = response.map { "${it.time}교시 : ${it.subject}" }
+
                     MessageRoomEvent.MessageParent.BOT.Timetable(
                         id = id,
                         chatRoomId = chatRoomId,
@@ -56,7 +117,8 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
                         userId = this.userId,
                         isFirst = true,
                         isLast = true,
-                        message = botData.data.toModels().toImmutableList(),
+                        message = response,
+                        visibleMessage = "오늘의 시간표에요\n${responseToString.joinToString("\n")}",
                         messageStatus = messageStatus,
                         emoticon = emoticon,
                         eventList = eventList?.toImmutableList() ?: persistentListOf(),
@@ -68,6 +130,16 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
                 }
                 "공지" -> {
                     val botData = message.toResponse<MessageBotRawKeywordInData<List<NotificationResponse>>>()
+                    val response = botData.data.toModels().toImmutableList()
+
+                    var visibleMessage = ""
+
+                    response.forEach {
+                        visibleMessage += "${it.userName} 선생님이 공지를 작성하셨어요\n" +
+                            "제목: ${it.title}" +
+                            it.content
+                    }
+
                     MessageRoomEvent.MessageParent.BOT.Notification(
                         id = id,
                         chatRoomId = chatRoomId,
@@ -76,6 +148,7 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
                         isFirst = true,
                         isLast = true,
                         message = botData.data.toModels().toImmutableList(),
+                        visibleMessage = visibleMessage,
                         messageStatus = messageStatus,
                         emoticon = emoticon,
                         eventList = eventList?.toImmutableList() ?: persistentListOf(),
