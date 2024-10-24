@@ -1,12 +1,13 @@
 package com.seugi.data.message.mapper
 
+import android.util.Log
 import com.seugi.data.core.model.MealType
 import com.seugi.data.message.model.CatSeugiResponse
 
 fun CatSeugiResponse.toModel(): String {
     return when (this) {
         is CatSeugiResponse.ETC -> {
-            ""
+            this.data
         }
         is CatSeugiResponse.Meal -> {
             val breakfast = this.data.firstOrNull { it.mealType == MealType.BREAKFAST }
@@ -46,7 +47,10 @@ fun CatSeugiResponse.toModel(): String {
             this.data
         }
         is CatSeugiResponse.Timetable -> {
-            this.data.joinToString(separator = ", ") { it.time }
+            val result = this.data.map {
+                "${it.time}교시 ${it.subject}"
+            }.joinToString(separator = "\n")
+            result
         }
     }
 }
