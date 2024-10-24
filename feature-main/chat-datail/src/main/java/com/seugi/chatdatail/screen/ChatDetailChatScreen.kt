@@ -482,13 +482,14 @@ internal fun ChatDetailChatScreen(
                                         state.roomInfo?.members ?: persistentListOf(),
                                     )
                                     val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
-                                    ChatItemType.Ai(
+                                    val ai = ChatItemType.Ai(
                                         isFirst = item.isFirst,
                                         isLast = item.isLast,
-                                        message = item.message.toString(),
+                                        message = item.visibleMessage,
                                         createdAt = item.timestamp.toAmShortString(),
                                         count = if (count <= 0) null else count,
                                     )
+                                    ai
                                 }
 
                                 is MessageRoomEvent.MessageParent.BOT.Timetable -> {
@@ -499,7 +500,7 @@ internal fun ChatDetailChatScreen(
                                     ChatItemType.Ai(
                                         isFirst = item.isFirst,
                                         isLast = item.isLast,
-                                        message = item.message.toString(),
+                                        message = item.visibleMessage,
                                         createdAt = item.timestamp.toAmShortString(),
                                         count = if (count <= 0) null else count,
                                     )
@@ -513,7 +514,7 @@ internal fun ChatDetailChatScreen(
                                     ChatItemType.Ai(
                                         isFirst = item.isFirst,
                                         isLast = item.isLast,
-                                        message = item.message.toString(),
+                                        message = item.visibleMessage,
                                         createdAt = item.timestamp.toAmShortString(),
                                         count = if (count <= 0) null else count,
                                     )

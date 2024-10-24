@@ -69,6 +69,7 @@ sealed class MessageRoomEvent(
             data class Meal(
                 override val type: MessageType,
                 val message: ImmutableList<MealModel>,
+                val visibleMessage: String,
                 override val messageStatus: String,
                 override val emoticon: String?,
                 override val eventList: ImmutableList<Int>?,
@@ -86,6 +87,7 @@ sealed class MessageRoomEvent(
             data class Timetable(
                 override val type: MessageType,
                 val message: ImmutableList<TimetableModel>,
+                val visibleMessage: String,
                 override val messageStatus: String,
                 override val emoticon: String?,
                 override val eventList: ImmutableList<Int>?,
@@ -103,6 +105,7 @@ sealed class MessageRoomEvent(
             data class Notification(
                 override val type: MessageType,
                 val message: ImmutableList<NotificationModel>,
+                val visibleMessage: String,
                 override val messageStatus: String,
                 override val emoticon: String?,
                 override val eventList: ImmutableList<Int>?,
