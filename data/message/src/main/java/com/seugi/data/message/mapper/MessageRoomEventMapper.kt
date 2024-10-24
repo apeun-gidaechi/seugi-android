@@ -10,10 +10,10 @@ import com.seugi.network.meal.response.MealResponse
 import com.seugi.network.message.response.MessageRoomEventResponse
 import com.seugi.network.notification.response.NotificationResponse
 import com.seugi.network.timetable.response.TimetableResponse
+import java.time.LocalDate
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.datetime.toKotlinLocalDate
-import java.time.LocalDate
 
 internal fun MessageRoomEventResponse.toEventModel(userId: Long): MessageRoomEvent = when (this) {
     is MessageRoomEventResponse.MessageParent.Message -> toModel(userId)
@@ -108,7 +108,7 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
 
                     val response = botData.data.toModels().toImmutableList()
 
-                    val responseToString = response.map { "${it.time}교시 : ${it.subject}"}
+                    val responseToString = response.map { "${it.time}교시 : ${it.subject}" }
 
                     MessageRoomEvent.MessageParent.BOT.Timetable(
                         id = id,
@@ -136,8 +136,8 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
 
                     response.forEach {
                         visibleMessage += "${it.userName} 선생님이 공지를 작성하셨어요\n" +
-                                "제목: ${it.title}" +
-                                it.content
+                            "제목: ${it.title}" +
+                            it.content
                     }
 
                     MessageRoomEvent.MessageParent.BOT.Notification(
