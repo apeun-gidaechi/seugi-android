@@ -7,8 +7,6 @@ import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.core.mapper.toModel
 import com.seugi.data.core.mapper.toModels
-import com.seugi.data.core.model.MealModel
-import com.seugi.data.core.model.NotificationModel
 import com.seugi.data.core.model.TimetableModel
 import com.seugi.data.message.MessageRepository
 import com.seugi.data.message.mapper.toEventModel
@@ -26,8 +24,8 @@ import com.seugi.network.core.utiles.toResponse
 import com.seugi.network.meal.response.MealResponse
 import com.seugi.network.message.MessageDataSource
 import com.seugi.network.notification.response.NotificationResponse
-import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -107,37 +105,37 @@ class MessageRepositoryImpl @Inject constructor(
             "급식" -> {
                 val data = response.toResponse<MessageBotRawKeywordInData<List<MealResponse>>>()
                 CatSeugiResponse.Meal(
-                    data = data.data.toModels().toImmutableList()
+                    data = data.data.toModels().toImmutableList(),
                 )
             }
-            "시간표" ->{
+            "시간표" -> {
                 val data = response.toResponse<MessageBotRawKeywordInData<List<TimetableModel>>>()
                 CatSeugiResponse.Timetable(
-                    data = data.data.toImmutableList()
+                    data = data.data.toImmutableList(),
                 )
             }
-            "기타" ->{
+            "기타" -> {
                 val data = response.toResponse<MessageBotRawKeywordInData<String>>()
                 CatSeugiResponse.ETC(
-                    data = data.data
+                    data = data.data,
                 )
             }
-            "공지" ->{
+            "공지" -> {
                 val data = response.toResponse<MessageBotRawKeywordInData<List<NotificationResponse>>>()
                 CatSeugiResponse.Notification(
-                    data = data.data.toModels().toImmutableList()
+                    data = data.data.toModels().toImmutableList(),
                 )
             }
-            "사람 뽑기" ->{
+            "사람 뽑기" -> {
                 val data = response.toResponse<MessageBotRawKeywordInData<String>>()
                 CatSeugiResponse.Picking(
-                    data = data.data
+                    data = data.data,
                 )
             }
-            "팀짜기" ->{
+            "팀짜기" -> {
                 val data = response.toResponse<MessageBotRawKeywordInData<String>>()
                 CatSeugiResponse.Team(
-                    data = data.data
+                    data = data.data,
                 )
             }
             else -> {
@@ -146,8 +144,6 @@ class MessageRepositoryImpl @Inject constructor(
                 )
             }
         }
-
-
 
         emit(result.toModel())
     }

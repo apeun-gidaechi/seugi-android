@@ -1,7 +1,6 @@
 package com.seugi.data.message
 
 import com.seugi.common.model.Result
-import com.seugi.data.message.model.CatSeugiResponse
 import com.seugi.data.message.model.MessageLoadModel
 import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.data.message.model.MessageType

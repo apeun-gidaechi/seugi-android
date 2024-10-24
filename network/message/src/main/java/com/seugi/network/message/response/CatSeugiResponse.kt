@@ -2,7 +2,7 @@ package com.seugi.network.message.response
 
 sealed class CatSeugiResponse(
     @Transient open val type: String,
-){
+) {
     data class Meal(
         override val type: String,
         val id: Long,
@@ -11,9 +11,8 @@ sealed class CatSeugiResponse(
         val menu: List<String>,
         val calorie: String,
         val mealInfo: List<String>,
-        val mealDate: List<String>
-    ): CatSeugiResponse(type)
-
+        val mealDate: List<String>,
+    ) : CatSeugiResponse(type)
 
     data class Timetable(
         override val type: String,
@@ -23,11 +22,11 @@ sealed class CatSeugiResponse(
         val className: String,
         val time: String,
         val subject: String,
-        val date: String
-    ):CatSeugiResponse(type)
+        val date: String,
+    ) : CatSeugiResponse(type)
 
     data class ETC(
         override val type: String,
-        val data: String
-    ): CatSeugiResponse(type)
+        val data: String,
+    ) : CatSeugiResponse(type)
 }

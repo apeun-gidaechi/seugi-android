@@ -1,6 +1,5 @@
 package com.seugi.data.message.mapper
 
-import android.util.Log
 import com.seugi.data.core.model.MealType
 import com.seugi.data.message.model.CatSeugiResponse
 
@@ -52,21 +51,21 @@ fun CatSeugiResponse.toModel(): String {
             }.joinToString(separator = "\n")
             result
         }
-        is CatSeugiResponse.Picking ->{
+        is CatSeugiResponse.Picking -> {
             val cleanedData = this.data.replace("::", "")
             cleanedData
         }
 
-        is CatSeugiResponse.Team ->{
+        is CatSeugiResponse.Team -> {
             val result = this.data.replace("::", "")
             result
         }
-        is CatSeugiResponse.Notification ->{
+        is CatSeugiResponse.Notification -> {
             var visibleMessage = ""
             this.data.forEach {
                 visibleMessage += "${it.userName} 선생님이 공지를 작성하셨어요\n" +
-                        "제목: ${it.title}" +
-                        it.content
+                    "제목: ${it.title}" +
+                    it.content
             }
 
             visibleMessage

@@ -1,7 +1,6 @@
 package com.seugi.network.message
 
 import com.seugi.network.core.response.BaseResponse
-import com.seugi.network.message.response.CatSeugiResponse
 import com.seugi.network.message.response.MessageRoomEventResponse
 import com.seugi.network.message.response.message.MessageLoadResponse
 import com.seugi.network.message.response.stomp.MessageStompLifecycleResponse
