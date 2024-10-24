@@ -7,4 +7,6 @@ import kotlinx.datetime.LocalDate
 interface MealDataSource {
 
     suspend fun getDateMeal(workspaceId: String, date: LocalDate): BaseResponse<List<MealResponse>>
+
+    suspend fun getMonthMeal(workspaceId: String): BaseResponse<List<MealResponse>>
 }

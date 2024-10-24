@@ -30,5 +30,6 @@ dependencies {
     implementation(projects.featureMain.setting)
     implementation(projects.featureMain.task)
     implementation(projects.featureMain.taskCreate)
+    implementation(projects.featureMain.meal)
 
 }

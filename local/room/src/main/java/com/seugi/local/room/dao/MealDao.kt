@@ -11,6 +11,12 @@ interface MealDao : BaseDao<MealEntity> {
     @Query("SELECT * FROM ${SeugiTable.MEAL_TABLE} WHERE workspaceId = :workspaceId AND mealDate = :date")
     suspend fun getDateMeals(workspaceId: String, date: String): List<MealEntity>?
 
+    /**
+     * datePattern: yyyyMM Pattern
+     */
+    @Query("SELECT * FROM ${SeugiTable.MEAL_TABLE} WHERE workspaceId = :workspaceId AND mealDate LIKE :datePattern")
+    suspend fun getMonthMeals(workspaceId: String, datePattern: String): List<MealEntity>?
+
     @Query("DELETE FROM ${SeugiTable.MEAL_TABLE}")
     suspend fun deleteToken()
 }

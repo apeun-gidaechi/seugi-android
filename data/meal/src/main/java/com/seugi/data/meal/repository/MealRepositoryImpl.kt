@@ -60,4 +60,35 @@ class MealRepositoryImpl @Inject constructor(
     }
         .flowOn(dispatcher)
         .asResult()
+
+    override suspend fun getMonthMeal(workspaceId: String, year: Int, month: Int): Flow<Result<ImmutableList<MealModel>>> = flow {
+        val response: ImmutableList<MealModel> =
+            mealDao.getMonthMeals(
+                workspaceId = workspaceId,
+                datePattern = year.toString() + month.toString().padStart(2, '0'),
+            )
+                .apply {
+                    Log.d("TAG", "getDateMeal: $this")
+                }
+                ?.isEmptyGetNull()
+                ?.toModels()
+                .apply {
+                    Log.d("TAG", "getDateMeal: $this")
+                }
+                ?.toImmutableList()
+                .apply {
+                    Log.d("TAG", "getDateMeal: $this")
+                }
+                ?: dataSource.getMonthMeal(
+                    workspaceId = workspaceId,
+                ).safeResponse()
+                    .toModels()
+                    .toImmutableList().also {
+                        mealDao.insert(it.toEntity())
+                    }
+        Log.d("TAG", "getDateMeal: $response")
+        emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
 }

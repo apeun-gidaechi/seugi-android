@@ -132,6 +132,7 @@ include(
     ":feature-main:timetable",
     ":feature-main:setting",
     ":feature-main:meal-widget",
+    ":feature-main:meal",
     ":feature-main:timetable-widget",
     ":feature-main:task",
     ":feature-main:task-create",

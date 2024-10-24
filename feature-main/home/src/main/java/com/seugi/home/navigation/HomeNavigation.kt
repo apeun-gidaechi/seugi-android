@@ -28,6 +28,7 @@ fun NavGraphBuilder.homeScreen(
     navigateToWorkspaceDetail: (String) -> Unit,
     navigateToWorkspaceCreate: () -> Unit,
     navigateToTask: () -> Unit,
+    navigateToMeal: () -> Unit,
 ) {
     composable(HOME_ROUTE) {
         HomeScreen(
@@ -39,6 +40,7 @@ fun NavGraphBuilder.homeScreen(
             navigateToWorkspaceDetail = navigateToWorkspaceDetail,
             navigateToWorkspaceCreate = navigateToWorkspaceCreate,
             navigateToTask = navigateToTask,
+            navigateToMeal = navigateToMeal,
         )
     }
 }
