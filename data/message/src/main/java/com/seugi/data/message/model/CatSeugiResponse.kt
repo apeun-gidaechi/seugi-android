@@ -26,4 +26,8 @@ sealed interface CatSeugiResponse {
     data class Picking(
         val data: String
     ): CatSeugiResponse
+
+    data class Team(
+        val data: String
+    ): CatSeugiResponse
 }

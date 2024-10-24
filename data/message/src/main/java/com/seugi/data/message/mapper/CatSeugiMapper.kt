@@ -56,5 +56,10 @@ fun CatSeugiResponse.toModel(): String {
             val cleanedData = this.data.replace("::", "")
             cleanedData
         }
+
+        is CatSeugiResponse.Team ->{
+            val result = this.data.replace("::", "")
+            result
+        }
     }
 }

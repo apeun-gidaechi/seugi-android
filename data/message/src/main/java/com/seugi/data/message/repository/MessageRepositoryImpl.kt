@@ -134,7 +134,7 @@ class MessageRepositoryImpl @Inject constructor(
             }
             "팀짜기" ->{
                 val data = response.toResponse<MessageBotRawKeywordInData<String>>()
-                CatSeugiResponse.ETC(
+                CatSeugiResponse.Team(
                     data = data.data
                 )
             }
