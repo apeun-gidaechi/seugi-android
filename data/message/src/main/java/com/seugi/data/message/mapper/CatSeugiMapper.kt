@@ -52,5 +52,9 @@ fun CatSeugiResponse.toModel(): String {
             }.joinToString(separator = "\n")
             result
         }
+        is CatSeugiResponse.Picking ->{
+            val cleanedData = this.data.replace("::", "")
+            cleanedData
+        }
     }
 }

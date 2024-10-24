@@ -128,7 +128,7 @@ class MessageRepositoryImpl @Inject constructor(
             }
             "사람 뽑기" ->{
                 val data = response.toResponse<MessageBotRawKeywordInData<String>>()
-                CatSeugiResponse.ETC(
+                CatSeugiResponse.Picking(
                     data = data.data
                 )
             }

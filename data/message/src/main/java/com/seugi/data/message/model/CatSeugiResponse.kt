@@ -22,4 +22,8 @@ sealed interface CatSeugiResponse {
     data class NotSupport(
         val data: String
     ): CatSeugiResponse
+
+    data class Picking(
+        val data: String
+    ): CatSeugiResponse
 }
