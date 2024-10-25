@@ -21,4 +21,6 @@ interface MessageDataSource {
     suspend fun getMessage(chatRoomId: String, timestamp: LocalDateTime?): BaseResponse<MessageLoadResponse>
 
     suspend fun collectStompLifecycle(): Flow<MessageStompLifecycleResponse>
+
+    suspend fun sendText(text: String): BaseResponse<String>
 }

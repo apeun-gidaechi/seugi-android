@@ -19,4 +19,6 @@ interface MessageRepository {
     suspend fun getMessage(chatRoomId: String, timestamp: LocalDateTime?, userId: Long): Flow<Result<MessageLoadModel>>
 
     suspend fun collectStompLifecycle(): Flow<Result<MessageStompLifecycleModel>>
+
+    suspend fun sendText(text: String): Flow<Result<String>>
 }

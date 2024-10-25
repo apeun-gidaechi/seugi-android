@@ -6,6 +6,7 @@ import com.seugi.chatseugi.model.ChatData
 import com.seugi.chatseugi.model.ChatSeugiUiState
 import com.seugi.common.model.Result
 import com.seugi.data.catseugi.CatSeugiRepository
+import com.seugi.data.message.MessageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ChatSeugiViewModel @Inject constructor(
     private val catSeugiRepository: CatSeugiRepository,
+    private val messageRepository: MessageRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ChatSeugiUiState())
@@ -33,7 +35,7 @@ class ChatSeugiViewModel @Inject constructor(
             )
         }
 
-        catSeugiRepository.sendText(
+        messageRepository.sendText(
             text = message,
         ).collect {
             when (it) {
