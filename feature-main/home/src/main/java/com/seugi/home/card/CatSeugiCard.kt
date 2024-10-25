@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.R
-import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.GradientPrimary
 import com.seugi.designsystem.component.LoadingDotsIndicator
 import com.seugi.designsystem.component.modifier.brushDraw
@@ -53,10 +52,10 @@ internal fun CatSeugiCard(uiState: CommonUiState<ImmutableList<String>>, navigat
                                 brush = GradientPrimary,
                                 shape = CircleShape,
                             )
-                            .clickable (
+                            .clickable(
                                 onClick = navigateToChatSeugi,
                                 indication = null,
-                                interactionSource = remember{ MutableInteractionSource() }
+                                interactionSource = remember { MutableInteractionSource() },
                             ),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
