@@ -1016,77 +1016,31 @@ internal fun LocalDateTime.isDifferentDay(time: LocalDateTime): Boolean = when {
     else -> false
 }
 
-internal fun MessageParent.getUserCount(users: List<UserInfoModel>): ImmutableList<Long> = when (this) {
-    is MessageParent.Me -> {
-        val utcTimeMillis = this.timestamp.toDeviceLocalDateTime().toEpochMilli()
-        val readUsers = mutableListOf<Long>()
+internal fun MessageParent.getUserCount(users: List<UserInfoModel>): ImmutableList<Long> {
+    val utcTimeMillis = this.timestamp.toDeviceLocalDateTime().toEpochMilli()
+    val readUsers = mutableListOf<Long>()
 
-        // 현재 접속중인 유저수 세기
-        users.takeWhile {
-            if (it.utcTimeMillis == 0L) {
-                readUsers.add(it.userInfo.id)
-            }
-            it.utcTimeMillis == 0L
+    // 현재 접속중인 유저수 세기
+    users.takeWhile {
+        if (it.utcTimeMillis == 0L) {
+            readUsers.add(it.userInfo.id)
         }
-
-        // 해당 메세지를 읽은 유저 카운트
-        val binaryIndex = users.binarySearch {
-            when {
-                it.utcTimeMillis >= utcTimeMillis -> 0
-                else -> -1
-            }
-        }
-
-        val index = if (binaryIndex >= 0) binaryIndex else users.size
-        for (i in index until users.size) {
-            val user = users.getOrNull(i)
-            if (user != null) {
-                readUsers.add(user.userInfo.id)
-            }
-        }
-        readUsers.toImmutableList()
+        it.utcTimeMillis == 0L
     }
-    is MessageParent.Other -> {
-        val utcTimeMillis = this.timestamp.toDeviceLocalDateTime().toEpochMilli()
-        val readUsers = mutableListOf<Long>()
 
-        // 현재 접속중인 유저수 세기
-        users.takeWhile {
-//            Log.d("TAG", "getUserCount: ")
-            if (it.utcTimeMillis == 0L) {
-                readUsers.add(it.userInfo.id)
-            }
-            it.utcTimeMillis == 0L
+    // 해당 메세지를 읽은 유저 카운트
+    val binaryIndex = users.binarySearch {
+        when {
+            it.utcTimeMillis >= utcTimeMillis -> 0
+            else -> -1
         }
-
-//        Log.d("TAG", "접속중인 유저수 :  $readUsers")
-
-        // 해당 메세지를 읽은 유저 카운트
-        val binaryIndex = users.binarySearch {
-            Log.d("TAG", "getUserCount: ${it.utcTimeMillis} $utcTimeMillis")
-            when {
-                it.utcTimeMillis >= utcTimeMillis -> 0
-                else -> -1
-            }
-        }
-//        Log.d("TAG", "getUserCount: $utcTimeMillis")
-//        Log.d("TAG", "getUserCount: $binaryIndex")
-
-        val index = if (binaryIndex >= 0) binaryIndex else users.size
-        for (i in index until users.size) {
-            val user = users.getOrNull(i)
-            if (user != null) {
-//                Log.d("TAG", "getUserCount: ${user.userInfo.id } ${user.utcTimeMillis}")
-                readUsers.add(user.userInfo.id)
-            }
-        }
-//        Log.d("TAG", "다 읽은 유저수 :  $readUsers")
-//            users.forEach { userInfo ->
-//                if (userInfo.utcTimeMillis == 0L || userInfo.utcTimeMillis >= utcTimeMillis) {
-//                    readUsers.add(userInfo.userInfo.id)
-//                }
-//            }
-        readUsers.toImmutableList()
     }
-    else -> persistentListOf()
+    val index = if (binaryIndex >= 0) binaryIndex else users.size
+    for (i in index until users.size) {
+        val user = users.getOrNull(i)
+        if (user != null) {
+            readUsers.add(user.userInfo.id)
+        }
+    }
+    return readUsers.toImmutableList()
 }

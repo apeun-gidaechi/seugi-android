@@ -478,18 +478,16 @@ internal fun ChatDetailChatScreen(
 
                                 is MessageRoomEvent.MessageParent.Etc -> ChatItemType.Else(item.toString())
                                 is MessageRoomEvent.MessageParent.BOT.Meal -> {
-                                    val readUser = item.getUserCount(
-                                        state.roomInfo?.members ?: persistentListOf(),
-                                    )
+                                    val readUser = item.getUserCount(state.roomInfo?.members ?: persistentListOf())
                                     val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
-                                    val ai = ChatItemType.Ai(
+
+                                    ChatItemType.Ai(
                                         isFirst = item.isFirst,
                                         isLast = item.isLast,
                                         message = item.visibleMessage,
                                         createdAt = item.timestamp.toAmShortString(),
                                         count = if (count <= 0) null else count,
                                     )
-                                    ai
                                 }
 
                                 is MessageRoomEvent.MessageParent.BOT.Timetable -> {
