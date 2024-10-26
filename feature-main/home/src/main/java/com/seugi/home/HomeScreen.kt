@@ -28,6 +28,7 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -145,13 +146,8 @@ internal fun HomeScreen(
             .fillMaxSize()
             .pullRefresh(pullRefreshState),
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .background(SeugiTheme.colors.primary050)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            item {
+        Scaffold(
+            topBar = {
                 SeugiTopBar(
                     title = {
                         Text(
@@ -160,52 +156,61 @@ internal fun HomeScreen(
                             color = SeugiTheme.colors.black,
                         )
                     },
-                    containerColors = Color.Transparent,
+                    containerColors = SeugiTheme.colors.primary050,
                 )
-            }
+            },
+            containerColor = SeugiTheme.colors.primary050
+        ) {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(it)
+                    .background(SeugiTheme.colors.primary050)
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                item {
+                    SchoolCard(
+                        workspaceId = state.nowWorkspaceId,
+                        uiState = state.schoolState,
+                        navigateToWorkspaceDetail = navigateToWorkspaceDetail,
+                    )
+                }
 
-            item {
-                SchoolCard(
-                    workspaceId = state.nowWorkspaceId,
-                    uiState = state.schoolState,
-                    navigateToWorkspaceDetail = navigateToWorkspaceDetail,
-                )
-            }
+                item {
+                    TimeScheduleCard(
+                        uiState = state.timeScheduleState,
+                        onClickDetail = navigateToTimetable,
+                    )
+                }
 
-            item {
-                TimeScheduleCard(
-                    uiState = state.timeScheduleState,
-                    onClickDetail = navigateToTimetable,
-                )
-            }
+                item {
+                    MealCard(
+                        uiState = state.mealState,
+                        onClickDetail = navigateToMeal,
+                    )
+                }
 
-            item {
-                MealCard(
-                    uiState = state.mealState,
-                    onClickDetail = navigateToMeal,
-                )
-            }
+                item {
+                    CatSeugiCard(
+                        uiState = state.catSeugiState,
+                        navigateToChatSeugi = navigateToChatSeugi,
+                    )
+                }
 
-            item {
-                CatSeugiCard(
-                    uiState = state.catSeugiState,
-                    navigateToChatSeugi = navigateToChatSeugi,
-                )
-            }
+                item {
+                    ScheduleCard(uiState = state.schoolScheduleState)
+                }
 
-            item {
-                ScheduleCard(uiState = state.schoolScheduleState)
-            }
+                item {
+                    TaskCard(
+                        uiState = state.taskState,
+                        navigateToTask = navigateToTask,
+                    )
+                }
 
-            item {
-                TaskCard(
-                    uiState = state.taskState,
-                    navigateToTask = navigateToTask,
-                )
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(32.dp))
+                item {
+                    Spacer(modifier = Modifier.height(32.dp))
+                }
             }
         }
         PullRefreshIndicator(
