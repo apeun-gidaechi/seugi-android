@@ -43,9 +43,9 @@ fun TaskCard(uiState: CommonUiState<ImmutableList<TaskModel>>, navigateToTask: (
                     uiState.data.fastForEach { task ->
                         if (task.dueDate == null) {
                             HomeCalendarCard(
-                                date = "??/??",
+                                date = "기한없음",
                                 content = task.title,
-                                dDay = "D-?",
+                                dDay = "기한없음",
                             )
                         } else {
                             HomeCalendarCard(

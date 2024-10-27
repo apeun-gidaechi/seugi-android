@@ -105,7 +105,7 @@ internal fun TaskScreen(viewModel: TaskViewModel = hiltViewModel(), popBackStack
                         TaskCard(
                             title = it.title,
                             description = it.description ?: "",
-                            dDay = "D-??",
+                            dDay = "기한없음",
                         )
                     } else {
                         TaskCard(
