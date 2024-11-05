@@ -479,9 +479,25 @@ internal fun ChatDetailChatScreen(
                                         fileSize = byteToFormatString(item.fileSize),
                                     )
 
-                                is MessageRoomEvent.MessageParent.Left -> ChatItemType.Else("${state.users[item.userId]?.name ?: ""}님이 방에서 퇴장하셨습니다.")
+                                is MessageRoomEvent.MessageParent.Left -> {
+                                    val userNames = item.eventList
+                                        .map {
+                                            state.users.get(it)?.name ?: ""
+                                        }
+                                        .reduce { acc, s -> "$acc, $s" }
 
-                                is MessageRoomEvent.MessageParent.Enter -> ChatItemType.Else("${state.users[item.userId]?.name ?: ""}님이 방에 입장하셨습니다.")
+                                    ChatItemType.Else("${userNames}님이 방에서 퇴장하셨습니다.")
+                                }
+
+                                is MessageRoomEvent.MessageParent.Enter -> {
+                                    val userNames = item.eventList
+                                        .map {
+                                            state.users.get(it)?.name ?: ""
+                                        }
+                                        .reduce { acc, s -> "$acc, $s" }
+
+                                    ChatItemType.Else("${userNames}님이 방에 입장하셨습니다.")
+                                }
 
                                 is MessageRoomEvent.MessageParent.Etc -> ChatItemType.Else(item.toString())
                                 is MessageRoomEvent.MessageParent.BOT.Meal -> {

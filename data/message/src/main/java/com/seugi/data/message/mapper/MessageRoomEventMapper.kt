@@ -10,10 +10,8 @@ import com.seugi.network.meal.response.MealResponse
 import com.seugi.network.message.response.MessageRoomEventResponse
 import com.seugi.network.notification.response.NotificationResponse
 import com.seugi.network.timetable.response.TimetableResponse
-import java.time.LocalDate
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.datetime.toKotlinLocalDate
 
 internal fun MessageRoomEventResponse.toEventModel(userId: Long): MessageRoomEvent = when (this) {
     is MessageRoomEventResponse.MessageParent.Message -> toModel(userId)
@@ -35,7 +33,6 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
                     val botData = message.toResponse<MessageBotRawKeywordInData<List<MealResponse>>>()
                     val response = botData.data
                         .toModels()
-                        .filter { it.mealDate == LocalDate.now().toKotlinLocalDate() }
                         .toImmutableList()
 
                     val breakfast = response.firstOrNull { it.mealType == MealType.BREAKFAST }

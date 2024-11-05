@@ -47,6 +47,7 @@ import com.seugi.designsystem.component.GradientPrimary
 import com.seugi.designsystem.component.SeugiAvatar
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
+import com.seugi.designsystem.component.modifier.`if`
 import com.seugi.designsystem.theme.SeugiTheme
 
 val CHAT_SHAPE = 8.dp
@@ -661,6 +662,9 @@ private fun SeugiChatItemFile(modifier: Modifier = Modifier, onClick: () -> Unit
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp * 0.8f
     Row(
         modifier = modifier
+            .`if`(!isMe) {
+                padding(start = 32.dp)
+            }
             .padding(horizontal = 8.dp)
             .widthIn(
                 min = min(screenWidth, 128.dp),
@@ -887,7 +891,11 @@ fun SeugiChatItemImage(modifier: Modifier = Modifier, isMe: Boolean, onClick: ()
     val screenWidth = configuration.screenWidthDp.dp * 0.8f
     val screenHeight = (configuration.screenHeightDp.dp - topBarHeight - bottomTextFieldHeight) * 0.8f
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .`if`(!isMe) {
+                padding(start = 32.dp)
+            },
         horizontalArrangement = if (isMe) Arrangement.End else Arrangement.Start,
         verticalAlignment = Alignment.Bottom,
     ) {

@@ -26,9 +26,9 @@ sealed class MessageRoomEvent(
             val messageStatus: String,
             val uuid: String?,
             val emoticon: String?,
-            val eventList: ImmutableList<Int>?,
+            val eventList: ImmutableList<Long>?,
             val emojiList: ImmutableList<MessageEmojiModel>,
-            val mention: ImmutableList<Int>,
+            val mention: ImmutableList<Long>,
             val mentionAll: Boolean,
             override val timestamp: LocalDateTime,
         ) : MessageParent(timestamp, type, userId)
@@ -44,9 +44,9 @@ sealed class MessageRoomEvent(
             val messageStatus: String,
             val uuid: String?,
             val emoticon: String?,
-            val eventList: ImmutableList<Int>?,
+            val eventList: ImmutableList<Long>?,
             val emojiList: ImmutableList<MessageEmojiModel>,
-            val mention: ImmutableList<Int>,
+            val mention: ImmutableList<Long>,
             val mentionAll: Boolean,
             override val timestamp: LocalDateTime,
         ) : MessageParent(timestamp, type, userId)
@@ -60,9 +60,9 @@ sealed class MessageRoomEvent(
             @Transient override val userId: Long,
             @Transient open val messageStatus: String,
             @Transient open val emoticon: String?,
-            @Transient open val eventList: ImmutableList<Int>?,
+            @Transient open val eventList: ImmutableList<Long>?,
             @Transient open val emojiList: ImmutableList<MessageEmojiModel>,
-            @Transient open val mention: ImmutableList<Int>,
+            @Transient open val mention: ImmutableList<Long>,
             @Transient open val mentionAll: Boolean,
             @Transient override val timestamp: LocalDateTime,
         ) : MessageParent(timestamp, type, userId) {
@@ -72,13 +72,13 @@ sealed class MessageRoomEvent(
                 val visibleMessage: String,
                 override val messageStatus: String,
                 override val emoticon: String?,
-                override val eventList: ImmutableList<Int>?,
+                override val eventList: ImmutableList<Long>?,
                 override val id: String,
                 override val emojiList: ImmutableList<MessageEmojiModel>,
                 override val chatRoomId: String,
                 override val timestamp: LocalDateTime,
                 override val userId: Long,
-                override val mention: ImmutableList<Int>,
+                override val mention: ImmutableList<Long>,
                 override val mentionAll: Boolean,
                 override val isFirst: Boolean,
                 override val isLast: Boolean,
@@ -90,13 +90,13 @@ sealed class MessageRoomEvent(
                 val visibleMessage: String,
                 override val messageStatus: String,
                 override val emoticon: String?,
-                override val eventList: ImmutableList<Int>?,
+                override val eventList: ImmutableList<Long>?,
                 override val id: String,
                 override val emojiList: ImmutableList<MessageEmojiModel>,
                 override val chatRoomId: String,
                 override val timestamp: LocalDateTime,
                 override val userId: Long,
-                override val mention: ImmutableList<Int>,
+                override val mention: ImmutableList<Long>,
                 override val mentionAll: Boolean,
                 override val isFirst: Boolean,
                 override val isLast: Boolean,
@@ -108,13 +108,13 @@ sealed class MessageRoomEvent(
                 val visibleMessage: String,
                 override val messageStatus: String,
                 override val emoticon: String?,
-                override val eventList: ImmutableList<Int>?,
+                override val eventList: ImmutableList<Long>?,
                 override val id: String,
                 override val emojiList: ImmutableList<MessageEmojiModel>,
                 override val chatRoomId: String,
                 override val timestamp: LocalDateTime,
                 override val userId: Long,
-                override val mention: ImmutableList<Int>,
+                override val mention: ImmutableList<Long>,
                 override val mentionAll: Boolean,
                 override val isFirst: Boolean,
                 override val isLast: Boolean,
@@ -126,13 +126,13 @@ sealed class MessageRoomEvent(
                 val visibleMessage: String,
                 override val messageStatus: String,
                 override val emoticon: String?,
-                override val eventList: ImmutableList<Int>?,
+                override val eventList: ImmutableList<Long>?,
                 override val id: String,
                 override val emojiList: ImmutableList<MessageEmojiModel>,
                 override val chatRoomId: String,
                 override val timestamp: LocalDateTime,
                 override val userId: Long,
-                override val mention: ImmutableList<Int>,
+                override val mention: ImmutableList<Long>,
                 override val mentionAll: Boolean,
                 override val isFirst: Boolean,
                 override val isLast: Boolean,
@@ -144,13 +144,13 @@ sealed class MessageRoomEvent(
                 val visibleMessage: String,
                 override val messageStatus: String,
                 override val emoticon: String?,
-                override val eventList: ImmutableList<Int>?,
+                override val eventList: ImmutableList<Long>?,
                 override val id: String,
                 override val emojiList: ImmutableList<MessageEmojiModel>,
                 override val chatRoomId: String,
                 override val timestamp: LocalDateTime,
                 override val userId: Long,
-                override val mention: ImmutableList<Int>,
+                override val mention: ImmutableList<Long>,
                 override val mentionAll: Boolean,
                 override val isFirst: Boolean,
                 override val isLast: Boolean,
@@ -161,13 +161,13 @@ sealed class MessageRoomEvent(
                 val message: String,
                 override val messageStatus: String,
                 override val emoticon: String?,
-                override val eventList: ImmutableList<Int>?,
+                override val eventList: ImmutableList<Long>?,
                 override val id: String,
                 override val emojiList: ImmutableList<MessageEmojiModel>,
                 override val chatRoomId: String,
                 override val timestamp: LocalDateTime,
                 override val userId: Long,
-                override val mention: ImmutableList<Int>,
+                override val mention: ImmutableList<Long>,
                 override val mentionAll: Boolean,
                 override val isFirst: Boolean,
                 override val isLast: Boolean,
@@ -178,13 +178,13 @@ sealed class MessageRoomEvent(
                 val message: String,
                 override val messageStatus: String,
                 override val emoticon: String?,
-                override val eventList: ImmutableList<Int>?,
+                override val eventList: ImmutableList<Long>?,
                 override val id: String,
                 override val emojiList: ImmutableList<MessageEmojiModel>,
                 override val chatRoomId: String,
                 override val timestamp: LocalDateTime,
                 override val userId: Long,
-                override val mention: ImmutableList<Int>,
+                override val mention: ImmutableList<Long>,
                 override val mentionAll: Boolean,
                 override val isFirst: Boolean,
                 override val isLast: Boolean,
@@ -215,7 +215,7 @@ sealed class MessageRoomEvent(
             override val userId: Long,
             override val timestamp: LocalDateTime,
             val roomId: String,
-            val eventList: ImmutableList<Int>,
+            val eventList: ImmutableList<Long>,
         ) : MessageParent(timestamp, type, userId)
 
         data class Left(
@@ -223,7 +223,7 @@ sealed class MessageRoomEvent(
             override val userId: Long,
             override val timestamp: LocalDateTime,
             val roomId: String,
-            val eventList: ImmutableList<Int>,
+            val eventList: ImmutableList<Long>,
         ) : MessageParent(timestamp, type, userId)
 
         data class Date(
@@ -260,21 +260,21 @@ sealed class MessageRoomEvent(
         override val type: MessageType,
         override val userId: Long,
         val messageId: String,
-        val emojiId: Int,
+        val emojiId: Long,
     ) : MessageRoomEvent(type, userId)
 
     data class RemoveEmoji(
         override val type: MessageType,
         override val userId: Long,
         val messageId: String,
-        val emojiId: Int,
+        val emojiId: Long,
     ) : MessageRoomEvent(type, userId)
 
     data class TransperAdmin(
         override val type: MessageType,
         override val userId: Long,
         val roomId: String,
-        val eventList: ImmutableList<Int>,
+        val eventList: ImmutableList<Long>,
     ) : MessageRoomEvent(type, userId)
 }
 
@@ -287,9 +287,9 @@ fun MessageRoomEvent.MessageParent.BOT.copy(
     userId: Long = this.userId,
     messageStatus: String = this.messageStatus,
     emoticon: String? = this.emoticon,
-    eventList: ImmutableList<Int>? = this.eventList,
+    eventList: ImmutableList<Long>? = this.eventList,
     emojiList: ImmutableList<MessageEmojiModel> = this.emojiList,
-    mention: ImmutableList<Int> = this.mention,
+    mention: ImmutableList<Long> = this.mention,
     mentionAll: Boolean = this.mentionAll,
     timestamp: LocalDateTime = this.timestamp,
 ): MessageRoomEvent.MessageParent.BOT = when (this) {
@@ -480,7 +480,7 @@ fun MessageRoomEvent.MessageParent.BOT.DrawLots.getVisibleMessage(members: List<
     val results = regex.findAll(this.message)
 
     val numbers = results.mapNotNull { result ->
-        result.groupValues[1].toIntOrNull()
+        result.groupValues[1].toLongOrNull()
     }.toList()
 
     val visibleMessage = "사람을 ${numbers.size}명 뽑았어요\n" +

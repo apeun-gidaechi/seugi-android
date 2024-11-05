@@ -27,9 +27,9 @@ sealed class MessageRoomEventResponse(
             val messageStatus: String,
             val uuid: String?,
             val emoticon: String?,
-            val eventList: List<Int>?,
+            val eventList: List<Long>?,
             val emojiList: List<MessageEmojiResponse>,
-            val mention: List<Int>,
+            val mention: List<Long>,
             val mentionAll: Boolean,
             override val timestamp: LocalDateTime,
         ) : MessageParent(timestamp, type, userId)
@@ -55,20 +55,20 @@ sealed class MessageRoomEventResponse(
         override val type: String,
         override val userId: Long,
         val messageId: String,
-        val emojiId: Int,
+        val emojiId: Long,
     ) : MessageRoomEventResponse(type, userId)
 
     data class RemoveEmoji(
         override val type: String,
         override val userId: Long,
         val messageId: String,
-        val emojiId: Int,
+        val emojiId: Long,
     ) : MessageRoomEventResponse(type, userId)
 
     data class TransperAdmin(
         override val type: String,
         override val userId: Long,
         val roomId: String,
-        val eventList: List<Int>,
+        val eventList: List<Long>,
     ) : MessageRoomEventResponse(type, userId)
 }

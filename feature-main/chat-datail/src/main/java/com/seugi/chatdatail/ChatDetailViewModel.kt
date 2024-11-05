@@ -279,7 +279,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun collectStompLifecycle(userId: Long) {
+    fun collectStompLifecycle(chatRoomId: String, userId: Long) {
         viewModelScope.launch {
             val job = viewModelScope.async {
                 messageRepository.collectStompLifecycle().collect {
@@ -297,10 +297,27 @@ class ChatDetailViewModel @Inject constructor(
                                             tokenRepository.newToken().collect {
                                                 when (it) {
                                                     is Result.Success -> {
-                                                        // TODO 페이징 처리
-//                                                        messageRepository.getMessage(state.value.roomInfo?.id ?: "665d9ec15e65717b19a62701", 0, PAGE_SIZE).collect {
-//                                                            it.collectMessage()
-//                                                        }
+                                                        messageRepository.getMessage(
+                                                            chatRoomId = chatRoomId,
+                                                            userId = userId,
+                                                            timestamp = LocalDateTime.now().toKotlinLocalDateTime(),
+                                                        ).collect {
+                                                            when (it) {
+                                                                is Result.Success -> {
+                                                                    _state.update { uiState ->
+                                                                        uiState.copy(
+                                                                            isInit = true,
+                                                                            isLastPage = it.data.messages.size != 30,
+                                                                        )
+                                                                    }
+                                                                    it.data.messages.collectMessage()
+                                                                }
+                                                                Result.Loading -> {}
+                                                                is Result.Error -> {
+                                                                    it.throwable.printStackTrace()
+                                                                }
+                                                            }
+                                                        }
                                                         channelReconnect(userId)
                                                     }
                                                     else -> {}
@@ -592,23 +609,20 @@ class ChatDetailViewModel @Inject constructor(
 
         val remoteFirstItem = data.first()
         val lastItem = message.lastOrNull()
-        if (lastItem is MessageParent.Date) {
-            // 날짜가 같다면 삭제
-            if (remoteFirstItem.timestamp.isDifferentDay(lastItem.timestamp).not()) {
-                message.removeLast()
-            }
+
+        // 날짜가 같다면 삭제
+        if (lastItem is MessageParent.Date && remoteFirstItem.timestamp.isDifferentDay(lastItem.timestamp).not()) {
+            message.removeLast()
         }
 
         // 최상단에 있는 채팅 isFirst 놔둬야 할지 비교
-        if (lastItem is MessageParent.Other && lastItem.isFirst) {
-            if (remoteFirstItem.userId == lastItem.userId) {
-                message.removeLast()
-                message.add(
-                    lastItem.copy(
-                        isFirst = false,
-                    ),
-                )
-            }
+        if (lastItem is MessageParent.Other && lastItem.isFirst && remoteFirstItem.userId == lastItem.userId) {
+            message.removeLast()
+            message.add(
+                lastItem.copy(
+                    isFirst = false,
+                ),
+            )
         }
 
         data.forEachIndexed { index, messageParent ->
@@ -623,21 +637,13 @@ class ChatDetailViewModel @Inject constructor(
 
             if (formerItem != null && messageParent.timestamp.isDifferentDay(formerItem.timestamp)) {
                 isFirst = true
-                message.add(
-                    element = MessageParent.Date(
-                        type = MessageType.MESSAGE,
-                        timestamp = LocalDateTime.of(messageParent.timestamp.year, messageParent.timestamp.monthValue, messageParent.timestamp.dayOfMonth, 0, 0),
-                        userId = 0,
-                        text = "",
-                    ),
-                )
             }
 
             if (formerItem is MessageParent.Enter || formerItem is MessageParent.Left) {
                 isFirst = true
             }
 
-            var newData = when (messageParent) {
+            val newData = when (messageParent) {
                 is MessageParent.Me -> messageParent.copy(
                     isLast = isLast,
                 )
@@ -669,7 +675,19 @@ class ChatDetailViewModel @Inject constructor(
                 }
                 else -> messageParent
             }
+
             message.add(newData)
+
+            if (formerItem != null && messageParent.timestamp.isDifferentDay(formerItem.timestamp)) {
+                message.add(
+                    element = MessageParent.Date(
+                        type = MessageType.MESSAGE,
+                        timestamp = LocalDateTime.of(messageParent.timestamp.year, messageParent.timestamp.monthValue, messageParent.timestamp.dayOfMonth, 0, 0),
+                        userId = 0,
+                        text = "",
+                    ),
+                )
+            }
         }
 
         _state.update {
