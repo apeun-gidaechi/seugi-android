@@ -613,6 +613,7 @@ class ChatDetailViewModel @Inject constructor(
 
         data.forEachIndexed { index, messageParent ->
 
+
             val formerItem = data.getOrNull(index + 1)
             val nextItem = if (index == 0) message.lastOrNull() else data.getOrNull(index - 1)
 
@@ -621,23 +622,16 @@ class ChatDetailViewModel @Inject constructor(
                 messageParent.timestamp.isDifferentMin(nextItem.timestamp) ||
                 formerItem is MessageParent.Enter || formerItem is MessageParent.Left
 
+
             if (formerItem != null && messageParent.timestamp.isDifferentDay(formerItem.timestamp)) {
                 isFirst = true
-                message.add(
-                    element = MessageParent.Date(
-                        type = MessageType.MESSAGE,
-                        timestamp = LocalDateTime.of(messageParent.timestamp.year, messageParent.timestamp.monthValue, messageParent.timestamp.dayOfMonth, 0, 0),
-                        userId = 0,
-                        text = "",
-                    ),
-                )
             }
 
             if (formerItem is MessageParent.Enter || formerItem is MessageParent.Left) {
                 isFirst = true
             }
 
-            var newData = when (messageParent) {
+            val newData = when (messageParent) {
                 is MessageParent.Me -> messageParent.copy(
                     isLast = isLast,
                 )
@@ -669,7 +663,19 @@ class ChatDetailViewModel @Inject constructor(
                 }
                 else -> messageParent
             }
+
             message.add(newData)
+
+            if (formerItem != null && messageParent.timestamp.isDifferentDay(formerItem.timestamp)) {
+                message.add(
+                    element = MessageParent.Date(
+                        type = MessageType.MESSAGE,
+                        timestamp = LocalDateTime.of(messageParent.timestamp.year, messageParent.timestamp.monthValue, messageParent.timestamp.dayOfMonth, 0, 0),
+                        userId = 0,
+                        text = "",
+                    ),
+                )
+            }
         }
 
         _state.update {
