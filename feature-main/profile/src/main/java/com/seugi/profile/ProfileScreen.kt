@@ -323,7 +323,9 @@ internal fun ProfileScreen(
 
 @Composable
 internal fun ProfileCard(title: String, content: String, onClickEdit: () -> Unit) {
-    Column {
+    Column(
+        modifier = Modifier.bounceClick(onClick = onClickEdit)
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -344,9 +346,6 @@ internal fun ProfileCard(title: String, content: String, onClickEdit: () -> Unit
         }
         Box(
             modifier = Modifier
-                .bounceClick(
-                    onClick = onClickEdit,
-                )
                 .fillMaxWidth()
                 .height(56.dp),
         ) {
