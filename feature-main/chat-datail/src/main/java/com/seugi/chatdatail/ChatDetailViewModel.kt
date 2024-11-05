@@ -300,7 +300,7 @@ class ChatDetailViewModel @Inject constructor(
                                                         messageRepository.getMessage(
                                                             chatRoomId = chatRoomId,
                                                             userId = userId,
-                                                            timestamp = LocalDateTime.now().toKotlinLocalDateTime()
+                                                            timestamp = LocalDateTime.now().toKotlinLocalDateTime(),
                                                         ).collect {
                                                             when (it) {
                                                                 is Result.Success -> {

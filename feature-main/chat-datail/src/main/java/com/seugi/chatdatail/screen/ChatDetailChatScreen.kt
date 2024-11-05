@@ -475,9 +475,9 @@ internal fun ChatDetailChatScreen(
                                 is MessageRoomEvent.MessageParent.Left -> {
                                     val userNames = item.eventList
                                         .map {
-                                            state.users.get(it)?.name?: ""
+                                            state.users.get(it)?.name ?: ""
                                         }
-                                        .reduce { acc, s -> "${acc}, ${s}" }
+                                        .reduce { acc, s -> "$acc, $s" }
 
                                     ChatItemType.Else("${userNames}님이 방에서 퇴장하셨습니다.")
                                 }
@@ -485,9 +485,9 @@ internal fun ChatDetailChatScreen(
                                 is MessageRoomEvent.MessageParent.Enter -> {
                                     val userNames = item.eventList
                                         .map {
-                                            state.users.get(it)?.name?: ""
+                                            state.users.get(it)?.name ?: ""
                                         }
-                                        .reduce { acc, s -> "${acc}, ${s}" }
+                                        .reduce { acc, s -> "$acc, $s" }
 
                                     ChatItemType.Else("${userNames}님이 방에 입장하셨습니다.")
                                 }
