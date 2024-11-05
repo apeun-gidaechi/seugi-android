@@ -592,23 +592,20 @@ class ChatDetailViewModel @Inject constructor(
 
         val remoteFirstItem = data.first()
         val lastItem = message.lastOrNull()
-        if (lastItem is MessageParent.Date) {
-            // 날짜가 같다면 삭제
-            if (remoteFirstItem.timestamp.isDifferentDay(lastItem.timestamp).not()) {
-                message.removeLast()
-            }
+
+        // 날짜가 같다면 삭제
+        if (lastItem is MessageParent.Date && remoteFirstItem.timestamp.isDifferentDay(lastItem.timestamp).not()) {
+            message.removeLast()
         }
 
         // 최상단에 있는 채팅 isFirst 놔둬야 할지 비교
-        if (lastItem is MessageParent.Other && lastItem.isFirst) {
-            if (remoteFirstItem.userId == lastItem.userId) {
-                message.removeLast()
-                message.add(
-                    lastItem.copy(
-                        isFirst = false,
-                    ),
-                )
-            }
+        if (lastItem is MessageParent.Other && lastItem.isFirst && remoteFirstItem.userId == lastItem.userId) {
+            message.removeLast()
+            message.add(
+                lastItem.copy(
+                    isFirst = false,
+                ),
+            )
         }
 
         data.forEachIndexed { index, messageParent ->
