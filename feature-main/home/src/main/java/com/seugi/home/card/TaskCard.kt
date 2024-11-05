@@ -53,7 +53,7 @@ fun TaskCard(uiState: CommonUiState<ImmutableList<TaskModel>>, navigateToTask: (
                                 date = "${task.dueDate!!.monthNumber}/${task.dueDate!!.dayOfMonth.toString().padStart(2, '0')}",
                                 content = task.title,
                                 dDay = "D" + when {
-                                    dayCnt > 0 -> "-${dayCnt}"
+                                    dayCnt > 0 -> "-$dayCnt"
                                     dayCnt < 0 -> "+${-dayCnt}"
                                     else -> " Day"
                                 },

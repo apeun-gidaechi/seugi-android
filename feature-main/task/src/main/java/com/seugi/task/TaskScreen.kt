@@ -113,7 +113,7 @@ internal fun TaskScreen(viewModel: TaskViewModel = hiltViewModel(), popBackStack
                             title = it.title,
                             description = it.description ?: "",
                             dDay = "D" + when {
-                                dayCnt > 0 -> "-${dayCnt}"
+                                dayCnt > 0 -> "-$dayCnt"
                                 dayCnt < 0 -> "+${-dayCnt}"
                                 else -> " Day"
                             },
@@ -144,7 +144,7 @@ internal fun TaskScreen(viewModel: TaskViewModel = hiltViewModel(), popBackStack
                             title = it.title,
                             description = it.description ?: "",
                             dDay = "D" + when {
-                                dayCnt > 0 -> "-${dayCnt}"
+                                dayCnt > 0 -> "-$dayCnt"
                                 dayCnt < 0 -> "+${-dayCnt}"
                                 else -> " Day"
                             },
