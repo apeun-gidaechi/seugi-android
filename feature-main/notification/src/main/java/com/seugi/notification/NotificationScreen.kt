@@ -173,6 +173,8 @@ internal fun NotificationScreen(
                     workspaceId = selectNotificationItem?.workspaceId ?: "",
                     notificationId = selectNotificationItem?.id ?: 0,
                 )
+                isShowPopupDialog = false
+                selectNotificationItem = null
             },
         )
     }
