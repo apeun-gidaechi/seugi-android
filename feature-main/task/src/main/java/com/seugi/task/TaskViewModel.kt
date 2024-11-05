@@ -8,6 +8,7 @@ import com.seugi.task.model.CommonUiState
 import com.seugi.task.model.TaskUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -27,7 +28,11 @@ class TaskViewModel @Inject constructor(
                 is Result.Success -> {
                     _state.update { state ->
                         state.copy(
-                            classroomTaskState = CommonUiState.Success(it.data),
+                            classroomTaskState = CommonUiState.Success(
+                                it.data
+                                    .sortedBy { it.dueDate }
+                                    .toImmutableList(),
+                            ),
                         )
                     }
                 }
@@ -49,7 +54,11 @@ class TaskViewModel @Inject constructor(
                 is Result.Success -> {
                     _state.update { state ->
                         state.copy(
-                            workspaceTaskState = CommonUiState.Success(it.data),
+                            workspaceTaskState = CommonUiState.Success(
+                                it.data
+                                    .sortedBy { it.dueDate }
+                                    .toImmutableList(),
+                            ),
                         )
                     }
                 }

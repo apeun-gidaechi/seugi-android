@@ -48,10 +48,15 @@ fun TaskCard(uiState: CommonUiState<ImmutableList<TaskModel>>, navigateToTask: (
                                 dDay = "기한없음",
                             )
                         } else {
+                            val dayCnt = LocalDate.now().toKotlinLocalDate().daysUntil(task.dueDate!!.date)
                             HomeCalendarCard(
                                 date = "${task.dueDate!!.monthNumber}/${task.dueDate!!.dayOfMonth.toString().padStart(2, '0')}",
                                 content = task.title,
-                                dDay = "D-${-task.dueDate!!.date.daysUntil(LocalDate.now().toKotlinLocalDate())}",
+                                dDay = "D" + when {
+                                    dayCnt > 0 -> "-$dayCnt"
+                                    dayCnt < 0 -> "+${-dayCnt}"
+                                    else -> " Day"
+                                },
                             )
                         }
                     }

@@ -108,10 +108,15 @@ internal fun TaskScreen(viewModel: TaskViewModel = hiltViewModel(), popBackStack
                             dDay = "기한없음",
                         )
                     } else {
+                        val dayCnt = LocalDate.now().toKotlinLocalDate().daysUntil(it.dueDate!!.date)
                         TaskCard(
                             title = it.title,
                             description = it.description ?: "",
-                            dDay = "D-${-it.dueDate!!.date.daysUntil(LocalDate.now().toKotlinLocalDate())}",
+                            dDay = "D" + when {
+                                dayCnt > 0 -> "-$dayCnt"
+                                dayCnt < 0 -> "+${-dayCnt}"
+                                else -> " Day"
+                            },
                         )
                     }
                 }
@@ -131,13 +136,18 @@ internal fun TaskScreen(viewModel: TaskViewModel = hiltViewModel(), popBackStack
                         TaskCard(
                             title = it.title,
                             description = it.description ?: "",
-                            dDay = "D-??",
+                            dDay = "기한없음",
                         )
                     } else {
+                        val dayCnt = LocalDate.now().toKotlinLocalDate().daysUntil(it.dueDate!!.date)
                         TaskCard(
                             title = it.title,
                             description = it.description ?: "",
-                            dDay = "D-${-it.dueDate!!.date.daysUntil(LocalDate.now().toKotlinLocalDate())}",
+                            dDay = "D" + when {
+                                dayCnt > 0 -> "-$dayCnt"
+                                dayCnt < 0 -> "+${-dayCnt}"
+                                else -> " Day"
+                            },
                         )
                     }
                 }
