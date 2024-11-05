@@ -15,7 +15,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
@@ -25,8 +24,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -75,7 +72,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleStartEffect
@@ -85,7 +81,6 @@ import com.seugi.chatdatail.model.ChatDetailSideEffect
 import com.seugi.chatdatail.model.ChatLocalType
 import com.seugi.chatdatail.screen.ChatDetailChatScreen
 import com.seugi.chatdatail.screen.ChatDetailInviteScreen
-import com.seugi.data.core.model.NotificationEmojiModel
 import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.core.model.UserInfoModel
 import com.seugi.data.core.model.UserModel
@@ -93,7 +88,6 @@ import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.data.message.model.MessageType
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
-import com.seugi.designsystem.animation.combinedBounceClick
 import com.seugi.designsystem.component.DragState
 import com.seugi.designsystem.component.SeugiIconButton
 import com.seugi.designsystem.component.SeugiImage
@@ -399,7 +393,7 @@ internal fun ChatDetailScreen(
                 isShowCopyMessageDialog = false
                 clipboardManager.setText(AnnotatedString(copyMessage))
                 copyMessage = ""
-            }
+            },
         )
     }
 
@@ -457,7 +451,7 @@ internal fun ChatDetailScreen(
             onChatLongClick = {
                 copyMessage = it
                 isShowCopyMessageDialog = true
-            }
+            },
         )
     }
 
@@ -899,10 +893,7 @@ internal fun ResendDialog(modifier: Modifier = Modifier, text: String = "재전�
 }
 
 @Composable
-fun ChatDetailCopyDialog(
-    onDismissRequest: () -> Unit,
-    onClickCopy: () -> Unit,
-) {
+fun ChatDetailCopyDialog(onDismissRequest: () -> Unit, onClickCopy: () -> Unit) {
     Dialog(
         onDismissRequest = onDismissRequest,
     ) {

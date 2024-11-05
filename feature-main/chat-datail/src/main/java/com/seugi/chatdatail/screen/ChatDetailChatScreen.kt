@@ -124,7 +124,7 @@ internal fun ChatDetailChatScreen(
     onShowImagePreview: (Boolean) -> Unit,
     onSelectedFileName: (String) -> Unit,
     onSelectedImageBitmap: (Bitmap?) -> Unit,
-    onChatLongClick: (text: String) -> Unit
+    onChatLongClick: (text: String) -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -416,7 +416,7 @@ internal fun ChatDetailChatScreen(
                                         count = if (count <= 0) null else count,
                                         onChatLongClick = {
                                             onChatLongClick(item.message)
-                                        }
+                                        },
                                     )
                                 }
                                 is MessageRoomEvent.MessageParent.Other -> {
@@ -433,7 +433,7 @@ internal fun ChatDetailChatScreen(
                                         count = if (count <= 0) null else count,
                                         onChatLongClick = {
                                             onChatLongClick(item.message)
-                                        }
+                                        },
                                     )
                                 }
 
@@ -496,7 +496,7 @@ internal fun ChatDetailChatScreen(
                                         count = if (count <= 0) null else count,
                                         onChatLongClick = {
                                             onChatLongClick(item.visibleMessage)
-                                        }
+                                        },
                                     )
                                 }
 
@@ -513,7 +513,7 @@ internal fun ChatDetailChatScreen(
                                         count = if (count <= 0) null else count,
                                         onChatLongClick = {
                                             onChatLongClick(item.visibleMessage)
-                                        }
+                                        },
                                     )
                                 }
 
@@ -530,7 +530,7 @@ internal fun ChatDetailChatScreen(
                                         count = if (count <= 0) null else count,
                                         onChatLongClick = {
                                             onChatLongClick(item.visibleMessage)
-                                        }
+                                        },
                                     )
                                 }
 
@@ -547,7 +547,7 @@ internal fun ChatDetailChatScreen(
                                         count = if (count <= 0) null else count,
                                         onChatLongClick = {
                                             onChatLongClick(item.visibleMessage)
-                                        }
+                                        },
                                     )
                                 }
 
@@ -564,7 +564,7 @@ internal fun ChatDetailChatScreen(
                                         count = if (count <= 0) null else count,
                                         onChatLongClick = {
                                             onChatLongClick(item.visibleMessage)
-                                        }
+                                        },
                                     )
                                 }
 
@@ -581,7 +581,7 @@ internal fun ChatDetailChatScreen(
                                         count = if (count <= 0) null else count,
                                         onChatLongClick = {
                                             onChatLongClick(item.message)
-                                        }
+                                        },
                                     )
                                 }
 
@@ -598,7 +598,7 @@ internal fun ChatDetailChatScreen(
                                         count = if (count <= 0) null else count,
                                         onChatLongClick = {
                                             onChatLongClick(item.message)
-                                        }
+                                        },
                                     )
                                 }
                             },
