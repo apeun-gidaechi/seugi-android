@@ -324,7 +324,7 @@ internal fun ProfileScreen(
 @Composable
 internal fun ProfileCard(title: String, content: String, onClickEdit: () -> Unit) {
     Column(
-        modifier = Modifier.bounceClick(onClick = onClickEdit)
+        modifier = Modifier.bounceClick(onClick = onClickEdit),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
