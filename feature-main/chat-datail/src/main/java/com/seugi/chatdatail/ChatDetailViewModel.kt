@@ -279,7 +279,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    fun collectStompLifecycle(userId: Long) {
+    fun collectStompLifecycle(chatRoomId: String, userId: Long) {
         viewModelScope.launch {
             val job = viewModelScope.async {
                 messageRepository.collectStompLifecycle().collect {
@@ -297,10 +297,27 @@ class ChatDetailViewModel @Inject constructor(
                                             tokenRepository.newToken().collect {
                                                 when (it) {
                                                     is Result.Success -> {
-                                                        // TODO 페이징 처리
-//                                                        messageRepository.getMessage(state.value.roomInfo?.id ?: "665d9ec15e65717b19a62701", 0, PAGE_SIZE).collect {
-//                                                            it.collectMessage()
-//                                                        }
+                                                        messageRepository.getMessage(
+                                                            chatRoomId = chatRoomId,
+                                                            userId = userId,
+                                                            timestamp = LocalDateTime.now().toKotlinLocalDateTime()
+                                                        ).collect {
+                                                            when (it) {
+                                                                is Result.Success -> {
+                                                                    _state.update { uiState ->
+                                                                        uiState.copy(
+                                                                            isInit = true,
+                                                                            isLastPage = it.data.messages.size != 30,
+                                                                        )
+                                                                    }
+                                                                    it.data.messages.collectMessage()
+                                                                }
+                                                                Result.Loading -> {}
+                                                                is Result.Error -> {
+                                                                    it.throwable.printStackTrace()
+                                                                }
+                                                            }
+                                                        }
                                                         channelReconnect(userId)
                                                     }
                                                     else -> {}

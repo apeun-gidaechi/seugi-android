@@ -245,7 +245,7 @@ internal fun ChatDetailScreen(
     }
 
     LifecycleStartEffect(key1 = Unit) {
-        viewModel.collectStompLifecycle(userId)
+        viewModel.collectStompLifecycle(chatRoomId, userId)
         viewModel.channelReconnect(userId, chatRoomId)
         onStopOrDispose {
             viewModel.subscribeCancel()
