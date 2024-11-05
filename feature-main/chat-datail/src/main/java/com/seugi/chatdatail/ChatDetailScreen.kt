@@ -42,6 +42,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -63,11 +64,13 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -127,6 +130,7 @@ internal fun ChatDetailScreen(
     val scrollState = rememberLazyListState()
     val focusRequester by remember { mutableStateOf(FocusRequester()) }
     val focusManager = LocalFocusManager.current
+    val clipboardManager = LocalClipboardManager.current
 
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -210,6 +214,9 @@ internal fun ChatDetailScreen(
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
 
     var nowPage: NowPage by remember { mutableStateOf(NowPage.CHAT) }
+
+    var copyMessage by remember { mutableStateOf("") }
+    var isShowCopyMessageDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = sideEffect) {
         if (sideEffect == null) {
@@ -376,6 +383,20 @@ internal fun ChatDetailScreen(
         )
     }
 
+    if (isShowCopyMessageDialog) {
+        ChatDetailCopyDialog(
+            onDismissRequest = {
+                isShowCopyMessageDialog = false
+                copyMessage = ""
+            },
+            onClickCopy = {
+                isShowCopyMessageDialog = false
+                clipboardManager.setText(AnnotatedString(copyMessage))
+                copyMessage = ""
+            },
+        )
+    }
+
     AnimatedVisibility(
         visible = nowPage == NowPage.CHAT,
         enter = fadeIn(),
@@ -427,6 +448,10 @@ internal fun ChatDetailScreen(
             onShowImagePreview = { showImagePreview = it },
             onSelectedFileName = { selectedFileName = it },
             onSelectedImageBitmap = { selectedImageBitmap = it },
+            onChatLongClick = {
+                copyMessage = it
+                isShowCopyMessageDialog = true
+            },
         )
     }
 
@@ -862,6 +887,37 @@ internal fun ResendDialog(modifier: Modifier = Modifier, text: String = "재전�
                     style = SeugiTheme.typography.subtitle2,
                     color = SeugiTheme.colors.primary600,
                 )
+            }
+        }
+    }
+}
+
+@Composable
+fun ChatDetailCopyDialog(onDismissRequest: () -> Unit, onClickCopy: () -> Unit) {
+    Dialog(
+        onDismissRequest = onDismissRequest,
+    ) {
+        Surface(
+            color = SeugiTheme.colors.white,
+            shape = RoundedCornerShape(16.dp),
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .bounceClick(onClickCopy),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(vertical = 8.dp),
+                        text = "메세지 복사하기",
+                        color = SeugiTheme.colors.black,
+                        style = SeugiTheme.typography.subtitle2,
+                    )
+                }
             }
         }
     }
