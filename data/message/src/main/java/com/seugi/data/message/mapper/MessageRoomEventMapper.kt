@@ -1,5 +1,6 @@
 package com.seugi.data.message.mapper
 
+import android.util.Log
 import com.seugi.data.core.mapper.toModels
 import com.seugi.data.core.model.MealType
 import com.seugi.data.message.model.MessageBotRawKeyword
@@ -35,7 +36,6 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
                     val botData = message.toResponse<MessageBotRawKeywordInData<List<MealResponse>>>()
                     val response = botData.data
                         .toModels()
-                        .filter { it.mealDate == LocalDate.now().toKotlinLocalDate() }
                         .toImmutableList()
 
                     val breakfast = response.firstOrNull { it.mealType == MealType.BREAKFAST }
