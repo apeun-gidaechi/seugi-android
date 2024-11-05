@@ -610,7 +610,6 @@ class ChatDetailViewModel @Inject constructor(
 
         data.forEachIndexed { index, messageParent ->
 
-
             val formerItem = data.getOrNull(index + 1)
             val nextItem = if (index == 0) message.lastOrNull() else data.getOrNull(index - 1)
 
@@ -618,7 +617,6 @@ class ChatDetailViewModel @Inject constructor(
             val isLast = messageParent.userId != nextItem?.userId ||
                 messageParent.timestamp.isDifferentMin(nextItem.timestamp) ||
                 formerItem is MessageParent.Enter || formerItem is MessageParent.Left
-
 
             if (formerItem != null && messageParent.timestamp.isDifferentDay(formerItem.timestamp)) {
                 isFirst = true

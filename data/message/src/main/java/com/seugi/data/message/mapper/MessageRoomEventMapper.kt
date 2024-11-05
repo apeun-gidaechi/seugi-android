@@ -1,6 +1,5 @@
 package com.seugi.data.message.mapper
 
-import android.util.Log
 import com.seugi.data.core.mapper.toModels
 import com.seugi.data.core.model.MealType
 import com.seugi.data.message.model.MessageBotRawKeyword
@@ -11,10 +10,8 @@ import com.seugi.network.meal.response.MealResponse
 import com.seugi.network.message.response.MessageRoomEventResponse
 import com.seugi.network.notification.response.NotificationResponse
 import com.seugi.network.timetable.response.TimetableResponse
-import java.time.LocalDate
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.datetime.toKotlinLocalDate
 
 internal fun MessageRoomEventResponse.toEventModel(userId: Long): MessageRoomEvent = when (this) {
     is MessageRoomEventResponse.MessageParent.Message -> toModel(userId)
