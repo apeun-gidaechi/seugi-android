@@ -144,6 +144,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun providesOkhttpClient(): OkHttpClient = OkHttpClient.Builder()
+        .pingInterval(30, TimeUnit.SECONDS)
         .readTimeout(99999, TimeUnit.SECONDS)
         .writeTimeout(99999, TimeUnit.SECONDS)
         .connectTimeout(99999, TimeUnit.SECONDS)
