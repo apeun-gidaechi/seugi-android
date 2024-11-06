@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -64,8 +65,11 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
                 .fillMaxHeight(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Spacer(modifier = Modifier.width(32.dp))
+            Spacer(
+                modifier = Modifier.width(16.dp)
+            )
             SeugiBottomNavigationItem(
+                modifier = Modifier.weight(1f),
                 type = BottomNavigationItemType.Home,
                 selected = selected is BottomNavigationItemType.Home,
                 isNew = false,
@@ -73,8 +77,8 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
                     onClick(BottomNavigationItemType.Home)
                 },
             )
-            Spacer(modifier = Modifier.weight(1f))
             SeugiBottomNavigationItem(
+                modifier = Modifier.weight(1f),
                 type = BottomNavigationItemType.Chat,
                 selected = selected is BottomNavigationItemType.Chat,
                 isNew = false,
@@ -82,8 +86,8 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
                     onClick(BottomNavigationItemType.Chat)
                 },
             )
-            Spacer(modifier = Modifier.weight(1f))
             SeugiBottomNavigationItem(
+                modifier = Modifier.weight(1f),
                 type = BottomNavigationItemType.Group,
                 selected = selected is BottomNavigationItemType.Group,
                 isNew = false,
@@ -91,8 +95,8 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
                     onClick(BottomNavigationItemType.Group)
                 },
             )
-            Spacer(modifier = Modifier.weight(1f))
             SeugiBottomNavigationItem(
+                modifier = Modifier.weight(1f),
                 type = BottomNavigationItemType.Notification,
                 selected = selected is BottomNavigationItemType.Notification,
                 isNew = false,
@@ -100,8 +104,8 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
                     onClick(BottomNavigationItemType.Notification)
                 },
             )
-            Spacer(modifier = Modifier.weight(1f))
             SeugiBottomNavigationItem(
+                modifier = Modifier.weight(1f),
                 type = BottomNavigationItemType.Profile,
                 selected = selected is BottomNavigationItemType.Profile,
                 isNew = false,
@@ -109,13 +113,21 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
                     onClick(BottomNavigationItemType.Profile)
                 },
             )
-            Spacer(modifier = Modifier.width(32.dp))
+            Spacer(
+                modifier = Modifier.width(16.dp)
+            )
         }
     }
 }
 
 @Composable
-private fun SeugiBottomNavigationItem(type: BottomNavigationItemType, selected: Boolean, isNew: Boolean, onClick: () -> Unit) {
+private fun SeugiBottomNavigationItem(
+    modifier: Modifier = Modifier,
+    type: BottomNavigationItemType,
+    selected: Boolean,
+    isNew: Boolean,
+    onClick: () -> Unit
+) {
     val animIconColor by animateColorAsState(
         targetValue = if (selected) SeugiTheme.colors.primary500 else SeugiTheme.colors.gray300,
         label = "",
@@ -126,8 +138,7 @@ private fun SeugiBottomNavigationItem(type: BottomNavigationItemType, selected: 
     )
 
     Column(
-        modifier = Modifier
-            .width(32.dp)
+        modifier = modifier
             .clickable(
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() },
