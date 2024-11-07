@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -66,7 +65,7 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Spacer(
-                modifier = Modifier.width(16.dp)
+                modifier = Modifier.width(16.dp),
             )
             SeugiBottomNavigationItem(
                 modifier = Modifier.weight(1f),
@@ -114,20 +113,14 @@ fun SeugiBottomNavigation(modifier: Modifier = Modifier, selected: BottomNavigat
                 },
             )
             Spacer(
-                modifier = Modifier.width(16.dp)
+                modifier = Modifier.width(16.dp),
             )
         }
     }
 }
 
 @Composable
-private fun SeugiBottomNavigationItem(
-    modifier: Modifier = Modifier,
-    type: BottomNavigationItemType,
-    selected: Boolean,
-    isNew: Boolean,
-    onClick: () -> Unit
-) {
+private fun SeugiBottomNavigationItem(modifier: Modifier = Modifier, type: BottomNavigationItemType, selected: Boolean, isNew: Boolean, onClick: () -> Unit) {
     val animIconColor by animateColorAsState(
         targetValue = if (selected) SeugiTheme.colors.primary500 else SeugiTheme.colors.gray300,
         label = "",
