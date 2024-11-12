@@ -2,10 +2,10 @@ package com.seugi.assignment
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.seugi.assignment.model.AssignmentUiState
+import com.seugi.assignment.model.CommonUiState
 import com.seugi.common.model.Result
 import com.seugi.data.assignment.AssignmentRepository
-import com.seugi.assignment.model.CommonUiState
-import com.seugi.assignment.model.AssignmentUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.collections.immutable.toImmutableList

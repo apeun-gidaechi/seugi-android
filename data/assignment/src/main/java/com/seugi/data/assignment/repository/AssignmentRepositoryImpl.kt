@@ -7,8 +7,8 @@ import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.assignment.AssignmentRepository
 import com.seugi.data.assignment.mapper.toModels
 import com.seugi.data.assignment.model.AssignmentModel
-import com.seugi.network.core.response.safeResponse
 import com.seugi.network.assignment.AssignmentDataSource
+import com.seugi.network.core.response.safeResponse
 import java.time.LocalDateTime
 import javax.inject.Inject
 import kotlinx.collections.immutable.ImmutableList

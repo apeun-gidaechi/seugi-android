@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.seugi.assignment.model.CommonUiState
 import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.core.model.isTeacher
 import com.seugi.designsystem.R
@@ -35,7 +36,6 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.theme.SeugiTheme
-import com.seugi.assignment.model.CommonUiState
 import java.time.LocalDate
 import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toKotlinLocalDate

@@ -17,6 +17,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.seugi.assignment.navigation.assignmentScreen
+import com.seugi.assignment.navigation.navigateToAssignment
 import com.seugi.chat.navigation.CHAT_ROUTE
 import com.seugi.chat.navigation.chatScreen
 import com.seugi.chatdatail.navigation.chatDetailScreen
@@ -46,8 +48,6 @@ import com.seugi.setting.navigate.navigateToSetting
 import com.seugi.setting.navigate.settingScreen
 import com.seugi.task.create.navigation.navigateToTaskCreate
 import com.seugi.task.create.navigation.taskCreateScreen
-import com.seugi.assignment.navigation.navigateToAssignment
-import com.seugi.assignment.navigation.assignmentScreen
 import com.seugi.timetable.navigation.navigateToTimetable
 import com.seugi.timetable.navigation.timetableScreen
 import com.seugi.workspace.navigation.WAITING_JOIN

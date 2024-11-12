@@ -4,8 +4,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.seugi.data.core.model.ProfileModel
 import com.seugi.assignment.AssignmentScreen
+import com.seugi.data.core.model.ProfileModel
 
 const val ASSIGNMENT_ROUTE = "task"
 
