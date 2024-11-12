@@ -105,7 +105,7 @@ include(
     ":network:timetable",
     ":network:catseugi",
     ":network:schedule",
-    ":network:task",
+    ":network:assignment",
     ":common",
     ":data:member",
     ":data:workspace",
@@ -123,7 +123,7 @@ include(
     ":data:timetable",
     ":data:catseugi",
     ":data:schedule",
-    ":data:task",
+    ":data:assignment",
     ":feature-onboarding:join",
     ":feature-onboarding:start",
     ":feature-onboarding:onboarding",
@@ -134,7 +134,7 @@ include(
     ":feature-main:meal-widget",
     ":feature-main:meal",
     ":feature-main:timetable-widget",
-    ":feature-main:task",
-    ":feature-main:task-create",
+    ":feature-main:assignment",
+    ":feature-main:assignment-create",
     ":ui"
 )

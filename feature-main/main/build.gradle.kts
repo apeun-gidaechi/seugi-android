@@ -28,8 +28,8 @@ dependencies {
     implementation(projects.featureMain.workspaceCreate)
     implementation(projects.featureMain.timetable)
     implementation(projects.featureMain.setting)
-    implementation(projects.featureMain.task)
-    implementation(projects.featureMain.taskCreate)
+    implementation(projects.featureMain.assignment)
+    implementation(projects.featureMain.assignmentCreate)
     implementation(projects.featureMain.meal)
 
 }

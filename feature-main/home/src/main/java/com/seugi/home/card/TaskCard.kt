@@ -5,15 +5,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
-import com.seugi.data.task.model.TaskModel
+import com.seugi.data.assignment.model.AssignmentModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.component.LoadingDotsIndicator
 import com.seugi.designsystem.theme.SeugiTheme
@@ -27,7 +25,7 @@ import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toKotlinLocalDate
 
 @Composable
-fun TaskCard(uiState: CommonUiState<ImmutableList<TaskModel>>, navigateToTask: () -> Unit) {
+fun TaskCard(uiState: CommonUiState<ImmutableList<AssignmentModel>>, navigateToTask: () -> Unit) {
     HomeCard(
         text = "다가오는 과제",
         onClickDetail = navigateToTask,

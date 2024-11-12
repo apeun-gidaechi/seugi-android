@@ -15,6 +15,6 @@ dependencies {
     implementation(projects.data.meal)
     implementation(projects.data.timetable)
     implementation(projects.data.schedule)
-    implementation(projects.data.task)
+    implementation(projects.data.assignment)
     implementation(projects.common)
 }

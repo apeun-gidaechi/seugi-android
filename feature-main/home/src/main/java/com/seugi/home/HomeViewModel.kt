@@ -7,11 +7,11 @@ import com.seugi.common.model.Result
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.common.utiles.combineWhenAllComplete
+import com.seugi.data.assignment.AssignmentRepository
+import com.seugi.data.assignment.model.AssignmentModel
 import com.seugi.data.core.model.MealType
 import com.seugi.data.meal.MealRepository
 import com.seugi.data.schedule.ScheduleRepository
-import com.seugi.data.task.TaskRepository
-import com.seugi.data.task.model.TaskModel
 import com.seugi.data.timetable.TimetableRepository
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.data.workspace.model.WorkspaceModel
@@ -39,7 +39,7 @@ class HomeViewModel @Inject constructor(
     private val mealRepository: MealRepository,
     private val timetableRepository: TimetableRepository,
     private val scheduleRepository: ScheduleRepository,
-    private val taskRepository: TaskRepository,
+    private val assignmentRepository: AssignmentRepository,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
@@ -212,7 +212,7 @@ class HomeViewModel @Inject constructor(
 
     private fun loadTask(workspaceId: String) = viewModelScope.launch(dispatcher) {
         launch {
-            taskRepository.getGoogleTaskAll().collect {
+            assignmentRepository.getGoogleTaskAll().collect {
                 when (it) {
                     is Result.Error -> {
                         it.throwable.printStackTrace()
@@ -229,10 +229,10 @@ class HomeViewModel @Inject constructor(
         }
 
         combineWhenAllComplete(
-            taskRepository.getGoogleTaskAll(),
-            taskRepository.getWorkspaceTaskAll(workspaceId),
+            assignmentRepository.getGoogleTaskAll(),
+            assignmentRepository.getWorkspaceTaskAll(workspaceId),
         ) { google, workspace ->
-            val tasks = mutableListOf<TaskModel>()
+            val tasks = mutableListOf<AssignmentModel>()
             var failedGoogleOauth = false
             var failedWorkspace = false
             when (google) {
