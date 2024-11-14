@@ -455,7 +455,7 @@ internal fun ChatDetailChatScreen(
                                         isFirst = item.isFirst,
                                         isLast = item.isLast,
                                         createdAt = item.timestamp.toAmShortString(),
-                                        userName = userInfo?.name?: "",
+                                        userName = userInfo?.name ?: "",
                                         userProfile = userInfo?.picture?.ifEmpty { null },
                                     )
                                 }
@@ -492,7 +492,7 @@ internal fun ChatDetailChatScreen(
                                         isFirst = item.isFirst,
                                         isLast = item.isLast,
                                         createdAt = item.timestamp.toAmShortString(),
-                                        userName = userInfo?.name?: "",
+                                        userName = userInfo?.name ?: "",
                                         userProfile = userInfo?.picture?.ifEmpty { null },
                                     )
                                 }

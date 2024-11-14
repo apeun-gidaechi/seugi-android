@@ -872,9 +872,6 @@ class ChatDetailViewModel @Inject constructor(
                 }
 
                 is MessageParent.Img -> {
-
-
-
                     val data = data as MessageParent.Img
                     val message = _state.value.message.toMutableList()
                     val formerItem = message.firstOrNull()
@@ -952,7 +949,6 @@ class ChatDetailViewModel @Inject constructor(
                     ) {
                         message[0] = formerItem.copy(isLast = false)
                     }
-
 
                     if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
                         isFirst = true

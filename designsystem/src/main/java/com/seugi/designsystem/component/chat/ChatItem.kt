@@ -1,6 +1,5 @@
 package com.seugi.designsystem.component.chat
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -48,7 +47,6 @@ import com.seugi.designsystem.component.GradientPrimary
 import com.seugi.designsystem.component.SeugiAvatar
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
-import com.seugi.designsystem.component.modifier.`if`
 import com.seugi.designsystem.theme.SeugiTheme
 
 val CHAT_SHAPE = 8.dp
@@ -230,7 +228,7 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType) {
                 createdAt = type.createdAt,
                 userName = type.userName,
                 userProfile = type.userProfile,
-                count = type.count
+                count = type.count,
             )
         }
         is ChatItemType.FileFailed -> {
@@ -259,7 +257,7 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType) {
                 createdAt = type.createdAt,
                 userName = type.userName,
                 userProfile = type.userProfile,
-                count = type.count
+                count = type.count,
             )
         }
 
@@ -700,7 +698,7 @@ private fun SeugiChatItemFile(
     Row(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = if (isMe) Arrangement.End else Arrangement.Start
+        horizontalArrangement = if (isMe) Arrangement.End else Arrangement.Start,
     ) {
         if (!isMe) {
             if (isFirst) {
@@ -723,11 +721,11 @@ private fun SeugiChatItemFile(
                 Spacer(modifier = Modifier.height(4.dp))
             }
             Row(
-                verticalAlignment = Alignment.Bottom
+                verticalAlignment = Alignment.Bottom,
             ) {
                 if (isMe) {
                     Column(
-                        horizontalAlignment = Alignment.End
+                        horizontalAlignment = Alignment.End,
                     ) {
                         Text(
                             text = count?.toString() ?: "",
@@ -830,12 +828,7 @@ private fun SeugiChatItemFile(
 }
 
 @Composable
-private fun SeugiChatItemFileFailed(
-    modifier: Modifier = Modifier,
-    onClickRetry: () -> Unit,
-    fileName: String,
-    fileSize: String,
-) {
+private fun SeugiChatItemFileFailed(modifier: Modifier = Modifier, onClickRetry: () -> Unit, fileName: String, fileSize: String) {
     val chatShape = RoundedCornerShape(CHAT_SHAPE)
 
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp * 0.8f
@@ -1022,11 +1015,11 @@ fun SeugiChatItemImage(
             Spacer(modifier = Modifier.width(8.dp))
         }
         Row(
-            verticalAlignment = Alignment.Bottom
+            verticalAlignment = Alignment.Bottom,
         ) {
             if (isMe) {
                 Column(
-                    horizontalAlignment = Alignment.End
+                    horizontalAlignment = Alignment.End,
                 ) {
                     Text(
                         text = count?.toString() ?: "",
@@ -1424,7 +1417,7 @@ private fun PreviewSeugiChatItem() {
                     isFirst = true,
                     isLast = true,
                     userName = "test",
-                    userProfile = null
+                    userProfile = null,
                 ),
             )
         }
