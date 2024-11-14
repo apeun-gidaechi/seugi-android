@@ -199,6 +199,8 @@ sealed class MessageRoomEvent(
             override val timestamp: LocalDateTime,
             override val type: MessageType,
             override val userId: Long,
+            val isFirst: Boolean,
+            val isLast: Boolean,
         ) : MessageParent(timestamp, type, userId)
 
         data class Img(
@@ -208,6 +210,8 @@ sealed class MessageRoomEvent(
             override val timestamp: LocalDateTime,
             override val type: MessageType,
             override val userId: Long,
+            val isFirst: Boolean,
+            val isLast: Boolean,
         ) : MessageParent(timestamp, type, userId)
 
         data class Enter(

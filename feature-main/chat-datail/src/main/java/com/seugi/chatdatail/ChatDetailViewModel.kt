@@ -653,6 +653,20 @@ class ChatDetailViewModel @Inject constructor(
                         isFirst = isFirst,
                     )
                 }
+
+                is MessageParent.File -> {
+                    messageParent.copy(
+                        isLast = isLast,
+                        isFirst = isFirst,
+                    )
+                }
+                is MessageParent.Img -> {
+                    messageParent.copy(
+                        isLast = isLast,
+                        isFirst = isFirst,
+                    )
+                }
+
                 is MessageParent.BOT -> {
                     if (messageParent is MessageParent.BOT.DrawLots) {
                         messageParent.copy(
@@ -713,6 +727,17 @@ class ChatDetailViewModel @Inject constructor(
                     ) {
                         message[0] = formerItem.copy(isLast = false)
                     }
+                    if (
+                        formerItem is MessageParent.File && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
+                    ) {
+                        message[0] = formerItem.copy(isLast = false)
+                    }
+
+                    if (
+                        formerItem is MessageParent.Img && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
+                    ) {
+                        message[0] = formerItem.copy(isLast = false)
+                    }
 
                     if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
                         isFirst = true
@@ -752,6 +777,16 @@ class ChatDetailViewModel @Inject constructor(
                     val formerItem = message.firstOrNull()
                     if (
                         formerItem is MessageParent.Me && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
+                    ) {
+                        message[0] = formerItem.copy(isLast = false)
+                    }
+                    if (
+                        formerItem is MessageParent.File && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
+                    ) {
+                        message[0] = formerItem.copy(isLast = false)
+                    }
+                    if (
+                        formerItem is MessageParent.Img && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
                     ) {
                         message[0] = formerItem.copy(isLast = false)
                     }
@@ -837,7 +872,52 @@ class ChatDetailViewModel @Inject constructor(
                 }
 
                 is MessageParent.Img -> {
+
+
+
                     val data = data as MessageParent.Img
+                    val message = _state.value.message.toMutableList()
+                    val formerItem = message.firstOrNull()
+
+                    var isFirst = data.userId != formerItem?.userId
+                    if (
+                        formerItem is MessageParent.Other && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
+                    ) {
+                        message[0] = formerItem.copy(isLast = false)
+                    }
+
+                    if (
+                        formerItem is MessageParent.File && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
+                    ) {
+                        message[0] = formerItem.copy(isLast = false)
+                    }
+
+                    if (
+                        formerItem is MessageParent.Img && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
+                    ) {
+                        message[0] = formerItem.copy(isLast = false)
+                    }
+
+                    if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
+                        isFirst = true
+                        message.add(
+                            index = 0,
+                            element = MessageParent.Date(
+                                type = MessageType.MESSAGE,
+                                timestamp = LocalDateTime.of(data.timestamp.year, data.timestamp.monthValue, data.timestamp.dayOfMonth, 0, 0),
+                                userId = 0,
+                                text = "",
+                            ),
+                        )
+                    }
+                    message.add(
+                        index = 0,
+                        element = data.copy(
+                            isLast = true,
+                            isFirst = isFirst,
+                        ),
+                    )
+
                     // messageQueue 삭제 로직
                     if (data.userId == _state.value.userInfo?.id) {
                         _messageSaveQueueState.value -= data.uuid ?: ""
@@ -845,15 +925,54 @@ class ChatDetailViewModel @Inject constructor(
                     _messageSaveQueueState.value -= data.uuid ?: ""
                     _state.update {
                         it.copy(
-                            message = it.message.toMutableList().apply {
-                                add(0, data)
-                            }.toImmutableList(),
+                            message = message.toImmutableList(),
                         )
                     }
                 }
 
                 is MessageParent.File -> {
                     val data = data as MessageParent.File
+                    val message = _state.value.message.toMutableList()
+                    val formerItem = message.firstOrNull()
+
+                    var isFirst = data.userId != formerItem?.userId
+                    if (
+                        formerItem is MessageParent.Other && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
+                    ) {
+                        message[0] = formerItem.copy(isLast = false)
+                    }
+                    if (
+                        formerItem is MessageParent.File && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
+                    ) {
+                        message[0] = formerItem.copy(isLast = false)
+                    }
+
+                    if (
+                        formerItem is MessageParent.Img && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
+                    ) {
+                        message[0] = formerItem.copy(isLast = false)
+                    }
+
+
+                    if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
+                        isFirst = true
+                        message.add(
+                            index = 0,
+                            element = MessageParent.Date(
+                                type = MessageType.MESSAGE,
+                                timestamp = LocalDateTime.of(data.timestamp.year, data.timestamp.monthValue, data.timestamp.dayOfMonth, 0, 0),
+                                userId = 0,
+                                text = "",
+                            ),
+                        )
+                    }
+                    message.add(
+                        index = 0,
+                        element = data.copy(
+                            isLast = true,
+                            isFirst = isFirst,
+                        ),
+                    )
                     // messageQueue 삭제 로직
                     if (data.userId == _state.value.userInfo?.id) {
                         _messageSaveQueueState.value -= data.uuid ?: ""
@@ -861,9 +980,7 @@ class ChatDetailViewModel @Inject constructor(
                     _messageSaveQueueState.value -= data.uuid ?: ""
                     _state.update {
                         it.copy(
-                            message = it.message.toMutableList().apply {
-                                add(0, data)
-                            }.toImmutableList(),
+                            message = message.toImmutableList(),
                         )
                     }
                 }
@@ -1017,6 +1134,7 @@ class ChatDetailViewModel @Inject constructor(
 internal fun LocalDateTime.isDifferentMin(time: LocalDateTime): Boolean {
     val seconds = abs(Duration.between(this, time).seconds)
     if (seconds >= 60) {
+        Log.d("TAG", "isDifferentMin: $seconds")
         return true
     }
     if (this.year != time.year) return true

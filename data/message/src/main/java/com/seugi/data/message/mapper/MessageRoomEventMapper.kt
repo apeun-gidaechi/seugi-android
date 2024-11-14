@@ -280,6 +280,8 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
                 type = type.toMessageType(),
                 userId = this.userId,
                 uuid = uuid,
+                isFirst = false,
+                isLast = false,
             )
         }
         "FILE" -> {
@@ -292,6 +294,8 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
                 type = type.toMessageType(),
                 userId = this.userId,
                 uuid = uuid,
+                isFirst = false,
+                isLast = false,
             )
         }
 
