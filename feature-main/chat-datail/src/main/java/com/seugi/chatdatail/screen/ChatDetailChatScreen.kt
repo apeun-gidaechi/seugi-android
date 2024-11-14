@@ -441,7 +441,9 @@ internal fun ChatDetailChatScreen(
                                     ChatItemType.Date(item.timestamp.toFullFormatString())
 
                                 is MessageRoomEvent.MessageParent.Img -> {
-                                    Log.d("TAG", "ChatDetailScreen: $item $userId")
+                                    val readUser = item.getUserCount(state.roomInfo?.members ?: persistentListOf())
+                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
+                                    val userInfo = state.users[item.userId]
                                     ChatItemType.Image(
                                         onClick = {
                                             onSelectUrlImageItemChange(item)
@@ -449,10 +451,19 @@ internal fun ChatDetailChatScreen(
                                         },
                                         image = item.url,
                                         isMe = item.userId == userId,
+                                        count = if (count <= 0) null else count,
+                                        isFirst = item.isFirst,
+                                        isLast = item.isLast,
+                                        createdAt = item.timestamp.toAmShortString(),
+                                        userName = userInfo?.name ?: "",
+                                        userProfile = userInfo?.picture?.ifEmpty { null },
                                     )
                                 }
 
-                                is MessageRoomEvent.MessageParent.File ->
+                                is MessageRoomEvent.MessageParent.File -> {
+                                    val readUser = item.getUserCount(state.roomInfo?.members ?: persistentListOf())
+                                    val count = (state.roomInfo?.members?.size ?: 0) - readUser.size
+                                    val userInfo = state.users[item.userId]
                                     ChatItemType.File(
                                         onClick = {
                                             if (!checkFileExist(item.fileName)) {
@@ -477,7 +488,14 @@ internal fun ChatDetailChatScreen(
                                         isMe = item.userId == userId,
                                         fileName = item.fileName,
                                         fileSize = byteToFormatString(item.fileSize),
+                                        count = if (count <= 0) null else count,
+                                        isFirst = item.isFirst,
+                                        isLast = item.isLast,
+                                        createdAt = item.timestamp.toAmShortString(),
+                                        userName = userInfo?.name ?: "",
+                                        userProfile = userInfo?.picture?.ifEmpty { null },
                                     )
+                                }
 
                                 is MessageRoomEvent.MessageParent.Left -> {
                                     val userNames = item.eventList
