@@ -216,6 +216,7 @@ internal fun MainScreen(
                     navHostController.popBackStack()
                 },
                 navigateToChatDetail = { chatId, workspaceId, isPersonal ->
+                    navHostController.popBackStack()
                     navHostController.navigateToChatDetail(
                         chatRoomId = chatId,
                         workspaceId = workspaceId,
