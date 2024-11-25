@@ -55,14 +55,14 @@ sealed class MessageRoomEventResponse(
         override val type: String,
         override val userId: Long,
         val messageId: String,
-        val emojiId: Long,
+        val emojiId: Int,
     ) : MessageRoomEventResponse(type, userId)
 
     data class RemoveEmoji(
         override val type: String,
         override val userId: Long,
         val messageId: String,
-        val emojiId: Long,
+        val emojiId: Int,
     ) : MessageRoomEventResponse(type, userId)
 
     data class TransperAdmin(

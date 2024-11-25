@@ -27,6 +27,7 @@ import com.seugi.data.message.model.MessageRoomEvent.MessageParent
 import com.seugi.data.message.model.MessageType
 import com.seugi.data.message.model.addEmoji
 import com.seugi.data.message.model.copy
+import com.seugi.data.message.model.equalsMessageId
 import com.seugi.data.message.model.getVisibleMessage
 import com.seugi.data.message.model.minusEmoji
 import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
@@ -535,20 +536,7 @@ class ChatDetailViewModel @Inject constructor(
         _state.update {
             it.copy(
                 message = it.message.map {
-                    when (it) {
-                        is MessageParent.BOT.DrawLots -> { if (it.id != messageId) return@map it }
-                        is MessageParent.BOT.Etc -> { if (it.id != messageId) return@map it }
-                        is MessageParent.BOT.Meal -> { if (it.id != messageId) return@map it }
-                        is MessageParent.BOT.NotSupport -> { if (it.id != messageId) return@map it }
-                        is MessageParent.BOT.Notification -> { if (it.id != messageId) return@map it }
-                        is MessageParent.BOT.TeamBuild -> { if (it.id != messageId) return@map it }
-                        is MessageParent.BOT.Timetable -> { if (it.id != messageId) return@map it }
-                        is MessageParent.File -> { if (it.id != messageId) return@map it }
-                        is MessageParent.Img -> { if (it.id != messageId) return@map it }
-                        is MessageParent.Me -> { if (it.id != messageId) return@map it }
-                        is MessageParent.Other -> { if (it.id != messageId) return@map it }
-                        else -> return@map  it
-                    }
+                    if (!it.equalsMessageId(messageId)) return@map it
                     it.addEmoji(userId, emojiId)
                 }.toImmutableList()
             )
@@ -572,20 +560,7 @@ class ChatDetailViewModel @Inject constructor(
         _state.update {
             it.copy(
                 message = it.message.map {
-                    when (it) {
-                        is MessageParent.BOT.DrawLots -> { if (it.id != messageId) return@map it }
-                        is MessageParent.BOT.Etc -> { if (it.id != messageId) return@map it }
-                        is MessageParent.BOT.Meal -> { if (it.id != messageId) return@map it }
-                        is MessageParent.BOT.NotSupport -> { if (it.id != messageId) return@map it }
-                        is MessageParent.BOT.Notification -> { if (it.id != messageId) return@map it }
-                        is MessageParent.BOT.TeamBuild -> { if (it.id != messageId) return@map it }
-                        is MessageParent.BOT.Timetable -> { if (it.id != messageId) return@map it }
-                        is MessageParent.File -> { if (it.id != messageId) return@map it }
-                        is MessageParent.Img -> { if (it.id != messageId) return@map it }
-                        is MessageParent.Me -> { if (it.id != messageId) return@map it }
-                        is MessageParent.Other -> { if (it.id != messageId) return@map it }
-                        else -> return@map  it
-                    }
+                    if (!it.equalsMessageId(messageId)) return@map it
                     it.minusEmoji(userId, emojiId)
                 }.toImmutableList()
             )
@@ -1141,6 +1116,36 @@ class ChatDetailViewModel @Inject constructor(
                                     .sortedBy { it.utcTimeMillis }
                                     .toImmutableList(),
                             ),
+                        )
+                    }
+                }
+
+                is MessageRoomEvent.AddEmoji -> {
+                    val data = data as MessageRoomEvent.AddEmoji
+                    _state.update {
+                        it.copy(
+                            message = it.message.map {
+                                if (!it.equalsMessageId(data.messageId)) return@map it
+                                it.addEmoji(
+                                    userId = data.userId,
+                                    emojiId = data.emojiId
+                                )
+                            }.toImmutableList()
+                        )
+                    }
+                }
+
+                is MessageRoomEvent.RemoveEmoji -> {
+                    val data = data as MessageRoomEvent.RemoveEmoji
+                    _state.update {
+                        it.copy(
+                            message = it.message.map {
+                                if (!it.equalsMessageId(data.messageId)) return@map it
+                                it.minusEmoji(
+                                    userId = data.userId,
+                                    emojiId = data.emojiId
+                                )
+                            }.toImmutableList()
                         )
                     }
                 }

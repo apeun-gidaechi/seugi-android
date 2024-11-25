@@ -4,6 +4,7 @@ import com.seugi.data.core.model.MealModel
 import com.seugi.data.core.model.NotificationModel
 import com.seugi.data.core.model.TimetableModel
 import com.seugi.data.core.model.UserInfoModel
+import com.seugi.data.message.model.MessageRoomEvent.MessageParent
 import java.time.LocalDateTime
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -271,14 +272,14 @@ sealed class MessageRoomEvent(
         override val type: MessageType,
         override val userId: Long,
         val messageId: String,
-        val emojiId: Long,
+        val emojiId: Int,
     ) : MessageRoomEvent(type, userId)
 
     data class RemoveEmoji(
         override val type: MessageType,
         override val userId: Long,
         val messageId: String,
-        val emojiId: Long,
+        val emojiId: Int,
     ) : MessageRoomEvent(type, userId)
 
     data class TransperAdmin(
@@ -596,4 +597,20 @@ fun MessageRoomEvent.MessageParent.minusEmoji(userId: Long, emojiId: Int): Messa
             emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList()
         )
         else -> this
+    }
+
+fun MessageRoomEvent.MessageParent.equalsMessageId(messageId: String): Boolean =
+    when(this) {
+        is MessageParent.BOT.DrawLots -> this.id == messageId
+        is MessageParent.BOT.Etc -> this.id == messageId
+        is MessageParent.BOT.Meal -> this.id == messageId
+        is MessageParent.BOT.NotSupport -> this.id == messageId
+        is MessageParent.BOT.Notification -> this.id == messageId
+        is MessageParent.BOT.TeamBuild -> this.id == messageId
+        is MessageParent.BOT.Timetable -> this.id == messageId
+        is MessageParent.File -> this.id == messageId
+        is MessageParent.Img -> this.id == messageId
+        is MessageParent.Me -> this.id == messageId
+        is MessageParent.Other -> this.id == messageId
+        else -> false
     }
