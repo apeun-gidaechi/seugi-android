@@ -50,6 +50,7 @@ import com.seugi.common.utiles.byteToFormatString
 import com.seugi.common.utiles.toAmShortString
 import com.seugi.common.utiles.toFullFormatString
 import com.seugi.data.core.model.UserModel
+import com.seugi.data.message.model.MessageEmojiModel
 import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.data.message.model.MessageType
 import com.seugi.designsystem.R
@@ -59,6 +60,7 @@ import com.seugi.designsystem.component.SeugiDivider
 import com.seugi.designsystem.component.SeugiIconButton
 import com.seugi.designsystem.component.SeugiRightSideScaffold
 import com.seugi.designsystem.component.SeugiTopBar
+import com.seugi.designsystem.component.chat.ChatItemEmoji
 import com.seugi.designsystem.component.chat.ChatItemType
 import com.seugi.designsystem.component.chat.SeugiChatItem
 import com.seugi.designsystem.component.modifier.DropShadowType
@@ -66,6 +68,7 @@ import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.component.modifier.`if`
 import com.seugi.designsystem.component.textfield.SeugiChatTextField
 import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.ui.EmojiUtiles
 import com.seugi.ui.addFocusCleaner
 import com.seugi.ui.checkFileExist
 import com.seugi.ui.downloadFile
@@ -73,6 +76,7 @@ import com.seugi.ui.getFile
 import com.seugi.ui.getFileMimeType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -110,6 +114,8 @@ internal fun ChatDetailChatScreen(
     popBackStack: () -> Unit,
     onTextChange: (String) -> Unit,
     onClickInviteMember: () -> Unit,
+    onClickAddEmoji: (emoji: String, messageId: String) -> Unit,
+    onClickMinusEmoji: (emoji: String, messageId: String) -> Unit,
     onSearchTextChange: (String) -> Unit,
     onIsSearchChange: (Boolean) -> Unit,
     onsOtherProfileStateChange: (UserModel) -> Unit,
@@ -124,7 +130,7 @@ internal fun ChatDetailChatScreen(
     onShowImagePreview: (Boolean) -> Unit,
     onSelectedFileName: (String) -> Unit,
     onSelectedImageBitmap: (Bitmap?) -> Unit,
-    onChatLongClick: (text: String) -> Unit,
+    onChatLongClick: (chatItem: MessageRoomEvent.MessageParent) -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -414,9 +420,17 @@ internal fun ChatDetailChatScreen(
                                         message = item.message,
                                         createdAt = item.timestamp.toAmShortString(),
                                         count = if (count <= 0) null else count,
+                                        emojis = item.emojiList.toChatEmojiModel(userId),
                                         onChatLongClick = {
-                                            onChatLongClick(item.message)
+                                            onChatLongClick(item)
                                         },
+                                        onEmojiClick = { emoji ->
+                                            if (emoji.isChecked) {
+                                                onClickMinusEmoji(emoji.emoji, item.id)
+                                            } else {
+                                                onClickAddEmoji(emoji.emoji, item.id)
+                                            }
+                                        }
                                     )
                                 }
                                 is MessageRoomEvent.MessageParent.Other -> {
@@ -431,9 +445,17 @@ internal fun ChatDetailChatScreen(
                                         message = item.message,
                                         createdAt = item.timestamp.toAmShortString(),
                                         count = if (count <= 0) null else count,
+                                        emojis = item.emojiList.toChatEmojiModel(userId),
                                         onChatLongClick = {
-                                            onChatLongClick(item.message)
+                                            onChatLongClick(item)
                                         },
+                                        onEmojiClick = { emoji ->
+                                            if (emoji.isChecked) {
+                                                onClickMinusEmoji(emoji.emoji, item.id)
+                                            } else {
+                                                onClickAddEmoji(emoji.emoji, item.id)
+                                            }
+                                        }
                                     )
                                 }
 
@@ -457,6 +479,14 @@ internal fun ChatDetailChatScreen(
                                         createdAt = item.timestamp.toAmShortString(),
                                         userName = userInfo?.name ?: "",
                                         userProfile = userInfo?.picture?.ifEmpty { null },
+                                        emojis = item.emojiList.toChatEmojiModel(userId),
+                                        onEmojiClick = { emoji ->
+                                            if (emoji.isChecked) {
+                                                onClickMinusEmoji(emoji.emoji, item.id)
+                                            } else {
+                                                onClickAddEmoji(emoji.emoji, item.id)
+                                            }
+                                        }
                                     )
                                 }
 
@@ -494,6 +524,14 @@ internal fun ChatDetailChatScreen(
                                         createdAt = item.timestamp.toAmShortString(),
                                         userName = userInfo?.name ?: "",
                                         userProfile = userInfo?.picture?.ifEmpty { null },
+                                        emojis = item.emojiList.toChatEmojiModel(userId),
+                                        onEmojiClick = { emoji ->
+                                            if (emoji.isChecked) {
+                                                onClickMinusEmoji(emoji.emoji, item.id)
+                                            } else {
+                                                onClickAddEmoji(emoji.emoji, item.id)
+                                            }
+                                        }
                                     )
                                 }
 
@@ -528,9 +566,17 @@ internal fun ChatDetailChatScreen(
                                         message = item.visibleMessage,
                                         createdAt = item.timestamp.toAmShortString(),
                                         count = if (count <= 0) null else count,
+                                        emojis = item.emojiList.toChatEmojiModel(userId),
                                         onChatLongClick = {
-                                            onChatLongClick(item.visibleMessage)
+                                            onChatLongClick(item)
                                         },
+                                        onEmojiClick = { emoji ->
+                                            if (emoji.isChecked) {
+                                                onClickMinusEmoji(emoji.emoji, item.id)
+                                            } else {
+                                                onClickAddEmoji(emoji.emoji, item.id)
+                                            }
+                                        }
                                     )
                                 }
 
@@ -545,9 +591,17 @@ internal fun ChatDetailChatScreen(
                                         message = item.visibleMessage,
                                         createdAt = item.timestamp.toAmShortString(),
                                         count = if (count <= 0) null else count,
+                                        emojis = item.emojiList.toChatEmojiModel(userId),
                                         onChatLongClick = {
-                                            onChatLongClick(item.visibleMessage)
+                                            onChatLongClick(item)
                                         },
+                                        onEmojiClick = { emoji ->
+                                            if (emoji.isChecked) {
+                                                onClickMinusEmoji(emoji.emoji, item.id)
+                                            } else {
+                                                onClickAddEmoji(emoji.emoji, item.id)
+                                            }
+                                        }
                                     )
                                 }
 
@@ -562,9 +616,17 @@ internal fun ChatDetailChatScreen(
                                         message = item.visibleMessage,
                                         createdAt = item.timestamp.toAmShortString(),
                                         count = if (count <= 0) null else count,
+                                        emojis = item.emojiList.toChatEmojiModel(userId),
                                         onChatLongClick = {
-                                            onChatLongClick(item.visibleMessage)
+                                            onChatLongClick(item)
                                         },
+                                        onEmojiClick = { emoji ->
+                                            if (emoji.isChecked) {
+                                                onClickMinusEmoji(emoji.emoji, item.id)
+                                            } else {
+                                                onClickAddEmoji(emoji.emoji, item.id)
+                                            }
+                                        }
                                     )
                                 }
 
@@ -579,9 +641,17 @@ internal fun ChatDetailChatScreen(
                                         message = item.visibleMessage,
                                         createdAt = item.timestamp.toAmShortString(),
                                         count = if (count <= 0) null else count,
+                                        emojis = item.emojiList.toChatEmojiModel(userId),
                                         onChatLongClick = {
-                                            onChatLongClick(item.visibleMessage)
+                                            onChatLongClick(item)
                                         },
+                                        onEmojiClick = { emoji ->
+                                            if (emoji.isChecked) {
+                                                onClickMinusEmoji(emoji.emoji, item.id)
+                                            } else {
+                                                onClickAddEmoji(emoji.emoji, item.id)
+                                            }
+                                        }
                                     )
                                 }
 
@@ -596,9 +666,17 @@ internal fun ChatDetailChatScreen(
                                         message = item.visibleMessage,
                                         createdAt = item.timestamp.toAmShortString(),
                                         count = if (count <= 0) null else count,
+                                        emojis = item.emojiList.toChatEmojiModel(userId),
                                         onChatLongClick = {
-                                            onChatLongClick(item.visibleMessage)
+                                            onChatLongClick(item)
                                         },
+                                        onEmojiClick = { emoji ->
+                                            if (emoji.isChecked) {
+                                                onClickMinusEmoji(emoji.emoji, item.id)
+                                            } else {
+                                                onClickAddEmoji(emoji.emoji, item.id)
+                                            }
+                                        }
                                     )
                                 }
 
@@ -613,9 +691,17 @@ internal fun ChatDetailChatScreen(
                                         message = item.message,
                                         createdAt = item.timestamp.toAmShortString(),
                                         count = if (count <= 0) null else count,
+                                        emojis = item.emojiList.toChatEmojiModel(userId),
                                         onChatLongClick = {
-                                            onChatLongClick(item.message)
+                                            onChatLongClick(item)
                                         },
+                                        onEmojiClick = { emoji ->
+                                            if (emoji.isChecked) {
+                                                onClickMinusEmoji(emoji.emoji, item.id)
+                                            } else {
+                                                onClickAddEmoji(emoji.emoji, item.id)
+                                            }
+                                        }
                                     )
                                 }
 
@@ -630,9 +716,17 @@ internal fun ChatDetailChatScreen(
                                         message = item.message,
                                         createdAt = item.timestamp.toAmShortString(),
                                         count = if (count <= 0) null else count,
+                                        emojis = item.emojiList.toChatEmojiModel(userId),
                                         onChatLongClick = {
-                                            onChatLongClick(item.message)
+                                            onChatLongClick(item)
                                         },
+                                        onEmojiClick = { emoji ->
+                                            if (emoji.isChecked) {
+                                                onClickMinusEmoji(emoji.emoji, item.id)
+                                            } else {
+                                                onClickAddEmoji(emoji.emoji, item.id)
+                                            }
+                                        }
                                     )
                                 }
                             },
@@ -709,3 +803,14 @@ internal fun ChatDetailChatScreen(
         }
     }
 }
+
+
+private fun ImmutableList<MessageEmojiModel>.toChatEmojiModel(userId: Long) =
+    this.map {
+        ChatItemEmoji(
+            id = it.emojiId,
+            emoji = EmojiUtiles.getEmoji(it.emojiId),
+            count = it.userId.size,
+            isChecked = it.userId.contains(userId)
+        )
+    }.toImmutableList()

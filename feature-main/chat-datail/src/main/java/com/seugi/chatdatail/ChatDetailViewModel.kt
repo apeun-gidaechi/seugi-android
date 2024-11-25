@@ -25,8 +25,10 @@ import com.seugi.data.message.MessageRepository
 import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.data.message.model.MessageRoomEvent.MessageParent
 import com.seugi.data.message.model.MessageType
+import com.seugi.data.message.model.addEmoji
 import com.seugi.data.message.model.copy
 import com.seugi.data.message.model.getVisibleMessage
+import com.seugi.data.message.model.minusEmoji
 import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
 import com.seugi.data.personalchat.PersonalChatRepository
 import com.seugi.data.profile.ProfileRepository
@@ -527,6 +529,80 @@ class ChatDetailViewModel @Inject constructor(
 
     fun deleteFailedSend(uuid: String) {
         _messageSaveQueueState.value -= uuid
+    }
+
+    fun emojiAdd(messageId: String, roomId: String, emojiId: Int, userId: Long) = viewModelScope.launch {
+        _state.update {
+            it.copy(
+                message = it.message.map {
+                    when (it) {
+                        is MessageParent.BOT.DrawLots -> { if (it.id != messageId) return@map it }
+                        is MessageParent.BOT.Etc -> { if (it.id != messageId) return@map it }
+                        is MessageParent.BOT.Meal -> { if (it.id != messageId) return@map it }
+                        is MessageParent.BOT.NotSupport -> { if (it.id != messageId) return@map it }
+                        is MessageParent.BOT.Notification -> { if (it.id != messageId) return@map it }
+                        is MessageParent.BOT.TeamBuild -> { if (it.id != messageId) return@map it }
+                        is MessageParent.BOT.Timetable -> { if (it.id != messageId) return@map it }
+                        is MessageParent.File -> { if (it.id != messageId) return@map it }
+                        is MessageParent.Img -> { if (it.id != messageId) return@map it }
+                        is MessageParent.Me -> { if (it.id != messageId) return@map it }
+                        is MessageParent.Other -> { if (it.id != messageId) return@map it }
+                        else -> return@map  it
+                    }
+                    it.addEmoji(userId, emojiId)
+                }.toImmutableList()
+            )
+        }
+        messageRepository.putEmoji(
+            messageId = messageId,
+            roomId = roomId,
+            emojiId = emojiId
+        ).collect {
+            when (it) {
+                is Result.Error -> {it.throwable.printStackTrace()}
+                Result.Loading -> {}
+                is Result.Success -> {
+                    Log.d("TAG", "emojiAdd: ${it.data}")
+                }
+            }
+        }
+    }
+
+    fun emojiMinus(messageId: String, roomId: String, emojiId: Int, userId: Long) = viewModelScope.launch {
+        _state.update {
+            it.copy(
+                message = it.message.map {
+                    when (it) {
+                        is MessageParent.BOT.DrawLots -> { if (it.id != messageId) return@map it }
+                        is MessageParent.BOT.Etc -> { if (it.id != messageId) return@map it }
+                        is MessageParent.BOT.Meal -> { if (it.id != messageId) return@map it }
+                        is MessageParent.BOT.NotSupport -> { if (it.id != messageId) return@map it }
+                        is MessageParent.BOT.Notification -> { if (it.id != messageId) return@map it }
+                        is MessageParent.BOT.TeamBuild -> { if (it.id != messageId) return@map it }
+                        is MessageParent.BOT.Timetable -> { if (it.id != messageId) return@map it }
+                        is MessageParent.File -> { if (it.id != messageId) return@map it }
+                        is MessageParent.Img -> { if (it.id != messageId) return@map it }
+                        is MessageParent.Me -> { if (it.id != messageId) return@map it }
+                        is MessageParent.Other -> { if (it.id != messageId) return@map it }
+                        else -> return@map  it
+                    }
+                    it.minusEmoji(userId, emojiId)
+                }.toImmutableList()
+            )
+        }
+        messageRepository.deleteEmoji(
+            messageId = messageId,
+            roomId = roomId,
+            emojiId = emojiId
+        ).collect {
+            when (it) {
+                is Result.Error -> {it.throwable.printStackTrace()}
+                Result.Loading -> {}
+                is Result.Success -> {
+                    Log.d("TAG", "emojiDelete: ${it.data}")
+                }
+            }
+        }
     }
 
     fun channelReconnect(userId: Long, roomId: String? = null) {
