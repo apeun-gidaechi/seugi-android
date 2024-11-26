@@ -55,7 +55,6 @@ import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.theme.SeugiTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.persistentSetOf
 
 val CHAT_SHAPE = 8.dp
 
@@ -398,7 +397,7 @@ private fun SeugiChatItemOthers(
                             start = 12.dp,
                             end = 12.dp,
                             top = 12.dp,
-                            bottom = 8.dp
+                            bottom = 8.dp,
                         ),
                         text = message,
                         color = SeugiTheme.colors.black,
@@ -406,7 +405,7 @@ private fun SeugiChatItemOthers(
                     )
                     FlowRow(
                         modifier = Modifier.padding(horizontal = 12.dp),
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
                     ) {
                         emojis.fastForEach { emoji ->
                             SeugiEmoji(
@@ -415,7 +414,7 @@ private fun SeugiChatItemOthers(
                                 isChecked = emoji.isChecked,
                                 onClick = {
                                     onEmojiClick(emoji)
-                                }
+                                },
                             )
                         }
                     }
@@ -514,7 +513,7 @@ private fun SeugiChatItemMe(
                     start = 12.dp,
                     end = 12.dp,
                     top = 12.dp,
-                    bottom = 8.dp
+                    bottom = 8.dp,
                 ),
                 text = message,
                 color = SeugiTheme.colors.white,
@@ -522,7 +521,7 @@ private fun SeugiChatItemMe(
             )
             FlowRow(
                 modifier = Modifier.padding(horizontal = 12.dp),
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
                 emojis.fastForEach { emoji ->
                     SeugiEmoji(
@@ -531,7 +530,7 @@ private fun SeugiChatItemMe(
                         isChecked = emoji.isChecked,
                         onClick = {
                             onEmojiClick(emoji)
-                        }
+                        },
                     )
                 }
             }
@@ -639,7 +638,7 @@ private fun SeugiChatItemAi(
                             start = 12.dp,
                             end = 12.dp,
                             top = 12.dp,
-                            bottom = 8.dp
+                            bottom = 8.dp,
                         ),
                         text = message,
                         color = SeugiTheme.colors.black,
@@ -648,7 +647,7 @@ private fun SeugiChatItemAi(
 
                     FlowRow(
                         modifier = Modifier.padding(horizontal = 12.dp),
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
                     ) {
                         emojis.fastForEach { emoji ->
                             SeugiEmoji(
@@ -657,7 +656,7 @@ private fun SeugiChatItemAi(
                                 isChecked = emoji.isChecked,
                                 onClick = {
                                     onEmojiClick(emoji)
-                                }
+                                },
                             )
                         }
                     }
@@ -1463,7 +1462,7 @@ private fun PreviewSeugiChatItem() {
                     onDateClick = {},
                     onChatLongClick = {},
                     emojis = persistentListOf(),
-                    onEmojiClick = {}
+                    onEmojiClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -1479,7 +1478,7 @@ private fun PreviewSeugiChatItem() {
                     onDateClick = {},
                     onChatLongClick = {},
                     emojis = persistentListOf(),
-                    onEmojiClick = {}
+                    onEmojiClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -1493,7 +1492,7 @@ private fun PreviewSeugiChatItem() {
                     onDateClick = {},
                     onChatLongClick = {},
                     emojis = persistentListOf(),
-                    onEmojiClick = {}
+                    onEmojiClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -1507,7 +1506,7 @@ private fun PreviewSeugiChatItem() {
                     onDateClick = {},
                     onChatLongClick = {},
                     emojis = persistentListOf(),
-                    onEmojiClick = {}
+                    onEmojiClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -1551,7 +1550,7 @@ private fun PreviewSeugiChatItem() {
                     userName = "test",
                     userProfile = null,
                     emojis = persistentListOf(),
-                    onEmojiClick = {}
+                    onEmojiClick = {},
                 ),
             )
         }

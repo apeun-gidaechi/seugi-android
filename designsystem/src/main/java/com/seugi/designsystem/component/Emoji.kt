@@ -17,13 +17,7 @@ import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.theme.SeugiTheme
 
 @Composable
-fun SeugiEmoji(
-    modifier: Modifier = Modifier,
-    emoji: String,
-    count: Int,
-    isChecked: Boolean,
-    onClick: () -> Unit,
-) {
+fun SeugiEmoji(modifier: Modifier = Modifier, emoji: String, count: Int, isChecked: Boolean, onClick: () -> Unit) {
     Box(
         modifier = Modifier.bounceClick(onClick),
     ) {

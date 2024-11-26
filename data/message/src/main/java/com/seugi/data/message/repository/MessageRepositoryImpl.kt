@@ -150,15 +150,11 @@ class MessageRepositoryImpl @Inject constructor(
         .flowOn(dispatcher)
         .asResult()
 
-    override suspend fun putEmoji(
-        messageId: String,
-        roomId: String,
-        emojiId: Int,
-    ): Flow<Result<Boolean>> = flow {
+    override suspend fun putEmoji(messageId: String, roomId: String, emojiId: Int): Flow<Result<Boolean>> = flow {
         val response = datasource.putEmoji(
             messageId = messageId,
             roomId = roomId,
-            emojiId = emojiId
+            emojiId = emojiId,
         ).safeResponse()
 
         emit(response)
@@ -166,15 +162,11 @@ class MessageRepositoryImpl @Inject constructor(
         .flowOn(dispatcher)
         .asResult()
 
-    override suspend fun deleteEmoji(
-        messageId: String,
-        roomId: String,
-        emojiId: Int,
-    ): Flow<Result<Boolean>> = flow {
+    override suspend fun deleteEmoji(messageId: String, roomId: String, emojiId: Int): Flow<Result<Boolean>> = flow {
         val response = datasource.deleteEmoji(
             messageId = messageId,
             roomId = roomId,
-            emojiId = emojiId
+            emojiId = emojiId,
         ).safeResponse()
 
         emit(response)

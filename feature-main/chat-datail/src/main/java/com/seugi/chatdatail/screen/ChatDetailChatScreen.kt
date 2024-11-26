@@ -430,7 +430,7 @@ internal fun ChatDetailChatScreen(
                                             } else {
                                                 onClickAddEmoji(emoji.emoji, item.id)
                                             }
-                                        }
+                                        },
                                     )
                                 }
                                 is MessageRoomEvent.MessageParent.Other -> {
@@ -455,7 +455,7 @@ internal fun ChatDetailChatScreen(
                                             } else {
                                                 onClickAddEmoji(emoji.emoji, item.id)
                                             }
-                                        }
+                                        },
                                     )
                                 }
 
@@ -486,7 +486,7 @@ internal fun ChatDetailChatScreen(
                                             } else {
                                                 onClickAddEmoji(emoji.emoji, item.id)
                                             }
-                                        }
+                                        },
                                     )
                                 }
 
@@ -531,7 +531,7 @@ internal fun ChatDetailChatScreen(
                                             } else {
                                                 onClickAddEmoji(emoji.emoji, item.id)
                                             }
-                                        }
+                                        },
                                     )
                                 }
 
@@ -576,7 +576,7 @@ internal fun ChatDetailChatScreen(
                                             } else {
                                                 onClickAddEmoji(emoji.emoji, item.id)
                                             }
-                                        }
+                                        },
                                     )
                                 }
 
@@ -601,7 +601,7 @@ internal fun ChatDetailChatScreen(
                                             } else {
                                                 onClickAddEmoji(emoji.emoji, item.id)
                                             }
-                                        }
+                                        },
                                     )
                                 }
 
@@ -626,7 +626,7 @@ internal fun ChatDetailChatScreen(
                                             } else {
                                                 onClickAddEmoji(emoji.emoji, item.id)
                                             }
-                                        }
+                                        },
                                     )
                                 }
 
@@ -651,7 +651,7 @@ internal fun ChatDetailChatScreen(
                                             } else {
                                                 onClickAddEmoji(emoji.emoji, item.id)
                                             }
-                                        }
+                                        },
                                     )
                                 }
 
@@ -676,7 +676,7 @@ internal fun ChatDetailChatScreen(
                                             } else {
                                                 onClickAddEmoji(emoji.emoji, item.id)
                                             }
-                                        }
+                                        },
                                     )
                                 }
 
@@ -701,7 +701,7 @@ internal fun ChatDetailChatScreen(
                                             } else {
                                                 onClickAddEmoji(emoji.emoji, item.id)
                                             }
-                                        }
+                                        },
                                     )
                                 }
 
@@ -726,7 +726,7 @@ internal fun ChatDetailChatScreen(
                                             } else {
                                                 onClickAddEmoji(emoji.emoji, item.id)
                                             }
-                                        }
+                                        },
                                     )
                                 }
                             },
@@ -804,13 +804,11 @@ internal fun ChatDetailChatScreen(
     }
 }
 
-
-private fun ImmutableList<MessageEmojiModel>.toChatEmojiModel(userId: Long) =
-    this.map {
-        ChatItemEmoji(
-            id = it.emojiId,
-            emoji = EmojiUtiles.getEmoji(it.emojiId),
-            count = it.userId.size,
-            isChecked = it.userId.contains(userId)
-        )
-    }.toImmutableList()
+private fun ImmutableList<MessageEmojiModel>.toChatEmojiModel(userId: Long) = this.map {
+    ChatItemEmoji(
+        id = it.emojiId,
+        emoji = EmojiUtiles.getEmoji(it.emojiId),
+        count = it.userId.size,
+        isChecked = it.userId.contains(userId),
+    )
+}.toImmutableList()

@@ -284,7 +284,7 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
                 uuid = uuid,
                 isFirst = false,
                 isLast = false,
-                emojiList = emojiList.map { it.toModel() }.toImmutableList()
+                emojiList = emojiList.map { it.toModel() }.toImmutableList(),
             )
         }
         "FILE" -> {
@@ -301,7 +301,7 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
                 uuid = uuid,
                 isFirst = false,
                 isLast = false,
-                emojiList = emojiList.map { it.toModel() }.toImmutableList()
+                emojiList = emojiList.map { it.toModel() }.toImmutableList(),
             )
         }
 

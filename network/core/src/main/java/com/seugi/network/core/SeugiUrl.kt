@@ -20,7 +20,7 @@ object SeugiUrl {
         const val VIRTUALHOST = "/"
         const val SEND = "/pub/chat.message"
         const val GET_MESSAGE = "${BASE_URL}/message/search"
-        const val EMOJI = "${MESSAGE}/emoji"
+        const val EMOJI = "$MESSAGE/emoji"
     }
 
     object PersonalChat {

@@ -538,16 +538,18 @@ class ChatDetailViewModel @Inject constructor(
                 message = it.message.map {
                     if (!it.equalsMessageId(messageId)) return@map it
                     it.addEmoji(userId, emojiId)
-                }.toImmutableList()
+                }.toImmutableList(),
             )
         }
         messageRepository.putEmoji(
             messageId = messageId,
             roomId = roomId,
-            emojiId = emojiId
+            emojiId = emojiId,
         ).collect {
             when (it) {
-                is Result.Error -> {it.throwable.printStackTrace()}
+                is Result.Error -> {
+                    it.throwable.printStackTrace()
+                }
                 Result.Loading -> {}
                 is Result.Success -> {
                     Log.d("TAG", "emojiAdd: ${it.data}")
@@ -562,16 +564,18 @@ class ChatDetailViewModel @Inject constructor(
                 message = it.message.map {
                     if (!it.equalsMessageId(messageId)) return@map it
                     it.minusEmoji(userId, emojiId)
-                }.toImmutableList()
+                }.toImmutableList(),
             )
         }
         messageRepository.deleteEmoji(
             messageId = messageId,
             roomId = roomId,
-            emojiId = emojiId
+            emojiId = emojiId,
         ).collect {
             when (it) {
-                is Result.Error -> {it.throwable.printStackTrace()}
+                is Result.Error -> {
+                    it.throwable.printStackTrace()
+                }
                 Result.Loading -> {}
                 is Result.Success -> {
                     Log.d("TAG", "emojiDelete: ${it.data}")
@@ -764,9 +768,7 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun Result<MessageRoomEvent>.collectMessage(
-        userId: Long
-    ) {
+    private fun Result<MessageRoomEvent>.collectMessage(userId: Long) {
         when (this) {
             is Result.Success -> {
                 when (data) {
@@ -778,14 +780,14 @@ class ChatDetailViewModel @Inject constructor(
                         var isFirst = data.userId != formerItem?.userId
                         if (
                             formerItem is MessageParent.Other && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
-                                data.timestamp
+                                data.timestamp,
                             )
                         ) {
                             message[0] = formerItem.copy(isLast = false)
                         }
                         if (
                             formerItem is MessageParent.File && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
-                                data.timestamp
+                                data.timestamp,
                             )
                         ) {
                             message[0] = formerItem.copy(isLast = false)
@@ -793,7 +795,7 @@ class ChatDetailViewModel @Inject constructor(
 
                         if (
                             formerItem is MessageParent.Img && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
-                                data.timestamp
+                                data.timestamp,
                             )
                         ) {
                             message[0] = formerItem.copy(isLast = false)
@@ -810,7 +812,7 @@ class ChatDetailViewModel @Inject constructor(
                                         data.timestamp.monthValue,
                                         data.timestamp.dayOfMonth,
                                         0,
-                                        0
+                                        0,
                                     ),
                                     userId = 0,
                                     text = "",
@@ -843,21 +845,21 @@ class ChatDetailViewModel @Inject constructor(
                         val formerItem = message.firstOrNull()
                         if (
                             formerItem is MessageParent.Me && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
-                                data.timestamp
+                                data.timestamp,
                             )
                         ) {
                             message[0] = formerItem.copy(isLast = false)
                         }
                         if (
                             formerItem is MessageParent.File && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
-                                data.timestamp
+                                data.timestamp,
                             )
                         ) {
                             message[0] = formerItem.copy(isLast = false)
                         }
                         if (
                             formerItem is MessageParent.Img && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
-                                data.timestamp
+                                data.timestamp,
                             )
                         ) {
                             message[0] = formerItem.copy(isLast = false)
@@ -873,7 +875,7 @@ class ChatDetailViewModel @Inject constructor(
                                         data.timestamp.monthValue,
                                         data.timestamp.dayOfMonth,
                                         0,
-                                        0
+                                        0,
                                     ),
                                     userId = 0,
                                     text = "",
@@ -906,7 +908,7 @@ class ChatDetailViewModel @Inject constructor(
                         val formerItem = message.firstOrNull()
                         if (
                             formerItem is MessageParent.BOT && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
-                                data.timestamp
+                                data.timestamp,
                             )
                         ) {
                             if (formerItem is MessageParent.BOT.Meal) {
@@ -924,7 +926,7 @@ class ChatDetailViewModel @Inject constructor(
                                         data.timestamp.monthValue,
                                         data.timestamp.dayOfMonth,
                                         0,
-                                        0
+                                        0,
                                     ),
                                     userId = 0,
                                     text = "",
@@ -965,7 +967,7 @@ class ChatDetailViewModel @Inject constructor(
                         var isFirst = data.userId != formerItem?.userId
                         if (
                             formerItem is MessageParent.Other && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
-                                data.timestamp
+                                data.timestamp,
                             )
                         ) {
                             message[0] = formerItem.copy(isLast = false)
@@ -973,7 +975,7 @@ class ChatDetailViewModel @Inject constructor(
 
                         if (
                             formerItem is MessageParent.File && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
-                                data.timestamp
+                                data.timestamp,
                             )
                         ) {
                             message[0] = formerItem.copy(isLast = false)
@@ -981,7 +983,7 @@ class ChatDetailViewModel @Inject constructor(
 
                         if (
                             formerItem is MessageParent.Img && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
-                                data.timestamp
+                                data.timestamp,
                             )
                         ) {
                             message[0] = formerItem.copy(isLast = false)
@@ -998,7 +1000,7 @@ class ChatDetailViewModel @Inject constructor(
                                         data.timestamp.monthValue,
                                         data.timestamp.dayOfMonth,
                                         0,
-                                        0
+                                        0,
                                     ),
                                     userId = 0,
                                     text = "",
@@ -1033,14 +1035,14 @@ class ChatDetailViewModel @Inject constructor(
                         var isFirst = data.userId != formerItem?.userId
                         if (
                             formerItem is MessageParent.Other && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
-                                data.timestamp
+                                data.timestamp,
                             )
                         ) {
                             message[0] = formerItem.copy(isLast = false)
                         }
                         if (
                             formerItem is MessageParent.File && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
-                                data.timestamp
+                                data.timestamp,
                             )
                         ) {
                             message[0] = formerItem.copy(isLast = false)
@@ -1048,7 +1050,7 @@ class ChatDetailViewModel @Inject constructor(
 
                         if (
                             formerItem is MessageParent.Img && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
-                                data.timestamp
+                                data.timestamp,
                             )
                         ) {
                             message[0] = formerItem.copy(isLast = false)
@@ -1065,7 +1067,7 @@ class ChatDetailViewModel @Inject constructor(
                                         data.timestamp.monthValue,
                                         data.timestamp.dayOfMonth,
                                         0,
-                                        0
+                                        0,
                                     ),
                                     userId = 0,
                                     text = "",
@@ -1191,9 +1193,9 @@ class ChatDetailViewModel @Inject constructor(
                                     if (!it.equalsMessageId(data.messageId)) return@map it
                                     it.addEmoji(
                                         userId = data.userId,
-                                        emojiId = data.emojiId
+                                        emojiId = data.emojiId,
                                     )
-                                }.toImmutableList()
+                                }.toImmutableList(),
                             )
                         }
                     }
@@ -1207,9 +1209,9 @@ class ChatDetailViewModel @Inject constructor(
                                     if (!it.equalsMessageId(data.messageId)) return@map it
                                     it.minusEmoji(
                                         userId = data.userId,
-                                        emojiId = data.emojiId
+                                        emojiId = data.emojiId,
                                     )
-                                }.toImmutableList()
+                                }.toImmutableList(),
                             )
                         }
                     }

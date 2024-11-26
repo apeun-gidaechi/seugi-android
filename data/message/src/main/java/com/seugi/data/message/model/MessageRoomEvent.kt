@@ -512,105 +512,102 @@ fun MessageRoomEvent.MessageParent.BOT.TeamBuild.getVisibleMessage(members: List
     return visibleMessage
 }
 
-fun MessageRoomEvent.MessageParent.addEmoji(userId: Long, emojiId: Int): MessageRoomEvent.MessageParent =
-    when (this) {
-        is MessageRoomEvent.MessageParent.BOT.DrawLots -> this.copy(
-            emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
+fun MessageRoomEvent.MessageParent.addEmoji(userId: Long, emojiId: Int): MessageRoomEvent.MessageParent = when (this) {
+    is MessageRoomEvent.MessageParent.BOT.DrawLots -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
 
-        is MessageRoomEvent.MessageParent.BOT.Etc -> this.copy(
-            emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
+    is MessageRoomEvent.MessageParent.BOT.Etc -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
 
-        is MessageRoomEvent.MessageParent.BOT.Meal -> this.copy(
-            emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
+    is MessageRoomEvent.MessageParent.BOT.Meal -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
 
-        is MessageRoomEvent.MessageParent.BOT.NotSupport -> this.copy(
-            emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
+    is MessageRoomEvent.MessageParent.BOT.NotSupport -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
 
-        is MessageRoomEvent.MessageParent.BOT.Notification -> this.copy(
-            emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
+    is MessageRoomEvent.MessageParent.BOT.Notification -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
 
-        is MessageRoomEvent.MessageParent.BOT.TeamBuild -> this.copy(
-            emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
+    is MessageRoomEvent.MessageParent.BOT.TeamBuild -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
 
-        is MessageRoomEvent.MessageParent.BOT.Timetable -> this.copy(
-            emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
+    is MessageRoomEvent.MessageParent.BOT.Timetable -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
 
-        is MessageRoomEvent.MessageParent.File -> this.copy(
-            emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
+    is MessageRoomEvent.MessageParent.File -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
 
-        is MessageRoomEvent.MessageParent.Img -> this.copy(
-            emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
+    is MessageRoomEvent.MessageParent.Img -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
 
-        is MessageRoomEvent.MessageParent.Me -> this.copy(
-            emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
+    is MessageRoomEvent.MessageParent.Me -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
 
-        is MessageRoomEvent.MessageParent.Other -> this.copy(
-            emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
+    is MessageRoomEvent.MessageParent.Other -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
 
-        else -> this
-    }
+    else -> this
+}
 
-fun MessageRoomEvent.MessageParent.minusEmoji(userId: Long, emojiId: Int): MessageRoomEvent.MessageParent =
-    when (this) {
-        is MessageRoomEvent.MessageParent.BOT.DrawLots -> this.copy(
-            emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
-        is MessageRoomEvent.MessageParent.BOT.Etc -> this.copy(
-            emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
-        is MessageRoomEvent.MessageParent.BOT.Meal -> this.copy(
-            emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
-        is MessageRoomEvent.MessageParent.BOT.NotSupport -> this.copy(
-            emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
-        is MessageRoomEvent.MessageParent.BOT.Notification -> this.copy(
-            emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
-        is MessageRoomEvent.MessageParent.BOT.TeamBuild -> this.copy(
-            emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
-        is MessageRoomEvent.MessageParent.BOT.Timetable -> this.copy(
-            emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
-        is MessageRoomEvent.MessageParent.File -> this.copy(
-            emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
-        is MessageRoomEvent.MessageParent.Img -> this.copy(
-            emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
-        is MessageRoomEvent.MessageParent.Me -> this.copy(
-            emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
-        is MessageRoomEvent.MessageParent.Other -> this.copy(
-            emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList()
-        )
-        else -> this
-    }
+fun MessageRoomEvent.MessageParent.minusEmoji(userId: Long, emojiId: Int): MessageRoomEvent.MessageParent = when (this) {
+    is MessageRoomEvent.MessageParent.BOT.DrawLots -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.BOT.Etc -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.BOT.Meal -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.BOT.NotSupport -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.BOT.Notification -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.BOT.TeamBuild -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.BOT.Timetable -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.File -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.Img -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.Me -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.Other -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    else -> this
+}
 
-fun MessageRoomEvent.MessageParent.equalsMessageId(messageId: String): Boolean =
-    when(this) {
-        is MessageParent.BOT.DrawLots -> this.id == messageId
-        is MessageParent.BOT.Etc -> this.id == messageId
-        is MessageParent.BOT.Meal -> this.id == messageId
-        is MessageParent.BOT.NotSupport -> this.id == messageId
-        is MessageParent.BOT.Notification -> this.id == messageId
-        is MessageParent.BOT.TeamBuild -> this.id == messageId
-        is MessageParent.BOT.Timetable -> this.id == messageId
-        is MessageParent.File -> this.id == messageId
-        is MessageParent.Img -> this.id == messageId
-        is MessageParent.Me -> this.id == messageId
-        is MessageParent.Other -> this.id == messageId
-        else -> false
-    }
+fun MessageRoomEvent.MessageParent.equalsMessageId(messageId: String): Boolean = when (this) {
+    is MessageParent.BOT.DrawLots -> this.id == messageId
+    is MessageParent.BOT.Etc -> this.id == messageId
+    is MessageParent.BOT.Meal -> this.id == messageId
+    is MessageParent.BOT.NotSupport -> this.id == messageId
+    is MessageParent.BOT.Notification -> this.id == messageId
+    is MessageParent.BOT.TeamBuild -> this.id == messageId
+    is MessageParent.BOT.Timetable -> this.id == messageId
+    is MessageParent.File -> this.id == messageId
+    is MessageParent.Img -> this.id == messageId
+    is MessageParent.Me -> this.id == messageId
+    is MessageParent.Other -> this.id == messageId
+    else -> false
+}

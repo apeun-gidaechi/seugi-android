@@ -127,7 +127,7 @@ class EmojiUtiles {
          * throws IllegalArgumentException
          * return String Emoji
          */
-        fun getEmoji(id: Int): String = when(id) {
+        fun getEmoji(id: Int): String = when (id) {
             1 -> "\uD83D\uDC4D"
             2 -> "\uD83D\uDC4C"
             3 -> "\uD83D\uDC4F"

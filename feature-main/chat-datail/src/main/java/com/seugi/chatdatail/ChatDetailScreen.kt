@@ -435,10 +435,10 @@ internal fun ChatDetailScreen(
                         else -> ""
                     },
                     emojiId = EmojiUtiles.emojiStringToId(emoji),
-                    userId = userId
+                    userId = userId,
                 )
                 selectMessage = null
-            }
+            },
         )
     }
 
@@ -479,12 +479,12 @@ internal fun ChatDetailScreen(
             popBackStack = popBackStack,
             onTextChange = { text = it },
             onClickInviteMember = { nowPage = NowPage.INVITE },
-            onClickAddEmoji = {emoji, messageId ->
+            onClickAddEmoji = { emoji, messageId ->
                 viewModel.emojiAdd(
                     messageId = messageId,
                     emojiId = EmojiUtiles.emojiStringToId(emoji),
                     roomId = chatRoomId,
-                    userId = userId
+                    userId = userId,
                 )
             },
             onClickMinusEmoji = { emoji, messageId ->
@@ -492,7 +492,7 @@ internal fun ChatDetailScreen(
                     messageId = messageId,
                     emojiId = EmojiUtiles.emojiStringToId(emoji),
                     roomId = chatRoomId,
-                    userId = userId
+                    userId = userId,
                 )
             },
             onSearchTextChange = { searchText = it },
@@ -976,7 +976,7 @@ private fun ChatDetailCopyDialog(onDismissRequest: () -> Unit, onClickCopy: () -
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Row(
                     modifier = Modifier
@@ -993,7 +993,7 @@ private fun ChatDetailCopyDialog(onDismissRequest: () -> Unit, onClickCopy: () -
                     )
                 }
                 Row(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     EmojiUtiles.EMOJIS.fastForEach { emoji ->
                         Box(
@@ -1003,13 +1003,13 @@ private fun ChatDetailCopyDialog(onDismissRequest: () -> Unit, onClickCopy: () -
                                 .bounceClick(
                                     onClick = {
                                         onClickEmoji(emoji)
-                                    }
+                                    },
                                 ),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             Text(
                                 text = emoji,
-                                style = SeugiTheme.typography.subtitle2
+                                style = SeugiTheme.typography.subtitle2,
                             )
                         }
                     }

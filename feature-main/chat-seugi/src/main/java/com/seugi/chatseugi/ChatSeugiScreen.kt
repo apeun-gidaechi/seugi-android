@@ -185,7 +185,7 @@ internal fun ChatSeugiScreen(
                                             createdAt = data.timestamp.toAmShortString(),
                                             count = null,
                                             emojis = persistentListOf(),
-                                            onEmojiClick = {}
+                                            onEmojiClick = {},
                                         ),
                                     )
                                 }
@@ -200,7 +200,7 @@ internal fun ChatSeugiScreen(
                                             createdAt = data.timestamp.toAmShortString(),
                                             count = null,
                                             emojis = persistentListOf(),
-                                            onEmojiClick = {}
+                                            onEmojiClick = {},
                                         ),
                                     )
                                 }

@@ -164,8 +164,8 @@ class MessageDataSourceImpl @Inject constructor(
             EmojiRequest(
                 messageId = messageId,
                 roomId = roomId,
-                emojiId = emojiId
-            )
+                emojiId = emojiId,
+            ),
         )
         contentType(ContentType.Application.Json)
     }.body()
@@ -175,8 +175,8 @@ class MessageDataSourceImpl @Inject constructor(
             EmojiRequest(
                 messageId = messageId,
                 roomId = roomId,
-                emojiId = emojiId
-            )
+                emojiId = emojiId,
+            ),
         )
         contentType(ContentType.Application.Json)
     }.body()

@@ -16,15 +16,15 @@ fun List<MessageEmojiModel>.addEmoji(userId: Long, emojiId: Int): List<MessageEm
         emojiItems[index] = messageEmojiModel.copy(
             userId = messageEmojiModel.userId.toMutableList().apply {
                 add(userId)
-            }.toSet().toImmutableList()
+            }.toSet().toImmutableList(),
         )
         return emojiItems
     }
     emojiItems.add(
         MessageEmojiModel(
-        emojiId = emojiId,
-        userId = persistentListOf(userId)
-    )
+            emojiId = emojiId,
+            userId = persistentListOf(userId),
+        ),
     )
     return emojiItems
 }
