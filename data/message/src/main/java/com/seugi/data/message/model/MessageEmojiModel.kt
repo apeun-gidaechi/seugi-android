@@ -38,7 +38,7 @@ fun List<MessageEmojiModel>.minusEmoji(userId: Long, emojiId: Int): List<Message
         val userIds = messageEmojiModel.userId.minus(userId)
         if (userIds.isEmpty()) {
             emojiItems.removeAt(index)
-            return@forEachIndexed
+            return emojiItems
         }
         emojiItems[index] = messageEmojiModel.copy(userId = userIds.toImmutableList())
         return emojiItems
