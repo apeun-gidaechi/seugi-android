@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.component.chat.ChatItemType
 import com.seugi.designsystem.component.chat.SeugiChatItem
 import com.seugi.designsystem.theme.SeugiTheme
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun ChatItem() {
@@ -32,6 +33,8 @@ fun ChatItem() {
                     count = 1,
                     onDateClick = {},
                     onChatLongClick = {},
+                    emojis = persistentListOf(),
+                    onEmojiClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -46,6 +49,8 @@ fun ChatItem() {
                     count = 1,
                     onDateClick = {},
                     onChatLongClick = {},
+                    emojis = persistentListOf(),
+                    onEmojiClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -58,6 +63,8 @@ fun ChatItem() {
                     count = 1,
                     onDateClick = {},
                     onChatLongClick = {},
+                    emojis = persistentListOf(),
+                    onEmojiClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -70,6 +77,8 @@ fun ChatItem() {
                     count = 1,
                     onDateClick = {},
                     onChatLongClick = {},
+                    emojis = persistentListOf(),
+                    onEmojiClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -88,6 +97,8 @@ fun ChatItem() {
                     count = 1,
                     onDateClick = {},
                     onChatLongClick = {},
+                    emojis = persistentListOf(),
+                    onEmojiClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -100,6 +111,8 @@ fun ChatItem() {
                     count = 1,
                     onDateClick = {},
                     onChatLongClick = {},
+                    emojis = persistentListOf(),
+                    onEmojiClick = {},
                 ),
             )
         }
