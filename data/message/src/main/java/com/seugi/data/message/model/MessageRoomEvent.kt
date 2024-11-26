@@ -4,8 +4,10 @@ import com.seugi.data.core.model.MealModel
 import com.seugi.data.core.model.NotificationModel
 import com.seugi.data.core.model.TimetableModel
 import com.seugi.data.core.model.UserInfoModel
+import com.seugi.data.message.model.MessageRoomEvent.MessageParent
 import java.time.LocalDateTime
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 sealed class MessageRoomEvent(
     @Transient open val type: MessageType,
@@ -192,10 +194,13 @@ sealed class MessageRoomEvent(
         }
 
         data class File(
+            val id: String,
+            val chatRoomId: String,
             val url: String,
             val fileName: String,
             val fileSize: Long,
             val uuid: String?,
+            val emojiList: ImmutableList<MessageEmojiModel>,
             override val timestamp: LocalDateTime,
             override val type: MessageType,
             override val userId: Long,
@@ -204,9 +209,12 @@ sealed class MessageRoomEvent(
         ) : MessageParent(timestamp, type, userId)
 
         data class Img(
+            val id: String,
+            val chatRoomId: String,
             val url: String,
             val fileName: String,
             val uuid: String?,
+            val emojiList: ImmutableList<MessageEmojiModel>,
             override val timestamp: LocalDateTime,
             override val type: MessageType,
             override val userId: Long,
@@ -264,14 +272,14 @@ sealed class MessageRoomEvent(
         override val type: MessageType,
         override val userId: Long,
         val messageId: String,
-        val emojiId: Long,
+        val emojiId: Int,
     ) : MessageRoomEvent(type, userId)
 
     data class RemoveEmoji(
         override val type: MessageType,
         override val userId: Long,
         val messageId: String,
-        val emojiId: Long,
+        val emojiId: Int,
     ) : MessageRoomEvent(type, userId)
 
     data class TransperAdmin(
@@ -502,4 +510,104 @@ fun MessageRoomEvent.MessageParent.BOT.TeamBuild.getVisibleMessage(members: List
         visibleMessage = visibleMessage.replace("::${it.userInfo.id}::", it.userInfo.name)
     }
     return visibleMessage
+}
+
+fun MessageRoomEvent.MessageParent.addEmoji(userId: Long, emojiId: Int): MessageRoomEvent.MessageParent = when (this) {
+    is MessageRoomEvent.MessageParent.BOT.DrawLots -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+
+    is MessageRoomEvent.MessageParent.BOT.Etc -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+
+    is MessageRoomEvent.MessageParent.BOT.Meal -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+
+    is MessageRoomEvent.MessageParent.BOT.NotSupport -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+
+    is MessageRoomEvent.MessageParent.BOT.Notification -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+
+    is MessageRoomEvent.MessageParent.BOT.TeamBuild -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+
+    is MessageRoomEvent.MessageParent.BOT.Timetable -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+
+    is MessageRoomEvent.MessageParent.File -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+
+    is MessageRoomEvent.MessageParent.Img -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+
+    is MessageRoomEvent.MessageParent.Me -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+
+    is MessageRoomEvent.MessageParent.Other -> this.copy(
+        emojiList = this.emojiList.addEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+
+    else -> this
+}
+
+fun MessageRoomEvent.MessageParent.minusEmoji(userId: Long, emojiId: Int): MessageRoomEvent.MessageParent = when (this) {
+    is MessageRoomEvent.MessageParent.BOT.DrawLots -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.BOT.Etc -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.BOT.Meal -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.BOT.NotSupport -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.BOT.Notification -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.BOT.TeamBuild -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.BOT.Timetable -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.File -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.Img -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.Me -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    is MessageRoomEvent.MessageParent.Other -> this.copy(
+        emojiList = this.emojiList.minusEmoji(userId, emojiId = emojiId).toImmutableList(),
+    )
+    else -> this
+}
+
+fun MessageRoomEvent.MessageParent.equalsMessageId(messageId: String): Boolean = when (this) {
+    is MessageParent.BOT.DrawLots -> this.id == messageId
+    is MessageParent.BOT.Etc -> this.id == messageId
+    is MessageParent.BOT.Meal -> this.id == messageId
+    is MessageParent.BOT.NotSupport -> this.id == messageId
+    is MessageParent.BOT.Notification -> this.id == messageId
+    is MessageParent.BOT.TeamBuild -> this.id == messageId
+    is MessageParent.BOT.Timetable -> this.id == messageId
+    is MessageParent.File -> this.id == messageId
+    is MessageParent.Img -> this.id == messageId
+    is MessageParent.Me -> this.id == messageId
+    is MessageParent.Other -> this.id == messageId
+    else -> false
 }

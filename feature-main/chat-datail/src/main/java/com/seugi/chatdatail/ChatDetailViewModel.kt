@@ -25,8 +25,11 @@ import com.seugi.data.message.MessageRepository
 import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.data.message.model.MessageRoomEvent.MessageParent
 import com.seugi.data.message.model.MessageType
+import com.seugi.data.message.model.addEmoji
 import com.seugi.data.message.model.copy
+import com.seugi.data.message.model.equalsMessageId
 import com.seugi.data.message.model.getVisibleMessage
+import com.seugi.data.message.model.minusEmoji
 import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
 import com.seugi.data.personalchat.PersonalChatRepository
 import com.seugi.data.profile.ProfileRepository
@@ -529,6 +532,58 @@ class ChatDetailViewModel @Inject constructor(
         _messageSaveQueueState.value -= uuid
     }
 
+    fun emojiAdd(messageId: String, roomId: String, emojiId: Int, userId: Long) = viewModelScope.launch {
+        _state.update {
+            it.copy(
+                message = it.message.map {
+                    if (!it.equalsMessageId(messageId)) return@map it
+                    it.addEmoji(userId, emojiId)
+                }.toImmutableList(),
+            )
+        }
+        messageRepository.putEmoji(
+            messageId = messageId,
+            roomId = roomId,
+            emojiId = emojiId,
+        ).collect {
+            when (it) {
+                is Result.Error -> {
+                    it.throwable.printStackTrace()
+                }
+                Result.Loading -> {}
+                is Result.Success -> {
+                    Log.d("TAG", "emojiAdd: ${it.data}")
+                }
+            }
+        }
+    }
+
+    fun emojiMinus(messageId: String, roomId: String, emojiId: Int, userId: Long) = viewModelScope.launch {
+        _state.update {
+            it.copy(
+                message = it.message.map {
+                    if (!it.equalsMessageId(messageId)) return@map it
+                    it.minusEmoji(userId, emojiId)
+                }.toImmutableList(),
+            )
+        }
+        messageRepository.deleteEmoji(
+            messageId = messageId,
+            roomId = roomId,
+            emojiId = emojiId,
+        ).collect {
+            when (it) {
+                is Result.Error -> {
+                    it.throwable.printStackTrace()
+                }
+                Result.Loading -> {}
+                is Result.Success -> {
+                    Log.d("TAG", "emojiDelete: ${it.data}")
+                }
+            }
+        }
+    }
+
     fun channelReconnect(userId: Long, roomId: String? = null) {
         viewModelScope.launch {
             isReconnectTry = true
@@ -538,7 +593,7 @@ class ChatDetailViewModel @Inject constructor(
                     chatRoomId = roomId ?: state.value.roomInfo?.id ?: "",
                     userId = userId,
                 ).collect {
-                    it.collectMessage()
+                    it.collectMessage(userId)
                 }
             }
             subscribeChat = job
@@ -557,7 +612,7 @@ class ChatDetailViewModel @Inject constructor(
                     chatRoomId = state.value.roomInfo?.id ?: "",
                     userId = userId,
                 ).collect {
-                    it.collectMessage()
+                    it.collectMessage(userId)
                 }
             }
             subscribeChat = job
@@ -713,368 +768,462 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun Result<MessageRoomEvent>.collectMessage() = when (this) {
-        is Result.Success -> {
-            when (data) {
-                is MessageParent.Other -> {
-                    val data = data as MessageParent.Other
-                    val message = _state.value.message.toMutableList()
-                    val formerItem = message.firstOrNull()
+    private fun Result<MessageRoomEvent>.collectMessage(userId: Long) {
+        when (this) {
+            is Result.Success -> {
+                when (data) {
+                    is MessageParent.Other -> {
+                        val data = data as MessageParent.Other
+                        val message = _state.value.message.toMutableList()
+                        val formerItem = message.firstOrNull()
 
-                    var isFirst = data.userId != formerItem?.userId
-                    if (
-                        formerItem is MessageParent.Other && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
-                    ) {
-                        message[0] = formerItem.copy(isLast = false)
-                    }
-                    if (
-                        formerItem is MessageParent.File && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
-                    ) {
-                        message[0] = formerItem.copy(isLast = false)
-                    }
-
-                    if (
-                        formerItem is MessageParent.Img && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
-                    ) {
-                        message[0] = formerItem.copy(isLast = false)
-                    }
-
-                    if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
-                        isFirst = true
-                        message.add(
-                            index = 0,
-                            element = MessageParent.Date(
-                                type = MessageType.MESSAGE,
-                                timestamp = LocalDateTime.of(data.timestamp.year, data.timestamp.monthValue, data.timestamp.dayOfMonth, 0, 0),
-                                userId = 0,
-                                text = "",
-                            ),
-                        )
-                    }
-                    message.add(
-                        index = 0,
-                        element = data.copy(
-                            isLast = true,
-                            isFirst = isFirst,
-                        ),
-                    )
-
-                    // messageQueue 삭제 로직
-                    if (data.userId == _state.value.userInfo?.id) {
-                        _messageSaveQueueState.value -= data.uuid ?: ""
-                    }
-                    _messageSaveQueueState.value -= data.uuid ?: ""
-                    _state.update {
-                        it.copy(
-                            message = message.toImmutableList(),
-                        )
-                    }
-                }
-
-                is MessageParent.Me -> {
-                    val data = data as MessageParent.Me
-                    val message = _state.value.message.toMutableList()
-                    val formerItem = message.firstOrNull()
-                    if (
-                        formerItem is MessageParent.Me && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
-                    ) {
-                        message[0] = formerItem.copy(isLast = false)
-                    }
-                    if (
-                        formerItem is MessageParent.File && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
-                    ) {
-                        message[0] = formerItem.copy(isLast = false)
-                    }
-                    if (
-                        formerItem is MessageParent.Img && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
-                    ) {
-                        message[0] = formerItem.copy(isLast = false)
-                    }
-
-                    if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
-                        message.add(
-                            index = 0,
-                            element = MessageParent.Date(
-                                type = MessageType.MESSAGE,
-                                timestamp = LocalDateTime.of(data.timestamp.year, data.timestamp.monthValue, data.timestamp.dayOfMonth, 0, 0),
-                                userId = 0,
-                                text = "",
-                            ),
-                        )
-                    }
-                    _messageSaveQueueState.value -= data.uuid ?: ""
-                    message.add(
-                        index = 0,
-                        element = data.copy(
-                            isLast = true,
-                        ),
-                    )
-
-                    // messageQueue 삭제 로직
-                    if (data.userId == _state.value.userInfo?.id) {
-                        _messageSaveQueueState.value -= data.uuid ?: ""
-                    }
-                    _state.update {
-                        it.copy(
-                            message = message.toImmutableList(),
-                        )
-                    }
-                }
-
-                is MessageParent.BOT -> {
-                    var data = data as MessageParent.BOT
-
-                    val message = _state.value.message.toMutableList()
-                    val formerItem = message.firstOrNull()
-                    if (
-                        formerItem is MessageParent.BOT && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
-                    ) {
-                        if (formerItem is MessageParent.BOT.Meal) {
+                        var isFirst = data.userId != formerItem?.userId
+                        if (
+                            formerItem is MessageParent.Other && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
+                                data.timestamp,
+                            )
+                        ) {
                             message[0] = formerItem.copy(isLast = false)
+                        }
+                        if (
+                            formerItem is MessageParent.File && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
+                                data.timestamp,
+                            )
+                        ) {
+                            message[0] = formerItem.copy(isLast = false)
+                        }
+
+                        if (
+                            formerItem is MessageParent.Img && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
+                                data.timestamp,
+                            )
+                        ) {
+                            message[0] = formerItem.copy(isLast = false)
+                        }
+
+                        if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
+                            isFirst = true
+                            message.add(
+                                index = 0,
+                                element = MessageParent.Date(
+                                    type = MessageType.MESSAGE,
+                                    timestamp = LocalDateTime.of(
+                                        data.timestamp.year,
+                                        data.timestamp.monthValue,
+                                        data.timestamp.dayOfMonth,
+                                        0,
+                                        0,
+                                    ),
+                                    userId = 0,
+                                    text = "",
+                                ),
+                            )
+                        }
+                        message.add(
+                            index = 0,
+                            element = data.copy(
+                                isLast = true,
+                                isFirst = isFirst,
+                            ),
+                        )
+
+                        // messageQueue 삭제 로직
+                        if (data.userId == _state.value.userInfo?.id) {
+                            _messageSaveQueueState.value -= data.uuid ?: ""
+                        }
+                        _messageSaveQueueState.value -= data.uuid ?: ""
+                        _state.update {
+                            it.copy(
+                                message = message.toImmutableList(),
+                            )
                         }
                     }
 
-                    if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
-                        message.add(
-                            index = 0,
-                            element = MessageParent.Date(
-                                type = MessageType.MESSAGE,
-                                timestamp = LocalDateTime.of(data.timestamp.year, data.timestamp.monthValue, data.timestamp.dayOfMonth, 0, 0),
-                                userId = 0,
-                                text = "",
-                            ),
-                        )
-                    }
+                    is MessageParent.Me -> {
+                        val data = data as MessageParent.Me
+                        val message = _state.value.message.toMutableList()
+                        val formerItem = message.firstOrNull()
+                        if (
+                            formerItem is MessageParent.Me && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
+                                data.timestamp,
+                            )
+                        ) {
+                            message[0] = formerItem.copy(isLast = false)
+                        }
+                        if (
+                            formerItem is MessageParent.File && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
+                                data.timestamp,
+                            )
+                        ) {
+                            message[0] = formerItem.copy(isLast = false)
+                        }
+                        if (
+                            formerItem is MessageParent.Img && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
+                                data.timestamp,
+                            )
+                        ) {
+                            message[0] = formerItem.copy(isLast = false)
+                        }
 
-                    if (data is MessageParent.BOT.DrawLots && state.value.roomInfo?.members?.isNotEmpty() == true) {
-                        data = data.copy(
-                            visibleMessage = data.getVisibleMessage(state.value.roomInfo?.members),
-                        )
-                    }
-
-                    if (data is MessageParent.BOT.TeamBuild && state.value.roomInfo?.members?.isNotEmpty() == true) {
-                        data = data.copy(
-                            visibleMessage = data.getVisibleMessage(state.value.roomInfo?.members),
-                        )
-                    }
-                    message.add(
-                        index = 0,
-                        element = data.copy(
-                            isLast = true,
-                        ),
-                    )
-
-                    _state.update {
-                        it.copy(
-                            message = message.toImmutableList(),
-                        )
-                    }
-                }
-
-                is MessageParent.Img -> {
-                    val data = data as MessageParent.Img
-                    val message = _state.value.message.toMutableList()
-                    val formerItem = message.firstOrNull()
-
-                    var isFirst = data.userId != formerItem?.userId
-                    if (
-                        formerItem is MessageParent.Other && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
-                    ) {
-                        message[0] = formerItem.copy(isLast = false)
-                    }
-
-                    if (
-                        formerItem is MessageParent.File && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
-                    ) {
-                        message[0] = formerItem.copy(isLast = false)
-                    }
-
-                    if (
-                        formerItem is MessageParent.Img && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
-                    ) {
-                        message[0] = formerItem.copy(isLast = false)
-                    }
-
-                    if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
-                        isFirst = true
-                        message.add(
-                            index = 0,
-                            element = MessageParent.Date(
-                                type = MessageType.MESSAGE,
-                                timestamp = LocalDateTime.of(data.timestamp.year, data.timestamp.monthValue, data.timestamp.dayOfMonth, 0, 0),
-                                userId = 0,
-                                text = "",
-                            ),
-                        )
-                    }
-                    message.add(
-                        index = 0,
-                        element = data.copy(
-                            isLast = true,
-                            isFirst = isFirst,
-                        ),
-                    )
-
-                    // messageQueue 삭제 로직
-                    if (data.userId == _state.value.userInfo?.id) {
+                        if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
+                            message.add(
+                                index = 0,
+                                element = MessageParent.Date(
+                                    type = MessageType.MESSAGE,
+                                    timestamp = LocalDateTime.of(
+                                        data.timestamp.year,
+                                        data.timestamp.monthValue,
+                                        data.timestamp.dayOfMonth,
+                                        0,
+                                        0,
+                                    ),
+                                    userId = 0,
+                                    text = "",
+                                ),
+                            )
+                        }
                         _messageSaveQueueState.value -= data.uuid ?: ""
-                    }
-                    _messageSaveQueueState.value -= data.uuid ?: ""
-                    _state.update {
-                        it.copy(
-                            message = message.toImmutableList(),
-                        )
-                    }
-                }
-
-                is MessageParent.File -> {
-                    val data = data as MessageParent.File
-                    val message = _state.value.message.toMutableList()
-                    val formerItem = message.firstOrNull()
-
-                    var isFirst = data.userId != formerItem?.userId
-                    if (
-                        formerItem is MessageParent.Other && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
-                    ) {
-                        message[0] = formerItem.copy(isLast = false)
-                    }
-                    if (
-                        formerItem is MessageParent.File && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
-                    ) {
-                        message[0] = formerItem.copy(isLast = false)
-                    }
-
-                    if (
-                        formerItem is MessageParent.Img && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(data.timestamp)
-                    ) {
-                        message[0] = formerItem.copy(isLast = false)
-                    }
-
-                    if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
-                        isFirst = true
                         message.add(
                             index = 0,
-                            element = MessageParent.Date(
-                                type = MessageType.MESSAGE,
-                                timestamp = LocalDateTime.of(data.timestamp.year, data.timestamp.monthValue, data.timestamp.dayOfMonth, 0, 0),
-                                userId = 0,
-                                text = "",
+                            element = data.copy(
+                                isLast = true,
                             ),
                         )
+
+                        // messageQueue 삭제 로직
+                        if (data.userId == _state.value.userInfo?.id) {
+                            _messageSaveQueueState.value -= data.uuid ?: ""
+                        }
+                        _state.update {
+                            it.copy(
+                                message = message.toImmutableList(),
+                            )
+                        }
                     }
-                    message.add(
-                        index = 0,
-                        element = data.copy(
-                            isLast = true,
-                            isFirst = isFirst,
-                        ),
-                    )
-                    // messageQueue 삭제 로직
-                    if (data.userId == _state.value.userInfo?.id) {
+
+                    is MessageParent.BOT -> {
+                        var data = data as MessageParent.BOT
+
+                        val message = _state.value.message.toMutableList()
+                        val formerItem = message.firstOrNull()
+                        if (
+                            formerItem is MessageParent.BOT && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
+                                data.timestamp,
+                            )
+                        ) {
+                            if (formerItem is MessageParent.BOT.Meal) {
+                                message[0] = formerItem.copy(isLast = false)
+                            }
+                        }
+
+                        if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
+                            message.add(
+                                index = 0,
+                                element = MessageParent.Date(
+                                    type = MessageType.MESSAGE,
+                                    timestamp = LocalDateTime.of(
+                                        data.timestamp.year,
+                                        data.timestamp.monthValue,
+                                        data.timestamp.dayOfMonth,
+                                        0,
+                                        0,
+                                    ),
+                                    userId = 0,
+                                    text = "",
+                                ),
+                            )
+                        }
+
+                        if (data is MessageParent.BOT.DrawLots && state.value.roomInfo?.members?.isNotEmpty() == true) {
+                            data = data.copy(
+                                visibleMessage = data.getVisibleMessage(state.value.roomInfo?.members),
+                            )
+                        }
+
+                        if (data is MessageParent.BOT.TeamBuild && state.value.roomInfo?.members?.isNotEmpty() == true) {
+                            data = data.copy(
+                                visibleMessage = data.getVisibleMessage(state.value.roomInfo?.members),
+                            )
+                        }
+                        message.add(
+                            index = 0,
+                            element = data.copy(
+                                isLast = true,
+                            ),
+                        )
+
+                        _state.update {
+                            it.copy(
+                                message = message.toImmutableList(),
+                            )
+                        }
+                    }
+
+                    is MessageParent.Img -> {
+                        val data = data as MessageParent.Img
+                        val message = _state.value.message.toMutableList()
+                        val formerItem = message.firstOrNull()
+
+                        var isFirst = data.userId != formerItem?.userId
+                        if (
+                            formerItem is MessageParent.Other && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
+                                data.timestamp,
+                            )
+                        ) {
+                            message[0] = formerItem.copy(isLast = false)
+                        }
+
+                        if (
+                            formerItem is MessageParent.File && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
+                                data.timestamp,
+                            )
+                        ) {
+                            message[0] = formerItem.copy(isLast = false)
+                        }
+
+                        if (
+                            formerItem is MessageParent.Img && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
+                                data.timestamp,
+                            )
+                        ) {
+                            message[0] = formerItem.copy(isLast = false)
+                        }
+
+                        if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
+                            isFirst = true
+                            message.add(
+                                index = 0,
+                                element = MessageParent.Date(
+                                    type = MessageType.MESSAGE,
+                                    timestamp = LocalDateTime.of(
+                                        data.timestamp.year,
+                                        data.timestamp.monthValue,
+                                        data.timestamp.dayOfMonth,
+                                        0,
+                                        0,
+                                    ),
+                                    userId = 0,
+                                    text = "",
+                                ),
+                            )
+                        }
+                        message.add(
+                            index = 0,
+                            element = data.copy(
+                                isLast = true,
+                                isFirst = isFirst,
+                            ),
+                        )
+
+                        // messageQueue 삭제 로직
+                        if (data.userId == _state.value.userInfo?.id) {
+                            _messageSaveQueueState.value -= data.uuid ?: ""
+                        }
                         _messageSaveQueueState.value -= data.uuid ?: ""
+                        _state.update {
+                            it.copy(
+                                message = message.toImmutableList(),
+                            )
+                        }
                     }
-                    _messageSaveQueueState.value -= data.uuid ?: ""
-                    _state.update {
-                        it.copy(
-                            message = message.toImmutableList(),
-                        )
-                    }
-                }
 
-                is MessageParent.Enter -> {
-                    val data = data as MessageParent.Enter
-                    _state.update {
-                        it.copy(
-                            message = it.message.toMutableList().apply {
-                                add(0, data)
-                            }.toImmutableList(),
-                        )
-                    }
-                }
+                    is MessageParent.File -> {
+                        val data = data as MessageParent.File
+                        val message = _state.value.message.toMutableList()
+                        val formerItem = message.firstOrNull()
 
-                is MessageParent.Left -> {
-                    val data = data as MessageParent.Left
-                    _state.update {
-                        it.copy(
-                            message = it.message.toMutableList().apply {
-                                add(0, data)
-                            }.toImmutableList(),
-                        )
-                    }
-                }
+                        var isFirst = data.userId != formerItem?.userId
+                        if (
+                            formerItem is MessageParent.Other && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
+                                data.timestamp,
+                            )
+                        ) {
+                            message[0] = formerItem.copy(isLast = false)
+                        }
+                        if (
+                            formerItem is MessageParent.File && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
+                                data.timestamp,
+                            )
+                        ) {
+                            message[0] = formerItem.copy(isLast = false)
+                        }
 
-                is MessageParent.Etc -> {
-                    val data = data as MessageParent.Etc
-                    _state.update {
-                        it.copy(
-                            message = it.message.toMutableList().apply {
-                                add(0, data)
-                            }.toImmutableList(),
-                        )
-                    }
-                }
+                        if (
+                            formerItem is MessageParent.Img && formerItem.isLast && formerItem.userId == data.userId && !formerItem.timestamp.isDifferentMin(
+                                data.timestamp,
+                            )
+                        ) {
+                            message[0] = formerItem.copy(isLast = false)
+                        }
 
-                is MessageRoomEvent.Sub -> {
-                    _state.update {
-                        it.copy(
-                            roomInfo = it.roomInfo?.copy(
-                                members = it.roomInfo.members
-                                    .toMutableList()
-                                    .map { userInfo ->
-                                        if (userInfo.userInfo.id != data.userId) {
-                                            return@map userInfo
-                                        }
-                                        userInfo.copy(
-                                            userInfo = userInfo.userInfo,
-                                            timestamp = LocalDateTime.MIN,
-                                            utcTimeMillis = 0L,
-                                        )
-                                    }
-                                    .sortedBy { it.utcTimeMillis }
-                                    .toImmutableList(),
+                        if (formerItem != null && data.timestamp.isDifferentDay(formerItem.timestamp)) {
+                            isFirst = true
+                            message.add(
+                                index = 0,
+                                element = MessageParent.Date(
+                                    type = MessageType.MESSAGE,
+                                    timestamp = LocalDateTime.of(
+                                        data.timestamp.year,
+                                        data.timestamp.monthValue,
+                                        data.timestamp.dayOfMonth,
+                                        0,
+                                        0,
+                                    ),
+                                    userId = 0,
+                                    text = "",
+                                ),
+                            )
+                        }
+                        message.add(
+                            index = 0,
+                            element = data.copy(
+                                isLast = true,
+                                isFirst = isFirst,
                             ),
                         )
+                        // messageQueue 삭제 로직
+                        if (data.userId == _state.value.userInfo?.id) {
+                            _messageSaveQueueState.value -= data.uuid ?: ""
+                        }
+                        _messageSaveQueueState.value -= data.uuid ?: ""
+                        _state.update {
+                            it.copy(
+                                message = message.toImmutableList(),
+                            )
+                        }
                     }
-                }
-                is MessageRoomEvent.UnSub -> {
-                    Log.d("TAG", "collectMessage: UNSUB User")
-                    _state.update {
-                        it.copy(
-                            roomInfo = it.roomInfo?.copy(
-                                members = it.roomInfo.members
-                                    .toMutableList()
-                                    .map { userInfo ->
-                                        if (userInfo.userInfo.id != data.userId) {
-                                            return@map userInfo
+
+                    is MessageParent.Enter -> {
+                        val data = data as MessageParent.Enter
+                        _state.update {
+                            it.copy(
+                                message = it.message.toMutableList().apply {
+                                    add(0, data)
+                                }.toImmutableList(),
+                            )
+                        }
+                    }
+
+                    is MessageParent.Left -> {
+                        val data = data as MessageParent.Left
+                        _state.update {
+                            it.copy(
+                                message = it.message.toMutableList().apply {
+                                    add(0, data)
+                                }.toImmutableList(),
+                            )
+                        }
+                    }
+
+                    is MessageParent.Etc -> {
+                        val data = data as MessageParent.Etc
+                        _state.update {
+                            it.copy(
+                                message = it.message.toMutableList().apply {
+                                    add(0, data)
+                                }.toImmutableList(),
+                            )
+                        }
+                    }
+
+                    is MessageRoomEvent.Sub -> {
+                        _state.update {
+                            it.copy(
+                                roomInfo = it.roomInfo?.copy(
+                                    members = it.roomInfo.members
+                                        .toMutableList()
+                                        .map { userInfo ->
+                                            if (userInfo.userInfo.id != data.userId) {
+                                                return@map userInfo
+                                            }
+                                            userInfo.copy(
+                                                userInfo = userInfo.userInfo,
+                                                timestamp = LocalDateTime.MIN,
+                                                utcTimeMillis = 0L,
+                                            )
                                         }
-                                        val timestamp = LocalDateTime.now()
-                                        Log.d(
-                                            "TAG",
-                                            "collectMessage: UNSUB ${userInfo.copy(
+                                        .sortedBy { it.utcTimeMillis }
+                                        .toImmutableList(),
+                                ),
+                            )
+                        }
+                    }
+
+                    is MessageRoomEvent.UnSub -> {
+                        Log.d("TAG", "collectMessage: UNSUB User")
+                        _state.update {
+                            it.copy(
+                                roomInfo = it.roomInfo?.copy(
+                                    members = it.roomInfo.members
+                                        .toMutableList()
+                                        .map { userInfo ->
+                                            if (userInfo.userInfo.id != data.userId) {
+                                                return@map userInfo
+                                            }
+                                            val timestamp = LocalDateTime.now()
+                                            Log.d(
+                                                "TAG",
+                                                "collectMessage: UNSUB ${
+                                                    userInfo.copy(
+                                                        userInfo = userInfo.userInfo,
+                                                        timestamp = timestamp,
+                                                        utcTimeMillis = timestamp.toEpochMilli(),
+                                                    )
+                                                }",
+                                            )
+                                            userInfo.copy(
                                                 userInfo = userInfo.userInfo,
                                                 timestamp = timestamp,
                                                 utcTimeMillis = timestamp.toEpochMilli(),
-                                            )}",
-                                        )
-                                        userInfo.copy(
-                                            userInfo = userInfo.userInfo,
-                                            timestamp = timestamp,
-                                            utcTimeMillis = timestamp.toEpochMilli(),
-                                        )
-                                    }
-                                    .sortedBy { it.utcTimeMillis }
-                                    .toImmutableList(),
-                            ),
-                        )
+                                            )
+                                        }
+                                        .sortedBy { it.utcTimeMillis }
+                                        .toImmutableList(),
+                                ),
+                            )
+                        }
                     }
-                }
 
-                else -> {}
+                    is MessageRoomEvent.AddEmoji -> {
+                        val data = data as MessageRoomEvent.AddEmoji
+                        if (data.userId == userId) return
+                        _state.update {
+                            it.copy(
+                                message = it.message.map {
+                                    if (!it.equalsMessageId(data.messageId)) return@map it
+                                    it.addEmoji(
+                                        userId = data.userId,
+                                        emojiId = data.emojiId,
+                                    )
+                                }.toImmutableList(),
+                            )
+                        }
+                    }
+
+                    is MessageRoomEvent.RemoveEmoji -> {
+                        val data = data as MessageRoomEvent.RemoveEmoji
+                        if (data.userId == userId) return
+                        _state.update {
+                            it.copy(
+                                message = it.message.map {
+                                    if (!it.equalsMessageId(data.messageId)) return@map it
+                                    it.minusEmoji(
+                                        userId = data.userId,
+                                        emojiId = data.emojiId,
+                                    )
+                                }.toImmutableList(),
+                            )
+                        }
+                    }
+
+                    else -> {}
+                }
             }
-        }
-        Result.Loading -> {}
-        is Result.Error -> {
-            throwable.printStackTrace()
+
+            Result.Loading -> {}
+            is Result.Error -> {
+                throwable.printStackTrace()
+            }
         }
     }
 

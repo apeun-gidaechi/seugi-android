@@ -72,6 +72,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleStartEffect
@@ -95,6 +96,7 @@ import com.seugi.designsystem.component.SeugiMemberList
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.theme.SeugiTheme
+import com.seugi.ui.EmojiUtiles
 import com.seugi.ui.component.OtherProfileBottomSheet
 import com.seugi.ui.getFileName
 import com.seugi.ui.getFileSize
@@ -215,6 +217,7 @@ internal fun ChatDetailScreen(
 
     var nowPage: NowPage by remember { mutableStateOf(NowPage.CHAT) }
 
+    var selectMessage: MessageRoomEvent.MessageParent? by remember { mutableStateOf(null) }
     var copyMessage by remember { mutableStateOf("") }
     var isShowCopyMessageDialog by remember { mutableStateOf(false) }
 
@@ -388,11 +391,53 @@ internal fun ChatDetailScreen(
             onDismissRequest = {
                 isShowCopyMessageDialog = false
                 copyMessage = ""
+                selectMessage = null
             },
             onClickCopy = {
                 isShowCopyMessageDialog = false
                 clipboardManager.setText(AnnotatedString(copyMessage))
                 copyMessage = ""
+                selectMessage = null
+            },
+            onClickEmoji = { emoji ->
+                isShowCopyMessageDialog = false
+                copyMessage = ""
+                if (selectMessage == null) {
+                    return@ChatDetailCopyDialog
+                }
+                viewModel.emojiAdd(
+                    messageId = when (selectMessage) {
+                        is MessageRoomEvent.MessageParent.BOT.DrawLots -> (selectMessage as MessageRoomEvent.MessageParent.BOT.DrawLots).id
+                        is MessageRoomEvent.MessageParent.BOT.Etc -> (selectMessage as MessageRoomEvent.MessageParent.BOT.Etc).id
+                        is MessageRoomEvent.MessageParent.BOT.Meal -> (selectMessage as MessageRoomEvent.MessageParent.BOT.Meal).id
+                        is MessageRoomEvent.MessageParent.BOT.NotSupport -> (selectMessage as MessageRoomEvent.MessageParent.BOT.NotSupport).id
+                        is MessageRoomEvent.MessageParent.BOT.Notification -> (selectMessage as MessageRoomEvent.MessageParent.BOT.Notification).id
+                        is MessageRoomEvent.MessageParent.BOT.TeamBuild -> (selectMessage as MessageRoomEvent.MessageParent.BOT.TeamBuild).id
+                        is MessageRoomEvent.MessageParent.BOT.Timetable -> (selectMessage as MessageRoomEvent.MessageParent.BOT.Timetable).id
+                        is MessageRoomEvent.MessageParent.File -> (selectMessage as MessageRoomEvent.MessageParent.File).id
+                        is MessageRoomEvent.MessageParent.Img -> (selectMessage as MessageRoomEvent.MessageParent.Img).id
+                        is MessageRoomEvent.MessageParent.Me -> (selectMessage as MessageRoomEvent.MessageParent.Me).id
+                        is MessageRoomEvent.MessageParent.Other -> (selectMessage as MessageRoomEvent.MessageParent.Other).id
+                        else -> ""
+                    },
+                    roomId = when (selectMessage) {
+                        is MessageRoomEvent.MessageParent.BOT.DrawLots -> (selectMessage as MessageRoomEvent.MessageParent.BOT.DrawLots).chatRoomId
+                        is MessageRoomEvent.MessageParent.BOT.Etc -> (selectMessage as MessageRoomEvent.MessageParent.BOT.Etc).chatRoomId
+                        is MessageRoomEvent.MessageParent.BOT.Meal -> (selectMessage as MessageRoomEvent.MessageParent.BOT.Meal).chatRoomId
+                        is MessageRoomEvent.MessageParent.BOT.NotSupport -> (selectMessage as MessageRoomEvent.MessageParent.BOT.NotSupport).chatRoomId
+                        is MessageRoomEvent.MessageParent.BOT.Notification -> (selectMessage as MessageRoomEvent.MessageParent.BOT.Notification).chatRoomId
+                        is MessageRoomEvent.MessageParent.BOT.TeamBuild -> (selectMessage as MessageRoomEvent.MessageParent.BOT.TeamBuild).chatRoomId
+                        is MessageRoomEvent.MessageParent.BOT.Timetable -> (selectMessage as MessageRoomEvent.MessageParent.BOT.Timetable).chatRoomId
+                        is MessageRoomEvent.MessageParent.File -> (selectMessage as MessageRoomEvent.MessageParent.File).chatRoomId
+                        is MessageRoomEvent.MessageParent.Img -> (selectMessage as MessageRoomEvent.MessageParent.Img).chatRoomId
+                        is MessageRoomEvent.MessageParent.Me -> (selectMessage as MessageRoomEvent.MessageParent.Me).chatRoomId
+                        is MessageRoomEvent.MessageParent.Other -> (selectMessage as MessageRoomEvent.MessageParent.Other).chatRoomId
+                        else -> ""
+                    },
+                    emojiId = EmojiUtiles.emojiStringToId(emoji),
+                    userId = userId,
+                )
+                selectMessage = null
             },
         )
     }
@@ -434,6 +479,22 @@ internal fun ChatDetailScreen(
             popBackStack = popBackStack,
             onTextChange = { text = it },
             onClickInviteMember = { nowPage = NowPage.INVITE },
+            onClickAddEmoji = { emoji, messageId ->
+                viewModel.emojiAdd(
+                    messageId = messageId,
+                    emojiId = EmojiUtiles.emojiStringToId(emoji),
+                    roomId = chatRoomId,
+                    userId = userId,
+                )
+            },
+            onClickMinusEmoji = { emoji, messageId ->
+                viewModel.emojiMinus(
+                    messageId = messageId,
+                    emojiId = EmojiUtiles.emojiStringToId(emoji),
+                    roomId = chatRoomId,
+                    userId = userId,
+                )
+            },
             onSearchTextChange = { searchText = it },
             onIsSearchChange = { isSearch = it },
             onsOtherProfileStateChange = { otherProfileState = it },
@@ -449,7 +510,19 @@ internal fun ChatDetailScreen(
             onSelectedFileName = { selectedFileName = it },
             onSelectedImageBitmap = { selectedImageBitmap = it },
             onChatLongClick = {
-                copyMessage = it
+                copyMessage = when (it) {
+                    is MessageRoomEvent.MessageParent.BOT.DrawLots -> it.visibleMessage
+                    is MessageRoomEvent.MessageParent.BOT.Etc -> it.message
+                    is MessageRoomEvent.MessageParent.BOT.Meal -> it.visibleMessage
+                    is MessageRoomEvent.MessageParent.BOT.NotSupport -> it.message
+                    is MessageRoomEvent.MessageParent.BOT.Notification -> it.visibleMessage
+                    is MessageRoomEvent.MessageParent.BOT.TeamBuild -> it.visibleMessage
+                    is MessageRoomEvent.MessageParent.BOT.Timetable -> it.visibleMessage
+                    is MessageRoomEvent.MessageParent.Me -> it.message
+                    is MessageRoomEvent.MessageParent.Other -> it.message
+                    else -> ""
+                }
+                selectMessage = it
                 isShowCopyMessageDialog = true
             },
         )
@@ -893,7 +966,7 @@ internal fun ResendDialog(modifier: Modifier = Modifier, text: String = "재전�
 }
 
 @Composable
-fun ChatDetailCopyDialog(onDismissRequest: () -> Unit, onClickCopy: () -> Unit) {
+private fun ChatDetailCopyDialog(onDismissRequest: () -> Unit, onClickCopy: () -> Unit, onClickEmoji: (emoji: String) -> Unit) {
     Dialog(
         onDismissRequest = onDismissRequest,
     ) {
@@ -903,6 +976,7 @@ fun ChatDetailCopyDialog(onDismissRequest: () -> Unit, onClickCopy: () -> Unit) 
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Row(
                     modifier = Modifier
@@ -917,6 +991,28 @@ fun ChatDetailCopyDialog(onDismissRequest: () -> Unit, onClickCopy: () -> Unit) 
                         color = SeugiTheme.colors.black,
                         style = SeugiTheme.typography.subtitle2,
                     )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    EmojiUtiles.EMOJIS.fastForEach { emoji ->
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(27.dp)
+                                .bounceClick(
+                                    onClick = {
+                                        onClickEmoji(emoji)
+                                    },
+                                ),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = emoji,
+                                style = SeugiTheme.typography.subtitle2,
+                            )
+                        }
+                    }
                 }
             }
         }

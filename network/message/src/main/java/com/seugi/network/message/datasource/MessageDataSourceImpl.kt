@@ -5,10 +5,12 @@ import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.network.core.SeugiUrl
 import com.seugi.network.core.response.BaseResponse
+import com.seugi.network.core.response.Response
 import com.seugi.network.core.utiles.toJsonString
 import com.seugi.network.core.utiles.toResponse
 import com.seugi.network.message.MessageDataSource
 import com.seugi.network.message.request.CatSeugiRequest
+import com.seugi.network.message.request.EmojiRequest
 import com.seugi.network.message.request.MessageRequest
 import com.seugi.network.message.response.MessageRoomEventResponse
 import com.seugi.network.message.response.message.MessageLoadResponse
@@ -19,10 +21,13 @@ import com.seugi.stompclient.dto.StompHeader
 import com.seugi.stompclient.dto.StompMessage
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
+import io.ktor.client.request.put
 import io.ktor.client.request.setBody
+import io.ktor.client.utils.EmptyContent.contentType
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import javax.inject.Inject
@@ -149,6 +154,28 @@ class MessageDataSourceImpl @Inject constructor(
             CatSeugiRequest(
                 message = text,
                 roomId = "67177e4ac6b844040200d65c",
+            ),
+        )
+        contentType(ContentType.Application.Json)
+    }.body()
+
+    override suspend fun putEmoji(messageId: String, roomId: String, emojiId: Int): Response = httpClient.put(SeugiUrl.Message.EMOJI) {
+        setBody(
+            EmojiRequest(
+                messageId = messageId,
+                roomId = roomId,
+                emojiId = emojiId,
+            ),
+        )
+        contentType(ContentType.Application.Json)
+    }.body()
+
+    override suspend fun deleteEmoji(messageId: String, roomId: String, emojiId: Int): Response = httpClient.delete(SeugiUrl.Message.EMOJI) {
+        setBody(
+            EmojiRequest(
+                messageId = messageId,
+                roomId = roomId,
+                emojiId = emojiId,
             ),
         )
         contentType(ContentType.Application.Json)

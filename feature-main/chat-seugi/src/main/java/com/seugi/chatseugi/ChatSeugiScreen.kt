@@ -67,6 +67,7 @@ import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.component.textfield.SeugiChatTextField
 import com.seugi.designsystem.theme.SeugiTheme
+import kotlinx.collections.immutable.persistentListOf
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -183,6 +184,8 @@ internal fun ChatSeugiScreen(
                                             message = data.message,
                                             createdAt = data.timestamp.toAmShortString(),
                                             count = null,
+                                            emojis = persistentListOf(),
+                                            onEmojiClick = {},
                                         ),
                                     )
                                 }
@@ -196,6 +199,8 @@ internal fun ChatSeugiScreen(
                                             message = data.message,
                                             createdAt = data.timestamp.toAmShortString(),
                                             count = null,
+                                            emojis = persistentListOf(),
+                                            onEmojiClick = {},
                                         ),
                                     )
                                 }

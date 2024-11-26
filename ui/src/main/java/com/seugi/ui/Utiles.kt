@@ -117,3 +117,48 @@ fun getFileMimeType(fileName: String): String {
         else -> "application/$extension"
     }
 }
+
+class EmojiUtiles {
+
+    companion object {
+
+        /**
+         * 1~8 사이의 숫자만 허용합니다.
+         * throws IllegalArgumentException
+         * return String Emoji
+         */
+        fun getEmoji(id: Int): String = when (id) {
+            1 -> "\uD83D\uDC4D"
+            2 -> "\uD83D\uDC4C"
+            3 -> "\uD83D\uDC4F"
+            4 -> "\uD83D\uDE0D"
+            5 -> "\uD83D\uDE06"
+            6 -> "\uD83D\uDE32"
+            7 -> "\uD83D\uDE22"
+            8 -> "\uD83D\uDE24"
+            else -> throw IllegalArgumentException("올바르지 않은 이모지.")
+        }
+
+        /**
+         * EmojiUtiles.EMOJIS 에 존재하는 이모지만 허용합니다.
+         * throws IllegalArgumentException
+         * return Int EmojiIndex
+         */
+        fun emojiStringToId(emoji: String): Int {
+            if (emoji !in EMOJIS) throw IllegalArgumentException("올바르지 않은 이모지.")
+            return when (emoji) {
+                "\uD83D\uDC4D" -> 1
+                "\uD83D\uDC4C" -> 2
+                "\uD83D\uDC4F" -> 3
+                "\uD83D\uDE0D" -> 4
+                "\uD83D\uDE06" -> 5
+                "\uD83D\uDE32" -> 6
+                "\uD83D\uDE22" -> 7
+                "\uD83D\uDE24" -> 8
+                else -> throw IllegalArgumentException("올바르지 않은 이모지.")
+            }
+        }
+
+        val EMOJIS = listOf("\uD83D\uDC4D", "\uD83D\uDC4C", "\uD83D\uDC4F", "\uD83D\uDE0D", "\uD83D\uDE06", "\uD83D\uDE32", "\uD83D\uDE22", "\uD83D\uDE24")
+    }
+}

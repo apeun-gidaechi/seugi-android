@@ -21,4 +21,8 @@ interface MessageRepository {
     suspend fun collectStompLifecycle(): Flow<Result<MessageStompLifecycleModel>>
 
     suspend fun sendText(text: String): Flow<Result<String>>
+
+    suspend fun putEmoji(messageId: String, roomId: String, emojiId: Int): Flow<Result<Boolean>>
+
+    suspend fun deleteEmoji(messageId: String, roomId: String, emojiId: Int): Flow<Result<Boolean>>
 }

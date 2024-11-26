@@ -274,6 +274,8 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
         "IMG" -> {
             val text = message.split("::")
             MessageRoomEvent.MessageParent.Img(
+                id = id,
+                chatRoomId = chatRoomId,
                 url = text[0],
                 fileName = text[1],
                 timestamp = timestamp,
@@ -282,11 +284,14 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
                 uuid = uuid,
                 isFirst = false,
                 isLast = false,
+                emojiList = emojiList.map { it.toModel() }.toImmutableList(),
             )
         }
         "FILE" -> {
             val text = message.split("::")
             MessageRoomEvent.MessageParent.File(
+                id = id,
+                chatRoomId = chatRoomId,
                 url = text[0],
                 fileName = text[1],
                 fileSize = text[2].toLong(),
@@ -296,6 +301,7 @@ internal fun MessageRoomEventResponse.MessageParent.Message.toModel(userId: Long
                 uuid = uuid,
                 isFirst = false,
                 isLast = false,
+                emojiList = emojiList.map { it.toModel() }.toImmutableList(),
             )
         }
 
