@@ -14,6 +14,7 @@ import com.seugi.network.message.request.EmojiRequest
 import com.seugi.network.message.request.MessageRequest
 import com.seugi.network.message.response.MessageRoomEventResponse
 import com.seugi.network.message.response.message.MessageLoadResponse
+import com.seugi.network.message.response.stomp.MessageStompErrorResponse
 import com.seugi.network.message.response.stomp.MessageStompLifecycleResponse
 import com.seugi.stompclient.StompClient
 import com.seugi.stompclient.dto.LifecycleEvent
@@ -27,7 +28,6 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
-import io.ktor.client.utils.EmptyContent.contentType
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import javax.inject.Inject
@@ -46,14 +46,18 @@ class MessageDataSourceImpl @Inject constructor(
     private val httpClient: HttpClient,
 ) : MessageDataSource {
 
-    override suspend fun connectStomp(accessToken: String) {
+    override suspend fun connectStompSocket(accessToken: String) {
         val header = listOf(StompHeader("Authorization", accessToken))
         stompClient.connect(header)
     }
 
-    override suspend fun reConnectStomp(accessToken: String, refreshToken: String): Unit = coroutineScope {
+    override suspend fun reConnectStompSocket(accessToken: String, refreshToken: String): Unit = coroutineScope {
+//        stompClient.disconnectCompletable().subscribe { }
+        connectStompSocket(accessToken)
+    }
+
+    override suspend fun closeStompSocket() {
         stompClient.disconnectCompletable().subscribe { }
-        connectStomp(accessToken)
     }
 
     override suspend fun getIsConnect(): Boolean = stompClient.isConnected
@@ -118,6 +122,19 @@ class MessageDataSourceImpl @Inject constructor(
                         emit(message.payload.toResponse(MessageRoomEventResponse.TransperAdmin::class.java))
                     }
                 }
+            }
+    }
+
+    override suspend fun subscribeError() = flow {
+        stompClient.topic(SeugiUrl.Message.ERRORS)
+            .asFlow()
+            .flowOn(dispatcher)
+            .catch {
+                it.printStackTrace()
+            }
+            .collect { message ->
+                val response = message.payload.toResponse(MessageStompErrorResponse::class.java)
+                emit(response)
             }
     }
 

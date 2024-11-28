@@ -604,12 +604,12 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun channelConnect(userId: Long) {
+    fun channelConnect(userId: Long, roomId: String? = null) {
         viewModelScope.launch {
             subscribeChat?.cancel()
             val job = viewModelScope.async {
                 messageRepository.subscribeRoom(
-                    chatRoomId = state.value.roomInfo?.id ?: "",
+                    chatRoomId = roomId ?: state.value.roomInfo?.id ?: "",
                     userId = userId,
                 ).collect {
                     it.collectMessage(userId)
@@ -626,6 +626,10 @@ class ChatDetailViewModel @Inject constructor(
         subscribeLifecycle = null
         subscribeChat?.cancel()
         subscribeChat = null
+    }
+
+    fun socketClose() = viewModelScope.launch {
+        messageRepository.closeSocket()
     }
 
     fun leftRoom(chatRoomId: String) {
