@@ -373,7 +373,7 @@ class ChatDetailViewModel @Inject constructor(
                             content = content,
                             mention = mention,
                         )
-                        channelReconnect(userId)
+                        channelConnect(userId)
                         return@launch
                     }
                     // 메세지가 보내고 MESSAGE_TIMEOUT 시간만큼 지났는데도 안보내지면 실패처리
@@ -604,12 +604,12 @@ class ChatDetailViewModel @Inject constructor(
         }
     }
 
-    private fun channelConnect(userId: Long) {
+    fun channelConnect(userId: Long, roomId: String? = null) {
         viewModelScope.launch {
             subscribeChat?.cancel()
             val job = viewModelScope.async {
                 messageRepository.subscribeRoom(
-                    chatRoomId = state.value.roomInfo?.id ?: "",
+                    chatRoomId = roomId ?: state.value.roomInfo?.id ?: "",
                     userId = userId,
                 ).collect {
                     it.collectMessage(userId)
@@ -626,6 +626,10 @@ class ChatDetailViewModel @Inject constructor(
         subscribeLifecycle = null
         subscribeChat?.cancel()
         subscribeChat = null
+    }
+
+    fun socketClose() = viewModelScope.launch {
+        messageRepository.closeSocket()
     }
 
     fun leftRoom(chatRoomId: String) {

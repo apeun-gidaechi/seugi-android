@@ -5,7 +5,6 @@ import com.seugi.common.model.Result
 import com.seugi.common.model.asResult
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
-import com.seugi.data.core.mapper.toModel
 import com.seugi.data.core.mapper.toModels
 import com.seugi.data.core.model.TimetableModel
 import com.seugi.data.message.MessageRepository
@@ -16,6 +15,7 @@ import com.seugi.data.message.model.MessageBotRawKeyword
 import com.seugi.data.message.model.MessageBotRawKeywordInData
 import com.seugi.data.message.model.MessageLoadModel
 import com.seugi.data.message.model.MessageRoomEvent
+import com.seugi.data.message.model.MessageStompErrorModel
 import com.seugi.data.message.model.MessageType
 import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
 import com.seugi.local.room.dao.TokenDao
@@ -54,27 +54,48 @@ class MessageRepositoryImpl @Inject constructor(
     override suspend fun subscribeRoom(chatRoomId: String, userId: Long): Flow<Result<MessageRoomEvent>> {
         if (!datasource.getIsConnect()) {
             val token = tokenDao.getToken()
-            datasource.connectStomp(
+            datasource.connectStompSocket(
                 token?.token ?: "",
             )
         }
         return datasource.subscribeRoom(chatRoomId)
             .flowOn(dispatcher)
             .map {
+                /**/
                 it.toEventModel(userId)
             }
             .asResult()
     }
 
+    override suspend fun subscribeError(): Flow<Result<MessageStompErrorModel>> {
+        if (!datasource.getIsConnect()) {
+            val token = tokenDao.getToken()
+            datasource.connectStompSocket(
+                token?.token ?: "",
+            )
+        }
+        return datasource.subscribeError()
+            .flowOn(dispatcher)
+            .map {
+                it.toModel()
+            }
+            .asResult()
+    }
+
+    override suspend fun closeSocket(): Boolean {
+        datasource.closeStompSocket()
+        return true
+    }
+
     override suspend fun reSubscribeRoom(chatRoomId: String, userId: Long): Flow<Result<MessageRoomEvent>> {
         val token = tokenDao.getToken()
-        datasource.reConnectStomp(
+        datasource.reConnectStompSocket(
             token?.token ?: "",
             token?.refreshToken ?: "",
         )
         delay(200)
         return datasource.subscribeRoom(chatRoomId)
-            .flowOn(dispatcher)
+//            .flowOn(dispatcher)
             .map {
                 it.toEventModel(userId)
             }
