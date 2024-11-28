@@ -6,7 +6,6 @@ import com.seugi.data.message.model.MessageRoomEvent
 import com.seugi.data.message.model.MessageStompErrorModel
 import com.seugi.data.message.model.MessageType
 import com.seugi.data.message.model.stomp.MessageStompLifecycleModel
-import com.seugi.network.message.response.stomp.MessageStompErrorResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDateTime
 

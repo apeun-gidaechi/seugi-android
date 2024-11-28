@@ -60,7 +60,8 @@ class MessageRepositoryImpl @Inject constructor(
         }
         return datasource.subscribeRoom(chatRoomId)
             .flowOn(dispatcher)
-            .map {/**/
+            .map {
+                /**/
                 it.toEventModel(userId)
             }
             .asResult()
@@ -70,7 +71,7 @@ class MessageRepositoryImpl @Inject constructor(
         if (!datasource.getIsConnect()) {
             val token = tokenDao.getToken()
             datasource.connectStompSocket(
-                token?.token ?: ""
+                token?.token ?: "",
             )
         }
         return datasource.subscribeError()
