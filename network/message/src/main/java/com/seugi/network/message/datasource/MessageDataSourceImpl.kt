@@ -52,7 +52,7 @@ class MessageDataSourceImpl @Inject constructor(
     }
 
     override suspend fun reConnectStompSocket(accessToken: String, refreshToken: String): Unit = coroutineScope {
-//        stompClient.disconnectCompletable().subscribe { }
+        stompClient.disconnectCompletable().subscribe { }
         connectStompSocket(accessToken)
     }
 

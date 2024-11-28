@@ -373,7 +373,7 @@ class ChatDetailViewModel @Inject constructor(
                             content = content,
                             mention = mention,
                         )
-                        channelReconnect(userId)
+                        channelConnect(userId)
                         return@launch
                     }
                     // 메세지가 보내고 MESSAGE_TIMEOUT 시간만큼 지났는데도 안보내지면 실패처리
