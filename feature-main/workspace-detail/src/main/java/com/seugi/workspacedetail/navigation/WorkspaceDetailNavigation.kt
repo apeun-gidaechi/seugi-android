@@ -19,13 +19,14 @@ fun NavController.navigateToWorkspaceDetail(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.workspaceDetailScreen(
     workspace: WorkspaceModel,
-    navigateToJoinWorkspace: () -> Unit,
+    changeWorkspace: () -> Unit,
+    myRole: WorkspacePermissionModel,
     popBackStack: () -> Unit,
+    navigateToJoinWorkspace: () -> Unit,
     navigateToWorkspaceMember: (String) -> Unit,
     navigateToCreateWorkspace: () -> Unit,
-    changeWorkspace: () -> Unit,
     navigateToInviteMember: () -> Unit,
-    myRole: WorkspacePermissionModel,
+    navigateToSettingGeneral: () -> Unit
 ) {
     composable(
         route = WORKSPACE_DETAIL_ROUTE,
@@ -39,6 +40,7 @@ fun NavGraphBuilder.workspaceDetailScreen(
             changeWorkspace = changeWorkspace,
             navigateToInviteMember = navigateToInviteMember,
             myRole = myRole,
+            navigateToSettingGeneral = navigateToSettingGeneral
         )
     }
 }

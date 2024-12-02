@@ -68,6 +68,7 @@ internal fun WorkspaceDetailScreen(
     changeWorkspace: () -> Unit,
     navigateToInviteMember: () -> Unit,
     myRole: WorkspacePermissionModel,
+    navigateToSettingGeneral: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var showDialog by remember { mutableStateOf(false) }
@@ -337,7 +338,8 @@ internal fun WorkspaceDetailScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp),
+                    .height(56.dp)
+                    .bounceClick(navigateToSettingGeneral),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
