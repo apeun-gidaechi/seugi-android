@@ -7,7 +7,7 @@ import android.util.Log
 import com.seugi.common.exception.UnauthorizedException
 import com.seugi.common.utiles.SeugiActivityStarter
 import com.seugi.local.room.dao.TokenDao
-import com.seugi.local.room.model.TokenEntity
+import com.seugi.local.room.entity.TokenEntity
 import com.seugi.network.core.SeugiUrl
 import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.response.FakeLocalDateResponse

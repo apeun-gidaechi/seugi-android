@@ -4,7 +4,7 @@ import com.seugi.common.utiles.toKotlinLocalDate
 import com.seugi.common.utiles.toNotSpaceString
 import com.seugi.data.core.mapper.toMealType
 import com.seugi.data.core.model.MealModel
-import com.seugi.local.room.model.MealEntity
+import com.seugi.local.room.entity.MealEntity
 import kotlinx.collections.immutable.toImmutableList
 
 internal fun MealEntity.toModel() = MealModel(

@@ -1,7 +1,7 @@
 package com.seugi.data.workspace.mapper
 
 import com.seugi.data.workspace.model.WorkspaceModel
-import com.seugi.local.room.model.WorkspaceEntity
+import com.seugi.local.room.entity.WorkspaceEntity
 import com.seugi.network.workspace.response.WorkspaceResponse
 import kotlinx.collections.immutable.toImmutableList
 

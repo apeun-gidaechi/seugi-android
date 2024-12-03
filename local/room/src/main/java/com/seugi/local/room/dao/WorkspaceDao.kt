@@ -3,7 +3,7 @@ package com.seugi.local.room.dao
 import androidx.room.Dao
 import androidx.room.Query
 import com.seugi.local.room.base.BaseDao
-import com.seugi.local.room.model.WorkspaceEntity
+import com.seugi.local.room.entity.WorkspaceEntity
 import com.seugi.local.room.util.SeugiTable
 
 @Dao

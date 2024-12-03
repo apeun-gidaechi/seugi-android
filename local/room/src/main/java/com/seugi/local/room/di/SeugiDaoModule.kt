@@ -5,6 +5,7 @@ import com.seugi.local.room.dao.FirebaseTokenDao
 import com.seugi.local.room.dao.MealDao
 import com.seugi.local.room.dao.TokenDao
 import com.seugi.local.room.dao.WorkspaceDao
+import com.seugi.local.room.dao.WorkspaceNotificationDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,4 +25,7 @@ internal object SeugiDaoModule {
 
     @Provides
     fun providesFirebaseTokenDao(database: SeugiDatabase): FirebaseTokenDao = database.firebaseTokenDao()
+
+    @Provides
+    fun providesWorkspaceNotificationDao(database: SeugiDatabase): WorkspaceNotificationDao = database.workspaceNotificationDao()
 }

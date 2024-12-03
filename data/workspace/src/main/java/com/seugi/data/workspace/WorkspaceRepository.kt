@@ -29,4 +29,7 @@ interface WorkspaceRepository {
     suspend fun getWorkspaceCode(workspaceId: String): Flow<Result<String>>
     suspend fun addMember(workspaceId: String, userSet: List<Long>, role: String): Flow<Result<Boolean>>
     suspend fun cancelMember(workspaceId: String, userSet: List<Long>, role: String): Flow<Result<Boolean>>
+
+    suspend fun getIsWorkspaceReceiveFCM(workspaceId: String): Flow<Result<Boolean>>
+    suspend fun changeIsWorkspaceReceiveFCM(isReceiveFCM: Boolean, workspaceId: String): Flow<Result<Boolean>>
 }
