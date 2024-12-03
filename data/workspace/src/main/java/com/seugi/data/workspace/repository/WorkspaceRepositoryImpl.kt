@@ -30,7 +30,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
     private val workspaceDatasource: WorkspaceDataSource,
     private val workspaceDao: WorkspaceDao,
-    private val workspaceNotificationDao: WorkspaceNotificationDao
+    private val workspaceNotificationDao: WorkspaceNotificationDao,
 ) : WorkspaceRepository {
     override suspend fun checkWorkspace(schoolCode: String): Flow<Result<CheckWorkspaceModel>> {
         return flow {
@@ -180,7 +180,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
     override suspend fun changeIsWorkspaceReceiveFCM(isReceiveFCM: Boolean, workspaceId: String): Flow<Result<Boolean>> = flow {
         workspaceNotificationDao.updateIsReceiveFCMByWorkspaceId(
             isReceiveFCM = isReceiveFCM,
-            workspaceId = workspaceId
+            workspaceId = workspaceId,
         )
         emit(true)
     }

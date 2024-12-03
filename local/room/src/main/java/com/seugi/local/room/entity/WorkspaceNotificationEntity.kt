@@ -9,10 +9,10 @@ data class WorkspaceNotificationEntity(
     @PrimaryKey(autoGenerate = true)
     val idx: Long,
     val workspaceId: String,
-    val isReceiveFCM: Boolean
+    val isReceiveFCM: Boolean,
 ) {
     constructor(
         workspaceId: String,
-        isReceiveFCM: Boolean
-    ): this(0, workspaceId, isReceiveFCM)
+        isReceiveFCM: Boolean,
+    ) : this(0, workspaceId, isReceiveFCM)
 }

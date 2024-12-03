@@ -7,28 +7,27 @@ import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.workspace.WorkspaceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class SettingAlarmViewModel @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
-    private val workspaceRepository: WorkspaceRepository
-): ViewModel() {
+    private val workspaceRepository: WorkspaceRepository,
+) : ViewModel() {
 
     private val _alarmState = MutableStateFlow(false)
     val alarmState = _alarmState.asStateFlow()
-
 
     fun load(workspaceId: String) = viewModelScope.launch(dispatcher) {
         workspaceRepository.getIsWorkspaceReceiveFCM(workspaceId).collect {
             when (it) {
                 is Result.Success -> {
-                    _alarmState.update {  _ ->
+                    _alarmState.update { _ ->
                         it.data
                     }
                 }
@@ -44,7 +43,7 @@ class SettingAlarmViewModel @Inject constructor(
         workspaceRepository.changeIsWorkspaceReceiveFCM(alarmState, workspaceId).collect {
             when (it) {
                 is Result.Success -> {
-                    _alarmState.update {  _ ->
+                    _alarmState.update { _ ->
                         alarmState
                     }
                 }
@@ -55,5 +54,4 @@ class SettingAlarmViewModel @Inject constructor(
             }
         }
     }
-
 }

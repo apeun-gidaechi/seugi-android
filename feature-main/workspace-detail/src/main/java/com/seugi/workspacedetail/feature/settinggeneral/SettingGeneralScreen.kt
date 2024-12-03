@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiDialog
 import com.seugi.designsystem.component.SeugiTopBar
@@ -27,9 +26,7 @@ import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.workspacecdetail.R
 
 @Composable
-internal fun SettingGeneralScreen(
-    popBackStack: () -> Unit
-) {
+internal fun SettingGeneralScreen(popBackStack: () -> Unit) {
     var showDialog by remember { mutableStateOf(false) }
 
     if (showDialog) {
@@ -38,7 +35,7 @@ internal fun SettingGeneralScreen(
             content = "시연 모드에서는 탈퇴가 불가능합니다.",
             onDismissRequest = {
                 showDialog = false
-            }
+            },
         )
     }
 
@@ -49,18 +46,18 @@ internal fun SettingGeneralScreen(
                     Text(
                         text = "일반",
                         style = SeugiTheme.typography.subtitle1,
-                        color = SeugiTheme.colors.black
+                        color = SeugiTheme.colors.black,
                     )
                 },
-                onNavigationIconClick = popBackStack
+                onNavigationIconClick = popBackStack,
             )
         },
-        containerColor = SeugiTheme.colors.white
+        containerColor = SeugiTheme.colors.white,
     ) {
         Column(
             modifier = Modifier
                 .padding(it)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Spacer(modifier = Modifier.height(6.dp))
             Row(
@@ -70,25 +67,25 @@ internal fun SettingGeneralScreen(
                     .bounceClick(
                         onClick = {
                             showDialog = true
-                        }
+                        },
                     )
                     .padding(
                         horizontal = 20.dp,
-                        vertical = 16.dp
+                        vertical = 16.dp,
                     ),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = "학교 나가기",
                     style = SeugiTheme.typography.subtitle2,
-                    color = SeugiTheme.colors.red500
+                    color = SeugiTheme.colors.red500,
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Icon(
                     modifier = Modifier.size(24.dp),
                     painter = painterResource(id = com.seugi.designsystem.R.drawable.ic_expand_right_line),
                     contentDescription = null,
-                    tint = SeugiTheme.colors.gray400
+                    tint = SeugiTheme.colors.gray400,
                 )
             }
         }

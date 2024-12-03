@@ -21,7 +21,7 @@ import com.seugi.local.room.util.LongListTypeConverter
         WorkspaceEntity::class,
         MealEntity::class,
         FirebaseTokenEntity::class,
-        WorkspaceNotificationEntity::class
+        WorkspaceNotificationEntity::class,
     ],
     version = 1,
     exportSchema = false,

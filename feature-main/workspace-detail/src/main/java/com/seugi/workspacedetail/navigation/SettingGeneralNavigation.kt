@@ -8,15 +8,12 @@ import com.seugi.workspacedetail.feature.settinggeneral.SettingGeneralScreen
 
 const val WORKSPACE_SETTING_GENERAL_ROUTE = "workspace_setting_general"
 
-fun NavController.navigateToWorkspaceSettingGeneral(navOptions: NavOptions? = null) =
-    this.navigate(WORKSPACE_SETTING_GENERAL_ROUTE, navOptions)
+fun NavController.navigateToWorkspaceSettingGeneral(navOptions: NavOptions? = null) = this.navigate(WORKSPACE_SETTING_GENERAL_ROUTE, navOptions)
 
-fun NavGraphBuilder.workspaceSettingGeneralScreen(
-    popBackStack: () -> Unit
-) {
+fun NavGraphBuilder.workspaceSettingGeneralScreen(popBackStack: () -> Unit) {
     composable(WORKSPACE_SETTING_GENERAL_ROUTE) {
         SettingGeneralScreen(
-            popBackStack = popBackStack
+            popBackStack = popBackStack,
         )
     }
 }

@@ -332,7 +332,7 @@ internal fun MainScreen(
                 navigateToInviteMember = navHostController::navigateToInviteMember,
                 myRole = state.profile.permission,
                 navigateToSettingGeneral = navHostController::navigateToWorkspaceSettingGeneral,
-                navigateToSettingAlarm = navHostController::navigateToWorkspaceSettingAlarm
+                navigateToSettingAlarm = navHostController::navigateToWorkspaceSettingAlarm,
             )
             workspaceMemberScreen(
                 showSnackbar = showSnackbar,
@@ -359,7 +359,7 @@ internal fun MainScreen(
 
             workspaceSettingAlarmScreen(
                 workspaceId = state.workspace.workspaceId,
-                popBackStack = navHostController::popBackStack
+                popBackStack = navHostController::popBackStack,
             )
 
             settingScreen(
