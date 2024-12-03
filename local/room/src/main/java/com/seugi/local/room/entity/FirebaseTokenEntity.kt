@@ -1,4 +1,4 @@
-package com.seugi.local.room.model
+package com.seugi.local.room.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

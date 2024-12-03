@@ -16,6 +16,8 @@ import com.seugi.data.workspace.model.CheckWorkspaceModel
 import com.seugi.data.workspace.model.WaitWorkspaceModel
 import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.local.room.dao.WorkspaceDao
+import com.seugi.local.room.dao.WorkspaceNotificationDao
+import com.seugi.local.room.entity.WorkspaceNotificationEntity
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.workspace.WorkspaceDataSource
 import javax.inject.Inject
@@ -28,6 +30,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
     private val workspaceDatasource: WorkspaceDataSource,
     private val workspaceDao: WorkspaceDao,
+    private val workspaceNotificationDao: WorkspaceNotificationDao,
 ) : WorkspaceRepository {
     override suspend fun checkWorkspace(schoolCode: String): Flow<Result<CheckWorkspaceModel>> {
         return flow {
@@ -76,10 +79,14 @@ class WorkspaceRepositoryImpl @Inject constructor(
             teacher = workspaceModel.teacher,
             student = workspaceModel.student,
         )
+        if (workspaceNotificationDao.getWorkspaceByWorkspaceId(workspaceModel.workspaceId) == null) {
+            workspaceNotificationDao.insert(WorkspaceNotificationEntity(workspaceModel.workspaceId, true))
+        }
     }
 
     override suspend fun insertWorkspace(workspaceModel: WorkspaceModel) {
         workspaceDao.insert(workspaceModel.toEntity())
+        workspaceNotificationDao.insert(WorkspaceNotificationEntity(workspaceModel.workspaceId, true))
     }
 
     override suspend fun getLocalWorkspaceId(): String {
@@ -158,6 +165,24 @@ class WorkspaceRepositoryImpl @Inject constructor(
         ).safeResponse()
 
         emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun getIsWorkspaceReceiveFCM(workspaceId: String): Flow<Result<Boolean>> = flow {
+        val response = workspaceNotificationDao.getWorkspaceByWorkspaceId(workspaceId)
+
+        emit(response?.isReceiveFCM ?: true)
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun changeIsWorkspaceReceiveFCM(isReceiveFCM: Boolean, workspaceId: String): Flow<Result<Boolean>> = flow {
+        workspaceNotificationDao.updateIsReceiveFCMByWorkspaceId(
+            isReceiveFCM = isReceiveFCM,
+            workspaceId = workspaceId,
+        )
+        emit(true)
     }
         .flowOn(dispatcher)
         .asResult()

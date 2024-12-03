@@ -1,7 +1,7 @@
 package com.seugi.data.core.mapper
 
 import com.seugi.data.core.model.TokenModel
-import com.seugi.local.room.model.TokenEntity
+import com.seugi.local.room.entity.TokenEntity
 import com.seugi.network.core.response.TokenResponse
 
 fun TokenResponse.toModel(): TokenModel = TokenModel(

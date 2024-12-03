@@ -65,8 +65,12 @@ import com.seugi.workspacedetail.navigation.inviteMemberScreen
 import com.seugi.workspacedetail.navigation.navigateToInviteMember
 import com.seugi.workspacedetail.navigation.navigateToWorkspaceDetail
 import com.seugi.workspacedetail.navigation.navigateToWorkspaceMember
+import com.seugi.workspacedetail.navigation.navigateToWorkspaceSettingAlarm
+import com.seugi.workspacedetail.navigation.navigateToWorkspaceSettingGeneral
 import com.seugi.workspacedetail.navigation.workspaceDetailScreen
 import com.seugi.workspacedetail.navigation.workspaceMemberScreen
+import com.seugi.workspacedetail.navigation.workspaceSettingAlarmScreen
+import com.seugi.workspacedetail.navigation.workspaceSettingGeneralScreen
 import kotlinx.coroutines.delay
 
 private const val NAVIGATION_ANIM = 400
@@ -327,6 +331,8 @@ internal fun MainScreen(
                 },
                 navigateToInviteMember = navHostController::navigateToInviteMember,
                 myRole = state.profile.permission,
+                navigateToSettingGeneral = navHostController::navigateToWorkspaceSettingGeneral,
+                navigateToSettingAlarm = navHostController::navigateToWorkspaceSettingAlarm,
             )
             workspaceMemberScreen(
                 showSnackbar = showSnackbar,
@@ -343,6 +349,17 @@ internal fun MainScreen(
                 popBackStack = {
                     navHostController.popBackStack()
                 },
+            )
+
+            workspaceSettingGeneralScreen(
+                popBackStack = {
+                    navHostController.popBackStack()
+                },
+            )
+
+            workspaceSettingAlarmScreen(
+                workspaceId = state.workspace.workspaceId,
+                popBackStack = navHostController::popBackStack,
             )
 
             settingScreen(

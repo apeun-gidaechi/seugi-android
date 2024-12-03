@@ -7,10 +7,12 @@ import com.seugi.local.room.dao.FirebaseTokenDao
 import com.seugi.local.room.dao.MealDao
 import com.seugi.local.room.dao.TokenDao
 import com.seugi.local.room.dao.WorkspaceDao
-import com.seugi.local.room.model.FirebaseTokenEntity
-import com.seugi.local.room.model.MealEntity
-import com.seugi.local.room.model.TokenEntity
-import com.seugi.local.room.model.WorkspaceEntity
+import com.seugi.local.room.dao.WorkspaceNotificationDao
+import com.seugi.local.room.entity.FirebaseTokenEntity
+import com.seugi.local.room.entity.MealEntity
+import com.seugi.local.room.entity.TokenEntity
+import com.seugi.local.room.entity.WorkspaceEntity
+import com.seugi.local.room.entity.WorkspaceNotificationEntity
 import com.seugi.local.room.util.LongListTypeConverter
 
 @Database(
@@ -19,6 +21,7 @@ import com.seugi.local.room.util.LongListTypeConverter
         WorkspaceEntity::class,
         MealEntity::class,
         FirebaseTokenEntity::class,
+        WorkspaceNotificationEntity::class,
     ],
     version = 1,
     exportSchema = false,
@@ -29,4 +32,5 @@ internal abstract class SeugiDatabase : RoomDatabase() {
     abstract fun workspaceDao(): WorkspaceDao
     abstract fun mealDao(): MealDao
     abstract fun firebaseTokenDao(): FirebaseTokenDao
+    abstract fun workspaceNotificationDao(): WorkspaceNotificationDao
 }
