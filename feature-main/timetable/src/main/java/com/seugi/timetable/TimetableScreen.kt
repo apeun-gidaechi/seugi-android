@@ -26,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -153,6 +154,7 @@ internal fun TimetableScreen(viewModel: TimetableViewModel = hiltViewModel(), wo
                                     text = item?.subject ?: "",
                                     style = SeugiTheme.typography.body2,
                                     color = SeugiTheme.colors.black,
+                                    textAlign = TextAlign.Center
                                 )
                             }
                         }
