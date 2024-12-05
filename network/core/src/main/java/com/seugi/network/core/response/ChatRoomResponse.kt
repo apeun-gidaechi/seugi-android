@@ -7,7 +7,7 @@ data class ChatRoomResponse(
     val workspaceId: String,
     val type: String,
     val roomAdmin: Long,
-    val chatName: String,
+    val chatName: String?,
     val chatRoomImg: String?,
     val createdAt: LocalDateTime,
     val chatStatusEnum: String,
