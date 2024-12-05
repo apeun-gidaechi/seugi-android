@@ -6,6 +6,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 
 data class ChatUiState(
+    val isRefresh: Boolean = false,
     val filterMessage: String = "",
     private val _chatItems: ImmutableList<ChatRoomModel> = persistentListOf(),
 ) {

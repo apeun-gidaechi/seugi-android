@@ -29,17 +29,25 @@ class RoomViewModel @Inject constructor(
         groupChatRepository.getGroupRoomList(workspaceId).collect {
             when (it) {
                 is Result.Success -> {
-                    _state.value = _state.value.copy(
-                        _chatItems = it.data
-                            .sortedByDescending {
-                                it.lastMessageTimestamp
-                            }
-                            .toImmutableList(),
-                    )
+                    _state.update { state ->
+                        state.copy(
+                            isRefresh = false,
+                            _chatItems = it.data
+                                .sortedByDescending {
+                                    it.lastMessageTimestamp
+                                }
+                                .toImmutableList(),
+                        )
+                    }
                 }
                 is Result.Loading -> {}
                 is Result.Error -> {
                     it.throwable.printStackTrace()
+                    _state.update {
+                        it.copy(
+                            isRefresh = false
+                        )
+                    }
                 }
             }
         }
@@ -51,5 +59,14 @@ class RoomViewModel @Inject constructor(
                 filterMessage = text,
             )
         }
+    }
+
+    fun refresh(workspaceId: String) {
+        _state.update {
+            it.copy(
+                isRefresh = true
+            )
+        }
+        loadChats(workspaceId)
     }
 }
