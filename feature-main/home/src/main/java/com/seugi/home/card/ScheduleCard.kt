@@ -43,10 +43,11 @@ internal fun ScheduleCard(uiState: CommonUiState<ImmutableList<ScheduleModel>>) 
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     uiState.data.fastForEach { schedule ->
+                        val nowDDayDiff = -schedule.date.daysUntil(LocalDate.now().toKotlinLocalDate())
                         HomeCalendarCard(
                             date = "${schedule.date.monthNumber}/${schedule.date.dayOfMonth.toString().padStart(2, '0')}",
                             content = schedule.eventName,
-                            dDay = "D-${-schedule.date.daysUntil(LocalDate.now().toKotlinLocalDate())}",
+                            dDay = if (nowDDayDiff == 0) "D-Day" else "D-${nowDDayDiff}",
                         )
                     }
                 }

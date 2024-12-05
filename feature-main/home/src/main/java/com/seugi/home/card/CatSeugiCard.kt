@@ -75,67 +75,67 @@ internal fun CatSeugiCard(uiState: CommonUiState<ImmutableList<String>>, navigat
                         Spacer(modifier = Modifier.width(12.dp))
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(
-                        text = "지난주",
-                        style = SeugiTheme.typography.body2,
-                        color = SeugiTheme.colors.gray600,
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(
-                                    color = SeugiTheme.colors.gray100,
-                                    shape = RoundedCornerShape(4.dp),
-                                ),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Text(
-                                modifier = Modifier.padding(vertical = (12).dp),
-                                text = "급식에 복어가 나오는 날이 언제..",
-                                style = SeugiTheme.typography.body1,
-                                color = SeugiTheme.colors.black,
-                            )
-                            Spacer(modifier = Modifier.weight(1f))
-                            Text(
-                                text = "6월 21일",
-                                style = SeugiTheme.typography.body2,
-                                color = SeugiTheme.colors.gray600,
-                            )
-                            Spacer(modifier = Modifier.width(12.dp))
-                        }
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(
-                                    color = SeugiTheme.colors.gray100,
-                                    shape = RoundedCornerShape(4.dp),
-                                ),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Text(
-                                modifier = Modifier.padding(vertical = (12).dp),
-                                text = "우리 학교 대회 담당하는 분이 누구...",
-                                style = SeugiTheme.typography.body1,
-                                color = SeugiTheme.colors.black,
-                            )
-                            Spacer(modifier = Modifier.weight(1f))
-                            Text(
-                                text = "6월 21일",
-                                style = SeugiTheme.typography.body2,
-                                color = SeugiTheme.colors.gray600,
-                            )
-                            Spacer(modifier = Modifier.width(12.dp))
-                        }
-                    }
+//                    Spacer(modifier = Modifier.height(16.dp))
+//                    Text(
+//                        text = "지난주",
+//                        style = SeugiTheme.typography.body2,
+//                        color = SeugiTheme.colors.gray600,
+//                    )
+//                    Spacer(modifier = Modifier.height(4.dp))
+//                    Column(
+//                        modifier = Modifier
+//                            .fillMaxWidth(),
+//                    ) {
+//                        Row(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .background(
+//                                    color = SeugiTheme.colors.gray100,
+//                                    shape = RoundedCornerShape(4.dp),
+//                                ),
+//                            verticalAlignment = Alignment.CenterVertically,
+//                        ) {
+//                            Spacer(modifier = Modifier.width(12.dp))
+//                            Text(
+//                                modifier = Modifier.padding(vertical = (12).dp),
+//                                text = "급식에 복어가 나오는 날이 언제..",
+//                                style = SeugiTheme.typography.body1,
+//                                color = SeugiTheme.colors.black,
+//                            )
+//                            Spacer(modifier = Modifier.weight(1f))
+//                            Text(
+//                                text = "6월 21일",
+//                                style = SeugiTheme.typography.body2,
+//                                color = SeugiTheme.colors.gray600,
+//                            )
+//                            Spacer(modifier = Modifier.width(12.dp))
+//                        }
+//                        Spacer(modifier = Modifier.height(4.dp))
+//                        Row(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .background(
+//                                    color = SeugiTheme.colors.gray100,
+//                                    shape = RoundedCornerShape(4.dp),
+//                                ),
+//                            verticalAlignment = Alignment.CenterVertically,
+//                        ) {
+//                            Spacer(modifier = Modifier.width(12.dp))
+//                            Text(
+//                                modifier = Modifier.padding(vertical = (12).dp),
+//                                text = "우리 학교 대회 담당하는 분이 누구...",
+//                                style = SeugiTheme.typography.body1,
+//                                color = SeugiTheme.colors.black,
+//                            )
+//                            Spacer(modifier = Modifier.weight(1f))
+//                            Text(
+//                                text = "6월 21일",
+//                                style = SeugiTheme.typography.body2,
+//                                color = SeugiTheme.colors.gray600,
+//                            )
+//                            Spacer(modifier = Modifier.width(12.dp))
+//                        }
+//                    }
                 }
             }
 
