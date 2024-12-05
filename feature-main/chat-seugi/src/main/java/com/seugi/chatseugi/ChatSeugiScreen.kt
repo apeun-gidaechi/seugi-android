@@ -234,13 +234,13 @@ internal fun ChatSeugiScreen(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     ChatSeugiExampleText(
-                        text = "날씨 어떄?",
+                        text = "오늘의 시간표 알려줘",
                         onClick = {
                             if (state.isLoading) {
-                                text = "오늘 날씨 어떄?"
+                                text = "오늘의 시간표 알려줘"
                             } else {
                                 text = ""
-                                viewModel.sendMessage("오늘 날씨 어떄?")
+                                viewModel.sendMessage("오늘의 시간표 알려줘")
                             }
                         },
                     )
