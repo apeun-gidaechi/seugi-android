@@ -69,7 +69,7 @@ internal fun RoomScreen(
         refreshing = state.isRefresh,
         onRefresh = {
             viewModel.refresh(workspaceId)
-        }
+        },
     )
 
     BackHandler(
@@ -131,7 +131,7 @@ internal fun RoomScreen(
                 onNavigationIconClick = if (isSearchMode) onDone else null,
             )
         },
-        containerColor = SeugiTheme.colors.white
+        containerColor = SeugiTheme.colors.white,
     ) {
         Box(
             modifier = Modifier
@@ -139,13 +139,13 @@ internal fun RoomScreen(
                 .background(SeugiTheme.colors.white)
                 .padding(it)
                 .pullRefresh(pullRefreshState),
-            contentAlignment = Alignment.TopCenter
+            contentAlignment = Alignment.TopCenter,
         ) {
             PullRefreshIndicator(
                 modifier = Modifier.zIndex(1f),
                 refreshing = state.isRefresh,
                 state = pullRefreshState,
-                contentColor = SeugiTheme.colors.primary500
+                contentColor = SeugiTheme.colors.primary500,
             )
 
             LazyColumn(

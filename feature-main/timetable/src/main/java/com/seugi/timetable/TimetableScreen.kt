@@ -154,7 +154,7 @@ internal fun TimetableScreen(viewModel: TimetableViewModel = hiltViewModel(), wo
                                     text = item?.subject ?: "",
                                     style = SeugiTheme.typography.body2,
                                     color = SeugiTheme.colors.black,
-                                    textAlign = TextAlign.Center
+                                    textAlign = TextAlign.Center,
                                 )
                             }
                         }

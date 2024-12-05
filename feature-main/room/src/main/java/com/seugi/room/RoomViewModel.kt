@@ -45,7 +45,7 @@ class RoomViewModel @Inject constructor(
                     it.throwable.printStackTrace()
                     _state.update {
                         it.copy(
-                            isRefresh = false
+                            isRefresh = false,
                         )
                     }
                 }
@@ -64,7 +64,7 @@ class RoomViewModel @Inject constructor(
     fun refresh(workspaceId: String) {
         _state.update {
             it.copy(
-                isRefresh = true
+                isRefresh = true,
             )
         }
         loadChats(workspaceId)

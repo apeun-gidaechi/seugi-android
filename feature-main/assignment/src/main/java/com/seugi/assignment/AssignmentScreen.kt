@@ -121,7 +121,7 @@ internal fun AssignmentScreen(viewModel: AssignmentViewModel = hiltViewModel(), 
                             dDay = "기한없음",
                             onClick = {
                                 onClickTaskCard(it)
-                            }
+                            },
                         )
                     } else {
                         val dayCnt = LocalDate.now().toKotlinLocalDate().daysUntil(it.dueDate!!.date)
@@ -135,7 +135,7 @@ internal fun AssignmentScreen(viewModel: AssignmentViewModel = hiltViewModel(), 
                             },
                             onClick = {
                                 onClickTaskCard(it)
-                            }
+                            },
                         )
                     }
                 }
@@ -170,7 +170,7 @@ internal fun AssignmentScreen(viewModel: AssignmentViewModel = hiltViewModel(), 
                         )
                     }
                 }
-                
+
                 item {
                     Spacer(modifier = Modifier.height(100.dp))
                 }
@@ -207,7 +207,7 @@ private fun TaskCard(modifier: Modifier = Modifier, title: String, description: 
                     onClick = onClick!!,
                     indication = rememberBounceIndication(
                         radius = RoundedCornerShape(12.dp),
-                    )
+                    ),
                 )
             },
     ) {

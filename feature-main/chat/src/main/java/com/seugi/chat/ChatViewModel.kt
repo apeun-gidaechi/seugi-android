@@ -28,7 +28,7 @@ class ChatViewModel @Inject constructor(
             when (it) {
                 is Result.Success -> {
                     Log.d("TAG", "loadChats: ${it.data}")
-                    _state.update {state ->
+                    _state.update { state ->
                         state.copy(
                             isRefresh = false,
                             _chatItems = it.data.sortedByDescending {
@@ -41,7 +41,7 @@ class ChatViewModel @Inject constructor(
                     it.throwable.printStackTrace()
                     _state.update {
                         it.copy(
-                            isRefresh = false
+                            isRefresh = false,
                         )
                     }
                 }
@@ -154,7 +154,7 @@ class ChatViewModel @Inject constructor(
     fun refresh(workspaceId: String) {
         _state.update {
             it.copy(
-                isRefresh = true
+                isRefresh = true,
             )
         }
         loadChats(workspaceId)

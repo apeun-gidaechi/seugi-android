@@ -47,7 +47,7 @@ internal fun ScheduleCard(uiState: CommonUiState<ImmutableList<ScheduleModel>>) 
                         HomeCalendarCard(
                             date = "${schedule.date.monthNumber}/${schedule.date.dayOfMonth.toString().padStart(2, '0')}",
                             content = schedule.eventName,
-                            dDay = if (nowDDayDiff == 0) "D-Day" else "D-${nowDDayDiff}",
+                            dDay = if (nowDDayDiff == 0) "D-Day" else "D-$nowDDayDiff",
                         )
                     }
                 }
