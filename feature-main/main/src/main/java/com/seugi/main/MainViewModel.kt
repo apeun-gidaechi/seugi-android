@@ -40,6 +40,7 @@ class MainViewModel @Inject constructor(
                 Log.d("TAG", "loadWorkspace: init Local Workspace $localWorkspace ")
                 _state.update { uiState ->
                     uiState.copy(
+                        notJoinWorkspace = false,
                         workspace = localWorkspace,
                     )
                 }
@@ -69,6 +70,7 @@ class MainViewModel @Inject constructor(
                                 workspaceId = workspaces[0].workspaceId
                                 _state.update { mainUi ->
                                     mainUi.copy(
+                                        notJoinWorkspace = false,
                                         workspace = workspaces[0],
                                     )
                                 }
@@ -80,6 +82,7 @@ class MainViewModel @Inject constructor(
                                     if (workspaceId == it.workspaceId) {
                                         _state.update { mainUi ->
                                             mainUi.copy(
+                                                notJoinWorkspace = false,
                                                 workspace = it,
                                             )
                                         }

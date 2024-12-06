@@ -44,12 +44,13 @@ import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.modifier.verticalScrollbar
 import com.seugi.designsystem.theme.SeugiTheme
 import com.seugi.roomcreate.model.RoomCreateUiState
+import com.seugi.ui.component.SeugiMemberListLoading
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) -> Unit, popBackStack: () -> Unit, nextScreen: () -> Unit) {
+internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Long) -> Unit, popBackStack: () -> Unit, nextScreen: () -> Unit) {
     val selectScrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     var beforeItemSize by remember { mutableStateOf(0) }
@@ -149,6 +150,17 @@ internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) 
             LazyColumn(
                 modifier = Modifier.background(SeugiTheme.colors.white),
             ) {
+                if (state.isLoading) {
+                    items(3) {
+                        Box(
+                            modifier = Modifier.height(72.dp),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            SeugiMemberListLoading()
+                        }
+                    }
+                }
+
                 items(
                     items = state.userItem,
                     key = { it.id },
@@ -157,7 +169,7 @@ internal fun FirstScreen(state: RoomCreateUiState, updateChecked: (userId: Int) 
                         SeugiMemberList(
                             modifier = Modifier.align(Alignment.Center),
                             userName = item.name,
-                            userProfile = item.memberProfile,
+                            userProfile = item.memberProfile?.ifEmpty { null },
                             checked = item.checked,
                             onCheckedChangeListener = {
                                 updateChecked(item.id)

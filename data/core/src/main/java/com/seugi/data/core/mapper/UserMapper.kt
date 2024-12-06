@@ -1,5 +1,6 @@
 package com.seugi.data.core.mapper
 
+import com.seugi.common.utiles.toDeviceLocalDateTime
 import com.seugi.common.utiles.toEpochMilli
 import com.seugi.data.core.model.UserInfoModel
 import com.seugi.data.core.model.UserModel
@@ -17,5 +18,9 @@ fun UserResponse.toModel() = UserModel(
 fun UserInfoResponse.toModel() = UserInfoModel(
     timestamp = timestamp,
     userInfo = userInfo.toModel(),
-    utcTimeMillis = timestamp.toEpochMilli(),
+    utcTimeMillis = timestamp.toDeviceLocalDateTime().toEpochMilli(),
 )
+
+fun List<UserResponse>.toModels() = this.map {
+    it.toModel()
+}

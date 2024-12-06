@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGesturesPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
@@ -132,7 +133,7 @@ internal fun ProfileScreen(
                                 belong = if (editTextTarget == "belong") editText else belong,
                                 phone = if (editTextTarget == "phone") editText else phone,
                                 wire = if (editTextTarget == "wire") editText else wire,
-                                location = location,
+                                location = if (editTextTarget == "location") editText else location,
                             )
                         }
                         viewModel.updateState(changeData)
@@ -165,116 +166,166 @@ internal fun ProfileScreen(
                 )
             },
         )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Spacer(modifier = Modifier.width(16.dp))
-            SeugiAvatar(type = AvatarType.Medium)
-            Spacer(modifier = Modifier.width(10.dp))
-            Text(
-                text = myProfile.member.name,
-                style = SeugiTheme.typography.subtitle2,
-                color = SeugiTheme.colors.black,
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            Image(
-                modifier = Modifier
-                    .padding(vertical = 8.dp)
-                    .size(32.dp)
-                    .bounceClick(navigateToSetting),
-                painter = painterResource(id = drawable.ic_setting_fill),
-                contentDescription = "설정 톱니바퀴",
-                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
-            )
-            Spacer(modifier = Modifier.width(16.dp))
+        LazyColumn {
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Spacer(modifier = Modifier.width(16.dp))
+                    SeugiAvatar(
+                        type = AvatarType.Medium,
+                        image = myProfile.member.picture.ifEmpty { null },
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = "${myProfile.member.name} ${if (myProfile.nick.isEmpty()) "" else "(${myProfile.nick})"}",
+                        style = SeugiTheme.typography.subtitle2,
+                        color = SeugiTheme.colors.black,
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Image(
+                        modifier = Modifier
+                            .padding(vertical = 8.dp)
+                            .size(32.dp)
+                            .bounceClick(navigateToSetting),
+                        painter = painterResource(id = drawable.ic_setting_fill),
+                        contentDescription = "설정 톱니바퀴",
+                        colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                SeugiDivider(
+                    size = 8.dp,
+                    type = DividerType.WIDTH,
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+                ProfileCard(
+                    title = "상태메세지",
+                    content = myProfile.status,
+                    onClickEdit = {
+                        editTextTarget = "status"
+                        isShowDialog = true
+                    },
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                SeugiDivider(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    type = DividerType.WIDTH,
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+                ProfileCard(
+                    title = "닉네임",
+                    content = myProfile.nick,
+                    onClickEdit = {
+                        editTextTarget = "nick"
+                        isShowDialog = true
+                    },
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                SeugiDivider(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    type = DividerType.WIDTH,
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+                ProfileCard(
+                    title = "직위",
+                    content = myProfile.spot,
+                    onClickEdit = {
+                        editTextTarget = "spot"
+                        isShowDialog = true
+                    },
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                SeugiDivider(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    type = DividerType.WIDTH,
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+                ProfileCard(
+                    title = "소속",
+                    content = myProfile.belong,
+                    onClickEdit = {
+                        editTextTarget = "belong"
+                        isShowDialog = true
+                    },
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                SeugiDivider(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    type = DividerType.WIDTH,
+                )
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+                ProfileCard(
+                    title = "휴대전화번호",
+                    content = myProfile.phone,
+                    onClickEdit = {
+                        editTextTarget = "phone"
+                        isShowDialog = true
+                    },
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                SeugiDivider(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    type = DividerType.WIDTH,
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+                ProfileCard(
+                    title = "유선전화번호",
+                    content = myProfile.wire,
+                    onClickEdit = {
+                        editTextTarget = "wire"
+                        isShowDialog = true
+                    },
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                SeugiDivider(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    type = DividerType.WIDTH,
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+                ProfileCard(
+                    title = "근무 위치",
+                    content = myProfile.location,
+                    onClickEdit = {
+                        editTextTarget = "location"
+                        isShowDialog = true
+                    },
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                SeugiDivider(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    type = DividerType.WIDTH,
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(32.dp))
+            }
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        SeugiDivider(
-            size = 8.dp,
-            type = DividerType.WIDTH,
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-        ProfileCard(
-            title = "상태메세지",
-            content = myProfile.status,
-            onClickEdit = {
-                editTextTarget = "status"
-                isShowDialog = true
-            },
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        SeugiDivider(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            type = DividerType.WIDTH,
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-        ProfileCard(
-            title = "직위",
-            content = myProfile.spot,
-            onClickEdit = {
-                editTextTarget = "spot"
-                isShowDialog = true
-            },
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        SeugiDivider(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            type = DividerType.WIDTH,
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-        ProfileCard(
-            title = "소속",
-            content = myProfile.belong,
-            onClickEdit = {
-                editTextTarget = "belong"
-                isShowDialog = true
-            },
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        SeugiDivider(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            type = DividerType.WIDTH,
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-        ProfileCard(
-            title = "휴대전화번호",
-            content = myProfile.phone,
-            onClickEdit = {
-                editTextTarget = "phone"
-                isShowDialog = true
-            },
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        SeugiDivider(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            type = DividerType.WIDTH,
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-        ProfileCard(
-            title = "유선전화번호",
-            content = myProfile.wire,
-            onClickEdit = {
-                editTextTarget = "wire"
-                isShowDialog = true
-            },
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        SeugiDivider(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            type = DividerType.WIDTH,
-        )
     }
 }
 
 @Composable
 internal fun ProfileCard(title: String, content: String, onClickEdit: () -> Unit) {
-    Column {
+    Column(
+        modifier = Modifier.bounceClick(onClick = onClickEdit),
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -295,9 +346,6 @@ internal fun ProfileCard(title: String, content: String, onClickEdit: () -> Unit
         }
         Box(
             modifier = Modifier
-                .bounceClick(
-                    onClick = onClickEdit,
-                )
                 .fillMaxWidth()
                 .height(56.dp),
         ) {
@@ -319,5 +367,7 @@ private fun getTargetTextToString(text: String): Pair<String, String> = when (te
     "belong" -> Pair("소속", "을")
     "phone" -> Pair("휴대전화번호", "를")
     "wire" -> Pair("유선전화번호", "를")
+    "nick" -> Pair("닉네임", "을")
+    "location" -> Pair("근무 위치", "를")
     else -> Pair("", "")
 }

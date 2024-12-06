@@ -4,9 +4,9 @@ import com.seugi.common.model.Result
 import com.seugi.common.model.asResult
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
+import com.seugi.data.core.mapper.toModels
+import com.seugi.data.core.model.TimetableModel
 import com.seugi.data.timetable.TimetableRepository
-import com.seugi.data.timetable.mapper.toModels
-import com.seugi.data.timetable.model.TimetableModel
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.timetable.TimetableDataSource
 import javax.inject.Inject
@@ -23,6 +23,16 @@ class TimetableRepositoryImpl @Inject constructor(
 ) : TimetableRepository {
     override suspend fun getTimetableDay(workspaceId: String): Flow<Result<ImmutableList<TimetableModel>>> = flow {
         val response = timetableDataSource.getTimetableDay(
+            workspaceId = workspaceId,
+        ).safeResponse()
+
+        emit(response.toModels().toImmutableList())
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun getTimetableWeekend(workspaceId: String): Flow<Result<ImmutableList<TimetableModel>>> = flow {
+        val response = timetableDataSource.getTimetableWeekend(
             workspaceId = workspaceId,
         ).safeResponse()
 

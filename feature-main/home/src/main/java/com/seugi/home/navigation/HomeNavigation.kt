@@ -24,8 +24,11 @@ fun NavGraphBuilder.homeScreen(
     notJoinWorkspace: Boolean,
     navigateToChatSeugi: () -> Unit,
     navigateToJoinWorkspace: () -> Unit,
+    navigateToTimetable: () -> Unit,
     navigateToWorkspaceDetail: (String) -> Unit,
     navigateToWorkspaceCreate: () -> Unit,
+    navigateToTask: () -> Unit,
+    navigateToMeal: () -> Unit,
 ) {
     composable(HOME_ROUTE) {
         HomeScreen(
@@ -33,8 +36,11 @@ fun NavGraphBuilder.homeScreen(
             notJoinWorkspace = notJoinWorkspace,
             navigateToChatSeugi = navigateToChatSeugi,
             navigateToJoinWorkspace = navigateToJoinWorkspace,
+            navigateToTimetable = navigateToTimetable,
             navigateToWorkspaceDetail = navigateToWorkspaceDetail,
             navigateToWorkspaceCreate = navigateToWorkspaceCreate,
+            navigateToTask = navigateToTask,
+            navigateToMeal = navigateToMeal,
         )
     }
 }

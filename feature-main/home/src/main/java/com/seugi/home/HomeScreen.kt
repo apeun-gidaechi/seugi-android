@@ -22,11 +22,19 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,13 +44,13 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.designsystem.R
-import com.seugi.designsystem.animation.ButtonState
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.SeugiDialog
 import com.seugi.designsystem.component.SeugiTopBar
@@ -54,9 +62,14 @@ import com.seugi.home.card.CatSeugiCard
 import com.seugi.home.card.MealCard
 import com.seugi.home.card.ScheduleCard
 import com.seugi.home.card.SchoolCard
+import com.seugi.home.card.TaskCard
 import com.seugi.home.card.TimeScheduleCard
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalFoundationApi::class,
+    ExperimentalMaterialApi::class,
+)
 @Composable
 internal fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
@@ -64,11 +77,25 @@ internal fun HomeScreen(
     workspace: WorkspaceModel,
     navigateToChatSeugi: () -> Unit,
     navigateToJoinWorkspace: () -> Unit,
+    navigateToTimetable: () -> Unit,
     navigateToWorkspaceDetail: (String) -> Unit,
     navigateToWorkspaceCreate: () -> Unit,
+    navigateToTask: () -> Unit,
+    navigateToMeal: () -> Unit,
 ) {
     val view = LocalView.current
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    var isRefreshing by remember { mutableStateOf(false) }
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = isRefreshing,
+        onRefresh = {
+            if (workspace.workspaceId.isEmpty()) {
+                return@rememberPullRefreshState
+            }
+            viewModel.load(workspace)
+        },
+    )
 
     val changeNavColorWhite = SeugiTheme.colors.white
     LifecycleResumeEffect(Unit) {
@@ -98,7 +125,7 @@ internal fun HomeScreen(
         }
     }
 
-    if (state.showDialog) {
+    if (notJoinWorkspace) {
         SeugiDialog(
             title = "학교 등록하기",
             content = "학교를 등록한 뒤 스기를 사용할 수 있어요",
@@ -114,60 +141,83 @@ internal fun HomeScreen(
         )
     }
 
-    LazyColumn(
+    Box(
         modifier = Modifier
-            .background(SeugiTheme.colors.primary050)
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+            .fillMaxSize()
+            .pullRefresh(pullRefreshState),
     ) {
-        item {
-            SeugiTopBar(
-                title = {
-                    Text(
-                        text = "홈",
-                        style = SeugiTheme.typography.subtitle1,
-                        color = SeugiTheme.colors.black,
+        Scaffold(
+            topBar = {
+                SeugiTopBar(
+                    title = {
+                        Text(
+                            text = "홈",
+                            style = SeugiTheme.typography.subtitle1,
+                            color = SeugiTheme.colors.black,
+                        )
+                    },
+                    containerColors = SeugiTheme.colors.primary050,
+                )
+            },
+            containerColor = SeugiTheme.colors.primary050,
+        ) {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(it)
+                    .background(SeugiTheme.colors.primary050)
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                item {
+                    SchoolCard(
+                        workspaceId = state.nowWorkspaceId,
+                        uiState = state.schoolState,
+                        navigateToWorkspaceDetail = navigateToWorkspaceDetail,
                     )
-                },
-                containerColors = Color.Transparent,
-            )
-        }
+                }
 
-        item {
-            SchoolCard(
-                workspaceId = state.nowWorkspaceId,
-                uiState = state.schoolState,
-                navigateToWorkspaceDetail = navigateToWorkspaceDetail,
-            )
-        }
+                item {
+                    TimeScheduleCard(
+                        uiState = state.timeScheduleState,
+                        onClickDetail = navigateToTimetable,
+                    )
+                }
 
-        item {
-            TimeScheduleCard(
-                uiState = state.timeScheduleState,
-                onClickDetail = {},
-            )
-        }
+                item {
+                    MealCard(
+                        uiState = state.mealState,
+                        onClickDetail = navigateToMeal,
+                    )
+                }
 
-        item {
-            MealCard(
-                uiState = state.mealState,
-                onClickDetail = {},
-            )
-        }
+                item {
+                    CatSeugiCard(
+                        uiState = state.catSeugiState,
+                        navigateToChatSeugi = navigateToChatSeugi,
+                    )
+                }
 
-        item {
-            CatSeugiCard(
-                uiState = state.catSeugiState,
-                navigateToChatSeugi = navigateToChatSeugi,
-            )
-        }
+                item {
+                    ScheduleCard(uiState = state.schoolScheduleState)
+                }
 
-        item {
-            ScheduleCard(uiState = state.schoolScheduleState)
+                item {
+                    TaskCard(
+                        uiState = state.taskState,
+                        navigateToTask = navigateToTask,
+                    )
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(32.dp))
+                }
+            }
         }
-        item {
-            Spacer(modifier = Modifier.height(32.dp))
-        }
+        PullRefreshIndicator(
+            modifier = Modifier.align(Alignment.TopCenter),
+            refreshing = isRefreshing,
+            state = pullRefreshState,
+        )
     }
 }
 
@@ -249,7 +299,7 @@ internal fun HomeCard(
     onClickDetail: () -> Unit,
     image: Painter,
     colorFilter: ColorFilter? = null,
-    onChangeButtonState: (ButtonState) -> Unit = {},
+    blockNav: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     Column(
@@ -268,9 +318,7 @@ internal fun HomeCard(
             modifier = Modifier
                 .bounceClick(
                     onClick = onClickDetail,
-                    onChangeButtonState = onChangeButtonState,
-                    requireUnconsumed = true,
-                    enabled = false,
+                    enabled = !blockNav,
                 ),
         ) {
             Spacer(modifier = Modifier.width(16.dp))
@@ -300,15 +348,17 @@ internal fun HomeCard(
                 color = SeugiTheme.colors.black,
             )
             Spacer(modifier = Modifier.weight(1f))
-            Image(
-                modifier = Modifier
-                    .size(24.dp)
-                    .align(Alignment.CenterVertically),
-                painter = painterResource(id = R.drawable.ic_expand_right_line),
-                contentDescription = "상세보기",
-                colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
-            )
-            Spacer(modifier = Modifier.width(12.dp))
+            if (!blockNav) {
+                Image(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .align(Alignment.CenterVertically),
+                    painter = painterResource(id = R.drawable.ic_expand_right_line),
+                    contentDescription = "상세보기",
+                    colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+            }
         }
         Spacer(modifier = Modifier.height(12.dp))
         Box(
@@ -371,11 +421,13 @@ internal fun HomeCalendarCard(modifier: Modifier = Modifier, date: String, conte
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(
+            modifier = Modifier.weight(1f),
             text = content,
             style = SeugiTheme.typography.body2,
             color = SeugiTheme.colors.black,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
-        Spacer(modifier = Modifier.weight(1f))
         Text(
             text = dDay,
             style = SeugiTheme.typography.body2,

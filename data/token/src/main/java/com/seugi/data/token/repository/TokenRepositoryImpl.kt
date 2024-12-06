@@ -8,7 +8,7 @@ import com.seugi.data.core.mapper.toModel
 import com.seugi.data.core.model.TokenModel
 import com.seugi.data.token.TokenRepository
 import com.seugi.local.room.dao.TokenDao
-import com.seugi.local.room.model.TokenEntity
+import com.seugi.local.room.entity.TokenEntity
 import com.seugi.network.token.TokenDatasource
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher

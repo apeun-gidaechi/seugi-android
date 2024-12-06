@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -55,13 +56,13 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.makeappssimple.abhimanyu.composeemojipicker.ComposeEmojiPickerBottomSheetUI
+import com.github.apeun.gidaechi.emojipicker.EmojiPicker
 import com.seugi.common.utiles.toTimeString
+import com.seugi.data.core.model.NotificationEmojiModel
+import com.seugi.data.core.model.NotificationModel
 import com.seugi.data.core.model.WorkspacePermissionModel
 import com.seugi.data.core.model.isAdmin
 import com.seugi.data.core.model.isTeacher
-import com.seugi.data.notification.model.NotificationEmojiModel
-import com.seugi.data.notification.model.NotificationModel
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.animation.combinedBounceClick
@@ -82,9 +83,9 @@ internal fun NotificationScreen(
     viewModel: NotificationViewModel = hiltViewModel(),
     permission: WorkspacePermissionModel,
     workspaceId: String,
-    userId: Int,
+    userId: Long,
     navigateToNotificationCreate: () -> Unit,
-    navigateToNotificationEdit: (id: Long, title: String, content: String, userId: Int) -> Unit,
+    navigateToNotificationEdit: (id: Long, title: String, content: String, userId: Long) -> Unit,
 ) {
     val view = LocalView.current
     val context = LocalContext.current
@@ -172,6 +173,8 @@ internal fun NotificationScreen(
                     workspaceId = selectNotificationItem?.workspaceId ?: "",
                     notificationId = selectNotificationItem?.id ?: 0,
                 )
+                isShowPopupDialog = false
+                selectNotificationItem = null
             },
         )
     }
@@ -186,6 +189,7 @@ internal fun NotificationScreen(
                     userId = userId.toLong(),
                     emoji = it,
                 )
+                isModalBottomSheetVisible = false
             },
             onDismissRequest = {
                 isModalBottomSheetVisible = false
@@ -301,34 +305,20 @@ internal fun NotificationScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectBottomSheet(isVisible: Boolean, sheetState: SheetState, onSelectEmoji: (emoji: String) -> Unit, onDismissRequest: () -> Unit) {
-    var searchText by remember { mutableStateOf("") }
     ModalBottomSheet(
         sheetState = sheetState,
         shape = RectangleShape,
         tonalElevation = 0.dp,
         onDismissRequest = {
             onDismissRequest()
-            searchText = ""
         },
         dragHandle = null,
         windowInsets = WindowInsets(0),
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-        ) {
-            ComposeEmojiPickerBottomSheetUI(
-                onEmojiClick = { emoji ->
-                    onSelectEmoji(emoji.character)
-                    onDismissRequest()
-                },
-                onEmojiLongClick = {},
-                searchText = searchText,
-                updateSearchText = { updatedSearchText ->
-                    searchText = updatedSearchText
-                },
-            )
-        }
+        EmojiPicker(
+            modifier = Modifier.fillMaxHeight(0.5f),
+            onClick = onSelectEmoji,
+        )
     }
 }
 
@@ -443,7 +433,6 @@ internal fun NotificationCard(
         modifier = modifier.combinedBounceClick(
             onClick = onClickNotification,
             onLongClick = onLongClick,
-            requireUnconsumed = true,
         ),
     ) {
         Column(
@@ -513,6 +502,7 @@ internal fun NotificationCard(
                     Spacer(modifier = Modifier.width(10.dp))
                     emojiList.fastForEach {
                         NotificationEmoji(
+                            modifier = Modifier.padding(vertical = 3.5.dp),
                             emoji = it.emoji,
                             count = it.userList.size,
                             isChecked = it.userList.contains(userId),

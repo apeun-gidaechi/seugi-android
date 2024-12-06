@@ -5,6 +5,7 @@ import com.seugi.network.core.response.BaseResponse
 import com.seugi.network.core.response.ChatRoomResponse
 import com.seugi.network.groupchat.GroupChatDataSource
 import com.seugi.network.personalchat.request.GroupChatCreateRequest
+import com.seugi.network.personalchat.request.GroupChatMemberAddRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -21,7 +22,7 @@ class GroupChatDataSourceImpl @Inject constructor(
         parameter("workspace", workspaceId)
     }.body()
 
-    override suspend fun createChat(workspaceId: String, roomName: String, joinUsers: List<Int>, chatRoomImg: String): BaseResponse<String> = httpClient.post(SeugiUrl.GroupChat.CREATE) {
+    override suspend fun createChat(workspaceId: String, roomName: String, joinUsers: List<Long>, chatRoomImg: String): BaseResponse<String> = httpClient.post(SeugiUrl.GroupChat.CREATE) {
         setBody(
             GroupChatCreateRequest(
                 workspaceId = workspaceId,
@@ -35,4 +36,13 @@ class GroupChatDataSourceImpl @Inject constructor(
     override suspend fun getChat(roomId: String): BaseResponse<ChatRoomResponse> = httpClient.get(SeugiUrl.GroupChat.SEARCH_ROOM + "/$roomId").body()
 
     override suspend fun leftRoom(chatRoomId: String): BaseResponse<Unit?> = httpClient.patch("${SeugiUrl.GroupChat.LEFT}/$chatRoomId").body()
+
+    override suspend fun addMembers(chatRoomId: String, chatMemberUsers: List<Long>): BaseResponse<Unit?> = httpClient.post(SeugiUrl.GroupChat.MEMBER_ADD) {
+        setBody(
+            GroupChatMemberAddRequest(
+                chatRoomId = chatRoomId,
+                chatMemberUsers = chatMemberUsers,
+            ),
+        )
+    }.body()
 }

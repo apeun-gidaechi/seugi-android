@@ -15,6 +15,10 @@ android {
 dependencies {
     implementation(projects.network.core)
     implementation(projects.network.message)
+    implementation(projects.data.core)
+    implementation(projects.network.meal)
+    implementation(projects.network.notification)
+    implementation(projects.network.timetable)
     implementation(projects.common)
     implementation(projects.local.room)
 }

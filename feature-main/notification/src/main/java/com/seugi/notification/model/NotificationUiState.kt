@@ -1,6 +1,6 @@
 package com.seugi.notification.model
 
-import com.seugi.data.notification.model.NotificationModel
+import com.seugi.data.core.model.NotificationModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 

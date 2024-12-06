@@ -29,6 +29,13 @@ class WorkspaceMemberViewModel @Inject constructor(
     private val _state = MutableStateFlow(WorkspaceMemberUiState())
     val state = _state.asStateFlow()
     fun getAllMember(workspaceId: String) {
+        if (_state.value.member.size == 0) {
+            _state.update {
+                it.copy(
+                    isLoading = true,
+                )
+            }
+        }
         viewModelScope.launch {
             workspaceRepository.getMembers(workspaceId = workspaceId).collect {
                 when (it) {
@@ -36,6 +43,7 @@ class WorkspaceMemberViewModel @Inject constructor(
                         _state.update { ui ->
                             ui.copy(
                                 member = it.data.toImmutableList(),
+                                isLoading = false,
                             )
                         }
                     }
@@ -52,7 +60,7 @@ class WorkspaceMemberViewModel @Inject constructor(
         personalChatRepository.createChat(
             workspaceId = workspaceId,
             roomName = "",
-            joinUsers = listOf(targetUserId.toInt()),
+            joinUsers = listOf(targetUserId),
             chatRoomImg = "",
         ).collect {
             when (it) {

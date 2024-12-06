@@ -7,10 +7,13 @@ import android.util.Log
 import com.seugi.common.exception.UnauthorizedException
 import com.seugi.common.utiles.SeugiActivityStarter
 import com.seugi.local.room.dao.TokenDao
-import com.seugi.local.room.model.TokenEntity
+import com.seugi.local.room.entity.TokenEntity
 import com.seugi.network.core.SeugiUrl
 import com.seugi.network.core.response.BaseResponse
+import com.seugi.network.core.response.FakeLocalDateResponse
 import com.seugi.network.core.response.safeResponse
+import com.seugi.network.core.utiles.FakeLocalDateResponseTypeAdapter
+import com.seugi.network.core.utiles.KotlinLocalDateTypeAdapter
 import com.seugi.network.core.utiles.LocalDateTimeTypeAdapter
 import com.seugi.network.core.utiles.removeBearer
 import com.seugi.stompclient.Stomp
@@ -43,6 +46,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.datetime.LocalDate
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
@@ -56,6 +60,8 @@ object NetworkModule {
         install(ContentNegotiation) {
             gson {
                 registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeTypeAdapter())
+                registerTypeAdapter(LocalDate::class.java, KotlinLocalDateTypeAdapter())
+                registerTypeAdapter(FakeLocalDateResponse::class.java, FakeLocalDateResponseTypeAdapter())
                 setPrettyPrinting()
                 setLenient()
             }
@@ -138,6 +144,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun providesOkhttpClient(): OkHttpClient = OkHttpClient.Builder()
+        .pingInterval(30, TimeUnit.SECONDS)
         .readTimeout(99999, TimeUnit.SECONDS)
         .writeTimeout(99999, TimeUnit.SECONDS)
         .connectTimeout(99999, TimeUnit.SECONDS)

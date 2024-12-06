@@ -8,7 +8,7 @@ import com.seugi.data.firebasetoken.FirebaseTokenRepository
 import com.seugi.data.firebasetoken.mapper.toModel
 import com.seugi.data.firebasetoken.model.FirebaseTokenModel
 import com.seugi.local.room.dao.FirebaseTokenDao
-import com.seugi.local.room.model.FirebaseTokenEntity
+import com.seugi.local.room.entity.FirebaseTokenEntity
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow

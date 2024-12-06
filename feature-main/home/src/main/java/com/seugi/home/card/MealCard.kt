@@ -23,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -33,7 +32,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.seugi.designsystem.R
-import com.seugi.designsystem.animation.ButtonState
 import com.seugi.designsystem.animation.NoInteractionSource
 import com.seugi.designsystem.component.LoadingDotsIndicator
 import com.seugi.designsystem.component.SeugiImage
@@ -62,15 +60,12 @@ internal fun MealCard(uiState: CommonUiState<MealUiState>, onClickDetail: () -> 
     val indicatorOffset by remember {
         derivedStateOf { (pagerState.currentPage * 10).dp }
     }
-    var nowButtonState by remember { mutableStateOf(ButtonState.Idle) }
     HomeCard(
         text = "오늘의 급식",
         image = painterResource(id = R.drawable.ic_utensils_line),
         colorFilter = ColorFilter.tint(SeugiTheme.colors.gray600),
         onClickDetail = onClickDetail,
-        onChangeButtonState = {
-            nowButtonState = it
-        },
+        blockNav = false,
     ) {
         when (uiState) {
             is CommonUiState.Success -> {

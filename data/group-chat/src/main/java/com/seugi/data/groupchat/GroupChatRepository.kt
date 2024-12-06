@@ -8,9 +8,11 @@ interface GroupChatRepository {
 
     suspend fun getGroupRoomList(workspaceId: String): Flow<Result<List<ChatRoomModel>>>
 
-    suspend fun createChat(workspaceId: String, roomName: String, joinUsers: List<Int>, chatRoomImg: String): Flow<Result<String>>
+    suspend fun createChat(workspaceId: String, roomName: String, joinUsers: List<Long>, chatRoomImg: String): Flow<Result<String>>
 
     suspend fun getGroupRoom(roomId: String): Flow<Result<ChatRoomModel>>
 
     suspend fun leftRoom(chatRoomId: String): Flow<Result<Unit>>
+
+    suspend fun addMembers(chatRoomId: String, chatMemberUsers: List<Long>): Flow<Result<Boolean>>
 }

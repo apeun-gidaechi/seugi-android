@@ -1,7 +1,7 @@
 package com.seugi.network.core.response
 
 data class UserResponse(
-    val id: Int,
+    val id: Long,
     val email: String,
     val birth: String,
     val name: String,

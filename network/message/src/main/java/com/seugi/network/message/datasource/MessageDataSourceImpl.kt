@@ -5,12 +5,16 @@ import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.network.core.SeugiUrl
 import com.seugi.network.core.response.BaseResponse
+import com.seugi.network.core.response.Response
 import com.seugi.network.core.utiles.toJsonString
 import com.seugi.network.core.utiles.toResponse
 import com.seugi.network.message.MessageDataSource
+import com.seugi.network.message.request.CatSeugiRequest
+import com.seugi.network.message.request.EmojiRequest
 import com.seugi.network.message.request.MessageRequest
 import com.seugi.network.message.response.MessageRoomEventResponse
 import com.seugi.network.message.response.message.MessageLoadResponse
+import com.seugi.network.message.response.stomp.MessageStompErrorResponse
 import com.seugi.network.message.response.stomp.MessageStompLifecycleResponse
 import com.seugi.stompclient.StompClient
 import com.seugi.stompclient.dto.LifecycleEvent
@@ -18,7 +22,14 @@ import com.seugi.stompclient.dto.StompHeader
 import com.seugi.stompclient.dto.StompMessage
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
+import io.ktor.client.request.post
+import io.ktor.client.request.put
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.coroutineScope
@@ -27,6 +38,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.reactive.asFlow
+import kotlinx.datetime.LocalDateTime
 
 class MessageDataSourceImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
@@ -34,20 +46,25 @@ class MessageDataSourceImpl @Inject constructor(
     private val httpClient: HttpClient,
 ) : MessageDataSource {
 
-    override suspend fun connectStomp(accessToken: String) {
+    override suspend fun connectStompSocket(accessToken: String) {
         val header = listOf(StompHeader("Authorization", accessToken))
         stompClient.connect(header)
     }
 
-    override suspend fun reConnectStomp(accessToken: String, refreshToken: String): Unit = coroutineScope {
+    override suspend fun reConnectStompSocket(accessToken: String, refreshToken: String): Unit = coroutineScope {
         stompClient.disconnectCompletable().subscribe { }
-        connectStomp(accessToken)
+        connectStompSocket(accessToken)
+    }
+
+    override suspend fun closeStompSocket() {
+        stompClient.disconnectCompletable().subscribe { }
     }
 
     override suspend fun getIsConnect(): Boolean = stompClient.isConnected
 
-    override suspend fun getMessage(chatRoomId: String, page: Int, size: Int): BaseResponse<MessageLoadResponse> =
-        httpClient.get("${SeugiUrl.Message.GET_MESSAGE}/$chatRoomId?page=$page&size=$size").body<BaseResponse<MessageLoadResponse>>()
+    override suspend fun getMessage(chatRoomId: String, timestamp: LocalDateTime?): BaseResponse<MessageLoadResponse> = httpClient.get("${SeugiUrl.Message.GET_MESSAGE}/$chatRoomId") {
+        parameter("timestamp", timestamp)
+    }.body<BaseResponse<MessageLoadResponse>>()
 
     override suspend fun collectStompLifecycle(): Flow<MessageStompLifecycleResponse> = flow {
         stompClient.lifecycle().asFlow().collect {
@@ -83,7 +100,7 @@ class MessageDataSourceImpl @Inject constructor(
                 val type = message.payload.toResponse(MessageRoomEventResponse.Raw::class.java).type
 
                 when (type) {
-                    "MESSAGE", "FILE", "IMG", "ENTER", "LEFT" -> {
+                    "MESSAGE", "FILE", "IMG", "ENTER", "LEFT", "BOT" -> {
                         emit(message.payload.toResponse(MessageRoomEventResponse.MessageParent.Message::class.java))
                     }
                     "SUB" -> {
@@ -108,7 +125,20 @@ class MessageDataSourceImpl @Inject constructor(
             }
     }
 
-    override suspend fun sendMessage(chatRoomId: String, message: String, messageUUID: String, type: String): Boolean {
+    override suspend fun subscribeError() = flow {
+        stompClient.topic(SeugiUrl.Message.ERRORS)
+            .asFlow()
+            .flowOn(dispatcher)
+            .catch {
+                it.printStackTrace()
+            }
+            .collect { message ->
+                val response = message.payload.toResponse(MessageStompErrorResponse::class.java)
+                emit(response)
+            }
+    }
+
+    override suspend fun sendMessage(chatRoomId: String, message: String, messageUUID: String, type: String, mention: List<Long>): Boolean {
         // 연결이 되지 않는 경우 연결 강제성 부여
         if (!stompClient.isConnected) {
             return false
@@ -119,6 +149,7 @@ class MessageDataSourceImpl @Inject constructor(
             message = message,
             uuid = messageUUID,
             type = type,
+            mention = mention,
         ).toJsonString()
 
         val sendContent = StompMessage(
@@ -134,4 +165,36 @@ class MessageDataSourceImpl @Inject constructor(
         )
         return true
     }
+
+    override suspend fun sendText(text: String): BaseResponse<String> = httpClient.post(SeugiUrl.AI) {
+        setBody(
+            CatSeugiRequest(
+                message = text,
+                roomId = "67177e4ac6b844040200d65c",
+            ),
+        )
+        contentType(ContentType.Application.Json)
+    }.body()
+
+    override suspend fun putEmoji(messageId: String, roomId: String, emojiId: Int): Response = httpClient.put(SeugiUrl.Message.EMOJI) {
+        setBody(
+            EmojiRequest(
+                messageId = messageId,
+                roomId = roomId,
+                emojiId = emojiId,
+            ),
+        )
+        contentType(ContentType.Application.Json)
+    }.body()
+
+    override suspend fun deleteEmoji(messageId: String, roomId: String, emojiId: Int): Response = httpClient.delete(SeugiUrl.Message.EMOJI) {
+        setBody(
+            EmojiRequest(
+                messageId = messageId,
+                roomId = roomId,
+                emojiId = emojiId,
+            ),
+        )
+        contentType(ContentType.Application.Json)
+    }.body()
 }

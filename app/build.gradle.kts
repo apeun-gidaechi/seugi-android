@@ -14,8 +14,8 @@ android {
 
     defaultConfig {
         applicationId = "com.seugi"
-        versionCode = 1
-        versionName = "0.0.1"
+        versionCode = 4
+        versionName = "0.0.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -43,6 +43,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.message)
+    implementation(libs.accompanist.permissions)
 
 
     implementation(projects.network.core)
@@ -54,5 +55,6 @@ dependencies {
     implementation(projects.data.token)
     implementation(projects.data.firebaseToken)
     implementation(projects.featureMain.mealWidget)
+    implementation(projects.featureMain.timetableWidget)
 
 }

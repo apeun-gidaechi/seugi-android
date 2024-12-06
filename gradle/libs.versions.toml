@@ -1,6 +1,7 @@
 [versions]
+accompanistPermissions = "0.30.1"
 complieSdk = "34"
-composeEmojiPicker = "1.0.0-alpha16"
+composeEmojiPicker = "1.0.2"
 minSdk = "28"
 targetSdk = "34"
 appVersion = "0.0.1"
@@ -76,12 +77,14 @@ firebase-bom = "33.3.0"
 firebase-auth = "23.0.0"
 google-play-auth = "21.2.0"
 coreKtx = "1.13.1"
+testng = "6.9.6"
 
 
 [libraries]
 
 # kotlin
-compose-emoji-picker = { module = "com.github.Abhimanyu14:compose-emoji-picker", version.ref = "composeEmojiPicker" }
+accompanist-permissions = { group = "com.google.accompanist",name = "accompanist-permissions", version.ref = "accompanistPermissions" }
+compose-emoji-picker = { module = "com.github.apeun-gidaechi:emojipicker", version.ref = "composeEmojiPicker" }
 kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -158,6 +161,7 @@ google-play-auth = {group = "com.google.android.gms", name = "play-services-auth
 
 # test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-ext-junit" }
 androidx-test-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-espresso" }
 ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref = "ktor" }
@@ -189,6 +193,7 @@ androidx-monitor = { group = "androidx.test", name = "monitor", version.ref = "m
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+testng = { group = "org.testng", name = "testng", version.ref = "testng" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

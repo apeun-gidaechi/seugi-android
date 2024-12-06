@@ -7,10 +7,11 @@ import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.common.utiles.isEmptyGetNull
 import com.seugi.common.utiles.toNotSpaceString
+import com.seugi.data.core.mapper.toModels
+import com.seugi.data.core.model.MealModel
 import com.seugi.data.meal.MealRepository
 import com.seugi.data.meal.mapper.toEntity
 import com.seugi.data.meal.mapper.toModels
-import com.seugi.data.meal.response.MealModel
 import com.seugi.local.room.dao.MealDao
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.meal.MealDataSource
@@ -48,7 +49,38 @@ class MealRepositoryImpl @Inject constructor(
                 }
                 ?: dataSource.getDateMeal(
                     workspaceId = workspaceId,
-                    date = date.toNotSpaceString(),
+                    date = date,
+                ).safeResponse()
+                    .toModels()
+                    .toImmutableList().also {
+                        mealDao.insert(it.toEntity())
+                    }
+        Log.d("TAG", "getDateMeal: $response")
+        emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun getMonthMeal(workspaceId: String, year: Int, month: Int): Flow<Result<ImmutableList<MealModel>>> = flow {
+        val response: ImmutableList<MealModel> =
+            mealDao.getMonthMeals(
+                workspaceId = workspaceId,
+                datePattern = year.toString() + month.toString().padStart(2, '0'),
+            )
+                .apply {
+                    Log.d("TAG", "getDateMeal: $this")
+                }
+                ?.isEmptyGetNull()
+                ?.toModels()
+                .apply {
+                    Log.d("TAG", "getDateMeal: $this")
+                }
+                ?.toImmutableList()
+                .apply {
+                    Log.d("TAG", "getDateMeal: $this")
+                }
+                ?: dataSource.getMonthMeal(
+                    workspaceId = workspaceId,
                 ).safeResponse()
                     .toModels()
                     .toImmutableList().also {

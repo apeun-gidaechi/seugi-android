@@ -10,7 +10,7 @@ import com.seugi.roomcreate.RoomCreateScreen
 
 const val ROOM_CREATE_ROUTE = "room_create"
 
-fun NavController.navigateToRoomCreate(workspaceId: String, userId: Int, navOptions: NavOptions? = null) = navigate(
+fun NavController.navigateToRoomCreate(workspaceId: String, userId: Long, navOptions: NavOptions? = null) = navigate(
     route = "$ROOM_CREATE_ROUTE/$workspaceId/$userId",
     navOptions = navOptions,
 )
@@ -20,14 +20,14 @@ fun NavGraphBuilder.roomCreateScreen(popBackStack: () -> Unit, navigateToChatDet
         route = "$ROOM_CREATE_ROUTE/{workspaceId}/{userId}",
         arguments = listOf(
             navArgument("workspaceId") { NavType.StringType },
-            navArgument("userId") { type = NavType.IntType },
+            navArgument("userId") { type = NavType.LongType },
         ),
     ) {
         RoomCreateScreen(
             popBackStack = popBackStack,
             workspaceId = it.arguments?.getString("workspaceId") ?: "",
             navigateToChatDetail = navigateToChatDetail,
-            userId = it.arguments?.getInt("userId") ?: 0,
+            userId = it.arguments?.getLong("userId") ?: 0,
         )
     }
 }

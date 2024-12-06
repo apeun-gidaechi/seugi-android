@@ -2,21 +2,10 @@ package com.seugi.data.meal.mapper
 
 import com.seugi.common.utiles.toKotlinLocalDate
 import com.seugi.common.utiles.toNotSpaceString
-import com.seugi.data.meal.response.MealModel
-import com.seugi.data.meal.response.MealType
-import com.seugi.local.room.model.MealEntity
-import com.seugi.network.meal.response.MealResponse
+import com.seugi.data.core.mapper.toMealType
+import com.seugi.data.core.model.MealModel
+import com.seugi.local.room.entity.MealEntity
 import kotlinx.collections.immutable.toImmutableList
-
-internal fun MealResponse.toModel() = MealModel(
-    id = id,
-    workspaceId = workspaceId,
-    mealType = mealType.toMealType(),
-    menu = menu.toImmutableList(),
-    calorie = calorie,
-    mealInfo = mealInfo.toImmutableList(),
-    mealDate = mealDate.toKotlinLocalDate(),
-)
 
 internal fun MealEntity.toModel() = MealModel(
     id = id,
@@ -37,19 +26,6 @@ internal fun MealModel.toEntity() = MealEntity(
     mealInfo = mealInfo.joinToString("||"),
     mealDate = mealDate.toNotSpaceString(),
 )
-
-internal fun String.toMealType() = when (this) {
-    "조식" -> MealType.BREAKFAST
-    "중식" -> MealType.LUNCH
-    "BREAKFAST" -> MealType.BREAKFAST
-    "LUNCH" -> MealType.LUNCH
-    else -> MealType.DINNER
-}
-
-@JvmName("ListMealResponsetoModels")
-internal fun List<MealResponse>.toModels() = this.map {
-    it.toModel()
-}
 
 @JvmName("ListMealEntitytoModels")
 internal fun List<MealEntity>.toModels() = this.map {

@@ -1,5 +1,6 @@
 package com.seugi.chatdatail.model
 
+import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.core.model.UserInfoModel
 import com.seugi.data.core.model.UserModel
 import com.seugi.data.message.model.MessageRoomEvent
@@ -15,14 +16,16 @@ data class ChatDetailUiState(
     val isInit: Boolean = false,
     val isLastPage: Boolean = false,
     val message: ImmutableList<MessageRoomEvent.MessageParent> = persistentListOf(),
-    val users: ImmutableMap<Int, UserModel> = persistentMapOf(),
+    val users: ImmutableMap<Long, UserModel> = persistentMapOf(),
+    val workspaceUsers: ImmutableList<ProfileModel> = persistentListOf(),
+    val workspaceUsersMap: ImmutableMap<Long, ProfileModel> = persistentMapOf(),
 )
 
 data class ChatRoomState(
     val id: String,
     val roomName: String,
     val members: ImmutableList<UserInfoModel> = persistentListOf(),
-    val adminId: Int,
+    val adminId: Long,
 )
 
 sealed interface ChatDetailSideEffect {

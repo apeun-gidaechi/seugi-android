@@ -17,6 +17,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.seugi.assignment.navigation.assignmentScreen
+import com.seugi.assignment.navigation.navigateToAssignment
 import com.seugi.chat.navigation.CHAT_ROUTE
 import com.seugi.chat.navigation.chatScreen
 import com.seugi.chatdatail.navigation.chatDetailScreen
@@ -28,6 +30,8 @@ import com.seugi.designsystem.component.SeugiBottomNavigation
 import com.seugi.home.navigation.HOME_ROUTE
 import com.seugi.home.navigation.homeScreen
 import com.seugi.home.navigation.navigateToHome
+import com.seugi.meal.navigation.mealScreen
+import com.seugi.meal.navigation.navigateToMeal
 import com.seugi.notification.navigation.NOTIFICATION_ROUTE
 import com.seugi.notification.navigation.notificationScreen
 import com.seugi.notificationcreate.navigation.navigateToNotificationCreate
@@ -42,6 +46,10 @@ import com.seugi.roomcreate.navigation.navigateToRoomCreate
 import com.seugi.roomcreate.navigation.roomCreateScreen
 import com.seugi.setting.navigate.navigateToSetting
 import com.seugi.setting.navigate.settingScreen
+import com.seugi.task.create.navigation.navigateToTaskCreate
+import com.seugi.task.create.navigation.taskCreateScreen
+import com.seugi.timetable.navigation.navigateToTimetable
+import com.seugi.timetable.navigation.timetableScreen
 import com.seugi.workspace.navigation.WAITING_JOIN
 import com.seugi.workspace.navigation.joinSuccess
 import com.seugi.workspace.navigation.navigateToJoinSuccess
@@ -53,12 +61,20 @@ import com.seugi.workspace.navigation.selectingJob
 import com.seugi.workspace.navigation.waitingJoin
 import com.seugi.workspacecreate.navigation.navigateToWorkspaceCreate
 import com.seugi.workspacecreate.navigation.workspaceCreateScreen
+import com.seugi.workspacedetail.navigation.inviteMemberScreen
+import com.seugi.workspacedetail.navigation.navigateToInviteMember
 import com.seugi.workspacedetail.navigation.navigateToWorkspaceDetail
 import com.seugi.workspacedetail.navigation.navigateToWorkspaceMember
+import com.seugi.workspacedetail.navigation.navigateToWorkspaceSettingAlarm
+import com.seugi.workspacedetail.navigation.navigateToWorkspaceSettingGeneral
 import com.seugi.workspacedetail.navigation.workspaceDetailScreen
 import com.seugi.workspacedetail.navigation.workspaceMemberScreen
+import com.seugi.workspacedetail.navigation.workspaceSettingAlarmScreen
+import com.seugi.workspacedetail.navigation.workspaceSettingGeneralScreen
+import kotlinx.coroutines.delay
 
 private const val NAVIGATION_ANIM = 400
+private const val LOAD_WORKSPACE_DELAY = 10000L
 
 @Composable
 internal fun MainScreen(
@@ -84,7 +100,12 @@ internal fun MainScreen(
         viewModel.loadWorkspace()
     }
 
-    LaunchedEffect(state) {}
+    LaunchedEffect(key1 = state.notJoinWorkspace) {
+        while (state.notJoinWorkspace) {
+            delay(LOAD_WORKSPACE_DELAY)
+            viewModel.loadWorkspace()
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -131,6 +152,7 @@ internal fun MainScreen(
                 navigateToJoinWorkspace = {
                     navHostController.navigateToSelectingJob()
                 },
+                navigateToTimetable = navHostController::navigateToTimetable,
                 navigateToWorkspaceDetail = { id ->
                     navHostController.navigateToWorkspaceDetail()
                     viewModel.loadLocalWorkspace()
@@ -138,15 +160,26 @@ internal fun MainScreen(
                 navigateToWorkspaceCreate = {
                     navHostController.navigateToWorkspaceCreate()
                 },
+                navigateToTask = {
+                    navHostController.navigateToAssignment()
+                },
+                navigateToMeal = navHostController::navigateToMeal,
             )
 
             chatScreen(
+                userId = state.userId,
                 workspaceId = state.workspace.workspaceId,
                 navigateToChatDetail = { chatId ->
                     navHostController.navigateToChatDetail(
                         workspaceId = state.profile.workspaceId,
                         chatRoomId = chatId,
                         isPersonal = true,
+                    )
+                },
+                navigateToCreateRoom = { workspaceId, userId ->
+                    navHostController.navigateToRoomCreate(
+                        workspaceId = workspaceId,
+                        userId = userId,
                     )
                 },
             )
@@ -187,6 +220,7 @@ internal fun MainScreen(
                     navHostController.popBackStack()
                 },
                 navigateToChatDetail = { chatId, workspaceId, isPersonal ->
+                    navHostController.popBackStack()
                     navHostController.navigateToChatDetail(
                         chatRoomId = chatId,
                         workspaceId = workspaceId,
@@ -295,6 +329,10 @@ internal fun MainScreen(
                 changeWorkspace = {
                     viewModel.loadWorkspace()
                 },
+                navigateToInviteMember = navHostController::navigateToInviteMember,
+                myRole = state.profile.permission,
+                navigateToSettingGeneral = navHostController::navigateToWorkspaceSettingGeneral,
+                navigateToSettingAlarm = navHostController::navigateToWorkspaceSettingAlarm,
             )
             workspaceMemberScreen(
                 showSnackbar = showSnackbar,
@@ -313,11 +351,50 @@ internal fun MainScreen(
                 },
             )
 
+            workspaceSettingGeneralScreen(
+                popBackStack = {
+                    navHostController.popBackStack()
+                },
+            )
+
+            workspaceSettingAlarmScreen(
+                workspaceId = state.workspace.workspaceId,
+                popBackStack = navHostController::popBackStack,
+            )
+
             settingScreen(
                 profileModel = state.profile,
                 navigationToOnboarding = mainToOnboarding,
                 popBackStack = navHostController::popBackStack,
                 showSnackbar = showSnackbar,
+                reloadProfile = viewModel::loadLocalWorkspace,
+            )
+
+            timetableScreen(
+                popBackStack = navHostController::popBackStack,
+                workspaceId = state.workspace.workspaceId,
+            )
+
+            inviteMemberScreen(
+                popBackStack = navHostController::popBackStack,
+                workspaceId = state.profile.workspaceId,
+            )
+
+            assignmentScreen(
+                popBackStack = navHostController::popBackStack,
+                workspaceId = state.workspace.workspaceId,
+                profile = state.profile,
+                navigateToTaskCreate = navHostController::navigateToTaskCreate,
+            )
+
+            taskCreateScreen(
+                popBackStack = navHostController::popBackStack,
+                workspaceId = state.workspace.workspaceId,
+            )
+
+            mealScreen(
+                workspaceId = state.workspace.workspaceId,
+                popBackStack = navHostController::popBackStack,
             )
         }
     }

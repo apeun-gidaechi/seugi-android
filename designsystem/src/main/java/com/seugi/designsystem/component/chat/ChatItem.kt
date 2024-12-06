@@ -10,6 +10,8 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +27,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,6 +41,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
+import androidx.compose.ui.util.fastForEach
 import coil.compose.AsyncImage
 import com.seugi.designsystem.R
 import com.seugi.designsystem.animation.AlphaIndication
@@ -45,11 +49,22 @@ import com.seugi.designsystem.animation.bounceClick
 import com.seugi.designsystem.component.AvatarType
 import com.seugi.designsystem.component.GradientPrimary
 import com.seugi.designsystem.component.SeugiAvatar
+import com.seugi.designsystem.component.SeugiEmoji
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
 import com.seugi.designsystem.theme.SeugiTheme
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 val CHAT_SHAPE = 8.dp
+
+@Immutable
+data class ChatItemEmoji(
+    val id: Int,
+    val emoji: String,
+    val count: Int,
+    val isChecked: Boolean,
+)
 
 sealed interface ChatItemType {
     data class Others(
@@ -60,16 +75,20 @@ sealed interface ChatItemType {
         val message: String,
         val createdAt: String,
         val count: Int?,
+        val emojis: ImmutableList<ChatItemEmoji>,
         val onChatLongClick: () -> Unit = {},
         val onDateClick: () -> Unit = {},
+        val onEmojiClick: (emoji: ChatItemEmoji) -> Unit,
     ) : ChatItemType
     data class Me(
         val isLast: Boolean,
         val message: String,
         val createdAt: String,
         val count: Int?,
+        val emojis: ImmutableList<ChatItemEmoji>,
         val onChatLongClick: () -> Unit = {},
         val onDateClick: () -> Unit = {},
+        val onEmojiClick: (emoji: ChatItemEmoji) -> Unit,
     ) : ChatItemType
     data class Date(
         val createdAt: String,
@@ -80,8 +99,10 @@ sealed interface ChatItemType {
         val message: String,
         val createdAt: String,
         val count: Int?,
+        val emojis: ImmutableList<ChatItemEmoji>,
         val onChatLongClick: () -> Unit = {},
         val onDateClick: () -> Unit = {},
+        val onEmojiClick: (emoji: ChatItemEmoji) -> Unit,
     ) : ChatItemType
     data class Else(
         val message: String,
@@ -101,6 +122,14 @@ sealed interface ChatItemType {
         val isMe: Boolean,
         val fileName: String,
         val fileSize: String,
+        val createdAt: String,
+        val count: Int?,
+        val emojis: ImmutableList<ChatItemEmoji>,
+        val isFirst: Boolean,
+        val isLast: Boolean,
+        val userName: String,
+        val userProfile: String?,
+        val onEmojiClick: (emoji: ChatItemEmoji) -> Unit,
     ) : ChatItemType
 
     data class FileFailed(
@@ -118,6 +147,14 @@ sealed interface ChatItemType {
         val onClick: () -> Unit,
         val isMe: Boolean,
         val image: String,
+        val createdAt: String,
+        val count: Int?,
+        val emojis: ImmutableList<ChatItemEmoji>,
+        val isFirst: Boolean,
+        val isLast: Boolean,
+        val userName: String,
+        val userProfile: String?,
+        val onEmojiClick: (emoji: ChatItemEmoji) -> Unit,
     ) : ChatItemType
 
     data class ImageFailedUrl(
@@ -152,8 +189,10 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType) {
                 message = type.message,
                 createdAt = type.createdAt,
                 count = type.count,
+                emojis = type.emojis,
                 onChatLongClick = type.onChatLongClick,
                 onDateClick = type.onDateClick,
+                onEmojiClick = type.onEmojiClick,
             )
         }
         is ChatItemType.Me -> {
@@ -163,8 +202,10 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType) {
                 message = type.message,
                 createdAt = type.createdAt,
                 count = type.count,
+                emojis = type.emojis,
                 onChatLongClick = type.onChatLongClick,
                 onDateClick = type.onDateClick,
+                onEmojiClick = type.onEmojiClick,
             )
         }
         is ChatItemType.Date -> {
@@ -181,8 +222,10 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType) {
                 message = type.message,
                 createdAt = type.createdAt,
                 count = type.count,
+                emojis = type.emojis,
                 onChatLongClick = type.onChatLongClick,
                 onDateClick = type.onDateClick,
+                onEmojiClick = type.onEmojiClick,
             )
         }
         is ChatItemType.Else -> {
@@ -211,6 +254,14 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType) {
                 isMe = type.isMe,
                 fileName = type.fileName,
                 fileSize = type.fileSize,
+                isFirst = type.isFirst,
+                isLast = type.isLast,
+                createdAt = type.createdAt,
+                userName = type.userName,
+                userProfile = type.userProfile,
+                count = type.count,
+                emojis = type.emojis,
+                onEmojiClick = type.onEmojiClick,
             )
         }
         is ChatItemType.FileFailed -> {
@@ -234,6 +285,14 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType) {
                 onClick = type.onClick,
                 isMe = type.isMe,
                 image = type.image,
+                isFirst = type.isFirst,
+                isLast = type.isLast,
+                createdAt = type.createdAt,
+                userName = type.userName,
+                userProfile = type.userProfile,
+                count = type.count,
+                emojis = type.emojis,
+                onEmojiClick = type.onEmojiClick,
             )
         }
 
@@ -266,7 +325,7 @@ fun SeugiChatItem(modifier: Modifier = Modifier, type: ChatItemType) {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
 private fun SeugiChatItemOthers(
     modifier: Modifier = Modifier,
@@ -277,8 +336,10 @@ private fun SeugiChatItemOthers(
     message: String,
     createdAt: String,
     count: Int?,
+    emojis: ImmutableList<ChatItemEmoji>,
     onChatLongClick: () -> Unit,
     onDateClick: () -> Unit,
+    onEmojiClick: (emoji: ChatItemEmoji) -> Unit,
 ) {
     val chatShape = RoundedCornerShape(
         topStart = 0.dp,
@@ -310,7 +371,7 @@ private fun SeugiChatItemOthers(
             Row(
                 verticalAlignment = Alignment.Bottom,
             ) {
-                Box(
+                Column(
                     modifier = Modifier
                         .weight(
                             weight = 1f,
@@ -330,29 +391,49 @@ private fun SeugiChatItemOthers(
                             onClick = {},
                             onLongClick = onChatLongClick,
                         ),
-                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        modifier = Modifier.padding(12.dp),
+                        modifier = Modifier.padding(
+                            start = 12.dp,
+                            end = 12.dp,
+                            top = 12.dp,
+                            bottom = 8.dp,
+                        ),
                         text = message,
                         color = SeugiTheme.colors.black,
                         style = SeugiTheme.typography.body1,
                     )
-                }
-                if (isLast) {
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Column(
-                        modifier = Modifier
-                            .clickable(
-                                onClick = onDateClick,
-                            ),
-                        verticalArrangement = Arrangement.Bottom,
+                    FlowRow(
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
                     ) {
-                        Text(
-                            text = count?.toString() ?: "",
-                            color = SeugiTheme.colors.gray600,
-                            style = SeugiTheme.typography.caption1,
-                        )
+                        emojis.fastForEach { emoji ->
+                            SeugiEmoji(
+                                emoji = emoji.emoji,
+                                count = emoji.count,
+                                isChecked = emoji.isChecked,
+                                onClick = {
+                                    onEmojiClick(emoji)
+                                },
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(if (emojis.isEmpty()) 4.dp else 12.dp))
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Column(
+                    modifier = Modifier
+                        .clickable(
+                            onClick = onDateClick,
+                        ),
+                    verticalArrangement = Arrangement.Bottom,
+                ) {
+                    Text(
+                        text = count?.toString() ?: "",
+                        color = SeugiTheme.colors.gray600,
+                        style = SeugiTheme.typography.caption1,
+                    )
+                    if (isLast) {
                         Text(
                             text = createdAt,
                             color = SeugiTheme.colors.gray600,
@@ -365,9 +446,19 @@ private fun SeugiChatItemOthers(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
-private fun SeugiChatItemMe(modifier: Modifier = Modifier, isLast: Boolean, message: String, createdAt: String, count: Int?, onChatLongClick: () -> Unit, onDateClick: () -> Unit) {
+private fun SeugiChatItemMe(
+    modifier: Modifier = Modifier,
+    isLast: Boolean,
+    message: String,
+    createdAt: String,
+    count: Int?,
+    emojis: ImmutableList<ChatItemEmoji>,
+    onChatLongClick: () -> Unit,
+    onDateClick: () -> Unit,
+    onEmojiClick: (emoji: ChatItemEmoji) -> Unit,
+) {
     val chatShape = RoundedCornerShape(
         topStart = CHAT_SHAPE,
         topEnd = 0.dp,
@@ -378,29 +469,29 @@ private fun SeugiChatItemMe(modifier: Modifier = Modifier, isLast: Boolean, mess
         modifier = modifier,
         verticalAlignment = Alignment.Bottom,
     ) {
-        if (isLast) {
-            Column(
-                modifier = Modifier
-                    .clickable(
-                        onClick = onDateClick,
-                    ),
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.End,
-            ) {
-                Text(
-                    text = count?.toString() ?: "",
-                    color = SeugiTheme.colors.gray600,
-                    style = SeugiTheme.typography.caption1,
-                )
+        Column(
+            modifier = Modifier
+                .clickable(
+                    onClick = onDateClick,
+                ),
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.End,
+        ) {
+            Text(
+                text = count?.toString() ?: "",
+                color = SeugiTheme.colors.gray600,
+                style = SeugiTheme.typography.caption1,
+            )
+            if (isLast) {
                 Text(
                     text = createdAt,
                     color = SeugiTheme.colors.gray600,
                     style = SeugiTheme.typography.caption2,
                 )
             }
-            Spacer(modifier = Modifier.width(8.dp))
         }
-        Box(
+        Spacer(modifier = Modifier.width(8.dp))
+        Column(
             modifier = Modifier
                 .dropShadow(
                     type = DropShadowType.EvBlack1,
@@ -416,14 +507,34 @@ private fun SeugiChatItemMe(modifier: Modifier = Modifier, isLast: Boolean, mess
                     onClick = {},
                     onLongClick = onChatLongClick,
                 ),
-            contentAlignment = Alignment.Center,
         ) {
             Text(
-                modifier = Modifier.padding(12.dp),
+                modifier = Modifier.padding(
+                    start = 12.dp,
+                    end = 12.dp,
+                    top = 12.dp,
+                    bottom = 8.dp,
+                ),
                 text = message,
                 color = SeugiTheme.colors.white,
                 style = SeugiTheme.typography.body1,
             )
+            FlowRow(
+                modifier = Modifier.padding(horizontal = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                emojis.fastForEach { emoji ->
+                    SeugiEmoji(
+                        emoji = emoji.emoji,
+                        count = emoji.count,
+                        isChecked = emoji.isChecked,
+                        onClick = {
+                            onEmojiClick(emoji)
+                        },
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(if (emojis.isEmpty()) 4.dp else 12.dp))
         }
     }
 }
@@ -451,9 +562,20 @@ private fun SeugiChatItemDate(modifier: Modifier, createdAt: String) {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
-private fun SeugiChatItemAi(modifier: Modifier = Modifier, isFirst: Boolean, isLast: Boolean, message: String, createdAt: String, count: Int?, onChatLongClick: () -> Unit, onDateClick: () -> Unit) {
+private fun SeugiChatItemAi(
+    modifier: Modifier = Modifier,
+    isFirst: Boolean,
+    isLast: Boolean,
+    message: String,
+    createdAt: String,
+    count: Int?,
+    emojis: ImmutableList<ChatItemEmoji>,
+    onChatLongClick: () -> Unit,
+    onDateClick: () -> Unit,
+    onEmojiClick: (emoji: ChatItemEmoji) -> Unit,
+) {
     val chatShape = RoundedCornerShape(
         topStart = 0.dp,
         topEnd = CHAT_SHAPE,
@@ -485,7 +607,7 @@ private fun SeugiChatItemAi(modifier: Modifier = Modifier, isFirst: Boolean, isL
             Row(
                 verticalAlignment = Alignment.Bottom,
             ) {
-                Box(
+                Column(
                     modifier = Modifier
                         .weight(
                             weight = 1f,
@@ -510,14 +632,35 @@ private fun SeugiChatItemAi(modifier: Modifier = Modifier, isFirst: Boolean, isL
                             onClick = {},
                             onLongClick = onChatLongClick,
                         ),
-                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        modifier = Modifier.padding(12.dp),
+                        modifier = Modifier.padding(
+                            start = 12.dp,
+                            end = 12.dp,
+                            top = 12.dp,
+                            bottom = 8.dp,
+                        ),
                         text = message,
                         color = SeugiTheme.colors.black,
                         style = SeugiTheme.typography.body1,
                     )
+
+                    FlowRow(
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    ) {
+                        emojis.fastForEach { emoji ->
+                            SeugiEmoji(
+                                emoji = emoji.emoji,
+                                count = emoji.count,
+                                isChecked = emoji.isChecked,
+                                onClick = {
+                                    onEmojiClick(emoji)
+                                },
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(if (emojis.isEmpty()) 4.dp else 12.dp))
                 }
                 if (isLast) {
                     Spacer(modifier = Modifier.width(8.dp))
@@ -655,73 +798,153 @@ private fun SeugiChatItemSending(modifier: Modifier = Modifier, message: String)
 }
 
 @Composable
-private fun SeugiChatItemFile(modifier: Modifier = Modifier, onClick: () -> Unit, isMe: Boolean, fileName: String, fileSize: String) {
+private fun SeugiChatItemFile(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    isMe: Boolean,
+    fileName: String,
+    fileSize: String,
+    createdAt: String,
+    count: Int?,
+    emojis: ImmutableList<ChatItemEmoji>,
+    isLast: Boolean,
+    isFirst: Boolean,
+    userName: String,
+    userProfile: String?,
+    onEmojiClick: (emoji: ChatItemEmoji) -> Unit,
+) {
     val chatShape = RoundedCornerShape(CHAT_SHAPE)
 
-    val screenWidth = LocalConfiguration.current.screenWidthDp.dp * 0.8f
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp * 0.7f
     Row(
-        modifier = modifier
-            .padding(horizontal = 8.dp)
-            .widthIn(
-                min = min(screenWidth, 128.dp),
-                max = min(screenWidth, 320.dp),
-            )
-            .dropShadow(type = DropShadowType.EvBlack1)
-            .background(
-                color = SeugiTheme.colors.white,
-                shape = chatShape,
-            )
-            .bounceClick(onClick),
-        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = if (isMe) Arrangement.End else Arrangement.Start,
     ) {
-        Box(
-            modifier = Modifier
-                .padding(
-                    start = 12.dp,
-                    top = 14.dp,
-                    bottom = 14.dp,
+        if (!isMe) {
+            if (isFirst) {
+                SeugiAvatar(
+                    type = AvatarType.Medium,
+                    image = userProfile,
                 )
-                .background(
-                    color = SeugiTheme.colors.primary500,
-                    shape = CircleShape,
-                ),
-            contentAlignment = Alignment.Center,
-        ) {
-            Image(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .size(24.dp),
-                painter = painterResource(id = R.drawable.ic_file_line),
-                contentDescription = "파일 아이콘",
-                colorFilter = ColorFilter.tint(SeugiTheme.colors.white),
-            )
+            } else {
+                Spacer(modifier = Modifier.width(32.dp))
+            }
+            Spacer(modifier = Modifier.width(8.dp))
         }
-        Spacer(modifier = Modifier.width(8.dp))
-        Column(
-            modifier = Modifier
-                .weight(1f),
-        ) {
-            Text(
-                text = fileName,
-                color = SeugiTheme.colors.black,
-                style = SeugiTheme.typography.body1,
-            )
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(
-                text = fileSize,
-                color = SeugiTheme.colors.gray500,
-                style = SeugiTheme.typography.caption2,
-            )
+        Column {
+            if (!isMe && isFirst) {
+                Text(
+                    text = userName,
+                    style = SeugiTheme.typography.body1,
+                    color = SeugiTheme.colors.gray600,
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+            }
+            Row(
+                verticalAlignment = Alignment.Bottom,
+            ) {
+                if (isMe) {
+                    Column(
+                        horizontalAlignment = Alignment.End,
+                    ) {
+                        Text(
+                            text = count?.toString() ?: "",
+                            color = SeugiTheme.colors.gray600,
+                            style = SeugiTheme.typography.caption1,
+                        )
+                        if (isLast) {
+                            Text(
+                                text = createdAt,
+                                color = SeugiTheme.colors.gray600,
+                                style = SeugiTheme.typography.caption2,
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
+                Row(
+                    modifier = modifier
+                        .widthIn(
+                            min = min(screenWidth, 128.dp),
+                            max = min(screenWidth, 320.dp),
+                        )
+                        .dropShadow(type = DropShadowType.EvBlack1)
+                        .background(
+                            color = SeugiTheme.colors.white,
+                            shape = chatShape,
+                        )
+                        .bounceClick(onClick),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .padding(
+                                start = 12.dp,
+                                top = 14.dp,
+                                bottom = 14.dp,
+                            )
+                            .background(
+                                color = SeugiTheme.colors.primary500,
+                                shape = CircleShape,
+                            ),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Image(
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .size(24.dp),
+                            painter = painterResource(id = R.drawable.ic_file_line),
+                            contentDescription = "파일 아이콘",
+                            colorFilter = ColorFilter.tint(SeugiTheme.colors.white),
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Column(
+                        modifier = Modifier
+                            .weight(1f),
+                    ) {
+                        Text(
+                            text = fileName,
+                            color = SeugiTheme.colors.black,
+                            style = SeugiTheme.typography.body1,
+                        )
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            text = fileSize,
+                            color = SeugiTheme.colors.gray500,
+                            style = SeugiTheme.typography.caption2,
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Image(
+                        modifier = Modifier
+                            .padding(end = 12.dp)
+                            .size(24.dp),
+                        painter = painterResource(id = R.drawable.ic_expand_stop_down_line),
+                        contentDescription = "다운로드 아이콘",
+                        colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
+                    )
+                }
+                if (!isMe) {
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Column {
+                        Text(
+                            text = count?.toString() ?: "",
+                            color = SeugiTheme.colors.gray600,
+                            style = SeugiTheme.typography.caption1,
+                        )
+                        if (isLast) {
+                            Text(
+                                text = createdAt,
+                                color = SeugiTheme.colors.gray600,
+                                style = SeugiTheme.typography.caption2,
+                            )
+                        }
+                    }
+                }
+            }
         }
-        Spacer(modifier = Modifier.width(8.dp))
-        Image(
-            modifier = Modifier
-                .padding(end = 12.dp)
-                .size(24.dp),
-            painter = painterResource(id = R.drawable.ic_expand_stop_down_line),
-            contentDescription = "다운로드 아이콘",
-            colorFilter = ColorFilter.tint(SeugiTheme.colors.gray500),
-        )
     }
 }
 
@@ -878,44 +1101,114 @@ private fun SeugiChatItemFileSending(modifier: Modifier = Modifier, fileName: St
 }
 
 @Composable
-fun SeugiChatItemImage(modifier: Modifier = Modifier, isMe: Boolean, onClick: () -> Unit, image: String) {
+fun SeugiChatItemImage(
+    modifier: Modifier = Modifier,
+    isMe: Boolean,
+    onClick: () -> Unit,
+    image: String,
+    isFirst: Boolean,
+    isLast: Boolean,
+    count: Int?,
+    emojis: ImmutableList<ChatItemEmoji>,
+    createdAt: String,
+    userName: String,
+    userProfile: String?,
+    onEmojiClick: (emoji: ChatItemEmoji) -> Unit,
+) {
     val configuration = LocalConfiguration.current
 
     val topBarHeight = 54.dp
     val bottomTextFieldHeight = 64.dp
 
-    val screenWidth = configuration.screenWidthDp.dp * 0.8f
+    val screenWidth = configuration.screenWidthDp.dp * 0.7f
     val screenHeight = (configuration.screenHeightDp.dp - topBarHeight - bottomTextFieldHeight) * 0.8f
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = if (isMe) Arrangement.End else Arrangement.Start,
-        verticalAlignment = Alignment.Bottom,
     ) {
-        Row(
-            modifier = modifier
-                .padding(
-                    horizontal = 8.dp,
+        if (!isMe) {
+            if (isFirst) {
+                SeugiAvatar(
+                    type = AvatarType.Medium,
+                    image = userProfile,
                 )
-                .clip(RoundedCornerShape(12.dp))
-                .bounceClick(onClick),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+            } else {
+                Spacer(modifier = Modifier.width(32.dp))
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+        }
+        Row(
+            verticalAlignment = Alignment.Bottom,
         ) {
-            AsyncImage(
-                modifier = Modifier
-                    .widthIn(
-                        min = min(screenWidth, 128.dp),
-                        max = min(screenWidth, 320.dp),
+            if (isMe) {
+                Column(
+                    horizontalAlignment = Alignment.End,
+                ) {
+                    Text(
+                        text = count?.toString() ?: "",
+                        color = SeugiTheme.colors.gray600,
+                        style = SeugiTheme.typography.caption1,
                     )
-                    .heightIn(
-                        min = min(40.dp, screenHeight),
-                        max = min(300.dp, screenHeight),
+                    if (isLast) {
+                        Text(
+                            text = createdAt,
+                            color = SeugiTheme.colors.gray600,
+                            style = SeugiTheme.typography.caption2,
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+            }
+            Column {
+                if (!isMe && isFirst) {
+                    Text(
+                        text = userName,
+                        style = SeugiTheme.typography.body1,
+                        color = SeugiTheme.colors.gray600,
                     )
-                    .wrapContentSize(),
-                model = image,
-                contentDescription = null,
-                contentScale = ContentScale.FillHeight,
-            )
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
+                Row(
+                    modifier = modifier
+                        .clip(RoundedCornerShape(12.dp))
+                        .bounceClick(onClick),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    AsyncImage(
+                        modifier = Modifier
+                            .widthIn(
+                                min = min(screenWidth, 128.dp),
+                                max = min(screenWidth, 320.dp),
+                            )
+                            .heightIn(
+                                min = min(40.dp, screenHeight),
+                                max = min(300.dp, screenHeight),
+                            )
+                            .wrapContentSize(),
+                        model = image,
+                        contentDescription = null,
+                        contentScale = ContentScale.FillHeight,
+                    )
+                }
+            }
+            if (!isMe) {
+                Spacer(modifier = Modifier.width(8.dp))
+                Column {
+                    Text(
+                        text = count?.toString() ?: "",
+                        color = SeugiTheme.colors.gray600,
+                        style = SeugiTheme.typography.caption1,
+                    )
+                    if (isLast) {
+                        Text(
+                            text = createdAt,
+                            color = SeugiTheme.colors.gray600,
+                            style = SeugiTheme.typography.caption2,
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -1168,6 +1461,8 @@ private fun PreviewSeugiChatItem() {
                     count = 1,
                     onDateClick = {},
                     onChatLongClick = {},
+                    emojis = persistentListOf(),
+                    onEmojiClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -1182,6 +1477,8 @@ private fun PreviewSeugiChatItem() {
                     count = 1,
                     onDateClick = {},
                     onChatLongClick = {},
+                    emojis = persistentListOf(),
+                    onEmojiClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -1194,6 +1491,8 @@ private fun PreviewSeugiChatItem() {
                     count = 1,
                     onDateClick = {},
                     onChatLongClick = {},
+                    emojis = persistentListOf(),
+                    onEmojiClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -1206,6 +1505,8 @@ private fun PreviewSeugiChatItem() {
                     count = 1,
                     onDateClick = {},
                     onChatLongClick = {},
+                    emojis = persistentListOf(),
+                    onEmojiClick = {},
                 ),
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -1242,6 +1543,14 @@ private fun PreviewSeugiChatItem() {
                     isMe = true,
                     fileName = "B1nd인턴+여행계획서.pptx",
                     fileSize = "191.3KB",
+                    count = 1,
+                    createdAt = "오후 12:44",
+                    isFirst = true,
+                    isLast = true,
+                    userName = "test",
+                    userProfile = null,
+                    emojis = persistentListOf(),
+                    onEmojiClick = {},
                 ),
             )
         }

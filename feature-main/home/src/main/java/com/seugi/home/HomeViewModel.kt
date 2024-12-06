@@ -5,8 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
+import com.seugi.common.utiles.combineWhenAllComplete
+import com.seugi.data.assignment.AssignmentRepository
+import com.seugi.data.assignment.model.AssignmentModel
+import com.seugi.data.core.model.MealType
 import com.seugi.data.meal.MealRepository
-import com.seugi.data.meal.response.MealType
 import com.seugi.data.schedule.ScheduleRepository
 import com.seugi.data.timetable.TimetableRepository
 import com.seugi.data.workspace.WorkspaceRepository
@@ -17,6 +20,7 @@ import com.seugi.home.model.MealUiState
 import com.seugi.home.model.TimeScheduleUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
@@ -28,6 +32,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.toKotlinLocalDate
+import kotlinx.datetime.toKotlinLocalDateTime
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -35,6 +40,7 @@ class HomeViewModel @Inject constructor(
     private val mealRepository: MealRepository,
     private val timetableRepository: TimetableRepository,
     private val scheduleRepository: ScheduleRepository,
+    private val assignmentRepository: AssignmentRepository,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
@@ -58,13 +64,13 @@ class HomeViewModel @Inject constructor(
             loadTimetable(workspace.workspaceId)
             loadCatSeugi()
             loadSchedule(workspace.workspaceId)
+            loadTask(workspace.workspaceId)
         }
     }
 
     fun setStateNotJoin() = viewModelScope.launch(dispatcher) {
         _state.update {
             it.copy(
-                showDialog = true,
                 schoolState = CommonUiState.Error,
                 timeScheduleState = CommonUiState.Error,
                 mealState = CommonUiState.Error,
@@ -201,6 +207,72 @@ class HomeViewModel @Inject constructor(
                         )
                     }
                 }
+            }
+        }
+    }
+
+    private fun loadTask(workspaceId: String) = viewModelScope.launch(dispatcher) {
+        combineWhenAllComplete(
+            assignmentRepository.getGoogleTaskAll(),
+            assignmentRepository.getWorkspaceTaskAll(workspaceId),
+        ) { google, workspace ->
+            val tasks = mutableListOf<AssignmentModel>()
+            var failedGoogleOauth = false
+            var failedWorkspace = false
+            when (google) {
+                is Result.Success -> {
+                    tasks.addAll(google.data)
+                }
+
+                Result.Loading -> {
+                }
+
+                is Result.Error -> {
+                    failedGoogleOauth = true
+                }
+            }
+
+            when (workspace) {
+                is Result.Success -> {
+                    tasks.addAll(workspace.data)
+                }
+
+                Result.Loading -> {
+                }
+
+                is Result.Error -> {
+                    failedWorkspace = true
+                }
+            }
+
+            return@combineWhenAllComplete Pair(
+                tasks.toImmutableList(),
+                failedGoogleOauth && failedWorkspace,
+            )
+        }.collect {
+            if (it.second) {
+                _state.update { state ->
+                    state.copy(
+                        taskState = CommonUiState.Error,
+                    )
+                }
+                return@collect
+            }
+            val nowDate = LocalDateTime.now().toKotlinLocalDateTime()
+            _state.update { state ->
+                state.copy(
+                    taskState = CommonUiState.Success(
+                        it.first
+                            .filter {
+                                it.dueDate != null && nowDate < it.dueDate!!
+                            }
+                            .sortedBy {
+                                it.dueDate
+                            }
+                            .take(3)
+                            .toImmutableList(),
+                    ),
+                )
             }
         }
     }

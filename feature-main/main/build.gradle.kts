@@ -26,6 +26,10 @@ dependencies {
     implementation(projects.featureMain.notificationEdit)
     implementation(projects.featureMain.workspaceDetail)
     implementation(projects.featureMain.workspaceCreate)
+    implementation(projects.featureMain.timetable)
     implementation(projects.featureMain.setting)
+    implementation(projects.featureMain.assignment)
+    implementation(projects.featureMain.assignmentCreate)
+    implementation(projects.featureMain.meal)
 
 }

@@ -6,6 +6,7 @@ import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.data.core.mapper.toModels
 import com.seugi.data.core.model.ProfileModel
+import com.seugi.data.core.model.UserModel
 import com.seugi.data.workspace.WorkspaceRepository
 import com.seugi.data.workspace.mapper.localToModel
 import com.seugi.data.workspace.mapper.toEntity
@@ -15,6 +16,8 @@ import com.seugi.data.workspace.model.CheckWorkspaceModel
 import com.seugi.data.workspace.model.WaitWorkspaceModel
 import com.seugi.data.workspace.model.WorkspaceModel
 import com.seugi.local.room.dao.WorkspaceDao
+import com.seugi.local.room.dao.WorkspaceNotificationDao
+import com.seugi.local.room.entity.WorkspaceNotificationEntity
 import com.seugi.network.core.response.safeResponse
 import com.seugi.network.workspace.WorkspaceDataSource
 import javax.inject.Inject
@@ -27,6 +30,7 @@ class WorkspaceRepositoryImpl @Inject constructor(
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
     private val workspaceDatasource: WorkspaceDataSource,
     private val workspaceDao: WorkspaceDao,
+    private val workspaceNotificationDao: WorkspaceNotificationDao,
 ) : WorkspaceRepository {
     override suspend fun checkWorkspace(schoolCode: String): Flow<Result<CheckWorkspaceModel>> {
         return flow {
@@ -75,10 +79,14 @@ class WorkspaceRepositoryImpl @Inject constructor(
             teacher = workspaceModel.teacher,
             student = workspaceModel.student,
         )
+        if (workspaceNotificationDao.getWorkspaceByWorkspaceId(workspaceModel.workspaceId) == null) {
+            workspaceNotificationDao.insert(WorkspaceNotificationEntity(workspaceModel.workspaceId, true))
+        }
     }
 
     override suspend fun insertWorkspace(workspaceModel: WorkspaceModel) {
         workspaceDao.insert(workspaceModel.toEntity())
+        workspaceNotificationDao.insert(WorkspaceNotificationEntity(workspaceModel.workspaceId, true))
     }
 
     override suspend fun getLocalWorkspaceId(): String {
@@ -115,6 +123,65 @@ class WorkspaceRepositoryImpl @Inject constructor(
     override suspend fun deleteWorkspace(): Flow<Result<Boolean>> = flow {
         workspaceDao.deleteWorkspace()
 
+        emit(true)
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun getWaitMembers(workspaceId: String, role: String): Flow<Result<List<UserModel>>> = flow {
+        val response = workspaceDatasource.getWaitMembers(
+            workspaceId = workspaceId,
+            role = role,
+        ).safeResponse()
+        emit(response.toModels())
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun getWorkspaceCode(workspaceId: String): Flow<Result<String>> = flow {
+        val response = workspaceDatasource.getWorkspaceCode(workspaceId).safeResponse()
+        emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun addMember(workspaceId: String, userSet: List<Long>, role: String): Flow<Result<Boolean>> = flow {
+        val response = workspaceDatasource.addMember(
+            workspaceId = workspaceId,
+            userSet = userSet,
+            role = role,
+        ).safeResponse()
+
+        emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun cancelMember(workspaceId: String, userSet: List<Long>, role: String): Flow<Result<Boolean>> = flow {
+        val response = workspaceDatasource.cancelMember(
+            workspaceId = workspaceId,
+            userSet = userSet,
+            role = role,
+        ).safeResponse()
+
+        emit(response)
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun getIsWorkspaceReceiveFCM(workspaceId: String): Flow<Result<Boolean>> = flow {
+        val response = workspaceNotificationDao.getWorkspaceByWorkspaceId(workspaceId)
+
+        emit(response?.isReceiveFCM ?: true)
+    }
+        .flowOn(dispatcher)
+        .asResult()
+
+    override suspend fun changeIsWorkspaceReceiveFCM(isReceiveFCM: Boolean, workspaceId: String): Flow<Result<Boolean>> = flow {
+        workspaceNotificationDao.updateIsReceiveFCMByWorkspaceId(
+            isReceiveFCM = isReceiveFCM,
+            workspaceId = workspaceId,
+        )
         emit(true)
     }
         .flowOn(dispatcher)

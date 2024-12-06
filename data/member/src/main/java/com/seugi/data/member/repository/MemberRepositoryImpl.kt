@@ -60,4 +60,18 @@ class MemberRepositoryImpl @Inject constructor(
     }
         .flowOn(dispatcher)
         .asResult()
+
+    override suspend fun editProfile(name: String, picture: String, birth: String): Flow<Result<Boolean>> {
+        return flow {
+            val response = datasource.editProfile(
+                name = name,
+                picture = picture,
+                birth = birth,
+            ).safeResponse()
+
+            emit(response)
+        }
+            .flowOn(dispatcher)
+            .asResult()
+    }
 }

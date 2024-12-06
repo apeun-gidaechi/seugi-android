@@ -1,11 +1,14 @@
 package com.seugi.setting
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
 import com.seugi.common.utiles.DispatcherType
 import com.seugi.common.utiles.SeugiDispatcher
 import com.seugi.common.utiles.combineWhenAllComplete
+import com.seugi.data.file.FileRepository
+import com.seugi.data.file.model.FileType
 import com.seugi.data.member.MemberRepository
 import com.seugi.data.token.TokenRepository
 import com.seugi.data.workspace.WorkspaceRepository
@@ -26,6 +29,7 @@ class SettingViewModel @Inject constructor(
     private val workspaceRepository: WorkspaceRepository,
     private val tokenRepository: TokenRepository,
     private val memberRepository: MemberRepository,
+    private val fileRepository: FileRepository,
     @SeugiDispatcher(DispatcherType.IO) private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
@@ -78,6 +82,51 @@ class SettingViewModel @Inject constructor(
                         )
                     }
                     _sideEffect.send(SettingSideEffect.FailedWithdraw(it.throwable))
+                }
+            }
+        }
+    }
+
+    fun editProfile(name: String, profileImage: String, birth: String) {
+        viewModelScope.launch {
+            memberRepository.editProfile(
+                name = name,
+                picture = profileImage,
+                birth = birth,
+            ).collect {
+                when (it) {
+                    is Result.Error -> {
+                        it.throwable.printStackTrace()
+                    }
+                    is Result.Loading -> {}
+                    is Result.Success -> {
+                        _sideEffect.send(SettingSideEffect.SuccessEdit)
+                        Log.d("TAG", "editProfile: ${it.data}")
+                    }
+                }
+            }
+        }
+    }
+
+    fun fileUpload(name: String, fileByteArray: ByteArray, fileMimeType: String, fileName: String, fileByte: Long, birth: String) {
+        viewModelScope.launch {
+            fileRepository.fileUpload(
+                type = FileType.IMG,
+                fileName = fileName,
+                fileMimeType = fileMimeType,
+                fileByteArray = fileByteArray,
+            ).collect {
+                when (it) {
+                    is Result.Success -> {
+                        editProfile(name, it.data.url, birth)
+                    }
+
+                    is Result.Error -> {
+                        it.throwable.printStackTrace()
+                    }
+
+                    else -> {
+                    }
                 }
             }
         }
