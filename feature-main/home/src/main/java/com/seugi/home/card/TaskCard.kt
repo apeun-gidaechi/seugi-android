@@ -53,7 +53,7 @@ fun TaskCard(uiState: CommonUiState<ImmutableList<AssignmentModel>>, navigateToT
                                 dDay = "D" + when {
                                     dayCnt > 0 -> "-$dayCnt"
                                     dayCnt < 0 -> "+${-dayCnt}"
-                                    else -> " Day"
+                                    else -> "-Day"
                                 },
                             )
                         }

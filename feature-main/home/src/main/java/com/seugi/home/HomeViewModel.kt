@@ -1,6 +1,5 @@
 package com.seugi.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seugi.common.model.Result
@@ -21,6 +20,7 @@ import com.seugi.home.model.MealUiState
 import com.seugi.home.model.TimeScheduleUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.toKotlinLocalDate
+import kotlinx.datetime.toKotlinLocalDateTime
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -211,23 +212,6 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun loadTask(workspaceId: String) = viewModelScope.launch(dispatcher) {
-        launch {
-            assignmentRepository.getGoogleTaskAll().collect {
-                when (it) {
-                    is Result.Error -> {
-                        it.throwable.printStackTrace()
-                    }
-
-                    Result.Loading -> {
-                    }
-
-                    is Result.Success -> {
-                        Log.d("TAG", "loadTask: ${it.data}")
-                    }
-                }
-            }
-        }
-
         combineWhenAllComplete(
             assignmentRepository.getGoogleTaskAll(),
             assignmentRepository.getWorkspaceTaskAll(workspaceId),
@@ -254,10 +238,10 @@ class HomeViewModel @Inject constructor(
                 }
 
                 Result.Loading -> {
-                    failedWorkspace = true
                 }
 
                 is Result.Error -> {
+                    failedWorkspace = true
                 }
             }
 
@@ -274,11 +258,14 @@ class HomeViewModel @Inject constructor(
                 }
                 return@collect
             }
+            val nowDate = LocalDateTime.now().toKotlinLocalDateTime()
             _state.update { state ->
                 state.copy(
                     taskState = CommonUiState.Success(
                         it.first
-                            .filter { it.dueDate != null }
+                            .filter {
+                                it.dueDate != null && nowDate < it.dueDate!!
+                            }
                             .sortedBy {
                                 it.dueDate
                             }

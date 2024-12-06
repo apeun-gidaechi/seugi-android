@@ -24,17 +24,22 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.seugi.assignment.model.CommonUiState
+import com.seugi.data.assignment.model.AssignmentModel
 import com.seugi.data.core.model.ProfileModel
 import com.seugi.data.core.model.isTeacher
 import com.seugi.designsystem.R
+import com.seugi.designsystem.animation.bounceClick
+import com.seugi.designsystem.animation.rememberBounceIndication
 import com.seugi.designsystem.component.SeugiTopBar
 import com.seugi.designsystem.component.modifier.DropShadowType
 import com.seugi.designsystem.component.modifier.dropShadow
+import com.seugi.designsystem.component.modifier.`if`
 import com.seugi.designsystem.theme.SeugiTheme
 import java.time.LocalDate
 import kotlinx.datetime.daysUntil
@@ -43,12 +48,20 @@ import kotlinx.datetime.toKotlinLocalDate
 @Composable
 internal fun AssignmentScreen(viewModel: AssignmentViewModel = hiltViewModel(), popBackStack: () -> Unit, workspaceId: String, profile: ProfileModel, navigateToTaskCreate: () -> Unit) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
+    val uriHandler = LocalUriHandler.current
 
     LaunchedEffect(workspaceId) {
         if (workspaceId.isEmpty()) return@LaunchedEffect
 
         viewModel.getClassroomTask()
         viewModel.getWorkspaceTask(workspaceId)
+    }
+
+    val onClickTaskCard: (AssignmentModel) -> Unit = onClickTaskCard@{
+        if (it.link == null) {
+            return@onClickTaskCard
+        }
+        uriHandler.openUri(it.link!!)
     }
 
     Scaffold(
@@ -106,6 +119,9 @@ internal fun AssignmentScreen(viewModel: AssignmentViewModel = hiltViewModel(), 
                             title = it.title,
                             description = it.description ?: "",
                             dDay = "기한없음",
+                            onClick = {
+                                onClickTaskCard(it)
+                            },
                         )
                     } else {
                         val dayCnt = LocalDate.now().toKotlinLocalDate().daysUntil(it.dueDate!!.date)
@@ -116,6 +132,9 @@ internal fun AssignmentScreen(viewModel: AssignmentViewModel = hiltViewModel(), 
                                 dayCnt > 0 -> "-$dayCnt"
                                 dayCnt < 0 -> "+${-dayCnt}"
                                 else -> " Day"
+                            },
+                            onClick = {
+                                onClickTaskCard(it)
                             },
                         )
                     }
@@ -151,6 +170,10 @@ internal fun AssignmentScreen(viewModel: AssignmentViewModel = hiltViewModel(), 
                         )
                     }
                 }
+
+                item {
+                    Spacer(modifier = Modifier.height(100.dp))
+                }
             }
         }
     }
@@ -170,7 +193,7 @@ private fun TaskTitleCard(modifier: Modifier = Modifier, title: String) {
 }
 
 @Composable
-private fun TaskCard(modifier: Modifier = Modifier, title: String, description: String, dDay: String) {
+private fun TaskCard(modifier: Modifier = Modifier, title: String, description: String, dDay: String, onClick: (() -> Unit)? = null) {
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -178,7 +201,15 @@ private fun TaskCard(modifier: Modifier = Modifier, title: String, description: 
             .background(
                 color = SeugiTheme.colors.white,
                 shape = RoundedCornerShape(12.dp),
-            ),
+            )
+            .`if`(onClick != null) {
+                bounceClick(
+                    onClick = onClick!!,
+                    indication = rememberBounceIndication(
+                        radius = RoundedCornerShape(12.dp),
+                    ),
+                )
+            },
     ) {
         Column(
             modifier = Modifier.padding(12.dp),
